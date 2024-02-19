@@ -10,8 +10,8 @@ import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpResponse;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.server.ServerAuthenticationEntryPoint;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.web.server.authorization.ServerAccessDeniedHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -19,14 +19,13 @@ import reactor.core.publisher.Mono;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class JwtAuthEntryPoint implements ServerAuthenticationEntryPoint {
+public class JwtDeniedHandler implements ServerAccessDeniedHandler {
     private final ObjectMapper mapper = new ObjectMapper();
-
     @Override
-    public Mono<Void> commence(ServerWebExchange exchange, AuthenticationException ex) {
-        String message = ex.getMessage();
+    public Mono<Void> handle(ServerWebExchange exchange, AccessDeniedException denied) {
+        String message = denied.getMessage();
         CustomErrorResponse unauthorized = CustomErrorResponse.builder()
-                .status(HttpStatus.UNAUTHORIZED.value())
+                .status(HttpStatus.FORBIDDEN.value())
                 .error(message)
                 .path(exchange.getRequest().getPath().toString())
                 .timestamp(System.currentTimeMillis())
@@ -42,10 +41,9 @@ public class JwtAuthEntryPoint implements ServerAuthenticationEntryPoint {
         return Mono.just(message)
                 .flatMap(s -> {
                     ServerHttpResponse response = exchange.getResponse();
-                    response.setStatusCode(HttpStatus.UNAUTHORIZED);
+                    response.setStatusCode(HttpStatus.FORBIDDEN);
                     response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
                     return response.writeWith(Mono.just(buffer));
                 }).doOnSuccess(empty -> DataBufferUtils.release(buffer));
     }
-
 }

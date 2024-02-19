@@ -5,6 +5,20 @@ spring:
     banner-mode: off
   application:
     name: kepegawaian
+  datasource:
+    url: jdbc:mysql://${DB_HOST:192.168.230.84}:${DB_PORT:3306}/${DB_SCHEMA:kepegawaian}?useSSL=false&allowMultiQueries=true&serverTimezone=UTC&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull
+    username: ${DB_USER:dev}
+    password: ${DB_PASSWORD:password}
+    hikari:
+      connection-timeout: 20000
+      maximum-pool-size: ${DB_POOL_SIZE:10}
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
 
 logging:
   level:

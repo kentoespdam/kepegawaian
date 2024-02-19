@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/test")
 public class TestController {
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
     public Mono<ResponseEntity<?>> index(){
         return Mono.just(ResponseEntity.ok("Hello World"));
