@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.2.2'
     id 'io.spring.dependency-management' version '1.1.4'
-    id 'org.hibernate.orm' version '6.4.1.Final'
+//    id 'org.hibernate.orm' version '6.4.1.Final'
     id 'org.graalvm.buildtools.native' version '0.9.28'
 }
 
@@ -24,8 +24,8 @@ repositories {
 }
 
 dependencies {
-//	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-//	implementation 'org.springframework.boot:spring-boot-starter-jooq'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.2.1'
+	implementation 'org.springframework.boot:spring-boot-starter-jooq'
 
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -42,7 +42,7 @@ dependencies {
     //FileUtils
     implementation 'commons-io:commons-io:2.15.1'
 	
-//	runtimeOnly 'com.mysql:mysql-connector-j'
+	runtimeOnly 'com.mysql:mysql-connector-j:8.3.0'
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
@@ -56,10 +56,10 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-hibernate {
-    enhancement {
-        enableAssociationManagement.set(true)
-//        enableAssociationManagement = true
-    }
-}
+//hibernate {
+//    enhancement {
+//        enableAssociationManagement.set(true)
+////        enableAssociationManagement = true
+//    }
+//}
 

@@ -48,17 +48,17 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
         String tokenString = request.getHeader(AUTHORIZATION);
         if (Objects.isNull(tokenString) || !tokenString.startsWith(BEARER)) {
-            log.error("invalid header: {}", tokenString);
+//            log.error("invalid header: {}", tokenString);
             return null;
         }
         String token = tokenString.substring(BEARER.length());
         AppwriteUser userFromToken = service.getUserFromToken(token);
         if (Objects.isNull(userFromToken)) {
-            log.error("invalid token: {}", token);
+//            log.error("invalid token: {}", token);
             return null;
         }
         return new UsernamePasswordAuthenticationToken(
-                userFromToken.get$id(),
+                userFromToken,
                 null,
                 userFromToken.getAuthorities());
     }
