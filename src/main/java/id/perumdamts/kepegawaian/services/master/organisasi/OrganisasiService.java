@@ -16,7 +16,11 @@ public interface OrganisasiService {
 
     OrganisasiResponse findById(Long id);
 
+    OrganisasiResponse findByParentId(Long id);
+
     SavedStatus<?> save(OrganisasiPostRequest request);
+
+    SavedStatus<?> saveBatch(List<OrganisasiPostRequest> requests);
 
     SavedStatus<?> update(Long id, OrganisasiPutRequest request);
 

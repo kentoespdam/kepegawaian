@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.controllers.master.organisasi;
+package id.perumdamts.kepegawaian.controllers.master;
 
 import id.perumdamts.kepegawaian.dto.commons.*;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiPostRequest;
@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,11 +36,22 @@ public class OrganisasiController {
         return CustomResult.any(service.findById(id));
     }
 
+    @GetMapping("/{id}/parent")
+    public ResponseEntity<?> findByParentId(@PathVariable Long id) {
+        return CustomResult.any(service.findByParentId(id));
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> save(@Valid @RequestBody OrganisasiPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         return CustomResult.save(service.save(request));
+    }
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/batch")
+    public ResponseEntity<?> saveBatch(@Valid @RequestBody List<OrganisasiPostRequest> requests, Errors errors) {
+        if (errors.hasErrors()) return ErrorResult.build(errors);
+        return CustomResult.save(service.saveBatch(requests));
     }
 
     @PreAuthorize("hasRole('ADMIN')")

@@ -22,18 +22,4 @@ public class PageResult<T> implements Serializable {
         this.data = data;
         this.timestamp = LocalDateTime.now();
     }
-
-    public Integer getStatus() {
-        return statusText.value();
-    }
-
-    @Override
-    public String toString() {
-        return "PageResult{" +
-                "status=" + getStatus() +
-                ", statusText=" + getStatusText() +
-                ", data=" + getData() +
-                ", timestamp=" + getTimestamp() +
-                '}';
-    }
 }

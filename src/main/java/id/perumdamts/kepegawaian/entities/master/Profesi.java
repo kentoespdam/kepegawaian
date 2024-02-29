@@ -1,10 +1,7 @@
 package id.perumdamts.kepegawaian.entities.master;
 
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,21 +10,16 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
-@Table
+@Table(indexes = @Index(columnList = "nama"))
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@SQLDelete(sql = "UPDATE organisasi SET is_deleted=true WHERE id=?")
+@SQLDelete(sql = "UPDATE profesi SET is_deleted=true WHERE id=?")
 @SQLRestriction("is_deleted <> 1")
 @EqualsAndHashCode(callSuper = true)
-public class Organisasi extends IdsAbstract {
+public class Profesi extends IdsAbstract {
     @ManyToOne
-    @JoinColumn(name = "parent_id")
-    private Organisasi organisasi;
-    private Integer levelOrg;
+    @JoinColumn(name = "level_id")
+    private Level level;
     private String nama;
-
-    public Organisasi(Long id){
-        super(id);
-    }
 }

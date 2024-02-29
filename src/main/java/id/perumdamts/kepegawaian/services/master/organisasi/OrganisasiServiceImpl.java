@@ -29,7 +29,10 @@ public class OrganisasiServiceImpl implements OrganisasiService {
 
     @Override
     public Page<OrganisasiResponse> findPage(OrganisasiRequest request) {
-        return repository.findAll(request.getSpecification(), request.getPageable()).map(OrganisasiResponse::from);
+        return repository.findAll(
+                        request.getSpecification(), request.getPageable()
+                )
+                .map(OrganisasiResponse::from);
     }
 
     @Override
@@ -40,8 +43,15 @@ public class OrganisasiServiceImpl implements OrganisasiService {
     }
 
     @Override
+    public OrganisasiResponse findByParentId(Long id) {
+        return repository.findByOrganisasi_Id(id)
+                .map(OrganisasiResponse::from)
+                .orElse(null);
+    }
+
+    @Override
     public SavedStatus<?> save(OrganisasiPostRequest request) {
-        Optional<Organisasi> cari = repository.findByParentIdAndLevelOrgAndNama(request.getParentId(), request.getLevelOrganisasi(), request.getNama());
+        Optional<Organisasi> cari = repository.findByOrganisasi_IdAndLevelOrgAndNama(request.getParentId(), request.getLevelOrganisasi(), request.getNama());
         if (cari.isPresent())
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Organisasi sudah ada");
         Organisasi entity = OrganisasiPostRequest.toEntity(request);
@@ -50,12 +60,18 @@ public class OrganisasiServiceImpl implements OrganisasiService {
     }
 
     @Override
+    public SavedStatus<?> saveBatch(List<OrganisasiPostRequest> requests) {
+        List<Organisasi> entities = OrganisasiPostRequest.toEntities(requests);
+        repository.saveAll(entities);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Success Saving Batch Data");
+    }
+
+    @Override
     public SavedStatus<?> update(Long id, OrganisasiPutRequest request) {
         Optional<Organisasi> byId = repository.findById(id);
         if (byId.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Organisasi");
-        Organisasi entity = request.toEntity(request);
-        entity.setId(id);
+        Organisasi entity = OrganisasiPutRequest.toEntity(request, id);
         Organisasi save = repository.save(entity);
         return SavedStatus.build(ESaveStatus.SUCCESS, save);
     }
