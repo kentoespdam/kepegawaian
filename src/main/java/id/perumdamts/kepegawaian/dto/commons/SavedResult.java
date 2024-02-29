@@ -12,14 +12,15 @@ public class SavedResult<T> extends ResultAbstract<T> {
         switch (data.getStatus()) {
             case SUCCESS:
                 this.message = "Data saved successfully";
+                this.data = data.getData();
                 this.statusText = HttpStatus.CREATED;
                 break;
             case FAILED:
-                this.message = "Data failed to save";
+                this.message = data.getData().toString();
                 this.statusText = HttpStatus.BAD_REQUEST;
                 break;
             case DUPLICATE:
-                this.message = "Data already exists";
+                this.message = data.getData().toString();
                 this.statusText = HttpStatus.CONFLICT;
         }
     }

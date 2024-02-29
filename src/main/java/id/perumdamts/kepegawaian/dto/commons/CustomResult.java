@@ -2,9 +2,16 @@ package id.perumdamts.kepegawaian.dto.commons;
 
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+
 public class CustomResult {
     public static <T> ResponseEntity<?> any(T data) {
-        ResultAbstract<T> result = new SingleResult<>(data);
+        SingleResult<T> result = new SingleResult<>(data);
+        return ResponseEntity.status(result.statusText).body(result);
+    }
+
+    public static <T> ResponseEntity<?> list(List<T> data) {
+        ListResult<T> result = new ListResult<>(data);
         return ResponseEntity.status(result.statusText).body(result);
     }
 

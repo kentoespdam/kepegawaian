@@ -2,22 +2,21 @@ package id.perumdamts.kepegawaian.dto.commons;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Slf4j
-public class SingleResult<T> extends ResultAbstract<T> {
-    public SingleResult(T data) {
-        if (data != null) {
+public class ListResult<T> extends ResultAbstract<List<T>> {
+    public ListResult(List<T> data) {
+        if (!data.isEmpty()) {
             this.data = data;
             this.statusText = HttpStatus.OK;
-            this.message = "Data Found";
+            this.message = "Data found!";
         } else {
-            this.message = "Data not found!";
             this.statusText = HttpStatus.NOT_FOUND;
+            this.message = "Data not found!";
         }
-
     }
 }

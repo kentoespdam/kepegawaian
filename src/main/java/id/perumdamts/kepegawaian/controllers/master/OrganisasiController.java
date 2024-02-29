@@ -28,7 +28,7 @@ public class OrganisasiController {
 
     @GetMapping("/list")
     public ResponseEntity<?> search() {
-        return CustomResult.any(service.findAll());
+        return CustomResult.list(service.findAll());
     }
 
     @GetMapping("/{id}")
