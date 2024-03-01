@@ -21,4 +21,9 @@ import org.hibernate.annotations.SQLRestriction;
 @EqualsAndHashCode(callSuper = true)
 public class Golongan extends IdsAbstract {
     private String nama;
+
+    public Golongan(Long id, String nama) {
+        super(id);
+        this.nama = nama;
+    }
 }
