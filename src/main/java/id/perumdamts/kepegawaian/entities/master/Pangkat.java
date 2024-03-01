@@ -21,4 +21,9 @@ import org.hibernate.annotations.SQLRestriction;
 @EqualsAndHashCode(callSuper = true)
 public class Pangkat extends IdsAbstract {
     private String nama;
+
+    public Pangkat(Long id, String nama) {
+        super(id);
+        this.nama = nama;
+    }
 }
