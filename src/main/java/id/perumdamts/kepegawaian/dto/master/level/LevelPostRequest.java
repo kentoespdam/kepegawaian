@@ -13,6 +13,10 @@ public class LevelPostRequest {
         return new Level(request.getNama());
     }
 
+    public static Level toEntity(LevelPostRequest request, Long id) {
+        return new Level(id, request.getNama());
+    }
+
     public static List<Level> toEntities(List<LevelPostRequest> requests) {
         return requests.stream().map(LevelPostRequest::toEntity).toList();
     }

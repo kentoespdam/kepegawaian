@@ -21,6 +21,7 @@ import org.hibernate.annotations.SQLRestriction;
 @EqualsAndHashCode(callSuper = true)
 public class StatusPegawai extends IdsAbstract {
     private String nama;
+
     public StatusPegawai(Long id, String nama) {
         super(id);
         this.nama = nama;

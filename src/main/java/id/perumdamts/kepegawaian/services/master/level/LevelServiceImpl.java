@@ -3,7 +3,6 @@ package id.perumdamts.kepegawaian.services.master.level;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.master.level.LevelPostRequest;
-import id.perumdamts.kepegawaian.dto.master.level.LevelPutRequest;
 import id.perumdamts.kepegawaian.dto.master.level.LevelRequest;
 import id.perumdamts.kepegawaian.dto.master.level.LevelResponse;
 import id.perumdamts.kepegawaian.entities.master.Level;
@@ -54,11 +53,11 @@ public class LevelServiceImpl implements LevelService {
     }
 
     @Override
-    public SavedStatus<?> update(Long id, LevelPutRequest request) {
+    public SavedStatus<?> update(Long id, LevelPostRequest request) {
         Optional<Level> byId = repository.findById(id);
         if (byId.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Level");
-        Level entity = LevelPutRequest.toEntity(request, id);
+        Level entity = LevelPostRequest.toEntity(request, id);
         Level save = repository.save(entity);
         return SavedStatus.build(ESaveStatus.SUCCESS, save);
     }

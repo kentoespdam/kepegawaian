@@ -3,7 +3,6 @@ package id.perumdamts.kepegawaian.services.master.golongan;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.master.golongan.GolonganPostRequest;
-import id.perumdamts.kepegawaian.dto.master.golongan.GolonganPutRequest;
 import id.perumdamts.kepegawaian.dto.master.golongan.GolonganRequest;
 import id.perumdamts.kepegawaian.dto.master.golongan.GolonganResponse;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
@@ -54,11 +53,11 @@ public class GolonganServiceImpl implements GolonganService {
     }
 
     @Override
-    public SavedStatus<?> update(Long id, GolonganPutRequest request) {
+    public SavedStatus<?> update(Long id, GolonganPostRequest request) {
         Optional<Golongan> byId = repository.findById(id);
         if (byId.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Golongan");
-        Golongan entity = GolonganPutRequest.toEntity(request, id);
+        Golongan entity = GolonganPostRequest.toEntity(request, id);
         Golongan save = repository.save(entity);
         return SavedStatus.build(ESaveStatus.SUCCESS, save);
     }

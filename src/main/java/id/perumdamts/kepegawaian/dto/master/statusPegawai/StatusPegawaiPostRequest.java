@@ -15,6 +15,10 @@ public class StatusPegawaiPostRequest {
         return statusPegawai;
     }
 
+    public static StatusPegawai toEntity(StatusPegawaiPostRequest request, Long id) {
+        return new StatusPegawai(id, request.getNama());
+    }
+
     public static List<StatusPegawai> toEntities(List<StatusPegawaiPostRequest> requests) {
         return requests.stream().map(StatusPegawaiPostRequest::toEntity).toList();
     }

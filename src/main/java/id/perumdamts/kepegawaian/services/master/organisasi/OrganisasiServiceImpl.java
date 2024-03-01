@@ -3,7 +3,6 @@ package id.perumdamts.kepegawaian.services.master.organisasi;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiPostRequest;
-import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiPutRequest;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiRequest;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiResponse;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
@@ -67,11 +66,11 @@ public class OrganisasiServiceImpl implements OrganisasiService {
     }
 
     @Override
-    public SavedStatus<?> update(Long id, OrganisasiPutRequest request) {
+    public SavedStatus<?> update(Long id, OrganisasiPostRequest  request) {
         Optional<Organisasi> byId = repository.findById(id);
         if (byId.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Organisasi");
-        Organisasi entity = OrganisasiPutRequest.toEntity(request, id);
+        Organisasi entity = OrganisasiPostRequest.toEntity(request, id);
         Organisasi save = repository.save(entity);
         return SavedStatus.build(ESaveStatus.SUCCESS, save);
     }

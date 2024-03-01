@@ -3,7 +3,6 @@ package id.perumdamts.kepegawaian.controllers.master;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.dto.master.statusPegawai.StatusPegawaiPostRequest;
-import id.perumdamts.kepegawaian.dto.master.statusPegawai.StatusPegawaiPutRequest;
 import id.perumdamts.kepegawaian.dto.master.statusPegawai.StatusPegawaiRequest;
 import id.perumdamts.kepegawaian.services.master.statusPegawai.StatusPegawaiService;
 import jakarta.validation.Valid;
@@ -53,7 +52,7 @@ public class StatusPegawaiController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody StatusPegawaiPutRequest request, Errors errors) {
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody StatusPegawaiPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         return CustomResult.save(service.update(id, request));
     }

@@ -3,7 +3,6 @@ package id.perumdamts.kepegawaian.controllers.master;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.dto.master.golongan.GolonganPostRequest;
-import id.perumdamts.kepegawaian.dto.master.golongan.GolonganPutRequest;
 import id.perumdamts.kepegawaian.dto.master.golongan.GolonganRequest;
 import id.perumdamts.kepegawaian.services.master.golongan.GolonganService;
 import jakarta.validation.Valid;
@@ -53,7 +52,7 @@ public class GolonganController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody GolonganPutRequest request, Errors errors) {
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody GolonganPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         return CustomResult.save(service.update(id, request));
     }

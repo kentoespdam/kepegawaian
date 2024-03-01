@@ -2,7 +2,6 @@ package id.perumdamts.kepegawaian.services.master.organisasi;
 
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiPostRequest;
-import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiPutRequest;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiRequest;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiResponse;
 import org.springframework.data.domain.Page;
@@ -22,7 +21,7 @@ public interface OrganisasiService {
 
     SavedStatus<?> saveBatch(List<OrganisasiPostRequest> requests);
 
-    SavedStatus<?> update(Long id, OrganisasiPutRequest request);
+    SavedStatus<?> update(Long id, OrganisasiPostRequest request);
 
     Boolean deleteById(Long id);
 }

@@ -3,7 +3,6 @@ package id.perumdamts.kepegawaian.controllers.master;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.dto.master.level.LevelPostRequest;
-import id.perumdamts.kepegawaian.dto.master.level.LevelPutRequest;
 import id.perumdamts.kepegawaian.dto.master.level.LevelRequest;
 import id.perumdamts.kepegawaian.services.master.level.LevelService;
 import jakarta.validation.Valid;
@@ -53,7 +52,7 @@ public class LevelController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody LevelPutRequest request, Errors errors) {
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody LevelPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         return CustomResult.save(service.update(id, request));
     }

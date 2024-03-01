@@ -21,6 +21,14 @@ public class OrganisasiPostRequest {
         organisasi.setNama(request.getNama());
         return organisasi;
     }
+    public static Organisasi toEntity(OrganisasiPostRequest request, Long id) {
+        Organisasi organisasi = new Organisasi(id);
+        if (request.getParentId() != null && request.getParentId() != 0L)
+            organisasi.setOrganisasi(new Organisasi(request.getParentId()));
+        organisasi.setLevelOrg(request.getLevelOrganisasi());
+        organisasi.setNama(request.getNama());
+        return organisasi;
+    }
 
     public static List<Organisasi> toEntities(List<OrganisasiPostRequest> orgs) {
         return orgs.stream().map(OrganisasiPostRequest::toEntity).toList();

@@ -2,7 +2,6 @@ package id.perumdamts.kepegawaian.services.master.golongan;
 
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.master.golongan.GolonganPostRequest;
-import id.perumdamts.kepegawaian.dto.master.golongan.GolonganPutRequest;
 import id.perumdamts.kepegawaian.dto.master.golongan.GolonganRequest;
 import id.perumdamts.kepegawaian.dto.master.golongan.GolonganResponse;
 import org.springframework.data.domain.Page;
@@ -15,6 +14,6 @@ public interface GolonganService {
     GolonganResponse findById(Long id);
     SavedStatus<?> save(GolonganPostRequest request);
     SavedStatus<?> saveBatch(List<GolonganPostRequest> requests);
-    SavedStatus<?> update(Long id, GolonganPutRequest request);
+    SavedStatus<?> update(Long id, GolonganPostRequest request);
     Boolean deleteById(Long id);
 }

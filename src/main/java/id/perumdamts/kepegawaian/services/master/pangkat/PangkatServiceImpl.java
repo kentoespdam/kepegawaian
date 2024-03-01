@@ -3,7 +3,6 @@ package id.perumdamts.kepegawaian.services.master.pangkat;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.master.pangkat.PangkatPostRequest;
-import id.perumdamts.kepegawaian.dto.master.pangkat.PangkatPutRequest;
 import id.perumdamts.kepegawaian.dto.master.pangkat.PangkatRequest;
 import id.perumdamts.kepegawaian.dto.master.pangkat.PangkatResponse;
 import id.perumdamts.kepegawaian.entities.master.Pangkat;
@@ -54,11 +53,11 @@ public class PangkatServiceImpl implements PangkatService {
     }
 
     @Override
-    public SavedStatus<?> update(Long id, PangkatPutRequest request) {
+    public SavedStatus<?> update(Long id, PangkatPostRequest request) {
         Optional<Pangkat> byId = repository.findById(id);
         if (byId.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Pangkat");
-        Pangkat entity = PangkatPutRequest.toEntity(request, id);
+        Pangkat entity = PangkatPostRequest.toEntity(request, id);
         Pangkat save = repository.save(entity);
         return SavedStatus.build(ESaveStatus.SUCCESS, save);
     }

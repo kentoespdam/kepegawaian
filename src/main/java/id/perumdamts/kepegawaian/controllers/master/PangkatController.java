@@ -3,7 +3,6 @@ package id.perumdamts.kepegawaian.controllers.master;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.dto.master.pangkat.PangkatPostRequest;
-import id.perumdamts.kepegawaian.dto.master.pangkat.PangkatPutRequest;
 import id.perumdamts.kepegawaian.dto.master.pangkat.PangkatRequest;
 import id.perumdamts.kepegawaian.services.master.pangkat.PangkatService;
 import jakarta.validation.Valid;
@@ -53,7 +52,7 @@ public class PangkatController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody PangkatPutRequest request, Errors errors) {
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody PangkatPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         return CustomResult.save(pangkatService.update(id, request));
     }

@@ -13,6 +13,10 @@ public class PangkatPostRequest {
         return new Pangkat(request.getNama());
     }
 
+    public static Pangkat toEntity(PangkatPostRequest request, Long id) {
+        return new Pangkat(id, request.getNama());
+    }
+
     public static List<Pangkat> toEntities(List<PangkatPostRequest> requests) {
         return requests.stream().map(PangkatPostRequest::toEntity).toList();
     }
