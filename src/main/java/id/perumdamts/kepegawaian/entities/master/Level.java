@@ -22,6 +22,10 @@ import org.hibernate.annotations.SQLRestriction;
 public class Level extends IdsAbstract {
     private String nama;
 
+    public Level(Long id) {
+        super(id);
+    }
+
     public Level(Long id, String nama) {
         super(id);
         this.nama = nama;

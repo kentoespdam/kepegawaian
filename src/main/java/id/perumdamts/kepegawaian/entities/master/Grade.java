@@ -23,4 +23,8 @@ public class Grade extends IdsAbstract {
     private Level level;
     private Integer grade;
     private Double tukin;
+
+    public Grade(Long id) {
+        super(id);
+    }
 }
