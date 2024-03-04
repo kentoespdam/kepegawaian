@@ -74,6 +74,7 @@ public class JabatanServiceImpl implements JabatanService {
         return SavedStatus.build(ESaveStatus.SUCCESS, "Success Saving Batch Data");
     }
 
+    @Transactional
     @Override
     public SavedStatus<?> update(Long id, JabatanPostRequest request) {
         Optional<Organisasi> organisasi = organisasiRepository.findById(request.getOrganisasiId());
@@ -96,6 +97,7 @@ public class JabatanServiceImpl implements JabatanService {
         return SavedStatus.build(ESaveStatus.SUCCESS, save);
     }
 
+    @Transactional
     @Override
     public Boolean deleteById(Long id) {
         Optional<Jabatan> byId = repository.findById(id);

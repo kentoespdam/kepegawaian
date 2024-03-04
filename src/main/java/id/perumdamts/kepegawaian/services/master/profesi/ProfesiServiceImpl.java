@@ -12,6 +12,7 @@ import id.perumdamts.kepegawaian.repositories.master.ProfesiRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +39,7 @@ public class ProfesiServiceImpl implements ProfesiService {
         return repository.findById(id).map(ProfesiResponse::from).orElse(null);
     }
 
+    @Transactional
     @Override
     public SavedStatus<?> save(ProfesiPostRequest request) {
         Optional<Level> level = levelRepository.findById(request.getLevelId());
@@ -52,6 +54,7 @@ public class ProfesiServiceImpl implements ProfesiService {
         return SavedStatus.build(ESaveStatus.SUCCESS, save);
     }
 
+    @Transactional
     @Override
     public SavedStatus<?> saveBatch(List<ProfesiPostRequest> requests) {
         List<Profesi> entities = ProfesiPostRequest.toEntities(requests);
@@ -59,6 +62,7 @@ public class ProfesiServiceImpl implements ProfesiService {
         return SavedStatus.build(ESaveStatus.SUCCESS, "Success Saving Batch Data");
     }
 
+    @Transactional
     @Override
     public SavedStatus<?> update(Long id, ProfesiPostRequest request) {
         Optional<Level> level = levelRepository.findById(request.getLevelId());
@@ -72,6 +76,7 @@ public class ProfesiServiceImpl implements ProfesiService {
         return SavedStatus.build(ESaveStatus.SUCCESS, save);
     }
 
+    @Transactional
     @Override
     public Boolean deleteById(Long id) {
         Optional<Profesi> byId = repository.findById(id);

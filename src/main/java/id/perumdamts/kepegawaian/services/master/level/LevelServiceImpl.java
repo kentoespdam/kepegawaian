@@ -10,6 +10,7 @@ import id.perumdamts.kepegawaian.repositories.master.LevelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +36,7 @@ public class LevelServiceImpl implements LevelService {
         return repository.findById(id).map(LevelResponse::from).orElse(null);
     }
 
+    @Transactional
     @Override
     public SavedStatus<?> save(LevelPostRequest request) {
         Optional<Level> cari = repository.findByNama(request.getNama());
@@ -45,6 +47,7 @@ public class LevelServiceImpl implements LevelService {
         return SavedStatus.build(ESaveStatus.SUCCESS, save);
     }
 
+    @Transactional
     @Override
     public SavedStatus<?> saveBatch(List<LevelPostRequest> requests) {
         List<Level> entities = LevelPostRequest.toEntities(requests);
@@ -52,6 +55,7 @@ public class LevelServiceImpl implements LevelService {
         return SavedStatus.build(ESaveStatus.SUCCESS, "Success Saving Batch Data");
     }
 
+    @Transactional
     @Override
     public SavedStatus<?> update(Long id, LevelPostRequest request) {
         Optional<Level> byId = repository.findById(id);
@@ -62,6 +66,7 @@ public class LevelServiceImpl implements LevelService {
         return SavedStatus.build(ESaveStatus.SUCCESS, save);
     }
 
+    @Transactional
     @Override
     public Boolean deleteById(Long id) {
         Optional<Level> byId = repository.findById(id);

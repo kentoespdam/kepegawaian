@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -48,6 +49,7 @@ public class OrganisasiServiceImpl implements OrganisasiService {
                 .orElse(null);
     }
 
+    @Transactional
     @Override
     public SavedStatus<?> save(OrganisasiPostRequest request) {
         Optional<Organisasi> cari = repository.findByOrganisasi_IdAndLevelOrgAndNama(request.getParentId(), request.getLevelOrganisasi(), request.getNama());
@@ -58,6 +60,7 @@ public class OrganisasiServiceImpl implements OrganisasiService {
         return SavedStatus.build(ESaveStatus.SUCCESS, save);
     }
 
+    @Transactional
     @Override
     public SavedStatus<?> saveBatch(List<OrganisasiPostRequest> requests) {
         List<Organisasi> entities = OrganisasiPostRequest.toEntities(requests);
@@ -65,6 +68,7 @@ public class OrganisasiServiceImpl implements OrganisasiService {
         return SavedStatus.build(ESaveStatus.SUCCESS, "Success Saving Batch Data");
     }
 
+    @Transactional
     @Override
     public SavedStatus<?> update(Long id, OrganisasiPostRequest  request) {
         Optional<Organisasi> byId = repository.findById(id);
@@ -75,6 +79,7 @@ public class OrganisasiServiceImpl implements OrganisasiService {
         return SavedStatus.build(ESaveStatus.SUCCESS, save);
     }
 
+    @Transactional
     @Override
     public Boolean deleteById(Long id) {
         Optional<Organisasi> byId = repository.findById(id);

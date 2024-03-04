@@ -10,6 +10,7 @@ import id.perumdamts.kepegawaian.repositories.master.PangkatRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +36,7 @@ public class PangkatServiceImpl implements PangkatService {
         return repository.findById(id).map(PangkatResponse::from).orElse(null);
     }
 
+    @Transactional
     @Override
     public SavedStatus<?> save(PangkatPostRequest request) {
         Optional<Pangkat> cari = repository.findByNama(request.getNama());
@@ -45,6 +47,7 @@ public class PangkatServiceImpl implements PangkatService {
         return SavedStatus.build(ESaveStatus.SUCCESS, save);
     }
 
+    @Transactional
     @Override
     public SavedStatus<?> saveBatch(List<PangkatPostRequest> requests) {
         List<Pangkat> entities = PangkatPostRequest.toEntities(requests);
@@ -52,6 +55,7 @@ public class PangkatServiceImpl implements PangkatService {
         return SavedStatus.build(ESaveStatus.SUCCESS, "Success Saving Batch Data");
     }
 
+    @Transactional
     @Override
     public SavedStatus<?> update(Long id, PangkatPostRequest request) {
         Optional<Pangkat> byId = repository.findById(id);
@@ -62,6 +66,7 @@ public class PangkatServiceImpl implements PangkatService {
         return SavedStatus.build(ESaveStatus.SUCCESS, save);
     }
 
+    @Transactional
     @Override
     public Boolean deleteById(Long id) {
         Optional<Pangkat> byId = repository.findById(id);

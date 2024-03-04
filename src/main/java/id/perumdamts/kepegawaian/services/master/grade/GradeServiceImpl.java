@@ -12,6 +12,7 @@ import id.perumdamts.kepegawaian.repositories.master.LevelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +39,7 @@ public class GradeServiceImpl implements GradeService {
         return repository.findById(id).map(GradeResponse::from).orElse(null);
     }
 
+    @Transactional
     @Override
     public SavedStatus<?> save(GradePostRequest request) {
         Optional<Level> level = levelRepository.findById(request.getLevelId());
@@ -55,6 +57,7 @@ public class GradeServiceImpl implements GradeService {
         return SavedStatus.build(ESaveStatus.SUCCESS, save);
     }
 
+    @Transactional
     @Override
     public SavedStatus<?> saveBatch(List<GradePostRequest> requests) {
         List<Grade> entities = GradePostRequest.toEntities(requests);
@@ -62,6 +65,7 @@ public class GradeServiceImpl implements GradeService {
         return SavedStatus.build(ESaveStatus.SUCCESS, "Success Saving Batch Data");
     }
 
+    @Transactional
     @Override
     public SavedStatus<?> update(Long id, GradePostRequest request) {
         Optional<Level> level = levelRepository.findById(request.getLevelId());
@@ -75,6 +79,7 @@ public class GradeServiceImpl implements GradeService {
         return SavedStatus.build(ESaveStatus.SUCCESS, save);
     }
 
+    @Transactional
     @Override
     public Boolean deleteById(Long id) {
         Optional<Grade> byId = repository.findById(id);
