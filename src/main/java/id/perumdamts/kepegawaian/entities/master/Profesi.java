@@ -22,4 +22,8 @@ public class Profesi extends IdsAbstract {
     @JoinColumn(name = "level_id")
     private Level level;
     private String nama;
+
+    public Profesi(Long id) {
+        super(id);
+    }
 }
