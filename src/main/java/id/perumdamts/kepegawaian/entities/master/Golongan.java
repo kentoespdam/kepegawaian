@@ -22,6 +22,10 @@ import org.hibernate.annotations.SQLRestriction;
 public class Golongan extends IdsAbstract {
     private String nama;
 
+    public Golongan(Long id) {
+        super(id);
+    }
+
     public Golongan(Long id, String nama) {
         super(id);
         this.nama = nama;

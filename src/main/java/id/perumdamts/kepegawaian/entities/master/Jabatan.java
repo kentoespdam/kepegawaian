@@ -34,4 +34,8 @@ public class Jabatan extends IdsAbstract {
     @ManyToOne
     @JoinColumn(name = "golongan_id")
     private Golongan golongan;
+
+    public Jabatan(Long id) {
+        super(id);
+    }
 }

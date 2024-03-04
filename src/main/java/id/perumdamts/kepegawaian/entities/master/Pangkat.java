@@ -22,6 +22,10 @@ import org.hibernate.annotations.SQLRestriction;
 public class Pangkat extends IdsAbstract {
     private String nama;
 
+    public Pangkat(Long id) {
+        super(id);
+    }
+
     public Pangkat(Long id, String nama) {
         super(id);
         this.nama = nama;
