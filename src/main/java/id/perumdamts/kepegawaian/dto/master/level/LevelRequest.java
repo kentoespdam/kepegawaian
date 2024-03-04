@@ -17,7 +17,7 @@ public class LevelRequest extends CommonPageRequest {
     @JsonIgnore
     public Specification<Level> getSpecification() {
         Specification<Level> namaSpec = Objects.isNull(nama) ? null :
-                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("nama"), nama);
+                (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("nama"), "%" + nama + "%");
 
         return Specification.where(namaSpec);
     }

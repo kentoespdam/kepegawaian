@@ -17,7 +17,7 @@ public class StatusPegawaiRequest extends CommonPageRequest {
     @JsonIgnore
     public Specification<StatusPegawai> getSpecification() {
         Specification<StatusPegawai> namaSpec = Objects.isNull(nama) ? null :
-                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("nama"), nama);
+                (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("nama"), "%" + nama + "%");
 
         return Specification.where(namaSpec);
     }

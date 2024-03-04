@@ -18,7 +18,7 @@ public class GradeRequest extends CommonPageRequest {
     @JsonIgnore
     public Specification<Grade> getSpecification() {
         Specification<Grade> levelSpec = Objects.isNull(levelId) ? null : (root, query, cb) -> cb.equal(root.get("level").get("id"), levelId);
-        Specification<Grade> gradeSpec = Objects.isNull(grade) ? null : (root, query, cb) -> cb.equal(root.get("grade"), grade);
+        Specification<Grade> gradeSpec = Objects.isNull(grade) ? null : (root, query, cb) -> cb.like(root.get("grade"), "%" + grade + "%");
 
         return Specification.where(levelSpec).and(gradeSpec);
     }
