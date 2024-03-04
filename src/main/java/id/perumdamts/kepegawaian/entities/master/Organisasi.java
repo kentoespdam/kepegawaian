@@ -1,10 +1,7 @@
 package id.perumdamts.kepegawaian.entities.master;
 
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,7 +10,10 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
-@Table
+@Table(indexes = {
+        @Index(columnList = "nama"),
+        @Index(columnList = "levelOrg")
+})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,7 +27,7 @@ public class Organisasi extends IdsAbstract {
     private Integer levelOrg;
     private String nama;
 
-    public Organisasi(Long id){
+    public Organisasi(Long id) {
         super(id);
     }
 }
