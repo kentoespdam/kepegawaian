@@ -7,5 +7,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import java.util.Optional;
 
 public interface GolonganRepository extends JpaRepository<Golongan, Long>, JpaSpecificationExecutor<Golongan> {
-    Optional<Golongan> findByNama(String nama);
+
+    Optional<Golongan> findByGolonganAndPangkat(String golongan, String pangkat);
 }

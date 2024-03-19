@@ -7,14 +7,15 @@ import java.util.List;
 
 @Data
 public class GolonganPostRequest {
-    private String nama;
+    private String golongan;
+    private String pangkat;
 
     public static Golongan toEntity(GolonganPostRequest request) {
-        return new Golongan(request.getNama());
+        return new Golongan(request.getGolongan(), request.getPangkat());
     }
 
     public static Golongan toEntity(GolonganPostRequest request, Long id) {
-        return new Golongan(id, request.getNama());
+        return new Golongan(id, request.getGolongan(), request.getPangkat());
     }
 
     public static List<Golongan> toEntities(List<GolonganPostRequest> requests) {

@@ -20,14 +20,16 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLRestriction("is_deleted <> 1")
 @EqualsAndHashCode(callSuper = true)
 public class Golongan extends IdsAbstract {
-    private String nama;
+    private String golongan;
+    private String pangkat;
 
     public Golongan(Long id) {
         super(id);
     }
 
-    public Golongan(Long id, String nama) {
+    public Golongan(Long id, String golongan, String pangkat) {
         super(id);
-        this.nama = nama;
+        this.golongan = golongan;
+        this.pangkat = pangkat;
     }
 }

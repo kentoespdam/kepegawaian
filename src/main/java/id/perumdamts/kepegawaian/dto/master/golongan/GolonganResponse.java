@@ -8,9 +8,10 @@ import lombok.Data;
 @Data
 public class GolonganResponse {
     private Long id;
-    private String nama;
+    private String golongan;
+    private String pangkat;
 
     public static GolonganResponse from(Golongan golongan) {
-        return new GolonganResponse(golongan.getId(), golongan.getNama());
+        return new GolonganResponse(golongan.getId(), golongan.getGolongan(), golongan.getPangkat());
     }
 }

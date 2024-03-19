@@ -12,13 +12,16 @@ import java.util.Objects;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class GolonganRequest extends CommonPageRequest {
-    private String nama;
+    private String golongan;
+    private String pangkat;
 
     @JsonIgnore
     public Specification<Golongan> getSpecification() {
-        Specification<Golongan> namaSpec = Objects.isNull(nama) ? null :
-                (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("nama"), "%" + nama + "%");
+        Specification<Golongan> golonganSpec = Objects.isNull(golongan) ? null :
+                (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("golongan"), "%" + golongan + "%");
+        Specification<Golongan> pangkatSpec = Objects.isNull(pangkat) ? null :
+                (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("pangkat"), "%" + pangkat + "%");
 
-        return Specification.where(namaSpec);
+        return Specification.where(golonganSpec).and(pangkatSpec);
     }
 }

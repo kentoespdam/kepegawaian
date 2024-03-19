@@ -15,7 +15,6 @@ public class JabatanRequest extends CommonPageRequest {
     private Long organisasiId;
     private Long levelId;
     private String nama;
-    private Long pangkatId;
     private Long golonganId;
 
     @JsonIgnore
@@ -23,9 +22,9 @@ public class JabatanRequest extends CommonPageRequest {
         Specification<Jabatan> organisasiSpec = Objects.isNull(organisasiId) ? null : (root, query, cb) -> cb.equal(root.get("organisasi").get("id"), organisasiId);
         Specification<Jabatan> levelSpec = Objects.isNull(levelId) ? null : (root, query, cb) -> cb.equal(root.get("level").get("id"), organisasiId);
         Specification<Jabatan> namaSpec = Objects.isNull(nama) ? null : (root, query, cb) -> cb.like(root.get("nama"), "%" + nama + "%");
-        Specification<Jabatan> pangkatSpec = Objects.isNull(pangkatId) ? null : (root, query, cb) -> cb.equal(root.get("pangkat").get("id"), pangkatId);
         Specification<Jabatan> golonganSpec = Objects.isNull(golonganId) ? null : (root, query, cb) -> cb.equal(root.get("golongan").get("id"), golonganId);
 
-        return Specification.where(organisasiSpec).and(levelSpec).and(namaSpec).and(pangkatSpec).and(golonganSpec);
+        return Specification.where(organisasiSpec).and(levelSpec)
+                .and(namaSpec).and(golonganSpec);
     }
 }

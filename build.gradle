@@ -3,11 +3,11 @@ plugins {
     id 'org.springframework.boot' version '3.2.2'
     id 'io.spring.dependency-management' version '1.1.4'
 //    id 'org.hibernate.orm' version '6.4.1.Final'
-    id 'org.graalvm.buildtools.native' version '0.9.28'
+//    id 'org.graalvm.buildtools.native' version '0.9.28'
 }
 
 group = 'id.perumdamts'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.0'
 
 java {
     sourceCompatibility = '21'
@@ -24,7 +24,7 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.2.1'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.2.1'
 //	implementation 'org.springframework.boot:spring-boot-starter-jooq'
 
     implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -42,10 +42,7 @@ dependencies {
     //FileUtils
     implementation 'commons-io:commons-io:2.15.1'
 
-    //develop
-//    implementation 'org.flywaydb:flyway-maven-plugin:10.7.1'
-	
-	runtimeOnly 'com.mysql:mysql-connector-j:8.3.0'
+    runtimeOnly 'com.mysql:mysql-connector-j:8.3.0'
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
@@ -58,11 +55,3 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
-
-//hibernate {
-//    enhancement {
-//        enableAssociationManagement.set(true)
-////        enableAssociationManagement = true
-//    }
-//}
-

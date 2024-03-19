@@ -39,7 +39,7 @@ public class GolonganServiceImpl implements GolonganService {
     @Transactional
     @Override
     public SavedStatus<?> save(GolonganPostRequest request) {
-        Optional<Golongan> cari = repository.findByNama(request.getNama());
+        Optional<Golongan> cari = repository.findByGolonganAndPangkat(request.getGolongan(), request.getPangkat());
         if (cari.isPresent())
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Golongan sudah ada");
         Golongan entity = GolonganPostRequest.toEntity(request);

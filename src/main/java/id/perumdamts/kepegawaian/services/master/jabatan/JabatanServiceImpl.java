@@ -22,7 +22,6 @@ public class JabatanServiceImpl implements JabatanService {
     private final JabatanRepository repository;
     private final OrganisasiRepository organisasiRepository;
     private final LevelRepository levelRepository;
-    private final PangkatRepository pangkatRepository;
     private final GolonganRepository golonganRepository;
 
     @Override
@@ -49,9 +48,6 @@ public class JabatanServiceImpl implements JabatanService {
         Optional<Level> level = levelRepository.findById(request.getLevelId());
         if (level.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Level");
-        Optional<Pangkat> pangkat = pangkatRepository.findById(request.getPangkatId());
-        if (pangkat.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Pangkat");
         Optional<Golongan> golongan = golonganRepository.findById(request.getGolonganId());
         if (golongan.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Golongan");
@@ -83,9 +79,6 @@ public class JabatanServiceImpl implements JabatanService {
         Optional<Level> level = levelRepository.findById(request.getLevelId());
         if (level.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Level");
-        Optional<Pangkat> pangkat = pangkatRepository.findById(request.getPangkatId());
-        if (pangkat.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Pangkat");
         Optional<Golongan> golongan = golonganRepository.findById(request.getGolonganId());
         if (golongan.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Golongan");

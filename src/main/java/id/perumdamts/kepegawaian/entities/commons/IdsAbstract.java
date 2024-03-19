@@ -24,9 +24,11 @@ public class IdsAbstract implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @CreatedBy
+    @Column(updatable = false)
     private String createdBy;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime createdAt;
     @LastModifiedBy
     private String updatedBy;

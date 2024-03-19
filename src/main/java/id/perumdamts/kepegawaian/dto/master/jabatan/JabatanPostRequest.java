@@ -19,8 +19,6 @@ public class JabatanPostRequest {
     private Long levelId;
     @NotEmpty(message = "Nama is required")
     private String nama;
-    @Min(value = 1, message = "Pangkat ID must be greater than or equal to 1")
-    private Long pangkatId;
     @Min(value = 1, message = "Golongan ID must be greater than or equal to 1")
     private Long golonganId;
 
@@ -33,11 +31,10 @@ public class JabatanPostRequest {
                 (root, query, cb) -> cb.equal(root.get("level").get("id"), organisasiId);
         Specification<Jabatan> namaSpec = Objects.isNull(nama) ? null :
                 (root, query, cb) -> cb.equal(root.get("nama"), nama);
-        Specification<Jabatan> pangkatSpec = Objects.isNull(pangkatId) ? null :
-                (root, query, cb) -> cb.equal(root.get("pangkat").get("id"), pangkatId);
         Specification<Jabatan> golonganSpec = Objects.isNull(golonganId) ? null :
                 (root, query, cb) -> cb.equal(root.get("golongan").get("id"), golonganId);
-        return Specification.where(jabatanSpec).and(organisasiSpec).and(levelSpec).and(namaSpec).and(pangkatSpec).and(golonganSpec);
+        return Specification.where(jabatanSpec).and(organisasiSpec)
+                .and(levelSpec).and(namaSpec).and(golonganSpec);
     }
 
     public static Jabatan toEntity(JabatanPostRequest request) {
@@ -47,7 +44,6 @@ public class JabatanPostRequest {
         entity.setOrganisasi(new Organisasi(request.getOrganisasiId()));
         entity.setLevel(new Level(request.getLevelId()));
         entity.setNama(request.getNama());
-        entity.setPangkat(new Pangkat(request.getPangkatId()));
         entity.setGolongan(new Golongan(request.getGolonganId()));
         return entity;
     }
@@ -59,7 +55,6 @@ public class JabatanPostRequest {
         entity.setOrganisasi(new Organisasi(request.getOrganisasiId()));
         entity.setLevel(new Level(request.getLevelId()));
         entity.setNama(request.getNama());
-        entity.setPangkat(new Pangkat(request.getPangkatId()));
         entity.setGolongan(new Golongan(request.getGolonganId()));
         return entity;
     }

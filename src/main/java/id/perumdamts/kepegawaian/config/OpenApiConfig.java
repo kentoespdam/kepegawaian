@@ -24,7 +24,7 @@ public class OpenApiConfig {
                         .addSecuritySchemes("authorization", createApiKeyScheme())
                 )
                 .info(new Info()
-                        .title("KPI Rest API")
+                        .title("Kepegawaian Rest API")
                         .description("Need JWT Token for execute this API")
                         .version("1.0.0")
                         .contact(new Contact()
