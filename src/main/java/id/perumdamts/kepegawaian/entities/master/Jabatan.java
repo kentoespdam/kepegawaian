@@ -28,9 +28,6 @@ public class Jabatan extends IdsAbstract {
     @JoinColumn(name = "level_id")
     private Level level;
     private String nama;
-    @ManyToOne
-    @JoinColumn(name = "golongan_id")
-    private Golongan golongan;
 
     public Jabatan(Long id) {
         super(id);

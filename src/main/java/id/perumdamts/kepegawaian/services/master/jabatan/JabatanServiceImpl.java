@@ -22,7 +22,6 @@ public class JabatanServiceImpl implements JabatanService {
     private final JabatanRepository repository;
     private final OrganisasiRepository organisasiRepository;
     private final LevelRepository levelRepository;
-    private final GolonganRepository golonganRepository;
 
     @Override
     public List<JabatanResponse> findAll() {
@@ -48,11 +47,8 @@ public class JabatanServiceImpl implements JabatanService {
         Optional<Level> level = levelRepository.findById(request.getLevelId());
         if (level.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Level");
-        Optional<Golongan> golongan = golonganRepository.findById(request.getGolonganId());
-        if (golongan.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Golongan");
-        Jabatan parent = Objects.nonNull(request.getJabatanId()) ?
-                repository.findById(request.getJabatanId()).orElse(null) :
+        Jabatan parent = Objects.nonNull(request.getParentId()) ?
+                repository.findById(request.getParentId()).orElse(null) :
                 null;
         List<Jabatan> all = repository.findAll(request.getSpecification());
         if (!all.isEmpty())
@@ -79,9 +75,6 @@ public class JabatanServiceImpl implements JabatanService {
         Optional<Level> level = levelRepository.findById(request.getLevelId());
         if (level.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Level");
-        Optional<Golongan> golongan = golonganRepository.findById(request.getGolonganId());
-        if (golongan.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Golongan");
         Optional<Jabatan> byId = repository.findById(id);
         if (byId.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jabatan");

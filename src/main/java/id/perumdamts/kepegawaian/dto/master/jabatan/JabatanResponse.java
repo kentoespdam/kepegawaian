@@ -1,6 +1,5 @@
 package id.perumdamts.kepegawaian.dto.master.jabatan;
 
-import id.perumdamts.kepegawaian.dto.master.golongan.GolonganResponse;
 import id.perumdamts.kepegawaian.dto.master.level.LevelResponse;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiResponse;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
@@ -13,7 +12,6 @@ public class JabatanResponse {
     private OrganisasiResponse organisasi;
     private LevelResponse level;
     private String nama;
-    private GolonganResponse golongan;
 
     public static JabatanResponse from(Jabatan entity) {
         JabatanResponse response = new JabatanResponse();
@@ -25,7 +23,6 @@ public class JabatanResponse {
         response.setOrganisasi(OrganisasiResponse.from(entity.getOrganisasi()));
         response.setLevel(LevelResponse.from(entity.getLevel()));
         response.setNama(entity.getNama());
-        response.setGolongan(GolonganResponse.from(entity.getGolongan()));
         return response;
     }
 
@@ -35,7 +32,6 @@ public class JabatanResponse {
         response.setOrganisasi(OrganisasiResponse.from(entity.getOrganisasi()));
         response.setLevel(LevelResponse.from(entity.getLevel()));
         response.setNama(entity.getNama());
-        response.setGolongan(GolonganResponse.from(entity.getGolongan()));
         return response;
     }
 }

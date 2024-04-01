@@ -90,7 +90,6 @@ CREATE TABLE IF NOT EXISTS `jabatan` (
   `organisasi_id` bigint(20) DEFAULT NULL,
   `level_id` bigint(20) DEFAULT NULL,
   `nama` varchar(255) DEFAULT NULL,
-  `golongan_id` bigint(20) DEFAULT NULL,
   `is_deleted` bit(1) DEFAULT b'0',
   `created_at` datetime(6) DEFAULT CURRENT_TIMESTAMP(6),
   `created_by` varchar(255) DEFAULT NULL,
@@ -104,6 +103,5 @@ CREATE TABLE IF NOT EXISTS `jabatan` (
   KEY `organisasi_idx` (`organisasi_id`),
   CONSTRAINT `fk_parent_jabatan` FOREIGN KEY (`parent_id`) REFERENCES `jabatan` (`id`),
   CONSTRAINT `fk_level_jabatan` FOREIGN KEY (`level_id`) REFERENCES `level` (`id`),
-  CONSTRAINT `fk_organisasi_jabatan` FOREIGN KEY (`organisasi_id`) REFERENCES `organisasi` (`id`),
-  CONSTRAINT `fk_golongan_jabatan` FOREIGN KEY (`golongan_id`) REFERENCES `golongan` (`id`)
+  CONSTRAINT `fk_organisasi_jabatan` FOREIGN KEY (`organisasi_id`) REFERENCES `organisasi` (`id`)
 ) ENGINE=InnoDB;
