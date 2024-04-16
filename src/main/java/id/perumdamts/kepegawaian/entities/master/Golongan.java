@@ -12,7 +12,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
-@Table(indexes = @Index(columnList = "nama"))
+@Table(indexes = {@Index(columnList = "golongan"), @Index(columnList = "pangkat")})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,10 +22,6 @@ import org.hibernate.annotations.SQLRestriction;
 public class Golongan extends IdsAbstract {
     private String golongan;
     private String pangkat;
-
-    public Golongan(Long id) {
-        super(id);
-    }
 
     public Golongan(Long id, String golongan, String pangkat) {
         super(id);
