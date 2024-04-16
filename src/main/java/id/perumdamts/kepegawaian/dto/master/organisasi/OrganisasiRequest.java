@@ -13,11 +13,14 @@ import java.util.Objects;
 @Data
 public class OrganisasiRequest extends CommonPageRequest {
     private String nama;
+    private Long parentId;
 
     @JsonIgnore
     public Specification<Organisasi> getSpecification() {
         Specification<Organisasi> namaSpec = Objects.isNull(nama) ? null :
                 (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("nama"), "%" + nama + "%");
-        return Specification.where(namaSpec);
+        Specification<Organisasi> parentIdSpec = Objects.isNull(parentId) ? null :
+                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("organisasi").get("id"), parentId);
+        return Specification.where(namaSpec).and(parentIdSpec);
     }
 }
