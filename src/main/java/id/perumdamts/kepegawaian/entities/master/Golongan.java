@@ -12,12 +12,16 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
-@Table(indexes = {@Index(columnList = "golongan"), @Index(columnList = "pangkat")})
+@Table(indexes = {
+        @Index(columnList = "golongan"),
+        @Index(columnList = "pangkat"),
+        @Index(columnList = "is_deleted")
+})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@SQLDelete(sql = "UPDATE golongan SET is_deleted=true WHERE id=?")
-@SQLRestriction("is_deleted <> 1")
+@SQLDelete(sql = "UPDATE golongan SET is_deleted = TRUE WHERE id=?")
+@SQLRestriction("is_deleted = FALSE")
 @EqualsAndHashCode(callSuper = true)
 public class Golongan extends IdsAbstract {
     private String golongan;

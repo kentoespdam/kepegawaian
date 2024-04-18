@@ -12,7 +12,8 @@ import org.hibernate.annotations.SQLRestriction;
 @Entity
 @Table(indexes = {
         @Index(columnList = "nama"),
-        @Index(columnList = "levelOrg")
+        @Index(columnList = "levelOrg"),
+        @Index(columnList = "is_deleted")
 })
 @Data
 @NoArgsConstructor
