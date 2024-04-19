@@ -24,4 +24,21 @@ import org.hibernate.annotations.SQLRestriction;
 @EqualsAndHashCode(callSuper = true)
 public class JenisKitas extends IdsAbstract {
     private String nama;
+
+    public JenisKitas(Long jenisKitasId) {
+        super(jenisKitasId);
+    }
+
+    public JenisKitas(Long id, String nama) {
+        super(id);
+        this.nama = nama;
+    }
+
+    @Override
+    public String toString() {
+        return "JenisKitas(" +
+                "id=" + getId() +", "+
+                "nama='" + nama + '\'' +
+                ") " ;
+    }
 }

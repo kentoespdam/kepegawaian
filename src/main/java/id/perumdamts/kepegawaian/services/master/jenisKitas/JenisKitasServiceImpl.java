@@ -57,7 +57,7 @@ public class JenisKitasServiceImpl implements JenisKitasService {
     public SavedStatus<?> update(Long id, JenisKitasPutRequest request) {
         Optional<JenisKitas> one = repository.findById(id);
         if (one.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jenis Kitas");
+            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jenis Kartu Identitas");
         JenisKitas entity = JenisKitasPutRequest.toEntity(request, one.get());
         JenisKitas save = repository.save(entity);
         return SavedStatus.build(ESaveStatus.SUCCESS, save);
