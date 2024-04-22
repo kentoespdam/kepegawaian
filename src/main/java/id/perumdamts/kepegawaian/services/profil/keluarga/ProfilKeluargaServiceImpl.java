@@ -13,7 +13,6 @@ import id.perumdamts.kepegawaian.repositories.master.JenjangPendidikanRepository
 import id.perumdamts.kepegawaian.repositories.profil.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.ProfilKeluargaRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,7 +59,7 @@ public class ProfilKeluargaServiceImpl implements ProfilKeluargaService {
         if (jenjangPendidikan.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jenjang Pendidikan");
         ProfilKeluarga entity = ProfilKeluargaPostRequest.toEntity(request, biodata.get(), jenjangPendidikan.get());
-        boolean profilKeluargaExist = repository.exists(Example.of(entity));
+        boolean profilKeluargaExist = repository.exists(request.getSpecification());
         if (profilKeluargaExist)
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Profil Keluarga sudah ada");
         ProfilKeluarga save = repository.save(entity);

@@ -11,6 +11,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDate;
 
@@ -24,6 +25,7 @@ public class BiodataPostRequest {
     private String tempatLahir;
     @NotNull(message = "Tanggal Lahir is required")
     private LocalDate tanggalLahir;
+    @NotEmpty(message = "Alamat is required")
     private String alamat;
     private String telp;
     @NotNull(message = "Agama is required")
@@ -38,6 +40,20 @@ public class BiodataPostRequest {
     @Enumerated(EnumType.ORDINAL)
     private EStatusKawin statusKawin;
     private String notes;
+
+    public Specification<Biodata> getSpecification() {
+        Specification<Biodata> nikSpec = (root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("nik"), nik);
+        Specification<Biodata> namaSpec = (root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("nama"), nama);
+        Specification<Biodata> tempatLahirSpec = (root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("tempatLahir"), tempatLahir);
+        Specification<Biodata> tanggalLahirSpec = (root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("tanggalLahir"), tanggalLahir);
+
+        return Specification.where(nikSpec).and(namaSpec).and(tempatLahirSpec)
+                .and(tanggalLahirSpec);
+    }
 
     public static Biodata toEntity(BiodataPostRequest request, JenjangPendidikan pendidikanTerakhir) {
         Biodata entity = new Biodata();
@@ -55,6 +71,4 @@ public class BiodataPostRequest {
         entity.setNotes(request.getNotes());
         return entity;
     }
-
-
 }

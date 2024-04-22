@@ -11,7 +11,6 @@ import id.perumdamts.kepegawaian.entities.profil.KartuIdentitas;
 import id.perumdamts.kepegawaian.repositories.master.JenisKitasRepository;
 import id.perumdamts.kepegawaian.repositories.profil.KartuIdentitasRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,7 +59,7 @@ public class KartuIdentitasServiceImpl implements KartuIdentitasService {
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jenis Kartu Identitas");
 
         KartuIdentitas entity = KartuIdentitasPostRequest.toEntity(request, jenisKitas.get());
-        boolean exists = repository.exists(Example.of(entity));
+        boolean exists = repository.exists(request.getSpecification());
         if (exists)
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Kartu Identitas sudah ada");
 

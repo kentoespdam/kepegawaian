@@ -69,22 +69,13 @@ public class ProfilKeluargaPostRequest {
     }
 
     public Specification<ProfilKeluarga> getSpecification() {
-        Biodata biodata = new Biodata(biodataId);
-        JenjangPendidikan pendidikan = new JenjangPendidikan(pendidikanId);
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.and(
-                        criteriaBuilder.equal(root.get("biodata"), biodata),
+                        criteriaBuilder.equal(root.get("biodata").get("nik"), biodataId),
                         criteriaBuilder.equal(root.get("nik"), nik),
                         criteriaBuilder.equal(root.get("nama"), nama),
                         criteriaBuilder.equal(root.get("jenisKelamin"), jenisKelamin),
-                        criteriaBuilder.equal(root.get("agama"), agama),
-                        criteriaBuilder.equal(root.get("hubunganKeluarga"), hubunganKeluarga),
-                        criteriaBuilder.equal(root.get("tempatLahir"), tempatLahir),
-                        criteriaBuilder.equal(root.get("tanggalLahir"), tanggalLahir),
-                        criteriaBuilder.equal(root.get("tanggungan"), tanggungan),
-                        criteriaBuilder.equal(root.get("pendidikan"), pendidikan),
-                        criteriaBuilder.equal(root.get("statusKawin"), statusKawin),
-                        criteriaBuilder.equal(root.get("notes"), notes)
+                        criteriaBuilder.equal(root.get("hubunganKeluarga"), hubunganKeluarga)
                 );
     }
 }

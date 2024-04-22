@@ -13,7 +13,6 @@ import id.perumdamts.kepegawaian.repositories.master.JenjangPendidikanRepository
 import id.perumdamts.kepegawaian.repositories.profil.BiodataRepository;
 import id.perumdamts.kepegawaian.services.profil.kartuIdentitas.KartuIdentitasService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,7 +51,7 @@ public class BiodataServiceImpl implements BiodataService {
             return SavedStatus.build(ESaveStatus.FAILED, "Pendidikan Terakhir Tidak Valid");
 
         Biodata entity = BiodataPostRequest.toEntity(request, pendidikanTerakhir.get());
-        boolean isBiodataExist = repository.exists(Example.of(entity));
+        boolean isBiodataExist = repository.exists(request.getSpecification());
         if (isBiodataExist)
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Biodata sudah ada");
 
