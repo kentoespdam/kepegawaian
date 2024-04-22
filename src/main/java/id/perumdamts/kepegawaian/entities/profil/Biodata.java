@@ -1,6 +1,9 @@
 package id.perumdamts.kepegawaian.entities.profil;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import id.perumdamts.kepegawaian.entities.commons.EAgama;
 import id.perumdamts.kepegawaian.entities.commons.EGolonganDarah;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKawin;
@@ -40,6 +43,7 @@ public class Biodata implements Serializable {
     private String nik;
     private String nama;
     private String tempatLahir;
+    @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tanggalLahir;
     private String alamat;
@@ -48,7 +52,7 @@ public class Biodata implements Serializable {
     private EAgama agama;
     private String ibuKandung;
     @ManyToOne
-    @JoinColumn(name = "pendidikan_id")
+    @JoinColumn(name = "pendidikan_id", referencedColumnName = "id")
     private JenjangPendidikan pendidikanTerakhir;
     @Enumerated(value = EnumType.STRING)
     private EGolonganDarah golonganDarah;
@@ -61,12 +65,14 @@ public class Biodata implements Serializable {
     @CreatedBy
     @Column(updatable = false)
     private String createdBy;
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
     @LastModifiedBy
     private String updatedBy;
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @LastModifiedDate
     private LocalDateTime updatedAt;

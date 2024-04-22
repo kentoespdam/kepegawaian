@@ -2,7 +2,7 @@ package id.perumdamts.kepegawaian.dto.profil.biodata;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import id.perumdamts.kepegawaian.dto.master.jenjangPendidikan.JenjangPendidikanResponse;
-import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasResponse;
+import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasMiniResponse;
 import id.perumdamts.kepegawaian.entities.commons.EAgama;
 import id.perumdamts.kepegawaian.entities.commons.EGolonganDarah;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKawin;
@@ -33,11 +33,11 @@ public class BiodataResponse {
     private EStatusKawin statusKawin;
     private String fotoProfil;
     private String notes;
-    private List<KartuIdentitasResponse> kartuIdentitas;
+    private List<KartuIdentitasMiniResponse> kartuIdentitas;
 
     public static BiodataResponse from(Biodata entity) {
         JenjangPendidikanResponse pendidikanTerakhir = JenjangPendidikanResponse.from(entity.getPendidikanTerakhir());
-        List<KartuIdentitasResponse> kartuIdentitas = KartuIdentitasResponse.from(entity.getKartuIdentitas());
+        List<KartuIdentitasMiniResponse> kartuIdentitas = KartuIdentitasMiniResponse.from(entity.getKartuIdentitas());
         BiodataResponse response = new BiodataResponse();
         response.setNik(entity.getNik());
         response.setNama(entity.getNama());

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.dto.master.jenisKitas.JenisKitasResponse;
+import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataMiniResponse;
 import id.perumdamts.kepegawaian.entities.profil.KartuIdentitas;
 import lombok.Data;
 
@@ -13,7 +14,7 @@ import java.util.List;
 @Data
 public class KartuIdentitasResponse {
     private Long id;
-    private String nik;
+    private BiodataMiniResponse biodata;
     private JenisKitasResponse jenisKartu;
     private String nomorKartu;
     @JsonSerialize(using = LocalDateSerializer.class)
@@ -25,9 +26,10 @@ public class KartuIdentitasResponse {
     private String notes;
 
     public static KartuIdentitasResponse from(KartuIdentitas entity) {
+        BiodataMiniResponse biodata = BiodataMiniResponse.from(entity.getBiodata());
         KartuIdentitasResponse response = new KartuIdentitasResponse();
         response.setId(entity.getId());
-        response.setNik(entity.getBiodata().getNik());
+        response.setBiodata(biodata);
         response.setJenisKartu(JenisKitasResponse.from(entity.getJenisKartu()));
         response.setNomorKartu(entity.getNomorKartu());
         response.setTanggalExpired(entity.getTanggalExpired());

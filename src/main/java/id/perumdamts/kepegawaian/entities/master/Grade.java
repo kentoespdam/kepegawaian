@@ -22,7 +22,7 @@ import org.hibernate.annotations.SQLRestriction;
 @EqualsAndHashCode(callSuper = true)
 public class Grade extends IdsAbstract {
     @ManyToOne
-    @JoinColumn(name = "level_id")
+    @JoinColumn(name = "level_id", referencedColumnName = "id")
     private Level level;
     private Integer grade;
     private Double tukin;

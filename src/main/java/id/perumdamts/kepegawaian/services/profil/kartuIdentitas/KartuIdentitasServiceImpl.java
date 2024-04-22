@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -51,6 +52,7 @@ public class KartuIdentitasServiceImpl implements KartuIdentitasService {
         return repository.save(kartuIdentitas);
     }
 
+    @Transactional
     @Override
     public SavedStatus<?> save(KartuIdentitasPostRequest request) {
         Optional<JenisKitas> jenisKitas = jenisKitasRepository.findById(request.getJenisKartu());
@@ -66,6 +68,7 @@ public class KartuIdentitasServiceImpl implements KartuIdentitasService {
         return SavedStatus.build(ESaveStatus.SUCCESS, save);
     }
 
+    @Transactional
     @Override
     public SavedStatus<?> update(Long id, KartuIdentitasPutRequest request) {
         Optional<JenisKitas> jenisKitas = jenisKitasRepository.findById(request.getJenisKartu());
@@ -81,6 +84,7 @@ public class KartuIdentitasServiceImpl implements KartuIdentitasService {
         return SavedStatus.build(ESaveStatus.SUCCESS, save);
     }
 
+    @Transactional
     @Override
     public Boolean deleteById(Long id) {
         boolean exists = repository.existsById(id);

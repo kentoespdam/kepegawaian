@@ -30,10 +30,10 @@ import java.time.LocalDate;
 public class KartuIdentitas extends IdsAbstract {
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name = "nik")
+    @JoinColumn(name = "nik", referencedColumnName = "nik")
     private Biodata biodata;
     @ManyToOne
-    @JoinColumn(name = "jenis_kitas_id")
+    @JoinColumn(name = "jenis_kitas_id", referencedColumnName = "id")
     private JenisKitas jenisKartu;
     private String nomorKartu;
     @JsonSerialize(using = LocalDateSerializer.class)

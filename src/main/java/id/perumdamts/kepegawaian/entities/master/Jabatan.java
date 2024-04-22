@@ -22,13 +22,13 @@ import org.hibernate.annotations.SQLRestriction;
 @EqualsAndHashCode(callSuper = true)
 public class Jabatan extends IdsAbstract {
     @ManyToOne
-    @JoinColumn(name = "parent_id")
+    @JoinColumn(name = "parent_id", referencedColumnName = "id")
     private Jabatan jabatan;
     @ManyToOne
-    @JoinColumn(name = "organisasi_id")
+    @JoinColumn(name = "organisasi_id", referencedColumnName = "id")
     private Organisasi organisasi;
     @ManyToOne
-    @JoinColumn(name = "level_id")
+    @JoinColumn(name = "level_id", referencedColumnName = "id")
     private Level level;
     private String nama;
 

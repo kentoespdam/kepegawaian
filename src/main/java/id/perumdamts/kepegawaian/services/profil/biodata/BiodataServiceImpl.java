@@ -61,6 +61,7 @@ public class BiodataServiceImpl implements BiodataService {
         return SavedStatus.build(ESaveStatus.SUCCESS, save);
     }
 
+    @Transactional
     @Override
     public SavedStatus<?> update(String id, BiodataPutRequest request) {
         Optional<JenjangPendidikan> pendidikanTerakhir = jenjangPendidikanRepository.findById(request.getPendidikanTerakhir());
@@ -76,6 +77,7 @@ public class BiodataServiceImpl implements BiodataService {
         return SavedStatus.build(ESaveStatus.SUCCESS, save);
     }
 
+    @Transactional
     @Override
     public Boolean deleteById(String id) {
         boolean isBiodataExist = repository.existsById(id);

@@ -21,8 +21,12 @@ import org.hibernate.annotations.SQLRestriction;
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE jenjang_pendidikan SET is_deleted = TRUE WHERE id = ?")
 @SQLRestriction("is_deleted = FALSE")
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 public class JenjangPendidikan extends IdsAbstract {
     private String nama;
     private Integer seq;
+
+    public JenjangPendidikan(Long pendidikanId) {
+        super(pendidikanId);
+    }
 }
