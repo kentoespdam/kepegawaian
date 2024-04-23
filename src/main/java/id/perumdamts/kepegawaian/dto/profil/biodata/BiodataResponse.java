@@ -13,6 +13,7 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 public class BiodataResponse {
@@ -37,7 +38,8 @@ public class BiodataResponse {
 
     public static BiodataResponse from(Biodata entity) {
         JenjangPendidikanResponse pendidikanTerakhir = JenjangPendidikanResponse.from(entity.getPendidikanTerakhir());
-        List<KartuIdentitasMiniResponse> kartuIdentitas = KartuIdentitasMiniResponse.from(entity.getKartuIdentitas());
+        List<KartuIdentitasMiniResponse> kartuIdentitas = Objects.isNull(entity.getKartuIdentitas()) ? null :
+                KartuIdentitasMiniResponse.from(entity.getKartuIdentitas());
         BiodataResponse response = new BiodataResponse();
         response.setNik(entity.getNik());
         response.setNama(entity.getNama());
