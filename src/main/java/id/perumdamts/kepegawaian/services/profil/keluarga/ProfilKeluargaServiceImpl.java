@@ -63,7 +63,7 @@ public class ProfilKeluargaServiceImpl implements ProfilKeluargaService {
         if (profilKeluargaExist)
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Profil Keluarga sudah ada");
         ProfilKeluarga save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        return SavedStatus.build(ESaveStatus.SUCCESS, ProfilKeluargaResponse.from(save));
     }
 
     @Transactional
@@ -80,7 +80,7 @@ public class ProfilKeluargaServiceImpl implements ProfilKeluargaService {
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jenjang Pendidikan");
         ProfilKeluarga entity = ProfilKeluargaPutRequest.toEntity(request, profilKeluarga.get(), biodata.get(), jenjangPendidikan.get());
         ProfilKeluarga save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        return SavedStatus.build(ESaveStatus.SUCCESS, ProfilKeluargaResponse.from(save));
     }
 
     @Transactional

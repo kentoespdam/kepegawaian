@@ -2,10 +2,7 @@ package id.perumdamts.kepegawaian.services.profil.pendidikan;
 
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
-import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanPostRequest;
-import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanPutRequest;
-import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanRequest;
-import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanResponse;
+import id.perumdamts.kepegawaian.dto.profil.pendidikan.*;
 import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.Pendidikan;
@@ -68,7 +65,7 @@ public class PendidikanServiceImpl implements PendidikanService {
 
         Pendidikan pendidikan = PendidikanPostRequest.from(request, biodata.get(), jenjangPendidikan.get());
         Pendidikan save = repository.save(pendidikan);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        return SavedStatus.build(ESaveStatus.SUCCESS, PendidikanResponse.from(save));
     }
 
     @Transactional
@@ -85,21 +82,23 @@ public class PendidikanServiceImpl implements PendidikanService {
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jenjang Pendidikan");
         Pendidikan entity = PendidikanPutRequest.from(request, pendidikan.get(), biodata.get(), jenjangPendidikan.get());
         Pendidikan save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        return SavedStatus.build(ESaveStatus.SUCCESS, PendidikanResponse.from(save));
     }
 
     @Transactional
     @Override
-    public SavedStatus<?> acceptPendidikan(Long id, String nik, String username) {
+    public SavedStatus<?> acceptPendidikan(Long id, PendidikanAcceptRequest request, String username) {
         Optional<Pendidikan> pendidikan = repository.findById(id);
         if (pendidikan.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Pendidikan");
         Pendidikan entity = pendidikan.get();
+        entity.setDisetujui(true);
         entity.setDisetujuiOleh(username);
         entity.setTanggalDisetujui(LocalDateTime.now());
-        repository.updateByBiodata_Nik(nik);
+        if (request.getIsLatest())
+            repository.updateByBiodata_Nik(request.getBiodataId());
         Pendidikan save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        return SavedStatus.build(ESaveStatus.SUCCESS, PendidikanResponse.from(save));
     }
 
     @Transactional

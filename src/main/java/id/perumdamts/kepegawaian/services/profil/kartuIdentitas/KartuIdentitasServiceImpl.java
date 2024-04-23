@@ -64,7 +64,7 @@ public class KartuIdentitasServiceImpl implements KartuIdentitasService {
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Kartu Identitas sudah ada");
 
         KartuIdentitas save = this.execSave(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        return SavedStatus.build(ESaveStatus.SUCCESS, KartuIdentitasResponse.from(save));
     }
 
     @Transactional
@@ -80,7 +80,7 @@ public class KartuIdentitasServiceImpl implements KartuIdentitasService {
 
         KartuIdentitas entity = KartuIdentitasPutRequest.toEntity(request, kartuIdentitas.get(), jenisKitas.get());
         KartuIdentitas save = this.execSave(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        return SavedStatus.build(ESaveStatus.SUCCESS, KartuIdentitasResponse.from(save));
     }
 
     @Transactional

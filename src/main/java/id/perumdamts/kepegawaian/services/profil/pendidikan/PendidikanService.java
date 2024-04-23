@@ -13,6 +13,6 @@ public interface PendidikanService {
     List<PendidikanResponse> findByBiodataId(String biodataId);
     SavedStatus<?> save(PendidikanPostRequest request);
     SavedStatus<?> update(Long id, PendidikanPutRequest request);
-    SavedStatus<?> acceptPendidikan(Long id, String nik, String username);
+    SavedStatus<?> acceptPendidikan(Long id, PendidikanAcceptRequest request, String username);
     Boolean delete(Long id);
 }

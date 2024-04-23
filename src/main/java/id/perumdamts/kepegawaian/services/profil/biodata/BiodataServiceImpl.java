@@ -57,7 +57,7 @@ public class BiodataServiceImpl implements BiodataService {
 
         Biodata save = repository.save(entity);
         kartuIdentitasService.execSave(new KartuIdentitas(save));
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        return SavedStatus.build(ESaveStatus.SUCCESS, BiodataResponse.from(save));
     }
 
     @Transactional
@@ -73,7 +73,7 @@ public class BiodataServiceImpl implements BiodataService {
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Biodata");
 
         Biodata save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        return SavedStatus.build(ESaveStatus.SUCCESS, BiodataResponse.from(save));
     }
 
     @Transactional
