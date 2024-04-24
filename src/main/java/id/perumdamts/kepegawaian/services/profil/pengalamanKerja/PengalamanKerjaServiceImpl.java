@@ -10,6 +10,7 @@ import id.perumdamts.kepegawaian.repositories.profil.PengalamanKerjaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -44,6 +45,7 @@ public class PengalamanKerjaServiceImpl implements PengalamanKerjaService {
                 .map(PengalamanKerjaResponse::from).toList();
     }
 
+    @Transactional
     @Override
     public SavedStatus<?> save(PengalamanKerjaPostRequest request) {
         Optional<Biodata> biodata = biodataRepository.findById(request.getBiodataId());
@@ -59,6 +61,7 @@ public class PengalamanKerjaServiceImpl implements PengalamanKerjaService {
         return SavedStatus.build(ESaveStatus.SUCCESS, PengalamanKerjaResponse.from(save));
     }
 
+    @Transactional
     @Override
     public SavedStatus<?> update(Long id, PengalamanKerjaPutRequest request) {
         Optional<PengalamanKerja> pengalamanKerja = repository.findById(id);
@@ -74,6 +77,7 @@ public class PengalamanKerjaServiceImpl implements PengalamanKerjaService {
         return SavedStatus.build(ESaveStatus.SUCCESS, PengalamanKerjaResponse.from(save));
     }
 
+    @Transactional
     @Override
     public SavedStatus<?> acceptPengalamanKerja(Long id, PengalamanKerjaAcceptRequest request, String username) {
         Optional<PengalamanKerja> pengalamanKerja = repository.findById(id);
@@ -88,6 +92,7 @@ public class PengalamanKerjaServiceImpl implements PengalamanKerjaService {
         return SavedStatus.build(ESaveStatus.SUCCESS, PengalamanKerjaResponse.from(save));
     }
 
+    @Transactional
     @Override
     public Boolean deleteById(Long id) {
         boolean exists = repository.existsById(id);

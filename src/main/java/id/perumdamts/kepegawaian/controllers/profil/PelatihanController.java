@@ -3,11 +3,11 @@ package id.perumdamts.kepegawaian.controllers.profil;
 import id.perumdamts.kepegawaian.dto.appwrite.AppwriteUser;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
-import id.perumdamts.kepegawaian.dto.profil.pengalamanKerja.PengalamanKerjaAcceptRequest;
-import id.perumdamts.kepegawaian.dto.profil.pengalamanKerja.PengalamanKerjaPostRequest;
-import id.perumdamts.kepegawaian.dto.profil.pengalamanKerja.PengalamanKerjaPutRequest;
-import id.perumdamts.kepegawaian.dto.profil.pengalamanKerja.PengalamanKerjaRequest;
-import id.perumdamts.kepegawaian.services.profil.pengalamanKerja.PengalamanKerjaService;
+import id.perumdamts.kepegawaian.dto.profil.pelatihan.PelatihanAcceptRequest;
+import id.perumdamts.kepegawaian.dto.profil.pelatihan.PelatihanPostRequest;
+import id.perumdamts.kepegawaian.dto.profil.pelatihan.PelatihanPutRequest;
+import id.perumdamts.kepegawaian.dto.profil.pelatihan.PelatihanRequest;
+import id.perumdamts.kepegawaian.services.profil.pelatihan.PelatihanService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -19,12 +19,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/profil/pengalaman")
-public class PengalamanKerjaController {
-    private final PengalamanKerjaService service;
+@RequestMapping("/profil/pelatihan")
+public class PelatihanController {
+    private final PelatihanService service;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject PengalamanKerjaRequest request) {
+    public ResponseEntity<?> index(@ParameterObject PelatihanRequest request) {
         return CustomResult.any(service.findPage(request));
     }
 
@@ -44,28 +44,28 @@ public class PengalamanKerjaController {
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@Valid @RequestBody PengalamanKerjaPostRequest request, Errors errors) {
+    public ResponseEntity<?> save(@Valid @RequestBody PelatihanPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         return CustomResult.save(service.save(request));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody PengalamanKerjaPutRequest request, Errors errors) {
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody PelatihanPutRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         return CustomResult.save(service.update(id, request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}/accept")
-    public ResponseEntity<?> acceptPengalamanKerja(@PathVariable Long id, @Valid @RequestBody PengalamanKerjaAcceptRequest request, Errors errors) {
+    public ResponseEntity<?> acceptPelatihan(@PathVariable Long id, @Valid @RequestBody PelatihanAcceptRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         AppwriteUser appwriteUser = (AppwriteUser) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();
-        return CustomResult.save(service.acceptPengalamanKerja(id, request, appwriteUser.get$id()));
+        return CustomResult.save(service.acceptPelatihan(id, request.getBiodataId(), appwriteUser.get$id()));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        return CustomResult.delete(service.deleteById(id));
+        return CustomResult.delete(service.delete(id));
     }
 }

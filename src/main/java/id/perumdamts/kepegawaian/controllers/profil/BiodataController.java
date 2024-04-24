@@ -50,7 +50,6 @@ public class BiodataController {
         return null;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable String id, @Valid @RequestBody BiodataPutRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);

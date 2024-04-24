@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
@@ -54,6 +55,7 @@ public class KeahlianController {
         return CustomResult.save(service.update(id, request));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}/accept")
     public ResponseEntity<?> acceptKeahlian(@PathVariable Long id, @Valid @RequestBody KeahlianAcceptRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);

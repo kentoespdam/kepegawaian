@@ -39,14 +39,12 @@ public class KartuIdentitasController {
         return CustomResult.any(service.findByNik(nik));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> save(@Valid @RequestBody KartuIdentitasPostRequest request, Errors errors){
         if (errors.hasErrors()) return ErrorResult.build(errors);
         return CustomResult.save(service.save(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody KartuIdentitasPutRequest request, Errors errors){
         if (errors.hasErrors()) return ErrorResult.build(errors);

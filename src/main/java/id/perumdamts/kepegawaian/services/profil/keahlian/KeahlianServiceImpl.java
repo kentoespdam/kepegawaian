@@ -15,6 +15,7 @@ import id.perumdamts.kepegawaian.repositories.profil.KeahlianRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -48,6 +49,7 @@ public class KeahlianServiceImpl implements KeahlianService {
         return repository.findByBiodata_Nik(biodataId).stream().map(KeahlianResponse::from).toList();
     }
 
+    @Transactional
     @Override
     public SavedStatus<?> save(KeahlianPostRequest request) {
         Optional<Biodata> biodata = biodataRepository.findById(request.getBiodataId());
@@ -67,6 +69,7 @@ public class KeahlianServiceImpl implements KeahlianService {
         return SavedStatus.build(ESaveStatus.SUCCESS, KeahlianResponse.from(save));
     }
 
+    @Transactional
     @Override
     public SavedStatus<?> update(Long id, KeahlianPutRequest request) {
         Optional<Biodata> biodata = biodataRepository.findById(request.getBiodataId());
@@ -86,6 +89,7 @@ public class KeahlianServiceImpl implements KeahlianService {
         return SavedStatus.build(ESaveStatus.SUCCESS, KeahlianResponse.from(save));
     }
 
+    @Transactional
     @Override
     public SavedStatus<?> acceptKeahlian(Long id, String nik, String username) {
         Optional<Keahlian> keahlian = repository.findById(id);
@@ -99,6 +103,7 @@ public class KeahlianServiceImpl implements KeahlianService {
         return SavedStatus.build(ESaveStatus.SUCCESS, KeahlianResponse.from(save));
     }
 
+    @Transactional
     @Override
     public Boolean delete(Long id) {
         boolean exists = repository.existsById(id);
