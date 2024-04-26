@@ -1,22 +1,33 @@
 package id.perumdamts.kepegawaian.services.profil.biodata;
 
+import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPutRequest;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataRequest;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataResponse;
+import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.KartuIdentitas;
 import id.perumdamts.kepegawaian.repositories.master.JenjangPendidikanRepository;
 import id.perumdamts.kepegawaian.repositories.profil.BiodataRepository;
 import id.perumdamts.kepegawaian.services.profil.kartuIdentitas.KartuIdentitasService;
+import id.perumdamts.kepegawaian.utils.FileUploadUtil;
+import id.perumdamts.kepegawaian.utils.UploadResultUtil;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FilenameUtils;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +37,7 @@ public class BiodataServiceImpl implements BiodataService {
     private final BiodataRepository repository;
     private final JenjangPendidikanRepository jenjangPendidikanRepository;
     private final KartuIdentitasService kartuIdentitasService;
+    private final FileUploadUtil fileUploadUtil;
 
     @Override
     public List<BiodataResponse> findAll() {
@@ -74,6 +86,49 @@ public class BiodataServiceImpl implements BiodataService {
 
         Biodata save = repository.save(entity);
         return SavedStatus.build(ESaveStatus.SUCCESS, BiodataResponse.from(save));
+    }
+
+    @Override
+    public SavedStatus<?> updateFotoProfil(String id, MultipartFile fileName) {
+        Optional<Biodata> biodata = repository.findById(id);
+        if (biodata.isEmpty())
+            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Biodata");
+
+        String oldFilename = biodata.get().getFotoProfil();
+        fileUploadUtil.deleteOldFile(oldFilename, EJenisLampiranProfil.FOTO_PROFIL, id);
+
+        UploadResultUtil uploadResultUtil = fileUploadUtil.uploadFile(fileName, EJenisLampiranProfil.FOTO_PROFIL, id);
+        if (!uploadResultUtil.isSuccess()) {
+            return SavedStatus.build(ESaveStatus.FAILED, uploadResultUtil.getMessage());
+        }
+
+        Biodata update = biodata.get();
+        update.setFotoProfil(uploadResultUtil.getFileName());
+        Biodata save = repository.save(update);
+        return SavedStatus.build(ESaveStatus.SUCCESS, BiodataResponse.from(save));
+    }
+
+    @Override
+    public ResponseEntity<?> findFotoProfil(String id) {
+        Optional<Biodata> biodata = repository.findById(id);
+        if (biodata.isEmpty() || biodata.get().getFotoProfil().isEmpty())
+            return CustomResult.any(null);
+
+        try{
+            Path path = fileUploadUtil.generatePath(EJenisLampiranProfil.FOTO_PROFIL, id, biodata.get().getFotoProfil());
+            System.out.println(path.toFile().getName());
+            FileInputStream stream = new FileInputStream(path.toFile());
+            String extension = FilenameUtils.getExtension(path.toFile().getName());
+            ByteArrayResource resource = new ByteArrayResource(stream.readAllBytes());
+            stream.close();
+            return ResponseEntity.ok()
+                    .contentLength(resource.contentLength())
+                    .header("Content-Type", "image/" + extension)
+                    .header("Content-Disposition", "inline; filename=\"" + biodata.get().getFotoProfil() + "\"")
+                    .body(resource);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Transactional

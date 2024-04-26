@@ -39,6 +39,8 @@ public class SetupMasterController {
     private JenisPelatihanRepository jenisPelatihanRepository;
     @Autowired
     private JenjangPendidikanRepository jenjangPendidikanRepository;
+    @Autowired
+    private JenisLampiranProfilRepository jenisLampiranProfilRepository;
 
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -56,6 +58,7 @@ public class SetupMasterController {
             insertDataJenisKitas();
             insertDataJenisPelatihan();
             insertDataJenjangPendidikan();
+            insertDataJenisLampiranProfil();
             return ResponseEntity.ok().build();
         } catch (JsonProcessingException e) {
             return ResponseEntity.badRequest().build();
@@ -149,5 +152,13 @@ public class SetupMasterController {
         List<JenjangPendidikan> jenjangPendidikanList = mapper.readValue(jsonData, new TypeReference<>() {
         });
         jenjangPendidikanRepository.saveAll(jenjangPendidikanList);
+    }
+
+    private void insertDataJenisLampiranProfil() throws JsonProcessingException {
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        String jsonData = "[{\"nama\":\"PROFIL_KELUARGA\"},{\"nama\":\"PROFIL_PENDIDIKAN\"},{\"nama\":\"PROFIL_PELATIHAN\"},{\"nama\":\"PROFIL_KEAHLIAN\"},{\"nama\":\"KITAS\"},{\"nama\":\"PROFIL_PENGALAMAN_KERJA\"}]";
+        List<JenisLampiranProfil> jenisLampiranProfilList = mapper.readValue(jsonData, new TypeReference<>() {
+        });
+        jenisLampiranProfilRepository.saveAll(jenisLampiranProfilList);
     }
 }
