@@ -2,16 +2,17 @@ package id.perumdamts.kepegawaian.services.profil.kartuIdentitas;
 
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
-import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasPostRequest;
-import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasPutRequest;
-import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasRequest;
-import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasResponse;
+import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.*;
+import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilResponse;
+import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.entities.master.JenisKitas;
 import id.perumdamts.kepegawaian.entities.profil.KartuIdentitas;
 import id.perumdamts.kepegawaian.repositories.master.JenisKitasRepository;
 import id.perumdamts.kepegawaian.repositories.profil.KartuIdentitasRepository;
+import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,7 @@ import java.util.Optional;
 public class KartuIdentitasServiceImpl implements KartuIdentitasService {
     private final KartuIdentitasRepository repository;
     private final JenisKitasRepository jenisKitasRepository;
+    private final LampiranProfilService lampiranProfilService;
 
     @Override
     public List<KartuIdentitasResponse> findAll() {
@@ -91,5 +93,35 @@ public class KartuIdentitasServiceImpl implements KartuIdentitasService {
             return false;
         repository.deleteById(id);
         return true;
+    }
+
+    @Override
+    public List<LampiranProfilResponse> getLampiran(Long id) {
+        return lampiranProfilService.getLampiran(EJenisLampiranProfil.KARTU_IDENTITAS, id);
+    }
+
+    @Override
+    public LampiranProfilResponse getLampiranById(Long id) {
+        return lampiranProfilService.getLampiranById(id);
+    }
+
+    @Override
+    public ResponseEntity<?> getFileLampiranById(Long id) {
+        return lampiranProfilService.getFileLampiranById(EJenisLampiranProfil.KARTU_IDENTITAS, id);
+    }
+
+    @Transactional
+    @Override
+    public SavedStatus<?> addLampiran(KartuIdentitasLampiranPostRequest request) {
+        boolean exists = repository.existsById(request.getRefId());
+        if (!exists)
+            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Kartu Identitas");
+
+        return lampiranProfilService.addLampiran(request);
+    }
+
+    @Override
+    public Boolean deleteLampiran(Long id) {
+        return lampiranProfilService.deleteById(id);
     }
 }
