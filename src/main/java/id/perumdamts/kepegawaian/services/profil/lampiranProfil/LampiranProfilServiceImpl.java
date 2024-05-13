@@ -11,7 +11,6 @@ import id.perumdamts.kepegawaian.repositories.profil.LampiranProfilRepository;
 import id.perumdamts.kepegawaian.utils.FileUploadUtil;
 import id.perumdamts.kepegawaian.utils.UploadResultUtil;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -24,7 +23,6 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class LampiranProfilServiceImpl implements LampiranProfilService {
     private final LampiranProfilRepository repository;
     private final FileUploadUtil fileUploadUtil;
@@ -51,10 +49,6 @@ public class LampiranProfilServiceImpl implements LampiranProfilService {
             FileInputStream stream = new FileInputStream(path.toFile());
             ByteArrayResource resource = new ByteArrayResource(stream.readAllBytes());
             stream.close();
-            log.info("File: " + lampiranProfil.getFileName());
-            log.info("Size: " + resource.contentLength());
-            log.info("MIME Type: " + lampiranProfil.getMimeType());
-            log.info("Path: " + path.toFile().getAbsolutePath());
             return ResponseEntity.ok()
                     .contentLength(resource.contentLength())
                     .header("Content-Type", lampiranProfil.getMimeType())
