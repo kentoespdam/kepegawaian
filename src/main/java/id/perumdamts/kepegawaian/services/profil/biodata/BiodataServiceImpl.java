@@ -116,7 +116,6 @@ public class BiodataServiceImpl implements BiodataService {
 
         try {
             Path path = fileUploadUtil.generatePath(EJenisLampiranProfil.FOTO_PROFIL, id, biodata.get().getFotoProfil());
-            System.out.println(path.toFile().getName());
             FileInputStream stream = new FileInputStream(path.toFile());
             String extension = FilenameUtils.getExtension(path.toFile().getName());
             ByteArrayResource resource = new ByteArrayResource(stream.readAllBytes());
