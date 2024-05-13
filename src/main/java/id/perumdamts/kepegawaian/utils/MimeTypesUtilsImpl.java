@@ -59,10 +59,10 @@ public class MimeTypesUtilsImpl implements MimeTypesUtils {
 
     @Override
     public String isSupported(String mimeType) {
-        String extension = mimeType.substring(mimeType.indexOf("/") + 1);
+//        String extension = mimeType.substring(mimeType.indexOf("/") + 1);
 
         if (isImage(mimeType) || isDocument(mimeType) || isCompressed(mimeType)) {
-            return extension;
+            return mimeType;
         } else {
             return null;
         }

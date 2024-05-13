@@ -1,6 +1,5 @@
 package id.perumdamts.kepegawaian.utils;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
@@ -12,16 +11,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.time.LocalDate;
 
 @RequiredArgsConstructor
 @Service
 public class FileUploadUtilImpl implements FileUploadUtil {
     private final RandomStringHelper randomStringHelper;
     private final MimeTypesUtils mimeTypesUtils;
-
-    @JsonFormat(pattern = "yyyyMM")
-    private final LocalDate date = LocalDate.now();
 
     @Override
     public UploadResultUtil uploadFile(MultipartFile file, EJenisLampiranProfil ref, String username) {
@@ -54,20 +49,12 @@ public class FileUploadUtilImpl implements FileUploadUtil {
     @Override
     public Path generatePath(EJenisLampiranProfil ref, String username) {
         String directoryPath = BASE_PATH + ref.name() + "/" + username;
-        if (ref != EJenisLampiranProfil.FOTO_PROFIL) {
-            directoryPath = BASE_PATH + ref.name() + "/" + date + "/" + username;
-        }
-
         return Paths.get(directoryPath);
     }
 
     @Override
     public Path generatePath(EJenisLampiranProfil ref, String username, String fileName) {
         String directoryPath = BASE_PATH + ref.name() + "/" + username + "/" + fileName;
-        if (ref != EJenisLampiranProfil.FOTO_PROFIL) {
-            directoryPath = BASE_PATH + ref.name() + "/" + date + "/" + username + "/" + fileName;
-        }
-
         return Paths.get(directoryPath);
     }
 
