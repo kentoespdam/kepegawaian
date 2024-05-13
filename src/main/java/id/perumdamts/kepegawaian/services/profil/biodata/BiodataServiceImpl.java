@@ -1,7 +1,7 @@
 package id.perumdamts.kepegawaian.services.profil.biodata;
 
-import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
+import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPutRequest;
@@ -111,10 +111,10 @@ public class BiodataServiceImpl implements BiodataService {
     @Override
     public ResponseEntity<?> findFotoProfil(String id) {
         Optional<Biodata> biodata = repository.findById(id);
-        if (biodata.isEmpty() || biodata.get().getFotoProfil().isEmpty())
-            return CustomResult.any(null);
+        if (biodata.isEmpty() || biodata.get().getFotoProfil() == null || biodata.get().getFotoProfil().isEmpty())
+            return ErrorResult.build("Foto Profil Not Found!");
 
-        try{
+        try {
             Path path = fileUploadUtil.generatePath(EJenisLampiranProfil.FOTO_PROFIL, id, biodata.get().getFotoProfil());
             System.out.println(path.toFile().getName());
             FileInputStream stream = new FileInputStream(path.toFile());
