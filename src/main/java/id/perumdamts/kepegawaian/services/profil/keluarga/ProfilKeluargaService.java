@@ -1,11 +1,10 @@
 package id.perumdamts.kepegawaian.services.profil.keluarga;
 
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
-import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaPostRequest;
-import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaPutRequest;
-import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaRequest;
-import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaResponse;
+import id.perumdamts.kepegawaian.dto.profil.keluarga.*;
+import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilResponse;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -17,4 +16,11 @@ public interface ProfilKeluargaService {
     SavedStatus<?> save(ProfilKeluargaPostRequest request);
     SavedStatus<?> update(Long id, ProfilKeluargaPutRequest request);
     Boolean delete(Long id);
+
+    // Lampiran
+    List<LampiranProfilResponse> getLampiran(Long id);
+    LampiranProfilResponse getLampiranById(Long id);
+    ResponseEntity<?> getFileLampiranById(Long id);
+    SavedStatus<?> addLampiran(ProfilKeluargaLampiranPostRequest request);
+    Boolean deleteLampiran(Long id);
 }

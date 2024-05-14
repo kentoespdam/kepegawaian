@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.controllers.profil;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
+import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaLampiranPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaPutRequest;
 import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaRequest;
@@ -54,5 +55,32 @@ public class ProfilKeluargaController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         return CustomResult.delete(service.delete(id));
+    }
+
+    // Lampiran
+    @GetMapping("/lampiran/{id}/list")
+    public ResponseEntity<?> getLampiran(@PathVariable Long id) {
+        return CustomResult.any(service.getLampiran(id));
+    }
+
+    @GetMapping("/lampiran/{id}/detail")
+    public ResponseEntity<?> getLampiranById(@PathVariable Long id) {
+        return CustomResult.any(service.getLampiranById(id));
+    }
+
+    @GetMapping("/lampiran/{id}/file")
+    public ResponseEntity<?> getFileLampiranById(@PathVariable Long id) {
+        return service.getFileLampiranById(id);
+    }
+
+    @PostMapping(value = "/lampiran", consumes = "multipart/form-data")
+    public ResponseEntity<?> saveLampiran(@Valid @ModelAttribute ProfilKeluargaLampiranPostRequest request, Errors errors) {
+        if (errors.hasErrors()) return ErrorResult.build(errors);
+        return CustomResult.save(service.addLampiran(request));
+    }
+
+    @DeleteMapping("/lampiran/{id}")
+    public ResponseEntity<?> deleteLampiran(@PathVariable Long id) {
+        return CustomResult.delete(service.deleteLampiran(id));
     }
 }
