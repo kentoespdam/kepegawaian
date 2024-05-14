@@ -3,10 +3,7 @@ package id.perumdamts.kepegawaian.controllers.profil;
 import id.perumdamts.kepegawaian.dto.appwrite.AppwriteUser;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
-import id.perumdamts.kepegawaian.dto.profil.keahlian.KeahlianAcceptRequest;
-import id.perumdamts.kepegawaian.dto.profil.keahlian.KeahlianPostRequest;
-import id.perumdamts.kepegawaian.dto.profil.keahlian.KeahlianPutRequest;
-import id.perumdamts.kepegawaian.dto.profil.keahlian.KeahlianRequest;
+import id.perumdamts.kepegawaian.dto.profil.keahlian.*;
 import id.perumdamts.kepegawaian.services.profil.keahlian.KeahlianService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -67,5 +64,32 @@ public class KeahlianController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         return CustomResult.delete(service.delete(id));
+    }
+
+    // Lampiran
+    @GetMapping("/lampiran/{id}/list")
+    public ResponseEntity<?> getLampiran(@PathVariable Long id) {
+        return CustomResult.any(service.getLampiran(id));
+    }
+
+    @GetMapping("/lampiran/{id}/detail")
+    public ResponseEntity<?> getLampiranById(@PathVariable Long id) {
+        return CustomResult.any(service.getLampiranById(id));
+    }
+
+    @GetMapping("/lampiran/{id}/file")
+    public ResponseEntity<?> getFileLampiranById(@PathVariable Long id) {
+        return service.getFileLampiranById(id);
+    }
+
+    @PostMapping("/lampiran")
+    public ResponseEntity<?> saveLampiran(@Valid @ModelAttribute KeahlianLampiranPostRequest request, Errors errors) {
+        if (errors.hasErrors()) return ErrorResult.build(errors);
+        return CustomResult.save(service.addLampiran(request));
+    }
+
+    @DeleteMapping("/lampiran/{id}")
+    public ResponseEntity<?> deleteLampiran(@PathVariable Long id) {
+        return CustomResult.delete(service.deleteLampiran(id));
     }
 }

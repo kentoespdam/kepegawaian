@@ -95,6 +95,7 @@ public class KartuIdentitasServiceImpl implements KartuIdentitasService {
         return true;
     }
 
+    //lampiran
     @Override
     public List<LampiranProfilResponse> getLampiran(Long id) {
         return lampiranProfilService.getLampiran(EJenisLampiranProfil.KARTU_IDENTITAS, id);
