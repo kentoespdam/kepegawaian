@@ -2,13 +2,17 @@ package id.perumdamts.kepegawaian.services.profil.pengalamanKerja;
 
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
+import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilResponse;
 import id.perumdamts.kepegawaian.dto.profil.pengalamanKerja.*;
+import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.PengalamanKerja;
 import id.perumdamts.kepegawaian.repositories.profil.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.PengalamanKerjaRepository;
+import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +25,7 @@ import java.util.Optional;
 public class PengalamanKerjaServiceImpl implements PengalamanKerjaService {
     private final PengalamanKerjaRepository repository;
     private final BiodataRepository biodataRepository;
+    private final LampiranProfilService lampiranProfilService;
 
     @Override
     public List<PengalamanKerjaResponse> findAll() {
@@ -100,5 +105,36 @@ public class PengalamanKerjaServiceImpl implements PengalamanKerjaService {
             return false;
         repository.deleteById(id);
         return true;
+    }
+
+    //lampiran
+    @Override
+    public List<LampiranProfilResponse> getLampiran(Long id) {
+        return lampiranProfilService.getLampiran(EJenisLampiranProfil.PROFIL_PENGALAMAN_KERJA, id);
+    }
+
+    @Override
+    public LampiranProfilResponse getLampiranById(Long id) {
+        return lampiranProfilService.getLampiranById(id);
+    }
+
+    @Override
+    public ResponseEntity<?> getFileLampiranById(Long id) {
+        return lampiranProfilService.getFileLampiranById(EJenisLampiranProfil.PROFIL_PENGALAMAN_KERJA, id);
+    }
+
+    @Transactional
+    @Override
+    public SavedStatus<?> addLampiran(PengalamanLampiranPostRequest request) {
+        boolean exists = repository.existsById(request.getRefId());
+        if (!exists)
+            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Kartu Identitas");
+
+        return lampiranProfilService.addLampiran(request);
+    }
+
+    @Override
+    public Boolean deleteLampiran(Long id) {
+        return lampiranProfilService.deleteById(id);
     }
 }
