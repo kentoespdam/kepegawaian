@@ -2,18 +2,19 @@ package id.perumdamts.kepegawaian.services.profil.pelatihan;
 
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
-import id.perumdamts.kepegawaian.dto.profil.pelatihan.PelatihanPostRequest;
-import id.perumdamts.kepegawaian.dto.profil.pelatihan.PelatihanPutRequest;
-import id.perumdamts.kepegawaian.dto.profil.pelatihan.PelatihanRequest;
-import id.perumdamts.kepegawaian.dto.profil.pelatihan.PelatihanResponse;
+import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilResponse;
+import id.perumdamts.kepegawaian.dto.profil.pelatihan.*;
+import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.entities.master.JenisPelatihan;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.Pelatihan;
 import id.perumdamts.kepegawaian.repositories.master.JenisPelatihanRepository;
 import id.perumdamts.kepegawaian.repositories.profil.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.PelatihanRepository;
+import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,7 @@ public class PelatihanServiceImpl implements PelatihanService {
     private final PelatihanRepository repository;
     private final BiodataRepository biodataRepository;
     private final JenisPelatihanRepository jenisPelatihanRepository;
+    private final LampiranProfilService lampiranProfilService;
 
     @Override
     public List<PelatihanResponse> findAll() {
@@ -65,7 +67,7 @@ public class PelatihanServiceImpl implements PelatihanService {
         if (exists)
             return SavedStatus.build(ESaveStatus.FAILED, "Pelatihan already exists");
 
-        Pelatihan entity = PelatihanPostRequest.toEntity(request, biodata.get(),jenisPelatihan.get());
+        Pelatihan entity = PelatihanPostRequest.toEntity(request, biodata.get(), jenisPelatihan.get());
         Pelatihan save = repository.save(entity);
         return SavedStatus.build(ESaveStatus.SUCCESS, PelatihanResponse.from(save));
     }
@@ -112,5 +114,34 @@ public class PelatihanServiceImpl implements PelatihanService {
             return false;
         repository.deleteById(id);
         return true;
+    }
+
+    // Lampiran
+    @Override
+    public List<LampiranProfilResponse> getLampiran(Long id) {
+        return lampiranProfilService.getLampiran(EJenisLampiranProfil.PROFIL_PELATIHAN, id);
+    }
+
+    @Override
+    public LampiranProfilResponse getLampiranDetail(Long id) {
+        return lampiranProfilService.getLampiranById(id);
+    }
+
+    @Override
+    public ResponseEntity<?> getFileLampiranById(Long id) {
+        return lampiranProfilService.getFileLampiranById(EJenisLampiranProfil.PROFIL_PELATIHAN, id);
+    }
+
+    @Override
+    public SavedStatus<?> addLampiran(PelatihanLampiranPostRequest request) {
+        boolean exists = repository.existsById(request.getRefId());
+        if (!exists)
+            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Pelatihan");
+        return lampiranProfilService.addLampiran(request);
+    }
+
+    @Override
+    public Boolean deleteLampiran(Long id) {
+        return lampiranProfilService.deleteById(id);
     }
 }

@@ -1,11 +1,10 @@
 package id.perumdamts.kepegawaian.services.profil.pelatihan;
 
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
-import id.perumdamts.kepegawaian.dto.profil.pelatihan.PelatihanPostRequest;
-import id.perumdamts.kepegawaian.dto.profil.pelatihan.PelatihanPutRequest;
-import id.perumdamts.kepegawaian.dto.profil.pelatihan.PelatihanRequest;
-import id.perumdamts.kepegawaian.dto.profil.pelatihan.PelatihanResponse;
+import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilResponse;
+import id.perumdamts.kepegawaian.dto.profil.pelatihan.*;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -18,4 +17,11 @@ public interface PelatihanService {
     SavedStatus<?> update(Long id, PelatihanPutRequest request);
     SavedStatus<?> acceptPelatihan(Long id, String nik, String username);
     Boolean delete(Long id);
+
+    // Lampiran
+    List<LampiranProfilResponse> getLampiran(Long id);
+    LampiranProfilResponse getLampiranDetail(Long id);
+    ResponseEntity<?> getFileLampiranById(Long id);
+    SavedStatus<?> addLampiran(PelatihanLampiranPostRequest request);
+    Boolean deleteLampiran(Long id);
 }
