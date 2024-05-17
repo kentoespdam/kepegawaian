@@ -5,10 +5,12 @@ import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiResponse;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import lombok.Data;
 
+import java.util.Objects;
+
 @Data
 public class JabatanResponse {
     private Long id;
-    private JabatanResponse jabatan;
+    private JabatanResponse parent;
     private OrganisasiResponse organisasi;
     private LevelResponse level;
     private String nama;
@@ -16,9 +18,9 @@ public class JabatanResponse {
     public static JabatanResponse from(Jabatan entity) {
         JabatanResponse response = new JabatanResponse();
         response.setId(entity.getId());
-        if (entity.getJabatan() != null) {
-            JabatanResponse parent = getJabatanParent(entity.getJabatan());
-            response.setJabatan(parent);
+        if (Objects.nonNull(entity.getParent())) {
+            JabatanResponse parent = getJabatanParent(entity.getParent());
+            response.setParent(parent);
         }
         response.setOrganisasi(OrganisasiResponse.from(entity.getOrganisasi()));
         response.setLevel(LevelResponse.from(entity.getLevel()));

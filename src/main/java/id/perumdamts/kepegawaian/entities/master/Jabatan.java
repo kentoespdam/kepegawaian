@@ -23,7 +23,7 @@ import org.hibernate.annotations.SQLRestriction;
 public class Jabatan extends IdsAbstract {
     @ManyToOne
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
-    private Jabatan jabatan;
+    private Jabatan parent;
     @ManyToOne
     @JoinColumn(name = "organisasi_id", referencedColumnName = "id")
     private Organisasi organisasi;
