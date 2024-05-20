@@ -29,9 +29,7 @@ public class OrganisasiServiceImpl implements OrganisasiService {
 
     @Override
     public Page<OrganisasiResponse> findPage(OrganisasiRequest request) {
-        return repository.findAll(
-                        request.getSpecification(), request.getPageable()
-                )
+        return repository.findAll(request.getSpecification(), request.getPageable())
                 .map(OrganisasiResponse::from);
     }
 
@@ -70,7 +68,7 @@ public class OrganisasiServiceImpl implements OrganisasiService {
 
     @Transactional
     @Override
-    public SavedStatus<?> update(Long id, OrganisasiPostRequest  request) {
+    public SavedStatus<?> update(Long id, OrganisasiPostRequest request) {
         Optional<Organisasi> byId = repository.findById(id);
         if (byId.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Organisasi");
