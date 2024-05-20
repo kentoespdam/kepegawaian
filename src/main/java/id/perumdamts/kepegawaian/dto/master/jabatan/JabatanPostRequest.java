@@ -8,7 +8,6 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.util.List;
 import java.util.Objects;
 
 @Data
@@ -35,33 +34,27 @@ public class JabatanPostRequest {
                 .and(levelSpec).and(namaSpec);
     }
 
-    public static Jabatan toEntity(JabatanPostRequest request) {
-        Jabatan entity = new Jabatan();
-        if (Objects.nonNull(request.getParentId()))
-            entity.setJabatan(new Jabatan(request.getParentId()));
-        entity.setOrganisasi(new Organisasi(request.getOrganisasiId()));
-        entity.setLevel(new Level(request.getLevelId()));
-        entity.setNama(request.getNama());
-        return entity;
-    }
-
-    public static Jabatan toEntity(JabatanPostRequest request, Jabatan parent) {
+    public static Jabatan toEntity(JabatanPostRequest request, Jabatan parent, Organisasi organisasi, Level level) {
         Jabatan entity = new Jabatan();
         if (Objects.nonNull(parent))
-            entity.setJabatan(parent);
-        entity.setOrganisasi(new Organisasi(request.getOrganisasiId()));
-        entity.setLevel(new Level(request.getLevelId()));
+            entity.setParent(parent);
+        entity.setOrganisasi(organisasi);
+        entity.setLevel(level);
         entity.setNama(request.getNama());
         return entity;
     }
 
-    public static Jabatan toEntity(JabatanPostRequest request, Long id) {
-        Jabatan jabatan = JabatanPostRequest.toEntity(request);
-        jabatan.setId(id);
-        return jabatan;
-    }
-
-    public static List<Jabatan> toEntities(List<JabatanPostRequest> requests) {
-        return requests.stream().map(JabatanPostRequest::toEntity).toList();
+    public static Jabatan toEntity(
+            Jabatan entity,
+            JabatanPostRequest request,
+            Jabatan parent,
+            Organisasi organisasi,
+            Level level
+    ) {
+        entity.setParent(parent);
+        entity.setOrganisasi(organisasi);
+        entity.setLevel(level);
+        entity.setNama(request.getNama());
+        return entity;
     }
 }

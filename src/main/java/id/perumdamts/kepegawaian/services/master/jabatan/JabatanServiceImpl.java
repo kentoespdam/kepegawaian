@@ -5,8 +5,12 @@ import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanPostRequest;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanRequest;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanResponse;
-import id.perumdamts.kepegawaian.entities.master.*;
-import id.perumdamts.kepegawaian.repositories.master.*;
+import id.perumdamts.kepegawaian.entities.master.Jabatan;
+import id.perumdamts.kepegawaian.entities.master.Level;
+import id.perumdamts.kepegawaian.entities.master.Organisasi;
+import id.perumdamts.kepegawaian.repositories.master.JabatanRepository;
+import id.perumdamts.kepegawaian.repositories.master.LevelRepository;
+import id.perumdamts.kepegawaian.repositories.master.OrganisasiRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -41,46 +45,83 @@ public class JabatanServiceImpl implements JabatanService {
     @Transactional
     @Override
     public SavedStatus<?> save(JabatanPostRequest request) {
-        Optional<Organisasi> organisasi = organisasiRepository.findById(request.getOrganisasiId());
-        if (organisasi.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Organisasi");
-        Optional<Level> level = levelRepository.findById(request.getLevelId());
-        if (level.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Level");
-        Jabatan parent = Objects.nonNull(request.getParentId()) ?
-                repository.findById(request.getParentId()).orElse(null) :
-                null;
-        List<Jabatan> all = repository.findAll(request.getSpecification());
-        if (!all.isEmpty())
-            return SavedStatus.build(ESaveStatus.DUPLICATE, "Jabatan sudah ada");
-        Jabatan entity = JabatanPostRequest.toEntity(request, parent);
-        Jabatan save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        try {
+            Organisasi organisasi = organisasiRepository.findById(request.getOrganisasiId())
+                    .orElseThrow(() -> new RuntimeException("Unknown Organisasi"));
+            Level level = levelRepository.findById(request.getLevelId())
+                    .orElseThrow(() -> new RuntimeException("Unknown Level"));
+            Jabatan parent = Objects.nonNull(request.getParentId()) ?
+                    repository.findById(request.getParentId()).orElse(null) :
+                    null;
+            Optional<Jabatan> jabatan = repository.findOne(request.getSpecification());
+            if (jabatan.isPresent())
+                return SavedStatus.build(ESaveStatus.DUPLICATE, "Jabatan sudah ada");
+            Jabatan entity = JabatanPostRequest.toEntity(
+                    request,
+                    parent,
+                    organisasi,
+                    level
+            );
+            Jabatan save = repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        } catch (Exception e) {
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+        }
     }
 
     @Transactional
     @Override
     public SavedStatus<?> saveBatch(List<JabatanPostRequest> requests) {
-        List<Jabatan> entities = JabatanPostRequest.toEntities(requests);
-        repository.saveAll(entities);
-        return SavedStatus.build(ESaveStatus.SUCCESS, "Success Saving Batch Data");
+        try {
+            List<Jabatan> entities = requests.stream().map(request -> {
+                Organisasi organisasi = organisasiRepository.findById(request.getOrganisasiId())
+                        .orElseThrow(() -> new RuntimeException("Unknown Organisasi"));
+                Level level = levelRepository.findById(request.getLevelId())
+                        .orElseThrow(() -> new RuntimeException("Unknown Level"));
+                Jabatan parent = Objects.nonNull(request.getParentId()) ?
+                        repository.findById(request.getParentId()).orElse(null) :
+                        null;
+                return JabatanPostRequest.toEntity(
+                        request,
+                        parent,
+                        organisasi,
+                        level
+                );
+            }).toList();
+            repository.saveAll(entities);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Success Saving Batch Data");
+        } catch (Exception e) {
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+        }
     }
 
     @Transactional
     @Override
     public SavedStatus<?> update(Long id, JabatanPostRequest request) {
-        Optional<Organisasi> organisasi = organisasiRepository.findById(request.getOrganisasiId());
-        if (organisasi.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Organisasi");
-        Optional<Level> level = levelRepository.findById(request.getLevelId());
-        if (level.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Level");
-        Optional<Jabatan> byId = repository.findById(id);
-        if (byId.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jabatan");
-        Jabatan entity = JabatanPostRequest.toEntity(request, id);
-        Jabatan save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        try {
+            Organisasi organisasi = organisasiRepository.findById(request.getOrganisasiId())
+                    .orElseThrow(() -> new RuntimeException("Unknown Organisasi"));
+            Level level = levelRepository.findById(request.getLevelId())
+                    .orElseThrow(() -> new RuntimeException("Unknown Level"));
+            Jabatan parent = repository.findById(request.getParentId())
+                    .orElseThrow(() -> new RuntimeException("Unknown Parent"));
+
+            Optional<Jabatan> jabatan = repository.findById(id);
+            if (jabatan.isEmpty())
+                return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jabatan");
+
+            Jabatan entity = JabatanPostRequest.toEntity(
+                    jabatan.get(),
+                    request,
+                    parent,
+                    organisasi,
+                    level
+            );
+            Jabatan save = repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        } catch (Exception e) {
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+        }
     }
 
     @Transactional

@@ -12,7 +12,8 @@ import org.hibernate.annotations.SQLRestriction;
 @Entity
 @Table(indexes = {
         @Index(columnList = "nama"),
-        @Index(columnList = "levelOrg")
+        @Index(columnList = "levelOrg"),
+        @Index(columnList = "is_deleted")
 })
 @Data
 @NoArgsConstructor
@@ -22,7 +23,7 @@ import org.hibernate.annotations.SQLRestriction;
 @EqualsAndHashCode(callSuper = true)
 public class Organisasi extends IdsAbstract {
     @ManyToOne
-    @JoinColumn(name = "parent_id")
+    @JoinColumn(name = "parent_id", referencedColumnName = "id")
     private Organisasi organisasi;
     private Integer levelOrg;
     private String nama;

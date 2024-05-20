@@ -10,7 +10,10 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
-@Table(indexes = @Index(columnList = "nama"))
+@Table(indexes = {
+        @Index(columnList = "nama"),
+        @Index(columnList = "is_deleted")
+})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,7 +22,7 @@ import org.hibernate.annotations.SQLRestriction;
 @EqualsAndHashCode(callSuper = true)
 public class Profesi extends IdsAbstract {
     @ManyToOne
-    @JoinColumn(name = "level_id")
+    @JoinColumn(name = "level_id", referencedColumnName = "id")
     private Level level;
     private String nama;
 

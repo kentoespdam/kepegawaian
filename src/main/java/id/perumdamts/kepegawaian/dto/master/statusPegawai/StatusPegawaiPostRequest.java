@@ -1,12 +1,14 @@
 package id.perumdamts.kepegawaian.dto.master.statusPegawai;
 
 import id.perumdamts.kepegawaian.entities.master.StatusPegawai;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
 public class StatusPegawaiPostRequest {
+    @NotEmpty(message = "Nama is required")
     private String nama;
 
     public static StatusPegawai toEntity(StatusPegawaiPostRequest request) {

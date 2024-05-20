@@ -10,7 +10,10 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
-@Table(indexes = @Index(columnList = "nama"))
+@Table(indexes = {
+        @Index(columnList = "nama"),
+        @Index(columnList = "is_deleted")
+})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,13 +22,13 @@ import org.hibernate.annotations.SQLRestriction;
 @EqualsAndHashCode(callSuper = true)
 public class Jabatan extends IdsAbstract {
     @ManyToOne
-    @JoinColumn(name = "parent_id")
-    private Jabatan jabatan;
+    @JoinColumn(name = "parent_id", referencedColumnName = "id")
+    private Jabatan parent;
     @ManyToOne
-    @JoinColumn(name = "organisasi_id")
+    @JoinColumn(name = "organisasi_id", referencedColumnName = "id")
     private Organisasi organisasi;
     @ManyToOne
-    @JoinColumn(name = "level_id")
+    @JoinColumn(name = "level_id", referencedColumnName = "id")
     private Level level;
     private String nama;
 

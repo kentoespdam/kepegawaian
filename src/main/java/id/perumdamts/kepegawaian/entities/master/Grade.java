@@ -10,7 +10,10 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
-@Table(indexes = @Index(columnList = "grade"))
+@Table(indexes = {
+        @Index(columnList = "grade"),
+        @Index(columnList = "is_deleted")
+})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,7 +22,7 @@ import org.hibernate.annotations.SQLRestriction;
 @EqualsAndHashCode(callSuper = true)
 public class Grade extends IdsAbstract {
     @ManyToOne
-    @JoinColumn(name = "level_id")
+    @JoinColumn(name = "level_id", referencedColumnName = "id")
     private Level level;
     private Integer grade;
     private Double tukin;

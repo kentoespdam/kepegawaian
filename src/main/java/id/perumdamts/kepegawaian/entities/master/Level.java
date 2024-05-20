@@ -12,7 +12,10 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
-@Table(indexes = @Index(columnList = "nama"))
+@Table(indexes = {
+        @Index(columnList = "nama"),
+        @Index(columnList = "is_deleted")
+})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
