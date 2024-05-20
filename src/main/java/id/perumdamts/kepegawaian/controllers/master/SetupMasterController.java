@@ -39,6 +39,8 @@ public class SetupMasterController {
     private JenisPelatihanRepository jenisPelatihanRepository;
     @Autowired
     private JenjangPendidikanRepository jenjangPendidikanRepository;
+    @Autowired
+    private StatusKerjaRepository statusKerjaRepository;
 
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -56,6 +58,7 @@ public class SetupMasterController {
             insertDataJenisKitas();
             insertDataJenisPelatihan();
             insertDataJenjangPendidikan();
+            insertDataStatusKerja();
             return ResponseEntity.ok().build();
         } catch (JsonProcessingException e) {
             return ResponseEntity.badRequest().build();
@@ -149,5 +152,13 @@ public class SetupMasterController {
         List<JenjangPendidikan> jenjangPendidikanList = mapper.readValue(jsonData, new TypeReference<>() {
         });
         jenjangPendidikanRepository.saveAll(jenjangPendidikanList);
+    }
+
+    private void insertDataStatusKerja() throws JsonProcessingException {
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        String jsonStatusKerja = "[{\"nama\":\"Karyawan Aktif\"},{\"nama\":\"Dirumahkan\"},{\"nama\":\"Berhenti/Keluar\"}]";
+        List<StatusKerja> list = mapper.readValue(jsonStatusKerja, new TypeReference<>() {
+        });
+        statusKerjaRepository.saveAll(list);
     }
 }
