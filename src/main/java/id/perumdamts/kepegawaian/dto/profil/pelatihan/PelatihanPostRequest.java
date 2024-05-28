@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.dto.profil.pelatihan;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.master.JenisPelatihan;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.Pelatihan;
@@ -32,6 +33,7 @@ public class PelatihanPostRequest {
     private LocalDate tanggalSelesai;
     private String notes;
 
+    @JsonIgnore
     public Specification<Pelatihan> getSpecification() {
         Specification<Pelatihan> biodataSpec = (root, query, cb) ->
                 cb.equal(root.get("biodata").get("nik"), biodataId);

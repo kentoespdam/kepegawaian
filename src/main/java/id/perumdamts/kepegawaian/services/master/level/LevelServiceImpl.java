@@ -39,7 +39,7 @@ public class LevelServiceImpl implements LevelService {
     @Transactional
     @Override
     public SavedStatus<?> save(LevelPostRequest request) {
-        Optional<Level> cari = repository.findByNama(request.getNama());
+        Optional<Level> cari = repository.findOne(request.getSpecification());
         if (cari.isPresent())
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Level sudah ada");
         Level entity = LevelPostRequest.toEntity(request);

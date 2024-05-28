@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.dto.master.statusKerja;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.master.StatusKerja;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
@@ -13,6 +14,7 @@ public class StatusKerjaPostRequest {
     @NotEmpty(message = "Nama is required")
     private String nama;
 
+    @JsonIgnore
     public Specification<StatusKerja> getSpecification() {
         Specification<StatusKerja> namaSpec = Objects.isNull(nama) ? null :
                 (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("nama"), nama);

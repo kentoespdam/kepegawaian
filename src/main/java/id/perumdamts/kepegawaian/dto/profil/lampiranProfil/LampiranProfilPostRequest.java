@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.dto.profil.lampiranProfil;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.entities.profil.LampiranProfil;
 import jakarta.persistence.MappedSuperclass;
@@ -23,6 +24,7 @@ public class LampiranProfilPostRequest implements Serializable {
     @NotNull(message = "File Name is required")
     private MultipartFile fileName;
 
+    @JsonIgnore
     public Specification<LampiranProfil> getSpecification() {
         Specification<LampiranProfil> refSpec = (root, query, cb) ->
                 cb.equal(root.get("ref"), ref);

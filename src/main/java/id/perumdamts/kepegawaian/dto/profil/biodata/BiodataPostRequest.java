@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.dto.profil.biodata;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.commons.EAgama;
 import id.perumdamts.kepegawaian.entities.commons.EGolonganDarah;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKawin;
@@ -41,6 +42,7 @@ public class BiodataPostRequest {
     private EStatusKawin statusKawin;
     private String notes;
 
+    @JsonIgnore
     public Specification<Biodata> getSpecification() {
         Specification<Biodata> nikSpec = (root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("nik"), nik);

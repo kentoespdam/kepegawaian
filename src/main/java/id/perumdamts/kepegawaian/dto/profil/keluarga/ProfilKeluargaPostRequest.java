@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.dto.profil.keluarga;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.commons.EAgama;
 import id.perumdamts.kepegawaian.entities.commons.EHubunganKeluarga;
 import id.perumdamts.kepegawaian.entities.commons.EJenisKelamin;
@@ -47,6 +48,18 @@ public class ProfilKeluargaPostRequest {
     private EStatusKawin statusKawin;
     private String notes;
 
+    @JsonIgnore
+    public Specification<ProfilKeluarga> getSpecification() {
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.and(
+                        criteriaBuilder.equal(root.get("biodata").get("nik"), biodataId),
+                        criteriaBuilder.equal(root.get("nik"), nik),
+                        criteriaBuilder.equal(root.get("nama"), nama),
+                        criteriaBuilder.equal(root.get("jenisKelamin"), jenisKelamin),
+                        criteriaBuilder.equal(root.get("hubunganKeluarga"), hubunganKeluarga)
+                );
+    }
+
     public static ProfilKeluarga toEntity(
             ProfilKeluargaPostRequest request,
             Biodata biodata,
@@ -66,16 +79,5 @@ public class ProfilKeluargaPostRequest {
         entity.setStatusKawin(request.getStatusKawin());
         entity.setNotes(request.getNotes());
         return entity;
-    }
-
-    public Specification<ProfilKeluarga> getSpecification() {
-        return (root, query, criteriaBuilder) ->
-                criteriaBuilder.and(
-                        criteriaBuilder.equal(root.get("biodata").get("nik"), biodataId),
-                        criteriaBuilder.equal(root.get("nik"), nik),
-                        criteriaBuilder.equal(root.get("nama"), nama),
-                        criteriaBuilder.equal(root.get("jenisKelamin"), jenisKelamin),
-                        criteriaBuilder.equal(root.get("hubunganKeluarga"), hubunganKeluarga)
-                );
     }
 }

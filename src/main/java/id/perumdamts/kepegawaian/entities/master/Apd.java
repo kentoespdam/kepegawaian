@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.entities.master;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,8 +10,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
-import java.util.List;
-
 @Entity
 @Table(indexes = {
         @Index(columnList = "nama"),
@@ -19,22 +18,13 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@SQLDelete(sql = "UPDATE profesi SET is_deleted=true WHERE id=?")
-@SQLRestriction("is_deleted <> 1")
+@SQLDelete(sql = "UPDATE apd SET is_deleted=true WHERE id=?")
+@SQLRestriction("is_deleted = false")
 @EqualsAndHashCode(callSuper = true)
-public class Profesi extends IdsAbstract {
+public class Apd extends IdsAbstract {
+    @JsonBackReference
     @ManyToOne
-    @JoinColumn(name = "level_id", referencedColumnName = "id")
-    private Level level;
+    @JoinColumn(name = "profesi_id", referencedColumnName = "id")
+    private Profesi profesi;
     private String nama;
-    private String detail;
-    private String resiko;
-    @OneToMany(mappedBy = "profesi")
-    private List<Apd> apdList;
-    @OneToMany(mappedBy = "profesi")
-    private List<AlatKerja> alatKerjaList;
-
-    public Profesi(Long id) {
-        super(id);
-    }
 }

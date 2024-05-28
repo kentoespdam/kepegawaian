@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.dto.profil.keahlian;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.commons.EKualifikasi;
 import id.perumdamts.kepegawaian.entities.master.JenisKeahlian;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
@@ -30,6 +31,7 @@ public class KeahlianPostRequest {
     private Integer tahun;
     private String masaBerlaku;
 
+    @JsonIgnore
     public Specification<Keahlian> getSpecification() {
         Specification<Keahlian> biodataSpec = (root, query, cb) ->
                 cb.equal(root.get("biodata").get("nik"), biodataId);

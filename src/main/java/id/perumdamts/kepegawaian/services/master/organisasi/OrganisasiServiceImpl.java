@@ -50,7 +50,7 @@ public class OrganisasiServiceImpl implements OrganisasiService {
     @Transactional
     @Override
     public SavedStatus<?> save(OrganisasiPostRequest request) {
-        Optional<Organisasi> cari = repository.findByOrganisasi_IdAndLevelOrgAndNama(request.getParentId(), request.getLevelOrganisasi(), request.getNama());
+        Optional<Organisasi> cari = repository.findOne(request.getSpecification());
         if (cari.isPresent())
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Organisasi sudah ada");
         Organisasi entity = OrganisasiPostRequest.toEntity(request);

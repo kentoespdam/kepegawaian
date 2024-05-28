@@ -1,11 +1,14 @@
 package id.perumdamts.kepegawaian.dto.master.grade;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.master.Grade;
 import id.perumdamts.kepegawaian.entities.master.Level;
 import jakarta.validation.constraints.Min;
 import lombok.Data;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
+import java.util.Objects;
 
 @Data
 public class GradePostRequest {
@@ -15,6 +18,17 @@ public class GradePostRequest {
     private Integer grade;
     @Min(value = 100000, message = "Tukin must be greater than 100.000")
     private Double tukin;
+
+    @JsonIgnore
+    public Specification<Grade> getSpecification() {
+        Specification<Grade> levelSpec = Objects.isNull(levelId) ? null :
+                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("level").get("id"), levelId);
+        Specification<Grade> gradeSpec = Objects.isNull(grade) ? null :
+                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("grade"), grade);
+        Specification<Grade> tukinSpec = Objects.isNull(tukin) ? null :
+                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("tukin"), tukin);
+        return Specification.where(levelSpec).and(gradeSpec).and(tukinSpec);
+    }
 
     public static Grade toEntity(GradePostRequest request) {
         Grade entity = new Grade();

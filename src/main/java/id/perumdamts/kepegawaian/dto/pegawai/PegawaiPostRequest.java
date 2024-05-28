@@ -1,7 +1,8 @@
 package id.perumdamts.kepegawaian.dto.pegawai;
 
-import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.master.*;
+import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -40,6 +41,7 @@ public class PegawaiPostRequest {
     private Long statusKerjaId;
     private String notes;
 
+    @JsonIgnore
     public Specification<Pegawai> getSpecification() {
         Specification<Pegawai> pegawaiSpec = Objects.isNull(nipam) ? null :
                 (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("nipam"), nipam);

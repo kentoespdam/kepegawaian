@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.dto.master.jabatan;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.master.Level;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
@@ -21,6 +22,7 @@ public class JabatanPostRequest {
     @NotEmpty(message = "Nama is required")
     private String nama;
 
+    @JsonIgnore
     public Specification<Jabatan> getSpecification() {
         Specification<Jabatan> jabatanSpec = Objects.isNull(parentId) ? null :
                 (root, query, cb) -> cb.equal(root.get("jabatan").get("id"), parentId);

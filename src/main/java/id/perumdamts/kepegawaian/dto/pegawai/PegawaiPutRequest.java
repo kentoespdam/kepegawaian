@@ -1,7 +1,7 @@
 package id.perumdamts.kepegawaian.dto.pegawai;
 
-import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.entities.master.*;
+import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

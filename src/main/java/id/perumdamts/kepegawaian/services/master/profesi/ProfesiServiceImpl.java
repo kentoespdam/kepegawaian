@@ -45,7 +45,7 @@ public class ProfesiServiceImpl implements ProfesiService {
         Optional<Level> level = levelRepository.findById(request.getLevelId());
         if (level.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Level");
-        Optional<Profesi> cari = repository.findByLevel_IdAndNama(request.getLevelId(), request.getNama());
+        Optional<Profesi> cari = repository.findOne(request.getSpecification());
         if (cari.isPresent())
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Profesi sudah ada");
 
