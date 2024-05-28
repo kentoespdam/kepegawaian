@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.dto.master.alatKerja;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.master.AlatKerja;
 import id.perumdamts.kepegawaian.entities.master.Profesi;
 import jakarta.validation.constraints.Min;
@@ -18,6 +19,7 @@ public class AlatKerjaPostRequest {
     @NotEmpty(message = "Nama is required")
     private String nama;
 
+    @JsonIgnore
     public Specification<AlatKerja> getSpecification() {
         Specification<AlatKerja> namaSpec = Objects.isNull(nama) ? null :
                 (root, query, cb) -> cb.equal(root.get("nama"), nama);

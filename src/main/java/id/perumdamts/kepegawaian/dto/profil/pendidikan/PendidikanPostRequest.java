@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.dto.profil.pendidikan;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.Pendidikan;
@@ -9,7 +10,6 @@ import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Data
 public class PendidikanPostRequest {
@@ -29,6 +29,15 @@ public class PendidikanPostRequest {
     private Double gpa;
     private Boolean isLatest=false;
 
+    @JsonIgnore
+    public Specification<Pendidikan> getSpecification() {
+        Specification<Pendidikan> biodataSpec= (root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("biodata").get("nik"), biodataId);
+        Specification<Pendidikan> jenjangSpec = (root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("jenjangPendidikan").get("id"), jenjangPendidikanId);
+        return Specification.where(biodataSpec).and(jenjangSpec);
+    }
+
     public static Pendidikan from(PendidikanPostRequest request, Biodata biodata, JenjangPendidikan jenjangPendidikan) {
         Pendidikan entity = new Pendidikan();
         entity.setBiodata(biodata);
@@ -44,31 +53,5 @@ public class PendidikanPostRequest {
         entity.setDisetujui(false);
         entity.setTanggalPengajuan(LocalDateTime.now());
         return entity;
-    }
-
-    public Specification<Pendidikan> getSpecification() {
-        Specification<Pendidikan> biodataSpec= (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("biodata").get("nik"), biodataId);
-        Specification<Pendidikan> jenjangSpec = (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("jenjangPendidikan").get("id"), jenjangPendidikanId);
-        Specification<Pendidikan> gelarDepanSpec = Objects.isNull(gelarDepan) ? null :
-                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("gelarDepan"), gelarDepan);
-        Specification<Pendidikan> gelarBelakangSpec = Objects.isNull(gelarBelakang) ? null :
-                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("gelarBelakang"), gelarBelakang);
-        Specification<Pendidikan> jurusanSpec = Objects.isNull(jurusan) ? null :
-                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("jurusan"), jurusan);
-        Specification<Pendidikan> institusiSpec = (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("institusi"), institusi);
-        Specification<Pendidikan> tahunMasukSpec = (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("tahunMasuk"), tahunMasuk);
-        Specification<Pendidikan> tahunLulusSpec = (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("tahunLulus"), tahunLulus);
-        Specification<Pendidikan> gpaSpec = Objects.isNull(gpa) ? null :
-                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("gpa"), gpa);
-        Specification<Pendidikan> isLatestSpec = (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("isLatest"), isLatest);
-        return Specification.where(biodataSpec).and(jenjangSpec).and(gelarDepanSpec)
-                .and(gelarBelakangSpec).and(jurusanSpec).and(institusiSpec)
-                .and(tahunMasukSpec).and(tahunLulusSpec).and(gpaSpec).and(isLatestSpec);
     }
 }

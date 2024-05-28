@@ -2,10 +2,10 @@ package id.perumdamts.kepegawaian.controllers.profil;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
+import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasLampiranPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasPutRequest;
 import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasRequest;
-import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasLampiranPostRequest;
 import id.perumdamts.kepegawaian.services.profil.kartuIdentitas.KartuIdentitasService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.dto.master.apd;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.master.Apd;
 import id.perumdamts.kepegawaian.entities.master.Profesi;
 import jakarta.validation.constraints.Min;
@@ -18,6 +19,7 @@ public class ApdPostRequest {
     @NotEmpty(message = "Nama is required")
     private String nama;
 
+    @JsonIgnore
     public Specification<Apd> getSpecification() {
         Specification<Apd> namaSpec = Objects.isNull(nama) ? null : (root, query, cb) -> cb.equal(root.get("nama"), nama);
         Specification<Apd> profesiSpec = Objects.isNull(profesiId) ? null : (root, query, cb) -> cb.equal(root.get("profesi").get("id"), profesiId);

@@ -45,10 +45,7 @@ public class GradeServiceImpl implements GradeService {
         Optional<Level> level = levelRepository.findById(request.getLevelId());
         if (level.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Level");
-        Optional<Grade> cari = repository.findByLevel_IdAndGradeAndTukin(
-                request.getLevelId(),
-                request.getGrade(),
-                request.getTukin());
+        Optional<Grade> cari = repository.findOne(request.getSpecification());
         if (cari.isPresent())
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Grade sudah ada");
 

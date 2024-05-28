@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.master;
 
-import id.perumdamts.kepegawaian.dto.commons.*;
+import id.perumdamts.kepegawaian.dto.commons.CustomResult;
+import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiPostRequest;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiRequest;
 import id.perumdamts.kepegawaian.services.master.organisasi.OrganisasiService;

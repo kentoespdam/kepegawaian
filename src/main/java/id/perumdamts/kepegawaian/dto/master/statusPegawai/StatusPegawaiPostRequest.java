@@ -1,8 +1,10 @@
 package id.perumdamts.kepegawaian.dto.master.statusPegawai;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.master.StatusPegawai;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 
@@ -10,6 +12,12 @@ import java.util.List;
 public class StatusPegawaiPostRequest {
     @NotEmpty(message = "Nama is required")
     private String nama;
+
+    @JsonIgnore
+    public Specification<StatusPegawai> getSpecification() {
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("nama"), nama);
+    }
 
     public static StatusPegawai toEntity(StatusPegawaiPostRequest request) {
         StatusPegawai statusPegawai = new StatusPegawai();

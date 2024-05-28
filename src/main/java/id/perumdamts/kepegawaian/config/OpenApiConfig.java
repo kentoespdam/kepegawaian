@@ -58,8 +58,8 @@ public class OpenApiConfig {
     @Bean
     public GroupedOpenApi profileApi() {
         return GroupedOpenApi.builder()
-                .group("profile")
-                .pathsToMatch("/profile/**")
+                .group("profil")
+                .pathsToMatch("/profil/**")
                 .build();
     }
 

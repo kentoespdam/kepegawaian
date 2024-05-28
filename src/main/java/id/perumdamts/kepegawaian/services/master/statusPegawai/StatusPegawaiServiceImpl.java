@@ -41,7 +41,7 @@ public class StatusPegawaiServiceImpl implements StatusPegawaiService {
     @Transactional
     @Override
     public SavedStatus<?> save(StatusPegawaiPostRequest request) {
-        Optional<StatusPegawai> cari = repository.findByNama(request.getNama());
+        Optional<StatusPegawai> cari = repository.findOne(request.getSpecification());
         if (cari.isPresent())
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Organisasi sudah ada");
         StatusPegawai entity = StatusPegawaiPostRequest.toEntity(request);

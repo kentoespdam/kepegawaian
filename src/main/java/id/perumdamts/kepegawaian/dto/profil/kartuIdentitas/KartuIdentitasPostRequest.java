@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.dto.profil.kartuIdentitas;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.master.JenisKitas;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.KartuIdentitas;
@@ -25,6 +26,7 @@ public class KartuIdentitasPostRequest {
     private LocalDate tanggalTerima = LocalDate.of(1945, 8, 17);
     private String notes;
 
+    @JsonIgnore
     public Specification<KartuIdentitas> getSpecification() {
         Specification<KartuIdentitas> nikSpec = (root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("biodata").get("nik"), nik);
