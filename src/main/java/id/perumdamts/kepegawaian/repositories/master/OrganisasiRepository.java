@@ -7,8 +7,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import java.util.Optional;
 
 public interface OrganisasiRepository extends JpaRepository<Organisasi, Long>, JpaSpecificationExecutor<Organisasi> {
-
-    Optional<Organisasi> findByOrganisasi_IdAndLevelOrgAndNama(Long parentId, Integer levelOrganisasi, String nama);
-
     Optional<Organisasi> findByOrganisasi_Id(Long id);
 }
