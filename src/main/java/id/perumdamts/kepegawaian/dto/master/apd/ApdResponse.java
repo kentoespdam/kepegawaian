@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @Data
 public class ApdResponse {
     private Long id;
-    private String name;
+    private String nama;
     private ProfesiMiniResponse profesi;
 
     public static ApdResponse from(Apd entity) {
         ApdResponse response = new ApdResponse();
         response.setId(entity.getId());
-        response.setName(entity.getNama());
+        response.setNama(entity.getNama());
         response.setProfesi(ProfesiMiniResponse.from(entity.getProfesi()));
         return response;
     }

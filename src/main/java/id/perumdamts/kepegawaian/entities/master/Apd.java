@@ -19,7 +19,7 @@ import org.hibernate.annotations.SQLRestriction;
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE apd SET is_deleted=true WHERE id=?")
-@SQLRestriction("is_deleted <> 1")
+@SQLRestriction("is_deleted = false")
 @EqualsAndHashCode(callSuper = true)
 public class Apd extends IdsAbstract {
     @JsonBackReference
