@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import java.util.List;
+
 @Configuration
 @EnableWebMvc
 public class OpenApiConfig {
@@ -19,10 +21,17 @@ public class OpenApiConfig {
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
-                .addSecurityItem(new SecurityRequirement().addList("Authorization"))
                 .components(new Components()
-                        .addSecuritySchemes("authorization", createApiKeyScheme())
+                                .addSecuritySchemes("BearerAuthentication",
+                                        new SecurityScheme()
+                                                .type(SecurityScheme.Type.HTTP)
+                                                .scheme("bearer")
+                                                .bearerFormat("JWT"))
                 )
+                .security(List.of(
+                        new SecurityRequirement()
+                                .addList("BearerAuthentication")
+                ))
                 .info(new Info()
                         .title("Kepegawaian Rest API")
                         .description("Need JWT Token for execute this API")
@@ -39,18 +48,26 @@ public class OpenApiConfig {
     }
 
     @Bean
-    public GroupedOpenApi masterApi(){
+    public GroupedOpenApi masterApi() {
         return GroupedOpenApi.builder()
                 .group("master")
                 .pathsToMatch("/master/**")
                 .build();
     }
 
-    private SecurityScheme createApiKeyScheme() {
-        return new SecurityScheme()
-                .type(SecurityScheme.Type.APIKEY)
-                .name("Authorization")
-                .in(SecurityScheme.In.HEADER)
-                .scheme("");
+    @Bean
+    public GroupedOpenApi profileApi() {
+        return GroupedOpenApi.builder()
+                .group("profile")
+                .pathsToMatch("/profile/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi pegawaiApi() {
+        return GroupedOpenApi.builder()
+                .group("pegawai")
+                .pathsToMatch("/pegawai/**")
+                .build();
     }
 }
