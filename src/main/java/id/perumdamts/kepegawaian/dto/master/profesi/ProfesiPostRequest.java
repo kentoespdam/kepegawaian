@@ -14,11 +14,17 @@ public class ProfesiPostRequest {
     private Long levelId;
     @NotEmpty(message = "Nama Profesi is required")
     private String nama;
+    @NotEmpty(message = "Detail Profesi is required")
+    private String detail;
+    @NotEmpty(message = "Resiko Profesi is required")
+    private String resiko;
 
     public static Profesi toEntity(ProfesiPostRequest request) {
         Profesi entity = new Profesi();
         entity.setLevel(new Level(request.getLevelId()));
         entity.setNama(request.getNama());
+        entity.setNama(request.getDetail());
+        entity.setResiko(request.getResiko());
         return entity;
     }
 
@@ -26,6 +32,8 @@ public class ProfesiPostRequest {
         Profesi entity = new Profesi(id);
         entity.setLevel(new Level(request.getLevelId()));
         entity.setNama(request.getNama());
+        entity.setDetail(request.getDetail());
+        entity.setResiko(request.getResiko());
         return entity;
     }
 

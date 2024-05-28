@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
+import java.util.List;
+
 @Entity
 @Table(indexes = {
         @Index(columnList = "nama"),
@@ -25,6 +27,12 @@ public class Profesi extends IdsAbstract {
     @JoinColumn(name = "level_id", referencedColumnName = "id")
     private Level level;
     private String nama;
+    private String detail;
+    private String resiko;
+    @OneToMany(mappedBy = "profesi")
+    private List<Apd> apdList;
+    @OneToMany(mappedBy = "profesi")
+    private List<AlatKerja> alatKerjaList;
 
     public Profesi(Long id) {
         super(id);
