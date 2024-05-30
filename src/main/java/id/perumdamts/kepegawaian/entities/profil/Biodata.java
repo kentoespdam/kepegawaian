@@ -6,6 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import id.perumdamts.kepegawaian.entities.commons.EAgama;
 import id.perumdamts.kepegawaian.entities.commons.EGolonganDarah;
+import id.perumdamts.kepegawaian.entities.commons.EJenisKelamin;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKawin;
 import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
 import jakarta.persistence.*;
@@ -29,7 +30,9 @@ import java.util.List;
 @Entity
 @Table(indexes = {
         @Index(columnList = "nama"),
-        @Index(columnList = "is_deleted")
+        @Index(columnList = "is_deleted"),
+        @Index(columnList = "jenis_kelamin"),
+        @Index(columnList = "alamat")
 })
 @Data
 @NoArgsConstructor
@@ -42,6 +45,8 @@ public class Biodata implements Serializable {
     @NotEmpty
     private String nik;
     private String nama;
+    @Enumerated(EnumType.ORDINAL)
+    private EJenisKelamin jenisKelamin;
     private String tempatLahir;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")

@@ -5,6 +5,7 @@ import id.perumdamts.kepegawaian.dto.master.jenjangPendidikan.JenjangPendidikanR
 import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasMiniResponse;
 import id.perumdamts.kepegawaian.entities.commons.EAgama;
 import id.perumdamts.kepegawaian.entities.commons.EGolonganDarah;
+import id.perumdamts.kepegawaian.entities.commons.EJenisKelamin;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKawin;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import jakarta.persistence.EnumType;
@@ -19,6 +20,8 @@ import java.util.Objects;
 public class BiodataResponse {
     private String nik;
     private String nama;
+    @Enumerated(EnumType.ORDINAL)
+    private EJenisKelamin jenisKelamin;
     private String tempatLahir;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tanggalLahir;
@@ -43,6 +46,7 @@ public class BiodataResponse {
         BiodataResponse response = new BiodataResponse();
         response.setNik(entity.getNik());
         response.setNama(entity.getNama());
+        response.setJenisKelamin(entity.getJenisKelamin());
         response.setTempatLahir(entity.getTempatLahir());
         response.setTanggalLahir(entity.getTanggalLahir());
         response.setAlamat(entity.getAlamat());

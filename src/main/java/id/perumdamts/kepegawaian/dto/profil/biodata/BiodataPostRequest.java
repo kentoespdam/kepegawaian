@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.dto.profil.biodata;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.commons.EAgama;
 import id.perumdamts.kepegawaian.entities.commons.EGolonganDarah;
+import id.perumdamts.kepegawaian.entities.commons.EJenisKelamin;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKawin;
 import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
@@ -22,6 +23,9 @@ public class BiodataPostRequest {
     private String nik;
     @NotEmpty(message = "Nama is required")
     private String nama;
+    @NotNull(message = "Jenis Kelamin is required")
+    @Enumerated(EnumType.ORDINAL)
+    private EJenisKelamin jenisKelamin;
     @NotEmpty(message = "Tempat Lahir is required")
     private String tempatLahir;
     @NotNull(message = "Tanggal Lahir is required")
@@ -61,6 +65,7 @@ public class BiodataPostRequest {
         Biodata entity = new Biodata();
         entity.setNik(request.getNik());
         entity.setNama(request.getNama());
+        entity.setJenisKelamin(request.getJenisKelamin());
         entity.setTempatLahir(request.getTempatLahir());
         entity.setTanggalLahir(request.getTanggalLahir());
         entity.setAlamat(request.getAlamat());
