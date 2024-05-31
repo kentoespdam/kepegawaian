@@ -132,7 +132,7 @@ public class SetupMasterController {
 
     private void insertDataJenisKitas() throws JsonProcessingException {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        String jsonData = "[{\"nama\":\"KTP\"},{\"nama\":\"Jamsostek\"},{\"nama\":\"Desain Grafis\"},{\"nama\":\"ASKES/BPJS\"},{\"nama\":\"NPWP\"},{\"nama\":\"SIM\"},{\"nama\":\"Dapenma\"},{\"nama\":\"JPn\"},{\"nama\":\"Yakan\"},{\"nama\":\"Korpri\"},{\"nama\":\"ID Card\"}]";
+        String jsonData = "[{\"nama\":\"KTP\"},{\"nama\":\"BPJS\"},{\"nama\":\"KK\"},{\"nama\":\"NPWP\"},{\"nama\":\"SIM\"},{\"nama\":\"Dapenma\"},{\"nama\":\"JPn\"},{\"nama\":\"Yakan\"},{\"nama\":\"Korpri\"},{\"nama\":\"ID Card\"}]";
         List<JenisKitas> jenisKitasList = mapper.readValue(jsonData, new TypeReference<>() {
         });
         jenisKitasRepository.saveAll(jenisKitasList);

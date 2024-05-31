@@ -21,6 +21,7 @@ import java.util.List;
 @RequestMapping("/master/jenis-kitas")
 public class JenisKitasController {
     private final JenisKitasService service;
+
     @GetMapping
     public ResponseEntity<?> index(@ParameterObject JenisKitasRequest request) {
         return CustomResult.any(service.findPage(request));
@@ -60,6 +61,7 @@ public class JenisKitasController {
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
+        if (id == 1L || id == 2L) return ResponseEntity.ok("Cannot delete this data");
         return CustomResult.delete(service.deleteById(id));
     }
 }
