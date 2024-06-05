@@ -13,6 +13,7 @@ import id.perumdamts.kepegawaian.repositories.master.ProfesiRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -44,6 +45,7 @@ public class AlatKerjaServiceImpl implements AlatKerjaService {
         return repository.findByProfesi_Id(id).stream().map(AlatKerjaResponse::from).toList();
     }
 
+    @Transactional
     @Override
     public SavedStatus<?> save(AlatKerjaPostRequest request) {
         try {
@@ -51,7 +53,7 @@ public class AlatKerjaServiceImpl implements AlatKerjaService {
                     .orElseThrow(() -> new RuntimeException("Unknown Profesi"));
             boolean exists = repository.exists(request.getSpecification());
             if (exists)
-                return SavedStatus.build(ESaveStatus.DUPLICATE, "AlatKerja sudah ada");
+                return SavedStatus.build(ESaveStatus.DUPLICATE, "Alat Kerja sudah ada");
             AlatKerja entity = AlatKerjaPostRequest.toEntity(request, profesi);
             AlatKerja save = repository.save(entity);
             return SavedStatus.build(ESaveStatus.SUCCESS, save);
@@ -60,11 +62,13 @@ public class AlatKerjaServiceImpl implements AlatKerjaService {
         }
     }
 
+    @Transactional
     @Override
     public SavedStatus<?> saveBatch(List<AlatKerjaPostRequest> requests) {
         return null;
     }
 
+    @Transactional
     @Override
     public SavedStatus<?> update(Long id, AlatKerjaPutRequest request) {
         try {
@@ -72,7 +76,7 @@ public class AlatKerjaServiceImpl implements AlatKerjaService {
                     .orElseThrow(() -> new RuntimeException("Unknown Profesi"));
             Optional<AlatKerja> AlatKerja = repository.findById(id);
             if (AlatKerja.isEmpty())
-                return SavedStatus.build(ESaveStatus.FAILED, "Unknown AlatKerja");
+                return SavedStatus.build(ESaveStatus.FAILED, "Unknown Alat Kerja");
             AlatKerja entity = AlatKerjaPutRequest.toEntity(AlatKerja.get(), request, profesi);
             AlatKerja save = repository.save(entity);
             return SavedStatus.build(ESaveStatus.SUCCESS, save);
