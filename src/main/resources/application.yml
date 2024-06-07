@@ -22,7 +22,8 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: ${DDL_AUTO:create-drop}
+#      ddl-auto: ${DDL_AUTO:create-drop}
+      ddl-auto: ${DDL_AUTO:none}
     properties:
       hibernate:
         format_sql: true
