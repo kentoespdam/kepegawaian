@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.services.master.jabatan;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanPostRequest;
+import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanPutRequest;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanRequest;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanResponse;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
@@ -97,7 +98,7 @@ public class JabatanServiceImpl implements JabatanService {
 
     @Transactional
     @Override
-    public SavedStatus<?> update(Long id, JabatanPostRequest request) {
+    public SavedStatus<?> update(Long id, JabatanPutRequest request) {
         try {
             Organisasi organisasi = organisasiRepository.findById(request.getOrganisasiId())
                     .orElseThrow(() -> new RuntimeException("Unknown Organisasi"));
@@ -110,7 +111,7 @@ public class JabatanServiceImpl implements JabatanService {
             if (jabatan.isEmpty())
                 return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jabatan");
 
-            Jabatan entity = JabatanPostRequest.toEntity(
+            Jabatan entity = JabatanPutRequest.toEntity(
                     jabatan.get(),
                     request,
                     parent,

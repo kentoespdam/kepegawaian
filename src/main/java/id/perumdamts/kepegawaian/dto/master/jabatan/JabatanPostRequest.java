@@ -25,7 +25,7 @@ public class JabatanPostRequest {
     @JsonIgnore
     public Specification<Jabatan> getSpecification() {
         Specification<Jabatan> jabatanSpec = Objects.isNull(parentId) ? null :
-                (root, query, cb) -> cb.equal(root.get("jabatan").get("id"), parentId);
+                (root, query, cb) -> cb.equal(root.get("parent").get("id"), parentId);
         Specification<Jabatan> organisasiSpec = Objects.isNull(organisasiId) ? null :
                 (root, query, cb) -> cb.equal(root.get("organisasi").get("id"), organisasiId);
         Specification<Jabatan> levelSpec = Objects.isNull(levelId) ? null :
@@ -36,24 +36,15 @@ public class JabatanPostRequest {
                 .and(levelSpec).and(namaSpec);
     }
 
-    public static Jabatan toEntity(JabatanPostRequest request, Jabatan parent, Organisasi organisasi, Level level) {
-        Jabatan entity = new Jabatan();
-        if (Objects.nonNull(parent))
-            entity.setParent(parent);
-        entity.setOrganisasi(organisasi);
-        entity.setLevel(level);
-        entity.setNama(request.getNama());
-        return entity;
-    }
-
     public static Jabatan toEntity(
-            Jabatan entity,
             JabatanPostRequest request,
             Jabatan parent,
             Organisasi organisasi,
             Level level
     ) {
-        entity.setParent(parent);
+        Jabatan entity = new Jabatan();
+        if (Objects.nonNull(parent))
+            entity.setParent(parent);
         entity.setOrganisasi(organisasi);
         entity.setLevel(level);
         entity.setNama(request.getNama());
