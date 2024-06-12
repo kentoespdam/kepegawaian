@@ -18,9 +18,9 @@ public class OrganisasiPostRequest {
     @JsonIgnore
     public Specification<Organisasi> getSpecification() {
         Specification<Organisasi> parentIdSpec = Objects.isNull(parentId) ? null :
-                (root, query, cb) -> cb.equal(root.get("organisasi").get("id"), parentId);
+                (root, query, cb) -> cb.equal(root.get("parent").get("id"), parentId);
         Specification<Organisasi> levelSpec = Objects.isNull(levelOrganisasi) ? null :
-                (root, query, cb) -> cb.equal(root.get("levelOrganisasi"), levelOrganisasi);
+                (root, query, cb) -> cb.equal(root.get("levelOrg"), levelOrganisasi);
         Specification<Organisasi> namaSpec = Objects.isNull(nama) ? null :
                 (root, query, cb) -> cb.equal(root.get("nama"), nama);
         return Specification.where(parentIdSpec).and(levelSpec).and(namaSpec);
