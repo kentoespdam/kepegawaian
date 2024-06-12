@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.services.master.profesi;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiPostRequest;
+import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiPutRequest;
 import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiRequest;
 import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiResponse;
 import id.perumdamts.kepegawaian.entities.master.Level;
@@ -49,7 +50,7 @@ public class ProfesiServiceImpl implements ProfesiService {
         if (cari.isPresent())
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Profesi sudah ada");
 
-        Profesi entity = ProfesiPostRequest.toEntity(request);
+        Profesi entity = ProfesiPostRequest.toEntity(request, level.get());
         Profesi save = repository.save(entity);
         return SavedStatus.build(ESaveStatus.SUCCESS, save);
     }
@@ -57,21 +58,24 @@ public class ProfesiServiceImpl implements ProfesiService {
     @Transactional
     @Override
     public SavedStatus<?> saveBatch(List<ProfesiPostRequest> requests) {
-        List<Profesi> entities = ProfesiPostRequest.toEntities(requests);
+        List<Profesi> entities = requests.stream().map(request -> {
+            Optional<Level> level = levelRepository.findById(request.getLevelId());
+            return level.map(value -> ProfesiPostRequest.toEntity(request, value)).orElse(null);
+        }).toList();
         repository.saveAll(entities);
         return SavedStatus.build(ESaveStatus.SUCCESS, "Success Saving Batch Data");
     }
 
     @Transactional
     @Override
-    public SavedStatus<?> update(Long id, ProfesiPostRequest request) {
+    public SavedStatus<?> update(Long id, ProfesiPutRequest request) {
         Optional<Level> level = levelRepository.findById(request.getLevelId());
         if (level.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Level");
         Optional<Profesi> byId = repository.findById(id);
         if (byId.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Profesi");
-        Profesi entity = ProfesiPostRequest.toEntity(request, id);
+        Profesi entity = ProfesiPutRequest.toEntity(byId.get(), request, level.get());
         Profesi save = repository.save(entity);
         return SavedStatus.build(ESaveStatus.SUCCESS, save);
     }

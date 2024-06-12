@@ -8,7 +8,6 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.util.List;
 import java.util.Objects;
 
 @Data
@@ -31,25 +30,12 @@ public class ProfesiPostRequest {
         return Specification.where(levelSpec).and(namaSpec);
     }
 
-    public static Profesi toEntity(ProfesiPostRequest request) {
+    public static Profesi toEntity(ProfesiPostRequest request, Level level) {
         Profesi entity = new Profesi();
-        entity.setLevel(new Level(request.getLevelId()));
-        entity.setNama(request.getNama());
-        entity.setNama(request.getDetail());
-        entity.setResiko(request.getResiko());
-        return entity;
-    }
-
-    public static Profesi toEntity(ProfesiPostRequest request, Long id) {
-        Profesi entity = new Profesi(id);
-        entity.setLevel(new Level(request.getLevelId()));
+        entity.setLevel(level);
         entity.setNama(request.getNama());
         entity.setDetail(request.getDetail());
         entity.setResiko(request.getResiko());
         return entity;
-    }
-
-    public static List<Profesi> toEntities(List<ProfesiPostRequest> requests) {
-        return requests.stream().map(ProfesiPostRequest::toEntity).toList();
     }
 }

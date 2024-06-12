@@ -43,7 +43,7 @@ public class StatusPegawaiServiceImpl implements StatusPegawaiService {
     public SavedStatus<?> save(StatusPegawaiPostRequest request) {
         Optional<StatusPegawai> cari = repository.findOne(request.getSpecification());
         if (cari.isPresent())
-            return SavedStatus.build(ESaveStatus.DUPLICATE, "Organisasi sudah ada");
+            return SavedStatus.build(ESaveStatus.DUPLICATE, "Status Pegawai sudah ada");
         StatusPegawai entity = StatusPegawaiPostRequest.toEntity(request);
         StatusPegawai save = repository.save(entity);
         return SavedStatus.build(ESaveStatus.SUCCESS, save);

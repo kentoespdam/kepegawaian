@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.services.master.profesi;
 
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiPostRequest;
+import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiPutRequest;
 import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiRequest;
 import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiResponse;
 import org.springframework.data.domain.Page;
@@ -19,7 +20,7 @@ public interface ProfesiService {
 
     SavedStatus<?> saveBatch(List<ProfesiPostRequest> requests);
 
-    SavedStatus<?> update(Long id, ProfesiPostRequest request);
+    SavedStatus<?> update(Long id, ProfesiPutRequest request);
 
     Boolean deleteById(Long id);
 }

@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.controllers.master;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiPostRequest;
+import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiPutRequest;
 import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiRequest;
 import id.perumdamts.kepegawaian.services.master.profesi.ProfesiService;
 import jakarta.validation.Valid;
@@ -52,7 +53,7 @@ public class ProfesiController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody ProfesiPostRequest request, Errors errors) {
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody ProfesiPutRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         return CustomResult.save(profesiService.update(id, request));
     }
