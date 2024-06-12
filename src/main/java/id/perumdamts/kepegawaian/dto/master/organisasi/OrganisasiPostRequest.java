@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.util.List;
 import java.util.Objects;
 
 @Data
@@ -27,25 +26,12 @@ public class OrganisasiPostRequest {
         return Specification.where(parentIdSpec).and(levelSpec).and(namaSpec);
     }
 
-    public static Organisasi toEntity(OrganisasiPostRequest request) {
+    public static Organisasi toEntity(OrganisasiPostRequest request, Organisasi parent) {
         Organisasi organisasi = new Organisasi();
-        if (request.getParentId() != null && request.getParentId() != 0L)
-            organisasi.setOrganisasi(new Organisasi(request.getParentId()));
+        if (parent != null)
+            organisasi.setParent(parent);
         organisasi.setLevelOrg(request.getLevelOrganisasi());
         organisasi.setNama(request.getNama());
         return organisasi;
-    }
-
-    public static Organisasi toEntity(OrganisasiPostRequest request, Long id) {
-        Organisasi organisasi = new Organisasi(id);
-        if (request.getParentId() != null && request.getParentId() != 0L)
-            organisasi.setOrganisasi(new Organisasi(request.getParentId()));
-        organisasi.setLevelOrg(request.getLevelOrganisasi());
-        organisasi.setNama(request.getNama());
-        return organisasi;
-    }
-
-    public static List<Organisasi> toEntities(List<OrganisasiPostRequest> orgs) {
-        return orgs.stream().map(OrganisasiPostRequest::toEntity).toList();
     }
 }

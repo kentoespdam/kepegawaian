@@ -24,7 +24,7 @@ import org.hibernate.annotations.SQLRestriction;
 public class Organisasi extends IdsAbstract {
     @ManyToOne
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
-    private Organisasi organisasi;
+    private Organisasi parent;
     private Integer levelOrg;
     private String nama;
 

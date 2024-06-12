@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.controllers.master;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiPostRequest;
+import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiPutRequest;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiRequest;
 import id.perumdamts.kepegawaian.services.master.organisasi.OrganisasiService;
 import jakarta.validation.Valid;
@@ -47,6 +48,7 @@ public class OrganisasiController {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         return CustomResult.save(service.save(request));
     }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/batch")
     public ResponseEntity<?> saveBatch(@Valid @RequestBody List<OrganisasiPostRequest> requests, Errors errors) {
@@ -56,7 +58,7 @@ public class OrganisasiController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody OrganisasiPostRequest request, Errors errors) {
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody OrganisasiPutRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         return CustomResult.save(service.update(id, request));
     }
