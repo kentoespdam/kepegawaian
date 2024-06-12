@@ -20,7 +20,7 @@ public class OrganisasiRequest extends CommonPageRequest {
         Specification<Organisasi> namaSpec = Objects.isNull(nama) ? null :
                 (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("nama"), "%" + nama + "%");
         Specification<Organisasi> parentIdSpec = Objects.isNull(parentId) ? null :
-                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("organisasi").get("id"), parentId);
+                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("parent").get("id"), parentId);
         return Specification.where(namaSpec).and(parentIdSpec);
     }
 }

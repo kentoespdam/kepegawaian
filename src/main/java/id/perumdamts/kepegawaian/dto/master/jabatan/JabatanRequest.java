@@ -19,7 +19,7 @@ public class JabatanRequest extends CommonPageRequest {
 
     @JsonIgnore
     public Specification<Jabatan> getSpecification() {
-        Specification<Jabatan> parentSpec = Objects.isNull(parentId) ? null : (root, query, cb) -> cb.equal(root.get("jabatan").get("id"), parentId);
+        Specification<Jabatan> parentSpec = Objects.isNull(parentId) ? null : (root, query, cb) -> cb.equal(root.get("parent").get("id"), parentId);
         Specification<Jabatan> organisasiSpec = Objects.isNull(organisasiId) ? null : (root, query, cb) -> cb.equal(root.get("organisasi").get("id"), organisasiId);
         Specification<Jabatan> levelSpec = Objects.isNull(levelId) ? null : (root, query, cb) -> cb.equal(root.get("level").get("id"), levelId);
         Specification<Jabatan> namaSpec = Objects.isNull(nama) ? null : (root, query, cb) -> cb.like(root.get("nama"), "%" + nama + "%");
