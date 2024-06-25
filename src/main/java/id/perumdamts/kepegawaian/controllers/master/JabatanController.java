@@ -37,6 +37,11 @@ public class JabatanController {
         return CustomResult.any(service.findById(id));
     }
 
+    @GetMapping("/organisasi/{id}")
+    public ResponseEntity<?> findByOrganisasiId(@PathVariable Long id) {
+        return CustomResult.list(service.findByOrganisasiId(id));
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> save(@Valid @RequestBody JabatanPostRequest request, Errors errors) {

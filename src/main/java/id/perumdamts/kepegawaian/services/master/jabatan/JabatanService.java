@@ -1,16 +1,14 @@
 package id.perumdamts.kepegawaian.services.master.jabatan;
 
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
-import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanPostRequest;
-import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanPutRequest;
-import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanRequest;
-import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanResponse;
+import id.perumdamts.kepegawaian.dto.master.jabatan.*;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface JabatanService {
     List<JabatanResponse> findAll();
+    List<JabatanMiniResponse> findByOrganisasiId(Long id);
     Page<JabatanResponse> findPage(JabatanRequest request);
     JabatanResponse findById(Long id);
     SavedStatus<?> save(JabatanPostRequest request);

@@ -2,10 +2,7 @@ package id.perumdamts.kepegawaian.services.master.jabatan;
 
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
-import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanPostRequest;
-import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanPutRequest;
-import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanRequest;
-import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanResponse;
+import id.perumdamts.kepegawaian.dto.master.jabatan.*;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.master.Level;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
@@ -31,6 +28,11 @@ public class JabatanServiceImpl implements JabatanService {
     @Override
     public List<JabatanResponse> findAll() {
         return repository.findAll().stream().map(JabatanResponse::from).toList();
+    }
+
+    @Override
+    public List<JabatanMiniResponse> findByOrganisasiId(Long id) {
+        return repository.findByOrganisasi_Id(id).stream().map(JabatanMiniResponse::from).toList();
     }
 
     @Override
