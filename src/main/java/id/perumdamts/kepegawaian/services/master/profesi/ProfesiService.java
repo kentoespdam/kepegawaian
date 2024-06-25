@@ -12,6 +12,8 @@ import java.util.List;
 public interface ProfesiService {
     List<ProfesiResponse> findAll();
 
+    List<ProfesiResponse> findByLevel(Long id);
+
     Page<ProfesiResponse> findPage(ProfesiRequest request);
 
     ProfesiResponse findById(Long id);

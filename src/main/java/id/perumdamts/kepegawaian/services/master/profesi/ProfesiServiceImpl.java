@@ -30,6 +30,11 @@ public class ProfesiServiceImpl implements ProfesiService {
     }
 
     @Override
+    public List<ProfesiResponse> findByLevel(Long id) {
+        return repository.findByLevel_Id(id).stream().map(ProfesiResponse::from).toList();
+    }
+
+    @Override
     public Page<ProfesiResponse> findPage(ProfesiRequest request) {
         return repository.findAll(request.getSpecification(), request.getPageable())
                 .map(ProfesiResponse::from);
