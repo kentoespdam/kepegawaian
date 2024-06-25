@@ -58,7 +58,7 @@ public class BiodataServiceImpl implements BiodataService {
     @Transactional
     @Override
     public SavedStatus<?> save(BiodataPostRequest request) {
-        Optional<JenjangPendidikan> pendidikanTerakhir = jenjangPendidikanRepository.findById(request.getPendidikanTerakhir());
+        Optional<JenjangPendidikan> pendidikanTerakhir = jenjangPendidikanRepository.findById(request.getPendidikanTerakhirId());
         if (pendidikanTerakhir.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Pendidikan Terakhir Tidak Valid");
 
@@ -75,7 +75,7 @@ public class BiodataServiceImpl implements BiodataService {
     @Transactional
     @Override
     public SavedStatus<?> update(String id, BiodataPutRequest request) {
-        Optional<JenjangPendidikan> pendidikanTerakhir = jenjangPendidikanRepository.findById(request.getPendidikanTerakhir());
+        Optional<JenjangPendidikan> pendidikanTerakhir = jenjangPendidikanRepository.findById(request.getPendidikanTerakhirId());
         if (pendidikanTerakhir.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Pendidikan Terakhir Tidak Valid");
 

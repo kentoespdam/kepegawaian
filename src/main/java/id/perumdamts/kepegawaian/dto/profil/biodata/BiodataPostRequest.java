@@ -39,7 +39,7 @@ public class BiodataPostRequest {
     @NotEmpty(message = "Ibu Kandung is required")
     private String ibuKandung;
     @Min(value = 1L, message = "Pendidikan Terakhir is required")
-    private Long pendidikanTerakhir;
+    private Long pendidikanTerakhirId;
     @Enumerated(value = EnumType.STRING)
     private EGolonganDarah golonganDarah;
     @Enumerated(EnumType.ORDINAL)
