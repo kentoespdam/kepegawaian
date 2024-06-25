@@ -34,7 +34,7 @@ public class ProfesiController {
 
     @GetMapping("/level/{id}")
     public ResponseEntity<?> findByLevel(@PathVariable Long id) {
-        return CustomResult.any(profesiService.findByLevel(id));
+        return CustomResult.list(profesiService.findByLevel(id));
     }
 
     @GetMapping("/{id}")
