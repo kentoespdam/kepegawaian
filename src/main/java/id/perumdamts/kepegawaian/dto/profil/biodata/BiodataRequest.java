@@ -17,6 +17,7 @@ public class BiodataRequest extends CommonPageRequest {
     private String nama;
     private EJenisKelamin jenisKelamin;
     private String alamat;
+    private Boolean isPegawai = false;
 
     @JsonIgnore
     public Specification<Biodata> getSpecification() {
@@ -24,7 +25,8 @@ public class BiodataRequest extends CommonPageRequest {
         Specification<Biodata> namaSpec = Objects.isNull(nama) ? null : (root, query, cb) -> cb.like(root.get("nama"), "%" + nama + "%");
         Specification<Biodata> jenisKelaminSpec = Objects.isNull(jenisKelamin) ? null : (root, query, cb) -> cb.equal(root.get("jenisKelamin"), jenisKelamin);
         Specification<Biodata> alamatSpec = Objects.isNull(alamat) ? null : (root, query, cb) -> cb.like(root.get("alamat"), "%" + alamat + "%");
+        Specification<Biodata> isPegawaiSpec = (root, query, cb) -> cb.equal(root.get("isPegawai"), isPegawai);
 
-        return Specification.where(nikSpec).and(namaSpec).and(jenisKelaminSpec).and(alamatSpec);
+        return Specification.where(nikSpec).and(namaSpec).and(jenisKelaminSpec).and(alamatSpec).and(isPegawaiSpec);
     }
 }

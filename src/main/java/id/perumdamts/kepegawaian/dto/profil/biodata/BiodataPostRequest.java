@@ -45,6 +45,7 @@ public class BiodataPostRequest {
     @Enumerated(EnumType.ORDINAL)
     private EStatusKawin statusKawin;
     private String notes;
+    private Boolean isPegawai = false;
 
     @JsonIgnore
     public Specification<Biodata> getSpecification() {
@@ -76,6 +77,7 @@ public class BiodataPostRequest {
         entity.setGolonganDarah(request.getGolonganDarah());
         entity.setStatusKawin(request.getStatusKawin());
         entity.setNotes(request.getNotes());
+        entity.setIsPegawai(request.getIsPegawai());
         return entity;
     }
 }

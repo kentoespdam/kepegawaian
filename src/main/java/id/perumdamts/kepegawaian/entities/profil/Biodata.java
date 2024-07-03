@@ -32,7 +32,8 @@ import java.util.List;
         @Index(columnList = "nama"),
         @Index(columnList = "is_deleted"),
         @Index(columnList = "jenis_kelamin"),
-        @Index(columnList = "alamat")
+        @Index(columnList = "alamat"),
+        @Index(columnList = "isPegawai")
 })
 @Data
 @NoArgsConstructor
@@ -67,6 +68,7 @@ public class Biodata implements Serializable {
     private String notes;
     @OneToMany(mappedBy = "biodata")
     private List<KartuIdentitas> kartuIdentitas;
+    private Boolean isPegawai = false;
     @CreatedBy
     @Column(updatable = false)
     private String createdBy;

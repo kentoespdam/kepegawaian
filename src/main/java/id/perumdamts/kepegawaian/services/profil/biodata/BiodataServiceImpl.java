@@ -14,9 +14,11 @@ import id.perumdamts.kepegawaian.entities.profil.KartuIdentitas;
 import id.perumdamts.kepegawaian.repositories.master.JenjangPendidikanRepository;
 import id.perumdamts.kepegawaian.repositories.profil.BiodataRepository;
 import id.perumdamts.kepegawaian.services.profil.kartuIdentitas.KartuIdentitasService;
+import id.perumdamts.kepegawaian.services.profil.pendidikan.PendidikanService;
 import id.perumdamts.kepegawaian.utils.FileUploadUtil;
 import id.perumdamts.kepegawaian.utils.UploadResultUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
@@ -33,11 +35,13 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BiodataServiceImpl implements BiodataService {
     private final BiodataRepository repository;
     private final JenjangPendidikanRepository jenjangPendidikanRepository;
     private final KartuIdentitasService kartuIdentitasService;
     private final FileUploadUtil fileUploadUtil;
+    private final PendidikanService pendidikanService;
 
     @Override
     public List<BiodataResponse> findAll() {
@@ -46,6 +50,7 @@ public class BiodataServiceImpl implements BiodataService {
 
     @Override
     public Page<BiodataResponse> findPage(BiodataRequest request) {
+        log.info("findPage: {}", request.getSpecification());
         return repository.findAll(request.getSpecification(), request.getPageable())
                 .map(BiodataResponse::from);
     }
@@ -69,6 +74,8 @@ public class BiodataServiceImpl implements BiodataService {
 
         Biodata save = repository.save(entity);
         kartuIdentitasService.execSave(new KartuIdentitas(save));
+        pendidikanService.saveFromBio(save, pendidikanTerakhir.get());
+
         return SavedStatus.build(ESaveStatus.SUCCESS, BiodataResponse.from(save));
     }
 
