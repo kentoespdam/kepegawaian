@@ -146,4 +146,12 @@ public class PendidikanServiceImpl implements PendidikanService {
     public Boolean deleteLampiran(Long id) {
         return lampiranProfilService.deleteById(id);
     }
+
+    @Override
+    public void saveFromBio(Biodata save, JenjangPendidikan jenjangPendidikan) {
+        Pendidikan pendidikan = new Pendidikan();
+        pendidikan.setBiodata(save);
+        pendidikan.setJenjangPendidikan(jenjangPendidikan);
+        repository.save(pendidikan);
+    }
 }

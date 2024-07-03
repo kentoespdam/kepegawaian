@@ -54,4 +54,11 @@ public class PendidikanPostRequest {
         entity.setTanggalPengajuan(LocalDateTime.now());
         return entity;
     }
+
+//    public static Pendidikan from(Biodata biodata, JenjangPendidikan jenjangPendidikan) {
+//        Pendidikan entity = new Pendidikan();
+//        entity.setBiodata(biodata);
+//        entity.setJenjangPendidikan(jenjangPendidikan);
+//        return entity;
+//    }
 }

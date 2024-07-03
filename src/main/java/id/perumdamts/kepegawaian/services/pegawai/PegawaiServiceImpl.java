@@ -49,6 +49,11 @@ public class PegawaiServiceImpl implements PegawaiService {
         return repository.findById(id).map(PegawaiResponse::from).orElse(null);
     }
 
+    @Override
+    public PegawaiResponse findByBiodata(String nik) {
+        return repository.findByBiodata_Nik(nik).map(PegawaiResponse::from).orElse(null);
+    }
+
     @Transactional
     @Override
     public SavedStatus<?> save(PegawaiPostRequest request) {
@@ -86,6 +91,8 @@ public class PegawaiServiceImpl implements PegawaiService {
                     statusKerja
             );
             Pegawai save = repository.save(entity);
+            biodata.setIsPegawai(true);
+            biodataRepository.save(biodata);
             return SavedStatus.build(ESaveStatus.SUCCESS, save);
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());

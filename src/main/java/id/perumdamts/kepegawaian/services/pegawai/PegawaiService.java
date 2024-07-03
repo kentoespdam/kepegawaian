@@ -16,6 +16,8 @@ public interface PegawaiService {
 
     PegawaiResponse findById(Long id);
 
+    PegawaiResponse findByBiodata(String nik);
+
     SavedStatus<?> save(PegawaiPostRequest request);
 
     SavedStatus<?> saveBatch(List<PegawaiPostRequest> requests);

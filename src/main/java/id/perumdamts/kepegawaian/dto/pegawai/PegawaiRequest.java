@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @EqualsAndHashCode(callSuper = true)
@@ -21,6 +23,7 @@ public class PegawaiRequest extends CommonPageRequest {
     private Long profesiId;
     private Long golonganId;
     private Long gradeId;
+    private List<Long> statusPegawaiIds = new ArrayList<>();
 
     public Specification<Pegawai> getSpecification() {
         Specification<Pegawai> pegawaiSpec = Objects.isNull(nipam) ? null :
@@ -41,8 +44,16 @@ public class PegawaiRequest extends CommonPageRequest {
                 (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("golongan").get("id"), golonganId);
         Specification<Pegawai> gradeSpec = Objects.isNull(gradeId) ? null :
                 (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("grade").get("id"), gradeId);
+        Specification<Pegawai> statusPegawaiIdsSpec = (root, query, criteriaBuilder) -> {
+            if (Objects.isNull(statusPegawaiIds) || statusPegawaiIds.isEmpty()) {
+                statusPegawaiIds.add(5L);
+                statusPegawaiIds.add(6L);
+            }
+            return criteriaBuilder.in(root.get("statusPegawai").get("id")).value(statusPegawaiIds).not();
+        };
 
         return Specification.where(pegawaiSpec).and(nikSpec).and(namaSpec).and(statusPegawaiSpec)
-                .and(jabatanSpec).and(organisasiSpec).and(profesiSpec).and(golonganSpec).and(gradeSpec);
+                .and(jabatanSpec).and(organisasiSpec).and(profesiSpec).and(golonganSpec)
+                .and(gradeSpec).and(statusPegawaiIdsSpec);
     }
 }

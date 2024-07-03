@@ -3,6 +3,8 @@ package id.perumdamts.kepegawaian.services.profil.pendidikan;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilResponse;
 import id.perumdamts.kepegawaian.dto.profil.pendidikan.*;
+import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
+import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 
@@ -24,4 +26,6 @@ public interface PendidikanService {
     ResponseEntity<?> getFileLampiranById(Long id);
     SavedStatus<?> addLampiran(PendidikanLampiranPostRequest request);
     Boolean deleteLampiran(Long id);
+
+    void saveFromBio(Biodata save, JenjangPendidikan jenjangPendidikan);
 }
