@@ -40,6 +40,7 @@ public class Pendidikan extends IdsAbstract {
     private String gelarBelakang;
     private String jurusan;
     private String institusi;
+    private String kota;
     private Integer tahunMasuk;
     private Integer tahunLulus;
     private Double gpa;

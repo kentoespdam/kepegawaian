@@ -19,6 +19,7 @@ public class PendidikanResponse {
     private String gelarBelakang;
     private String jurusan;
     private String institusi;
+    private String kota;
     private Integer tahunMasuk;
     private Integer tahunLulus;
     private Double gpa;
@@ -43,6 +44,7 @@ public class PendidikanResponse {
         response.setGelarBelakang(entity.getGelarBelakang());
         response.setJurusan(entity.getJurusan());
         response.setInstitusi(entity.getInstitusi());
+        response.setKota(entity.getKota());
         response.setTahunMasuk(entity.getTahunMasuk());
         response.setTahunLulus(entity.getTahunLulus());
         response.setGpa(entity.getGpa());
