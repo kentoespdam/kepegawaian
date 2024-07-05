@@ -14,7 +14,7 @@ public interface PendidikanService {
     List<PendidikanResponse> findAll();
     Page<PendidikanResponse> findPage(PendidikanRequest request);
     PendidikanResponse findById(Long id);
-    List<PendidikanResponse> findByBiodataId(String biodataId);
+    Page<PendidikanResponse> findByBiodataId(String biodataId);
     SavedStatus<?> save(PendidikanPostRequest request);
     SavedStatus<?> update(Long id, PendidikanPutRequest request);
     SavedStatus<?> acceptPendidikan(Long id, PendidikanAcceptRequest request, String username);

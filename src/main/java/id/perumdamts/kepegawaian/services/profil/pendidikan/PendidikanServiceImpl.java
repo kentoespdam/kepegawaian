@@ -14,6 +14,8 @@ import id.perumdamts.kepegawaian.repositories.profil.PendidikanRepository;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,9 +49,9 @@ public class PendidikanServiceImpl implements PendidikanService {
     }
 
     @Override
-    public List<PendidikanResponse> findByBiodataId(String biodataId) {
-        return repository.findByBiodata_Nik(biodataId).stream()
-                .map(PendidikanResponse::from).toList();
+    public Page<PendidikanResponse> findByBiodataId(String biodataId) {
+        Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);
+        return repository.findByBiodata_Nik(biodataId, pageable).map(PendidikanResponse::from);
     }
 
     @Transactional
