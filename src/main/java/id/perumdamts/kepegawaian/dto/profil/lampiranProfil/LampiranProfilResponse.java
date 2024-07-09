@@ -8,15 +8,17 @@ import lombok.Data;
 public class LampiranProfilResponse {
     private Long id;
     private EJenisLampiranProfil ref;
-    private Long ref_id;
+    private Long refId;
     private String fileName;
+    private String notes;
 
     public static LampiranProfilResponse from(LampiranProfil entity) {
         LampiranProfilResponse response = new LampiranProfilResponse();
         response.setId(entity.getId());
         response.setRef(entity.getRef());
-        response.setRef_id(entity.getRefId());
+        response.setRefId(entity.getRefId());
         response.setFileName(entity.getFileName());
+        response.setNotes(entity.getNotes());
         return response;
     }
 }

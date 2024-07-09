@@ -10,11 +10,11 @@ public class LampiranProfilRequest {
     @Min(value = 1, message = "Jenis lampiran profil ID is required")
     private Long ref;
     @Min(value = 1, message = "Lampiran profil ID is required")
-    private Long ref_id;
+    private Long refId;
 
     public Specification<LampiranProfil> getSpecification() {
         Specification<LampiranProfil> refSpec = (root, query, cb) -> cb.equal(root.get("ref").get("id"), ref);
-        Specification<LampiranProfil> refIdSpec = (root, query, cb) -> cb.equal(root.get("ref_id"), ref_id);
+        Specification<LampiranProfil> refIdSpec = (root, query, cb) -> cb.equal(root.get("refId"), refId);
         return Specification.where(refSpec).and(refIdSpec);
     }
 }

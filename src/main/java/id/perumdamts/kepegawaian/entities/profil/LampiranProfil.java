@@ -35,6 +35,7 @@ public class LampiranProfil extends IdsAbstract {
     private Long refId;
     private String mimeType;
     private String fileName;
+    private String notes;
     private String hashedFileName;
     private Boolean disetujui;
     @JsonSerialize(using = LocalDateTimeSerializer.class)
