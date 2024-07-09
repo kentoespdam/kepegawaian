@@ -17,6 +17,7 @@ public class PendidikanRequest extends CommonPageRequest {
     private String gelarBelakang;
     private String jurusan;
     private String institusi;
+    private String kota;
     private Integer tahunMasuk;
     private Integer tahunLulus;
     private Double gpa;
@@ -34,6 +35,8 @@ public class PendidikanRequest extends CommonPageRequest {
                 (root, query, cb) -> cb.like(root.get("jurusan"), "%" + jurusan + "%");
         Specification<Pendidikan> institusiSpec = Objects.isNull(institusi) ? null :
                 (root, query, cb) -> cb.like(root.get("institusi"), "%" + institusi + "%");
+        Specification<Pendidikan> kotaSpec = Objects.isNull(kota) ? null :
+                (root, query, cb) -> cb.like(root.get("kota"), "%" + kota + "%");
         Specification<Pendidikan> tahunMasukSpec = Objects.isNull(tahunMasuk) ? null :
                 (root, query, cb) -> cb.equal(root.get("tahunMasuk"), tahunMasuk);
         Specification<Pendidikan> tahunLulusSpec = Objects.isNull(tahunLulus) ? null :
@@ -45,7 +48,7 @@ public class PendidikanRequest extends CommonPageRequest {
         Specification<Pendidikan> disetujuiSpec = Objects.isNull(disetujui) ? null :
                 (root, query, cb) -> cb.equal(root.get("disetujui"), disetujui);
         return Specification.where(biodataSpec).and(jenjangSpec).and(gelarSpec)
-                .and(jurusanSpec).and(institusiSpec).and(tahunMasukSpec)
+                .and(jurusanSpec).and(institusiSpec).and(kotaSpec).and(tahunMasukSpec)
                 .and(tahunLulusSpec).and(gpaSpec).and(isLatestSpec).and(disetujuiSpec);
     }
 }

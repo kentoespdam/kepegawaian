@@ -36,8 +36,8 @@ public class PendidikanController {
     }
 
     @GetMapping("/{nik}/biodata")
-    public ResponseEntity<?> findByBiodataId(@PathVariable String nik) {
-        return CustomResult.any(service.findByBiodataId(nik));
+    public ResponseEntity<?> findByBiodataId(@PathVariable String nik, @ParameterObject PendidikanRequest request) {
+        return CustomResult.any(service.findByBiodataId(nik, request));
     }
 
     @PostMapping
