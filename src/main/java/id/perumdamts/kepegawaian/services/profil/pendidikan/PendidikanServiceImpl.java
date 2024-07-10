@@ -154,4 +154,5 @@ public class PendidikanServiceImpl implements PendidikanService {
         pendidikan.setJenjangPendidikan(jenjangPendidikan);
         repository.save(pendidikan);
     }
+
 }

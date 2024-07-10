@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.dto.profil.lampiranProfil;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
@@ -18,6 +19,7 @@ public class LampiranProfilResponse {
     private boolean disetujui;
     private String disetujuiOleh;
     @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime tanggalDisetujui;
 
     public static LampiranProfilResponse from(LampiranProfil entity) {

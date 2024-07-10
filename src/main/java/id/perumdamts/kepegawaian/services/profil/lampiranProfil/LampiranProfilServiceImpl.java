@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.services.profil.lampiranProfil;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
+import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilAcceptRequest;
 import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilResponse;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -86,5 +88,15 @@ public class LampiranProfilServiceImpl implements LampiranProfilService {
             return false;
         repository.deleteById(id);
         return true;
+    }
+
+    @Override
+    public SavedStatus<?> acceptLampiran(LampiranProfilAcceptRequest request, String oleh) {
+        Optional<LampiranProfil> one = repository.findOne(request.getSpecification());
+        if (one.isEmpty())
+            return SavedStatus.build(ESaveStatus.FAILED, "Lampiran Profil Not Found");
+        LampiranProfil entity = LampiranProfilAcceptRequest.toEntity(one.get(), oleh);
+        LampiranProfil save = repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, LampiranProfilResponse.from(save));
     }
 }
