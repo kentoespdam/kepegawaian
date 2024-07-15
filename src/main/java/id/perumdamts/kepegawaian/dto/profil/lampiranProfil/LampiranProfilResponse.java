@@ -15,6 +15,7 @@ public class LampiranProfilResponse {
     private EJenisLampiranProfil ref;
     private Long refId;
     private String fileName;
+    private String mimeType;
     private String notes;
     private boolean disetujui;
     private String disetujuiOleh;
@@ -28,6 +29,7 @@ public class LampiranProfilResponse {
         response.setRef(entity.getRef());
         response.setRefId(entity.getRefId());
         response.setFileName(entity.getFileName());
+        response.setMimeType(entity.getMimeType());
         response.setNotes(entity.getNotes());
         response.setDisetujui(entity.getDisetujui());
         response.setDisetujuiOleh(entity.getDisetujuiOleh());
