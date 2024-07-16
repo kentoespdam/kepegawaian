@@ -112,6 +112,7 @@ public class PendidikanServiceImpl implements PendidikanService {
         boolean exists = repository.existsById(id);
         if (!exists)
             return false;
+        lampiranProfilService.deleteByRefId(EJenisLampiranProfil.PROFIL_PENDIDIKAN, id);
         repository.deleteById(id);
         return true;
     }

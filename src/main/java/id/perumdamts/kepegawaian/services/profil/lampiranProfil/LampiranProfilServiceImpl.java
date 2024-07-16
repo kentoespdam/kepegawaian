@@ -13,6 +13,7 @@ import id.perumdamts.kepegawaian.utils.FileUploadUtil;
 import id.perumdamts.kepegawaian.utils.UploadResultUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -98,5 +99,14 @@ public class LampiranProfilServiceImpl implements LampiranProfilService {
         LampiranProfil entity = LampiranProfilAcceptRequest.toEntity(one.get(), oleh);
         LampiranProfil save = repository.save(entity);
         return SavedStatus.build(ESaveStatus.SUCCESS, LampiranProfilResponse.from(save));
+    }
+
+    @Override
+    public void deleteByRefId(EJenisLampiranProfil eJenisLampiranProfil, Long id) {
+        Specification<LampiranProfil> specification = (root, query, cb) -> cb.and(
+                cb.equal(root.get("ref"), eJenisLampiranProfil),
+                cb.equal(root.get("refId"), id));
+        List<LampiranProfil> all = repository.findAll(specification).stream().peek(lampiranProfil -> lampiranProfil.setIsDeleted(true)).toList();
+        repository.saveAll(all);
     }
 }

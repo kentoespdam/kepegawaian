@@ -21,4 +21,6 @@ public interface LampiranProfilService {
     boolean deleteById(Long id);
 
     SavedStatus<?> acceptLampiran(LampiranProfilAcceptRequest request, String oleh);
+
+    void deleteByRefId(EJenisLampiranProfil eJenisLampiranProfil, Long id);
 }
