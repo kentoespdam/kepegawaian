@@ -47,8 +47,10 @@ public class KeahlianServiceImpl implements KeahlianService {
     }
 
     @Override
-    public List<KeahlianResponse> findByBiodataId(String biodataId) {
-        return repository.findByBiodata_Nik(biodataId).stream().map(KeahlianResponse::from).toList();
+    public Page<KeahlianResponse> findByBiodataId(String biodataId, KeahlianRequest request) {
+        request.setBiodataId(biodataId);
+        return repository.findAll(request.getSpecification(), request.getPageable())
+                .map(KeahlianResponse::from);
     }
 
     @Transactional
@@ -111,6 +113,7 @@ public class KeahlianServiceImpl implements KeahlianService {
         boolean exists = repository.existsById(id);
         if (!exists)
             return false;
+        lampiranProfilService.deleteByRefId(EJenisLampiranProfil.PROFIL_KEAHLIAN, id);
         repository.deleteById(id);
         return true;
     }
