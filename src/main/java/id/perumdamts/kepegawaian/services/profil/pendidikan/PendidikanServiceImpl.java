@@ -70,6 +70,10 @@ public class PendidikanServiceImpl implements PendidikanService {
 
         Pendidikan pendidikan = PendidikanPostRequest.from(request, biodata.get(), jenjangPendidikan.get());
         Pendidikan save = repository.save(pendidikan);
+        if (request.getIsLatest()) {
+            biodata.get().setPendidikanTerakhir(jenjangPendidikan.get());
+            biodataRepository.save(biodata.get());
+        }
         return SavedStatus.build(ESaveStatus.SUCCESS, PendidikanResponse.from(save));
     }
 
@@ -87,6 +91,10 @@ public class PendidikanServiceImpl implements PendidikanService {
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jenjang Pendidikan");
         Pendidikan entity = PendidikanPutRequest.from(request, pendidikan.get(), biodata.get(), jenjangPendidikan.get());
         Pendidikan save = repository.save(entity);
+        if (request.getIsLatest()) {
+            biodata.get().setPendidikanTerakhir(jenjangPendidikan.get());
+            biodataRepository.save(biodata.get());
+        }
         return SavedStatus.build(ESaveStatus.SUCCESS, PendidikanResponse.from(save));
     }
 
