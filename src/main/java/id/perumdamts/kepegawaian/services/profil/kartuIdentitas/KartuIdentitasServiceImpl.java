@@ -11,6 +11,7 @@ import id.perumdamts.kepegawaian.repositories.master.JenisKitasRepository;
 import id.perumdamts.kepegawaian.repositories.profil.KartuIdentitasRepository;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,9 @@ public class KartuIdentitasServiceImpl implements KartuIdentitasService {
     private final KartuIdentitasRepository repository;
     private final JenisKitasRepository jenisKitasRepository;
     private final LampiranProfilService lampiranProfilService;
+
+    @Value("${custom.protected.delete.kartuIdentitas.ktp}")
+    private final Long PROTECTED_KARTU_IDENTITAS_ID;
 
     @Override
     public List<KartuIdentitasResponse> findAll() {
@@ -89,8 +93,10 @@ public class KartuIdentitasServiceImpl implements KartuIdentitasService {
     @Transactional
     @Override
     public Boolean deleteById(Long id) {
-        boolean exists = repository.existsById(id);
-        if (!exists)
+        Optional<KartuIdentitas> byId = repository.findById(id);
+        if (byId.isEmpty())
+            return false;
+        if (byId.get().getId().equals(PROTECTED_KARTU_IDENTITAS_ID))
             return false;
         repository.deleteById(id);
         lampiranProfilService.deleteByRefId(EJenisLampiranProfil.KARTU_IDENTITAS, id);
