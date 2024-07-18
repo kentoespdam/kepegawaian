@@ -58,7 +58,7 @@ public class LampiranProfilServiceImpl implements LampiranProfilService {
                     .header("Content-Disposition", "inline; filename=\"" + lampiranProfil.getFileName() + "\"")
                     .body(resource);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            return ErrorResult.build("File Not Found!");
         }
     }
 

@@ -47,9 +47,10 @@ public class PelatihanServiceImpl implements PelatihanService {
     }
 
     @Override
-    public List<PelatihanResponse> findByBiodataId(String biodataId) {
-        return repository.findByBiodata_Nik(biodataId).stream()
-                .map(PelatihanResponse::from).toList();
+    public Page<PelatihanResponse> findByBiodataId(String biodataId, PelatihanRequest request) {
+        request.setBiodataId(biodataId);
+        return repository.findAll(request.getSpecification(), request.getPageable())
+                .map(PelatihanResponse::from);
     }
 
     @Transactional
