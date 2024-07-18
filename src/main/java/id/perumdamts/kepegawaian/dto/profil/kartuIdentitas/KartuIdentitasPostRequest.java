@@ -17,7 +17,7 @@ public class KartuIdentitasPostRequest {
     @NotEmpty(message = "NIK tidak boleh kosong")
     private String nik;
     @Min(value = 1L, message = "Jenis kartu identitas tidak boleh kosong")
-    private Long jenisKartu;
+    private Long jenisKartuId;
     @NotEmpty(message = "Nomor kartu identitas tidak boleh kosong")
     private String nomorKartu;
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -31,7 +31,7 @@ public class KartuIdentitasPostRequest {
         Specification<KartuIdentitas> nikSpec = (root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("biodata").get("nik"), nik);
         Specification<KartuIdentitas> jenisKartuSpec = (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("jenisKartu").get("id"), jenisKartu);
+                criteriaBuilder.equal(root.get("jenisKartu").get("id"), jenisKartuId);
         Specification<KartuIdentitas> nomorKartuSpec = (root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("nomorKartu"), nomorKartu);
         return Specification.where(nikSpec).and(jenisKartuSpec).and(nomorKartuSpec);

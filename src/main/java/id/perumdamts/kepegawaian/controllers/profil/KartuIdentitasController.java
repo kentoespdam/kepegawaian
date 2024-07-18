@@ -36,9 +36,9 @@ public class KartuIdentitasController {
         return CustomResult.any(service.findById(id));
     }
 
-    @GetMapping("/{nik}/nik")
-    public ResponseEntity<?> findByNik(@PathVariable String nik) {
-        return CustomResult.any(service.findByNik(nik));
+    @GetMapping("/{nik}/biodata")
+    public ResponseEntity<?> findByNik(@PathVariable String nik, @ParameterObject KartuIdentitasRequest request) {
+        return CustomResult.any(service.findByNik(nik, request));
     }
 
     @PostMapping

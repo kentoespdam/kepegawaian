@@ -92,6 +92,7 @@ public class ProfilKeluargaServiceImpl implements ProfilKeluargaService {
         if (!exists)
             return false;
         repository.deleteById(id);
+        lampiranProfilService.deleteByRefId(EJenisLampiranProfil.PROFIL_KELUARGA, id);
         return true;
     }
 

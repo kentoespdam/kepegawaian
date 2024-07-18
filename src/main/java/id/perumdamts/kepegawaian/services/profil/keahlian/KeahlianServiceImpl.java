@@ -113,8 +113,8 @@ public class KeahlianServiceImpl implements KeahlianService {
         boolean exists = repository.existsById(id);
         if (!exists)
             return false;
-        lampiranProfilService.deleteByRefId(EJenisLampiranProfil.PROFIL_KEAHLIAN, id);
         repository.deleteById(id);
+        lampiranProfilService.deleteByRefId(EJenisLampiranProfil.PROFIL_KEAHLIAN, id);
         return true;
     }
 

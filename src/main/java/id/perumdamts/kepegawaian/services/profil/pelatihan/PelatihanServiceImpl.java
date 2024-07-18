@@ -114,6 +114,7 @@ public class PelatihanServiceImpl implements PelatihanService {
         if (!exists)
             return false;
         repository.deleteById(id);
+        lampiranProfilService.deleteByRefId(EJenisLampiranProfil.PROFIL_PELATIHAN, id);
         return true;
     }
 

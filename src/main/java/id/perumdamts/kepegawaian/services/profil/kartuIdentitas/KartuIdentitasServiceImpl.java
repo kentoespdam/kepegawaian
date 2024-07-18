@@ -43,9 +43,10 @@ public class KartuIdentitasServiceImpl implements KartuIdentitasService {
     }
 
     @Override
-    public List<KartuIdentitasResponse> findByNik(String nik) {
-        return repository.findByBiodata_Nik(nik).stream()
-                .map(KartuIdentitasResponse::from).toList();
+    public Page<KartuIdentitasResponse> findByNik(String nik, KartuIdentitasRequest request) {
+        request.setNik(nik);
+        return repository.findAll(request.getSpecification(), request.getPageable())
+                .map(KartuIdentitasResponse::from);
     }
 
     @Override
@@ -56,7 +57,7 @@ public class KartuIdentitasServiceImpl implements KartuIdentitasService {
     @Transactional
     @Override
     public SavedStatus<?> save(KartuIdentitasPostRequest request) {
-        Optional<JenisKitas> jenisKitas = jenisKitasRepository.findById(request.getJenisKartu());
+        Optional<JenisKitas> jenisKitas = jenisKitasRepository.findById(request.getJenisKartuId());
         if (jenisKitas.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jenis Kartu Identitas");
 
@@ -72,7 +73,7 @@ public class KartuIdentitasServiceImpl implements KartuIdentitasService {
     @Transactional
     @Override
     public SavedStatus<?> update(Long id, KartuIdentitasPutRequest request) {
-        Optional<JenisKitas> jenisKitas = jenisKitasRepository.findById(request.getJenisKartu());
+        Optional<JenisKitas> jenisKitas = jenisKitasRepository.findById(request.getJenisKartuId());
         if (jenisKitas.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jenis Kartu Identitas");
 
@@ -92,6 +93,7 @@ public class KartuIdentitasServiceImpl implements KartuIdentitasService {
         if (!exists)
             return false;
         repository.deleteById(id);
+        lampiranProfilService.deleteByRefId(EJenisLampiranProfil.KARTU_IDENTITAS, id);
         return true;
     }
 
