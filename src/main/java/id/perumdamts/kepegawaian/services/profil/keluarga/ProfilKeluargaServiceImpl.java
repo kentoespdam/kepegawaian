@@ -46,8 +46,12 @@ public class ProfilKeluargaServiceImpl implements ProfilKeluargaService {
     }
 
     @Override
-    public List<ProfilKeluargaResponse> findByBiodataId(String biodataId) {
-        return repository.findByBiodata_Nik(biodataId).stream().map(ProfilKeluargaResponse::from).toList();
+    public Page<ProfilKeluargaResponse> findByBiodataId(String biodataId, ProfilKeluargaRequest request) {
+        System.out.println(request);
+        request.setBiodataId(biodataId);
+        System.out.println(request);
+        return repository.findAll(request.getSpecification(), request.getPageable())
+                .map(ProfilKeluargaResponse::from);
     }
 
     @Transactional

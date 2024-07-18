@@ -39,21 +39,6 @@ public class KartuIdentitasPostRequest {
 
     public static KartuIdentitas toEntity(
             KartuIdentitasPostRequest request,
-            JenisKitas jenisKartu
-    ) {
-        Biodata biodata = new Biodata(request.getNik());
-        KartuIdentitas entity = new KartuIdentitas();
-        entity.setBiodata(biodata);
-        entity.setJenisKartu(jenisKartu);
-        entity.setNomorKartu(request.getNomorKartu());
-        entity.setTanggalExpired(request.getTanggalExpired());
-        entity.setTanggalTerima(request.getTanggalTerima());
-        entity.setNotes(request.getNotes());
-        return entity;
-    }
-
-    public static KartuIdentitas toEntity(
-            KartuIdentitasPostRequest request,
             Biodata biodata,
             JenisKitas jenisKartu
     ) {

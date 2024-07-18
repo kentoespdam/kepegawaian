@@ -12,7 +12,7 @@ public interface ProfilKeluargaService {
     List<ProfilKeluargaResponse> findAll();
     Page<ProfilKeluargaResponse> findPage(ProfilKeluargaRequest request);
     ProfilKeluargaResponse findById(Long id);
-    List<ProfilKeluargaResponse> findByBiodataId(String biodataId);
+    Page<ProfilKeluargaResponse> findByBiodataId(String biodataId, ProfilKeluargaRequest request);
     SavedStatus<?> save(ProfilKeluargaPostRequest request);
     SavedStatus<?> update(Long id, ProfilKeluargaPutRequest request);
     Boolean delete(Long id);

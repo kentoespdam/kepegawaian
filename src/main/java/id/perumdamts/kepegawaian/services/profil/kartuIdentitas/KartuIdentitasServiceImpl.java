@@ -6,8 +6,10 @@ import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.*;
 import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilResponse;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.entities.master.JenisKitas;
+import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.KartuIdentitas;
 import id.perumdamts.kepegawaian.repositories.master.JenisKitasRepository;
+import id.perumdamts.kepegawaian.repositories.profil.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.KartuIdentitasRepository;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilService;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +28,10 @@ public class KartuIdentitasServiceImpl implements KartuIdentitasService {
     private final KartuIdentitasRepository repository;
     private final JenisKitasRepository jenisKitasRepository;
     private final LampiranProfilService lampiranProfilService;
+    private final BiodataRepository biodataRepository;
 
     @Value("${custom.protected.delete.kartuIdentitas.ktp}")
-    private final Long PROTECTED_KARTU_IDENTITAS_ID;
+    private Long PROTECTED_KARTU_IDENTITAS_ID;
 
     @Override
     public List<KartuIdentitasResponse> findAll() {
@@ -61,11 +64,14 @@ public class KartuIdentitasServiceImpl implements KartuIdentitasService {
     @Transactional
     @Override
     public SavedStatus<?> save(KartuIdentitasPostRequest request) {
+        Optional<Biodata> biodata = biodataRepository.findById(request.getNik());
+        if (biodata.isEmpty())
+            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Biodata");
         Optional<JenisKitas> jenisKitas = jenisKitasRepository.findById(request.getJenisKartuId());
         if (jenisKitas.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jenis Kartu Identitas");
 
-        KartuIdentitas entity = KartuIdentitasPostRequest.toEntity(request, jenisKitas.get());
+        KartuIdentitas entity = KartuIdentitasPostRequest.toEntity(request, biodata.get(), jenisKitas.get());
         boolean exists = repository.exists(request.getSpecification());
         if (exists)
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Kartu Identitas sudah ada");
@@ -77,6 +83,10 @@ public class KartuIdentitasServiceImpl implements KartuIdentitasService {
     @Transactional
     @Override
     public SavedStatus<?> update(Long id, KartuIdentitasPutRequest request) {
+        Optional<Biodata> biodata = biodataRepository.findById(request.getNik());
+        if (biodata.isEmpty())
+            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Biodata");
+
         Optional<JenisKitas> jenisKitas = jenisKitasRepository.findById(request.getJenisKartuId());
         if (jenisKitas.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jenis Kartu Identitas");
@@ -85,8 +95,9 @@ public class KartuIdentitasServiceImpl implements KartuIdentitasService {
         if (kartuIdentitas.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Kartu Identitas");
 
-        KartuIdentitas entity = KartuIdentitasPutRequest.toEntity(request, kartuIdentitas.get(), jenisKitas.get());
+        KartuIdentitas entity = KartuIdentitasPutRequest.toEntity(request, kartuIdentitas.get(), biodata.get(), jenisKitas.get());
         KartuIdentitas save = this.execSave(entity);
+
         return SavedStatus.build(ESaveStatus.SUCCESS, KartuIdentitasResponse.from(save));
     }
 
@@ -96,7 +107,7 @@ public class KartuIdentitasServiceImpl implements KartuIdentitasService {
         Optional<KartuIdentitas> byId = repository.findById(id);
         if (byId.isEmpty())
             return false;
-        if (byId.get().getId().equals(PROTECTED_KARTU_IDENTITAS_ID))
+        if (byId.get().getJenisKartu().getId().equals(PROTECTED_KARTU_IDENTITAS_ID))
             return false;
         repository.deleteById(id);
         lampiranProfilService.deleteByRefId(EJenisLampiranProfil.KARTU_IDENTITAS, id);
