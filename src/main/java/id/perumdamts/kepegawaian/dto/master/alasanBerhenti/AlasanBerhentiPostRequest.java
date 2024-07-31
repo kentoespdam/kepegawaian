@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.dto.master.alasanBerhenti;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.master.AlasanBerhenti;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
@@ -11,9 +12,10 @@ public class AlasanBerhentiPostRequest {
     private String nama;
     private String notes;
 
+    @JsonIgnore
     public Specification<AlasanBerhenti> getSpecification() {
         return (root, query, criteriaBuilder) ->
-                criteriaBuilder.like(root.get("nama"), "%" + this.getNama() + "%");
+                criteriaBuilder.equal(root.get("nama"), this.getNama());
     }
 
     public static AlasanBerhenti toEntity(AlasanBerhentiPostRequest request) {
