@@ -10,6 +10,7 @@ import java.time.LocalDate;
 
 @Data
 public class DasarGajiResponse {
+    private Long id;
     private String deskripsi;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -21,6 +22,7 @@ public class DasarGajiResponse {
 
     public static DasarGajiResponse from(DasarGaji entity) {
         DasarGajiResponse response = new DasarGajiResponse();
+        response.setId(entity.getId());
         response.setDeskripsi(entity.getDeskripsi());
         response.setAktif(entity.isAktif());
         response.setTanggalAkhir(entity.getTglAkhir());
