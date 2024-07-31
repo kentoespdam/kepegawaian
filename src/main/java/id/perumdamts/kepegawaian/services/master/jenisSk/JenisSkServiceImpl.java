@@ -52,8 +52,12 @@ public class JenisSkServiceImpl implements JenisSkService {
     @Transactional
     @Override
     public SavedStatus<?> saveBatch(List<JenisSkPostRequest> requests) {
-        requests.stream().map(JenisSkPostRequest::toEntity).forEach(repository::save);
-        return SavedStatus.build(ESaveStatus.SUCCESS, null);
+        try {
+            requests.stream().map(JenisSkPostRequest::toEntity).forEach(repository::save);
+            return SavedStatus.build(ESaveStatus.SUCCESS, null);
+        } catch (Exception e) {
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+        }
     }
 
     @Transactional
