@@ -8,13 +8,9 @@ import java.nio.file.Path;
 public interface FileUploadUtil {
     String BASE_PATH = System.getProperty("user.dir") + "/attachments/";
 
-    UploadResultUtil uploadFile(MultipartFile file, EJenisLampiranProfil ref, String fileName);
+    UploadResultUtil uploadFile(MultipartFile file, Enum<?> ref, String subFolder);
 
-    Path generatePath(EJenisLampiranProfil ref, String username);
+    Path generatePath(Enum<?> ref, String subFolder, String fileName);
 
-    Path generatePath(EJenisLampiranProfil ref, String username, String fileName);
-
-    void deleteOldFile(String oldFileName);
-
-    void deleteOldFile(String fileName, EJenisLampiranProfil ref, String username);
+    void deleteOldFile(String fileName, EJenisLampiranProfil ref, String subFolder);
 }
