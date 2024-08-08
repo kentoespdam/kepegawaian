@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.dto.profil.pelatihan;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.dto.commons.CommonPageRequest;
 import id.perumdamts.kepegawaian.entities.profil.Pelatihan;
 import lombok.Data;
@@ -17,6 +18,7 @@ public class PelatihanRequest extends CommonPageRequest {
     private Boolean lulus;
     private Boolean disetujui;
 
+    @JsonIgnore
     public Specification<Pelatihan> getSpecification() {
         Specification<Pelatihan> biodataSpec = Objects.isNull(biodataId) ? null :
                 (root, query, cb) -> cb.equal(root.get("biodata").get("nik"), biodataId);
