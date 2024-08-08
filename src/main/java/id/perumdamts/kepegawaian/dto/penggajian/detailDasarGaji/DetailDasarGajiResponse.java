@@ -11,7 +11,7 @@ public class DetailDasarGajiResponse {
     private DasarGajiResponse dasarGaji;
     private Integer mkg;
     private GolonganResponse golongan;
-    private Integer nominal;
+    private Double nominal;
 
     public static DetailDasarGajiResponse from(DetailDasarGaji entity){
         DetailDasarGajiResponse response = new DetailDasarGajiResponse();

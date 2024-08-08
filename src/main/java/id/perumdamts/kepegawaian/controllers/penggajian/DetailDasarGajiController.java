@@ -37,6 +37,11 @@ public class DetailDasarGajiController {
         return CustomResult.any(service.findById(id));
     }
 
+    @GetMapping("/{golonganId}/{masaKerja}")
+    public ResponseEntity<?> findByGolonganIdAndMasaKerja(@PathVariable Long golonganId, @PathVariable Integer masaKerja) {
+        return CustomResult.any(service.findDetailDasarGajiByGolonganAndMasaKerja(golonganId, masaKerja));
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> save(@Valid @RequestBody DetailDasarGajiPostRequest request, Errors errors) {

@@ -32,5 +32,13 @@ public class DetailDasarGaji extends IdsAbstract {
     @ManyToOne
     @JoinColumn(name = "golongan_id", referencedColumnName = "id")
     private Golongan golongan;
-    private Integer nominal;
+    private Double nominal;
+
+    public DetailDasarGaji(Long id, DasarGaji dasarGaji, Integer mkg, Golongan golongan, Double nominal) {
+        super(id);
+        this.dasarGaji = dasarGaji;
+        this.mkg = mkg;
+        this.golongan = golongan;
+        this.nominal = nominal;
+    }
 }

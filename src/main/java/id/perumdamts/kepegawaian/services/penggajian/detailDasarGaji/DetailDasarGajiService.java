@@ -5,6 +5,7 @@ import id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji.DetailDasarGajiP
 import id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji.DetailDasarGajiPutRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji.DetailDasarGajiRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji.DetailDasarGajiResponse;
+import id.perumdamts.kepegawaian.entities.penggajian.DetailDasarGaji;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -15,6 +16,8 @@ public interface DetailDasarGajiService {
     Page<DetailDasarGajiResponse> findPage(DetailDasarGajiRequest request);
 
     DetailDasarGajiResponse findById(Long id);
+
+    DetailDasarGaji findDetailDasarGajiByGolonganAndMasaKerja(Long golonganId, Integer masaKerja);
 
     SavedStatus<?> save(DetailDasarGajiPostRequest request);
 

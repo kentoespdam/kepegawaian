@@ -45,6 +45,12 @@ public class DetailDasarGajiServiceImpl implements DetailDasarGajiService {
         return repository.findById(id).map(DetailDasarGajiResponse::from).orElse(null);
     }
 
+    @Override
+    public DetailDasarGaji findDetailDasarGajiByGolonganAndMasaKerja(Long golonganId, Integer masaKerja) {
+        return repository.findDetailDasarGajiByGolongan_IdAndMkg(golonganId, masaKerja)
+                .orElseThrow(() -> new RuntimeException("Detail Dasar Gaji not found"));
+    }
+
     @Transactional
     @Override
     public SavedStatus<?> save(DetailDasarGajiPostRequest request) {

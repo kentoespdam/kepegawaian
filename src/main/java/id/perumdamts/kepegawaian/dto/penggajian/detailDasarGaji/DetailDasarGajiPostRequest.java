@@ -14,7 +14,7 @@ public class DetailDasarGajiPostRequest {
     private Long dasarGajiId;
     private Integer mkg;
     private Long golonganId;
-    private Integer nominal;
+    private Double nominal;
 
     @JsonIgnore
     public Specification<DetailDasarGaji> getSpecification() {

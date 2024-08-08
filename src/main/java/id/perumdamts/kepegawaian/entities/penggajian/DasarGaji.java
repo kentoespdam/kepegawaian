@@ -37,4 +37,8 @@ public class DasarGaji extends IdsAbstract {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tglAkhir;
     private boolean aktif;
+
+    public DasarGaji(Long id) {
+        super(id);
+    }
 }
