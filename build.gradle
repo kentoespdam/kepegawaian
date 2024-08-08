@@ -35,15 +35,17 @@ dependencies {
 
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
 
+    implementation 'jakarta.validation:jakarta.validation-api:3.1.0'
+
     compileOnly 'org.projectlombok:lombok'
 
     //date serializer
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.1'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.2'
 
     //FileUtils
-    implementation 'commons-io:commons-io:2.15.1'
+    implementation 'commons-io:commons-io:2.16.1'
 
-    runtimeOnly 'com.mysql:mysql-connector-j:8.3.0'
+    runtimeOnly 'com.mysql:mysql-connector-j:8.4.0'
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
@@ -51,6 +53,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'
     testImplementation 'org.springframework.security:spring-security-test'
+    testAnnotationProcessor("org.projectlombok:lombok")
+    testCompileOnly("org.projectlombok:lombok")
 }
 
 tasks.named('test') {
