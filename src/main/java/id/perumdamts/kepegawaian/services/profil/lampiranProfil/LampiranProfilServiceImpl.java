@@ -16,6 +16,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -62,6 +63,7 @@ public class LampiranProfilServiceImpl implements LampiranProfilService {
         }
     }
 
+    @Transactional
     @Override
     public SavedStatus<?> addLampiran(LampiranProfilPostRequest request) {
         boolean exists = repository.exists(request.getSpecification());
@@ -82,6 +84,7 @@ public class LampiranProfilServiceImpl implements LampiranProfilService {
         return SavedStatus.build(ESaveStatus.SUCCESS, LampiranProfilResponse.from(save));
     }
 
+    @Transactional
     @Override
     public boolean deleteById(Long id) {
         boolean exists = repository.existsById(id);
@@ -91,6 +94,7 @@ public class LampiranProfilServiceImpl implements LampiranProfilService {
         return true;
     }
 
+    @Transactional
     @Override
     public SavedStatus<?> acceptLampiran(LampiranProfilAcceptRequest request, String oleh) {
         Optional<LampiranProfil> one = repository.findOne(request.getSpecification());
@@ -101,6 +105,7 @@ public class LampiranProfilServiceImpl implements LampiranProfilService {
         return SavedStatus.build(ESaveStatus.SUCCESS, LampiranProfilResponse.from(save));
     }
 
+    @Transactional
     @Override
     public void deleteByRefId(EJenisLampiranProfil eJenisLampiranProfil, Long id) {
         Specification<LampiranProfil> specification = (root, query, cb) -> cb.and(
