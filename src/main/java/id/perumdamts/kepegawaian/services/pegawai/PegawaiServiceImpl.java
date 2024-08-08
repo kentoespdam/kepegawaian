@@ -2,21 +2,27 @@ package id.perumdamts.kepegawaian.services.pegawai;
 
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
+import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkResponse;
 import id.perumdamts.kepegawaian.dto.pegawai.PegawaiPostRequest;
 import id.perumdamts.kepegawaian.dto.pegawai.PegawaiPutRequest;
 import id.perumdamts.kepegawaian.dto.pegawai.PegawaiRequest;
 import id.perumdamts.kepegawaian.dto.pegawai.PegawaiResponse;
+import id.perumdamts.kepegawaian.entities.commons.EReferensiPegawai;
+import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
 import id.perumdamts.kepegawaian.entities.master.*;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.master.*;
 import id.perumdamts.kepegawaian.repositories.profil.BiodataRepository;
+import id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk.RiwayatSkService;
+import id.perumdamts.kepegawaian.services.profil.biodata.BiodataService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +38,8 @@ public class PegawaiServiceImpl implements PegawaiService {
     private final GolonganRepository golonganRepository;
     private final GradeRepository gradeRepository;
     private final StatusKerjaRepository statusKerjaRepository;
+    private final BiodataService biodataService;
+    private final RiwayatSkService riwayatSkService;
 
     @Override
     public Page<PegawaiResponse> findPage(PegawaiRequest request) {
@@ -46,7 +54,11 @@ public class PegawaiServiceImpl implements PegawaiService {
 
     @Override
     public PegawaiResponse findById(Long id) {
-        return repository.findById(id).map(PegawaiResponse::from).orElse(null);
+        Optional<Pegawai> byId = repository.findById(id);
+        if (byId.isEmpty())
+            return null;
+        RiwayatSkResponse skCapeg = riwayatSkService.findById(byId.get().getRefSkCapegId());
+        return PegawaiResponse.from(byId.get(), skCapeg);
     }
 
     @Override
@@ -58,8 +70,14 @@ public class PegawaiServiceImpl implements PegawaiService {
     @Override
     public SavedStatus<?> save(PegawaiPostRequest request) {
         try {
-            Biodata biodata = biodataRepository.findById(request.getNik())
-                    .orElseThrow(() -> new RuntimeException("Unknown Biodata"));
+            boolean exists = repository.exists(request.getSpecificationPegawai());
+            if (exists) return SavedStatus.build(ESaveStatus.DUPLICATE, "Pegawai sudah ada");
+            if (request.getReferensi().equals(EReferensiPegawai.PEGAWAI))
+                request.setIsPegawai(true);
+            Biodata biodata = biodataService.saveFromPegawai(request);
+            if (request.getReferensi().equals(EReferensiPegawai.BIODATA))
+                return SavedStatus.build(ESaveStatus.SUCCESS, biodata);
+
             StatusPegawai statusPegawai = statusPegawaiRepository.findById(request.getStatusPegawaiId())
                     .orElseThrow(() -> new RuntimeException("Unknown Status Pegawai"));
             Jabatan jabatan = jabatanRepository.findById(request.getJabatanId())
@@ -75,10 +93,6 @@ public class PegawaiServiceImpl implements PegawaiService {
             StatusKerja statusKerja = statusKerjaRepository.findById(request.getStatusKerjaId())
                     .orElseThrow(() -> new RuntimeException("Unknown Status Kerja"));
 
-            Optional<Pegawai> pegawai = repository.findOne(request.getSpecification());
-            if (pegawai.isPresent())
-                return SavedStatus.build(ESaveStatus.DUPLICATE, "Pegawai is Exists");
-
             Pegawai entity = PegawaiPostRequest.toEntity(
                     request,
                     biodata,
@@ -91,9 +105,8 @@ public class PegawaiServiceImpl implements PegawaiService {
                     statusKerja
             );
             Pegawai save = repository.save(entity);
-            biodata.setIsPegawai(true);
-            biodataRepository.save(biodata);
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            Pegawai pegawai = saveCapeg(request, save);
+            return SavedStatus.build(ESaveStatus.SUCCESS, pegawai);
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
@@ -162,5 +175,20 @@ public class PegawaiServiceImpl implements PegawaiService {
             return false;
         repository.deleteById(id);
         return true;
+    }
+
+    private Pegawai saveCapeg(PegawaiPostRequest request, Pegawai pegawai) {
+        int umur = LocalDate.now().getYear() - pegawai.getBiodata().getTanggalLahir().getYear();
+        LocalDate pensiun = pegawai.getBiodata().getTanggalLahir().plusYears(56 - umur);
+        RiwayatSk riwayatSk = riwayatSkService.saveCapeg(request, pegawai);
+        pegawai.setRefSkCapegId(riwayatSk.getId());
+        pegawai.setTmtPensiun(pensiun);
+
+        pegawai.setGajiPokok(riwayatSk.getGajiPokok());
+
+        pegawai.setMkgTahun(0);
+        pegawai.setMkgBulan(0);
+
+        return repository.save(pegawai);
     }
 }

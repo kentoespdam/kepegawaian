@@ -79,6 +79,18 @@ public class BiodataServiceImpl implements BiodataService {
         return SavedStatus.build(ESaveStatus.SUCCESS, BiodataResponse.from(save));
     }
 
+    @Override
+    public Biodata saveFromPegawai(BiodataPostRequest request) {
+
+        JenjangPendidikan pendidikanTerakhir = jenjangPendidikanRepository.findById(request.getPendidikanTerakhirId()).orElseThrow(() -> new RuntimeException("Unknown Pendidikan Terakhir"));
+
+        Biodata entity = BiodataPostRequest.toEntity(request, pendidikanTerakhir);
+        Biodata save = repository.save(entity);
+        kartuIdentitasService.execSave(new KartuIdentitas(save));
+        pendidikanService.saveFromBio(save, pendidikanTerakhir);
+        return save;
+    }
+
     @Transactional
     @Override
     public SavedStatus<?> update(String id, BiodataPutRequest request) {

@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.dto.pegawai;
 
+import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkResponse;
 import id.perumdamts.kepegawaian.dto.master.golongan.GolonganResponse;
 import id.perumdamts.kepegawaian.dto.master.grade.GradeResponse;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;
@@ -23,6 +24,7 @@ public class PegawaiResponse {
     private GolonganResponse golongan;
     private GradeResponse grade;
     private StatusKerjaResponse statusKerja;
+    private RiwayatSkResponse skCapeg;
     private String notes;
 
     public static PegawaiResponse from(Pegawai pegawai) {
@@ -39,6 +41,12 @@ public class PegawaiResponse {
         response.setStatusKerja(StatusKerjaResponse.from(pegawai.getStatusKerja()));
         response.setNotes(pegawai.getNotes());
 
+        return response;
+    }
+
+    public static PegawaiResponse from(Pegawai pegawai, RiwayatSkResponse skCapeg) {
+        PegawaiResponse response = from(pegawai);
+        response.setSkCapeg(skCapeg);
         return response;
     }
 }

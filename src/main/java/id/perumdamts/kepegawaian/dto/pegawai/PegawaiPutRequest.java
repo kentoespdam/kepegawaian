@@ -3,11 +3,7 @@ package id.perumdamts.kepegawaian.dto.pegawai;
 import id.perumdamts.kepegawaian.entities.master.*;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
 public class PegawaiPutRequest extends PegawaiPostRequest {
     public static Pegawai toEntity(
             Pegawai entity,
@@ -30,6 +26,7 @@ public class PegawaiPutRequest extends PegawaiPostRequest {
         entity.setGolongan(golongan);
         entity.setGrade(grade);
         entity.setStatusKerja(statusKerja);
+        entity.setTmtKerja(request.getTmtKerja());
 
         return entity;
     }

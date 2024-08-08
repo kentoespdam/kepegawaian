@@ -32,6 +32,11 @@ public class PegawaiController {
         return CustomResult.list(service.findAll());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findById(@PathVariable Long id) {
+        return CustomResult.any(service.findById(id));
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> save(@Valid @RequestBody PegawaiPostRequest request, Errors errors) {
