@@ -36,6 +36,11 @@ public class GolonganServiceImpl implements GolonganService {
         return repository.findById(id).map(GolonganResponse::from).orElse(null);
     }
 
+    @Override
+    public Golongan findGolonganById(Long id) {
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Golongan not found"));
+    }
+
     @Transactional
     @Override
     public SavedStatus<?> save(GolonganPostRequest request) {

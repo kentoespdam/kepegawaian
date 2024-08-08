@@ -32,4 +32,8 @@ public class Golongan extends IdsAbstract {
         this.golongan = golongan;
         this.pangkat = pangkat;
     }
+
+    public Golongan(Long id) {
+        super(id);
+    }
 }

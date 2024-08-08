@@ -37,4 +37,12 @@ public class Profesi extends IdsAbstract {
     public Profesi(Long id) {
         super(id);
     }
+
+    public Profesi(Long id, Level level, String nama, String detail, String resiko) {
+        super(id);
+        this.level = level;
+        this.nama = nama;
+        this.detail = detail;
+        this.resiko = resiko;
+    }
 }

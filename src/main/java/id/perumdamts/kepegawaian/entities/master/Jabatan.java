@@ -35,4 +35,12 @@ public class Jabatan extends IdsAbstract {
     public Jabatan(Long id) {
         super(id);
     }
+
+    public Jabatan(Long id, Jabatan jabatan, Organisasi organisasi, Level level, String nama) {
+        super(id);
+        this.parent = jabatan;
+        this.organisasi = organisasi;
+        this.level = level;
+        this.nama = nama;
+    }
 }
