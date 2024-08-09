@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/setup-master")
 @RequiredArgsConstructor
 public class SetupMasterController {
-    private final SetupStatusPegawai setupStatusPegawai;
     private final SetupStatusKerja setupStatusKerja;
     private final SetupOrganisasi setupOrganisasi;
     private final SetupLevel setupLevel;
@@ -33,7 +32,6 @@ public class SetupMasterController {
     @GetMapping
     public ResponseEntity<?> initialData() {
         try {
-            setupStatusPegawai.insertBatch();
             setupStatusKerja.insertBatch();
             setupOrganisasi.insertBatch();
             setupLevel.insertBatch();

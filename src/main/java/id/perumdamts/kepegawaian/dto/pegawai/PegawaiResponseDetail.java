@@ -3,95 +3,78 @@ package id.perumdamts.kepegawaian.dto.pegawai;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkResponse;
 import id.perumdamts.kepegawaian.dto.master.golongan.GolonganResponse;
 import id.perumdamts.kepegawaian.dto.master.grade.GradeResponse;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;
-import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiResponse;
-import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiResponse;
+import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiMiniResponse;
+import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.statusKerja.StatusKerjaResponse;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataMiniResponse;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
+import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
-public class PegawaiResponse {
+public class PegawaiResponseDetail {
     private Long id;
     private String nipam;
     private BiodataMiniResponse biodata;
     @Enumerated(EnumType.ORDINAL)
     private EStatusPegawai statusPegawai;
-    private OrganisasiResponse organisasi;
+    private OrganisasiMiniResponse organisasi;
     private JabatanMiniResponse jabatan;
-    private ProfesiResponse profesi;
+    private ProfesiMiniResponse profesi;
     private GolonganResponse golongan;
     private GradeResponse grade;
     private StatusKerjaResponse statusKerja;
-
-    private Long refSkCapegId;
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate tmtKerja;
+    private RiwayatSkResponse skCapeg;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tmtPensiun;
-
-    private Long refSkPegawaiId;
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate tmtPegawai;
-
-    private Long refSkGolId;
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate tmtGolongan;
-    private Long refSkJabatanId;
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate tmtJabatan;
-
-    private Long refSkMutasiId;
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate tmtMutasi;
-
+    private RiwayatSkResponse skPegawai;
+    private RiwayatSkResponse skGolongan;
+    private RiwayatSkResponse skJabatan;
+    private RiwayatSkResponse skMutasi;
     private Double gajiPokok;
     private Double phdp;
     private Integer jmlTanggungan;
-
     private Integer mkgTahun;
     private Integer mkgBulan;
-
     private Long absensiId;
     private String notes;
 
-    public static PegawaiResponse from(Pegawai pegawai) {
-        PegawaiResponse response = new PegawaiResponse();
+    public static PegawaiResponseDetail from(Pegawai pegawai, List<RiwayatSkResponse> list) {
+        PegawaiResponseDetail response = new PegawaiResponseDetail();
         response.setId(pegawai.getId());
         response.setNipam(pegawai.getNipam());
         response.setBiodata(BiodataMiniResponse.from(pegawai.getBiodata()));
         response.setStatusPegawai(pegawai.getStatusPegawai());
+        response.setOrganisasi(OrganisasiMiniResponse.from(pegawai.getOrganisasi()));
         response.setJabatan(JabatanMiniResponse.from(pegawai.getJabatan()));
-        response.setOrganisasi(OrganisasiResponse.from(pegawai.getOrganisasi()));
-        response.setProfesi(ProfesiResponse.from(pegawai.getProfesi()));
+        response.setProfesi(ProfesiMiniResponse.from(pegawai.getProfesi()));
         response.setGolongan(GolonganResponse.from(pegawai.getGolongan()));
         response.setGrade(GradeResponse.from(pegawai.getGrade()));
         response.setStatusKerja(StatusKerjaResponse.from(pegawai.getStatusKerja()));
-        response.setRefSkCapegId(pegawai.getRefSkCapegId());
-        response.setTmtKerja(pegawai.getTmtKerja());
+        for (RiwayatSkResponse riwayatSkResponse : list) {
+            if (riwayatSkResponse.getJenisSk().equals(EJenisSk.SK_CAPEG))
+                response.setSkCapeg(riwayatSkResponse);
+            if (riwayatSkResponse.getJenisSk().equals(EJenisSk.SK_PEGAWAI_TETAP))
+                response.setSkPegawai(riwayatSkResponse);
+            if (riwayatSkResponse.getJenisSk().equals(EJenisSk.SK_KENAIKAN_PANGKAT_GOLONGAN))
+                response.setSkGolongan(riwayatSkResponse);
+            if (riwayatSkResponse.getJenisSk().equals(EJenisSk.SK_JABATAN))
+                response.setSkJabatan(riwayatSkResponse);
+            if (riwayatSkResponse.getJenisSk().equals(EJenisSk.SK_MUTASI))
+                response.setSkMutasi(riwayatSkResponse);
+        }
         response.setTmtPensiun(pegawai.getTmtPensiun());
-        response.setRefSkPegawaiId(pegawai.getRefSkPegawaiId());
-        response.setTmtPegawai(pegawai.getTmtPegawai());
-        response.setRefSkGolId(pegawai.getRefSkGolId());
-        response.setTmtGolongan(pegawai.getTmtGolongan());
-        response.setRefSkJabatanId(pegawai.getRefSkJabatanId());
-        response.setTmtJabatan(pegawai.getTmtJabatan());
-        response.setRefSkMutasiId(pegawai.getRefSkMutasiId());
-        response.setTmtMutasi(pegawai.getTmtMutasi());
         response.setGajiPokok(pegawai.getGajiPokok());
         response.setPhdp(pegawai.getPhdp());
         response.setJmlTanggungan(pegawai.getJmlTanggungan());

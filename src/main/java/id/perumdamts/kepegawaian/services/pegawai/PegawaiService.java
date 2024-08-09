@@ -1,10 +1,7 @@
 package id.perumdamts.kepegawaian.services.pegawai;
 
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
-import id.perumdamts.kepegawaian.dto.pegawai.PegawaiPostRequest;
-import id.perumdamts.kepegawaian.dto.pegawai.PegawaiPutRequest;
-import id.perumdamts.kepegawaian.dto.pegawai.PegawaiRequest;
-import id.perumdamts.kepegawaian.dto.pegawai.PegawaiResponse;
+import id.perumdamts.kepegawaian.dto.pegawai.*;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -14,9 +11,7 @@ public interface PegawaiService {
 
     List<PegawaiResponse> findAll();
 
-    PegawaiResponse findById(Long id);
-
-    PegawaiResponse findByBiodata(String nik);
+    PegawaiResponseDetail findById(Long id);
 
     SavedStatus<?> save(PegawaiPostRequest request);
 

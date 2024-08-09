@@ -44,11 +44,6 @@ public class PegawaiController {
         return CustomResult.save(service.save(request));
     }
 
-    @GetMapping("/nik/{nik}")
-    public ResponseEntity<?> findById(@PathVariable String nik) {
-        return CustomResult.any(service.findByBiodata(nik));
-    }
-
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/batch")
     public ResponseEntity<?> saveBatch(@Valid @RequestBody List<PegawaiPostRequest> requests, Errors errors) {

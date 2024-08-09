@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.entities.pegawai;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
 import id.perumdamts.kepegawaian.entities.master.*;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
@@ -35,10 +36,8 @@ public class Pegawai extends IdsAbstract {
     @OneToOne
     @JoinColumn(name = "biodata_id", unique = true, referencedColumnName = "nik")
     private Biodata biodata;
-
-    @ManyToOne
-    @JoinColumn(name = "status_pegawai_id", referencedColumnName = "id")
-    private StatusPegawai statusPegawai;
+    @Enumerated(EnumType.ORDINAL)
+    private EStatusPegawai statusPegawai;
     @ManyToOne
     @JoinColumn(name = "organisasi_id", referencedColumnName = "id")
     private Organisasi organisasi;
@@ -66,7 +65,7 @@ public class Pegawai extends IdsAbstract {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tmtPensiun;
 
-    private Long refSkPegawai;
+    private Long refSkPegawaiId;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tmtPegawai;

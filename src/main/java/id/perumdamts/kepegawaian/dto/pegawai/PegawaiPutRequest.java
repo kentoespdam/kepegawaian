@@ -9,7 +9,6 @@ public class PegawaiPutRequest extends PegawaiPostRequest {
             Pegawai entity,
             PegawaiPutRequest request,
             Biodata biodata,
-            StatusPegawai statusPegawai,
             Jabatan jabatan,
             Organisasi organisasi,
             Profesi profesi,
@@ -19,7 +18,7 @@ public class PegawaiPutRequest extends PegawaiPostRequest {
     ) {
         entity.setNipam(request.getNipam());
         entity.setBiodata(biodata);
-        entity.setStatusPegawai(statusPegawai);
+        entity.setStatusPegawai(request.getStatusPegawai());
         entity.setJabatan(jabatan);
         entity.setOrganisasi(organisasi);
         entity.setProfesi(profesi);

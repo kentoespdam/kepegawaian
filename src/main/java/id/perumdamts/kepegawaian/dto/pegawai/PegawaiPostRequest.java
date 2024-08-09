@@ -5,10 +5,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPostRequest;
+import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.commons.EReferensiPegawai;
 import id.perumdamts.kepegawaian.entities.master.*;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -26,11 +29,8 @@ public class PegawaiPostRequest extends BiodataPostRequest {
     private EReferensiPegawai referensi;
     @NotEmpty(message = "Nipam is required")
     private String nipam;
-//    @NotEmpty(message = "NIK is required")
-//    private String nik;
-    @NotNull(message = "Status Pegawai is required")
-    @Min(value = 1, message = "Status Pegawai is required")
-    private Long statusPegawaiId;
+    @Enumerated(EnumType.ORDINAL)
+    private EStatusPegawai statusPegawai;
     @NotNull(message = "Jabatan is required")
     @Min(value = 1, message = "Jabatan is required")
     private Long jabatanId;
@@ -56,23 +56,19 @@ public class PegawaiPostRequest extends BiodataPostRequest {
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tmtKerja;
+    private Double gajiPokok;
     private String notes;
 
     @JsonIgnore
     public Specification<Pegawai> getSpecificationPegawai() {
         Specification<Pegawai> pegawaiSpec = Objects.isNull(nipam) ? null :
                 (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("nipam"), nipam);
-//        Specification<Pegawai> nikSpec = Objects.isNull(this.getNik()) ? null :
-//                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("biodata").get("nik"), this.getNik());
-
         return Specification.where(pegawaiSpec);
-//        .and(nikSpec);
     }
 
     public static Pegawai toEntity(
             PegawaiPostRequest request,
             Biodata biodata,
-            StatusPegawai statusPegawai,
             Jabatan jabatan,
             Organisasi organisasi,
             Profesi profesi,
@@ -80,16 +76,23 @@ public class PegawaiPostRequest extends BiodataPostRequest {
             Grade grade,
             StatusKerja statusKerja
     ) {
+        int umur = LocalDate.now().getYear() - biodata.getTanggalLahir().getYear();
+        LocalDate pensiun = biodata.getTanggalLahir().plusYears(56 - umur);
+
         Pegawai entity = new Pegawai();
         entity.setNipam(request.getNipam());
         entity.setBiodata(biodata);
-        entity.setStatusPegawai(statusPegawai);
+        entity.setStatusPegawai(request.getStatusPegawai());
         entity.setJabatan(jabatan);
         entity.setOrganisasi(organisasi);
         entity.setProfesi(profesi);
         entity.setGolongan(golongan);
         entity.setGrade(grade);
         entity.setStatusKerja(statusKerja);
+        entity.setTmtKerja(request.getTmtKerja());
+        entity.setTmtPensiun(pensiun);
+        entity.setGajiPokok(request.getGajiPokok());
+        entity.setNotes(request.getNotes());
 
         return entity;
     }
