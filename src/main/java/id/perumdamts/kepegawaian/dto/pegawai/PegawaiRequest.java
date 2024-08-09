@@ -54,7 +54,7 @@ public class PegawaiRequest extends CommonPageRequest {
             if (Objects.isNull(statusKerjaList) || statusKerjaList.isEmpty()) {
                 statusKerjaList.add(EStatusKerja.KARYAWAN_AKTIF);
             }
-            return criteriaBuilder.in(root.get("statusPegawai")).value(statusKerjaList).not();
+            return criteriaBuilder.in(root.get("statusPegawai")).value(statusKerjaList);
         };
 
         return Specification.where(pegawaiSpec).and(nikSpec).and(namaSpec).and(statusPegawaiSpec)
