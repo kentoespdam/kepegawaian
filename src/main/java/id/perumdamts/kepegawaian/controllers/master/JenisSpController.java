@@ -1,66 +1,30 @@
 package id.perumdamts.kepegawaian.controllers.master;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
-import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
-import id.perumdamts.kepegawaian.dto.master.jenisSp.JenisSpPostRequest;
-import id.perumdamts.kepegawaian.dto.master.jenisSp.JenisSpPutRequest;
-import id.perumdamts.kepegawaian.dto.master.jenisSp.JenisSpRequest;
-import id.perumdamts.kepegawaian.services.master.jenisSp.JenisSpService;
-import jakarta.validation.Valid;
+import id.perumdamts.kepegawaian.entities.commons.EJenisSp;
 import lombok.RequiredArgsConstructor;
-import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/master/jenis-sp")
 public class JenisSpController {
-    private final JenisSpService service;
-
     @GetMapping
-    public ResponseEntity<?> get(@ParameterObject JenisSpRequest request) {
-        return CustomResult.any(service.findPage(request));
-    }
-
-    @GetMapping("/list")
-    public ResponseEntity<?> list(@ParameterObject JenisSpRequest request) {
-        return CustomResult.list(service.findAll(request));
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
-        return CustomResult.any(service.findById(id));
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping
-    public ResponseEntity<?> save(@Valid @RequestBody JenisSpPostRequest request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(service.save(request));
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/batch")
-    public ResponseEntity<?> batch(@Valid @RequestBody List<JenisSpPostRequest> requests, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(service.saveBatch(requests));
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody JenisSpPutRequest request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(service.update(id, request));
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteById(@PathVariable Long id) {
-        return CustomResult.delete(service.deleteById(id));
+    public ResponseEntity<?> index() {
+        List<Map<String, Object>> list = Arrays.stream(EJenisSp.values()).map(eJenisSp -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", eJenisSp);
+            map.put("nama", eJenisSp.value);
+            return map;
+        }).toList();
+        return CustomResult.list(list);
     }
 }

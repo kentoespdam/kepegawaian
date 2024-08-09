@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.entities.pegawai;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
 import id.perumdamts.kepegawaian.entities.master.*;
@@ -53,9 +54,9 @@ public class Pegawai extends IdsAbstract {
     @ManyToOne
     @JoinColumn(name = "grade_id", referencedColumnName = "id")
     private Grade grade;
-    @ManyToOne
-    @JoinColumn(name = "status_kerja_id", referencedColumnName = "id")
-    private StatusKerja statusKerja;
+
+    @Enumerated(EnumType.ORDINAL)
+    private EStatusKerja statusKerja;
 
     private Long refSkCapegId;
     @JsonSerialize(using = LocalDateSerializer.class)

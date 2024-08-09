@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPostRequest;
+import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.commons.EReferensiPegawai;
 import id.perumdamts.kepegawaian.entities.master.*;
@@ -46,9 +47,8 @@ public class PegawaiPostRequest extends BiodataPostRequest {
     @NotNull(message = "Grade is required")
     @Min(value = 1, message = "Grade is required")
     private Long gradeId;
-    @NotNull(message = "Status Kerja is required")
-    @Min(value = 1, message = "Status Kerja is required")
-    private Long statusKerjaId;
+    @Enumerated(EnumType.ORDINAL)
+    private EStatusKerja statusKerja;
     private String nomorSk;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -73,8 +73,7 @@ public class PegawaiPostRequest extends BiodataPostRequest {
             Organisasi organisasi,
             Profesi profesi,
             Golongan golongan,
-            Grade grade,
-            StatusKerja statusKerja
+            Grade grade
     ) {
         int umur = LocalDate.now().getYear() - biodata.getTanggalLahir().getYear();
         LocalDate pensiun = biodata.getTanggalLahir().plusYears(56 - umur);
@@ -88,7 +87,7 @@ public class PegawaiPostRequest extends BiodataPostRequest {
         entity.setProfesi(profesi);
         entity.setGolongan(golongan);
         entity.setGrade(grade);
-        entity.setStatusKerja(statusKerja);
+        entity.setStatusKerja(request.getStatusKerja());
         entity.setTmtKerja(request.getTmtKerja());
         entity.setTmtPensiun(pensiun);
         entity.setGajiPokok(request.getGajiPokok());

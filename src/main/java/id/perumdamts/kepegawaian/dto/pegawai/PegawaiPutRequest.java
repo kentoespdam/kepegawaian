@@ -13,8 +13,7 @@ public class PegawaiPutRequest extends PegawaiPostRequest {
             Organisasi organisasi,
             Profesi profesi,
             Golongan golongan,
-            Grade grade,
-            StatusKerja statusKerja
+            Grade grade
     ) {
         entity.setNipam(request.getNipam());
         entity.setBiodata(biodata);
@@ -24,7 +23,7 @@ public class PegawaiPutRequest extends PegawaiPostRequest {
         entity.setProfesi(profesi);
         entity.setGolongan(golongan);
         entity.setGrade(grade);
-        entity.setStatusKerja(statusKerja);
+        entity.setStatusKerja(request.getStatusKerja());
         entity.setTmtKerja(request.getTmtKerja());
 
         return entity;

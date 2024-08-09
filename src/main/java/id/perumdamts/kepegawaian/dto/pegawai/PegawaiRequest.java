@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.dto.pegawai;
 
 
 import id.perumdamts.kepegawaian.dto.commons.CommonPageRequest;
+import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import jakarta.persistence.EnumType;
@@ -27,7 +28,8 @@ public class PegawaiRequest extends CommonPageRequest {
     private Long profesiId;
     private Long golonganId;
     private Long gradeId;
-    private List<Long> statusPegawaiIds = new ArrayList<>();
+    @Enumerated(EnumType.ORDINAL)
+    private List<EStatusKerja> statusKerjaList = new ArrayList<>();
 
     public Specification<Pegawai> getSpecification() {
         Specification<Pegawai> pegawaiSpec = Objects.isNull(nipam) ? null :
@@ -49,11 +51,10 @@ public class PegawaiRequest extends CommonPageRequest {
         Specification<Pegawai> gradeSpec = Objects.isNull(gradeId) ? null :
                 (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("grade").get("id"), gradeId);
         Specification<Pegawai> statusPegawaiIdsSpec = (root, query, criteriaBuilder) -> {
-            if (Objects.isNull(statusPegawaiIds) || statusPegawaiIds.isEmpty()) {
-                statusPegawaiIds.add(5L);
-                statusPegawaiIds.add(6L);
+            if (Objects.isNull(statusKerjaList) || statusKerjaList.isEmpty()) {
+                statusKerjaList.add(EStatusKerja.KARYAWAN_AKTIF);
             }
-            return criteriaBuilder.in(root.get("statusPegawai").get("id")).value(statusPegawaiIds).not();
+            return criteriaBuilder.in(root.get("statusPegawai")).value(statusKerjaList).not();
         };
 
         return Specification.where(pegawaiSpec).and(nikSpec).and(namaSpec).and(statusPegawaiSpec)

@@ -49,6 +49,11 @@ public class RiwayatSkServiceImpl implements RiwayatSkService {
     }
 
     @Override
+    public List<RiwayatSkResponse> findByIds(List<Long> riwayatIds) {
+        return repository.findByIdIn(riwayatIds).stream().map(RiwayatSkResponse::from).toList();
+    }
+
+    @Override
     public Page<RiwayatSkResponse> findByPegawaiId(Long pegawaiId, RiwayatSkRequest request) {
         request.setPegawaiId(pegawaiId);
         return repository.findAll(request.getSpecification(), request.getPageable())

@@ -1,7 +1,6 @@
 package id.perumdamts.kepegawaian.entities.commons;
 
 public enum EStatusPegawai {
-    NONE("null"),
     KONTRAK("Pegawai Kontrak"),
     CAPEG("Calon Pegawai"),
     PEGAWAI("Pegawai Tetap"),

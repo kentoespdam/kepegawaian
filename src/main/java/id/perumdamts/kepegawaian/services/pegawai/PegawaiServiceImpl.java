@@ -34,7 +34,6 @@ public class PegawaiServiceImpl implements PegawaiService {
     private final ProfesiRepository profesiRepository;
     private final GolonganRepository golonganRepository;
     private final GradeRepository gradeRepository;
-    private final StatusKerjaRepository statusKerjaRepository;
     private final BiodataService biodataService;
     private final RiwayatSkService riwayatSkService;
 
@@ -90,8 +89,6 @@ public class PegawaiServiceImpl implements PegawaiService {
                     .orElseThrow(() -> new RuntimeException("Unknown Golongan"));
             Grade grade = gradeRepository.findById(request.getGradeId())
                     .orElseThrow(() -> new RuntimeException("Unknown Grade"));
-            StatusKerja statusKerja = statusKerjaRepository.findById(request.getStatusKerjaId())
-                    .orElseThrow(() -> new RuntimeException("Unknown Status Kerja"));
 
             Pegawai entity = PegawaiPostRequest.toEntity(
                     request,
@@ -100,8 +97,7 @@ public class PegawaiServiceImpl implements PegawaiService {
                     organisasi,
                     profesi,
                     golongan,
-                    grade,
-                    statusKerja
+                    grade
             );
             Pegawai save = repository.save(entity);
             Pegawai pegawai = saveCapeg(request, save);
@@ -143,8 +139,6 @@ public class PegawaiServiceImpl implements PegawaiService {
                     .orElseThrow(() -> new RuntimeException("Unknown Golongan"));
             Grade grade = gradeRepository.findById(request.getGradeId())
                     .orElseThrow(() -> new RuntimeException("Unknown Grade"));
-            StatusKerja statusKerja = statusKerjaRepository.findById(request.getStatusKerjaId())
-                    .orElseThrow(() -> new RuntimeException("Unknown Status Kerja"));
 
             Pegawai entity = PegawaiPutRequest.toEntity(
                     pegawai.get(),
@@ -154,8 +148,7 @@ public class PegawaiServiceImpl implements PegawaiService {
                     organisasi,
                     profesi,
                     golongan,
-                    grade,
-                    statusKerja
+                    grade
             );
             Pegawai save = repository.save(entity);
             return SavedStatus.build(ESaveStatus.SUCCESS, save);

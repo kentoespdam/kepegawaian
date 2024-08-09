@@ -9,8 +9,8 @@ import id.perumdamts.kepegawaian.dto.master.grade.GradeResponse;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiMiniResponse;
-import id.perumdamts.kepegawaian.dto.master.statusKerja.StatusKerjaResponse;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataMiniResponse;
+import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
@@ -33,7 +33,8 @@ public class PegawaiResponseDetail {
     private ProfesiMiniResponse profesi;
     private GolonganResponse golongan;
     private GradeResponse grade;
-    private StatusKerjaResponse statusKerja;
+    @Enumerated(EnumType.ORDINAL)
+    private EStatusKerja statusKerja;
     private RiwayatSkResponse skCapeg;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -61,7 +62,7 @@ public class PegawaiResponseDetail {
         response.setProfesi(ProfesiMiniResponse.from(pegawai.getProfesi()));
         response.setGolongan(GolonganResponse.from(pegawai.getGolongan()));
         response.setGrade(GradeResponse.from(pegawai.getGrade()));
-        response.setStatusKerja(StatusKerjaResponse.from(pegawai.getStatusKerja()));
+        response.setStatusKerja(pegawai.getStatusKerja());
         for (RiwayatSkResponse riwayatSkResponse : list) {
             if (riwayatSkResponse.getJenisSk().equals(EJenisSk.SK_CAPEG))
                 response.setSkCapeg(riwayatSkResponse);
