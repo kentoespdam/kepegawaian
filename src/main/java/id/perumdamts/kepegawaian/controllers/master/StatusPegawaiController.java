@@ -17,7 +17,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/master/status-pegawai")
 public class StatusPegawaiController {
-    @GetMapping
+    @GetMapping("/list")
     public ResponseEntity<?> index() {
         List<Map<String, Object>> list = Arrays.stream(EStatusPegawai.values())
                 .map(eJenisPegawai -> {
