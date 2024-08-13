@@ -11,8 +11,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @EqualsAndHashCode(callSuper = true)
@@ -29,7 +27,7 @@ public class PegawaiRequest extends CommonPageRequest {
     private Long golonganId;
     private Long gradeId;
     @Enumerated(EnumType.ORDINAL)
-    private List<EStatusKerja> statusKerjaList = new ArrayList<>();
+    private EStatusKerja statusKerja=EStatusKerja.KARYAWAN_AKTIF;
 
     public Specification<Pegawai> getSpecification() {
         Specification<Pegawai> pegawaiSpec = Objects.isNull(nipam) ? null :
@@ -50,12 +48,8 @@ public class PegawaiRequest extends CommonPageRequest {
                 (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("golongan").get("id"), golonganId);
         Specification<Pegawai> gradeSpec = Objects.isNull(gradeId) ? null :
                 (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("grade").get("id"), gradeId);
-        Specification<Pegawai> statusPegawaiIdsSpec = (root, query, criteriaBuilder) -> {
-            if (Objects.isNull(statusKerjaList) || statusKerjaList.isEmpty()) {
-                statusKerjaList.add(EStatusKerja.KARYAWAN_AKTIF);
-            }
-            return criteriaBuilder.in(root.get("statusPegawai")).value(statusKerjaList);
-        };
+        Specification<Pegawai> statusPegawaiIdsSpec = Objects.isNull(statusKerja) ? null :
+                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("statusKerja"), statusKerja);
 
         return Specification.where(pegawaiSpec).and(nikSpec).and(namaSpec).and(statusPegawaiSpec)
                 .and(jabatanSpec).and(organisasiSpec).and(profesiSpec).and(golonganSpec)

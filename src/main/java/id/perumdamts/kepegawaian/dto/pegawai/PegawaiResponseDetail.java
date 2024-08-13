@@ -49,6 +49,12 @@ public class PegawaiResponseDetail {
     private Integer mkgTahun;
     private Integer mkgBulan;
     private Long absensiId;
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate tanggalSk;
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate tmtKontrakSelesai;
     private String notes;
 
     public static PegawaiResponseDetail from(Pegawai pegawai, List<RiwayatSkResponse> list) {
@@ -63,9 +69,12 @@ public class PegawaiResponseDetail {
         response.setGolongan(GolonganResponse.from(pegawai.getGolongan()));
         response.setGrade(GradeResponse.from(pegawai.getGrade()));
         response.setStatusKerja(pegawai.getStatusKerja());
+        response.setTanggalSk(pegawai.getTmtPegawai());
         for (RiwayatSkResponse riwayatSkResponse : list) {
-            if (riwayatSkResponse.getJenisSk().equals(EJenisSk.SK_CAPEG))
+            if (riwayatSkResponse.getJenisSk().equals(EJenisSk.SK_CAPEG)) {
                 response.setSkCapeg(riwayatSkResponse);
+                response.setTanggalSk(riwayatSkResponse.getTmtBerlaku());
+            }
             if (riwayatSkResponse.getJenisSk().equals(EJenisSk.SK_PEGAWAI_TETAP))
                 response.setSkPegawai(riwayatSkResponse);
             if (riwayatSkResponse.getJenisSk().equals(EJenisSk.SK_KENAIKAN_PANGKAT_GOLONGAN))
@@ -74,6 +83,7 @@ public class PegawaiResponseDetail {
                 response.setSkJabatan(riwayatSkResponse);
             if (riwayatSkResponse.getJenisSk().equals(EJenisSk.SK_MUTASI))
                 response.setSkMutasi(riwayatSkResponse);
+
         }
         response.setTmtPensiun(pegawai.getTmtPensiun());
         response.setGajiPokok(pegawai.getGajiPokok());

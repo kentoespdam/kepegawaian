@@ -7,7 +7,6 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPostRequest;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
-import id.perumdamts.kepegawaian.entities.commons.EReferensiPegawai;
 import id.perumdamts.kepegawaian.entities.master.*;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
@@ -26,12 +25,12 @@ import java.util.Objects;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class PegawaiPostRequest extends BiodataPostRequest {
-    @NotNull(message = "Referensi is required")
-    private EReferensiPegawai referensi;
     @NotEmpty(message = "Nipam is required")
     private String nipam;
     @Enumerated(EnumType.ORDINAL)
     private EStatusPegawai statusPegawai;
+    @Enumerated(EnumType.ORDINAL)
+    private EStatusKerja statusKerja;
     @NotNull(message = "Jabatan is required")
     @Min(value = 1, message = "Jabatan is required")
     private Long jabatanId;
@@ -47,15 +46,16 @@ public class PegawaiPostRequest extends BiodataPostRequest {
     @NotNull(message = "Grade is required")
     @Min(value = 1, message = "Grade is required")
     private Long gradeId;
-    @Enumerated(EnumType.ORDINAL)
-    private EStatusKerja statusKerja;
     private String nomorSk;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tanggalSk;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate tmtKerja;
+    private LocalDate tmtBerlakuSk;
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate tmtKontrakSelesai;
     private Double gajiPokok;
     private String notes;
 
@@ -87,8 +87,8 @@ public class PegawaiPostRequest extends BiodataPostRequest {
         entity.setProfesi(profesi);
         entity.setGolongan(golongan);
         entity.setGrade(grade);
-        entity.setStatusKerja(request.getStatusKerja());
-        entity.setTmtKerja(request.getTmtKerja());
+        entity.setStatusKerja(EStatusKerja.KARYAWAN_AKTIF);
+        entity.setTmtKerja(request.getTmtBerlakuSk());
         entity.setTmtPensiun(pensiun);
         entity.setGajiPokok(request.getGajiPokok());
         entity.setNotes(request.getNotes());

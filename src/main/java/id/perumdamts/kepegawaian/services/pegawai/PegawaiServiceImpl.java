@@ -4,7 +4,7 @@ import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkResponse;
 import id.perumdamts.kepegawaian.dto.pegawai.*;
-import id.perumdamts.kepegawaian.entities.commons.EReferensiPegawai;
+import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
 import id.perumdamts.kepegawaian.entities.master.*;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
@@ -39,8 +39,7 @@ public class PegawaiServiceImpl implements PegawaiService {
 
     @Override
     public Page<PegawaiResponse> findPage(PegawaiRequest request) {
-        return repository.findAll(request.getSpecification(), request.getPageable())
-                .map(PegawaiResponse::from);
+        return repository.findAll(request.getSpecification(), request.getPageable()).map(PegawaiResponse::from);
     }
 
     @Override
@@ -52,16 +51,11 @@ public class PegawaiServiceImpl implements PegawaiService {
     public PegawaiResponseDetail findById(Long id) {
         return repository.findById(id).map(pegawai -> {
             List<Long> riwayatIds = new ArrayList<>();
-            if (Objects.nonNull(pegawai.getRefSkCapegId()))
-                riwayatIds.add(pegawai.getRefSkCapegId());
-            if (Objects.nonNull(pegawai.getRefSkPegawaiId()))
-                riwayatIds.add(pegawai.getRefSkPegawaiId());
-            if (Objects.nonNull(pegawai.getRefSkGolId()))
-                riwayatIds.add(pegawai.getRefSkGolId());
-            if (Objects.nonNull(pegawai.getRefSkJabatanId()))
-                riwayatIds.add(pegawai.getRefSkJabatanId());
-            if (Objects.nonNull(pegawai.getRefSkMutasiId()))
-                riwayatIds.add(pegawai.getRefSkMutasiId());
+            if (Objects.nonNull(pegawai.getRefSkCapegId())) riwayatIds.add(pegawai.getRefSkCapegId());
+            if (Objects.nonNull(pegawai.getRefSkPegawaiId())) riwayatIds.add(pegawai.getRefSkPegawaiId());
+            if (Objects.nonNull(pegawai.getRefSkGolId())) riwayatIds.add(pegawai.getRefSkGolId());
+            if (Objects.nonNull(pegawai.getRefSkJabatanId())) riwayatIds.add(pegawai.getRefSkJabatanId());
+            if (Objects.nonNull(pegawai.getRefSkMutasiId())) riwayatIds.add(pegawai.getRefSkMutasiId());
             List<RiwayatSkResponse> riwayatSkResponses = riwayatSkService.findByIds(riwayatIds);
             return PegawaiResponseDetail.from(pegawai, riwayatSkResponses);
         }).orElse(null);
@@ -71,13 +65,12 @@ public class PegawaiServiceImpl implements PegawaiService {
     @Override
     public SavedStatus<?> save(PegawaiPostRequest request) {
         try {
+            if (request.getStatusPegawai().equals(EStatusPegawai.PEGAWAI)) request.setIsPegawai(true);
+            Biodata biodata = biodataService.saveFromPegawai(request);
+            if (request.getStatusPegawai().equals(EStatusPegawai.NON_PEGAWAI))
+                return SavedStatus.build(ESaveStatus.SUCCESS, biodata);
             boolean exists = repository.exists(request.getSpecificationPegawai());
             if (exists) return SavedStatus.build(ESaveStatus.DUPLICATE, "Pegawai sudah ada");
-            if (request.getReferensi().equals(EReferensiPegawai.PEGAWAI))
-                request.setIsPegawai(true);
-            Biodata biodata = biodataService.saveFromPegawai(request);
-            if (request.getReferensi().equals(EReferensiPegawai.BIODATA))
-                return SavedStatus.build(ESaveStatus.SUCCESS, biodata);
 
             Jabatan jabatan = jabatanRepository.findById(request.getJabatanId())
                     .orElseThrow(() -> new RuntimeException("Unknown Jabatan"));
@@ -90,18 +83,15 @@ public class PegawaiServiceImpl implements PegawaiService {
             Grade grade = gradeRepository.findById(request.getGradeId())
                     .orElseThrow(() -> new RuntimeException("Unknown Grade"));
 
-            Pegawai entity = PegawaiPostRequest.toEntity(
-                    request,
-                    biodata,
-                    jabatan,
-                    organisasi,
-                    profesi,
-                    golongan,
-                    grade
-            );
+            Pegawai entity = PegawaiPostRequest.toEntity(request, biodata, jabatan, organisasi, profesi, golongan, grade);
             Pegawai save = repository.save(entity);
-            Pegawai pegawai = saveCapeg(request, save);
+            Pegawai pegawai;
+            if (!request.getStatusPegawai().equals(EStatusPegawai.KONTRAK))
+                pegawai = saveCapeg(request, save);
+            else
+                pegawai = saveKontrak(request, save);
             return SavedStatus.build(ESaveStatus.SUCCESS, pegawai);
+
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
@@ -124,32 +114,16 @@ public class PegawaiServiceImpl implements PegawaiService {
     public SavedStatus<?> update(Long id, PegawaiPutRequest request) {
         try {
             Optional<Pegawai> pegawai = repository.findById(id);
-            if (pegawai.isEmpty())
-                return SavedStatus.build(ESaveStatus.FAILED, "Unknown Pegawai");
+            if (pegawai.isEmpty()) return SavedStatus.build(ESaveStatus.FAILED, "Unknown Pegawai");
 
-            Biodata biodata = biodataRepository.findById(request.getNik())
-                    .orElseThrow(() -> new RuntimeException("Unknown Biodata"));
-            Jabatan jabatan = jabatanRepository.findById(request.getJabatanId())
-                    .orElseThrow(() -> new RuntimeException("Unknown Jabatan"));
-            Organisasi organisasi = organisasiRepository.findById(request.getOrganisasiId())
-                    .orElseThrow(() -> new RuntimeException("Unknown Organisasi"));
-            Profesi profesi = profesiRepository.findById(request.getProfesiId())
-                    .orElseThrow(() -> new RuntimeException("Unknown Profesi"));
-            Golongan golongan = golonganRepository.findById(request.getGolonganId())
-                    .orElseThrow(() -> new RuntimeException("Unknown Golongan"));
-            Grade grade = gradeRepository.findById(request.getGradeId())
-                    .orElseThrow(() -> new RuntimeException("Unknown Grade"));
+            Biodata biodata = biodataRepository.findById(request.getNik()).orElseThrow(() -> new RuntimeException("Unknown Biodata"));
+            Jabatan jabatan = jabatanRepository.findById(request.getJabatanId()).orElseThrow(() -> new RuntimeException("Unknown Jabatan"));
+            Organisasi organisasi = organisasiRepository.findById(request.getOrganisasiId()).orElseThrow(() -> new RuntimeException("Unknown Organisasi"));
+            Profesi profesi = profesiRepository.findById(request.getProfesiId()).orElseThrow(() -> new RuntimeException("Unknown Profesi"));
+            Golongan golongan = golonganRepository.findById(request.getGolonganId()).orElseThrow(() -> new RuntimeException("Unknown Golongan"));
+            Grade grade = gradeRepository.findById(request.getGradeId()).orElseThrow(() -> new RuntimeException("Unknown Grade"));
 
-            Pegawai entity = PegawaiPutRequest.toEntity(
-                    pegawai.get(),
-                    request,
-                    biodata,
-                    jabatan,
-                    organisasi,
-                    profesi,
-                    golongan,
-                    grade
-            );
+            Pegawai entity = PegawaiPutRequest.toEntity(pegawai.get(), request, biodata, jabatan, organisasi, profesi, golongan, grade);
             Pegawai save = repository.save(entity);
             return SavedStatus.build(ESaveStatus.SUCCESS, save);
         } catch (Exception e) {
@@ -160,18 +134,24 @@ public class PegawaiServiceImpl implements PegawaiService {
     @Override
     public boolean deleteById(Long id) {
         boolean exists = repository.existsById(id);
-        if (!exists)
-            return false;
+        if (!exists) return false;
         repository.deleteById(id);
         return true;
     }
 
     private Pegawai saveCapeg(PegawaiPostRequest request, Pegawai pegawai) {
-       RiwayatSk riwayatSk = riwayatSkService.saveCapeg(request, pegawai);
+        RiwayatSk riwayatSk = riwayatSkService.saveCapeg(request, pegawai);
         pegawai.setRefSkCapegId(riwayatSk.getId());
         pegawai.setMkgTahun(0);
         pegawai.setMkgBulan(0);
 
         return repository.save(pegawai);
+    }
+
+    private Pegawai saveKontrak(PegawaiPostRequest request, Pegawai pegawai) {
+//        RiwayatSk riwayatSk = riwayatSkService.saveKontrak(request, pegawai);
+//        pegawai.setRefSkMutasiId(riwayatSk.getId());
+//        return repository.save(pegawai);
+        return pegawai;
     }
 }

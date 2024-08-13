@@ -92,7 +92,7 @@ public class RiwayatSkServiceImpl implements RiwayatSkService {
         entity.setNomorSk(request.getNomorSk());
         entity.setJenisSk(EJenisSk.SK_CAPEG);
         entity.setTanggalSk(request.getTanggalSk());
-        entity.setTmtBerlaku(request.getTmtKerja());
+        entity.setTmtBerlaku(request.getTmtBerlakuSk());
         entity.setGolongan(golongan);
         entity.setMkgTahun(0);
         entity.setMkgBulan(0);

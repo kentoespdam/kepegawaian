@@ -23,7 +23,7 @@ public class DetailDasarGajiController {
     private final DetailDasarGajiService service;
 
     @GetMapping
-    public ResponseEntity<?> get(@ParameterObject DetailDasarGajiRequest request) {
+    public ResponseEntity<?> index(@ParameterObject DetailDasarGajiRequest request) {
         return CustomResult.any(service.findPage(request));
     }
 

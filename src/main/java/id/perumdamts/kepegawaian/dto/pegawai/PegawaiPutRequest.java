@@ -24,7 +24,7 @@ public class PegawaiPutRequest extends PegawaiPostRequest {
         entity.setGolongan(golongan);
         entity.setGrade(grade);
         entity.setStatusKerja(request.getStatusKerja());
-        entity.setTmtKerja(request.getTmtKerja());
+        entity.setTmtKerja(request.getTmtBerlakuSk());
 
         return entity;
     }
