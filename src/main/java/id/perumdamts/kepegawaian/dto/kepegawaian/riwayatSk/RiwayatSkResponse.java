@@ -34,12 +34,14 @@ public class RiwayatSkResponse {
     private Integer mkgbTahun;
     private Integer mkgbBulan;
     private Boolean updateMaster;
+    private String notes;
 
     public static RiwayatSkResponse from(RiwayatSk entity) {
         RiwayatSkResponse response = new RiwayatSkResponse();
         response.setId(entity.getId());
         response.setNomorSk(entity.getNomorSk());
         response.setJenisSk(entity.getJenisSk());
+        response.setTanggalSk(entity.getTanggalSk());
         response.setTmtBerlaku(entity.getTmtBerlaku());
         response.setGolongan(GolonganResponse.from(entity.getGolongan()));
         response.setGajiPokok(entity.getGajiPokok());
@@ -49,6 +51,7 @@ public class RiwayatSkResponse {
         response.setMkgbTahun(entity.getMkgbTahun());
         response.setMkgbBulan(entity.getMkgbBulan());
         response.setUpdateMaster(entity.getUpdateMaster());
+        response.setNotes(entity.getNotes());
         return response;
     }
 }

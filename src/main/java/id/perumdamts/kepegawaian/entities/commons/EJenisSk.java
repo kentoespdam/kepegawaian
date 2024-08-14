@@ -1,7 +1,6 @@
 package id.perumdamts.kepegawaian.entities.commons;
 
 public enum EJenisSk {
-    NONE("null"),
     SK_KENAIKAN_PANGKAT_GOLONGAN("SK Kenaikan Pangkat/Gol"),
     SK_CAPEG("SK Capeg"),
     SK_PEGAWAI_TETAP("SK Pegawai Tetap"),

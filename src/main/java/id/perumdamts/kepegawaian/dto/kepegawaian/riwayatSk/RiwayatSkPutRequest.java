@@ -4,13 +4,14 @@ import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 
-import java.util.Objects;
-
 public class RiwayatSkPutRequest extends RiwayatSkPostRequest {
     public static RiwayatSk toEntity(RiwayatSk entity, RiwayatSkPostRequest request, Pegawai pegawai, Golongan golongan) {
         entity.setPegawai(pegawai);
+        entity.setNomorSk(request.getNomorSk());
         entity.setJenisSk(request.getJenisSk());
-        if (Objects.nonNull(golongan)) entity.setGolongan(golongan);
+        entity.setTanggalSk(request.getTanggalSk());
+        entity.setTmtBerlaku(request.getTmtBerlaku());
+        entity.setGolongan(golongan);
         entity.setGajiPokok(request.getGajiPokok());
         entity.setMkgTahun(request.getMkgTahun());
         entity.setMkgBulan(request.getMkgBulan());

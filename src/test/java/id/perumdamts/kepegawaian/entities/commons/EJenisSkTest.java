@@ -10,7 +10,6 @@ class EJenisSkTest {
 
     @org.junit.jupiter.api.Test
     void value() {
-        assertEquals("null", EJenisSk.NONE.value);
         assertEquals("SK Kenaikan Pangkat/Gol", EJenisSk.SK_KENAIKAN_PANGKAT_GOLONGAN.value);
         assertEquals("SK Capeg", EJenisSk.SK_CAPEG.value);
         assertEquals("SK Pegawai Tetap", EJenisSk.SK_PEGAWAI_TETAP.value);
