@@ -9,4 +9,6 @@ import java.util.List;
 
 public interface LampiranSkRepository extends JpaRepository<LampiranSk, Long>, JpaSpecificationExecutor<LampiranSk> {
     List<LampiranSk> findByRefAndRefId(EJenisSk jenisSk, Long id);
+
+    List<LampiranSk> findAllByRefId(Long id);
 }

@@ -11,6 +11,7 @@ import jakarta.persistence.Enumerated;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Data
 public class RiwayatSkResponse {
@@ -43,7 +44,8 @@ public class RiwayatSkResponse {
         response.setJenisSk(entity.getJenisSk());
         response.setTanggalSk(entity.getTanggalSk());
         response.setTmtBerlaku(entity.getTmtBerlaku());
-        response.setGolongan(GolonganResponse.from(entity.getGolongan()));
+        if (Objects.nonNull(entity.getGolongan()))
+            response.setGolongan(GolonganResponse.from(entity.getGolongan()));
         response.setGajiPokok(entity.getGajiPokok());
         response.setMkgTahun(entity.getMkgTahun());
         response.setMkgBulan(entity.getMkgBulan());

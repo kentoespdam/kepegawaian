@@ -64,7 +64,7 @@ public class RiwayatSkPostRequest {
         Specification<RiwayatSk> nomorSkSpec = Objects.isNull(nomorSk) ? null :
                 (root, query, cb) -> cb.equal(root.get("nomorSk"), nomorSk);
         Specification<RiwayatSk> jenisSkSpec = Objects.isNull(jenisSk) ? null :
-                (root, query, cb) -> cb.equal(root.get("jenisSk").get("id"), jenisSk);
+                (root, query, cb) -> cb.equal(root.get("jenisSk"), jenisSk);
         return Specification.where(pegawaiSpec).and(nomorSkSpec).and(jenisSkSpec);
     }
 

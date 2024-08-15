@@ -11,6 +11,7 @@ import jakarta.validation.*;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,6 +46,7 @@ public class RiwayatSkController {
         return CustomResult.any(riwayatSkService.findByPegawaiId(id, request));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> save(@Valid @RequestBody RiwayatSkPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
@@ -57,6 +59,7 @@ public class RiwayatSkController {
         return CustomResult.save(riwayatSkService.save(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody RiwayatSkPutRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
@@ -68,6 +71,7 @@ public class RiwayatSkController {
         return CustomResult.save(riwayatSkService.update(id, request));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         return CustomResult.delete(riwayatSkService.delete(id));

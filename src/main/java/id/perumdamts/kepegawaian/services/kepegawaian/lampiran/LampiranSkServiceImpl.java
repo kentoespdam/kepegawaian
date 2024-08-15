@@ -95,4 +95,10 @@ public class LampiranSkServiceImpl implements LampiranSkService {
         LampiranSk save = repository.save(entity);
         return SavedStatus.build(ESaveStatus.SUCCESS, LampiranSkResponse.from(save));
     }
+
+    @Override
+    public void deleteByRefId(Long id) {
+        List<LampiranSk> list = repository.findAllByRefId(id).stream().peek(lampiranSk -> lampiranSk.setIsDeleted(true)).toList();
+        repository.saveAll(list);
+    }
 }

@@ -10,6 +10,7 @@ import id.perumdamts.kepegawaian.services.kepegawaian.lampiran.LampiranSkService
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
@@ -30,12 +31,14 @@ public class LampiranSkController {
         return service.getFileLampiranById(jenis, id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> create(@Valid @ModelAttribute LampiranSkPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         return CustomResult.save(service.addLampiran(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/accept")
     public ResponseEntity<?> acceptLampiran(@Valid @RequestBody LampiranSkAcceptRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
@@ -44,6 +47,7 @@ public class LampiranSkController {
         return CustomResult.save(service.acceptLampiran(request, appwriteUser.getName()));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         return CustomResult.delete(service.deleteById(id));

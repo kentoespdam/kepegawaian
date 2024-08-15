@@ -14,6 +14,7 @@ import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.RiwayatSkRepository;
 import id.perumdamts.kepegawaian.repositories.master.GolonganRepository;
+import id.perumdamts.kepegawaian.services.kepegawaian.lampiran.LampiranSkService;
 import id.perumdamts.kepegawaian.services.master.golongan.GolonganService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -31,6 +32,7 @@ public class RiwayatSkServiceImpl implements RiwayatSkService {
     private final PegawaiRepository pegawaiRepository;
     private final GolonganService golonganService;
     private final GolonganRepository golonganRepository;
+    private final LampiranSkService lampiranSkService;
 
     @Override
     public List<RiwayatSkResponse> findAll(RiwayatSkRequest request) {
@@ -125,10 +127,13 @@ public class RiwayatSkServiceImpl implements RiwayatSkService {
     @Transactional
     @Override
     public Boolean delete(Long id) {
-        return null;
+        boolean existsById = repository.existsById(id);
+        if (!existsById) return false;
+        repository.deleteById(id);
+        lampiranSkService.deleteByRefId(id);
+        return true;
     }
 
-    @Transactional
     private void updatePegawai(RiwayatSkPostRequest request, Pegawai pegawai, RiwayatSk sk, Golongan golongan) {
         if (request.getGajiPokok() <= 0 || request.getGolonganId() <= 0) return;
         pegawai.setGajiPokok(request.getGajiPokok());

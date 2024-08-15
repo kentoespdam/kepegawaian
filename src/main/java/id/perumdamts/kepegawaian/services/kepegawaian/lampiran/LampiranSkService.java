@@ -21,4 +21,6 @@ public interface LampiranSkService {
     boolean deleteById(Long id);
 
     SavedStatus<?> acceptLampiran(LampiranSkAcceptRequest request, String oleh);
+
+    void deleteByRefId(Long id);
 }
