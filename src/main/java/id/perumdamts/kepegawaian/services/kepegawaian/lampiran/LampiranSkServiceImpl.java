@@ -13,6 +13,7 @@ import id.perumdamts.kepegawaian.utils.FileUploadUtil;
 import id.perumdamts.kepegawaian.utils.UploadResultUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,7 +47,7 @@ public class LampiranSkServiceImpl implements LampiranSkService {
         LampiranSk lampiranById = repository.findById(id).orElse(null);
         if (Objects.isNull(lampiranById))
             return ErrorResult.build("File Not Found");
-        try{
+        try {
             Path path = fileUploadUtil.generatePath(jenisSk, String.valueOf(lampiranById.getRefId()), lampiranById.getHashedFileName());
             FileInputStream stream = new FileInputStream(path.toFile());
             ByteArrayResource resource = new ByteArrayResource(stream.readAllBytes());
@@ -56,7 +57,7 @@ public class LampiranSkServiceImpl implements LampiranSkService {
                     .header("Content-Type", lampiranById.getMimeType())
                     .header("Content-Disposition", "inline; filename=\"" + lampiranById.getFileName() + "\"")
                     .body(resource);
-        }catch (IOException e){
+        } catch (IOException e) {
             return ErrorResult.build("File Not Found");
         }
     }
@@ -85,6 +86,21 @@ public class LampiranSkServiceImpl implements LampiranSkService {
         return true;
     }
 
+    @Override
+    public boolean deleteLampiran(EJenisSk ref, Long refId, Long id) {
+        Specification<LampiranSk> specification = (root, query, cb) ->
+                cb.and(
+                        cb.equal(root.get("ref"), ref),
+                        cb.equal(root.get("refId"), refId),
+                        cb.equal(root.get("id"), id)
+                );
+        boolean exists = repository.exists(specification);
+        if (!exists)
+            return false;
+        repository.deleteById(id);
+        return true;
+    }
+
     @Transactional
     @Override
     public SavedStatus<?> acceptLampiran(LampiranSkAcceptRequest request, String oleh) {
@@ -98,7 +114,9 @@ public class LampiranSkServiceImpl implements LampiranSkService {
 
     @Override
     public void deleteByRefId(Long id) {
-        List<LampiranSk> list = repository.findAllByRefId(id).stream().peek(lampiranSk -> lampiranSk.setIsDeleted(true)).toList();
+        List<LampiranSk> list = repository.findAllByRefId(id)
+                .stream().peek(lampiranSk -> lampiranSk.setIsDeleted(true))
+                .toList();
         repository.saveAll(list);
     }
 }

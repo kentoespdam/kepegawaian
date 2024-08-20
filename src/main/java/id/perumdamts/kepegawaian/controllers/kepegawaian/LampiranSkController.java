@@ -48,8 +48,8 @@ public class LampiranSkController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
-        return CustomResult.delete(service.deleteById(id));
+    @DeleteMapping("/{ref}/{refId}/{id}")
+    public ResponseEntity<?> delete(@PathVariable EJenisSk ref, @PathVariable Long refId, @PathVariable Long id) {
+        return CustomResult.delete(service.deleteLampiran(ref, refId, id));
     }
 }
