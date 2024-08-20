@@ -3,6 +3,8 @@ package id.perumdamts.kepegawaian.dto.kepegawaian.lampiran;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.penggajian.LampiranSk;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -14,6 +16,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class LampiranSkPostRequest implements Serializable {
+    @Enumerated(EnumType.STRING)
     private EJenisSk ref;
     @Min(value = 1, message = "Ref ID must be greater than or equal to 1")
     private Long refId;
