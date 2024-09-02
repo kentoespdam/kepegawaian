@@ -51,6 +51,11 @@ public class RiwayatSkServiceImpl implements RiwayatSkService {
     }
 
     @Override
+    public RiwayatSk findEntityById(Long id) {
+        return repository.findById(id).orElse(null);
+    }
+
+    @Override
     public List<RiwayatSkResponse> findByIds(List<Long> riwayatIds) {
         return repository.findByIdIn(riwayatIds).stream().map(RiwayatSkResponse::from).toList();
     }
@@ -60,6 +65,23 @@ public class RiwayatSkServiceImpl implements RiwayatSkService {
         request.setPegawaiId(pegawaiId);
         return repository.findAll(request.getSpecification(), request.getPageable())
                 .map(RiwayatSkResponse::from);
+    }
+
+    @Override
+    public RiwayatSk saveEntity(RiwayatSkPostRequest request) {
+        Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId()).orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
+        Golongan golongan = golonganRepository.findById(request.getGolonganId()).orElse(null);
+
+        Optional<RiwayatSk> one = repository.findOne(request.getSpecification());
+        if (one.isPresent())
+            throw new RuntimeException("Riwayat SK is Exists");
+
+        RiwayatSk entity = RiwayatSkPostRequest.toEntity(request, pegawai, golongan);
+        RiwayatSk save = repository.save(entity);
+        if (request.getUpdateMaster())
+            this.updatePegawai(request, pegawai, save, golongan);
+
+        return save;
     }
 
     @Transactional
@@ -78,7 +100,7 @@ public class RiwayatSkServiceImpl implements RiwayatSkService {
             if (request.getUpdateMaster())
                 this.updatePegawai(request, pegawai, save, golongan);
 
-            return SavedStatus.build(ESaveStatus.SUCCESS, "Riwayat SK is Saved");
+            return SavedStatus.build(ESaveStatus.SUCCESS, save);
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }

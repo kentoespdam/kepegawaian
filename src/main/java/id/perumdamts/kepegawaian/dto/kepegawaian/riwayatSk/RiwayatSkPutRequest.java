@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk;
 
+import id.perumdamts.kepegawaian.dto.kepegawaian.mutasi.RiwayatMutasiPutRequest;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
@@ -18,6 +19,16 @@ public class RiwayatSkPutRequest extends RiwayatSkPostRequest {
         entity.setKenaikanBerikutnya(request.getKenaikanBerikutnya());
         entity.setMkgbTahun(request.getMkgbTahun());
         entity.setMkgbBulan(request.getMkgbBulan());
+        entity.setUpdateMaster(request.getUpdateMaster());
+        entity.setNotes(request.getNotes());
+        return entity;
+    }
+
+    public static RiwayatSk toEntity(RiwayatSk entity, RiwayatMutasiPutRequest request, Pegawai pegawai) {
+        entity.setPegawai(pegawai);
+        entity.setNomorSk(request.getNomorSk());
+        entity.setJenisSk(request.getJenisSk());
+        entity.setTmtBerlaku(request.getTmtBerlaku());
         entity.setUpdateMaster(request.getUpdateMaster());
         entity.setNotes(request.getNotes());
         return entity;

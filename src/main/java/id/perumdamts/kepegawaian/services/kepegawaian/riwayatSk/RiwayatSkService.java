@@ -16,8 +16,10 @@ public interface RiwayatSkService {
     List<RiwayatSkResponse> findAll(RiwayatSkRequest request);
     Page<RiwayatSkResponse> findPage(RiwayatSkRequest request);
     RiwayatSkResponse findById(Long id);
+    RiwayatSk findEntityById(Long id);
     List<RiwayatSkResponse> findByIds(List<Long> riwayatIds);
     Page<RiwayatSkResponse> findByPegawaiId(Long pegawaiId, RiwayatSkRequest request);
+    RiwayatSk saveEntity(RiwayatSkPostRequest request);
     SavedStatus<?> save(RiwayatSkPostRequest request);
     RiwayatSk saveCapeg(PegawaiPostRequest request, Pegawai pegawai);
 

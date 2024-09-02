@@ -13,12 +13,16 @@ import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class RiwayatSkPostRequest {
     @NotNull(message = "Pegawai ID is required")
@@ -54,7 +58,7 @@ public class RiwayatSkPostRequest {
     private Integer mkgbTahun;
     @JsonSerialize(using = LocalDateSerializer.class)
     private Integer mkgbBulan;
-    private Boolean updateMaster;
+    private Boolean updateMaster = false;
     private String notes;
 
     @JsonIgnore
@@ -68,7 +72,7 @@ public class RiwayatSkPostRequest {
         return Specification.where(pegawaiSpec).and(nomorSkSpec).and(jenisSkSpec);
     }
 
-    public static RiwayatSk toEntity(RiwayatSkPostRequest request, Pegawai pegawai, Golongan golongan){
+    public static RiwayatSk toEntity(RiwayatSkPostRequest request, Pegawai pegawai, Golongan golongan) {
         RiwayatSk entity = new RiwayatSk();
         entity.setPegawai(pegawai);
         entity.setNomorSk(request.getNomorSk());
