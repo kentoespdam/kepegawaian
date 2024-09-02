@@ -24,7 +24,6 @@ public class SetupMasterController {
     private final SetupJenjangPendidikan setupJenjangPendidikan;
     private final SetupKodePajak setupKodePajak;
     private final SetupAlasanBerhenti setupAlasanBerhenti;
-    private final SetupJenisMutasi setupJenisMutasi;
     private final SetupDasarGaji setupDasarGaji;
     private final SetupDetailDasarGaji setupDetailDasarGaji;
 
@@ -45,7 +44,6 @@ public class SetupMasterController {
             setupJenjangPendidikan.insertBatch();
             setupKodePajak.insertBatch();
             setupAlasanBerhenti.insertBatch();
-            setupJenisMutasi.insertBatch();
             setupDetailDasarGaji.insertBatch();
             return ResponseEntity.ok().build();
         } catch (JsonProcessingException e) {
