@@ -16,6 +16,8 @@ import java.util.Objects;
 @Data
 public class RiwayatSkResponse {
     private Long id;
+    private String nipam;
+    private String nama;
     private String nomorSk;
     @Enumerated(EnumType.ORDINAL)
     private EJenisSk jenisSk;
@@ -40,6 +42,8 @@ public class RiwayatSkResponse {
     public static RiwayatSkResponse from(RiwayatSk entity) {
         RiwayatSkResponse response = new RiwayatSkResponse();
         response.setId(entity.getId());
+        response.setNipam(entity.getNipam());
+        response.setNama(entity.getNama());
         response.setNomorSk(entity.getNomorSk());
         response.setJenisSk(entity.getJenisSk());
         response.setTanggalSk(entity.getTanggalSk());

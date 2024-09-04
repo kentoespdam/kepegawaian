@@ -75,6 +75,8 @@ public class RiwayatSkPostRequest {
     public static RiwayatSk toEntity(RiwayatSkPostRequest request, Pegawai pegawai, Golongan golongan) {
         RiwayatSk entity = new RiwayatSk();
         entity.setPegawai(pegawai);
+        entity.setNipam(pegawai.getNipam());
+        entity.setNama(pegawai.getBiodata().getNama());
         entity.setNomorSk(request.getNomorSk());
         entity.setJenisSk(request.getJenisSk());
         entity.setTanggalSk(request.getTanggalSk());

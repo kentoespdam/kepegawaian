@@ -21,6 +21,8 @@ import java.time.LocalDate;
 @Entity
 @Table(indexes = {
         @Index(columnList = "nomorSk"),
+        @Index(columnList = "nipam"),
+        @Index(columnList = "nama"),
         @Index(columnList = "tanggalSk"),
         @Index(columnList = "mkgTahun"),
         @Index(columnList = "mkgbTahun"),
@@ -37,6 +39,8 @@ public class RiwayatSk extends IdsAbstract {
     @ManyToOne
     @JoinColumn(name = "pegawai_id", referencedColumnName = "id")
     private Pegawai pegawai;
+    private String nipam;
+    private String nama;
     private String nomorSk;
     @Enumerated(EnumType.ORDINAL)
     private EJenisSk jenisSk;

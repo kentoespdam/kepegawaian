@@ -88,8 +88,12 @@ public class RiwayatSkServiceImpl implements RiwayatSkService {
     @Override
     public SavedStatus<?> save(RiwayatSkPostRequest request) {
         try {
-            Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId()).orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
-            Golongan golongan = golonganRepository.findById(request.getGolonganId()).orElse(null);
+            if (request.getTmtBerlaku().isBefore(request.getTanggalSk()))
+                return SavedStatus.build(ESaveStatus.FAILED, "TMT Berlaku must be greater than Tgl. SK");
+            Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId())
+                    .orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
+            Golongan golongan = golonganRepository.findById(request.getGolonganId())
+                    .orElse(null);
 
             Optional<RiwayatSk> one = repository.findOne(request.getSpecification());
             if (one.isPresent())
@@ -113,6 +117,8 @@ public class RiwayatSkServiceImpl implements RiwayatSkService {
 
         RiwayatSk entity = new RiwayatSk();
         entity.setPegawai(pegawai);
+        entity.setNipam(pegawai.getNipam());
+        entity.setNama(pegawai.getBiodata().getNama());
         entity.setNomorSk(request.getNomorSk());
         entity.setJenisSk(EJenisSk.SK_CAPEG);
         entity.setTanggalSk(request.getTanggalSk());

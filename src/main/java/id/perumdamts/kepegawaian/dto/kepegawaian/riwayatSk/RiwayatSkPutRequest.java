@@ -8,6 +8,8 @@ import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 public class RiwayatSkPutRequest extends RiwayatSkPostRequest {
     public static RiwayatSk toEntity(RiwayatSk entity, RiwayatSkPostRequest request, Pegawai pegawai, Golongan golongan) {
         entity.setPegawai(pegawai);
+        entity.setNipam(pegawai.getNipam());
+        entity.setNama(pegawai.getBiodata().getNama());
         entity.setNomorSk(request.getNomorSk());
         entity.setJenisSk(request.getJenisSk());
         entity.setTanggalSk(request.getTanggalSk());
@@ -26,6 +28,8 @@ public class RiwayatSkPutRequest extends RiwayatSkPostRequest {
 
     public static RiwayatSk toEntity(RiwayatSk entity, RiwayatMutasiPutRequest request, Pegawai pegawai) {
         entity.setPegawai(pegawai);
+        entity.setNipam(pegawai.getNipam());
+        entity.setNama(pegawai.getBiodata().getNama());
         entity.setNomorSk(request.getNomorSk());
         entity.setJenisSk(request.getJenisSk());
         entity.setTmtBerlaku(request.getTmtBerlaku());
