@@ -36,6 +36,8 @@ public class IdsAbstract implements Serializable {
     @LastModifiedDate
     private LocalDateTime updatedAt;
     private Boolean isDeleted = false;
+    @Version
+    private Long version = 1L;
 
     public IdsAbstract(Long id) {
         this.id = id;

@@ -16,6 +16,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import java.time.LocalDate;
 
@@ -30,27 +32,34 @@ import java.time.LocalDate;
 @SQLDelete(sql = "UPDATE pegawai SET is_deleted = true WHERE id = ?")
 @SQLRestriction("is_deleted = FALSE")
 @EqualsAndHashCode(callSuper = true)
+@Audited
 public class Pegawai extends IdsAbstract {
     @NotEmpty
     @Column(unique = true)
     private String nipam;
+    @NotAudited
     @OneToOne
     @JoinColumn(name = "biodata_id", unique = true, referencedColumnName = "nik")
     private Biodata biodata;
     @Enumerated(EnumType.ORDINAL)
     private EStatusPegawai statusPegawai;
+    @NotAudited
     @ManyToOne
     @JoinColumn(name = "organisasi_id", referencedColumnName = "id")
     private Organisasi organisasi;
+    @NotAudited
     @ManyToOne
     @JoinColumn(name = "jabatan_id", referencedColumnName = "id")
     private Jabatan jabatan;
+    @NotAudited
     @ManyToOne
     @JoinColumn(name = "profesi_id", referencedColumnName = "id")
     private Profesi profesi;
+    @NotAudited
     @ManyToOne
     @JoinColumn(name = "golongan_id", referencedColumnName = "id")
     private Golongan golongan;
+    @NotAudited
     @ManyToOne
     @JoinColumn(name = "grade_id", referencedColumnName = "id")
     private Grade grade;

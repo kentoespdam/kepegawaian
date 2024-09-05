@@ -8,6 +8,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 @Entity
 @Table(indexes = {
@@ -21,7 +23,9 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLDelete(sql = "UPDATE organisasi SET is_deleted=true WHERE id=?")
 @SQLRestriction("is_deleted <> 1")
 @EqualsAndHashCode(callSuper = true)
+@Audited
 public class Organisasi extends IdsAbstract {
+    @NotAudited
     @ManyToOne
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
     private Organisasi parent;
@@ -40,7 +44,8 @@ public class Organisasi extends IdsAbstract {
 
     public Organisasi(Long id, Organisasi organisasi, Integer levelOrg, String nama) {
         super(id);
-        this.parent = organisasi;
+        if (organisasi != null)
+            this.parent = organisasi;
         this.levelOrg = levelOrg;
         this.nama = nama;
     }

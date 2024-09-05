@@ -8,6 +8,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 @Entity
 @Table(indexes = {
@@ -20,13 +22,17 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLDelete(sql = "UPDATE jabatan SET is_deleted=true WHERE id=?")
 @SQLRestriction("is_deleted <> 1")
 @EqualsAndHashCode(callSuper = true)
+@Audited
 public class Jabatan extends IdsAbstract {
+    @NotAudited
     @ManyToOne
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
     private Jabatan parent;
+    @NotAudited
     @ManyToOne
     @JoinColumn(name = "organisasi_id", referencedColumnName = "id")
     private Organisasi organisasi;
+    @NotAudited
     @ManyToOne
     @JoinColumn(name = "level_id", referencedColumnName = "id")
     private Level level;
@@ -36,11 +42,12 @@ public class Jabatan extends IdsAbstract {
         super(id);
     }
 
-    public Jabatan(Long id, Jabatan jabatan, Organisasi organisasi, Level level, String nama) {
+    public Jabatan(long id, Jabatan parent, Organisasi organisasi, Level level, String direkturUtama) {
         super(id);
-        this.parent = jabatan;
+        if (parent != null)
+            this.parent = parent;
         this.organisasi = organisasi;
         this.level = level;
-        this.nama = nama;
+        this.nama = direkturUtama;
     }
 }

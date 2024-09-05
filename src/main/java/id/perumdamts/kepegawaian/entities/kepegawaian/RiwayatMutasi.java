@@ -16,6 +16,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.envers.NotAudited;
 
 import java.time.LocalDate;
 
@@ -30,10 +31,12 @@ import java.time.LocalDate;
 @SQLRestriction("is_deleted = false")
 @EqualsAndHashCode(callSuper = true)
 public class RiwayatMutasi extends IdsAbstract {
+    @NotAudited
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name="pegawai_id", referencedColumnName = "id")
     private Pegawai pegawai;
+    @NotAudited
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "riwayat_sk_id", referencedColumnName = "id")
@@ -46,21 +49,25 @@ public class RiwayatMutasi extends IdsAbstract {
     private LocalDate tglBerakhir;
     @Enumerated(EnumType.ORDINAL)
     private EJenisMutasi jenisMutasi;
+    @NotAudited
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name="organisasi_id", referencedColumnName = "id")
     private Organisasi organisasi;
     private String namaOrganisasi;
+    @NotAudited
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name="jabatan_id", referencedColumnName = "id")
     private Jabatan jabatan;
     private String namaJabatan;
+    @NotAudited
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="organisasi_lama_id", referencedColumnName = "id")
     private Organisasi organisasiLama;
     private String namaOrganisasiLama;
+    @NotAudited
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="jabatan_lama_id", referencedColumnName = "id")

@@ -10,6 +10,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.envers.Audited;
 
 @Entity
 @Table(indexes = {
@@ -23,6 +24,7 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLDelete(sql = "UPDATE golongan SET is_deleted = TRUE WHERE id=?")
 @SQLRestriction("is_deleted = FALSE")
 @EqualsAndHashCode(callSuper = true)
+@Audited
 public class Golongan extends IdsAbstract {
     private String golongan;
     private String pangkat;

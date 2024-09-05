@@ -8,6 +8,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import java.util.List;
 
@@ -22,15 +24,19 @@ import java.util.List;
 @SQLDelete(sql = "UPDATE profesi SET is_deleted=true WHERE id=?")
 @SQLRestriction("is_deleted <> 1")
 @EqualsAndHashCode(callSuper = true)
+@Audited
 public class Profesi extends IdsAbstract {
+    @NotAudited
     @ManyToOne
     @JoinColumn(name = "level_id", referencedColumnName = "id")
     private Level level;
     private String nama;
     private String detail;
     private String resiko;
+    @NotAudited
     @OneToMany(mappedBy = "profesi")
     private List<Apd> apdList;
+    @NotAudited
     @OneToMany(mappedBy = "profesi")
     private List<AlatKerja> alatKerjaList;
 

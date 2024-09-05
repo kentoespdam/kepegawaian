@@ -24,8 +24,8 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.2.1'
-//	implementation 'org.springframework.boot:spring-boot-starter-jooq'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.data:spring-data-envers'
 
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -45,7 +45,7 @@ dependencies {
     //FileUtils
     implementation 'commons-io:commons-io:2.16.1'
 
-    runtimeOnly 'com.mysql:mysql-connector-j:8.4.0'
+    runtimeOnly 'com.mysql:mysql-connector-j'
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
@@ -59,4 +59,8 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+test{
+    jvmArgs("-XX:+EnableDynamicAgentLoading","-Djdk.instrument.traceUsage")
 }
