@@ -55,13 +55,13 @@ public class RiwayatSk extends IdsAbstract {
     @JoinColumn(name = "golongan_id", referencedColumnName = "id")
     private Golongan golongan;
     private Double gajiPokok;
-    private Integer mkgTahun;
-    private Integer mkgBulan;
+    private Integer mkgTahun=0;
+    private Integer mkgBulan=0;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate kenaikanBerikutnya;
-    private Integer mkgbTahun;
-    private Integer mkgbBulan;
-    private Boolean updateMaster;
+    private Integer mkgbTahun=0;
+    private Integer mkgbBulan=0;
+    private Boolean updateMaster = false;
     private String notes;
 }

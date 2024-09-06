@@ -22,10 +22,13 @@ public class RiwayatMutasiResponse {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tglBerakhir;
     private OrganisasiMiniResponse organisasi;
+    private String namaOrganisasi;
     private JabatanMiniResponse jabatan;
+    private String namaJabatan;
     private OrganisasiMiniResponse organisasiLama;
     private String namaOrganisasiLama;
     private JabatanMiniResponse jabatanLama;
+    private String namaJabatanLama;
     private String notes;
 
     public static RiwayatMutasiResponse from(RiwayatMutasi entity) {
@@ -35,11 +38,16 @@ public class RiwayatMutasiResponse {
         response.setTmtBerlaku(entity.getTmtBerlaku());
         response.setTglBerakhir(entity.getTglBerakhir());
         response.setOrganisasi(OrganisasiMiniResponse.from(entity.getOrganisasi()));
+        response.setNamaOrganisasi(entity.getNamaOrganisasi());
         response.setJabatan(JabatanMiniResponse.from(entity.getJabatan()));
+        response.setNamaJabatan(entity.getNamaJabatan());
         if (entity.getOrganisasiLama() != null)
             response.setOrganisasiLama(OrganisasiMiniResponse.from(entity.getOrganisasiLama()));
-        if (entity.getJabatanLama() != null)
+        response.setNamaOrganisasiLama(entity.getNamaOrganisasiLama());
+        if (entity.getJabatanLama() != null) {
             response.setJabatanLama(JabatanMiniResponse.from(entity.getJabatanLama()));
+        }
+        response.setNamaJabatanLama(entity.getNamaJabatanLama());
         response.setNotes(entity.getNotes());
         return response;
     }

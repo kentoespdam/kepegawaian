@@ -77,6 +77,7 @@ public class PegawaiPostRequest extends BiodataPostRequest {
     ) {
         int umur = LocalDate.now().getYear() - biodata.getTanggalLahir().getYear();
         LocalDate pensiun = biodata.getTanggalLahir().plusYears(56 - umur);
+        pensiun=LocalDate.of(pensiun.getYear(), pensiun.getMonth(), 1);
 
         Pegawai entity = new Pegawai();
         entity.setNipam(request.getNipam());
