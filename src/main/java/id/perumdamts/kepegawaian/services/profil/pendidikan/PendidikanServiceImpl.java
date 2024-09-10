@@ -161,6 +161,7 @@ public class PendidikanServiceImpl implements PendidikanService {
         Pendidikan pendidikan = new Pendidikan();
         pendidikan.setBiodata(save);
         pendidikan.setJenjangPendidikan(jenjangPendidikan);
+        pendidikan.setIsLatest(true);
         repository.save(pendidikan);
     }
 
