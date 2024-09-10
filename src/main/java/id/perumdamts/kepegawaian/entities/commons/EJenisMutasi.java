@@ -2,8 +2,10 @@ package id.perumdamts.kepegawaian.entities.commons;
 
 public enum EJenisMutasi {
     PENGANGKATAN_PERTAMA("Pengangkatan Pertama"),
-    PINDAH_LOKER_JABATAN("Pindah Loker / Jabatan"),
-    PERUBAHAN_GAJI("Perubahan Gaji"),
+    MUTASI_LOKER("Pindah Lokasi Kerja"),
+    MUTASI_GOLONGAN("Perubahan Golongan"),
+    MUTASI_JABATAN("Perubahan Jabatan"),
+//    PERUBAHAN_GAJI("Perubahan Gaji"),
     TERMINASI("Terminasi");
 
     public final String value;

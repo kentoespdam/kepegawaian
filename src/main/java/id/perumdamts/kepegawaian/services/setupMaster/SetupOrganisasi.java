@@ -85,8 +85,8 @@ public class SetupOrganisasi implements SetupMaster {
             list.add(new Organisasi(59L, new Organisasi(58L),4,"SUB BAG PEMASARAN"));
             list.add(new Organisasi(60L, new Organisasi(58L),4,"SUB BAG PRODUKSI"));
 
-//            organisasiRepository.saveAll(list);
-            list.forEach(organisasiRepository::save);
+            organisasiRepository.saveAll(list);
+//            list.forEach(organisasiRepository::save);
         } catch (Exception e) {
             log.error("Failed to setup Organisasi", e);
         }

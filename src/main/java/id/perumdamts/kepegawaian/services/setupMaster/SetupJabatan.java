@@ -129,6 +129,7 @@ public class SetupJabatan implements SetupMaster {
         list.add(new Jabatan(103L, new Jabatan(100L), new Organisasi(60L), new Level(6L),"Supervisor Produksi"));
         list.add(new Jabatan(104L, new Jabatan(103L), new Organisasi(60L), new Level(7L),"Staf Sub Bag. Produksi"));
 
-        list.forEach(repository::save);
+//        list.forEach(repository::save);
+        repository.saveAll(list);
     }
 }

@@ -1,6 +1,5 @@
 package id.perumdamts.kepegawaian.dto.commons;
 
-import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkPostRequest;
 import jakarta.validation.ConstraintViolation;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -37,13 +36,6 @@ public class ErrorResult extends ResultAbstract<Object> {
         return ResponseEntity.status(result.statusText).body(result);
     }
 
-    public static ResponseEntity<?> build(Set<ConstraintViolation<RiwayatSkPostRequest>> validate) {
-        ErrorResult result = new ErrorResult();
-        result.setErrors(getErrors(validate));
-        result.setStatusText(HttpStatus.BAD_REQUEST);
-        return ResponseEntity.status(result.statusText).body(result);
-    }
-
     private static List<String> getErrors(Errors errors) {
         return errors.getFieldErrors()
                 .stream()
@@ -51,7 +43,14 @@ public class ErrorResult extends ResultAbstract<Object> {
                 .toList();
     }
 
-    private static List<String> getErrors(Set<ConstraintViolation<RiwayatSkPostRequest>> validate) {
+    public static <T> ResponseEntity<?> build(Set<ConstraintViolation<T>> validate) {
+        ErrorResult result = new ErrorResult();
+        result.setErrors(getErrors(validate));
+        result.setStatusText(HttpStatus.BAD_REQUEST);
+        return ResponseEntity.status(result.statusText).body(result);
+    }
+
+    private static <T> List<String> getErrors(Set<ConstraintViolation<T>> validate) {
         return validate.stream()
                 .map(error -> "field [" + error.getPropertyPath() + "] : " + error.getMessage())
                 .toList();

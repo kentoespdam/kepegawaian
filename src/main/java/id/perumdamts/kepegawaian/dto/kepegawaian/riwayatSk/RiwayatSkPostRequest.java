@@ -61,6 +61,7 @@ public class RiwayatSkPostRequest {
     private Boolean updateMaster = false;
     private String notes;
 
+
     @JsonIgnore
     public Specification<RiwayatSk> getSpecification() {
         Specification<RiwayatSk> pegawaiSpec = Objects.isNull(pegawaiId) ? null :
@@ -72,7 +73,7 @@ public class RiwayatSkPostRequest {
         return Specification.where(pegawaiSpec).and(nomorSkSpec).and(jenisSkSpec);
     }
 
-    public static RiwayatSk toEntity(RiwayatSkPostRequest request, Pegawai pegawai, Golongan golongan) {
+    public static RiwayatSk toEntity(RiwayatSkPostRequest request, Pegawai pegawai){
         RiwayatSk entity = new RiwayatSk();
         entity.setPegawai(pegawai);
         entity.setNipam(pegawai.getNipam());
@@ -81,7 +82,6 @@ public class RiwayatSkPostRequest {
         entity.setJenisSk(request.getJenisSk());
         entity.setTanggalSk(request.getTanggalSk());
         entity.setTmtBerlaku(request.getTmtBerlaku());
-        entity.setGolongan(golongan);
         entity.setGajiPokok(request.getGajiPokok());
         entity.setMkgTahun(request.getMkgTahun());
         entity.setMkgBulan(request.getMkgBulan());
@@ -90,6 +90,12 @@ public class RiwayatSkPostRequest {
         entity.setMkgbBulan(request.getMkgbBulan());
         entity.setUpdateMaster(request.getUpdateMaster());
         entity.setNotes(request.getNotes());
+        return entity;
+    }
+
+    public static RiwayatSk toEntity(RiwayatSkPostRequest request, Pegawai pegawai, Golongan golongan) {
+        RiwayatSk entity = RiwayatSkPostRequest.toEntity(request, pegawai);
+        entity.setGolongan(golongan);
         return entity;
     }
 }

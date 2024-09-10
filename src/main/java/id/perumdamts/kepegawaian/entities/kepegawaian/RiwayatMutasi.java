@@ -6,8 +6,10 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.entities.commons.EJenisMutasi;
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
+import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
+import id.perumdamts.kepegawaian.entities.master.Profesi;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -47,7 +49,7 @@ public class RiwayatMutasi extends IdsAbstract {
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tglBerakhir;
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private EJenisMutasi jenisMutasi;
     @NotAudited
     @JsonBackReference
@@ -63,6 +65,18 @@ public class RiwayatMutasi extends IdsAbstract {
     private String namaJabatan;
     @NotAudited
     @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name="profesi_id", referencedColumnName = "id")
+    private Profesi profesi;
+    private String namaProfesi;
+    @NotAudited
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name="golongan_id", referencedColumnName = "id")
+    private Golongan golongan;
+    private String namaGolongan;
+    @NotAudited
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="organisasi_lama_id", referencedColumnName = "id")
     private Organisasi organisasiLama;
@@ -73,5 +87,17 @@ public class RiwayatMutasi extends IdsAbstract {
     @JoinColumn(name="jabatan_lama_id", referencedColumnName = "id")
     private Jabatan jabatanLama;
     private String namaJabatanLama;
+    @NotAudited
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name="profesi_lama_id", referencedColumnName = "id")
+    private Profesi profesiLama;
+    private String namaProfesiLama;
+    @NotAudited
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="golongan_lama_id", referencedColumnName = "id")
+    private Golongan golonganLama;
+    private String namaGolonganLama;
     private String notes;
 }

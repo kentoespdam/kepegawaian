@@ -6,6 +6,7 @@ import id.perumdamts.kepegawaian.dto.kepegawaian.mutasi.RiwayatMutasiPostRequest
 import id.perumdamts.kepegawaian.dto.kepegawaian.mutasi.RiwayatMutasiPutRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.mutasi.RiwayatMutasiRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.mutasi.RiwayatMutasiResponse;
+import id.perumdamts.kepegawaian.entities.commons.EJenisMutasi;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatMutasi;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
@@ -30,6 +31,7 @@ public class RiwayatMutasiServiceImpl implements RiwayatMutasiService {
     private final RiwayatSkService riwayatSkService;
     private final OrganisasiRepository organisasiRepository;
     private final JabatanRepository jabatanRepository;
+    private final GenericMutasiService genericMutasiService;
 
     @Override
     public List<RiwayatMutasiResponse> findAll(RiwayatMutasiRequest request) {
@@ -64,41 +66,11 @@ public class RiwayatMutasiServiceImpl implements RiwayatMutasiService {
     @Transactional
     @Override
     public SavedStatus<?> save(RiwayatMutasiPostRequest request) {
-        try {
-            Organisasi organisasi = organisasiRepository.findById(request.getOrganisasiId())
-                    .orElseThrow(() -> new RuntimeException("Unknown Organisasi"));
-            Jabatan jabatan = jabatanRepository.findById(request.getJabatanId())
-                    .orElseThrow(() -> new RuntimeException("Unknown Jabatan"));
-
-            Organisasi lamaOrganisasi = null;
-            Jabatan lamaJabatan = null;
-            if (request.getOrganisasiLamaId() != null && request.getOrganisasiLamaId() != 0) {
-                lamaOrganisasi = organisasiRepository.findById(request.getOrganisasiLamaId())
-                        .orElseThrow(() -> new RuntimeException("Unknown Organisasi"));
-                lamaJabatan = jabatanRepository.findById(request.getJabatanLamaId())
-                        .orElseThrow(() -> new RuntimeException("Unknown Jabatan"));
-            }
-
-            boolean exists = repository.exists(request.getSpecificationMutasi());
-            if (exists) {
-                return SavedStatus.build(ESaveStatus.DUPLICATE, "Riwayat Mutasi is Exists");
-            }
-
-            RiwayatSk riwayatSk = riwayatSkService.saveEntity(request);
-
-            RiwayatMutasi entity = RiwayatMutasiPostRequest.toEntity(
-                    riwayatSk,
-                    request,
-                    organisasi,
-                    jabatan,
-                    lamaOrganisasi,
-                    lamaJabatan
-            );
-
-            return SavedStatus.build(ESaveStatus.SUCCESS, repository.save(entity));
-        } catch (Exception e) {
-            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
-        }
+        return switch (request.getJenisMutasi()) {
+            case EJenisMutasi.MUTASI_GOLONGAN -> genericMutasiService.saveGolongan(request);
+            case EJenisMutasi.MUTASI_JABATAN -> genericMutasiService.saveJabatan(request);
+            default -> throw new RuntimeException("Unknown Mutasi");
+        };
     }
 
 

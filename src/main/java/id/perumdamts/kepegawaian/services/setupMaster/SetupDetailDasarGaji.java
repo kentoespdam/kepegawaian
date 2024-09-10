@@ -562,6 +562,7 @@ public class SetupDetailDasarGaji implements SetupMaster {
         list.add(new DetailDasarGaji(543L, new DasarGaji(1L), 32, 15, 5_173_400D));
         list.add(new DetailDasarGaji(544L, new DasarGaji(1L), 32, 16, 5_392_200D));
         list.add(new DetailDasarGaji(545L, new DasarGaji(1L), 32, 17, 5_620_300D));
-        list.forEach(repository::save);
+//        list.forEach(repository::save);
+        repository.saveAll(list);
     }
 }
