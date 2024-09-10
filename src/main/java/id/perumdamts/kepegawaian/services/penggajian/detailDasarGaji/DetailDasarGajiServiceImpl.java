@@ -14,6 +14,7 @@ import id.perumdamts.kepegawaian.repositories.penggajian.DasarGajiRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.DetailDasarGajiRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,7 +48,16 @@ public class DetailDasarGajiServiceImpl implements DetailDasarGajiService {
 
     @Override
     public DetailDasarGaji findDetailDasarGajiByGolonganAndMasaKerja(Long golonganId, Integer masaKerja) {
-        return repository.findDetailDasarGajiByGolongan_IdAndMkg(golonganId, masaKerja)
+        Optional<Golongan> golongan = golonganRepository.findById(golonganId);
+        if (golongan.isEmpty())
+            throw new RuntimeException("Golongan not found: " + golonganId);
+        Integer golonganKode = Integer.parseInt(golongan.get().getGolongan().split("\\.")[1]);
+        Specification<DetailDasarGaji> specification = (root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("golonganKode"), golonganKode);
+        Specification<DetailDasarGaji> masaKerjaSpec = (root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("mkg"), masaKerja);
+        Specification<DetailDasarGaji> andSpec = Specification.where(specification).and(masaKerjaSpec);
+        return repository.findOne(andSpec)
                 .orElseThrow(() -> new RuntimeException("Detail Dasar Gaji not found"));
     }
 

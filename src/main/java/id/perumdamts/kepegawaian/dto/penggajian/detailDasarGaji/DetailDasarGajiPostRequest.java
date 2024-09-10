@@ -30,10 +30,11 @@ public class DetailDasarGajiPostRequest {
     }
 
     public static DetailDasarGaji toEntity(DetailDasarGajiPostRequest request, DasarGaji dasarGaji, Golongan golongan) {
+        Integer golonganKode = Integer.parseInt(golongan.getGolongan().split("\\.")[1]);
         DetailDasarGaji entity = new DetailDasarGaji();
         entity.setDasarGaji(dasarGaji);
         entity.setMkg(request.getMkg());
-        entity.setGolongan(golongan);
+        entity.setGolonganKode(golonganKode);
         entity.setNominal(request.getNominal());
         return entity;
     }

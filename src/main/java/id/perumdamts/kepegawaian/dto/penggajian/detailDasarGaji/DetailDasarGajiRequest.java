@@ -14,7 +14,7 @@ import java.util.Objects;
 public class DetailDasarGajiRequest extends CommonPageRequest {
     private Long dasarGajiId;
     private Integer mkg;
-    private Long golonganId;
+    private Integer golonganKode;
     private Integer nominal;
 
     @JsonIgnore
@@ -23,8 +23,8 @@ public class DetailDasarGajiRequest extends CommonPageRequest {
                 (root, query, cb) -> cb.equal(root.get("dasarGaji").get("id"), dasarGajiId);
         Specification<DetailDasarGaji> mkgSpec = Objects.isNull(mkg) ? null :
                 (root, query, cb) -> cb.equal(root.get("mkg"), mkg);
-        Specification<DetailDasarGaji> golonganSpec = Objects.isNull(golonganId) ? null :
-                (root, query, cb) -> cb.equal(root.get("golongan").get("id"), golonganId);
+        Specification<DetailDasarGaji> golonganSpec = Objects.isNull(golonganKode) ? null :
+                (root, query, cb) -> cb.equal(root.get("golonganKode"), golonganKode);
         Specification<DetailDasarGaji> nominalSpec = Objects.isNull(nominal) ? null :
                 (root, query, cb) -> cb.equal(root.get("nominal"), nominal);
         return Specification.where(dasarGajiSpec).and(mkgSpec).and(golonganSpec).and(nominalSpec);
