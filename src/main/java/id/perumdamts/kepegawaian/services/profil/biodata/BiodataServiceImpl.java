@@ -81,7 +81,6 @@ public class BiodataServiceImpl implements BiodataService {
 
     @Override
     public Biodata saveFromPegawai(BiodataPostRequest request) {
-
         JenjangPendidikan pendidikanTerakhir = jenjangPendidikanRepository.findById(request.getPendidikanTerakhirId()).orElseThrow(() -> new RuntimeException("Unknown Pendidikan Terakhir"));
 
         Biodata entity = BiodataPostRequest.toEntity(request, pendidikanTerakhir);
