@@ -65,9 +65,11 @@ public class KodePajakServiceImpl implements KodePajakService {
 
     @Override
     public boolean deleteById(Long id) {
-        boolean exists = repository.existsById(id);
-        if (!exists) return false;
-        repository.deleteById(id);
+        Optional<KodePajak> byId = repository.findById(id);
+        if (byId.isEmpty())
+            return false;
+        byId.get().setIsDeleted(true);
+        repository.save(byId.get());
         return true;
     }
 }
