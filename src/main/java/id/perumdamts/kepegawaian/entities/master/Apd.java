@@ -27,4 +27,5 @@ public class Apd extends IdsAbstract {
     @JoinColumn(name = "profesi_id", referencedColumnName = "id")
     private Profesi profesi;
     private String nama;
+    private Boolean isDeleted = false;
 }

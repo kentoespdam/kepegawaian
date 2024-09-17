@@ -23,4 +23,5 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLRestriction("is_deleted = FALSE")
 public class JenisKeahlian extends IdsAbstract {
     private String nama;
+    private Boolean isDeleted = false;
 }

@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public class IdsAbstract implements Serializable {
+public abstract class IdsAbstract implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,6 +35,7 @@ public class IdsAbstract implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @LastModifiedDate
     private LocalDateTime updatedAt;
+    @Column(columnDefinition = "boolean default false")
     private Boolean isDeleted = false;
     @Version
     private Long version = 1L;

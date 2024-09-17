@@ -24,6 +24,7 @@ import org.hibernate.annotations.SQLRestriction;
 @EqualsAndHashCode(callSuper = true)
 public class Level extends IdsAbstract {
     private String nama;
+    private Boolean isDeleted = false;
 
     public Level(Long id) {
         super(id);

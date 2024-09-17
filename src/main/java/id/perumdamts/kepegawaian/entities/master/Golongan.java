@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
@@ -25,9 +26,11 @@ import org.hibernate.envers.Audited;
 @SQLRestriction("is_deleted = FALSE")
 @EqualsAndHashCode(callSuper = true)
 @Audited
+@Slf4j
 public class Golongan extends IdsAbstract {
     private String golongan;
     private String pangkat;
+    private Boolean isDeleted = false;
 
     public Golongan(Long id, String golongan, String pangkat) {
         super(id);

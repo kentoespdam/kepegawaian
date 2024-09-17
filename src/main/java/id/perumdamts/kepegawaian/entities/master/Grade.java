@@ -30,6 +30,7 @@ public class Grade extends IdsAbstract {
     private Level level;
     private Integer grade;
     private Double tukin;
+    private Boolean isDeleted = false;
 
     public Grade(Long id) {
         super(id);

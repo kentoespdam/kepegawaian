@@ -24,6 +24,7 @@ import org.hibernate.annotations.SQLRestriction;
 @EqualsAndHashCode(callSuper = true)
 public class JenisKitas extends IdsAbstract {
     private String nama;
+    private Boolean isDeleted = false;
 
     public JenisKitas(Long jenisKitasId) {
         super(jenisKitasId);

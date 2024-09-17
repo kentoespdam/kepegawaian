@@ -1,9 +1,6 @@
 package id.perumdamts.kepegawaian.dto.appwrite;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collection;
@@ -13,6 +10,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Data
 public class AppwriteUser {
+    @Setter
     @Getter
     private String $id;
     @Getter

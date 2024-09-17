@@ -10,6 +10,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.envers.Audited;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -22,7 +23,9 @@ import org.hibernate.annotations.SQLRestriction;
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE alasan_berhenti SET is_deleted = true WHERE id = ?")
 @SQLRestriction("is_deleted = false")
+@Audited
 public class AlasanBerhenti extends IdsAbstract {
     private String nama;
     private String notes;
+    private Boolean isDeleted = false;
 }

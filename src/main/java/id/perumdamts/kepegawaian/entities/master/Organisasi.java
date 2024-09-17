@@ -31,6 +31,7 @@ public class Organisasi extends IdsAbstract {
     private Organisasi parent;
     private Integer levelOrg;
     private String nama;
+    private Boolean isDeleted = false;
 
     public Organisasi(Long id) {
         super(id);
