@@ -33,7 +33,6 @@ public class Profesi extends IdsAbstract {
     private String nama;
     private String detail;
     private String resiko;
-    private Boolean isDeleted = false;
 
     @NotAudited
     @OneToMany(mappedBy = "profesi")

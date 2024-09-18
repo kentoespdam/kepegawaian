@@ -25,5 +25,4 @@ import org.hibernate.annotations.SQLRestriction;
 public class KodePajak extends IdsAbstract {
     private String kode;
     private Double nominal;
-    private Boolean isDeleted = false;
 }

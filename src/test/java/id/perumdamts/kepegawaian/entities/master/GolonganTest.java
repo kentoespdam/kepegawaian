@@ -3,31 +3,37 @@ package id.perumdamts.kepegawaian.entities.master;
 import id.perumdamts.kepegawaian.dto.appwrite.AppwriteUser;
 import id.perumdamts.kepegawaian.dto.appwrite.Prefs;
 import id.perumdamts.kepegawaian.repositories.master.GolonganRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 @SpringBootTest
+@Slf4j
 class GolonganTest {
-    @Autowired
+    @Mock
     private GolonganRepository repository;
     @Mock
     private SecurityContext securityContext;
     @Mock
     private Authentication authentication;
+
+    private Golongan golongan;
+
     @BeforeEach
     public void setup() {
+        openMocks(this);
         List<String> roles = List.of("ADMIN");
         Prefs prefs = new Prefs();
         prefs.setRoles(roles);
@@ -41,23 +47,23 @@ class GolonganTest {
         SecurityContextHolder.setContext(securityContext);
         when(authentication.isAuthenticated()).thenReturn(true);
         when(authentication.getPrincipal()).thenReturn(user);
-    }
-    @Test
-    void test() {
-        // create test with jwt authentication
 
-        Golongan golongan = new Golongan();
+        golongan = new Golongan();
+        golongan.setId(1L);
         golongan.setGolongan("1");
         golongan.setPangkat("Pangkat 1");
-        Golongan gol = repository.save(golongan);
-        assertNotNull(gol);
-        Long id=gol.getId();
-        System.out.println("golongan id: "+id);
+        golongan.setIsDeleted(false);
+    }
 
-        gol.setIsDeleted(true);
-
-        repository.save(gol);
-        Golongan byId = repository.findById(id).orElse(null);
-        assertNull(byId);
+    @Test
+    void testDelete() {
+        when(repository.findById(1L)).thenReturn(Optional.of(golongan));
+        log.info("before delete: {}", golongan);
+        assertFalse(golongan.getIsDeleted());
+        golongan.setIsDeleted(true);
+        repository.save(golongan);
+        log.info("after delete: {}", golongan);
+        assertTrue(golongan.getIsDeleted());
+        verify(repository, times(1)).save(golongan);
     }
 }

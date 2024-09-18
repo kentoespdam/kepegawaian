@@ -30,7 +30,6 @@ import org.hibernate.envers.Audited;
 public class Golongan extends IdsAbstract {
     private String golongan;
     private String pangkat;
-    private Boolean isDeleted = false;
 
     public Golongan(Long id, String golongan, String pangkat) {
         super(id);
@@ -40,5 +39,14 @@ public class Golongan extends IdsAbstract {
 
     public Golongan(Long id) {
         super(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Golongan{" +
+                "golongan='" + golongan + '\'' +
+                ", pangkat='" + pangkat + '\'' +
+                ", isDeleted='" + getIsDeleted() + '\'' +
+                "} " + super.toString();
     }
 }

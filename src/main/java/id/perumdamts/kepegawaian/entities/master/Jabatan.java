@@ -37,7 +37,6 @@ public class Jabatan extends IdsAbstract {
     @JoinColumn(name = "level_id", referencedColumnName = "id")
     private Level level;
     private String nama;
-    private Boolean isDeleted = false;
 
     public Jabatan(Long id) {
         super(id);

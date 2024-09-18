@@ -27,5 +27,4 @@ import org.hibernate.envers.Audited;
 public class AlasanBerhenti extends IdsAbstract {
     private String nama;
     private String notes;
-    private Boolean isDeleted = false;
 }
