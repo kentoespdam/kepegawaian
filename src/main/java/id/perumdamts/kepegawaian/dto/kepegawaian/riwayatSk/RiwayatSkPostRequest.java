@@ -73,7 +73,7 @@ public class RiwayatSkPostRequest {
         return Specification.where(pegawaiSpec).and(nomorSkSpec).and(jenisSkSpec);
     }
 
-    public static RiwayatSk toEntity(RiwayatSkPostRequest request, Pegawai pegawai){
+    public static RiwayatSk toEntity(RiwayatSkPostRequest request, Pegawai pegawai) {
         RiwayatSk entity = new RiwayatSk();
         entity.setPegawai(pegawai);
         entity.setNipam(pegawai.getNipam());

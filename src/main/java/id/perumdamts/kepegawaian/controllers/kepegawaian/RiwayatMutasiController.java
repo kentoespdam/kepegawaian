@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.controllers.kepegawaian;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.dto.kepegawaian.mutasi.*;
+import id.perumdamts.kepegawaian.entities.commons.EJenisMutasi;
 import id.perumdamts.kepegawaian.services.kepegawaian.mutasi.RiwayatMutasiService;
 import jakarta.validation.*;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Objects;
 import java.util.Set;
 
 @RestController
@@ -42,18 +42,24 @@ public class RiwayatMutasiController {
     @PostMapping
     public ResponseEntity<?> save(@Valid @RequestBody RiwayatMutasiPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
+        if (request.getJenisMutasi().equals(EJenisMutasi.MUTASI_GOLONGAN) ||
+                request.getJenisMutasi().equals(EJenisMutasi.MUTASI_GAJI) ||
+                request.getJenisMutasi().equals(EJenisMutasi.MUTASI_GAJI_BERKALA)
+        ) {
+            Set<ConstraintViolation<RiwayatMutasiPostRequest>> violations = validator.validate(request, MutasiGolongan.class);
+            if (!violations.isEmpty())
+                return ErrorResult.build(violations);
+        }
 
-        Set<ConstraintViolation<RiwayatMutasiPostRequest>> violations = validator.validate(request);
+        if (request.getJenisMutasi().equals(EJenisMutasi.MUTASI_JABATAN) ||
+                request.getJenisMutasi().equals(EJenisMutasi.MUTASI_LOKER)
+        ) {
+            Set<ConstraintViolation<RiwayatMutasiPostRequest>> violations = validator.validate(request, MutasiJabatan.class);
+            if (!violations.isEmpty())
+                return ErrorResult.build(violations);
+        }
 
-        if (Objects.nonNull(request.getGolonganId()))
-            violations.addAll(validator.validate(request, MutasiGolongan.class));
-
-        if (Objects.nonNull(request.getOrganisasiId()))
-            violations.addAll(validator.validate(request, MutasiJabatan.class));
-
-        if (!violations.isEmpty()) return ErrorResult.build(violations);
-
-        return CustomResult.any(service.save(request));
+        return CustomResult.save(service.save(request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -62,7 +68,7 @@ public class RiwayatMutasiController {
         if (errors.hasErrors()) {
             return ErrorResult.build(errors);
         }
-        return CustomResult.any(service.update(id, request));
+        return CustomResult.save(service.update(id, request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")

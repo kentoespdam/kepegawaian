@@ -6,14 +6,9 @@ import id.perumdamts.kepegawaian.dto.kepegawaian.mutasi.RiwayatMutasiPostRequest
 import id.perumdamts.kepegawaian.dto.kepegawaian.mutasi.RiwayatMutasiPutRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.mutasi.RiwayatMutasiRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.mutasi.RiwayatMutasiResponse;
-import id.perumdamts.kepegawaian.entities.commons.EJenisMutasi;
+import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatMutasi;
-import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
-import id.perumdamts.kepegawaian.entities.master.Jabatan;
-import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.RiwayatMutasiRepository;
-import id.perumdamts.kepegawaian.repositories.master.JabatanRepository;
-import id.perumdamts.kepegawaian.repositories.master.OrganisasiRepository;
 import id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk.RiwayatSkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -29,8 +24,6 @@ import java.util.Optional;
 public class RiwayatMutasiServiceImpl implements RiwayatMutasiService {
     private final RiwayatMutasiRepository repository;
     private final RiwayatSkService riwayatSkService;
-    private final OrganisasiRepository organisasiRepository;
-    private final JabatanRepository jabatanRepository;
     private final GenericMutasiService genericMutasiService;
 
     @Override
@@ -66,11 +59,20 @@ public class RiwayatMutasiServiceImpl implements RiwayatMutasiService {
     @Transactional
     @Override
     public SavedStatus<?> save(RiwayatMutasiPostRequest request) {
-        return switch (request.getJenisMutasi()) {
-            case EJenisMutasi.MUTASI_GOLONGAN -> genericMutasiService.saveGolongan(request);
-            case EJenisMutasi.MUTASI_JABATAN -> genericMutasiService.saveJabatan(request);
-            default -> throw new RuntimeException("Unknown Mutasi");
-        };
+        try {
+            EJenisSk jenisSk = switch (request.getJenisMutasi()) {
+                case MUTASI_LOKER -> EJenisSk.SK_MUTASI;
+                case MUTASI_GOLONGAN -> EJenisSk.SK_KENAIKAN_PANGKAT_GOLONGAN;
+                case MUTASI_GAJI -> EJenisSk.SK_PENYESUAIAN_GAJI;
+                case MUTASI_GAJI_BERKALA -> EJenisSk.SK_KENAIKAN_GAJI_BERKALA;
+                case MUTASI_JABATAN -> EJenisSk.SK_JABATAN;
+                default -> throw new IllegalStateException("Unexpected value: " + request.getJenisMutasi());
+            };
+            request.setJenisSk(jenisSk);
+        } catch (Exception e) {
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+        }
+        return genericMutasiService.save(request);
     }
 
 
@@ -78,39 +80,19 @@ public class RiwayatMutasiServiceImpl implements RiwayatMutasiService {
     @Override
     public SavedStatus<?> update(Long id, RiwayatMutasiPutRequest request) {
         try {
-            RiwayatMutasi riwayatMutasi = repository.findById(id).orElseThrow(() -> new RuntimeException("Unknown Riwayat Mutasi"));
-            Organisasi organisasi = organisasiRepository.findById(request.getOrganisasiId())
-                    .orElseThrow(() -> new RuntimeException("Unknown Organisasi"));
-            Jabatan jabatan = jabatanRepository.findById(request.getJabatanId())
-                    .orElseThrow(() -> new RuntimeException("Unknown Jabatan"));
-
-            Organisasi lamaOrganisasi = null;
-            Jabatan lamaJabatan = null;
-            if (request.getOrganisasiLamaId() != null && request.getOrganisasiLamaId() != 0) {
-                lamaOrganisasi = organisasiRepository.findById(request.getOrganisasiLamaId())
-                        .orElseThrow(() -> new RuntimeException("Unknown Organisasi"));
-                lamaJabatan = jabatanRepository.findById(request.getJabatanLamaId())
-                        .orElseThrow(() -> new RuntimeException("Unknown Jabatan"));
-            }
-
-            RiwayatSk riwayatSk = riwayatSkService.findEntityById(riwayatMutasi.getRiwayatSk().getId());
-            if (riwayatSk == null) throw new RuntimeException("Unknown Riwayat Sk");
-
-            RiwayatMutasi entity = RiwayatMutasiPutRequest.toEntity(
-                    riwayatMutasi,
-                    riwayatSk,
-                    request,
-                    organisasi,
-                    jabatan,
-                    lamaOrganisasi,
-                    lamaJabatan
-            );
-            repository.save(entity);
-            return SavedStatus.build(ESaveStatus.SUCCESS, entity);
-
+            EJenisSk jenisSk = switch (request.getJenisMutasi()) {
+                case MUTASI_LOKER -> EJenisSk.SK_MUTASI;
+                case MUTASI_GOLONGAN -> EJenisSk.SK_KENAIKAN_PANGKAT_GOLONGAN;
+                case MUTASI_GAJI -> EJenisSk.SK_PENYESUAIAN_GAJI;
+                case MUTASI_GAJI_BERKALA -> EJenisSk.SK_KENAIKAN_GAJI_BERKALA;
+                case MUTASI_JABATAN -> EJenisSk.SK_JABATAN;
+                default -> throw new IllegalStateException("Unexpected value: " + request.getJenisMutasi());
+            };
+            request.setJenisSk(jenisSk);
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
+        return genericMutasiService.update(id, request);
     }
 
     @Override

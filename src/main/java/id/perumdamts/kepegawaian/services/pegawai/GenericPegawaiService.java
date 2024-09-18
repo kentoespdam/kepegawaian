@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.services.pegawai;
 
+import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
@@ -17,6 +18,10 @@ public class GenericPegawaiService {
         pegawai.setTmtGolongan(riwayatSk.getTmtBerlaku());
         pegawai.setMkgTahun(riwayatSk.getMkgTahun());
         pegawai.setMkgBulan(riwayatSk.getMkgBulan());
+        if (riwayatSk.getJenisSk().equals(EJenisSk.SK_KENAIKAN_GAJI_BERKALA) ||
+                riwayatSk.getJenisSk().equals(EJenisSk.SK_PENYESUAIAN_GAJI))
+            pegawai.setGajiPokok(riwayatSk.getGajiPokok());
+
         this.updatePegawai(pegawai);
     }
 

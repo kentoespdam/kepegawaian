@@ -12,6 +12,8 @@ import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.entities.master.Profesi;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -28,19 +30,19 @@ public class RiwayatMutasiPostRequest extends RiwayatSkPostRequest {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tglBerakhir;
     @NotNull(message = "Jenis Mutasi is required")
-//    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     private EJenisMutasi jenisMutasi;
     @NotNull(message = "Organisasi ID is required", groups = MutasiJabatan.class)
-    @Min(value = 1, message = "Organisasi ID is required")
+    @Min(value = 1, message = "Organisasi ID is required", groups = MutasiJabatan.class)
     private Long organisasiId;
     @NotNull(message = "Jabatan ID is required", groups = MutasiJabatan.class)
-    @Min(value = 1, message = "Jabatan ID is required")
+    @Min(value = 1, message = "Jabatan ID is required", groups = MutasiJabatan.class)
     private Long jabatanId;
     @NotNull(message = "Profesi ID is required", groups = MutasiJabatan.class)
-    @Min(value = 1, message = "Profesi ID is required")
+    @Min(value = 1, message = "Profesi ID is required", groups = MutasiJabatan.class)
     private Long profesiId;
     @NotNull(message = "Golongan ID is required", groups = MutasiGolongan.class)
-    @Min(value = 1, message = "Golongan ID is required")
+    @Min(value = 1, message = "Golongan ID must be greater than or equal to 1", groups = MutasiGolongan.class)
     private Long golonganId;
     private Long organisasiLamaId;
     private Long jabatanLamaId;
@@ -61,48 +63,44 @@ public class RiwayatMutasiPostRequest extends RiwayatSkPostRequest {
         RiwayatMutasi entity = new RiwayatMutasi();
         entity.setRiwayatSk(riwayatSk);
         entity.setPegawai(riwayatSk.getPegawai());
+        entity.setTmtBerlaku(request.getTmtBerlaku());
         entity.setTglBerakhir(request.getTglBerakhir());
         entity.setJenisMutasi(request.getJenisMutasi());
         entity.setNotes(request.getNotes());
         return entity;
     }
 
-    public static RiwayatMutasi toEntity(RiwayatMutasiPostRequest request, RiwayatSk riwayatSk, Organisasi organisasi, Jabatan jabatan, Profesi profesi, Organisasi organisasiLama, Jabatan jabatanLama, Profesi profesiLama) {
-        RiwayatMutasi entity = RiwayatMutasiPostRequest.toEntity(request, riwayatSk);
-        entity.setGolongan(riwayatSk.getGolongan());
-        entity.setNamaGolongan(riwayatSk.getGolongan().getPangkat() + " - " + riwayatSk.getGolongan().getGolongan());
-        entity.setGolonganLama(riwayatSk.getGolongan());
-        entity.setNamaGolonganLama(riwayatSk.getGolongan().getPangkat() + " - " + riwayatSk.getGolongan().getGolongan());
-        entity.setOrganisasi(organisasi);
-        entity.setNamaOrganisasi(organisasi.getNama());
-        entity.setJabatan(jabatan);
-        entity.setNamaJabatan(jabatan.getNama());
-        entity.setOrganisasiLama(organisasiLama);
-        entity.setNamaOrganisasiLama(organisasiLama.getNama());
-        entity.setJabatanLama(jabatanLama);
-        entity.setNamaJabatanLama(jabatanLama.getNama());
-        entity.setProfesi(profesi);
-        entity.setNamaProfesi(profesi.getNama());
-        entity.setProfesiLama(profesiLama);
-        entity.setNamaProfesiLama(profesiLama.getNama());
-        entity.setGolongan(riwayatSk.getGolongan());
-        entity.setNamaGolongan(riwayatSk.getGolongan().getPangkat() + " - " + riwayatSk.getGolongan().getGolongan());
-        return entity;
-    }
-
-
     public static RiwayatMutasi toEntity(RiwayatMutasiPostRequest request, RiwayatSk riwayatSk, Golongan golongan, Golongan golonganLama) {
-        RiwayatMutasi entity = new RiwayatMutasi();
-        entity.setRiwayatSk(riwayatSk);
-        entity.setPegawai(riwayatSk.getPegawai());
-        entity.setTmtBerlaku(request.getTmtBerlaku());
-        entity.setTglBerakhir(request.getTglBerakhir());
-        entity.setJenisMutasi(request.getJenisMutasi());
+        RiwayatMutasi entity = toEntity(request, riwayatSk);
         entity.setGolongan(golongan);
         entity.setNamaGolongan(golongan.getPangkat() + " - " + golongan.getGolongan());
         entity.setGolonganLama(golonganLama);
         entity.setNamaGolonganLama(golonganLama.getPangkat() + " - " + golonganLama.getGolongan());
-        entity.setNotes(request.getNotes());
         return entity;
     }
+
+    public static RiwayatMutasi toEntity(RiwayatMutasiPostRequest request, RiwayatSk riwayatSk, Organisasi organisasi, Jabatan jabatan, Profesi profesi, Organisasi organisasiLama, Jabatan jabatanLama, Profesi profesiLama) {
+        RiwayatMutasi entity = toEntity(request, riwayatSk);
+        entity.setGolongan(riwayatSk.getGolongan());
+        entity.setNamaGolongan(riwayatSk.getGolongan().getPangkat() + " - " + riwayatSk.getGolongan().getGolongan());
+        entity.setGolonganLama(riwayatSk.getGolongan());
+        entity.setNamaGolonganLama(riwayatSk.getGolongan().getPangkat() + " - " + riwayatSk.getGolongan().getGolongan());
+
+        entity.setOrganisasi(organisasi);
+        entity.setNamaOrganisasi(organisasi.getNama());
+        entity.setJabatan(jabatan);
+        entity.setNamaJabatan(jabatan.getNama());
+        entity.setProfesi(profesi);
+        entity.setNamaProfesi(profesi.getNama());
+
+        entity.setOrganisasiLama(organisasiLama);
+        entity.setNamaOrganisasiLama(organisasiLama.getNama());
+        entity.setJabatanLama(jabatanLama);
+        entity.setNamaJabatanLama(jabatanLama.getNama());
+        entity.setProfesiLama(profesiLama);
+        entity.setNamaProfesiLama(profesiLama.getNama());
+        return entity;
+    }
+
+
 }

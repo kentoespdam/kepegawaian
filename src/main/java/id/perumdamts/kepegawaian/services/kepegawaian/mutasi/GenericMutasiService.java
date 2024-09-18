@@ -3,7 +3,7 @@ package id.perumdamts.kepegawaian.services.kepegawaian.mutasi;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.kepegawaian.mutasi.RiwayatMutasiPostRequest;
-import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
+import id.perumdamts.kepegawaian.dto.kepegawaian.mutasi.RiwayatMutasiPutRequest;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatMutasi;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
@@ -33,7 +33,6 @@ public class GenericMutasiService {
 
     public SavedStatus<?> saveGolongan(RiwayatMutasiPostRequest request) {
         try {
-            request.setJenisSk(EJenisSk.SK_KENAIKAN_PANGKAT_GOLONGAN);
             boolean exists = repository.exists(request.getSpecificationMutasi());
             if (exists)
                 return SavedStatus.build(ESaveStatus.DUPLICATE, "Riwayat Mutasi is Exists");
@@ -53,12 +52,30 @@ public class GenericMutasiService {
         }
     }
 
+    public SavedStatus<?> updateGolongan(Long id, RiwayatMutasiPutRequest request) {
+        try {
+            RiwayatMutasi riwayatMutasi = repository.findById(id).orElseThrow(() -> new RuntimeException("Unknown Riwayat Mutasi"));
+            List<Golongan> golonganList = golonganRepository.findAll();
+            Golongan golonganBaru = findExistGolongan(golonganList, request.getGolonganId());
+            Golongan golonganLama = findExistGolongan(golonganList, request.getGolonganLamaId());
+
+            RiwayatSk riwayatSk = skService.updateSkGolongan(riwayatMutasi, request, golonganBaru);
+            RiwayatMutasi entity = RiwayatMutasiPutRequest.toEntity(riwayatMutasi, riwayatSk, request, golonganBaru, golonganLama);
+
+            RiwayatMutasi save = repository.save(entity);
+
+            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        } catch (Exception e) {
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+        }
+    }
+
     public SavedStatus<?> saveJabatan(RiwayatMutasiPostRequest request) {
         try {
-            request.setJenisSk(EJenisSk.SK_JABATAN);
-            boolean exists = repository.exists(request.getSpecificationMutasi());
-            if (exists)
+            if (repository.exists(request.getSpecificationMutasi())) {
                 return SavedStatus.build(ESaveStatus.DUPLICATE, "Riwayat Mutasi is Exists");
+            }
+
             List<Organisasi> organisasiList = organisasiRepository.findAll();
             List<Jabatan> jabatanList = jabatanRepository.findAll();
             List<Profesi> profesiList = profesiRepository.findAll();
@@ -78,6 +95,29 @@ public class GenericMutasiService {
 
             return SavedStatus.build(ESaveStatus.SUCCESS, save);
 
+        } catch (Exception e) {
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+        }
+    }
+
+    public SavedStatus<?> updateJabatan(Long id, RiwayatMutasiPutRequest request) {
+        try {
+            RiwayatMutasi riwayatMutasi = repository.findById(id).orElseThrow(() -> new RuntimeException("Unknown Riwayat Mutasi"));
+            List<Organisasi> organisasiList = organisasiRepository.findAll();
+            List<Jabatan> jabatanList = jabatanRepository.findAll();
+            List<Profesi> profesiList = profesiRepository.findAll();
+
+            Organisasi organisasiBaru = findExistOrganisasi(organisasiList, request.getOrganisasiId());
+            Organisasi organisasiLama = findExistOrganisasi(organisasiList, request.getOrganisasiLamaId());
+            Jabatan jabatanBaru = findExistJabatan(jabatanList, request.getJabatanId());
+            Jabatan jabatanLama = findExistJabatan(jabatanList, request.getJabatanLamaId());
+            Profesi profesiBaru = findExistProfesi(profesiList, request.getProfesiId());
+            Profesi profesiLama = findExistProfesi(profesiList, request.getProfesiLamaId());
+
+            RiwayatSk riwayatSk = skService.updateSkJabatan(riwayatMutasi, request);
+            RiwayatMutasi entity = RiwayatMutasiPutRequest.toEntity(riwayatMutasi, riwayatSk, request, organisasiBaru, jabatanBaru, profesiBaru, organisasiLama, jabatanLama, profesiLama);
+            RiwayatMutasi save = repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, save);
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
@@ -113,5 +153,21 @@ public class GenericMutasiService {
                 .findFirst()
                 .orElseGet(() -> profesiRepository.findById(profesiId)
                         .orElseThrow(() -> new RuntimeException("Unknown Profesi")));
+    }
+
+    public SavedStatus<?> save(RiwayatMutasiPostRequest request) {
+        return switch (request.getJenisMutasi()) {
+            case MUTASI_GOLONGAN, MUTASI_GAJI, MUTASI_GAJI_BERKALA -> saveGolongan(request);
+            case MUTASI_JABATAN, MUTASI_LOKER -> saveJabatan(request);
+            default -> SavedStatus.build(ESaveStatus.FAILED, "Unknown Mutasi");
+        };
+    }
+
+    public SavedStatus<?> update(Long id, RiwayatMutasiPutRequest request) {
+        return switch (request.getJenisMutasi()) {
+            case MUTASI_GOLONGAN, MUTASI_GAJI, MUTASI_GAJI_BERKALA -> updateGolongan(id, request);
+            case MUTASI_JABATAN, MUTASI_LOKER -> updateJabatan(id, request);
+            default -> SavedStatus.build(ESaveStatus.FAILED, "Unknown Mutasi");
+        };
     }
 }
