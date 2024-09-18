@@ -110,10 +110,11 @@ public class PelatihanServiceImpl implements PelatihanService {
     @Transactional
     @Override
     public Boolean delete(Long id) {
-        boolean exists = repository.existsById(id);
-        if (!exists)
+        Optional<Pelatihan> byId = repository.findById(id);
+        if (byId.isEmpty())
             return false;
-        repository.deleteById(id);
+        byId.get().setIsDeleted(true);
+        repository.save(byId.get());
         lampiranProfilService.deleteByRefId(EJenisLampiranProfil.PROFIL_PELATIHAN, id);
         return true;
     }

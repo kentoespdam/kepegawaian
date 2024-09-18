@@ -109,7 +109,8 @@ public class KartuIdentitasServiceImpl implements KartuIdentitasService {
             return false;
         if (byId.get().getJenisKartu().getId().equals(PROTECTED_KARTU_IDENTITAS_ID))
             return false;
-        repository.deleteById(id);
+        byId.get().setIsDeleted(true);
+        repository.save(byId.get());
         lampiranProfilService.deleteByRefId(EJenisLampiranProfil.KARTU_IDENTITAS, id);
         return true;
     }

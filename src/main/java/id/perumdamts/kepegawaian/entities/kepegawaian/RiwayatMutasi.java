@@ -18,6 +18,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
 import java.time.LocalDate;
@@ -32,6 +33,7 @@ import java.time.LocalDate;
 @SQLDelete(sql = "UPDATE riwayat_mutasi SET is_deleted=true WHERE id=?")
 @SQLRestriction("is_deleted = false")
 @EqualsAndHashCode(callSuper = true)
+@Audited
 public class RiwayatMutasi extends IdsAbstract {
     @NotAudited
     @JsonBackReference

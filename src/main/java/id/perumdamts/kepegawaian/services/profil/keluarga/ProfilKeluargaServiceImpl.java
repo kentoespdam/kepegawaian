@@ -100,7 +100,8 @@ public class ProfilKeluargaServiceImpl implements ProfilKeluargaService {
         Optional<ProfilKeluarga> byId = repository.findById(id);
         if (byId.isEmpty())
             return false;
-        repository.deleteById(id);
+        byId.get().setIsDeleted(true);
+        repository.save(byId.get());
         lampiranProfilService.deleteByRefId(EJenisLampiranProfil.PROFIL_KELUARGA, id);
         this.updateTanggunganPegawai(byId.get().getNik());
         return true;

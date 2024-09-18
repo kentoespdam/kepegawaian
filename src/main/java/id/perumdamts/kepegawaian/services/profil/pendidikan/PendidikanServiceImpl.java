@@ -117,10 +117,11 @@ public class PendidikanServiceImpl implements PendidikanService {
     @Transactional
     @Override
     public Boolean delete(Long id) {
-        boolean exists = repository.existsById(id);
-        if (!exists)
+        Optional<Pendidikan> byId = repository.findById(id);
+        if (byId.isEmpty())
             return false;
-        repository.deleteById(id);
+        byId.get().setIsDeleted(true);
+        repository.save(byId.get());
         lampiranProfilService.deleteByRefId(EJenisLampiranProfil.PROFIL_PENDIDIKAN, id);
         return true;
     }

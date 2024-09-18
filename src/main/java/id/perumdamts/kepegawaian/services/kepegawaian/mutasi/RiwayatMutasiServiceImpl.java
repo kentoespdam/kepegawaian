@@ -118,7 +118,8 @@ public class RiwayatMutasiServiceImpl implements RiwayatMutasiService {
         Optional<RiwayatMutasi> byId = repository.findById(id);
         if (byId.isEmpty()) return false;
         riwayatSkService.delete(byId.get().getRiwayatSk().getId());
-        repository.deleteById(id);
+        byId.get().setIsDeleted(true);
+        repository.save(byId.get());
         return true;
     }
 }

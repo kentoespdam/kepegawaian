@@ -155,9 +155,10 @@ public class RiwayatSkServiceImpl implements RiwayatSkService {
     @Transactional
     @Override
     public Boolean delete(Long id) {
-        boolean existsById = repository.existsById(id);
-        if (!existsById) return false;
-        repository.deleteById(id);
+        Optional<RiwayatSk> byId = repository.findById(id);
+        if (byId.isEmpty()) return false;
+        byId.get().setIsDeleted(true);
+        repository.save(byId.get());
         lampiranSkService.deleteByRefId(id);
         return true;
     }

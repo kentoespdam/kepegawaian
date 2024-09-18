@@ -151,10 +151,11 @@ public class BiodataServiceImpl implements BiodataService {
     @Transactional
     @Override
     public Boolean deleteById(String id) {
-        boolean isBiodataExist = repository.existsById(id);
-        if (!isBiodataExist)
+        Optional<Biodata> byId = repository.findById(id);
+        if (byId.isEmpty())
             return false;
-        repository.deleteById(id);
+        byId.get().setIsDeleted(true);
+        repository.save(byId.get());
         return true;
     }
 }

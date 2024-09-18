@@ -102,10 +102,11 @@ public class PengalamanKerjaServiceImpl implements PengalamanKerjaService {
     @Transactional
     @Override
     public Boolean deleteById(Long id) {
-        boolean exists = repository.existsById(id);
-        if (!exists)
+        Optional<PengalamanKerja> byId = repository.findById(id);
+        if (byId.isEmpty())
             return false;
-        repository.deleteById(id);
+        byId.get().setIsDeleted(true);
+        repository.save(byId.get());
         lampiranProfilService.deleteByRefId(EJenisLampiranProfil.PROFIL_PENGALAMAN_KERJA, id);
         return true;
     }
