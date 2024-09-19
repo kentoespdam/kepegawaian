@@ -87,7 +87,7 @@ public class GenericMutasiService {
             Profesi profesiBaru = findExistProfesi(profesiList, request.getProfesiId());
             Profesi profesiLama = findExistProfesi(profesiList, request.getProfesiLamaId());
 
-            RiwayatSk riwayatSk = skService.saveSkJabatan(request);
+            RiwayatSk riwayatSk = skService.saveSkJabatan(request, organisasiBaru, jabatanBaru, profesiBaru);
 
             RiwayatMutasi entity = RiwayatMutasiPostRequest.toEntity(request, riwayatSk, organisasiBaru, jabatanBaru, profesiBaru, organisasiLama, jabatanLama, profesiLama);
 
@@ -114,8 +114,24 @@ public class GenericMutasiService {
             Profesi profesiBaru = findExistProfesi(profesiList, request.getProfesiId());
             Profesi profesiLama = findExistProfesi(profesiList, request.getProfesiLamaId());
 
-            RiwayatSk riwayatSk = skService.updateSkJabatan(riwayatMutasi, request);
-            RiwayatMutasi entity = RiwayatMutasiPutRequest.toEntity(riwayatMutasi, riwayatSk, request, organisasiBaru, jabatanBaru, profesiBaru, organisasiLama, jabatanLama, profesiLama);
+            RiwayatSk riwayatSk = skService.updateSkJabatan(
+                    riwayatMutasi,
+                    request,
+                    organisasiBaru,
+                    jabatanBaru,
+                    profesiBaru
+            );
+            RiwayatMutasi entity = RiwayatMutasiPutRequest.toEntity(
+                    riwayatMutasi,
+                    riwayatSk,
+                    request,
+                    organisasiBaru,
+                    jabatanBaru,
+                    profesiBaru,
+                    organisasiLama,
+                    jabatanLama,
+                    profesiLama
+            );
             RiwayatMutasi save = repository.save(entity);
             return SavedStatus.build(ESaveStatus.SUCCESS, save);
         } catch (Exception e) {

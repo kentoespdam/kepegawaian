@@ -8,7 +8,10 @@ import id.perumdamts.kepegawaian.dto.master.golongan.GolonganResponse;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiMiniResponse;
+import id.perumdamts.kepegawaian.entities.commons.EJenisMutasi;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatMutasi;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -18,6 +21,8 @@ import java.util.Objects;
 public class RiwayatMutasiResponse {
     private Long id;
     private RiwayatSkResponse skMutasi;
+    @Enumerated(EnumType.STRING)
+    private EJenisMutasi jenisMutasi;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tmtBerlaku;
@@ -43,6 +48,7 @@ public class RiwayatMutasiResponse {
     public static RiwayatMutasiResponse from(RiwayatMutasi entity) {
         RiwayatMutasiResponse response = new RiwayatMutasiResponse();
         response.setId(entity.getId());
+        response.setJenisMutasi(entity.getJenisMutasi());
         response.setSkMutasi(RiwayatSkResponse.from(entity.getRiwayatSk()));
         response.setTmtBerlaku(entity.getTmtBerlaku());
         response.setTglBerakhir(entity.getTglBerakhir());

@@ -3,6 +3,9 @@ package id.perumdamts.kepegawaian.services.pegawai;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
+import id.perumdamts.kepegawaian.entities.master.Jabatan;
+import id.perumdamts.kepegawaian.entities.master.Organisasi;
+import id.perumdamts.kepegawaian.entities.master.Profesi;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +28,26 @@ public class GenericPegawaiService {
         this.updatePegawai(pegawai);
     }
 
-    public void updateJabatan(Pegawai pegawai, RiwayatSk riwayatSk) {
-        pegawai.setRefSkJabatanId(riwayatSk.getId());
-        pegawai.setTmtJabatan(riwayatSk.getTmtBerlaku());
+    public void updateJabatan(
+            Pegawai pegawai,
+            RiwayatSk riwayatSk,
+            Organisasi organisasiBaru,
+            Jabatan jabatanBaru,
+            Profesi profesiBaru
+    ) {
+        if (riwayatSk.getJenisSk().equals(EJenisSk.SK_KENAIKAN_PANGKAT_GOLONGAN)) {
+            pegawai.setRefSkJabatanId(riwayatSk.getId());
+            pegawai.setTmtJabatan(riwayatSk.getTmtBerlaku());
+        }
+        if (riwayatSk.getJenisSk().equals(EJenisSk.SK_MUTASI)) {
+            pegawai.setRefSkMutasiId(riwayatSk.getId());
+            pegawai.setTmtMutasi(riwayatSk.getTmtBerlaku());
+        }
+
+        pegawai.setOrganisasi(organisasiBaru);
+        pegawai.setJabatan(jabatanBaru);
+        pegawai.setProfesi(profesiBaru);
+
         this.updatePegawai(pegawai);
     }
 

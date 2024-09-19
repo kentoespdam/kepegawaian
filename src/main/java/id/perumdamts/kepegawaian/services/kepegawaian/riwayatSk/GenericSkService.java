@@ -7,6 +7,9 @@ import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkPutRequest;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatMutasi;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
+import id.perumdamts.kepegawaian.entities.master.Jabatan;
+import id.perumdamts.kepegawaian.entities.master.Organisasi;
+import id.perumdamts.kepegawaian.entities.master.Profesi;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.RiwayatSkRepository;
@@ -40,22 +43,33 @@ public class GenericSkService {
         return save;
     }
 
-    public RiwayatSk saveSkJabatan(RiwayatMutasiPostRequest request) {
+    public RiwayatSk saveSkJabatan(
+            RiwayatMutasiPostRequest request,
+            Organisasi organisasiBaru,
+            Jabatan jabatanBaru,
+            Profesi profesiBaru
+    ) {
         this.mainValidate(request);
         Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId()).orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
 
         RiwayatSk entity = RiwayatSkPostRequest.toEntity(request, pegawai, pegawai.getGolongan());
         RiwayatSk riwayatSk = this.saveSK(entity);
-        pegawaiService.updateJabatan(pegawai, riwayatSk);
+        pegawaiService.updateJabatan(pegawai, riwayatSk, organisasiBaru, jabatanBaru, profesiBaru);
 
         return riwayatSk;
     }
 
-    public RiwayatSk updateSkJabatan(RiwayatMutasi riwayatMutasi, RiwayatMutasiPutRequest request) {
+    public RiwayatSk updateSkJabatan(
+            RiwayatMutasi riwayatMutasi,
+            RiwayatMutasiPutRequest request,
+            Organisasi organisasiBaru,
+            Jabatan jabatanBaru,
+            Profesi profesiBaru
+    ) {
         RiwayatSk riwayatSk = riwayatMutasi.getRiwayatSk();
         RiwayatSk entity = RiwayatSkPutRequest.toEntity(riwayatSk, request);
         RiwayatSk save = this.saveSK(entity);
-        pegawaiService.updateJabatan(riwayatMutasi.getPegawai(), save);
+        pegawaiService.updateJabatan(riwayatMutasi.getPegawai(), save, organisasiBaru, jabatanBaru, profesiBaru);
         return save;
     }
 
