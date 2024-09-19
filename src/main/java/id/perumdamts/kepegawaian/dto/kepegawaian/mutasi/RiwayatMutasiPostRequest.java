@@ -30,7 +30,7 @@ public class RiwayatMutasiPostRequest extends RiwayatSkPostRequest {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tglBerakhir;
     @NotNull(message = "Jenis Mutasi is required")
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     private EJenisMutasi jenisMutasi;
     @NotNull(message = "Organisasi ID is required", groups = MutasiJabatan.class)
     @Min(value = 1, message = "Organisasi ID is required", groups = MutasiJabatan.class)

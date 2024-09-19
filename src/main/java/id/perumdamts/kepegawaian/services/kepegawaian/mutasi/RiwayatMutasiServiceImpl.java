@@ -49,8 +49,6 @@ public class RiwayatMutasiServiceImpl implements RiwayatMutasiService {
             request.setSortBy("id");
             request.setSortDirection("DESC");
         }
-        System.out.println(request.getSortBy());
-        System.out.println(request.getSortDirection());
         request.setPegawaiId(pegawaiId);
         return repository.findAll(request.getSpecification(), request.getPageable())
                 .map(RiwayatMutasiResponse::from);

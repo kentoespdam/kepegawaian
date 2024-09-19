@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class LampiranSkPostRequest implements Serializable {
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     private EJenisSk ref;
     @Min(value = 1, message = "Ref ID must be greater than or equal to 1")
     private Long refId;

@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class SavedStatus<T> {
     private final T data;
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     private ESaveStatus status;
 
     public SavedStatus(T data, ESaveStatus status) {

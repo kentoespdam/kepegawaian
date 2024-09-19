@@ -20,6 +20,7 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 public class PegawaiResponseDetail {
@@ -66,7 +67,8 @@ public class PegawaiResponseDetail {
         response.setOrganisasi(OrganisasiMiniResponse.from(pegawai.getOrganisasi()));
         response.setJabatan(JabatanMiniResponse.from(pegawai.getJabatan()));
         response.setProfesi(ProfesiMiniResponse.from(pegawai.getProfesi()));
-        response.setGolongan(GolonganResponse.from(pegawai.getGolongan()));
+        if (Objects.nonNull(pegawai.getGolongan()))
+            response.setGolongan(GolonganResponse.from(pegawai.getGolongan()));
         response.setGrade(GradeResponse.from(pegawai.getGrade()));
         response.setStatusKerja(pegawai.getStatusKerja());
         response.setTanggalSk(pegawai.getTmtPegawai());

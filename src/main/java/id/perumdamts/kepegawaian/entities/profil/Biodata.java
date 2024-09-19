@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.entities.profil;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
@@ -70,6 +71,7 @@ public class Biodata implements Serializable {
     private EStatusKawin statusKawin;
     private String fotoProfil;
     private String notes;
+    @JsonBackReference
     @NotAudited
     @OneToMany(mappedBy = "biodata")
     private List<KartuIdentitas> kartuIdentitas;

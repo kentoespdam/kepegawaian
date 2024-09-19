@@ -40,8 +40,8 @@ public class PegawaiPostRequest extends BiodataPostRequest {
     @NotNull(message = "Profesi is required")
     @Min(value = 1, message = "Profesi is required")
     private Long profesiId;
-    @NotNull(message = "Golongan is required")
-    @Min(value = 1, message = "Golongan is required")
+    @NotNull(message = "Golongan is required", groups = PegawaiKontrak.class)
+    @Min(value = 1, message = "Golongan is required", groups = PegawaiKontrak.class)
     private Long golonganId;
     @NotNull(message = "Grade is required")
     @Min(value = 1, message = "Grade is required")
@@ -77,7 +77,7 @@ public class PegawaiPostRequest extends BiodataPostRequest {
     ) {
         int umur = LocalDate.now().getYear() - biodata.getTanggalLahir().getYear();
         LocalDate pensiun = biodata.getTanggalLahir().plusYears(56 - umur);
-        pensiun=LocalDate.of(pensiun.getYear(), pensiun.getMonth(), 1);
+        pensiun = LocalDate.of(pensiun.getYear(), pensiun.getMonth(), 1);
 
         Pegawai entity = new Pegawai();
         entity.setNipam(request.getNipam());
@@ -86,7 +86,8 @@ public class PegawaiPostRequest extends BiodataPostRequest {
         entity.setJabatan(jabatan);
         entity.setOrganisasi(organisasi);
         entity.setProfesi(profesi);
-        entity.setGolongan(golongan);
+        if (!request.getStatusPegawai().equals(EStatusPegawai.KONTRAK))
+            entity.setGolongan(golongan);
         entity.setGrade(grade);
         entity.setStatusKerja(EStatusKerja.KARYAWAN_AKTIF);
         entity.setTmtKerja(request.getTmtBerlakuSk());

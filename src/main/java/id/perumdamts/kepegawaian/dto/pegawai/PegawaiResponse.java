@@ -17,6 +17,7 @@ import jakarta.persistence.Enumerated;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Data
 public class PegawaiResponse {
@@ -79,7 +80,8 @@ public class PegawaiResponse {
         response.setJabatan(JabatanMiniResponse.from(pegawai.getJabatan()));
         response.setOrganisasi(OrganisasiResponse.from(pegawai.getOrganisasi()));
         response.setProfesi(ProfesiResponse.from(pegawai.getProfesi()));
-        response.setGolongan(GolonganResponse.from(pegawai.getGolongan()));
+        if (Objects.nonNull(pegawai.getGolongan()))
+            response.setGolongan(GolonganResponse.from(pegawai.getGolongan()));
         response.setGrade(GradeResponse.from(pegawai.getGrade()));
         response.setStatusKerja(pegawai.getStatusKerja());
         response.setRefSkCapegId(pegawai.getRefSkCapegId());

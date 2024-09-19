@@ -28,7 +28,7 @@ import java.time.LocalDateTime;
 @SQLDelete(sql = "UPDATE lampiran_profil SET is_deleted = TRUE WHERE id = ?")
 @SQLRestriction("is_deleted = FALSE")
 public class LampiranProfil extends IdsAbstract {
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     @Column(nullable = false)
     private EJenisLampiranProfil ref;
     @Column(nullable = false)

@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.entities.master;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -34,12 +35,14 @@ public class Profesi extends IdsAbstract {
     private String detail;
     private String resiko;
 
-    @NotAudited
-    @OneToMany(mappedBy = "profesi")
-    private List<Apd> apdList;
+    @JsonManagedReference
     @NotAudited
     @OneToMany(mappedBy = "profesi")
     private List<AlatKerja> alatKerjaList;
+    @JsonManagedReference
+    @NotAudited
+    @OneToMany(mappedBy = "profesi")
+    private List<Apd> apdList;
 
     public Profesi(Long id) {
         super(id);

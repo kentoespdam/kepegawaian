@@ -21,7 +21,7 @@ import java.util.Objects;
 public class RiwayatMutasiResponse {
     private Long id;
     private RiwayatSkResponse skMutasi;
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     private EJenisMutasi jenisMutasi;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
