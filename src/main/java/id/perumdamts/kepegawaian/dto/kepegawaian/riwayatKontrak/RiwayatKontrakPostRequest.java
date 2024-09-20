@@ -64,6 +64,7 @@ public class RiwayatKontrakPostRequest {
         entity.setTanggalSk(request.getTanggalSk());
         entity.setTanggalMulai(request.getTanggalMulai());
         entity.setTanggalSelesai(request.getTanggalSelesai());
+        entity.setIsLatest(request.getIsLatest());
         entity.setNotes(request.getNotes());
         return entity;
     }
@@ -77,6 +78,7 @@ public class RiwayatKontrakPostRequest {
         entity.setTanggalSk(request.getTanggalSk());
         entity.setTanggalMulai(request.getTmtBerlakuSk());
         entity.setTanggalSelesai(request.getTmtKontrakSelesai());
+        entity.setIsLatest(true);
         entity.setNotes(request.getNotes());
         return entity;
     }

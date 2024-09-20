@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.entities.pegawai;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
@@ -37,6 +38,7 @@ public class Pegawai extends IdsAbstract {
     @NotEmpty
     @Column(unique = true)
     private String nipam;
+    @JsonBackReference
     @NotAudited
     @OneToOne
     @JoinColumn(name = "biodata_id", unique = true, referencedColumnName = "nik")

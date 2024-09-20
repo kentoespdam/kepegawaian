@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.entities.master;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,7 @@ import org.hibernate.envers.NotAudited;
 @EqualsAndHashCode(callSuper = true)
 @Audited
 public class Organisasi extends IdsAbstract {
+    @JsonBackReference
     @NotAudited
     @ManyToOne
     @JoinColumn(name = "parent_id", referencedColumnName = "id")

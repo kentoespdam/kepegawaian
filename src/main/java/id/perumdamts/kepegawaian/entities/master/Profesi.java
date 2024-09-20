@@ -1,6 +1,6 @@
 package id.perumdamts.kepegawaian.entities.master;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,6 +27,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Audited
 public class Profesi extends IdsAbstract {
+    @JsonBackReference
     @NotAudited
     @ManyToOne
     @JoinColumn(name = "level_id", referencedColumnName = "id")
@@ -35,11 +36,11 @@ public class Profesi extends IdsAbstract {
     private String detail;
     private String resiko;
 
-    @JsonManagedReference
+    @JsonBackReference
     @NotAudited
     @OneToMany(mappedBy = "profesi")
     private List<AlatKerja> alatKerjaList;
-    @JsonManagedReference
+    @JsonBackReference
     @NotAudited
     @OneToMany(mappedBy = "profesi")
     private List<Apd> apdList;

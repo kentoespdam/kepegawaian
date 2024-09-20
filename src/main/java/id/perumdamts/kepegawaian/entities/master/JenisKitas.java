@@ -13,8 +13,8 @@ import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Table(indexes = {
-        @Index(columnList="nama"),
-        @Index(columnList="is_deleted")
+        @Index(columnList = "nama"),
+        @Index(columnList = "is_deleted")
 })
 @Data
 @NoArgsConstructor
@@ -37,8 +37,8 @@ public class JenisKitas extends IdsAbstract {
     @Override
     public String toString() {
         return "JenisKitas(" +
-                "id=" + getId() +", "+
+                "id=" + getId() + ", " +
                 "nama='" + nama + '\'' +
-                ") " ;
+                ") ";
     }
 }

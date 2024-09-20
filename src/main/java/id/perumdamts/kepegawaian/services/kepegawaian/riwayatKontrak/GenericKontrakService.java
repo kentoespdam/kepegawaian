@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.services.kepegawaian.riwayatKontrak;
 
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatKontrak.RiwayatKontrakPostRequest;
+import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatKontrak.RiwayatKontrakPutRequest;
 import id.perumdamts.kepegawaian.dto.pegawai.PegawaiPostRequest;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatKontrak;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
@@ -24,6 +25,16 @@ public class GenericKontrakService {
         RiwayatKontrak save = repository.save(entity);
         if (entity.getIsLatest()) updateLatest(save);
         return save;
+    }
+
+    public RiwayatKontrak save(RiwayatKontrakPostRequest request, Pegawai pegawai) {
+        RiwayatKontrak entity = RiwayatKontrakPostRequest.toEntity(request, pegawai);
+        return save(entity);
+    }
+
+    public RiwayatKontrak update(RiwayatKontrak riwayatKontrak, RiwayatKontrakPutRequest request, Pegawai pegawai) {
+        RiwayatKontrak entity = RiwayatKontrakPutRequest.toEntity(riwayatKontrak, request, pegawai);
+        return save(entity);
     }
 
     private void updateLatest(RiwayatKontrak entity) {
