@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
-import org.hibernate.envers.NotAudited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 import java.time.LocalDate;
 
@@ -36,9 +36,9 @@ import java.time.LocalDate;
 @SQLDelete(sql = "UPDATE riwayat_sk SET is_deleted=true WHERE id=?")
 @SQLRestriction("is_deleted = false")
 @EqualsAndHashCode(callSuper = true)
-@Audited
+@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class RiwayatSk extends IdsAbstract {
-    @NotAudited
+    
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "pegawai_id", referencedColumnName = "id")
@@ -54,7 +54,7 @@ public class RiwayatSk extends IdsAbstract {
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tmtBerlaku;
-    @NotAudited
+    
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "golongan_id", referencedColumnName = "id")

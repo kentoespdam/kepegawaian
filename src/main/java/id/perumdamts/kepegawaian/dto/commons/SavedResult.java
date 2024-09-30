@@ -16,11 +16,13 @@ public class SavedResult<T> extends ResultAbstract<T> {
                 this.statusText = HttpStatus.CREATED;
                 break;
             case FAILED:
-                this.message = data.getData().toString();
+                this.addError(data.getData().toString());
+//                this.message = data.getData().toString();
                 this.statusText = HttpStatus.BAD_REQUEST;
                 break;
             case DUPLICATE:
-                this.message = data.getData().toString();
+                this.addError(data.getData().toString());
+//                this.message = data.getData().toString();
                 this.statusText = HttpStatus.CONFLICT;
         }
     }

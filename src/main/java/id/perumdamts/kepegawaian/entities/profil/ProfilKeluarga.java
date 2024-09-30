@@ -12,6 +12,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 import java.time.LocalDate;
 
@@ -28,6 +30,7 @@ import java.time.LocalDate;
 @SQLDelete(sql = "UPDATE profil_keluarga SET is_deleted = TRUE WHERE id = ?")
 @SQLRestriction("is_deleted = FALSE")
 @EqualsAndHashCode(callSuper = true)
+@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class ProfilKeluarga extends IdsAbstract {
     @ManyToOne
     @JoinColumn(name="biodata_id", referencedColumnName = "nik")

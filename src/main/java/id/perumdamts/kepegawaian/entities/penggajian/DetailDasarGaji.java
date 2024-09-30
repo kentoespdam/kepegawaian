@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
-import org.hibernate.envers.NotAudited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 @Entity
 @Table(indexes = {
@@ -23,9 +23,9 @@ import org.hibernate.envers.NotAudited;
 @SQLDelete(sql = "UPDATE dasar_gaji SET is_deleted=true WHERE id=?")
 @SQLRestriction("is_deleted = false")
 @EqualsAndHashCode(callSuper = true)
-@Audited
+@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class DetailDasarGaji extends IdsAbstract {
-    @NotAudited
+
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "dasar_gaji_id", referencedColumnName = "id")

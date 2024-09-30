@@ -11,6 +11,7 @@ import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.RiwayatKontrakRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,10 +21,12 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class RiwayatKontrakServiceImpl implements RiwayatKontrakService {
     private final RiwayatKontrakRepository repository;
     private final PegawaiRepository pegawaiRepository;
     private final GenericKontrakService genericKontrakService;
+
 
     @Override
     public Page<RiwayatKontrakResponse> findByPegawaiId(Long id, RiwayatKontrakRequest request) {
@@ -32,6 +35,7 @@ public class RiwayatKontrakServiceImpl implements RiwayatKontrakService {
             request.setSortDirection("DESC");
         }
         request.setPegawaiId(id);
+        log.info("request: {}", request);
         return repository.findAll(request.getSpecification(), request.getPageable())
                 .map(RiwayatKontrakResponse::from);
     }
@@ -50,6 +54,7 @@ public class RiwayatKontrakServiceImpl implements RiwayatKontrakService {
             if (exists) return SavedStatus.build(ESaveStatus.DUPLICATE, "Riwayat Kontrak sudah ada");
             Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId()).orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
             RiwayatKontrak save = genericKontrakService.save(request, pegawai);
+
             return SavedStatus.build(ESaveStatus.SUCCESS, save);
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
@@ -74,7 +79,7 @@ public class RiwayatKontrakServiceImpl implements RiwayatKontrakService {
         Optional<RiwayatKontrak> byId = repository.findById(id);
         if (byId.isEmpty()) return false;
         byId.get().setIsDeleted(true);
-        repository.save(byId.get());
+        genericKontrakService.delete(byId.get());
         return true;
     }
 }

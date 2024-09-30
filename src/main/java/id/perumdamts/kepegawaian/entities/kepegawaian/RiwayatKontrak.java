@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 import java.time.LocalDate;
 
@@ -30,7 +31,7 @@ import java.time.LocalDate;
 @SQLDelete(sql = "UPDATE riwayat_kontrak SET is_deleted=true WHERE id=?")
 @SQLRestriction("is_deleted = false")
 @EqualsAndHashCode(callSuper = true)
-@Audited
+@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class RiwayatKontrak extends IdsAbstract {
     @Enumerated(EnumType.ORDINAL)
     private EJenisKontrak jenisKontrak;

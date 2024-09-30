@@ -49,7 +49,7 @@ dependencies {
     // sqids
     implementation('org.sqids:sqids:0.1.0')
 
-    runtimeOnly 'com.mysql:mysql-connector-j'
+    runtimeOnly 'com.mysql:mysql-connector-j:9.0.0'
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'

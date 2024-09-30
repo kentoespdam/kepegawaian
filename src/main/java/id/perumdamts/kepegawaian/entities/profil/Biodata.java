@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
-import org.hibernate.envers.NotAudited;
+import org.hibernate.envers.RelationTargetAuditMode;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -44,7 +44,7 @@ import java.util.List;
 @SQLDelete(sql = "UPDATE biodata SET is_deleted = TRUE WHERE nik=?")
 @SQLRestriction("is_deleted = FALSE")
 @EntityListeners(AuditingEntityListener.class)
-@Audited
+@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class Biodata implements Serializable {
     @Id
     @NotEmpty
@@ -61,7 +61,7 @@ public class Biodata implements Serializable {
     @Enumerated(value = EnumType.ORDINAL)
     private EAgama agama;
     private String ibuKandung;
-    @NotAudited
+    
     @ManyToOne
     @JoinColumn(name = "pendidikan_id", referencedColumnName = "id")
     private JenjangPendidikan pendidikanTerakhir;
@@ -71,8 +71,8 @@ public class Biodata implements Serializable {
     private EStatusKawin statusKawin;
     private String fotoProfil;
     private String notes;
+
     @JsonBackReference
-    @NotAudited
     @OneToMany(mappedBy = "biodata")
     private List<KartuIdentitas> kartuIdentitas;
     private Boolean isPegawai = false;

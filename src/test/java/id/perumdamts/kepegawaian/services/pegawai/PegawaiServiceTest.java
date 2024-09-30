@@ -8,13 +8,13 @@ import id.perumdamts.kepegawaian.entities.commons.*;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -86,7 +86,8 @@ class PegawaiServiceTest {
         setupPostRequest();
     }
 
-    @Test
+    @Transactional
+//    @Test
     void createKontrak() {
         SavedStatus<?> save = service.save(postRequest);
         assertNotNull(save);

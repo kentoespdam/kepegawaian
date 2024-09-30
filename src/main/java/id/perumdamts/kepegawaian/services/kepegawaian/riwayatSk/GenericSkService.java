@@ -2,8 +2,11 @@ package id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk;
 
 import id.perumdamts.kepegawaian.dto.kepegawaian.mutasi.RiwayatMutasiPostRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.mutasi.RiwayatMutasiPutRequest;
+import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatKontrak.RiwayatKontrakPostRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkPostRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkPutRequest;
+import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
+import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatKontrak;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatMutasi;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
@@ -13,9 +16,13 @@ import id.perumdamts.kepegawaian.entities.master.Profesi;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.RiwayatSkRepository;
+import id.perumdamts.kepegawaian.services.kepegawaian.lampiran.LampiranSkService;
 import id.perumdamts.kepegawaian.services.pegawai.GenericPegawaiService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +30,7 @@ public class GenericSkService {
     private final RiwayatSkRepository repository;
     private final PegawaiRepository pegawaiRepository;
     private final GenericPegawaiService pegawaiService;
+    private final LampiranSkService lampiranSkService;
 
     public RiwayatSk saveSkGolongan(RiwayatSkPostRequest request, Golongan golongan) {
         this.mainValidate(request);
@@ -52,7 +60,9 @@ public class GenericSkService {
         this.mainValidate(request);
         Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId()).orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
 
-        RiwayatSk entity = RiwayatSkPostRequest.toEntity(request, pegawai, pegawai.getGolongan());
+        RiwayatSk entity = Objects.isNull(pegawai.getGolongan()) ?
+                RiwayatSkPostRequest.toEntity(request, pegawai) :
+                RiwayatSkPostRequest.toEntity(request, pegawai, pegawai.getGolongan());
         RiwayatSk riwayatSk = this.saveSK(entity);
         pegawaiService.updateJabatan(pegawai, riwayatSk, organisasiBaru, jabatanBaru, profesiBaru);
 
@@ -73,6 +83,41 @@ public class GenericSkService {
         return save;
     }
 
+    public void saveKontrak(RiwayatKontrakPostRequest request, Pegawai pegawai) {
+        RiwayatSk entity = new RiwayatSk();
+        entity.setPegawai(pegawai);
+        entity.setNipam(pegawai.getNipam());
+        entity.setNama(pegawai.getBiodata().getNama());
+        entity.setNomorSk(request.getNomorKontrak());
+        entity.setJenisSk(EJenisSk.SK_LAINNYA);
+        entity.setTanggalSk(request.getTanggalSk());
+        entity.setTmtBerlaku(request.getTanggalMulai());
+        entity.setGajiPokok(request.getGajiPokok());
+        entity.setNotes(request.getNotes());
+
+        RiwayatSk save = this.saveSK(entity);
+        pegawaiService.updateKontrak(pegawai, save);
+    }
+
+    public void saveKontrakToCapeg(RiwayatKontrakPostRequest request, Pegawai pegawai, Golongan golongan) {
+        RiwayatSk entity = new RiwayatSk();
+        entity.setPegawai(pegawai);
+        entity.setNipam(request.getNipam());
+        entity.setNama(pegawai.getBiodata().getNama());
+        entity.setNomorSk(request.getNomorKontrak());
+        entity.setJenisSk(EJenisSk.SK_CAPEG);
+        entity.setTanggalSk(request.getTanggalSk());
+        entity.setTmtBerlaku(request.getTanggalMulai());
+        entity.setGolongan(golongan);
+        entity.setMkgbBulan(0);
+        entity.setMkgTahun(0);
+        entity.setGajiPokok(request.getGajiPokok());
+        entity.setNotes(request.getNotes());
+
+        RiwayatSk save = this.saveSK(entity);
+        pegawaiService.updateGolongan(pegawai, save, golongan);
+    }
+
     private void mainValidate(RiwayatSkPostRequest request) {
         if (request.getTmtBerlaku().isBefore(request.getTmtBerlaku()))
             throw new RuntimeException("TMT Berlaku cannot before TMT Berlaku");
@@ -83,5 +128,18 @@ public class GenericSkService {
 
     private RiwayatSk saveSK(RiwayatSk entity) {
         return repository.save(entity);
+    }
+
+    public void delete(RiwayatKontrak riwayatKontrak) {
+        Specification<RiwayatSk> specification = Specification.where(
+                (root, query, criteriaBuilder) -> criteriaBuilder.and(
+                        criteriaBuilder.equal(root.get("pegawai").get("id"), riwayatKontrak.getPegawai().getId()),
+                        criteriaBuilder.equal(root.get("nomorSk"), riwayatKontrak.getNomorKontrak())
+                )
+        );
+        repository.findAll(specification).stream().map(r -> {
+            r.setIsDeleted(true);
+            return repository.save(r).getId();
+        }).forEach(lampiranSkService::deleteByRefId);
     }
 }

@@ -12,6 +12,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.envers.Audited;
 
 import java.time.LocalDateTime;
 
@@ -27,6 +28,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 @SQLDelete(sql = "UPDATE lampiran_profil SET is_deleted = TRUE WHERE id = ?")
 @SQLRestriction("is_deleted = FALSE")
+@Audited
 public class LampiranProfil extends IdsAbstract {
     @Enumerated(EnumType.ORDINAL)
     @Column(nullable = false)

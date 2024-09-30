@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -16,12 +15,6 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 public class ErrorResult extends ResultAbstract<Object> {
-    private List<String> errors = new ArrayList<>();
-
-    private void addError(String message) {
-        this.errors.add(message);
-    }
-
     public static ResponseEntity<?> build(String message) {
         ErrorResult result = new ErrorResult();
         result.addError(message);
@@ -33,7 +26,7 @@ public class ErrorResult extends ResultAbstract<Object> {
         ErrorResult result = new ErrorResult();
         result.setErrors(getErrors(errors));
         result.setStatusText(HttpStatus.BAD_REQUEST);
-        return ResponseEntity.status(result.statusText).body(result);
+        return ResponseEntity.status(result.getStatusText()).body(result);
     }
 
     private static List<String> getErrors(Errors errors) {
@@ -47,7 +40,7 @@ public class ErrorResult extends ResultAbstract<Object> {
         ErrorResult result = new ErrorResult();
         result.setErrors(getErrors(validate));
         result.setStatusText(HttpStatus.BAD_REQUEST);
-        return ResponseEntity.status(result.statusText).body(result);
+        return ResponseEntity.status(result.getStatusText()).body(result);
     }
 
     private static <T> List<String> getErrors(Set<ConstraintViolation<T>> validate) {

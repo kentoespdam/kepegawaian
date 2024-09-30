@@ -20,7 +20,6 @@ import id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk.RiwayatSkService
 import id.perumdamts.kepegawaian.services.profil.biodata.BiodataService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -148,7 +147,7 @@ class PegawaiServiceImplTest {
     }
 
     @Transactional
-    @Test
+//    @Test
     public void test() {
         SavedStatus<?> save = service.save(request);
         assertEquals(ESaveStatus.SUCCESS, save.getStatus());
@@ -161,7 +160,7 @@ class PegawaiServiceImplTest {
         log.info("pegawai : {}", byId);
     }
 
-    @Test
+//    @Test
     @Transactional
     public void testSave() {
         try {

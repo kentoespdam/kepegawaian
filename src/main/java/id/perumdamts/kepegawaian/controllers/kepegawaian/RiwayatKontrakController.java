@@ -14,7 +14,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/kepegawaian/riwayat-kontrak")
+@RequestMapping("/kepegawaian/riwayat/kontrak")
 @RequiredArgsConstructor
 public class RiwayatKontrakController {
     private final RiwayatKontrakService service;

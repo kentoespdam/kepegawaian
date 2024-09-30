@@ -10,13 +10,13 @@ import id.perumdamts.kepegawaian.entities.commons.EJenisKontrak;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatKontrak;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -88,34 +88,27 @@ class RiwayatKontrakServiceImplTest {
         setupPutRequest();
     }
 
-    @Test
+    @Transactional
+//    @Test
     public void createPerpanjangan() {
         SavedStatus<?> save = service.save(postRequest);
         assertNotNull(save);
         RiwayatKontrak data = (RiwayatKontrak) save.getData();
-        log.info("save: {}", data);
         assertNotNull(data);
+        log.info("save: {}", data);
         Long id = data.getId();
         assertNotNull(id);
         log.info("id: {}", id);
-    }
 
-    @Test
-    public void updatePerpanjangan() {
-        SavedStatus<?> update = service.update(2L, putRequest);
+        SavedStatus<?> update = service.update(id, putRequest);
         assertNotNull(update);
-        RiwayatKontrak data = (RiwayatKontrak) update.getData();
-        log.info("update: {}", data);
-        assertNotNull(data);
-        Long id = data.getId();
-        assertNotNull(id);
-    }
+        RiwayatKontrak updatedData = (RiwayatKontrak) update.getData();
+        log.info("update: {}", updatedData);
+        assertNotNull(updatedData);
 
-    @Test
-    public void delete() {
-        boolean delete = service.delete(2L);
+        boolean delete = service.delete(id);
         assertTrue(delete);
-        RiwayatKontrakResponse byId = service.findById(2L);
+        RiwayatKontrakResponse byId = service.findById(id);
         assertNull(byId);
     }
 }

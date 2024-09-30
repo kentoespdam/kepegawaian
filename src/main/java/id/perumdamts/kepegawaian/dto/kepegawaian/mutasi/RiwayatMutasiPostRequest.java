@@ -81,10 +81,12 @@ public class RiwayatMutasiPostRequest extends RiwayatSkPostRequest {
 
     public static RiwayatMutasi toEntity(RiwayatMutasiPostRequest request, RiwayatSk riwayatSk, Organisasi organisasi, Jabatan jabatan, Profesi profesi, Organisasi organisasiLama, Jabatan jabatanLama, Profesi profesiLama) {
         RiwayatMutasi entity = toEntity(request, riwayatSk);
-        entity.setGolongan(riwayatSk.getGolongan());
-        entity.setNamaGolongan(riwayatSk.getGolongan().getPangkat() + " - " + riwayatSk.getGolongan().getGolongan());
-        entity.setGolonganLama(riwayatSk.getGolongan());
-        entity.setNamaGolonganLama(riwayatSk.getGolongan().getPangkat() + " - " + riwayatSk.getGolongan().getGolongan());
+        if (Objects.nonNull(riwayatSk.getGolongan())) {
+            entity.setGolongan(riwayatSk.getGolongan());
+            entity.setNamaGolongan(riwayatSk.getGolongan().getPangkat() + " - " + riwayatSk.getGolongan().getGolongan());
+            entity.setGolonganLama(riwayatSk.getGolongan());
+            entity.setNamaGolonganLama(riwayatSk.getGolongan().getPangkat() + " - " + riwayatSk.getGolongan().getGolongan());
+        }
 
         entity.setOrganisasi(organisasi);
         entity.setNamaOrganisasi(organisasi.getNama());

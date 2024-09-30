@@ -32,6 +32,7 @@ public abstract class IdsAbstract implements Serializable {
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
+    @Audited
     @LastModifiedBy
     private String updatedBy;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatKontrak.RiwayatKontrakPostRequest;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
@@ -94,8 +95,24 @@ public class RiwayatSkPostRequest {
     }
 
     public static RiwayatSk toEntity(RiwayatSkPostRequest request, Pegawai pegawai, Golongan golongan) {
-        RiwayatSk entity = RiwayatSkPostRequest.toEntity(request, pegawai);
+        RiwayatSk entity = toEntity(request, pegawai);
+        if (golongan == null)
+            return entity;
         entity.setGolongan(golongan);
+        return entity;
+    }
+
+    public static RiwayatSk toEntity(RiwayatKontrakPostRequest request, Pegawai pegawai) {
+        RiwayatSk entity = new RiwayatSk();
+        entity.setPegawai(pegawai);
+        entity.setNipam(pegawai.getNipam());
+        entity.setNama(pegawai.getBiodata().getNama());
+        entity.setNomorSk(request.getNomorKontrak());
+        entity.setJenisSk(EJenisSk.SK_LAINNYA);
+        entity.setTmtBerlaku(request.getTanggalMulai());
+        entity.setTanggalSk(request.getTanggalSk());
+        entity.setGajiPokok(request.getGajiPokok());
+        entity.setNotes(request.getNotes());
         return entity;
     }
 }

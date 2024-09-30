@@ -4,6 +4,7 @@ import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.profil.keluarga.*;
 import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilResponse;
+import id.perumdamts.kepegawaian.entities.commons.EHubunganKeluarga;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
@@ -72,7 +73,10 @@ public class ProfilKeluargaServiceImpl implements ProfilKeluargaService {
         if (profilKeluargaExist)
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Profil Keluarga sudah ada");
         ProfilKeluarga save = repository.save(entity);
-        this.updateTanggunganPegawai(request.getBiodataId());
+        if ((!request.getHubunganKeluarga().equals(EHubunganKeluarga.ISTRI) &&
+                !request.getHubunganKeluarga().equals(EHubunganKeluarga.SUAMI)) &&
+                entity.getTanggungan().equals(true))
+            this.updateTanggunganPegawai(request.getBiodataId());
         return SavedStatus.build(ESaveStatus.SUCCESS, ProfilKeluargaResponse.from(save));
     }
 
@@ -90,7 +94,10 @@ public class ProfilKeluargaServiceImpl implements ProfilKeluargaService {
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jenjang Pendidikan");
         ProfilKeluarga entity = ProfilKeluargaPutRequest.toEntity(request, profilKeluarga.get(), biodata.get(), jenjangPendidikan.get());
         ProfilKeluarga save = repository.save(entity);
-        this.updateTanggunganPegawai(request.getBiodataId());
+        if ((!request.getHubunganKeluarga().equals(EHubunganKeluarga.ISTRI) &&
+                !request.getHubunganKeluarga().equals(EHubunganKeluarga.SUAMI)) &&
+                entity.getTanggungan().equals(true))
+            this.updateTanggunganPegawai(request.getBiodataId());
         return SavedStatus.build(ESaveStatus.SUCCESS, ProfilKeluargaResponse.from(save));
     }
 
@@ -138,9 +145,9 @@ public class ProfilKeluargaServiceImpl implements ProfilKeluargaService {
         return lampiranProfilService.deleteById(id);
     }
 
-    private void updateTanggunganPegawai(String nik){
+    private void updateTanggunganPegawai(String nik) {
         Specification<ProfilKeluarga> specification = (root, query, cb) -> cb.and(
-            cb.equal(root.get("biodata").get("nik"), nik),
+                cb.equal(root.get("biodata").get("nik"), nik),
                 cb.equal(root.get("tanggungan"), true)
         );
         pegawaiRepository.findByBiodata_Nik(nik).ifPresent(pegawai -> {

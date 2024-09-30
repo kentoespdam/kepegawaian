@@ -49,7 +49,8 @@ public class RiwayatMutasiResponse {
         RiwayatMutasiResponse response = new RiwayatMutasiResponse();
         response.setId(entity.getId());
         response.setJenisMutasi(entity.getJenisMutasi());
-        response.setSkMutasi(RiwayatSkResponse.from(entity.getRiwayatSk()));
+        if (Objects.nonNull(entity.getRiwayatSk()))
+            response.setSkMutasi(RiwayatSkResponse.from(entity.getRiwayatSk()));
         response.setTmtBerlaku(entity.getTmtBerlaku());
         response.setTglBerakhir(entity.getTglBerakhir());
         if (Objects.nonNull(entity.getGolongan())) {

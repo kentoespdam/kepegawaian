@@ -41,8 +41,13 @@ public class RiwayatKontrakPostRequest {
     private LocalDate tanggalMulai;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @NotNull(message = "Tanggal Selesai is required")
+    @NotNull(message = "Tanggal Selesai is required", groups = PerpanjanganKontrak.class)
     private LocalDate tanggalSelesai;
+    @NotNull(message = "Golongan ID is required", groups = KontrakToCapeg.class)
+    @Min(value = 1, message = "Golongan ID must be greater than or equal to 1", groups = KontrakToCapeg.class)
+    private Long golonganId;
+    @Min(value = 0, message = "Gaji Pokok must be greater than or equal to 0")
+    private Double gajiPokok;
     private Boolean isLatest = false;
     private String notes;
 

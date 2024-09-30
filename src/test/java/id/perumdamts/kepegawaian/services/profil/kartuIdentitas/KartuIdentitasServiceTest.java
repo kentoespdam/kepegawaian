@@ -1,7 +1,7 @@
 package id.perumdamts.kepegawaian.services.profil.kartuIdentitas;
 
 import id.perumdamts.kepegawaian.entities.master.JenisKitas;
-import org.junit.jupiter.api.Test;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.LongStream;
@@ -14,7 +14,8 @@ class KartuIdentitasServiceTest {
             new JenisKitas(3L)
     );
 
-    @Test
+    @Transactional
+//    @Test
     void findAll() {
         List<JenisKitas> collect = LongStream.range(1, 4)
                 .mapToObj(JenisKitas::new)

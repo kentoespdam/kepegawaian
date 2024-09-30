@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.services.pegawai;
 
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
+import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
@@ -17,13 +18,17 @@ public class GenericPegawaiService {
     private final PegawaiRepository repository;
 
     public void updateGolongan(Pegawai pegawai, RiwayatSk riwayatSk, Golongan golongan) {
+        pegawai.setNipam(riwayatSk.getNipam());
         pegawai.setRefSkGolId(golongan.getId());
         pegawai.setTmtGolongan(riwayatSk.getTmtBerlaku());
         pegawai.setMkgTahun(riwayatSk.getMkgTahun());
         pegawai.setMkgBulan(riwayatSk.getMkgBulan());
         if (riwayatSk.getJenisSk().equals(EJenisSk.SK_KENAIKAN_GAJI_BERKALA) ||
-                riwayatSk.getJenisSk().equals(EJenisSk.SK_PENYESUAIAN_GAJI))
+                riwayatSk.getJenisSk().equals(EJenisSk.SK_PENYESUAIAN_GAJI) ||
+                riwayatSk.getJenisSk().equals(EJenisSk.SK_CAPEG))
             pegawai.setGajiPokok(riwayatSk.getGajiPokok());
+        if(riwayatSk.getJenisSk().equals(EJenisSk.SK_CAPEG))
+            pegawai.setStatusPegawai(EStatusPegawai.CAPEG);
 
         this.updatePegawai(pegawai);
     }
@@ -54,4 +59,11 @@ public class GenericPegawaiService {
     public void updatePegawai(Pegawai pegawai) {
         repository.save(pegawai);
     }
+
+    public void updateKontrak(Pegawai pegawai, RiwayatSk riwayatSk) {
+        pegawai.setGajiPokok(riwayatSk.getGajiPokok());
+
+        this.updatePegawai(pegawai);
+    }
+
 }

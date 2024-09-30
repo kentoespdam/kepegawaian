@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
-import org.hibernate.envers.NotAudited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 import java.util.List;
 
@@ -25,10 +25,9 @@ import java.util.List;
 @SQLDelete(sql = "UPDATE profesi SET is_deleted=true WHERE id=?")
 @SQLRestriction("is_deleted <> 1")
 @EqualsAndHashCode(callSuper = true)
-@Audited
+@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class Profesi extends IdsAbstract {
     @JsonBackReference
-    @NotAudited
     @ManyToOne
     @JoinColumn(name = "level_id", referencedColumnName = "id")
     private Level level;
@@ -37,11 +36,9 @@ public class Profesi extends IdsAbstract {
     private String resiko;
 
     @JsonBackReference
-    @NotAudited
     @OneToMany(mappedBy = "profesi")
     private List<AlatKerja> alatKerjaList;
     @JsonBackReference
-    @NotAudited
     @OneToMany(mappedBy = "profesi")
     private List<Apd> apdList;
 

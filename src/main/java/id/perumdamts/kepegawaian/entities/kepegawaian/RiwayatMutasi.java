@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
-import org.hibernate.envers.NotAudited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 import java.time.LocalDate;
 
@@ -33,14 +33,14 @@ import java.time.LocalDate;
 @SQLDelete(sql = "UPDATE riwayat_mutasi SET is_deleted=true WHERE id=?")
 @SQLRestriction("is_deleted = false")
 @EqualsAndHashCode(callSuper = true)
-@Audited
+@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class RiwayatMutasi extends IdsAbstract {
-    @NotAudited
+
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name="pegawai_id", referencedColumnName = "id")
     private Pegawai pegawai;
-    @NotAudited
+
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "riwayat_sk_id", referencedColumnName = "id")
@@ -53,49 +53,49 @@ public class RiwayatMutasi extends IdsAbstract {
     private LocalDate tglBerakhir;
     @Enumerated(EnumType.ORDINAL)
     private EJenisMutasi jenisMutasi;
-    @NotAudited
+
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name="organisasi_id", referencedColumnName = "id")
     private Organisasi organisasi;
     private String namaOrganisasi;
-    @NotAudited
+
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name="jabatan_id", referencedColumnName = "id")
     private Jabatan jabatan;
     private String namaJabatan;
-    @NotAudited
+
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name="profesi_id", referencedColumnName = "id")
     private Profesi profesi;
     private String namaProfesi;
-    @NotAudited
+
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name="golongan_id", referencedColumnName = "id")
     private Golongan golongan;
     private String namaGolongan;
-    @NotAudited
+
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="organisasi_lama_id", referencedColumnName = "id")
     private Organisasi organisasiLama;
     private String namaOrganisasiLama;
-    @NotAudited
+
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="jabatan_lama_id", referencedColumnName = "id")
     private Jabatan jabatanLama;
     private String namaJabatanLama;
-    @NotAudited
+
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name="profesi_lama_id", referencedColumnName = "id")
     private Profesi profesiLama;
     private String namaProfesiLama;
-    @NotAudited
+
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="golongan_lama_id", referencedColumnName = "id")
