@@ -70,7 +70,7 @@ public class LampiranProfilServiceImpl implements LampiranProfilService {
         if (exists)
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Lampiran Profil sudah ada");
 
-        UploadResultUtil uploadedFile = fileUploadUtil.uploadFile(request.getFileName(), request.getRef(), String.valueOf(request.getRefId()));
+        UploadResultUtil uploadedFile = fileUploadUtil.uploadFileSp(request.getFileName(), request.getRef(), String.valueOf(request.getRefId()));
         if (!uploadedFile.isSuccess())
             return SavedStatus.build(ESaveStatus.FAILED, uploadedFile.getMessage());
 

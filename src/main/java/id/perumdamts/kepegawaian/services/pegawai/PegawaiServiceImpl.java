@@ -41,12 +41,14 @@ public class PegawaiServiceImpl implements PegawaiService {
 
     @Override
     public Page<PegawaiResponse> findPage(PegawaiRequest request) {
-        return repository.findAll(request.getSpecification(), request.getPageable()).map(PegawaiResponse::from);
+        return repository.findAll(request.getSpecification(), request.getPageable())
+                .map(PegawaiResponse::from);
     }
 
     @Override
-    public List<PegawaiResponse> findAll() {
-        return repository.findAll().stream().map(PegawaiResponse::from).toList();
+    public List<PegawaiListResponse> findAll(PegawaiRequest request) {
+        return repository.findAll(request.getSpecification()).stream()
+                .map(PegawaiListResponse::from).toList();
     }
 
     @Override

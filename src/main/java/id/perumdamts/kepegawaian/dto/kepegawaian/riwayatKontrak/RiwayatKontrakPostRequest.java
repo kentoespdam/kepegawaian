@@ -8,8 +8,6 @@ import id.perumdamts.kepegawaian.dto.pegawai.PegawaiPostRequest;
 import id.perumdamts.kepegawaian.entities.commons.EJenisKontrak;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatKontrak;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -20,7 +18,7 @@ import java.time.LocalDate;
 
 @Data
 public class RiwayatKontrakPostRequest {
-    @Enumerated(EnumType.ORDINAL)
+//    @Enumerated(EnumType.ORDINAL)
     private EJenisKontrak jenisKontrak;
     @NotNull(message = "Pegawai ID is required")
     @Min(value = 1, message = "Pegawai ID must be greater than or equal to 1")
@@ -56,7 +54,8 @@ public class RiwayatKontrakPostRequest {
         return (root, query, criteriaBuilder) -> criteriaBuilder.and(
                 criteriaBuilder.equal(root.get("pegawai").get("id"), this.pegawaiId),
                 criteriaBuilder.equal(root.get("nipam"), this.nipam),
-                criteriaBuilder.equal(root.get("nomorKontrak"), this.nomorKontrak)
+                criteriaBuilder.equal(root.get("nomorKontrak"), this.nomorKontrak),
+                criteriaBuilder.equal(root.get("jenisKontrak"), this.jenisKontrak)
         );
     }
 

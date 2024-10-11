@@ -51,7 +51,7 @@ public class PegawaiRequest extends CommonPageRequest {
         Specification<Pegawai> statusPegawaiIdsSpec = Objects.isNull(statusKerja) ? null :
                 (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("statusKerja"), statusKerja);
 
-        return Specification.where(pegawaiSpec).and(nikSpec).and(namaSpec).and(statusPegawaiSpec)
+        return Specification.where(pegawaiSpec).or(namaSpec).and(nikSpec).and(statusPegawaiSpec)
                 .and(jabatanSpec).and(organisasiSpec).and(profesiSpec).and(golonganSpec)
                 .and(gradeSpec).and(statusPegawaiIdsSpec);
     }

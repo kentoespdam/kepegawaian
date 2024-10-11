@@ -68,7 +68,7 @@ public class LampiranSkServiceImpl implements LampiranSkService {
         boolean exists = repository.exists(request.getSpecification());
         if (exists)
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Lampiran SK sudah ada");
-        UploadResultUtil uploadedFile = fileUploadUtil.uploadFile(request.getFileName(), request.getRef(), String.valueOf(request.getRefId()));
+        UploadResultUtil uploadedFile = fileUploadUtil.uploadFileSp(request.getFileName(), request.getRef(), String.valueOf(request.getRefId()));
         if (!uploadedFile.isSuccess())
             return SavedStatus.build(ESaveStatus.FAILED, uploadedFile.getMessage());
         LampiranSk entity = LampiranSkPostRequest.toEntity(request, uploadedFile.getFileName(), uploadedFile.getHashedFileName(), uploadedFile.getMimeType());

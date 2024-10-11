@@ -8,6 +8,7 @@ import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkResponse;
 import id.perumdamts.kepegawaian.dto.pegawai.PegawaiPostRequest;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
+import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
@@ -89,7 +90,7 @@ public class RiwayatSkServiceImpl implements RiwayatSkService {
     public SavedStatus<?> save(RiwayatSkPostRequest request) {
         try {
             if (request.getTmtBerlaku().isBefore(request.getTanggalSk()))
-                return SavedStatus.build(ESaveStatus.FAILED, "TMT Berlaku must be greater than Tgl. SK");
+                throw new RuntimeException("TMT Berlaku must be greater than Tgl. SK");
             Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId())
                     .orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
             Golongan golongan = golonganRepository.findById(request.getGolonganId())
@@ -167,12 +168,33 @@ public class RiwayatSkServiceImpl implements RiwayatSkService {
         if (request.getGajiPokok() <= 0 || request.getGolonganId() <= 0) return;
         pegawai.setGajiPokok(request.getGajiPokok());
         pegawai.setGolongan(golongan);
-        if (request.getJenisSk() == EJenisSk.SK_KENAIKAN_PANGKAT_GOLONGAN) {
-            pegawai.setRefSkGolId(sk.getId());
-            pegawai.setTmtGolongan(request.getTmtBerlaku());
-            pegawai.setMkgTahun(sk.getMkgTahun());
-            pegawai.setMkgBulan(sk.getMkgBulan());
+        switch (request.getJenisSk()) {
+            case SK_KENAIKAN_PANGKAT_GOLONGAN:
+                pegawai.setRefSkGolId(sk.getId());
+                pegawai.setTmtGolongan(request.getTmtBerlaku());
+                pegawai.setMkgTahun(sk.getMkgTahun());
+                pegawai.setMkgBulan(sk.getMkgBulan());
+                break;
+            case SK_CAPEG:
+                pegawai.setStatusPegawai(EStatusPegawai.CAPEG);
+                pegawai.setRefSkCapegId(sk.getId());
+                break;
+            case SK_PEGAWAI_TETAP:
+                if (pegawai.getStatusPegawai().equals(EStatusPegawai.CAPEG))
+                    pegawai.setStatusPegawai(EStatusPegawai.PEGAWAI);
+                else if (pegawai.getStatusPegawai().equals(EStatusPegawai.CALON_HONORER))
+                    pegawai.setStatusPegawai(EStatusPegawai.HONORER);
+                pegawai.setRefSkPegawaiId(sk.getId());
+                break;
+            case SK_JABATAN:
+                pegawai.setRefSkJabatanId(sk.getId());
+                break;
+            case SK_MUTASI:
+                pegawai.setRefSkMutasiId(sk.getId());
+                break;
+            case SK_PENYESUAIAN_GAJI:
         }
+
         pegawaiRepository.save(pegawai);
     }
 }

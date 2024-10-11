@@ -9,7 +9,7 @@ import java.util.List;
 public interface PegawaiService {
     Page<PegawaiResponse> findPage(PegawaiRequest request);
 
-    List<PegawaiResponse> findAll();
+    List<PegawaiListResponse> findAll(PegawaiRequest request);
 
     PegawaiResponseDetail findById(Long id);
 

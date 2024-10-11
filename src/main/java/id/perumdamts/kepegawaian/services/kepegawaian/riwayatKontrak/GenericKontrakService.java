@@ -21,6 +21,7 @@ public class GenericKontrakService {
     private final GolonganRepository golonganRepository;
 
     public RiwayatKontrak saveFromPegawai(PegawaiPostRequest request, Pegawai pegawai) {
+        genericSkService.saveSkKontrakFromPegawai(request, pegawai);
         RiwayatKontrak entity = RiwayatKontrakPostRequest.toEntity(request, pegawai);
 
         entity.setIsLatest(true);

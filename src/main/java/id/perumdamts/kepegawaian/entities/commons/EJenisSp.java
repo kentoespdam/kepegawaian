@@ -1,6 +1,6 @@
 package id.perumdamts.kepegawaian.entities.commons;
 
-public enum     EJenisSp {
+public enum EJenisSp {
     TEGURAN_LISAN("Teguran Lisan"),
     SP_1("SP 1"),
     SP_2("SP 2"),

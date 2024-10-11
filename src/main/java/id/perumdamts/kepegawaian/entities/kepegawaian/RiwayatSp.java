@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSp;
-import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
@@ -16,13 +15,15 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(indexes = {
-        @Index(columnList = "nomorSp"),
-        @Index(columnList = "tglSp"),
+        @Index(columnList = "nomor_sp"),
+        @Index(columnList = "tanggal_sp"),
         @Index(columnList = "is_deleted")
 })
 @Data
@@ -31,12 +32,15 @@ import java.time.LocalDate;
 @SQLDelete(sql = "UPDATE riwayat_sp SET is_deleted=true WHERE id=?")
 @SQLRestriction("is_deleted = false")
 @EqualsAndHashCode(callSuper = true)
-public class RiwayatSp extends IdsAbstract {
+@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
+public class RiwayatSp extends LampiranSp {
     private String nomorSp;
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "pegawai_id", referencedColumnName = "id")
     private Pegawai pegawai;
+    private String nipam;
+    private String nama;
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "organisasi_id", referencedColumnName = "id")
@@ -49,8 +53,16 @@ public class RiwayatSp extends IdsAbstract {
     private String namaJabatan;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate tglSp;
+    private LocalDate tanggalSp;
     @Enumerated(EnumType.ORDINAL)
     private EJenisSp jenisSp;
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate tanggalMulai;
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate tanggalSelesai;
+    private String penandaTangan;
+    private String jabatanPenandaTangan;
     private String notes;
 }

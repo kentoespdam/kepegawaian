@@ -5,6 +5,7 @@ import id.perumdamts.kepegawaian.dto.kepegawaian.mutasi.RiwayatMutasiPutRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatKontrak.RiwayatKontrakPostRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkPostRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkPutRequest;
+import id.perumdamts.kepegawaian.dto.pegawai.PegawaiPostRequest;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatKontrak;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatMutasi;
@@ -99,7 +100,23 @@ public class GenericSkService {
         pegawaiService.updateKontrak(pegawai, save);
     }
 
+    public void saveSkKontrakFromPegawai(PegawaiPostRequest request, Pegawai pegawai) {
+        RiwayatSk entity = new RiwayatSk();
+        entity.setPegawai(pegawai);
+        entity.setNipam(pegawai.getNipam());
+        entity.setNama(pegawai.getBiodata().getNama());
+        entity.setNomorSk(request.getNomorSk());
+        entity.setJenisSk(EJenisSk.SK_LAINNYA);
+        entity.setTanggalSk(request.getTanggalSk());
+        entity.setTmtBerlaku(request.getTmtBerlakuSk());
+        entity.setGajiPokok(request.getGajiPokok());
+        entity.setNotes(request.getNotes());
+
+        this.saveSK(entity);
+    }
+
     public void saveKontrakToCapeg(RiwayatKontrakPostRequest request, Pegawai pegawai, Golongan golongan) {
+        pegawai.setGolongan(golongan);
         RiwayatSk entity = new RiwayatSk();
         entity.setPegawai(pegawai);
         entity.setNipam(request.getNipam());
@@ -125,6 +142,7 @@ public class GenericSkService {
         boolean exists = repository.exists(request.getSpecification());
         if (exists) throw new RuntimeException("Riwayat SK is Exists");
     }
+
 
     private RiwayatSk saveSK(RiwayatSk entity) {
         return repository.save(entity);

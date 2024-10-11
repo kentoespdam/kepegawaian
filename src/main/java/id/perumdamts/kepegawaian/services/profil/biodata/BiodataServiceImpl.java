@@ -115,7 +115,7 @@ public class BiodataServiceImpl implements BiodataService {
         String oldFilename = biodata.get().getFotoProfil();
         fileUploadUtil.deleteOldFile(oldFilename, EJenisLampiranProfil.FOTO_PROFIL, id);
 
-        UploadResultUtil uploadResultUtil = fileUploadUtil.uploadFile(fileName, EJenisLampiranProfil.FOTO_PROFIL, id);
+        UploadResultUtil uploadResultUtil = fileUploadUtil.uploadFileSp(fileName, EJenisLampiranProfil.FOTO_PROFIL, id);
         if (!uploadResultUtil.isSuccess()) {
             return SavedStatus.build(ESaveStatus.FAILED, uploadResultUtil.getMessage());
         }

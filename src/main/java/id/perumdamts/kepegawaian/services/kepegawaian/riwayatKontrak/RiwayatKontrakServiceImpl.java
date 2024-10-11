@@ -6,6 +6,7 @@ import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatKontrak.RiwayatKontrakPo
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatKontrak.RiwayatKontrakPutRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatKontrak.RiwayatKontrakRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatKontrak.RiwayatKontrakResponse;
+import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatKontrak;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
@@ -53,6 +54,8 @@ public class RiwayatKontrakServiceImpl implements RiwayatKontrakService {
             boolean exists = repository.exists(request.getSpecification());
             if (exists) return SavedStatus.build(ESaveStatus.DUPLICATE, "Riwayat Kontrak sudah ada");
             Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId()).orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
+            if (!pegawai.getStatusPegawai().equals(EStatusPegawai.KONTRAK))
+                throw new RuntimeException("Pegawai bukan Kontrak");
             RiwayatKontrak save = genericKontrakService.save(request, pegawai);
 
             return SavedStatus.build(ESaveStatus.SUCCESS, save);

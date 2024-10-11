@@ -28,8 +28,8 @@ public class PegawaiController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<?> list() {
-        return CustomResult.list(service.findAll());
+    public ResponseEntity<?> list(@ParameterObject PegawaiRequest request) {
+        return CustomResult.list(service.findAll(request));
     }
 
     @GetMapping("/{id}")
