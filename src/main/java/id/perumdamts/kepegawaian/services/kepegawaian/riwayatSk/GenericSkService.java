@@ -5,8 +5,11 @@ import id.perumdamts.kepegawaian.dto.kepegawaian.mutasi.RiwayatMutasiPutRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatKontrak.RiwayatKontrakPostRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkPostRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkPutRequest;
+import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiPostRequest;
+import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiPutRequest;
 import id.perumdamts.kepegawaian.dto.pegawai.PegawaiPostRequest;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
+import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatKontrak;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatMutasi;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
@@ -133,6 +136,24 @@ public class GenericSkService {
 
         RiwayatSk save = this.saveSK(entity);
         pegawaiService.updateGolongan(pegawai, save, golongan);
+    }
+
+    public RiwayatSk saveSkTerminasi(RiwayatTerminasiPostRequest request, Pegawai pegawai, Golongan golongan) {
+        RiwayatSk entity = RiwayatSkPostRequest.toEntity(request, pegawai, golongan);
+        RiwayatSk riwayatSk = this.saveSK(entity);
+        pegawai.setStatusKerja(EStatusKerja.BERHENTI_OR_KELUAR);
+        pegawaiService.updatePegawai(pegawai);
+        return riwayatSk;
+    }
+
+    public RiwayatSk updateTerminasi(RiwayatTerminasiPutRequest request, RiwayatSk skTerminasi, Golongan golongan) {
+        skTerminasi.setNomorSk(request.getNomorSk());
+        skTerminasi.setTanggalSk(request.getTanggalSk());
+        skTerminasi.setTmtBerlaku(request.getTmtBerlaku());
+        if (golongan != null)
+            skTerminasi.setGolongan(golongan);
+        skTerminasi.setNotes(request.getNotes());
+        return this.saveSK(skTerminasi);
     }
 
     private void mainValidate(RiwayatSkPostRequest request) {

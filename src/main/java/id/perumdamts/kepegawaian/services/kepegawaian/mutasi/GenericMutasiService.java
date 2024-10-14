@@ -16,6 +16,7 @@ import id.perumdamts.kepegawaian.repositories.master.JabatanRepository;
 import id.perumdamts.kepegawaian.repositories.master.OrganisasiRepository;
 import id.perumdamts.kepegawaian.repositories.master.ProfesiRepository;
 import id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk.GenericSkService;
+import id.perumdamts.kepegawaian.utils.DetailFromList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -37,8 +38,10 @@ public class GenericMutasiService {
             if (exists)
                 return SavedStatus.build(ESaveStatus.DUPLICATE, "Riwayat Mutasi is Exists");
             List<Golongan> golonganList = golonganRepository.findAll();
-            Golongan golonganBaru = findExistGolongan(golonganList, request.getGolonganId());
-            Golongan golonganLama = findExistGolongan(golonganList, request.getGolonganLamaId());
+            Golongan golonganBaru = DetailFromList.findExistGolongan(golonganList, request.getGolonganId());
+            if (golonganBaru == null) throw new RuntimeException("Unknown Golongan");
+            Golongan golonganLama = DetailFromList.findExistGolongan(golonganList, request.getGolonganLamaId());
+            if (golonganLama == null) throw new RuntimeException("Unknown Golongan");
 
             RiwayatSk riwayatSk = skService.saveSkGolongan(request, golonganBaru);
             RiwayatMutasi entity = RiwayatMutasiPostRequest.toEntity(request, riwayatSk, golonganBaru, golonganLama);
@@ -56,9 +59,10 @@ public class GenericMutasiService {
         try {
             RiwayatMutasi riwayatMutasi = repository.findById(id).orElseThrow(() -> new RuntimeException("Unknown Riwayat Mutasi"));
             List<Golongan> golonganList = golonganRepository.findAll();
-            Golongan golonganBaru = findExistGolongan(golonganList, request.getGolonganId());
-            Golongan golonganLama = findExistGolongan(golonganList, request.getGolonganLamaId());
-
+            Golongan golonganBaru = DetailFromList.findExistGolongan(golonganList, request.getGolonganId());
+            if (golonganBaru == null) throw new RuntimeException("Unknown Golongan");
+            Golongan golonganLama = DetailFromList.findExistGolongan(golonganList, request.getGolonganLamaId());
+            if (golonganLama == null) throw new RuntimeException("Unknown Golongan");
             RiwayatSk riwayatSk = skService.updateSkGolongan(riwayatMutasi, request, golonganBaru);
             RiwayatMutasi entity = RiwayatMutasiPutRequest.toEntity(riwayatMutasi, riwayatSk, request, golonganBaru, golonganLama);
 
@@ -73,19 +77,25 @@ public class GenericMutasiService {
     public SavedStatus<?> saveJabatan(RiwayatMutasiPostRequest request) {
         try {
             if (repository.exists(request.getSpecificationMutasi())) {
-                return SavedStatus.build(ESaveStatus.DUPLICATE, "Riwayat Mutasi is Exists");
+                return SavedStatus.build(ESaveStatus.DUPLICATE, "Riwayat Mutasi is already Exists");
             }
 
             List<Organisasi> organisasiList = organisasiRepository.findAll();
             List<Jabatan> jabatanList = jabatanRepository.findAll();
             List<Profesi> profesiList = profesiRepository.findAll();
 
-            Organisasi organisasiBaru = findExistOrganisasi(organisasiList, request.getOrganisasiId());
-            Organisasi organisasiLama = findExistOrganisasi(organisasiList, request.getOrganisasiLamaId());
-            Jabatan jabatanBaru = findExistJabatan(jabatanList, request.getJabatanId());
-            Jabatan jabatanLama = findExistJabatan(jabatanList, request.getJabatanLamaId());
-            Profesi profesiBaru = findExistProfesi(profesiList, request.getProfesiId());
-            Profesi profesiLama = findExistProfesi(profesiList, request.getProfesiLamaId());
+            Organisasi organisasiBaru = DetailFromList.findExistOrganisasi(organisasiList, request.getOrganisasiId());
+            if (organisasiBaru == null) throw new RuntimeException("Unknown Organisasi");
+            Organisasi organisasiLama = DetailFromList.findExistOrganisasi(organisasiList, request.getOrganisasiLamaId());
+            if (organisasiLama == null) throw new RuntimeException("Unknown Organisasi");
+            Jabatan jabatanBaru = DetailFromList.findExistJabatan(jabatanList, request.getJabatanId());
+            if (jabatanBaru == null) throw new RuntimeException("Unknown Jabatan");
+            Jabatan jabatanLama = DetailFromList.findExistJabatan(jabatanList, request.getJabatanLamaId());
+            if (jabatanLama == null) throw new RuntimeException("Unknown Jabatan");
+            Profesi profesiBaru = DetailFromList.findExistProfesi(profesiList, request.getProfesiId());
+            if (profesiBaru == null) throw new RuntimeException("Unknown Profesi");
+            Profesi profesiLama = DetailFromList.findExistProfesi(profesiList, request.getProfesiLamaId());
+            if (profesiLama == null) throw new RuntimeException("Unknown Profesi");
 
             RiwayatSk riwayatSk = skService.saveSkJabatan(request, organisasiBaru, jabatanBaru, profesiBaru);
 
@@ -107,12 +117,18 @@ public class GenericMutasiService {
             List<Jabatan> jabatanList = jabatanRepository.findAll();
             List<Profesi> profesiList = profesiRepository.findAll();
 
-            Organisasi organisasiBaru = findExistOrganisasi(organisasiList, request.getOrganisasiId());
-            Organisasi organisasiLama = findExistOrganisasi(organisasiList, request.getOrganisasiLamaId());
-            Jabatan jabatanBaru = findExistJabatan(jabatanList, request.getJabatanId());
-            Jabatan jabatanLama = findExistJabatan(jabatanList, request.getJabatanLamaId());
-            Profesi profesiBaru = findExistProfesi(profesiList, request.getProfesiId());
-            Profesi profesiLama = findExistProfesi(profesiList, request.getProfesiLamaId());
+            Organisasi organisasiBaru = DetailFromList.findExistOrganisasi(organisasiList, request.getOrganisasiId());
+            if (organisasiBaru == null) throw new RuntimeException("Unknown Organisasi");
+            Organisasi organisasiLama = DetailFromList.findExistOrganisasi(organisasiList, request.getOrganisasiLamaId());
+            if (organisasiLama == null) throw new RuntimeException("Unknown Organisasi");
+            Jabatan jabatanBaru = DetailFromList.findExistJabatan(jabatanList, request.getJabatanId());
+            if (jabatanBaru == null) throw new RuntimeException("Unknown Jabatan");
+            Jabatan jabatanLama = DetailFromList.findExistJabatan(jabatanList, request.getJabatanLamaId());
+            if (jabatanLama == null) throw new RuntimeException("Unknown Jabatan");
+            Profesi profesiBaru = DetailFromList.findExistProfesi(profesiList, request.getProfesiId());
+            if (profesiBaru == null) throw new RuntimeException("Unknown Profesi");
+            Profesi profesiLama = DetailFromList.findExistProfesi(profesiList, request.getProfesiLamaId());
+            if (profesiLama == null) throw new RuntimeException("Unknown Profesi");
 
             RiwayatSk riwayatSk = skService.updateSkJabatan(
                     riwayatMutasi,
@@ -139,37 +155,6 @@ public class GenericMutasiService {
         }
     }
 
-    private Golongan findExistGolongan(List<Golongan> golonganList, Long golonganId) {
-        return golonganList.stream()
-                .filter(golongan -> golongan.getId().equals(golonganId))
-                .findFirst()
-                .orElseGet(() -> golonganRepository.findById(golonganId)
-                        .orElseThrow(() -> new RuntimeException("Unknown Golongan")));
-    }
-
-    private Organisasi findExistOrganisasi(List<Organisasi> organisasiList, Long organisasiId) {
-        return organisasiList.stream()
-                .filter(organisasi -> organisasi.getId().equals(organisasiId))
-                .findFirst()
-                .orElseGet(() -> organisasiRepository.findById(organisasiId)
-                        .orElseThrow(() -> new RuntimeException("Unknown Organisasi")));
-    }
-
-    private Jabatan findExistJabatan(List<Jabatan> jabatanList, Long jabatanId) {
-        return jabatanList.stream()
-                .filter(jabatan -> jabatan.getId().equals(jabatanId))
-                .findFirst()
-                .orElseGet(() -> jabatanRepository.findById(jabatanId)
-                        .orElseThrow(() -> new RuntimeException("Unknown Jabatan")));
-    }
-
-    private Profesi findExistProfesi(List<Profesi> profesiList, Long profesiId) {
-        return profesiList.stream()
-                .filter(profesi -> profesi.getId().equals(profesiId))
-                .findFirst()
-                .orElseGet(() -> profesiRepository.findById(profesiId)
-                        .orElseThrow(() -> new RuntimeException("Unknown Profesi")));
-    }
 
     public SavedStatus<?> save(RiwayatMutasiPostRequest request) {
         return switch (request.getJenisMutasi()) {
