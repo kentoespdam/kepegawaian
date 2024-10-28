@@ -75,6 +75,7 @@ public class SetupProfesi implements SetupMaster {
         list.add(new Profesi(56L, new Level(7L),"Staf Sub Bag Teknik Cabang (PJ)","-","-"));
         list.add(new Profesi(57L, new Level(7L),"Staf Sub Bag Teknik Cabang (Adm RAB)","-","-"));
         list.add(new Profesi(58L, new Level(7L),"Staf Sub Bag Teknik Cabang (Adm Kegiatan Teknik)","-","-"));
+        list.add(new Profesi(59L, new Level(5L),"Manajer Cabang Banyumas","-","-"));
 
         profesiRepository.saveAll(list);
     }

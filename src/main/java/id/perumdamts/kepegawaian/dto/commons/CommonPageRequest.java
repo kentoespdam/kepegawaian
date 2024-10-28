@@ -17,7 +17,7 @@ public class CommonPageRequest implements Serializable {
     protected Integer page = 0;
     protected Integer size = 10;
     protected String sortBy;
-    protected String sortDirection;
+    protected String sortDirection = "asc";
 
     @JsonIgnore
     public Pageable getPageable() {

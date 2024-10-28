@@ -25,6 +25,7 @@ import java.time.LocalDate;
 @Entity
 @Table(indexes = {
         @Index(columnList = "nipam", unique = true),
+        @Index(columnList = "tmt_pensiun"),
         @Index(columnList = "is_deleted")
 })
 @Data
@@ -50,15 +51,15 @@ public class Pegawai extends IdsAbstract {
     @ManyToOne
     @JoinColumn(name = "jabatan_id", referencedColumnName = "id")
     private Jabatan jabatan;
-    
+
     @ManyToOne
     @JoinColumn(name = "profesi_id", referencedColumnName = "id")
     private Profesi profesi;
-    
+
     @ManyToOne
     @JoinColumn(name = "golongan_id", referencedColumnName = "id")
     private Golongan golongan;
-    
+
     @ManyToOne
     @JoinColumn(name = "grade_id", referencedColumnName = "id")
     private Grade grade;

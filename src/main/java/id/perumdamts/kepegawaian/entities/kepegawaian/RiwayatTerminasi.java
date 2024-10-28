@@ -26,7 +26,7 @@ import java.time.LocalDate;
         @Index(columnList = "nipam"),
         @Index(columnList = "nama"),
         @Index(columnList = "nomor_sk"),
-        @Index(columnList = "tanggal_pensiun")
+        @Index(columnList = "tanggal_terminasi")
 })
 @SQLDelete(sql = "UPDATE riwayat_terminasi SET is_deleted = true WHERE id = ?")
 @SQLRestriction("is_deleted = false")
@@ -57,8 +57,8 @@ public class RiwayatTerminasi extends IdsAbstract {
     private String namaGolongan;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate tanggalPensiun;
-    private Integer tahunPensiun;
+    private LocalDate tanggalTerminasi;
+    private Integer tahunTerminasi;
     private Integer masaKerja;
     private String notes;
 }

@@ -29,8 +29,8 @@ public class RiwayatTerminasiResponse {
     private String namaGolongan;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate tanggalPensiun;
-    private Integer tahunPensiun;
+    private LocalDate tanggalTerminasi;
+    private Integer tahunTerminasi;
     private Integer masaKerja;
     private String notes;
 
@@ -50,8 +50,8 @@ public class RiwayatTerminasiResponse {
             response.setGolongan(GolonganResponse.from(entity.getGolongan()));
             response.setNamaGolongan(entity.getNamaGolongan());
         }
-        response.setTanggalPensiun(entity.getTanggalPensiun());
-        response.setTahunPensiun(entity.getTahunPensiun());
+        response.setTanggalTerminasi(entity.getTanggalTerminasi());
+        response.setTahunTerminasi(entity.getTahunTerminasi());
         response.setMasaKerja(entity.getMasaKerja());
         response.setNotes(entity.getNotes());
         return response;

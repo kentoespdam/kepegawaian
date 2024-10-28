@@ -23,6 +23,11 @@ public class RiwayatTerminasiController {
         return CustomResult.any(service.findPage(request));
     }
 
+    @GetMapping("/calon-pensiun")
+    public ResponseEntity<?> indexCalonPensiun(RiwayatTerminasiRequest request) {
+        return CustomResult.any(service.findPageCalonPensiun(request));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> detail(@PathVariable Long id) {
         return CustomResult.any(service.findById(id));
@@ -34,7 +39,7 @@ public class RiwayatTerminasiController {
         return CustomResult.save(service.save(request));
     }
 
-    @PutMapping("/id")
+    @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody RiwayatTerminasiPutRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         return CustomResult.save(service.update(id, request));

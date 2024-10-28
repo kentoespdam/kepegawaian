@@ -75,8 +75,7 @@ public class PegawaiPostRequest extends BiodataPostRequest {
             Golongan golongan,
             Grade grade
     ) {
-        int umur = LocalDate.now().getYear() - biodata.getTanggalLahir().getYear();
-        LocalDate pensiun = biodata.getTanggalLahir().plusYears(56 - umur);
+        LocalDate pensiun = biodata.getTanggalLahir().plusYears(56);
         pensiun = LocalDate.of(pensiun.getYear(), pensiun.getMonth(), 1);
 
         Pegawai entity = new Pegawai();

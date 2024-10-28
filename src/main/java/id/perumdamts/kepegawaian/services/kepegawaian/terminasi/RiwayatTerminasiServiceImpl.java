@@ -6,6 +6,7 @@ import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiPostR
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiPutRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiResponse;
+import id.perumdamts.kepegawaian.dto.pegawai.PegawaiResponse;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatTerminasi;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
@@ -20,11 +21,14 @@ import id.perumdamts.kepegawaian.repositories.master.OrganisasiRepository;
 import id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk.GenericSkService;
 import id.perumdamts.kepegawaian.utils.DetailFromList;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RiwayatTerminasiServiceImpl implements RiwayatTerminasiService {
@@ -39,6 +43,18 @@ public class RiwayatTerminasiServiceImpl implements RiwayatTerminasiService {
     public Page<RiwayatTerminasiResponse> findPage(RiwayatTerminasiRequest request) {
         return repository.findAll(request.getSpecification(), request.getPageable())
                 .map(RiwayatTerminasiResponse::from);
+    }
+
+    @Override
+    public Page<PegawaiResponse> findPageCalonPensiun(RiwayatTerminasiRequest request) {
+        LocalDate now = LocalDate.now();
+        LocalDate end = now.plusMonths(3);
+        request.setTanggalTerminasi(end);
+        request.setSortBy("Biodata.nama");
+        request.setSortDirection("ASC");
+
+        return pegawaiRepository.findAll(request.getCalonPensiunSpecification(), request.getPageable())
+                .map(PegawaiResponse::from);
     }
 
     @Override
