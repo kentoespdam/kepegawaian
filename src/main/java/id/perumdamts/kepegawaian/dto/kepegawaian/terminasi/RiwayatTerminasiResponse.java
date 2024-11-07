@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.dto.kepegawaian.terminasi;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import id.perumdamts.kepegawaian.dto.kepegawaian.lampiran.LampiranSkResponse;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkResponse;
 import id.perumdamts.kepegawaian.dto.master.golongan.GolonganResponse;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;
@@ -12,6 +13,7 @@ import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatTerminasi;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 public class RiwayatTerminasiResponse {
@@ -21,6 +23,7 @@ public class RiwayatTerminasiResponse {
     private String nama;
     private String nomorSk;
     private RiwayatSkResponse skTerminasi;
+    private LampiranSkResponse lampiranSkTerminasi;
     private OrganisasiMiniResponse organisasi;
     private String namaOrganisasi;
     private JabatanMiniResponse jabatan;
@@ -54,6 +57,13 @@ public class RiwayatTerminasiResponse {
         response.setTahunTerminasi(entity.getTahunTerminasi());
         response.setMasaKerja(entity.getMasaKerja());
         response.setNotes(entity.getNotes());
+        return response;
+    }
+
+    public static RiwayatTerminasiResponse from(RiwayatTerminasi entity, List<LampiranSkResponse> lampiranSkResponses) {
+        RiwayatTerminasiResponse response = RiwayatTerminasiResponse.from(entity);
+        if (lampiranSkResponses != null && !lampiranSkResponses.isEmpty())
+            response.setLampiranSkTerminasi(lampiranSkResponses.getFirst());
         return response;
     }
 }

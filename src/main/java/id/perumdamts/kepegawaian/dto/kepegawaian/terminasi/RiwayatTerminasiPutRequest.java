@@ -13,9 +13,10 @@ import java.util.Objects;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class RiwayatTerminasiPutRequest extends RiwayatTerminasiPostRequest {
-    public static RiwayatTerminasi toEntity(RiwayatTerminasi entity, RiwayatSk riwayatSk, Golongan golongan, Jabatan jabatan, Organisasi organisasi) {
+    public static RiwayatTerminasi toEntity(RiwayatTerminasiPutRequest request, RiwayatTerminasi entity, RiwayatSk riwayatSk, Golongan golongan, Jabatan jabatan, Organisasi organisasi) {
         entity.setNipam(riwayatSk.getNipam());
         entity.setSkTerminasi(riwayatSk);
+        entity.setPegawai(riwayatSk.getPegawai());
         entity.setOrganisasi(organisasi);
         entity.setNamaOrganisasi(organisasi.getNama());
         entity.setJabatan(jabatan);
@@ -24,6 +25,7 @@ public class RiwayatTerminasiPutRequest extends RiwayatTerminasiPostRequest {
             entity.setGolongan(golongan);
             entity.setNamaGolongan(golongan.getPangkat() + " - " + golongan.getGolongan());
         }
+        entity.setNotes(request.getNotes());
 
         return entity;
     }

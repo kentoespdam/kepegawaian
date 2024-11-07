@@ -34,13 +34,13 @@ public class RiwayatTerminasiController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody RiwayatTerminasiPostRequest request, Errors errors) {
+    public ResponseEntity<?> create(@Valid @ModelAttribute RiwayatTerminasiPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         return CustomResult.save(service.save(request));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody RiwayatTerminasiPutRequest request, Errors errors) {
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @ModelAttribute RiwayatTerminasiPutRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         return CustomResult.save(service.update(id, request));
     }

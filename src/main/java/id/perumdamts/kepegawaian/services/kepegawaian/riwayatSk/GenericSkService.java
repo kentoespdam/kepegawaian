@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk;
 
+import id.perumdamts.kepegawaian.dto.kepegawaian.lampiran.LampiranSkPostRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.mutasi.RiwayatMutasiPostRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.mutasi.RiwayatMutasiPutRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatKontrak.RiwayatKontrakPostRequest;
@@ -143,6 +144,14 @@ public class GenericSkService {
         RiwayatSk riwayatSk = this.saveSK(entity);
         pegawai.setStatusKerja(EStatusKerja.BERHENTI_OR_KELUAR);
         pegawaiService.updatePegawai(pegawai);
+        if (request.getFileName() != null) {
+            LampiranSkPostRequest lampiranSkPostRequest = new LampiranSkPostRequest();
+            lampiranSkPostRequest.setRef(EJenisSk.SK_PENSIUN);
+            lampiranSkPostRequest.setRefId(riwayatSk.getId());
+            lampiranSkPostRequest.setFileName(request.getFileName());
+            lampiranSkPostRequest.setNotes(request.getNotes());
+            lampiranSkService.addLampiran(lampiranSkPostRequest);
+        }
         return riwayatSk;
     }
 
@@ -153,6 +162,14 @@ public class GenericSkService {
         if (golongan != null)
             skTerminasi.setGolongan(golongan);
         skTerminasi.setNotes(request.getNotes());
+        if (request.getFileName() != null) {
+            LampiranSkPostRequest lampiranSkPostRequest = new LampiranSkPostRequest();
+            lampiranSkPostRequest.setRef(EJenisSk.SK_PENSIUN);
+            lampiranSkPostRequest.setRefId(skTerminasi.getId());
+            lampiranSkPostRequest.setFileName(request.getFileName());
+            lampiranSkPostRequest.setNotes(request.getNotes());
+            lampiranSkService.addLampiran(lampiranSkPostRequest);
+        }
         return this.saveSK(skTerminasi);
     }
 

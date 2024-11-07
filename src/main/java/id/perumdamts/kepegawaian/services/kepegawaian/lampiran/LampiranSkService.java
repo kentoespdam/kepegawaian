@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface LampiranSkService {
-    List<LampiranSkResponse> getLampiran(EJenisSk jenisSk, Long id);
+    List<LampiranSkResponse> getLampiran(EJenisSk jenisSk, Long refId);
 
     LampiranSkResponse getLampiranById(Long id);
 

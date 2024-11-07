@@ -32,8 +32,8 @@ public class LampiranSkServiceImpl implements LampiranSkService {
     private final FileUploadUtil fileUploadUtil;
 
     @Override
-    public List<LampiranSkResponse> getLampiran(EJenisSk jenisSk, Long id) {
-        return repository.findByRefAndRefId(jenisSk, id).stream()
+    public List<LampiranSkResponse> getLampiran(EJenisSk jenisSk, Long refId) {
+        return repository.findByRefAndRefId(jenisSk, refId).stream()
                 .map(LampiranSkResponse::from).toList();
     }
 

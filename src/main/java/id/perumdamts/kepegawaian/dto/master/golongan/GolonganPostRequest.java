@@ -24,16 +24,11 @@ public class GolonganPostRequest {
     }
 
     public static Golongan toEntity(GolonganPostRequest request) {
-        Golongan entity= new Golongan();
-        entity.setGolongan(request.getGolongan());
-        entity.setPangkat(request.getPangkat());
-        return entity;
+        return new Golongan(request.getGolongan(), request.getPangkat());
     }
 
     public static Golongan toEntity(GolonganPostRequest request, Long id) {
-        Golongan entity = toEntity(request);
-        entity.setId(id);
-        return entity;
+        return new Golongan(id, request.getGolongan(), request.getPangkat());
     }
 
     public static List<Golongan> toEntities(List<GolonganPostRequest> requests) {

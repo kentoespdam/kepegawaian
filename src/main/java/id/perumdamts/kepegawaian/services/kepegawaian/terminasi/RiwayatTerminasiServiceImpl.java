@@ -2,11 +2,13 @@ package id.perumdamts.kepegawaian.services.kepegawaian.terminasi;
 
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
+import id.perumdamts.kepegawaian.dto.kepegawaian.lampiran.LampiranSkResponse;
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiPostRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiPutRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiResponse;
 import id.perumdamts.kepegawaian.dto.pegawai.PegawaiResponse;
+import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatTerminasi;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
@@ -18,6 +20,7 @@ import id.perumdamts.kepegawaian.repositories.kepegawaian.RiwayatTerminasiReposi
 import id.perumdamts.kepegawaian.repositories.master.GolonganRepository;
 import id.perumdamts.kepegawaian.repositories.master.JabatanRepository;
 import id.perumdamts.kepegawaian.repositories.master.OrganisasiRepository;
+import id.perumdamts.kepegawaian.services.kepegawaian.lampiran.LampiranSkService;
 import id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk.GenericSkService;
 import id.perumdamts.kepegawaian.utils.DetailFromList;
 import lombok.RequiredArgsConstructor;
@@ -38,11 +41,18 @@ public class RiwayatTerminasiServiceImpl implements RiwayatTerminasiService {
     private final OrganisasiRepository organisasiRepository;
     private final JabatanRepository jabatanRepository;
     private final PegawaiRepository pegawaiRepository;
+    private final LampiranSkService lampiranSkService;
 
     @Override
     public Page<RiwayatTerminasiResponse> findPage(RiwayatTerminasiRequest request) {
         return repository.findAll(request.getSpecification(), request.getPageable())
-                .map(RiwayatTerminasiResponse::from);
+                .map(riwayatTerminasi -> {
+                    List<LampiranSkResponse> lampiran = lampiranSkService.getLampiran(
+                            EJenisSk.SK_PENSIUN,
+                            riwayatTerminasi.getSkTerminasi().getId()
+                    );
+                    return RiwayatTerminasiResponse.from(riwayatTerminasi, lampiran);
+                });
     }
 
     @Override
@@ -59,7 +69,11 @@ public class RiwayatTerminasiServiceImpl implements RiwayatTerminasiService {
 
     @Override
     public RiwayatTerminasiResponse findById(Long id) {
-        return repository.findById(id).map(RiwayatTerminasiResponse::from).orElse(null);
+        return repository.findById(id)
+                .map(entity -> {
+                    List<LampiranSkResponse> lampiran = lampiranSkService.getLampiran(EJenisSk.SK_PENSIUN, entity.getSkTerminasi().getId());
+                    return RiwayatTerminasiResponse.from(entity, lampiran);
+                }).orElse(null);
     }
 
     @Override
@@ -106,7 +120,7 @@ public class RiwayatTerminasiServiceImpl implements RiwayatTerminasiService {
             if (jabatan == null) throw new RuntimeException("Unknown Jabatan");
 
             RiwayatSk riwayatSk = skService.updateTerminasi(request, terminasi.getSkTerminasi(), golongan);
-            RiwayatTerminasi entity = RiwayatTerminasiPutRequest.toEntity(terminasi, riwayatSk, golongan, jabatan, organisasi);
+            RiwayatTerminasi entity = RiwayatTerminasiPutRequest.toEntity(request, terminasi, riwayatSk, golongan, jabatan, organisasi);
             RiwayatTerminasi save = repository.save(entity);
             return SavedStatus.build(ESaveStatus.SUCCESS, save);
         } catch (Exception e) {
