@@ -13,6 +13,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -32,7 +33,7 @@ public class RiwayatTerminasiPostRequest extends RiwayatSkPostRequest {
     @NotNull(message = "Jabatan ID is required")
     @Min(value = 1, message = "Jabatan ID must be greater than or equal to 1")
     private Long jabatanId;
-    private String notes;
+    private MultipartFile fileName;
 
     @JsonIgnore
     public Specification<RiwayatTerminasi> getTerminasiSpecification() {
@@ -45,191 +46,11 @@ public class RiwayatTerminasiPostRequest extends RiwayatSkPostRequest {
 
     public static RiwayatTerminasi toEntity(RiwayatTerminasiPostRequest request, RiwayatSk riwayatSk, Golongan golongan, Jabatan jabatan, Organisasi organisasi) {
         RiwayatTerminasi entity = new RiwayatTerminasi();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         entity.setNipam(request.getNipam());
         entity.setNama(request.getNama());
         entity.setNomorSk(request.getNomorSk());
         entity.setSkTerminasi(riwayatSk);
+        entity.setPegawai(riwayatSk.getPegawai());
         entity.setOrganisasi(organisasi);
         entity.setNamaOrganisasi(organisasi.getNama());
         entity.setJabatan(jabatan);
