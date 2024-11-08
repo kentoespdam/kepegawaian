@@ -40,7 +40,7 @@ public class Pegawai extends IdsAbstract {
     @Column(unique = true)
     private String nipam;
     @JsonBackReference
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "biodata_id", unique = true, referencedColumnName = "nik")
     private Biodata biodata;
     @Enumerated(EnumType.ORDINAL)

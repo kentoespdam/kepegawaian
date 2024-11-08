@@ -24,14 +24,12 @@ import id.perumdamts.kepegawaian.services.kepegawaian.lampiran.LampiranSkService
 import id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk.GenericSkService;
 import id.perumdamts.kepegawaian.utils.DetailFromList;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RiwayatTerminasiServiceImpl implements RiwayatTerminasiService {
@@ -108,6 +106,7 @@ public class RiwayatTerminasiServiceImpl implements RiwayatTerminasiService {
     public SavedStatus<?> update(Long id, RiwayatTerminasiPutRequest request) {
         try {
             RiwayatTerminasi terminasi = repository.findById(id).orElseThrow(() -> new RuntimeException("Unknown Riwayat Terminasi"));
+            Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId()).orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
 
             List<Golongan> golonganList = golonganRepository.findAll();
             List<Organisasi> organisasiList = organisasiRepository.findAll();
@@ -119,7 +118,7 @@ public class RiwayatTerminasiServiceImpl implements RiwayatTerminasiService {
             Jabatan jabatan = DetailFromList.findExistJabatan(jabatanList, request.getJabatanId());
             if (jabatan == null) throw new RuntimeException("Unknown Jabatan");
 
-            RiwayatSk riwayatSk = skService.updateTerminasi(request, terminasi.getSkTerminasi(), golongan);
+            RiwayatSk riwayatSk = skService.updateTerminasi(request, terminasi, pegawai, golongan);
             RiwayatTerminasi entity = RiwayatTerminasiPutRequest.toEntity(request, terminasi, riwayatSk, golongan, jabatan, organisasi);
             RiwayatTerminasi save = repository.save(entity);
             return SavedStatus.build(ESaveStatus.SUCCESS, save);

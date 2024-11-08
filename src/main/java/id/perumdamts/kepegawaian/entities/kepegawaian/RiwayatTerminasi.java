@@ -40,7 +40,7 @@ public class RiwayatTerminasi extends IdsAbstract {
     private String nama;
     private String nomorSk;
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "riwayat_sk_id", referencedColumnName = "id")
     private RiwayatSk skTerminasi;
     @OneToOne

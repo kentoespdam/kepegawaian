@@ -14,16 +14,20 @@ import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatKontrak;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatMutasi;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
+import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatTerminasi;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.entities.master.Profesi;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
+import id.perumdamts.kepegawaian.entities.penggajian.LampiranSk;
 import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
+import id.perumdamts.kepegawaian.repositories.kepegawaian.LampiranSkRepository;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.RiwayatSkRepository;
 import id.perumdamts.kepegawaian.services.kepegawaian.lampiran.LampiranSkService;
 import id.perumdamts.kepegawaian.services.pegawai.GenericPegawaiService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -31,11 +35,13 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class GenericSkService {
     private final RiwayatSkRepository repository;
     private final PegawaiRepository pegawaiRepository;
     private final GenericPegawaiService pegawaiService;
     private final LampiranSkService lampiranSkService;
+    private final LampiranSkRepository lampiranSkRepository;
 
     public RiwayatSk saveSkGolongan(RiwayatSkPostRequest request, Golongan golongan) {
         this.mainValidate(request);
@@ -155,22 +161,34 @@ public class GenericSkService {
         return riwayatSk;
     }
 
-    public RiwayatSk updateTerminasi(RiwayatTerminasiPutRequest request, RiwayatSk skTerminasi, Golongan golongan) {
-        skTerminasi.setNomorSk(request.getNomorSk());
-        skTerminasi.setTanggalSk(request.getTanggalSk());
-        skTerminasi.setTmtBerlaku(request.getTmtBerlaku());
-        if (golongan != null)
-            skTerminasi.setGolongan(golongan);
-        skTerminasi.setNotes(request.getNotes());
-        if (request.getFileName() != null) {
-            LampiranSkPostRequest lampiranSkPostRequest = new LampiranSkPostRequest();
-            lampiranSkPostRequest.setRef(EJenisSk.SK_PENSIUN);
-            lampiranSkPostRequest.setRefId(skTerminasi.getId());
-            lampiranSkPostRequest.setFileName(request.getFileName());
-            lampiranSkPostRequest.setNotes(request.getNotes());
-            lampiranSkService.addLampiran(lampiranSkPostRequest);
+    public RiwayatSk updateTerminasi(RiwayatTerminasiPutRequest request, RiwayatTerminasi terminasi, Pegawai pegawai, Golongan golongan) {
+        try {
+            RiwayatSk skTerminasi = terminasi.getSkTerminasi();
+            skTerminasi.setPegawai(pegawai);
+            skTerminasi.setNomorSk(request.getNomorSk());
+            skTerminasi.setTanggalSk(request.getTanggalSk());
+            skTerminasi.setTmtBerlaku(request.getTmtBerlaku());
+            if (golongan != null)
+                skTerminasi.setGolongan(golongan);
+            skTerminasi.setNotes(request.getNotes());
+            if (request.getFileName() != null) {
+                LampiranSk oldLampiran = lampiranSkRepository.findByRefAndRefId(EJenisSk.SK_PENSIUN, skTerminasi.getId()).getFirst();
+                if (oldLampiran != null) {
+                    oldLampiran.setIsDeleted(true);
+                    lampiranSkRepository.save(oldLampiran);
+                }
+                LampiranSkPostRequest lampiranSkPostRequest = new LampiranSkPostRequest();
+                lampiranSkPostRequest.setRef(EJenisSk.SK_PENSIUN);
+                lampiranSkPostRequest.setRefId(skTerminasi.getId());
+                lampiranSkPostRequest.setFileName(request.getFileName());
+                lampiranSkPostRequest.setNotes(request.getNotes());
+                lampiranSkService.addLampiran(lampiranSkPostRequest);
+            }
+            return repository.save(skTerminasi);
+        } catch (Exception e) {
+            log.info("updateTerminasi: {}", e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
-        return this.saveSK(skTerminasi);
     }
 
     private void mainValidate(RiwayatSkPostRequest request) {
