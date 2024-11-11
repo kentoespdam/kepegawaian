@@ -12,6 +12,4 @@ public interface GajiTunjanganRepository extends JpaRepository<GajiTunjangan, Lo
         JpaSpecificationExecutor<GajiTunjangan>,
         RevisionRepository<GajiTunjangan, Long, Long> {
     Optional<GajiTunjangan> findByIdAndJenisTunjangan(Long id, EJenisTunjangan eJenisTunjangan);
-
-    boolean existsByIdAndJenisTunjangan(Long id, EJenisTunjangan jenis);
 }

@@ -80,9 +80,10 @@ public class GajiTunjanganServiceImpl implements GajiTunjanganService {
 
     @Override
     public boolean deleteById(EJenisTunjangan jenis, Long id) {
-        boolean exists = repository.existsByIdAndJenisTunjangan(id, jenis);
-        if (!exists) return false;
-        repository.deleteById(id);
+        Optional<GajiTunjangan> byId = repository.findByIdAndJenisTunjangan(id, jenis);
+        if (byId.isEmpty()) return false;
+        byId.get().setIsDeleted(true);
+        repository.save(byId.get());
         return true;
     }
 }
