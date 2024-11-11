@@ -79,10 +79,10 @@ public class LampiranSkServiceImpl implements LampiranSkService {
     @Transactional
     @Override
     public boolean deleteById(Long id) {
-        boolean exists = repository.existsById(id);
-        if (!exists)
-            return false;
-        repository.deleteById(id);
+        Optional<LampiranSk> byId = repository.findById(id);
+        if (byId.isEmpty()) return false;
+        byId.get().setIsDeleted(true);
+        repository.save(byId.get());
         return true;
     }
 
@@ -94,10 +94,10 @@ public class LampiranSkServiceImpl implements LampiranSkService {
                         cb.equal(root.get("refId"), refId),
                         cb.equal(root.get("id"), id)
                 );
-        boolean exists = repository.exists(specification);
-        if (!exists)
-            return false;
-        repository.deleteById(id);
+        Optional<LampiranSk> one = repository.findOne(specification);
+        if (one.isEmpty()) return false;
+        one.get().setIsDeleted(true);
+        repository.save(one.get());
         return true;
     }
 
