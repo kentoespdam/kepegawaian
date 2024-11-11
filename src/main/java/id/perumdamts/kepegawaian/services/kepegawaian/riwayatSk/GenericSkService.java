@@ -173,10 +173,9 @@ public class GenericSkService {
             skTerminasi.setNotes(request.getNotes());
             if (request.getFileName() != null) {
                 LampiranSk oldLampiran = lampiranSkRepository.findByRefAndRefId(EJenisSk.SK_PENSIUN, skTerminasi.getId()).getFirst();
-                if (oldLampiran != null) {
-                    oldLampiran.setIsDeleted(true);
-                    lampiranSkRepository.save(oldLampiran);
-                }
+                if (oldLampiran != null)
+                    lampiranSkService.deleteById(oldLampiran.getId());
+
                 LampiranSkPostRequest lampiranSkPostRequest = new LampiranSkPostRequest();
                 lampiranSkPostRequest.setRef(EJenisSk.SK_PENSIUN);
                 lampiranSkPostRequest.setRefId(skTerminasi.getId());
