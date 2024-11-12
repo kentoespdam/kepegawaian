@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.entities.penggajian;
+package id.perumdamts.kepegawaian.entities.kepegawaian;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

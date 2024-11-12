@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
-import id.perumdamts.kepegawaian.entities.penggajian.LampiranSk;
+import id.perumdamts.kepegawaian.entities.kepegawaian.LampiranSk;
 import lombok.Data;
 
 import java.time.LocalDateTime;

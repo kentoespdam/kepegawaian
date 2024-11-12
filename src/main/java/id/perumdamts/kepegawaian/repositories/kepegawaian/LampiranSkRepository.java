@@ -1,7 +1,7 @@
 package id.perumdamts.kepegawaian.repositories.kepegawaian;
 
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
-import id.perumdamts.kepegawaian.entities.penggajian.LampiranSk;
+import id.perumdamts.kepegawaian.entities.kepegawaian.LampiranSk;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.history.RevisionRepository;

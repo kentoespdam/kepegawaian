@@ -20,7 +20,7 @@ import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.entities.master.Profesi;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
-import id.perumdamts.kepegawaian.entities.penggajian.LampiranSk;
+import id.perumdamts.kepegawaian.entities.kepegawaian.LampiranSk;
 import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.LampiranSkRepository;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.RiwayatSkRepository;
