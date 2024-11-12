@@ -7,6 +7,7 @@ import id.perumdamts.kepegawaian.dto.penggajian.gajiProfil.GajiProfilPutRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiProfil.GajiProfilResponse;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiProfil;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiProfilRepository;
+import id.perumdamts.kepegawaian.services.penggajian.gajiKomponen.GajiKomponenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class GajiProfilServiceImpl implements GajiProfilService {
     private final GajiProfilRepository repository;
+    private final GajiKomponenService gajiKomponenService;
 
     @Override
     public List<GajiProfilResponse> findAll() {
@@ -34,6 +36,7 @@ public class GajiProfilServiceImpl implements GajiProfilService {
         if (exists) return SavedStatus.build(ESaveStatus.DUPLICATE, "Gaji Profil sudah ada");
         GajiProfil entity = GajiProfilPostRequest.toEntity(request);
         GajiProfil save = repository.save(entity);
+        gajiKomponenService.generateDefaultValue(save);
         return SavedStatus.build(ESaveStatus.SUCCESS, save);
     }
 
