@@ -8,6 +8,7 @@ import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSp.RiwayatSpRequest;
 import id.perumdamts.kepegawaian.services.kepegawaian.riwayatSp.RiwayatSpService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.Errors;
@@ -20,7 +21,7 @@ public class RiwayatSpController {
     private final RiwayatSpService service;
 
     @GetMapping("/pegawai/{id}")
-    public ResponseEntity<?> index(@PathVariable Long id, RiwayatSpRequest request) {
+    public ResponseEntity<?> index(@PathVariable Long id, @ParameterObject RiwayatSpRequest request) {
         return CustomResult.page(service.findPage(id, request));
     }
 

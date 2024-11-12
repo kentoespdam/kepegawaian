@@ -8,6 +8,7 @@ import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatKontrak.RiwayatKontrakRe
 import id.perumdamts.kepegawaian.services.kepegawaian.riwayatKontrak.RiwayatKontrakService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.Errors;
@@ -20,7 +21,7 @@ public class RiwayatKontrakController {
     private final RiwayatKontrakService service;
 
     @GetMapping("/pegawai/{id}")
-    public ResponseEntity<?> index(@PathVariable Long id, RiwayatKontrakRequest request) {
+    public ResponseEntity<?> index(@PathVariable Long id, @ParameterObject RiwayatKontrakRequest request) {
         return CustomResult.any(service.findByPegawaiId(id, request));
     }
 
