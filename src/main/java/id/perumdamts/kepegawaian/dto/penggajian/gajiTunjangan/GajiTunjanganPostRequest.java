@@ -24,9 +24,9 @@ public class GajiTunjanganPostRequest {
     public Specification<GajiTunjangan> getSpecification() {
         Specification<GajiTunjangan> jenisSpec = Objects.isNull(jenisTunjangan) ? null :
                 (root, query, cb) -> cb.equal(root.get("jenisTunjangan"), jenisTunjangan);
-        Specification<GajiTunjangan> levelSpec = Objects.isNull(levelId) ? null :
+        Specification<GajiTunjangan> levelSpec = Objects.isNull(levelId) || levelId <= 0 ? null :
                 (root, query, cb) -> cb.equal(root.get("level").get("id"), levelId);
-        Specification<GajiTunjangan> golonganSpec = Objects.isNull(golonganId) ? null :
+        Specification<GajiTunjangan> golonganSpec = Objects.isNull(golonganId) || golonganId <= 0 ? null :
                 (root, query, cb) -> cb.equal(root.get("golongan").get("id"), golonganId);
         return Specification.where(jenisSpec).and(levelSpec).and(golonganSpec);
     }
