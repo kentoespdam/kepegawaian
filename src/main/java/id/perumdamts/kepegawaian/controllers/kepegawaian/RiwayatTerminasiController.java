@@ -8,6 +8,7 @@ import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiReque
 import id.perumdamts.kepegawaian.services.kepegawaian.terminasi.RiwayatTerminasiService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +20,12 @@ public class RiwayatTerminasiController {
     private final RiwayatTerminasiService service;
 
     @GetMapping
-    public ResponseEntity<?> index(RiwayatTerminasiRequest request) {
+    public ResponseEntity<?> index(@ParameterObject RiwayatTerminasiRequest request) {
         return CustomResult.any(service.findPage(request));
     }
 
     @GetMapping("/calon-pensiun")
-    public ResponseEntity<?> indexCalonPensiun(RiwayatTerminasiRequest request) {
+    public ResponseEntity<?> indexCalonPensiun(@ParameterObject RiwayatTerminasiRequest request) {
         return CustomResult.any(service.findPageCalonPensiun(request));
     }
 

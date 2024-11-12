@@ -70,10 +70,11 @@ public class AlasanBerhentiServiceImpl implements AlasanBerhentiService {
 
     @Override
     public boolean deleteById(Long id) {
-        boolean exists = repository.existsById(id);
-        if (!exists)
+        Optional<AlasanBerhenti> byId = repository.findById(id);
+        if (byId.isEmpty())
             return false;
-        repository.deleteById(id);
+        byId.get().setIsDeleted(true);
+        repository.save(byId.get());
         return true;
     }
 }

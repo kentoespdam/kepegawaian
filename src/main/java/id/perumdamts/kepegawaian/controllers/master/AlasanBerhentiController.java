@@ -6,6 +6,7 @@ import id.perumdamts.kepegawaian.dto.master.alasanBerhenti.AlasanBerhentiPostReq
 import id.perumdamts.kepegawaian.dto.master.alasanBerhenti.AlasanBerhentiPutRequest;
 import id.perumdamts.kepegawaian.dto.master.alasanBerhenti.AlasanBerhentiRequest;
 import id.perumdamts.kepegawaian.services.master.alasanBerhenti.AlasanBerhentiService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -22,11 +23,13 @@ import java.util.List;
 public class AlasanBerhentiController {
     private final AlasanBerhentiService alasanBerhenti;
 
+    @Operation(summary = "Get Page Alasan Berhenti")
     @GetMapping
     public ResponseEntity<?> get(@ParameterObject AlasanBerhentiRequest request) {
         return CustomResult.any(alasanBerhenti.findPage(request));
     }
 
+    @Operation(summary = "Get List Alasan Berhenti")
     @GetMapping("/list")
     public ResponseEntity<?> list() {
         return CustomResult.list(alasanBerhenti.findAll());

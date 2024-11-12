@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.dto.kepegawaian.lampiran.LampiranSkResponse;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkResponse;
+import id.perumdamts.kepegawaian.dto.master.alasanBerhenti.AlasanBerhentiResponse;
 import id.perumdamts.kepegawaian.dto.master.golongan.GolonganResponse;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiMiniResponse;
@@ -18,6 +19,7 @@ import java.util.List;
 @Data
 public class RiwayatTerminasiResponse {
     private Long id;
+    private AlasanBerhentiResponse alasanTerminasi;
     private PegawaiResponse pegawai;
     private String nipam;
     private String nama;
@@ -40,6 +42,7 @@ public class RiwayatTerminasiResponse {
     public static RiwayatTerminasiResponse from(RiwayatTerminasi entity) {
         RiwayatTerminasiResponse response = new RiwayatTerminasiResponse();
         response.setId(entity.getId());
+        response.setAlasanTerminasi(AlasanBerhentiResponse.from(entity.getAlasanTerminasi()));
         response.setPegawai(PegawaiResponse.from(entity.getPegawai()));
         response.setNipam(entity.getNipam());
         response.setNama(entity.getNama());

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkPostRequest;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatTerminasi;
+import id.perumdamts.kepegawaian.entities.master.AlasanBerhenti;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
@@ -21,6 +22,9 @@ import java.util.Objects;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class RiwayatTerminasiPostRequest extends RiwayatSkPostRequest {
+    @NotNull(message = "Alasan Berhenti is required")
+    @Min(value = 1, message = "Alasan Berhenti is required")
+    private Long alasanTerminasiId;
     @NotNull(message = "Nipam is required")
     @NotEmpty(message = "Nipam ID is required")
     private String nipam;
@@ -44,8 +48,9 @@ public class RiwayatTerminasiPostRequest extends RiwayatSkPostRequest {
         return Specification.where(skSpec).and(pegawaiSpec);
     }
 
-    public static RiwayatTerminasi toEntity(RiwayatTerminasiPostRequest request, RiwayatSk riwayatSk, Golongan golongan, Jabatan jabatan, Organisasi organisasi) {
+    public static RiwayatTerminasi toEntity(RiwayatTerminasiPostRequest request, AlasanBerhenti alasanTerminasi, RiwayatSk riwayatSk, Golongan golongan, Jabatan jabatan, Organisasi organisasi) {
         RiwayatTerminasi entity = new RiwayatTerminasi();
+        entity.setAlasanTerminasi(alasanTerminasi);
         entity.setNipam(request.getNipam());
         entity.setNama(request.getNama());
         entity.setNomorSk(request.getNomorSk());

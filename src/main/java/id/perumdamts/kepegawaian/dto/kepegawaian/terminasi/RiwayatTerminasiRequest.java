@@ -19,6 +19,7 @@ import java.util.Objects;
 @Data
 public class RiwayatTerminasiRequest extends CommonPageRequest {
     private Integer tahunPensiun;
+    private Long alasanTerminasiId;
     private Long pegawaiId;
     private String nipam;
     private String nama;
@@ -34,6 +35,8 @@ public class RiwayatTerminasiRequest extends CommonPageRequest {
     public Specification<RiwayatTerminasi> getSpecification() {
         Specification<RiwayatTerminasi> tahunPensiunSpec = Objects.isNull(tahunPensiun) ? null :
                 (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("tahunPensiun"), tahunPensiun);
+        Specification<RiwayatTerminasi> alasanBerhentiSpec = Objects.isNull(alasanTerminasiId) ? null :
+                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("alasanTerminasi").get("id"), alasanTerminasiId);
         Specification<RiwayatTerminasi> pegawaiIdSpec = Objects.isNull(pegawaiId) ? null :
                 (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("pegawai").get("id"), pegawaiId);
         Specification<RiwayatTerminasi> nipamSpec = Objects.isNull(nipam) ? null :
@@ -47,7 +50,7 @@ public class RiwayatTerminasiRequest extends CommonPageRequest {
         Specification<RiwayatTerminasi> nomorSkSpec = Objects.isNull(nomorSk) ? null :
                 (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("nomorSk"), nomorSk);
 
-        return Specification.where(tahunPensiunSpec).and(pegawaiIdSpec).and(nipamSpec).and(namaSpec).and(jabatanIdSpec).and(golonganIdSpec).and(nomorSkSpec);
+        return Specification.where(tahunPensiunSpec).and(alasanBerhentiSpec).and(pegawaiIdSpec).and(nipamSpec).and(namaSpec).and(jabatanIdSpec).and(golonganIdSpec).and(nomorSkSpec);
     }
 
     @JsonIgnore

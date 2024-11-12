@@ -11,12 +11,14 @@ import id.perumdamts.kepegawaian.dto.pegawai.PegawaiResponse;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatTerminasi;
+import id.perumdamts.kepegawaian.entities.master.AlasanBerhenti;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.RiwayatTerminasiRepository;
+import id.perumdamts.kepegawaian.repositories.master.AlasanBerhentiRepository;
 import id.perumdamts.kepegawaian.repositories.master.GolonganRepository;
 import id.perumdamts.kepegawaian.repositories.master.JabatanRepository;
 import id.perumdamts.kepegawaian.repositories.master.OrganisasiRepository;
@@ -34,6 +36,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RiwayatTerminasiServiceImpl implements RiwayatTerminasiService {
     private final RiwayatTerminasiRepository repository;
+    private final AlasanBerhentiRepository alasanBerhentiRepository;
     private final GenericSkService skService;
     private final GolonganRepository golonganRepository;
     private final OrganisasiRepository organisasiRepository;
@@ -81,6 +84,7 @@ public class RiwayatTerminasiServiceImpl implements RiwayatTerminasiService {
             if (exists)
                 return SavedStatus.build(ESaveStatus.DUPLICATE, "Terminasi is already exist");
 
+            AlasanBerhenti alasanBerhenti = alasanBerhentiRepository.findById(request.getAlasanTerminasiId()).orElseThrow(() -> new RuntimeException("Unknown Alasan Terminasi"));
             Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId()).orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
 
             List<Golongan> golonganList = golonganRepository.findAll();
@@ -94,7 +98,7 @@ public class RiwayatTerminasiServiceImpl implements RiwayatTerminasiService {
             if (jabatan == null) throw new RuntimeException("Unknown Jabatan");
 
             RiwayatSk riwayatSk = skService.saveSkTerminasi(request, pegawai, golongan);
-            RiwayatTerminasi entity = RiwayatTerminasiPostRequest.toEntity(request, riwayatSk, golongan, jabatan, organisasi);
+            RiwayatTerminasi entity = RiwayatTerminasiPostRequest.toEntity(request, alasanBerhenti, riwayatSk, golongan, jabatan, organisasi);
             RiwayatTerminasi save = repository.save(entity);
             return SavedStatus.build(ESaveStatus.SUCCESS, save);
         } catch (Exception e) {
@@ -106,6 +110,7 @@ public class RiwayatTerminasiServiceImpl implements RiwayatTerminasiService {
     public SavedStatus<?> update(Long id, RiwayatTerminasiPutRequest request) {
         try {
             RiwayatTerminasi terminasi = repository.findById(id).orElseThrow(() -> new RuntimeException("Unknown Riwayat Terminasi"));
+            AlasanBerhenti alasanTerminasi = alasanBerhentiRepository.findById(request.getAlasanTerminasiId()).orElseThrow(() -> new RuntimeException("Unknown Alasan Terminasi"));
             Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId()).orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
 
             List<Golongan> golonganList = golonganRepository.findAll();
@@ -119,7 +124,7 @@ public class RiwayatTerminasiServiceImpl implements RiwayatTerminasiService {
             if (jabatan == null) throw new RuntimeException("Unknown Jabatan");
 
             RiwayatSk riwayatSk = skService.updateTerminasi(request, terminasi, pegawai, golongan);
-            RiwayatTerminasi entity = RiwayatTerminasiPutRequest.toEntity(request, terminasi, riwayatSk, golongan, jabatan, organisasi);
+            RiwayatTerminasi entity = RiwayatTerminasiPutRequest.toEntity(request, terminasi, alasanTerminasi, riwayatSk, golongan, jabatan, organisasi);
             RiwayatTerminasi save = repository.save(entity);
             return SavedStatus.build(ESaveStatus.SUCCESS, save);
         } catch (Exception e) {

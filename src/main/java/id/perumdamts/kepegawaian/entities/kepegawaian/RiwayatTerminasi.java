@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
+import id.perumdamts.kepegawaian.entities.master.AlasanBerhenti;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
@@ -38,6 +39,9 @@ public class RiwayatTerminasi extends IdsAbstract {
     private Pegawai pegawai;
     private String nipam;
     private String nama;
+    @ManyToOne
+    @JoinColumn(name = "alasan_terminasi_id", referencedColumnName = "id")
+    private AlasanBerhenti alasanTerminasi;
     private String nomorSk;
     @JsonBackReference
     @ManyToOne(fetch = FetchType.EAGER)
