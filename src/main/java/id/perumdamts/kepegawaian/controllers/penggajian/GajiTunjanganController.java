@@ -53,7 +53,7 @@ public class GajiTunjanganController {
         if (errors.hasErrors()) {
             return ErrorResult.build(errors);
         }
-        return CustomResult.any(service.save(jenis, request));
+        return CustomResult.save(service.save(jenis, request));
     }
 
     @PutMapping("/{jenis}/{id}")
@@ -61,7 +61,7 @@ public class GajiTunjanganController {
         if (errors.hasErrors()) {
             return ErrorResult.build(errors);
         }
-        return CustomResult.any(service.update(jenis, id, request));
+        return CustomResult.save(service.update(jenis, id, request));
     }
 
     @DeleteMapping("/{jenis}/{id}")

@@ -30,13 +30,13 @@ public class GajiProfilController {
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody GajiProfilPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.any(service.create(request));
+        return CustomResult.save(service.create(request));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody GajiProfilPutRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.any(service.update(id, request));
+        return CustomResult.save(service.update(id, request));
     }
 
     @DeleteMapping("/{id}")
