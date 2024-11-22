@@ -52,11 +52,6 @@ public class RiwayatSkServiceImpl implements RiwayatSkService {
     }
 
     @Override
-    public RiwayatSk findEntityById(Long id) {
-        return repository.findById(id).orElse(null);
-    }
-
-    @Override
     public List<RiwayatSkResponse> findByIds(List<Long> riwayatIds) {
         return repository.findByIdIn(riwayatIds).stream().map(RiwayatSkResponse::from).toList();
     }
@@ -66,23 +61,6 @@ public class RiwayatSkServiceImpl implements RiwayatSkService {
         request.setPegawaiId(pegawaiId);
         return repository.findAll(request.getSpecification(), request.getPageable())
                 .map(RiwayatSkResponse::from);
-    }
-
-    @Override
-    public RiwayatSk saveEntity(RiwayatSkPostRequest request) {
-        Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId()).orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
-        Golongan golongan = golonganRepository.findById(request.getGolonganId()).orElse(null);
-
-        Optional<RiwayatSk> one = repository.findOne(request.getSpecification());
-        if (one.isPresent())
-            throw new RuntimeException("Riwayat SK is Exists");
-
-        RiwayatSk entity = RiwayatSkPostRequest.toEntity(request, pegawai, golongan);
-        RiwayatSk save = repository.save(entity);
-        if (request.getUpdateMaster())
-            this.updatePegawai(request, pegawai, save, golongan);
-
-        return save;
     }
 
     @Transactional
@@ -133,6 +111,29 @@ public class RiwayatSkServiceImpl implements RiwayatSkService {
 
         return repository.save(entity);
 
+    }
+
+    @Override
+    public RiwayatSk savePegawai(PegawaiPostRequest request, Pegawai pegawai) {
+        Golongan golongan = golonganService.findGolonganById(request.getGolonganId());
+        LocalDate kenaikanBerikutnya = LocalDate.now().plusYears(2);
+
+        RiwayatSk entity = new RiwayatSk();
+        entity.setPegawai(pegawai);
+        entity.setNipam(pegawai.getNipam());
+        entity.setNama(pegawai.getBiodata().getNama());
+        entity.setNomorSk(request.getNomorSk());
+        entity.setJenisSk(EJenisSk.SK_PEGAWAI_TETAP);
+        entity.setTanggalSk(request.getTanggalSk());
+        entity.setTmtBerlaku(request.getTmtBerlakuSk());
+        entity.setGolongan(golongan);
+        entity.setMkgTahun(0);
+        entity.setMkgBulan(0);
+        entity.setKenaikanBerikutnya(kenaikanBerikutnya);
+        entity.setMkgbTahun(2);
+        entity.setMkgbBulan(0);
+
+        return repository.save(entity);
     }
 
     @Transactional

@@ -84,10 +84,21 @@ public class PegawaiServiceImpl implements PegawaiService {
             Pegawai entity = PegawaiPostRequest.toEntity(request, biodata, jabatan, organisasi, profesi, golongan, grade);
             Pegawai pegawai = repository.save(entity);
 
-            if (request.getStatusPegawai().equals(EStatusPegawai.KONTRAK)) {
-                genericKontrakService.saveFromPegawai(request, pegawai);
-            } else {
-                pegawai = saveCapeg(request, pegawai);
+            switch (request.getStatusPegawai()) {
+                case KONTRAK:
+                    genericKontrakService.saveFromPegawai(request, pegawai);
+                    break;
+                case PEGAWAI:
+                    RiwayatSk riwayatSk = riwayatSkService.savePegawai(request, pegawai);
+                    pegawai.setRefSkPegawaiId(riwayatSk.getId());
+                    pegawai.setMkgTahun(0);
+                    pegawai.setMkgBulan(0);
+
+                    pegawai = repository.save(pegawai);
+                    break;
+                default:
+                    pegawai = saveCapeg(request, pegawai);
+                    break;
             }
 
             return SavedStatus.build(ESaveStatus.SUCCESS, pegawai);

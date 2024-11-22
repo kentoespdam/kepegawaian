@@ -1,9 +1,6 @@
 package id.perumdamts.kepegawaian.dto.pegawai;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPostRequest;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
@@ -47,14 +44,14 @@ public class PegawaiPostRequest extends BiodataPostRequest {
     @Min(value = 1, message = "Grade is required")
     private Long gradeId;
     private String nomorSk;
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd")
+//    @JsonSerialize(using = LocalDateSerializer.class)
+//    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tanggalSk;
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd")
+//    @JsonSerialize(using = LocalDateSerializer.class)
+//    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tmtBerlakuSk;
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd")
+//    @JsonSerialize(using = LocalDateSerializer.class)
+//    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tmtKontrakSelesai;
     private Double gajiPokok;
     private String notes;
