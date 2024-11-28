@@ -2,12 +2,15 @@ package id.perumdamts.kepegawaian.entities.pegawai;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
 import id.perumdamts.kepegawaian.entities.master.*;
+import id.perumdamts.kepegawaian.entities.penggajian.GajiPendapatanNonPajak;
+import id.perumdamts.kepegawaian.entities.penggajian.GajiProfil;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
@@ -95,7 +98,18 @@ public class Pegawai extends IdsAbstract {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tmtMutasi;
 
+    @ManyToOne
+    @JoinColumn(name = "gaji_profil_id", referencedColumnName = "id")
+    private GajiProfil gajiProfil;
+    @JsonManagedReference
+    @ManyToOne
+    @JoinColumn(name = "gaji_pendapatan_non_pajak_kode", referencedColumnName = "kode")
+    private GajiPendapatanNonPajak kodePajak;
+    @ManyToOne
+    @JoinColumn(name = "rumah_dinas_id", referencedColumnName = "id")
+    private RumahDinas rumahDinas;
     private Double gajiPokok;
+    private Boolean isAskes = false;
     private Double phdp;
     private Integer jmlTanggungan;
 

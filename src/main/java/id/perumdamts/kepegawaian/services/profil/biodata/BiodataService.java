@@ -1,10 +1,7 @@
 package id.perumdamts.kepegawaian.services.profil.biodata;
 
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
-import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPostRequest;
-import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPutRequest;
-import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataRequest;
-import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataResponse;
+import id.perumdamts.kepegawaian.dto.profil.biodata.*;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +21,8 @@ public interface BiodataService {
     Biodata saveFromPegawai(BiodataPostRequest request);
 
     SavedStatus<?> update(String id, BiodataPutRequest request);
+
+    SavedStatus<?> patchBiodata(String id, BiodataPatchRequest request);
 
     SavedStatus<?> updateFotoProfil(String id, MultipartFile fileName);
 

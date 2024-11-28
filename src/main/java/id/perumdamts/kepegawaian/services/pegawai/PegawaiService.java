@@ -19,5 +19,7 @@ public interface PegawaiService {
 
     SavedStatus<?> update(Long id, PegawaiPutRequest request);
 
+    SavedStatus<?> patchGaji(Long id, PegawaiPatchGaji request);
+
     boolean deleteById(Long id);
 }

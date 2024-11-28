@@ -3,10 +3,7 @@ package id.perumdamts.kepegawaian.services.profil.biodata;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
-import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPostRequest;
-import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPutRequest;
-import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataRequest;
-import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataResponse;
+import id.perumdamts.kepegawaian.dto.profil.biodata.*;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
@@ -102,6 +99,17 @@ public class BiodataServiceImpl implements BiodataService {
         if (biodata.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Biodata");
 
+        Biodata save = repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, BiodataResponse.from(save));
+    }
+
+    @Override
+    public SavedStatus<?> patchBiodata(String id, BiodataPatchRequest request) {
+        Optional<Biodata> biodata = repository.findById(id);
+        if (biodata.isEmpty())
+            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Biodata");
+
+        Biodata entity = BiodataPatchRequest.toEntity(biodata.get(), request);
         Biodata save = repository.save(entity);
         return SavedStatus.build(ESaveStatus.SUCCESS, BiodataResponse.from(save));
     }

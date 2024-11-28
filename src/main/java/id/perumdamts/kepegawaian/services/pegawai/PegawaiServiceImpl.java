@@ -8,9 +8,13 @@ import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
 import id.perumdamts.kepegawaian.entities.master.*;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
+import id.perumdamts.kepegawaian.entities.penggajian.GajiPendapatanNonPajak;
+import id.perumdamts.kepegawaian.entities.penggajian.GajiProfil;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.master.*;
+import id.perumdamts.kepegawaian.repositories.penggajian.GajiPendapatanNonPajakRepository;
+import id.perumdamts.kepegawaian.repositories.penggajian.GajiProfilRepository;
 import id.perumdamts.kepegawaian.repositories.profil.BiodataRepository;
 import id.perumdamts.kepegawaian.services.kepegawaian.riwayatKontrak.GenericKontrakService;
 import id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk.RiwayatSkService;
@@ -38,6 +42,9 @@ public class PegawaiServiceImpl implements PegawaiService {
     private final BiodataService biodataService;
     private final RiwayatSkService riwayatSkService;
     private final GenericKontrakService genericKontrakService;
+    private final GajiPendapatanNonPajakRepository gajiPendapatanNonPajakRepository;
+    private final GajiProfilRepository gajiProfilRepository;
+    private final RumahDinasRepository rumahDinasRepository;
 
     @Override
     public Page<PegawaiResponse> findPage(PegawaiRequest request) {
@@ -135,6 +142,24 @@ public class PegawaiServiceImpl implements PegawaiService {
             Grade grade = gradeRepository.findById(request.getGradeId()).orElseThrow(() -> new RuntimeException("Unknown Grade"));
 
             Pegawai entity = PegawaiPutRequest.toEntity(pegawai.get(), request, biodata, jabatan, organisasi, profesi, golongan, grade);
+            Pegawai save = repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        } catch (Exception e) {
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+        }
+    }
+
+    @Override
+    public SavedStatus<?> patchGaji(Long id, PegawaiPatchGaji request) {
+        try {
+            Optional<Pegawai> pegawai = repository.findById(id);
+            if (pegawai.isEmpty()) return SavedStatus.build(ESaveStatus.FAILED, "Unknown Pegawai");
+
+            GajiPendapatanNonPajak kodePajak = gajiPendapatanNonPajakRepository.findById(request.getKodePajak()).orElseThrow(() -> new RuntimeException("Unknown Kode Pajak"));
+            GajiProfil profilGaji = gajiProfilRepository.findById(request.getGajiProfilId()).orElseThrow(() -> new RuntimeException("Unknown Profil Gaji"));
+            RumahDinas rumahDinas = rumahDinasRepository.findById(request.getRumahDinasId()).orElse(null);
+
+            Pegawai entity = PegawaiPatchGaji.toEntity(pegawai.get(), request, kodePajak, profilGaji, rumahDinas);
             Pegawai save = repository.save(entity);
             return SavedStatus.build(ESaveStatus.SUCCESS, save);
         } catch (Exception e) {
