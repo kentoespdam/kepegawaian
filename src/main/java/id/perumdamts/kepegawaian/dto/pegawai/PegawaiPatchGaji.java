@@ -21,7 +21,7 @@ public class PegawaiPatchGaji {
     private Boolean isAskes;
     @NotEmpty(message = "Kode Pajak is required")
     @NotNull(message = "Kode Pajak is required")
-    private String kodePajak;
+    private Long kodePajakId;
     @Min(value = 1, message = "Gaji Profil ID is required")
     @NotNull(message = "Gaji Profil ID is required")
     private Long gajiProfilId;

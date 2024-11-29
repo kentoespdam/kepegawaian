@@ -13,6 +13,7 @@ public class GajiPendapatanNonPajakPostRequest {
     private String kode;
     @NotNull(message = "Nominal is required")
     private Double nominal;
+    private String notes;
 
     @JsonIgnore
     public Specification<GajiPendapatanNonPajak> getSpecification() {
@@ -24,6 +25,7 @@ public class GajiPendapatanNonPajakPostRequest {
         GajiPendapatanNonPajak entity = new GajiPendapatanNonPajak();
         entity.setKode(request.getKode());
         entity.setNominal(request.getNominal());
+        entity.setNotes(request.getNotes());
         return entity;
     }
 }

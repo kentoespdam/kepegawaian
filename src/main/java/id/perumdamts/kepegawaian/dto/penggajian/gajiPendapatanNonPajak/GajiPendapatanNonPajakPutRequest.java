@@ -6,6 +6,7 @@ public class GajiPendapatanNonPajakPutRequest extends GajiPendapatanNonPajakPost
     public static GajiPendapatanNonPajak toEntity(GajiPendapatanNonPajak entity, GajiPendapatanNonPajakPutRequest request) {
         entity.setKode(request.getKode());
         entity.setNominal(request.getNominal());
+        entity.setNotes(request.getNotes());
         return entity;
     }
 }

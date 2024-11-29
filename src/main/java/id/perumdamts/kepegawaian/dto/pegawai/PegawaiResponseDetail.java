@@ -9,10 +9,13 @@ import id.perumdamts.kepegawaian.dto.master.grade.GradeResponse;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiMiniResponse;
+import id.perumdamts.kepegawaian.dto.master.rumahDinas.RumahDinasResponse;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiPendapatanNonPajak.GajiPendapatanNonPajakResponse;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiProfil.GajiProfilResponse;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataMiniResponse;
+import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
-import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -56,6 +59,10 @@ public class PegawaiResponseDetail {
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tmtKontrakSelesai;
+    private Boolean isAskes;
+    private GajiPendapatanNonPajakResponse kodePajak;
+    private GajiProfilResponse gajiProfil;
+    private RumahDinasResponse rumahDinas;
     private String notes;
 
     public static PegawaiResponseDetail from(Pegawai pegawai, List<RiwayatSkResponse> list) {
@@ -95,6 +102,13 @@ public class PegawaiResponseDetail {
         response.setMkgBulan(pegawai.getMkgBulan());
         response.setAbsensiId(pegawai.getAbsensiId());
         response.setNotes(pegawai.getNotes());
+        response.setIsAskes(pegawai.getIsAskes());
+        if (pegawai.getKodePajak() != null)
+            response.setKodePajak(GajiPendapatanNonPajakResponse.from(pegawai.getKodePajak()));
+        if (pegawai.getGajiProfil() != null)
+            response.setGajiProfil(GajiProfilResponse.from(pegawai.getGajiProfil()));
+        if (pegawai.getRumahDinas() != null)
+            response.setRumahDinas(RumahDinasResponse.from(pegawai.getRumahDinas()));
         return response;
     }
 }

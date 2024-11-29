@@ -103,7 +103,7 @@ public class Pegawai extends IdsAbstract {
     private GajiProfil gajiProfil;
     @JsonManagedReference
     @ManyToOne
-    @JoinColumn(name = "gaji_pendapatan_non_pajak_kode", referencedColumnName = "kode")
+    @JoinColumn(name = "gaji_pendapatan_non_pajak_id", referencedColumnName = "id")
     private GajiPendapatanNonPajak kodePajak;
     @ManyToOne
     @JoinColumn(name = "rumah_dinas_id", referencedColumnName = "id")

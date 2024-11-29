@@ -155,7 +155,7 @@ public class PegawaiServiceImpl implements PegawaiService {
             Optional<Pegawai> pegawai = repository.findById(id);
             if (pegawai.isEmpty()) return SavedStatus.build(ESaveStatus.FAILED, "Unknown Pegawai");
 
-            GajiPendapatanNonPajak kodePajak = gajiPendapatanNonPajakRepository.findById(request.getKodePajak()).orElseThrow(() -> new RuntimeException("Unknown Kode Pajak"));
+            GajiPendapatanNonPajak kodePajak = gajiPendapatanNonPajakRepository.findById(request.getKodePajakId()).orElseThrow(() -> new RuntimeException("Unknown Kode Pajak"));
             GajiProfil profilGaji = gajiProfilRepository.findById(request.getGajiProfilId()).orElseThrow(() -> new RuntimeException("Unknown Profil Gaji"));
             RumahDinas rumahDinas = rumahDinasRepository.findById(request.getRumahDinasId()).orElse(null);
 
