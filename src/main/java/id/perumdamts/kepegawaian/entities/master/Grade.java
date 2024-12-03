@@ -12,6 +12,8 @@ import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
 
+import java.util.List;
+
 @Entity
 @Table(indexes = {
         @Index(columnList = "grade"),
@@ -33,7 +35,17 @@ public class Grade extends IdsAbstract {
     private Integer grade;
     private Double tukin;
 
+    @JsonBackReference
+    @OneToMany(mappedBy = "grade")
+    private List<Profesi> profesiList;
+
     public Grade(Long id) {
         super(id);
+    }
+
+    public Grade(Level level, Integer grade, Double tukin) {
+        this.level = level;
+        this.grade = grade;
+        this.tukin = tukin;
     }
 }

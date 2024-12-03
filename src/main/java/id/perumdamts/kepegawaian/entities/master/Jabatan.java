@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.entities.master;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,6 +12,8 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
+
+import java.util.List;
 
 @Entity
 @Table(indexes = {
@@ -29,16 +32,21 @@ public class Jabatan extends IdsAbstract {
     @ManyToOne
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
     private Jabatan parent;
+
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "organisasi_id", referencedColumnName = "id")
     private Organisasi organisasi;
-    @JsonBackReference
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "level_id", referencedColumnName = "id")
     private Level level;
     private String nama;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "jabatan")
+    public List<Profesi> profesiList;
 
     public Jabatan(Long id) {
         super(id);
