@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.util.Objects;
+
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class RumahDinasRequest extends CommonPageRequest {
@@ -14,7 +16,7 @@ public class RumahDinasRequest extends CommonPageRequest {
 
     @JsonIgnore
     public Specification<RumahDinas> getSpecification() {
-        return Specification.where(
+        return Objects.isNull(nama) ? null : Specification.where(
                 (root, query, cb) ->
                         cb.like(root.get("nama"), "%" + nama + "%")
         );

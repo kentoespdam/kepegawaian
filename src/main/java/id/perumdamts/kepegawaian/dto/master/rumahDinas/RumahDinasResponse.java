@@ -15,5 +15,6 @@ public class RumahDinasResponse {
         response.setNama(entity.getNama());
         response.setNilai(entity.getNilai());
         return response;
+
     }
 }
