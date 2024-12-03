@@ -2,7 +2,10 @@ package id.perumdamts.kepegawaian.dto.master.profesi;
 
 import id.perumdamts.kepegawaian.dto.master.alatKerja.AlatKerjaMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.apd.ApdMiniResponse;
+import id.perumdamts.kepegawaian.dto.master.grade.GradeResponse;
+import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.level.LevelResponse;
+import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiMiniResponse;
 import id.perumdamts.kepegawaian.entities.master.Profesi;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,7 +18,10 @@ import java.util.List;
 @Data
 public class ProfesiResponse {
     private Long id;
+    private OrganisasiMiniResponse organisasi;
+    private JabatanMiniResponse jabatan;
     private LevelResponse level;
+    private GradeResponse grade;
     private String nama;
     private String detail;
     private String resiko;
@@ -25,7 +31,10 @@ public class ProfesiResponse {
     public static ProfesiResponse from(Profesi profesi) {
         ProfesiResponse response = new ProfesiResponse();
         response.setId(profesi.getId());
+        response.setOrganisasi(OrganisasiMiniResponse.from(profesi.getOrganisasi()));
+        response.setJabatan(JabatanMiniResponse.from(profesi.getJabatan()));
         LevelResponse levelResponse = LevelResponse.from(profesi.getLevel());
+        response.setGrade(GradeResponse.from(profesi.getGrade()));
         response.setLevel(levelResponse);
         response.setNama(profesi.getNama());
         response.setDetail(profesi.getDetail());

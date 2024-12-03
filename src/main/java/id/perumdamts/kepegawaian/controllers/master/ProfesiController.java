@@ -14,8 +14,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/master/profesi")
@@ -47,13 +45,6 @@ public class ProfesiController {
     public ResponseEntity<?> save(@Valid @RequestBody ProfesiPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         return CustomResult.save(profesiService.save(request));
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/batch")
-    public ResponseEntity<?> saveBatch(@Valid @RequestBody List<ProfesiPostRequest> requests, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(profesiService.saveBatch(requests));
     }
 
     @PreAuthorize("hasRole('ADMIN')")

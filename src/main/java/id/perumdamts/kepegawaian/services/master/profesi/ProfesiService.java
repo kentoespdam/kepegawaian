@@ -20,8 +20,6 @@ public interface ProfesiService {
 
     SavedStatus<?> save(ProfesiPostRequest request);
 
-    SavedStatus<?> saveBatch(List<ProfesiPostRequest> requests);
-
     SavedStatus<?> update(Long id, ProfesiPutRequest request);
 
     Boolean deleteById(Long id);

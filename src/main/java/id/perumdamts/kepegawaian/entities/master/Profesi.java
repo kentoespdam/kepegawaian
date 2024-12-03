@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.hibernate.envers.RelationTargetAuditMode;
 
 import java.util.List;
@@ -27,17 +28,28 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class Profesi extends IdsAbstract {
+    private String nama;
+    private String detail;
+    private String resiko;
+    @ManyToOne
+    @JoinColumn(name = "organisasi_id", referencedColumnName = "id")
+    private Organisasi organisasi;
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "jabatan_id", referencedColumnName = "id")
+    private Jabatan jabatan;
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "level_id", referencedColumnName = "id")
     private Level level;
-    private String nama;
-    private String detail;
-    private String resiko;
+    @ManyToOne
+    private Grade grade;
 
+    @NotAudited
     @JsonBackReference
     @OneToMany(mappedBy = "profesi")
     private List<AlatKerja> alatKerjaList;
+    @NotAudited
     @JsonBackReference
     @OneToMany(mappedBy = "profesi")
     private List<Apd> apdList;
