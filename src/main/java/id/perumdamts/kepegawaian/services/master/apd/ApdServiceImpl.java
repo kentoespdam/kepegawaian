@@ -86,8 +86,7 @@ public class ApdServiceImpl implements ApdService {
         Optional<Apd> byId = repository.findById(id);
         if (byId.isEmpty())
             return false;
-        byId.get().setIsDeleted(true);
-        repository.save(byId.get());
+        repository.deleteById(id);
         return true;
     }
 }

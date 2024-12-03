@@ -90,8 +90,7 @@ public class AlatKerjaServiceImpl implements AlatKerjaService {
         Optional<AlatKerja> byId = repository.findById(id);
         if (byId.isEmpty())
             return false;
-        byId.get().setIsDeleted(true);
-        repository.save(byId.get());
+        repository.deleteById(id);
         return true;
     }
 }
