@@ -8,6 +8,7 @@ import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.entities.master.JenisKitas;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.KartuIdentitas;
+import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.master.JenisKitasRepository;
 import id.perumdamts.kepegawaian.repositories.profil.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.KartuIdentitasRepository;
@@ -29,6 +30,7 @@ public class KartuIdentitasServiceImpl implements KartuIdentitasService {
     private final JenisKitasRepository jenisKitasRepository;
     private final LampiranProfilService lampiranProfilService;
     private final BiodataRepository biodataRepository;
+    private final PegawaiRepository pegawaiRepository;
 
     @Value("${custom.protected.delete.kartuIdentitas.ktp}")
     private Long PROTECTED_KARTU_IDENTITAS_ID;
@@ -77,6 +79,11 @@ public class KartuIdentitasServiceImpl implements KartuIdentitasService {
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Kartu Identitas sudah ada");
 
         KartuIdentitas save = this.execSave(entity);
+        if (save.getJenisKartu().getNama().equals("BPJS"))
+            pegawaiRepository.findByBiodata_Nik(request.getNik()).ifPresent(pegawai -> {
+                pegawai.setIsAskes(true);
+                pegawaiRepository.save(pegawai);
+            });
         return SavedStatus.build(ESaveStatus.SUCCESS, KartuIdentitasResponse.from(save));
     }
 
@@ -95,8 +102,22 @@ public class KartuIdentitasServiceImpl implements KartuIdentitasService {
         if (kartuIdentitas.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Kartu Identitas");
 
+        if (kartuIdentitas.get().getJenisKartu().getNama().equals("BPJS") &&
+                !jenisKitas.get().getNama().equals("BPJS")) {
+            pegawaiRepository.findByBiodata_Nik(request.getNik()).ifPresent(pegawai -> {
+                pegawai.setIsAskes(false);
+                pegawaiRepository.save(pegawai);
+            });
+        }
+
         KartuIdentitas entity = KartuIdentitasPutRequest.toEntity(request, kartuIdentitas.get(), biodata.get(), jenisKitas.get());
         KartuIdentitas save = this.execSave(entity);
+
+        if (save.getJenisKartu().getNama().equals("BPJS"))
+            pegawaiRepository.findByBiodata_Nik(request.getNik()).ifPresent(pegawai -> {
+                pegawai.setIsAskes(true);
+                pegawaiRepository.save(pegawai);
+            });
 
         return SavedStatus.build(ESaveStatus.SUCCESS, KartuIdentitasResponse.from(save));
     }
