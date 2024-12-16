@@ -38,6 +38,11 @@ public class PegawaiController {
         return CustomResult.any(service.findById(id));
     }
 
+    @GetMapping("/{id}/ringkasan")
+    public ResponseEntity<?> findRingkasan(@PathVariable Long id) {
+        return CustomResult.any(service.findRingkasan(id));
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> save(@Valid @RequestBody PegawaiPostRequest request, Errors errors) {

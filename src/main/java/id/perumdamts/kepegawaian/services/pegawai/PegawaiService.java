@@ -13,6 +13,8 @@ public interface PegawaiService {
 
     PegawaiResponseDetail findById(Long id);
 
+    PegawaiResponseRingkasan findRingkasan(Long id);
+
     SavedStatus<?> save(PegawaiPostRequest request);
 
     SavedStatus<?> saveBatch(List<PegawaiPostRequest> requests);

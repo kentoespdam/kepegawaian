@@ -8,6 +8,8 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
+import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatMutasi;
+import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
 import id.perumdamts.kepegawaian.entities.master.*;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiPendapatanNonPajak;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiProfil;
@@ -24,6 +26,7 @@ import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(indexes = {
@@ -48,22 +51,27 @@ public class Pegawai extends IdsAbstract {
     private Biodata biodata;
     @Enumerated(EnumType.ORDINAL)
     private EStatusPegawai statusPegawai;
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "organisasi_id", referencedColumnName = "id")
     private Organisasi organisasi;
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "jabatan_id", referencedColumnName = "id")
     private Jabatan jabatan;
 
-    @ManyToOne
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profesi_id", referencedColumnName = "id")
     private Profesi profesi;
 
-    @ManyToOne
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "golongan_id", referencedColumnName = "id")
     private Golongan golongan;
 
-    @ManyToOne
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "grade_id", referencedColumnName = "id")
     private Grade grade;
 
@@ -98,14 +106,16 @@ public class Pegawai extends IdsAbstract {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tmtMutasi;
 
-    @ManyToOne
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "gaji_profil_id", referencedColumnName = "id")
     private GajiProfil gajiProfil;
-    @JsonManagedReference
-    @ManyToOne
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "gaji_pendapatan_non_pajak_id", referencedColumnName = "id")
     private GajiPendapatanNonPajak kodePajak;
-    @ManyToOne
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rumah_dinas_id", referencedColumnName = "id")
     private RumahDinas rumahDinas;
     private Double gajiPokok;
@@ -118,4 +128,12 @@ public class Pegawai extends IdsAbstract {
 
     private Long absensiId;
     private String notes;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "pegawai")
+    private List<RiwayatSk> riwayatSkList;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "pegawai")
+    private List<RiwayatMutasi> riwayatMutasiList;
 }

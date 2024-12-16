@@ -39,6 +39,9 @@ public class PegawaiResponseDetail {
     private GradeResponse grade;
     @Enumerated(EnumType.ORDINAL)
     private EStatusKerja statusKerja;
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate tmtKerja;
     private RiwayatSkResponse skCapeg;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -72,12 +75,16 @@ public class PegawaiResponseDetail {
         response.setBiodata(BiodataMiniResponse.from(pegawai.getBiodata()));
         response.setStatusPegawai(pegawai.getStatusPegawai());
         response.setOrganisasi(OrganisasiMiniResponse.from(pegawai.getOrganisasi()));
-        response.setJabatan(JabatanMiniResponse.from(pegawai.getJabatan()));
-        response.setProfesi(ProfesiMiniResponse.from(pegawai.getProfesi()));
+        if (Objects.nonNull(pegawai.getJabatan()))
+            response.setJabatan(JabatanMiniResponse.from(pegawai.getJabatan()));
+        if (Objects.nonNull(pegawai.getProfesi()))
+            response.setProfesi(ProfesiMiniResponse.from(pegawai.getProfesi()));
         if (Objects.nonNull(pegawai.getGolongan()))
             response.setGolongan(GolonganResponse.from(pegawai.getGolongan()));
-        response.setGrade(GradeResponse.from(pegawai.getGrade()));
+        if (Objects.nonNull(pegawai.getGrade()))
+            response.setGrade(GradeResponse.from(pegawai.getGrade()));
         response.setStatusKerja(pegawai.getStatusKerja());
+        response.setTmtKerja(pegawai.getTmtKerja());
         response.setTanggalSk(pegawai.getTmtPegawai());
         for (RiwayatSkResponse riwayatSkResponse : list) {
             if (riwayatSkResponse.getJenisSk().equals(EJenisSk.SK_CAPEG)) {

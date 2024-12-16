@@ -72,6 +72,12 @@ public class PegawaiServiceImpl implements PegawaiService {
         }).orElse(null);
     }
 
+    @Override
+    public PegawaiResponseRingkasan findRingkasan(Long id) {
+        return repository.findById(id)
+                .map(PegawaiResponseRingkasan::from).orElse(null);
+    }
+
     @Transactional
     @Override
     public SavedStatus<?> save(PegawaiPostRequest request) {

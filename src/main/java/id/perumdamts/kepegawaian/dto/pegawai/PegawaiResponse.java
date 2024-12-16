@@ -8,6 +8,7 @@ import id.perumdamts.kepegawaian.dto.master.grade.GradeResponse;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiResponse;
 import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiResponse;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiPendapatanNonPajak.GajiPendapatanNonPajakResponse;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataMiniResponse;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
@@ -64,6 +65,8 @@ public class PegawaiResponse {
     private Double gajiPokok;
     private Double phdp;
     private Integer jmlTanggungan;
+    private GajiPendapatanNonPajakResponse kodePajak;
+    private Boolean isAskes;
 
     private Integer mkgTahun;
     private Integer mkgBulan;
@@ -79,10 +82,12 @@ public class PegawaiResponse {
         response.setStatusPegawai(pegawai.getStatusPegawai());
         response.setJabatan(JabatanMiniResponse.from(pegawai.getJabatan()));
         response.setOrganisasi(OrganisasiResponse.from(pegawai.getOrganisasi()));
-        response.setProfesi(ProfesiResponse.from(pegawai.getProfesi()));
+        if (Objects.nonNull(pegawai.getProfesi()))
+            response.setProfesi(ProfesiResponse.from(pegawai.getProfesi()));
         if (Objects.nonNull(pegawai.getGolongan()))
             response.setGolongan(GolonganResponse.from(pegawai.getGolongan()));
-        response.setGrade(GradeResponse.from(pegawai.getGrade()));
+        if (Objects.nonNull(pegawai.getGrade()))
+            response.setGrade(GradeResponse.from(pegawai.getGrade()));
         response.setStatusKerja(pegawai.getStatusKerja());
         response.setRefSkCapegId(pegawai.getRefSkCapegId());
         response.setTmtKerja(pegawai.getTmtKerja());
@@ -98,6 +103,9 @@ public class PegawaiResponse {
         response.setGajiPokok(pegawai.getGajiPokok());
         response.setPhdp(pegawai.getPhdp());
         response.setJmlTanggungan(pegawai.getJmlTanggungan());
+        if (Objects.nonNull(pegawai.getKodePajak()))
+            response.setKodePajak(GajiPendapatanNonPajakResponse.from(pegawai.getKodePajak()));
+        response.setIsAskes(pegawai.getIsAskes());
         response.setMkgTahun(pegawai.getMkgTahun());
         response.setMkgBulan(pegawai.getMkgBulan());
         response.setAbsensiId(pegawai.getAbsensiId());

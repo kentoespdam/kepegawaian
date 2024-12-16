@@ -1,9 +1,9 @@
 package id.perumdamts.kepegawaian.services.pegawai;
 
-import id.perumdamts.kepegawaian.dto.appwrite.AppwriteUser;
 import id.perumdamts.kepegawaian.dto.appwrite.Prefs;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
+import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkResponse;
 import id.perumdamts.kepegawaian.dto.pegawai.PegawaiPostRequest;
 import id.perumdamts.kepegawaian.dto.pegawai.PegawaiResponse;
 import id.perumdamts.kepegawaian.dto.pegawai.PegawaiResponseDetail;
@@ -20,29 +20,27 @@ import id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk.RiwayatSkService
 import id.perumdamts.kepegawaian.services.profil.biodata.BiodataService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 
 @SpringBootTest
 //@AutoConfigureMockMvc
 @Slf4j
 class PegawaiServiceImplTest {
-    @Mock
-    private SecurityContext securityContext;
-    @Mock
-    private Authentication authentication;
+//    @Mock
+//    private SecurityContext securityContext;
+//    @Mock
+//    private Authentication authentication;
 
     @Autowired
     private PegawaiServiceImpl service;
@@ -133,17 +131,17 @@ class PegawaiServiceImplTest {
         Prefs prefs = new Prefs();
         prefs.setRoles(roles);
 
-        AppwriteUser user = new AppwriteUser();
-        user.set$id("ADMIN");
-        user.setName("Bagus Sudrajat");
-        user.setPrefs(prefs);
-
-        when(securityContext.getAuthentication()).thenReturn(authentication);
-        SecurityContextHolder.setContext(securityContext);
-        when(authentication.isAuthenticated()).thenReturn(true);
-        when(authentication.getPrincipal()).thenReturn(user);
-
-        setupRequest();
+//        AppwriteUser user = new AppwriteUser();
+//        user.set$id("ADMIN");
+//        user.setName("Bagus Sudrajat");
+//        user.setPrefs(prefs);
+//
+//        when(securityContext.getAuthentication()).thenReturn(authentication);
+//        SecurityContextHolder.setContext(securityContext);
+//        when(authentication.isAuthenticated()).thenReturn(true);
+//        when(authentication.getPrincipal()).thenReturn(user);
+//
+//        setupRequest();
     }
 
     @Transactional
@@ -160,18 +158,18 @@ class PegawaiServiceImplTest {
         log.info("pegawai : {}", byId);
     }
 
-//    @Test
+    //    @Test
     @Transactional
     public void testSave() {
         try {
             if (request.getStatusPegawai().equals(EStatusPegawai.PEGAWAI)) request.setIsPegawai(true);
             Biodata biodata = biodataService.saveFromPegawai(request);
             if (request.getStatusPegawai().equals(EStatusPegawai.NON_PEGAWAI)) {
-                assertEquals(request.getStatusPegawai(), EStatusPegawai.NON_PEGAWAI);
+                assertEquals(EStatusPegawai.NON_PEGAWAI, request.getStatusPegawai());
                 log.info("Success Non Pegawai : {}", biodata);
                 return;
             }
-            assertNotEquals(request.getStatusPegawai(), EStatusPegawai.NON_PEGAWAI);
+            assertNotEquals(EStatusPegawai.NON_PEGAWAI, request.getStatusPegawai());
             boolean exists = repository.exists(request.getSpecificationPegawai());
             assertFalse(exists);
 //            if (exists) {
@@ -233,5 +231,22 @@ class PegawaiServiceImplTest {
         assertNotNull(riwayatKontrak);
         return pegawai;
     }
-}
 
+//    @Transactional
+//    @Test
+    public void detail() {
+        Long id = 1L;
+        Optional<PegawaiResponseDetail> pegawaiResponseDetail = repository.findById(id).map(pegawai -> {
+            List<Long> riwayatIds = new ArrayList<>();
+            if (Objects.nonNull(pegawai.getRefSkCapegId())) riwayatIds.add(pegawai.getRefSkCapegId());
+            if (Objects.nonNull(pegawai.getRefSkPegawaiId())) riwayatIds.add(pegawai.getRefSkPegawaiId());
+            if (Objects.nonNull(pegawai.getRefSkGolId())) riwayatIds.add(pegawai.getRefSkGolId());
+            if (Objects.nonNull(pegawai.getRefSkJabatanId())) riwayatIds.add(pegawai.getRefSkJabatanId());
+            if (Objects.nonNull(pegawai.getRefSkMutasiId())) riwayatIds.add(pegawai.getRefSkMutasiId());
+            List<RiwayatSkResponse> riwayatSkResponses = riwayatSkService.findByIds(riwayatIds);
+            log.info("list riwayat : {}", riwayatSkResponses);
+            return PegawaiResponseDetail.from(pegawai, riwayatSkResponses);
+        });
+        assertNotNull(pegawaiResponseDetail);
+    }
+}
