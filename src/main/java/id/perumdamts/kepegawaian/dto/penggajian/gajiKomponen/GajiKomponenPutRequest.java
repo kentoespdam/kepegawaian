@@ -5,6 +5,7 @@ import id.perumdamts.kepegawaian.entities.penggajian.GajiProfil;
 
 public class GajiKomponenPutRequest extends GajiKomponenPostRequest {
     public static GajiKomponen toEntity(GajiKomponen entity, GajiKomponenPutRequest request, GajiProfil profilGaji) {
+        entity.setUrut(request.getUrut());
         entity.setProfilGaji(profilGaji);
         entity.setKode(request.getKode().toUpperCase());
         entity.setNama(request.getNama());

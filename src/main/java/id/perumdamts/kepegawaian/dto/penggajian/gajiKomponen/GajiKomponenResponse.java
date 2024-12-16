@@ -10,6 +10,7 @@ import lombok.Data;
 @Data
 public class GajiKomponenResponse {
     private Long id;
+    private Integer urut;
     private GajiProfilResponse profilGaji;
     private String kode;
     private String nama;
@@ -22,6 +23,7 @@ public class GajiKomponenResponse {
     public static GajiKomponenResponse from(GajiKomponen gajiKomponen) {
         GajiKomponenResponse response = new GajiKomponenResponse();
         response.setId(gajiKomponen.getId());
+        response.setUrut(gajiKomponen.getUrut());
         response.setProfilGaji(GajiProfilResponse.from(gajiKomponen.getProfilGaji()));
         response.setKode(gajiKomponen.getKode());
         response.setNama(gajiKomponen.getNama());

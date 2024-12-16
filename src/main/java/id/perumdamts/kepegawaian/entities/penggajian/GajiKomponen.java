@@ -24,6 +24,7 @@ import org.hibernate.envers.RelationTargetAuditMode;
 @EqualsAndHashCode(callSuper = true)
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class GajiKomponen extends IdsAbstract {
+    private Integer urut;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "profil_gaji_id", referencedColumnName = "id")
     private GajiProfil profilGaji;

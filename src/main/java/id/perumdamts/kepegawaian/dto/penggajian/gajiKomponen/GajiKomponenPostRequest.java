@@ -16,6 +16,7 @@ import java.util.Objects;
 
 @Data
 public class GajiKomponenPostRequest {
+    private Integer urut;
     @Min(value = 1, message = "Profil Gaji ID is required")
     @NotNull(message = "Profil Gaji ID is required")
     private Long profilGajiId;
@@ -42,6 +43,7 @@ public class GajiKomponenPostRequest {
 
     public static GajiKomponen toEntity(GajiKomponenPostRequest request, GajiProfil profilGaji) {
         GajiKomponen entity = new GajiKomponen();
+        entity.setUrut(request.getUrut());
         entity.setProfilGaji(profilGaji);
         entity.setKode(request.getKode().toUpperCase());
         entity.setNama(request.getNama());

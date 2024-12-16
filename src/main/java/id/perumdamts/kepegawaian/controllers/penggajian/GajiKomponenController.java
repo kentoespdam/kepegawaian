@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.controllers.penggajian;
 
+import id.perumdamts.kepegawaian.dto.commons.CommonPageRequest;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiKomponen.GajiKomponenPostRequest;
@@ -7,6 +8,7 @@ import id.perumdamts.kepegawaian.dto.penggajian.gajiKomponen.GajiKomponenPutRequ
 import id.perumdamts.kepegawaian.services.penggajian.gajiKomponen.GajiKomponenService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +21,17 @@ public class GajiKomponenController {
 
     @GetMapping("/{profilId}/kode")
     public ResponseEntity<?> listKode(@PathVariable Long profilId) {
-        return CustomResult.list(service.findAllKode(profilId));
+        return CustomResult.page(service.findAllKode(profilId));
     }
 
     @GetMapping("/{profilId}/profil")
-    public ResponseEntity<?> index(@PathVariable Long profilId) {
-        return CustomResult.list(service.findByProfil(profilId));
+    public ResponseEntity<?> index(@PathVariable Long profilId, @ParameterObject CommonPageRequest request) {
+        return CustomResult.page(service.findByProfil(profilId, request));
+    }
+
+    @GetMapping("/{profilId}/profil/urut")
+    public ResponseEntity<?> indexUrut(@PathVariable Long profilId) {
+        return CustomResult.any(service.findLastUrut(profilId));
     }
 
     @GetMapping("/{id}/detail")

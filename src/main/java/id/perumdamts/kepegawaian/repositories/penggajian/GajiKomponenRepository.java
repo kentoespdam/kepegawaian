@@ -13,10 +13,12 @@ import java.util.List;
 public interface GajiKomponenRepository extends JpaRepository<GajiKomponen, Long>,
         JpaSpecificationExecutor<GajiKomponen>,
         RevisionRepository<GajiKomponen, Long, Long> {
-    List<GajiKomponen> findByProfilGajiId(Long id);
 
     @Query("SELECT DISTINCT gk.kode AS kode, gk.nama AS nama " +
             "FROM GajiKomponen gk " +
             "WHERE gk.profilGaji.id = :profilId")
     List<GajiKomponenMiniProjection> findAllKode(@Param("profilId") Long profilId);
+
+    @Query("SELECT gk.urut FROM GajiKomponen gk WHERE gk.profilGaji.id = :profilId ORDER BY gk.urut DESC LIMIT 1")
+    Integer findLastUrut(Long profilId);
 }

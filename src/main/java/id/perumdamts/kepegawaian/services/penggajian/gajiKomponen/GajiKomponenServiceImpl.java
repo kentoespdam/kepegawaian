@@ -1,14 +1,20 @@
 package id.perumdamts.kepegawaian.services.penggajian.gajiKomponen;
 
+import id.perumdamts.kepegawaian.dto.commons.CommonPageRequest;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
-import id.perumdamts.kepegawaian.dto.penggajian.gajiKomponen.*;
-import id.perumdamts.kepegawaian.repositories.penggajian.GajiKomponenRepository;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiKomponen.GajiKomponenMiniProjection;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiKomponen.GajiKomponenPostRequest;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiKomponen.GajiKomponenPutRequest;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiKomponen.GajiKomponenResponse;
 import id.perumdamts.kepegawaian.entities.commons.EJenisGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiKomponen;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiProfil;
+import id.perumdamts.kepegawaian.repositories.penggajian.GajiKomponenRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiProfilRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,9 +32,14 @@ public class GajiKomponenServiceImpl implements GajiKomponenService {
     }
 
     @Override
-    public List<GajiKomponenResponse> findByProfil(Long id) {
-        return repository.findByProfilGajiId(id).stream()
-                .map(GajiKomponenResponse::from).toList();
+    public Page<GajiKomponenResponse> findByProfil(Long id, CommonPageRequest request) {
+        Specification<GajiKomponen> specification = (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("profilGaji").get("id"), id);
+        return repository.findAll(specification, request.getPageable()).map(GajiKomponenResponse::from);
+    }
+
+    @Override
+    public Integer findLastUrut(Long profilId) {
+        return repository.findLastUrut(profilId);
     }
 
     @Override
@@ -82,6 +93,7 @@ public class GajiKomponenServiceImpl implements GajiKomponenService {
     private GajiKomponen defaultGP(GajiProfil profilGaji) {
         GajiKomponen entity = new GajiKomponen();
         entity.setProfilGaji(profilGaji);
+        entity.setUrut(1);
         entity.setKode("GP");
         entity.setNama("Gaji Pokok");
         entity.setJenisGaji(EJenisGaji.PEMASUKAN);
@@ -94,6 +106,7 @@ public class GajiKomponenServiceImpl implements GajiKomponenService {
     private GajiKomponen defaultJmlAnak(GajiProfil profilGaji) {
         GajiKomponen entity = new GajiKomponen();
         entity.setProfilGaji(profilGaji);
+        entity.setUrut(2);
         entity.setKode("JML_ANAK");
         entity.setNama("Jumlah Anak");
         entity.setJenisGaji(EJenisGaji.NONE);
@@ -106,6 +119,7 @@ public class GajiKomponenServiceImpl implements GajiKomponenService {
     private GajiKomponen defaultJmlJiwa(GajiProfil profilGaji) {
         GajiKomponen entity = new GajiKomponen();
         entity.setProfilGaji(profilGaji);
+        entity.setUrut(3);
         entity.setKode("JML_JIWA");
         entity.setNama("Jumlah Jiwa");
         entity.setJenisGaji(EJenisGaji.NONE);
