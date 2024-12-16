@@ -19,7 +19,12 @@ public class GajiProfilController {
 
     @GetMapping
     public ResponseEntity<?> index() {
-        return CustomResult.list(service.findAll());
+        return CustomResult.page(service.findAll());
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<?> list() {
+        return CustomResult.list(service.list());
     }
 
     @GetMapping("/{id}")

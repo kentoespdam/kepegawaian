@@ -9,6 +9,8 @@ import id.perumdamts.kepegawaian.entities.penggajian.GajiProfil;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiProfilRepository;
 import id.perumdamts.kepegawaian.services.penggajian.gajiKomponen.GajiKomponenService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +23,13 @@ public class GajiProfilServiceImpl implements GajiProfilService {
     private final GajiKomponenService gajiKomponenService;
 
     @Override
-    public List<GajiProfilResponse> findAll() {
+    public Page<GajiProfilResponse> findAll() {
+        Pageable pageable = Pageable.ofSize(100);
+        return repository.findAll(pageable).map(GajiProfilResponse::from);
+    }
+
+    @Override
+    public List<GajiProfilResponse> list() {
         return repository.findAll().stream().map(GajiProfilResponse::from).toList();
     }
 
