@@ -3,7 +3,6 @@ package id.perumdamts.kepegawaian.services.pegawai;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
-import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.entities.master.Profesi;
@@ -17,9 +16,9 @@ import org.springframework.stereotype.Service;
 public class GenericPegawaiService {
     private final PegawaiRepository repository;
 
-    public void updateGolongan(Pegawai pegawai, RiwayatSk riwayatSk, Golongan golongan) {
+    public void updateGolongan(Pegawai pegawai, RiwayatSk riwayatSk) {
         pegawai.setNipam(riwayatSk.getNipam());
-        pegawai.setRefSkGolId(golongan.getId());
+        pegawai.setRefSkGolId(riwayatSk.getId());
         pegawai.setTmtGolongan(riwayatSk.getTmtBerlaku());
         pegawai.setMkgTahun(riwayatSk.getMkgTahun());
         pegawai.setMkgBulan(riwayatSk.getMkgBulan());

@@ -49,7 +49,7 @@ public class GenericSkService {
 
         RiwayatSk entity = RiwayatSkPostRequest.toEntity(request, pegawai, golongan);
         RiwayatSk save = this.saveSK(entity);
-        pegawaiService.updateGolongan(pegawai, save, golongan);
+        pegawaiService.updateGolongan(pegawai, save);
 
         return save;
     }
@@ -58,7 +58,7 @@ public class GenericSkService {
         RiwayatSk riwayatSk = riwayatMutasi.getRiwayatSk();
         RiwayatSkPutRequest.toEntity(riwayatSk, request, golonganBaru);
         RiwayatSk save = this.saveSK(riwayatSk);
-        pegawaiService.updateGolongan(riwayatMutasi.getPegawai(), save, golonganBaru);
+        pegawaiService.updateGolongan(riwayatMutasi.getPegawai(), save);
         return save;
     }
 
@@ -142,7 +142,7 @@ public class GenericSkService {
         entity.setNotes(request.getNotes());
 
         RiwayatSk save = this.saveSK(entity);
-        pegawaiService.updateGolongan(pegawai, save, golongan);
+        pegawaiService.updateGolongan(pegawai, save);
     }
 
     public RiwayatSk saveSkTerminasi(RiwayatTerminasiPostRequest request, Pegawai pegawai, Golongan golongan) {
