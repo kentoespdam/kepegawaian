@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 @Data
 public class GajiPhdpPostRequest {
+    private Integer urut;
     @NotEmpty(message = "Kondisi is required")
     private String kondisi;
     @NotEmpty(message = "Formula is required")
@@ -22,6 +23,7 @@ public class GajiPhdpPostRequest {
 
     public static GajiPhdp toEntity(GajiPhdpPostRequest request) {
         GajiPhdp gajiPhdp = new GajiPhdp();
+        gajiPhdp.setUrut(request.getUrut());
         gajiPhdp.setKondisi(request.getKondisi());
         gajiPhdp.setFormula(request.getFormula());
         return gajiPhdp;

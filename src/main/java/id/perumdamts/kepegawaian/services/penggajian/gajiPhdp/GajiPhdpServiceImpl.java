@@ -22,6 +22,10 @@ public class GajiPhdpServiceImpl implements GajiPhdpService {
 
     @Override
     public Page<GajiPhdpResponse> findPage(GajiPhdpRequest request) {
+        if (request.getPageable().getSort().isUnsorted()) {
+            request.setSortBy("urut");
+            request.setSortDirection("ASC");
+        }
         return repository.findAll(request.getSpecification(), request.getPageable())
                 .map(GajiPhdpResponse::from);
     }
