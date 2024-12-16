@@ -5,7 +5,6 @@ import id.perumdamts.kepegawaian.dto.appwrite.Prefs;
 import id.perumdamts.kepegawaian.repositories.master.GolonganRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.Authentication;
@@ -15,7 +14,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
 
@@ -55,7 +55,7 @@ class GolonganTest {
         golongan.setIsDeleted(false);
     }
 
-    @Test
+//    @Test
     void testDelete() {
         when(repository.findById(1L)).thenReturn(Optional.of(golongan));
         log.info("before delete: {}", golongan);

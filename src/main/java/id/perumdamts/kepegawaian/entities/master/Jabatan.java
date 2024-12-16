@@ -29,17 +29,17 @@ import java.util.List;
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class Jabatan extends IdsAbstract {
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
     private Jabatan parent;
 
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organisasi_id", referencedColumnName = "id")
     private Organisasi organisasi;
 
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "level_id", referencedColumnName = "id")
     private Level level;
     private String nama;

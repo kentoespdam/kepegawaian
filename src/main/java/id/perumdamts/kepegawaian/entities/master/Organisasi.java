@@ -27,7 +27,7 @@ import org.hibernate.envers.RelationTargetAuditMode;
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class Organisasi extends IdsAbstract {
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
     private Organisasi parent;
     private Integer levelOrg;

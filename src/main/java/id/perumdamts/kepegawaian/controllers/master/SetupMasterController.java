@@ -16,7 +16,7 @@ public class SetupMasterController {
     private final SetupLevel setupLevel;
     private final SetupGolongan setupGolongan;
     private final SetupGrade setupGrade;
-    private final SetupProfesi setupProfesi;
+//    private final SetupProfesi setupProfesi;
     private final SetupJabatan setupJabatan;
     private final SetupJenisKeahlian setupJenisKeahlian;
     private final SetupJenisKitas setupJenisKitas;
@@ -36,7 +36,7 @@ public class SetupMasterController {
             setupGolongan.insertBatch();
             setupDasarGaji.insertBatch();
             setupGrade.insertBatch();
-            setupProfesi.insertBatch();
+//            setupProfesi.insertBatch();
             setupJabatan.insertBatch();
             setupJenisKeahlian.insertBatch();
             setupJenisKitas.insertBatch();
