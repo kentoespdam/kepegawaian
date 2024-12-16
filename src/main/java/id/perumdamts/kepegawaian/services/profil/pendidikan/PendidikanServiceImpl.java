@@ -71,6 +71,7 @@ public class PendidikanServiceImpl implements PendidikanService {
         Pendidikan pendidikan = PendidikanPostRequest.from(request, biodata.get(), jenjangPendidikan.get());
         Pendidikan save = repository.save(pendidikan);
         if (request.getIsLatest()) {
+            repository.updateIsLatest(save.getId(), request.getBiodataId());
             biodata.get().setPendidikanTerakhir(jenjangPendidikan.get());
             biodataRepository.save(biodata.get());
         }
@@ -92,6 +93,7 @@ public class PendidikanServiceImpl implements PendidikanService {
         Pendidikan entity = PendidikanPutRequest.from(request, pendidikan.get(), biodata.get(), jenjangPendidikan.get());
         Pendidikan save = repository.save(entity);
         if (request.getIsLatest()) {
+            repository.updateIsLatest(save.getId(), request.getBiodataId());
             biodata.get().setPendidikanTerakhir(jenjangPendidikan.get());
             biodataRepository.save(biodata.get());
         }

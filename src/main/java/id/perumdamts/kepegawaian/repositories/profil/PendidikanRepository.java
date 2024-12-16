@@ -11,4 +11,8 @@ public interface PendidikanRepository extends JpaRepository<Pendidikan, Long>, J
     @Modifying
     @Query( "UPDATE Pendidikan p SET p.disetujui = FALSE WHERE p.biodata.nik = :nik")
     void updateByBiodata_Nik(@Param("nik") String nik);
+
+    @Modifying
+    @Query("UPDATE Pendidikan p SET p.isLatest = FALSE WHERE p.id != :id AND p.biodata.nik = :nik")
+    void updateIsLatest(@Param("id") Long id, @Param("nik") String nik);
 }
