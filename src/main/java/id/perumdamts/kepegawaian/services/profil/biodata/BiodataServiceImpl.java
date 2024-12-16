@@ -8,6 +8,7 @@ import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.KartuIdentitas;
+import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.master.JenjangPendidikanRepository;
 import id.perumdamts.kepegawaian.repositories.profil.BiodataRepository;
 import id.perumdamts.kepegawaian.services.profil.kartuIdentitas.KartuIdentitasService;
@@ -39,6 +40,7 @@ public class BiodataServiceImpl implements BiodataService {
     private final KartuIdentitasService kartuIdentitasService;
     private final FileUploadUtil fileUploadUtil;
     private final PendidikanService pendidikanService;
+    private final PegawaiRepository pegawaiRepository;
 
     @Override
     public List<BiodataResponse> findAll() {
@@ -55,6 +57,13 @@ public class BiodataServiceImpl implements BiodataService {
     @Override
     public BiodataResponse findById(String id) {
         return repository.findById(id).map(BiodataResponse::from).orElse(null);
+    }
+
+    @Override
+    public BiodataResponse findByPegawaiId(Long id) {
+        return pegawaiRepository.findById(id)
+                .map(pegawai -> BiodataResponse.from(pegawai.getBiodata()))
+                .orElse(null);
     }
 
     @Transactional

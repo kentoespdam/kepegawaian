@@ -16,6 +16,8 @@ public interface BiodataService {
 
     BiodataResponse findById(String id);
 
+    BiodataResponse findByPegawaiId(Long id);
+
     SavedStatus<?> save(BiodataPostRequest request);
 
     Biodata saveFromPegawai(BiodataPostRequest request);

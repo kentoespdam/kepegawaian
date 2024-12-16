@@ -41,6 +41,11 @@ public class BiodataController {
         return CustomResult.any(service.findById(id));
     }
 
+    @GetMapping("/{id}/pegawai")
+    public ResponseEntity<?> findByPegawaiId(@PathVariable Long id) {
+        return CustomResult.any(service.findByPegawaiId(id));
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> save(@Valid @RequestBody BiodataPostRequest request, Errors errors) {

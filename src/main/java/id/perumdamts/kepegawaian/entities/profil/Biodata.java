@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.entities.profil;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
@@ -28,6 +29,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -58,14 +60,14 @@ public class Biodata implements Serializable {
     private LocalDate tanggalLahir;
     private String alamat;
     private String telp;
-    @Enumerated(value = EnumType.ORDINAL)
+    @Enumerated(EnumType.ORDINAL)
     private EAgama agama;
     private String ibuKandung;
-    
+
     @ManyToOne
     @JoinColumn(name = "pendidikan_id", referencedColumnName = "id")
     private JenjangPendidikan pendidikanTerakhir;
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     private EGolonganDarah golonganDarah;
     @Enumerated(EnumType.ORDINAL)
     private EStatusKawin statusKawin;
@@ -93,6 +95,14 @@ public class Biodata implements Serializable {
     private Boolean isDeleted = false;
     @Version
     private Long version = 1L;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "biodata")
+    List<Pendidikan> pendidikanList=new ArrayList<>();
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "biodata")
+    List<KartuIdentitas> kartuIdentitasList=new ArrayList<>();
 
     public Biodata(String nik) {
         this.nik = nik;
