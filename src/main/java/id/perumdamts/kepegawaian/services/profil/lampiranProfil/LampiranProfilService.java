@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.services.profil.lampiranProfil;
 
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
+import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilAcceptRequest;
 import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilResponse;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
@@ -13,9 +14,13 @@ public interface LampiranProfilService {
 
     LampiranProfilResponse getLampiranById(Long id);
 
-    ResponseEntity<?> getFileLampiranById(EJenisLampiranProfil ref, Long id);
+    ResponseEntity<?> getFileLampiranById(EJenisLampiranProfil eJenisLampiranProfil, Long id);
 
     SavedStatus<?> addLampiran(LampiranProfilPostRequest request);
 
     boolean deleteById(Long id);
+
+    SavedStatus<?> acceptLampiran(LampiranProfilAcceptRequest request, String oleh);
+
+    void deleteByRefId(EJenisLampiranProfil eJenisLampiranProfil, Long id);
 }

@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.entities.master;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,10 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
+
+import java.util.List;
 
 @Entity
 @Table(indexes = {
@@ -20,14 +25,27 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLDelete(sql = "UPDATE grade SET is_deleted=true WHERE id=?")
 @SQLRestriction("is_deleted <> 1")
 @EqualsAndHashCode(callSuper = true)
+@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class Grade extends IdsAbstract {
+
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "level_id", referencedColumnName = "id")
     private Level level;
     private Integer grade;
     private Double tukin;
 
+    @JsonBackReference
+    @OneToMany(mappedBy = "grade")
+    private List<Profesi> profesiList;
+
     public Grade(Long id) {
         super(id);
+    }
+
+    public Grade(Level level, Integer grade, Double tukin) {
+        this.level = level;
+        this.grade = grade;
+        this.tukin = tukin;
     }
 }

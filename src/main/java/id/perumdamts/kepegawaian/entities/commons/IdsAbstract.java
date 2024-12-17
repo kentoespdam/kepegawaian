@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.envers.Audited;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -19,7 +20,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public class IdsAbstract implements Serializable {
+@Audited
+public abstract class IdsAbstract implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,14 +32,32 @@ public class IdsAbstract implements Serializable {
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
+    @Audited
     @LastModifiedBy
     private String updatedBy;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @LastModifiedDate
     private LocalDateTime updatedAt;
+    @Audited
+    @Column(columnDefinition = "boolean default false")
     private Boolean isDeleted = false;
+    @Version
+    private Long version = 1L;
 
     public IdsAbstract(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "IdsAbstract{" +
+                "id=" + id +
+                ", createdBy='" + createdBy + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedBy='" + updatedBy + '\'' +
+                ", updatedAt=" + updatedAt +
+                ", isDeleted=" + isDeleted +
+                ", version=" + version +
+                '}';
     }
 }

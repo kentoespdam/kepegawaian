@@ -12,7 +12,7 @@ public interface PelatihanService {
     List<PelatihanResponse> findAll();
     Page<PelatihanResponse> findPage(PelatihanRequest request);
     PelatihanResponse findById(Long id);
-    List<PelatihanResponse> findByBiodataId(String biodataId);
+    Page<PelatihanResponse> findByBiodataId(String biodataId, PelatihanRequest request);
     SavedStatus<?> save(PelatihanPostRequest request);
     SavedStatus<?> update(Long id, PelatihanPutRequest request);
     SavedStatus<?> acceptPelatihan(Long id, String nik, String username);

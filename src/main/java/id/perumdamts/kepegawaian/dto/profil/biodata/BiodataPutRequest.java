@@ -7,6 +7,7 @@ public class BiodataPutRequest extends BiodataPostRequest {
     public static Biodata toEntity(BiodataPutRequest request, Biodata entity, JenjangPendidikan pendidikanTerakhir) {
         entity.setNik(request.getNik());
         entity.setNama(request.getNama());
+        entity.setJenisKelamin(request.getJenisKelamin());
         entity.setTempatLahir(request.getTempatLahir());
         entity.setTanggalLahir(request.getTanggalLahir());
         entity.setAlamat(request.getAlamat());

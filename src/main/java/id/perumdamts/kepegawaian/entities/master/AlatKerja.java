@@ -7,8 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -19,8 +17,6 @@ import org.hibernate.annotations.SQLRestriction;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@SQLDelete(sql = "UPDATE alat_kerja SET is_deleted = true WHERE id = ?")
-@SQLRestriction("is_deleted = false")
 public class AlatKerja extends IdsAbstract {
     @JsonBackReference
     @ManyToOne

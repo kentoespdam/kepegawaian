@@ -10,11 +10,12 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.envers.Audited;
 
 @Entity
 @Table(indexes = {
-        @Index(columnList="nama"),
-        @Index(columnList="is_deleted")
+        @Index(columnList = "nama"),
+        @Index(columnList = "is_deleted")
 })
 @Data
 @NoArgsConstructor
@@ -22,6 +23,7 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLDelete(sql = "UPDATE jenis_kitas SET is_deleted = TRUE WHERE id = ?")
 @SQLRestriction("is_deleted = FALSE")
 @EqualsAndHashCode(callSuper = true)
+@Audited
 public class JenisKitas extends IdsAbstract {
     private String nama;
 
@@ -37,8 +39,8 @@ public class JenisKitas extends IdsAbstract {
     @Override
     public String toString() {
         return "JenisKitas(" +
-                "id=" + getId() +", "+
+                "id=" + getId() + ", " +
                 "nama='" + nama + '\'' +
-                ") " ;
+                ") ";
     }
 }

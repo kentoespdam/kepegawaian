@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.controllers.profil;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
+import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPatchRequest;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPutRequest;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataRequest;
@@ -40,6 +41,11 @@ public class BiodataController {
         return CustomResult.any(service.findById(id));
     }
 
+    @GetMapping("/{id}/pegawai")
+    public ResponseEntity<?> findByPegawaiId(@PathVariable Long id) {
+        return CustomResult.any(service.findByPegawaiId(id));
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> save(@Valid @RequestBody BiodataPostRequest request, Errors errors) {
@@ -59,6 +65,17 @@ public class BiodataController {
         return CustomResult.save(service.update(id, request));
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> patchBiodata(@PathVariable String id, @Valid @RequestBody BiodataPatchRequest request, Errors errors) {
+        if (errors.hasErrors()) return ErrorResult.build(errors);
+        return CustomResult.save(service.patchBiodata(id, request));
+    }
+
+    @GetMapping("/{id}/foto-profil")
+    public ResponseEntity<?> getFotoProfil(@PathVariable String id) {
+        return service.findFotoProfil(id);
+    }
+
     @PutMapping("/{id}/foto-profil")
     public ResponseEntity<?> updateFotoProfil(@PathVariable String id, @RequestParam("fotoProfil") MultipartFile fotoProfil) {
         String extension = mimeTypesUtils.getExtension(fotoProfil.getContentType());
@@ -66,11 +83,6 @@ public class BiodataController {
             return ErrorResult.build("File must be an image");
 
         return CustomResult.save(service.updateFotoProfil(id, fotoProfil));
-    }
-
-    @GetMapping("/{id}/foto-profil")
-    public ResponseEntity<?> getFotoProfil(@PathVariable String id) {
-        return service.findFotoProfil(id);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

@@ -4,16 +4,19 @@ import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.profil.keluarga.*;
 import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilResponse;
+import id.perumdamts.kepegawaian.entities.commons.EHubunganKeluarga;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.ProfilKeluarga;
+import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.master.JenjangPendidikanRepository;
 import id.perumdamts.kepegawaian.repositories.profil.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.ProfilKeluargaRepository;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +31,7 @@ public class ProfilKeluargaServiceImpl implements ProfilKeluargaService {
     private final BiodataRepository biodataRepository;
     private final JenjangPendidikanRepository jenjangPendidikanRepository;
     private final LampiranProfilService lampiranProfilService;
+    private final PegawaiRepository pegawaiRepository;
 
     @Override
     public List<ProfilKeluargaResponse> findAll() {
@@ -46,8 +50,12 @@ public class ProfilKeluargaServiceImpl implements ProfilKeluargaService {
     }
 
     @Override
-    public List<ProfilKeluargaResponse> findByBiodataId(String biodataId) {
-        return repository.findByBiodata_Nik(biodataId).stream().map(ProfilKeluargaResponse::from).toList();
+    public Page<ProfilKeluargaResponse> findByBiodataId(String biodataId, ProfilKeluargaRequest request) {
+        System.out.println(request);
+        request.setBiodataId(biodataId);
+        System.out.println(request);
+        return repository.findAll(request.getSpecification(), request.getPageable())
+                .map(ProfilKeluargaResponse::from);
     }
 
     @Transactional
@@ -65,6 +73,10 @@ public class ProfilKeluargaServiceImpl implements ProfilKeluargaService {
         if (profilKeluargaExist)
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Profil Keluarga sudah ada");
         ProfilKeluarga save = repository.save(entity);
+        if ((!request.getHubunganKeluarga().equals(EHubunganKeluarga.ISTRI) &&
+                !request.getHubunganKeluarga().equals(EHubunganKeluarga.SUAMI)) &&
+                entity.getTanggungan().equals(true))
+            this.updateTanggunganPegawai(request.getBiodataId());
         return SavedStatus.build(ESaveStatus.SUCCESS, ProfilKeluargaResponse.from(save));
     }
 
@@ -82,16 +94,23 @@ public class ProfilKeluargaServiceImpl implements ProfilKeluargaService {
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jenjang Pendidikan");
         ProfilKeluarga entity = ProfilKeluargaPutRequest.toEntity(request, profilKeluarga.get(), biodata.get(), jenjangPendidikan.get());
         ProfilKeluarga save = repository.save(entity);
+        if ((!request.getHubunganKeluarga().equals(EHubunganKeluarga.ISTRI) &&
+                !request.getHubunganKeluarga().equals(EHubunganKeluarga.SUAMI)) &&
+                entity.getTanggungan().equals(true))
+            this.updateTanggunganPegawai(request.getBiodataId());
         return SavedStatus.build(ESaveStatus.SUCCESS, ProfilKeluargaResponse.from(save));
     }
 
     @Transactional
     @Override
     public Boolean delete(Long id) {
-        boolean exists = repository.existsById(id);
-        if (!exists)
+        Optional<ProfilKeluarga> byId = repository.findById(id);
+        if (byId.isEmpty())
             return false;
-        repository.deleteById(id);
+        byId.get().setIsDeleted(true);
+        repository.save(byId.get());
+        lampiranProfilService.deleteByRefId(EJenisLampiranProfil.PROFIL_KELUARGA, id);
+        this.updateTanggunganPegawai(byId.get().getNik());
         return true;
     }
 
@@ -124,5 +143,17 @@ public class ProfilKeluargaServiceImpl implements ProfilKeluargaService {
     @Override
     public Boolean deleteLampiran(Long id) {
         return lampiranProfilService.deleteById(id);
+    }
+
+    private void updateTanggunganPegawai(String nik) {
+        Specification<ProfilKeluarga> specification = (root, query, cb) -> cb.and(
+                cb.equal(root.get("biodata").get("nik"), nik),
+                cb.equal(root.get("tanggungan"), true)
+        );
+        pegawaiRepository.findByBiodata_Nik(nik).ifPresent(pegawai -> {
+            long count = repository.count(specification);
+            pegawai.setJmlTanggungan((int) count);
+            pegawaiRepository.save(pegawai);
+        });
     }
 }

@@ -19,7 +19,7 @@ public class FileUploadUtilImpl implements FileUploadUtil {
     private final MimeTypesUtils mimeTypesUtils;
 
     @Override
-    public UploadResultUtil uploadFile(MultipartFile file, EJenisLampiranProfil ref, String username) {
+    public UploadResultUtil uploadFileSp(MultipartFile file, Enum<?> ref, String subFolder) {
         String mimeType = mimeTypesUtils.isSupported(file.getContentType());
         if (mimeType == null)
             return UploadResultUtil.build(false, "File type not supported");
@@ -28,11 +28,11 @@ public class FileUploadUtilImpl implements FileUploadUtil {
         String hashedFileName = randomStringHelper.generate();
         String originalFilename = file.getOriginalFilename();
 
-        Path dir = createDirectory(ref, username);
-
+        Path dir = createDirectory(ref, subFolder);
         boolean saved = ref == EJenisLampiranProfil.FOTO_PROFIL ?
                 saveToStorage(file, dir, originalFilename) :
                 saveToStorage(file, dir, hashedFileName);
+
         if (!saved)
             return UploadResultUtil.build(false, "Failed to save file");
 
@@ -47,42 +47,77 @@ public class FileUploadUtilImpl implements FileUploadUtil {
     }
 
     @Override
-    public Path generatePath(EJenisLampiranProfil ref, String username) {
-        String directoryPath = BASE_PATH + ref.name() + "/" + username;
+    public UploadResultUtil uploadFileSp(MultipartFile file, String subFolder) {
+        String mimeType = mimeTypesUtils.isSupported(file.getContentType());
+        if (mimeType == null)
+            return UploadResultUtil.build(false, "File type not supported");
+        String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
+        String hashedFileName = randomStringHelper.generate();
+        String originalFilename = file.getOriginalFilename();
+
+        Path dir = createDirectorySp(subFolder);
+        boolean saved = saveToStorage(file, dir, hashedFileName);
+
+        if (!saved)
+            return UploadResultUtil.build(false, "Failed to save file");
+
+        return UploadResultUtil.build(
+                true,
+                "File uploaded successfully",
+                originalFilename,
+                fileExtension,
+                mimeType,
+                hashedFileName
+        );
+    }
+
+    @Override
+    public Path generatePath(Enum<?> ref, String subFolder, String fileName) {
+        String directoryPath = BASE_PATH + ref.name() + "/" + subFolder + "/" + fileName;
         return Paths.get(directoryPath);
     }
 
     @Override
-    public Path generatePath(EJenisLampiranProfil ref, String username, String fileName) {
-        String directoryPath = BASE_PATH + ref.name() + "/" + username + "/" + fileName;
-        return Paths.get(directoryPath);
-    }
-
-    @Override
-    public void deleteOldFile(String oldFileName) {
-        try {
-            Path filePath = Paths.get(BASE_PATH, oldFileName);
-            Files.deleteIfExists(filePath);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void deleteOldFile(String fileName, EJenisLampiranProfil ref, String username) {
+    public void deleteOldFile(String fileName, EJenisLampiranProfil ref, String subFolder) {
         try {
             if (fileName == null || fileName.isEmpty())
                 return;
-            Path filePath = Paths.get(BASE_PATH, ref.name(), username, fileName);
+            Path filePath = Paths.get(BASE_PATH, ref.name(), subFolder, fileName);
             Files.deleteIfExists(filePath);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private Path createDirectory(EJenisLampiranProfil ref, String username) {
+    private Path generatePath(Enum<?> ref, String subFolder) {
+        String directoryPath = BASE_PATH + ref.name() + "/" + subFolder;
+        return Paths.get(directoryPath);
+    }
+
+    @Override
+    public Path generatePathSp(String subFolder, String fileName) {
+        String directoryPath = BASE_PATH + "SP/" + subFolder + "/" + fileName;
+        return Paths.get(directoryPath);
+    }
+
+    private Path generatePathSp(String subFolder) {
+        String directoryPath = BASE_PATH + "SP/" + subFolder;
+        return Paths.get(directoryPath);
+    }
+
+    private Path createDirectory(Enum<?> ref, String subFolder) {
         try {
-            Path directory = this.generatePath(ref, username);
+            Path directory = this.generatePath(ref, subFolder);
+            Files.createDirectories(directory);
+            return directory;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Path createDirectorySp(String subFolder) {
+        try {
+            Path directory = this.generatePathSp(subFolder);
             Files.createDirectories(directory);
             return directory;
         } catch (IOException e) {

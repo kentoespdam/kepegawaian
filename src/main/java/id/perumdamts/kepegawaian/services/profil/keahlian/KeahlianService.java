@@ -12,7 +12,7 @@ public interface KeahlianService {
     List<KeahlianResponse> findAll();
     Page<KeahlianResponse> findPage(KeahlianRequest request);
     KeahlianResponse findById(Long id);
-    List<KeahlianResponse> findByBiodataId(String biodataId);
+    Page<KeahlianResponse> findByBiodataId(String biodataId, KeahlianRequest request);
     SavedStatus<?> save(KeahlianPostRequest request);
     SavedStatus<?> update(Long id, KeahlianPutRequest request);
     SavedStatus<?> acceptKeahlian(Long id, String nik, String username);

@@ -3,20 +3,20 @@ package id.perumdamts.kepegawaian.services.profil.biodata;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
-import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPostRequest;
-import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPutRequest;
-import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataRequest;
-import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataResponse;
+import id.perumdamts.kepegawaian.dto.profil.biodata.*;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.KartuIdentitas;
+import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.master.JenjangPendidikanRepository;
 import id.perumdamts.kepegawaian.repositories.profil.BiodataRepository;
 import id.perumdamts.kepegawaian.services.profil.kartuIdentitas.KartuIdentitasService;
+import id.perumdamts.kepegawaian.services.profil.pendidikan.PendidikanService;
 import id.perumdamts.kepegawaian.utils.FileUploadUtil;
 import id.perumdamts.kepegawaian.utils.UploadResultUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
@@ -33,11 +33,14 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BiodataServiceImpl implements BiodataService {
     private final BiodataRepository repository;
     private final JenjangPendidikanRepository jenjangPendidikanRepository;
     private final KartuIdentitasService kartuIdentitasService;
     private final FileUploadUtil fileUploadUtil;
+    private final PendidikanService pendidikanService;
+    private final PegawaiRepository pegawaiRepository;
 
     @Override
     public List<BiodataResponse> findAll() {
@@ -46,6 +49,7 @@ public class BiodataServiceImpl implements BiodataService {
 
     @Override
     public Page<BiodataResponse> findPage(BiodataRequest request) {
+        log.info("findPage: {}", request.getSpecification());
         return repository.findAll(request.getSpecification(), request.getPageable())
                 .map(BiodataResponse::from);
     }
@@ -55,10 +59,17 @@ public class BiodataServiceImpl implements BiodataService {
         return repository.findById(id).map(BiodataResponse::from).orElse(null);
     }
 
+    @Override
+    public BiodataResponse findByPegawaiId(Long id) {
+        return pegawaiRepository.findById(id)
+                .map(pegawai -> BiodataResponse.from(pegawai.getBiodata()))
+                .orElse(null);
+    }
+
     @Transactional
     @Override
     public SavedStatus<?> save(BiodataPostRequest request) {
-        Optional<JenjangPendidikan> pendidikanTerakhir = jenjangPendidikanRepository.findById(request.getPendidikanTerakhir());
+        Optional<JenjangPendidikan> pendidikanTerakhir = jenjangPendidikanRepository.findById(request.getPendidikanTerakhirId());
         if (pendidikanTerakhir.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Pendidikan Terakhir Tidak Valid");
 
@@ -69,13 +80,26 @@ public class BiodataServiceImpl implements BiodataService {
 
         Biodata save = repository.save(entity);
         kartuIdentitasService.execSave(new KartuIdentitas(save));
+        pendidikanService.saveFromBio(save, pendidikanTerakhir.get());
+
         return SavedStatus.build(ESaveStatus.SUCCESS, BiodataResponse.from(save));
+    }
+
+    @Override
+    public Biodata saveFromPegawai(BiodataPostRequest request) {
+        JenjangPendidikan pendidikanTerakhir = jenjangPendidikanRepository.findById(request.getPendidikanTerakhirId()).orElseThrow(() -> new RuntimeException("Unknown Pendidikan Terakhir"));
+
+        Biodata entity = BiodataPostRequest.toEntity(request, pendidikanTerakhir);
+        Biodata save = repository.save(entity);
+        kartuIdentitasService.execSave(new KartuIdentitas(save));
+        pendidikanService.saveFromBio(save, pendidikanTerakhir);
+        return save;
     }
 
     @Transactional
     @Override
     public SavedStatus<?> update(String id, BiodataPutRequest request) {
-        Optional<JenjangPendidikan> pendidikanTerakhir = jenjangPendidikanRepository.findById(request.getPendidikanTerakhir());
+        Optional<JenjangPendidikan> pendidikanTerakhir = jenjangPendidikanRepository.findById(request.getPendidikanTerakhirId());
         if (pendidikanTerakhir.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Pendidikan Terakhir Tidak Valid");
 
@@ -89,6 +113,17 @@ public class BiodataServiceImpl implements BiodataService {
     }
 
     @Override
+    public SavedStatus<?> patchBiodata(String id, BiodataPatchRequest request) {
+        Optional<Biodata> biodata = repository.findById(id);
+        if (biodata.isEmpty())
+            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Biodata");
+
+        Biodata entity = BiodataPatchRequest.toEntity(biodata.get(), request);
+        Biodata save = repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, BiodataResponse.from(save));
+    }
+
+    @Override
     public SavedStatus<?> updateFotoProfil(String id, MultipartFile fileName) {
         Optional<Biodata> biodata = repository.findById(id);
         if (biodata.isEmpty())
@@ -97,7 +132,7 @@ public class BiodataServiceImpl implements BiodataService {
         String oldFilename = biodata.get().getFotoProfil();
         fileUploadUtil.deleteOldFile(oldFilename, EJenisLampiranProfil.FOTO_PROFIL, id);
 
-        UploadResultUtil uploadResultUtil = fileUploadUtil.uploadFile(fileName, EJenisLampiranProfil.FOTO_PROFIL, id);
+        UploadResultUtil uploadResultUtil = fileUploadUtil.uploadFileSp(fileName, EJenisLampiranProfil.FOTO_PROFIL, id);
         if (!uploadResultUtil.isSuccess()) {
             return SavedStatus.build(ESaveStatus.FAILED, uploadResultUtil.getMessage());
         }
@@ -133,10 +168,11 @@ public class BiodataServiceImpl implements BiodataService {
     @Transactional
     @Override
     public Boolean deleteById(String id) {
-        boolean isBiodataExist = repository.existsById(id);
-        if (!isBiodataExist)
+        Optional<Biodata> byId = repository.findById(id);
+        if (byId.isEmpty())
             return false;
-        repository.deleteById(id);
+        byId.get().setIsDeleted(true);
+        repository.save(byId.get());
         return true;
     }
 }

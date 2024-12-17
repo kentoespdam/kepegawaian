@@ -19,8 +19,10 @@ public class PendidikanPutRequest extends PendidikanPostRequest {
         entity.setGelarBelakang(request.getGelarBelakang());
         entity.setJurusan(request.getJurusan());
         entity.setInstitusi(request.getInstitusi());
+        entity.setKota(request.getKota());
         entity.setTahunMasuk(request.getTahunMasuk());
         entity.setTahunLulus(request.getTahunLulus());
+        entity.setGpa(request.getGpa());
         entity.setIsLatest(request.getIsLatest());
         entity.setDisetujui(false);
         entity.setTanggalPengajuan(LocalDateTime.now());

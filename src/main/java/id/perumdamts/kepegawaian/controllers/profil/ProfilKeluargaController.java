@@ -35,9 +35,9 @@ public class ProfilKeluargaController {
         return CustomResult.any(service.findById(id));
     }
 
-    @GetMapping("/{nik}/biodata")
-    public ResponseEntity<?> findByNik(@PathVariable String nik) {
-        return CustomResult.list(service.findByBiodataId(nik));
+    @GetMapping("/{biodataId}/biodata")
+    public ResponseEntity<?> findByNik(@PathVariable String biodataId, @ParameterObject ProfilKeluargaRequest request) {
+        return CustomResult.any(service.findByBiodataId(biodataId, request));
     }
 
     @PostMapping

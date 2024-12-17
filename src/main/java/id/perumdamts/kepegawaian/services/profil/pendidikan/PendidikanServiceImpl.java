@@ -47,9 +47,9 @@ public class PendidikanServiceImpl implements PendidikanService {
     }
 
     @Override
-    public List<PendidikanResponse> findByBiodataId(String biodataId) {
-        return repository.findByBiodata_Nik(biodataId).stream()
-                .map(PendidikanResponse::from).toList();
+    public Page<PendidikanResponse> findByBiodataId(String biodataId, PendidikanRequest request) {
+        request.setBiodataId(biodataId);
+        return repository.findAll(request.getSpecification(), request.getPageable()).map(PendidikanResponse::from);
     }
 
     @Transactional
@@ -70,6 +70,11 @@ public class PendidikanServiceImpl implements PendidikanService {
 
         Pendidikan pendidikan = PendidikanPostRequest.from(request, biodata.get(), jenjangPendidikan.get());
         Pendidikan save = repository.save(pendidikan);
+        if (request.getIsLatest()) {
+            repository.updateIsLatest(save.getId(), request.getBiodataId());
+            biodata.get().setPendidikanTerakhir(jenjangPendidikan.get());
+            biodataRepository.save(biodata.get());
+        }
         return SavedStatus.build(ESaveStatus.SUCCESS, PendidikanResponse.from(save));
     }
 
@@ -87,6 +92,11 @@ public class PendidikanServiceImpl implements PendidikanService {
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jenjang Pendidikan");
         Pendidikan entity = PendidikanPutRequest.from(request, pendidikan.get(), biodata.get(), jenjangPendidikan.get());
         Pendidikan save = repository.save(entity);
+        if (request.getIsLatest()) {
+            repository.updateIsLatest(save.getId(), request.getBiodataId());
+            biodata.get().setPendidikanTerakhir(jenjangPendidikan.get());
+            biodataRepository.save(biodata.get());
+        }
         return SavedStatus.build(ESaveStatus.SUCCESS, PendidikanResponse.from(save));
     }
 
@@ -109,10 +119,12 @@ public class PendidikanServiceImpl implements PendidikanService {
     @Transactional
     @Override
     public Boolean delete(Long id) {
-        boolean exists = repository.existsById(id);
-        if (!exists)
+        Optional<Pendidikan> byId = repository.findById(id);
+        if (byId.isEmpty())
             return false;
-        repository.deleteById(id);
+        byId.get().setIsDeleted(true);
+        repository.save(byId.get());
+        lampiranProfilService.deleteByRefId(EJenisLampiranProfil.PROFIL_PENDIDIKAN, id);
         return true;
     }
 
@@ -146,4 +158,14 @@ public class PendidikanServiceImpl implements PendidikanService {
     public Boolean deleteLampiran(Long id) {
         return lampiranProfilService.deleteById(id);
     }
+
+    @Override
+    public void saveFromBio(Biodata save, JenjangPendidikan jenjangPendidikan) {
+        Pendidikan pendidikan = new Pendidikan();
+        pendidikan.setBiodata(save);
+        pendidikan.setJenjangPendidikan(jenjangPendidikan);
+        pendidikan.setIsLatest(true);
+        repository.save(pendidikan);
+    }
+
 }

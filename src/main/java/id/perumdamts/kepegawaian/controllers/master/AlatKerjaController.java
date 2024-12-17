@@ -16,47 +16,47 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/master/alat_kerja")
+@RequestMapping("/master/alat-kerja")
 public class AlatKerjaController {
-    private final AlatKerjaService AlatKerjaService;
+    private final AlatKerjaService alatKerjaService;
 
     @GetMapping
     public ResponseEntity<?> get(@ParameterObject AlatKerjaRequest request) {
-        return CustomResult.any(AlatKerjaService.findPage(request));
+        return CustomResult.any(alatKerjaService.findPage(request));
     }
 
     @GetMapping("/list")
     public ResponseEntity<?> list() {
-        return CustomResult.list(AlatKerjaService.findAll());
+        return CustomResult.list(alatKerjaService.findAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
-        return CustomResult.any(AlatKerjaService.findById(id));
+        return CustomResult.any(alatKerjaService.findById(id));
     }
 
     @GetMapping("/{id}/profesi")
     public ResponseEntity<?> findByProfesi(@PathVariable Long id) {
-        return CustomResult.any(AlatKerjaService.findByProfesiId(id));
+        return CustomResult.any(alatKerjaService.findByProfesiId(id));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> save(@Valid @RequestBody AlatKerjaPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(AlatKerjaService.save(request));
+        return CustomResult.save(alatKerjaService.save(request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody AlatKerjaPutRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(AlatKerjaService.update(id, request));
+        return CustomResult.save(alatKerjaService.update(id, request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
-        return CustomResult.delete(AlatKerjaService.deleteById(id));
+        return CustomResult.delete(alatKerjaService.deleteById(id));
     }
 }

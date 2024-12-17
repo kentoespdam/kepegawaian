@@ -13,7 +13,7 @@ public interface KartuIdentitasService {
     List<KartuIdentitasResponse> findAll();
     Page<KartuIdentitasResponse> findPage(KartuIdentitasRequest request);
     KartuIdentitasResponse findById(Long id);
-    List<KartuIdentitasResponse> findByNik(String nik);
+    Page<KartuIdentitasResponse> findByNik(String nik, KartuIdentitasRequest request);
     KartuIdentitas execSave(KartuIdentitas kartuIdentitas);
     SavedStatus<?> save(KartuIdentitasPostRequest request);
     SavedStatus<?> update(Long id, KartuIdentitasPutRequest request);

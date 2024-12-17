@@ -47,9 +47,10 @@ public class PelatihanServiceImpl implements PelatihanService {
     }
 
     @Override
-    public List<PelatihanResponse> findByBiodataId(String biodataId) {
-        return repository.findByBiodata_Nik(biodataId).stream()
-                .map(PelatihanResponse::from).toList();
+    public Page<PelatihanResponse> findByBiodataId(String biodataId, PelatihanRequest request) {
+        request.setBiodataId(biodataId);
+        return repository.findAll(request.getSpecification(), request.getPageable())
+                .map(PelatihanResponse::from);
     }
 
     @Transactional
@@ -109,10 +110,12 @@ public class PelatihanServiceImpl implements PelatihanService {
     @Transactional
     @Override
     public Boolean delete(Long id) {
-        boolean exists = repository.existsById(id);
-        if (!exists)
+        Optional<Pelatihan> byId = repository.findById(id);
+        if (byId.isEmpty())
             return false;
-        repository.deleteById(id);
+        byId.get().setIsDeleted(true);
+        repository.save(byId.get());
+        lampiranProfilService.deleteByRefId(EJenisLampiranProfil.PROFIL_PELATIHAN, id);
         return true;
     }
 

@@ -45,9 +45,11 @@ public class PengalamanKerjaServiceImpl implements PengalamanKerjaService {
     }
 
     @Override
-    public List<PengalamanKerjaResponse> findByBiodataId(String biodataId) {
-        return repository.findByBiodata_Nik(biodataId).stream()
-                .map(PengalamanKerjaResponse::from).toList();
+    public Page<PengalamanKerjaResponse> findByBiodataId(String biodataId) {
+        PengalamanKerjaRequest request = new PengalamanKerjaRequest();
+        request.setBiodataId(biodataId);
+        return repository.findAll(request.getSpecification(), request.getPageable())
+                .map(PengalamanKerjaResponse::from);
     }
 
     @Transactional
@@ -100,10 +102,12 @@ public class PengalamanKerjaServiceImpl implements PengalamanKerjaService {
     @Transactional
     @Override
     public Boolean deleteById(Long id) {
-        boolean exists = repository.existsById(id);
-        if (!exists)
+        Optional<PengalamanKerja> byId = repository.findById(id);
+        if (byId.isEmpty())
             return false;
-        repository.deleteById(id);
+        byId.get().setIsDeleted(true);
+        repository.save(byId.get());
+        lampiranProfilService.deleteByRefId(EJenisLampiranProfil.PROFIL_PENGALAMAN_KERJA, id);
         return true;
     }
 

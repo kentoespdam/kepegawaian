@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'jvm-test-suite'
     id 'org.springframework.boot' version '3.2.2'
     id 'io.spring.dependency-management' version '1.1.4'
 //    id 'org.hibernate.orm' version '6.4.1.Final'
@@ -10,7 +11,7 @@ group = 'id.perumdamts'
 version = '1.0.0'
 
 java {
-    sourceCompatibility = '21'
+    sourceCompatibility = '21.0.4'
 }
 
 configurations {
@@ -24,8 +25,8 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.2.1'
-//	implementation 'org.springframework.boot:spring-boot-starter-jooq'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.data:spring-data-envers'
 
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -35,15 +36,20 @@ dependencies {
 
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
 
+    implementation 'jakarta.validation:jakarta.validation-api:3.1.0'
+
     compileOnly 'org.projectlombok:lombok'
 
     //date serializer
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.1'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.2'
 
     //FileUtils
-    implementation 'commons-io:commons-io:2.15.1'
+    implementation 'commons-io:commons-io:2.16.1'
 
-    runtimeOnly 'com.mysql:mysql-connector-j:8.3.0'
+    // sqids
+    implementation('org.sqids:sqids:0.1.0')
+
+    runtimeOnly 'com.mysql:mysql-connector-j:9.0.0'
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
@@ -51,8 +57,26 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'
     testImplementation 'org.springframework.security:spring-security-test'
+    testAnnotationProcessor("org.projectlombok:lombok")
+    testCompileOnly("org.projectlombok:lombok")
+//
+//    testImplementation('org.junit.jupiter:junit-jupiter:5.10.3')
+//    testRuntimeOnly('org.junit.platform:junit-platform-launcher:1.10.3')
+//    testImplementation('org.mockito:mockito-core:5.11.0')
+//    testImplementation('org.mockito:mockito-junit-jupiter:5.12.0')
+//    testImplementation('org.mockito:mockito-inline:5.2.0')
 }
 
-tasks.named('test') {
+//tasks.named('test') {
+//    useJUnitPlatform()
+//}
+tasks.named('test', Test) {
     useJUnitPlatform()
+
+    maxHeapSize = '384m'
+    minHeapSize = '128m'
+}
+
+test {
+    jvmArgs("-XX:+EnableDynamicAgentLoading", "-Djdk.instrument.traceUsage")
 }

@@ -1,66 +1,31 @@
 package id.perumdamts.kepegawaian.controllers.master;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
-import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
-import id.perumdamts.kepegawaian.dto.master.statusKerja.StatusKerjaPostRequest;
-import id.perumdamts.kepegawaian.dto.master.statusKerja.StatusKerjaPutRequest;
-import id.perumdamts.kepegawaian.dto.master.statusKerja.StatusKerjaRequest;
-import id.perumdamts.kepegawaian.services.master.statusKerja.StatusKerjaService;
-import jakarta.validation.Valid;
+import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
 import lombok.RequiredArgsConstructor;
-import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/master/status-kerja")
 public class StatusKerjaController {
-    private final StatusKerjaService service;
-
-    @GetMapping
-    public ResponseEntity<?> index(@ParameterObject StatusKerjaRequest request) {
-        return CustomResult.any(service.findPage(request));
-    }
 
     @GetMapping("/list")
-    public ResponseEntity<?> list() {
-        return CustomResult.any(service.findAll());
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
-        return CustomResult.any(service.findById(id));
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping
-    public ResponseEntity<?> save(@Valid @RequestBody StatusKerjaPostRequest request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(service.save(request));
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/batch")
-    public ResponseEntity<?> saveBatch(@Valid @RequestBody List<StatusKerjaPostRequest> requests, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(service.saveBatch(requests));
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody StatusKerjaPutRequest request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(service.update(id, request));
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteById(@PathVariable Long id) {
-        return CustomResult.delete(service.deleteById(id));
+    public ResponseEntity<?> index() {
+        List<Map<String, Object>> list = Arrays.stream(EStatusKerja.values()).map(statusKerja -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", statusKerja);
+            map.put("nama", statusKerja.value);
+            return map;
+        }).toList();
+        return CustomResult.list(list);
     }
 }

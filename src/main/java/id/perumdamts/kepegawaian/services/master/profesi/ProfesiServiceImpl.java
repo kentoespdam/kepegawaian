@@ -3,12 +3,11 @@ package id.perumdamts.kepegawaian.services.master.profesi;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiPostRequest;
+import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiPutRequest;
 import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiRequest;
 import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiResponse;
-import id.perumdamts.kepegawaian.entities.master.Level;
-import id.perumdamts.kepegawaian.entities.master.Profesi;
-import id.perumdamts.kepegawaian.repositories.master.LevelRepository;
-import id.perumdamts.kepegawaian.repositories.master.ProfesiRepository;
+import id.perumdamts.kepegawaian.entities.master.*;
+import id.perumdamts.kepegawaian.repositories.master.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -21,11 +20,18 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProfesiServiceImpl implements ProfesiService {
     private final ProfesiRepository repository;
-    private final LevelRepository levelRepository;
+    private final OrganisasiRepository organisasiRepository;
+    private final JabatanRepository jabatanRepository;
+    private final GradeRepository gradeRepository;
 
     @Override
     public List<ProfesiResponse> findAll() {
         return repository.findAll().stream().map(ProfesiResponse::from).toList();
+    }
+
+    @Override
+    public List<ProfesiResponse> findByLevel(Long id) {
+        return repository.findByLevel_Id(id).stream().map(ProfesiResponse::from).toList();
     }
 
     @Override
@@ -42,38 +48,46 @@ public class ProfesiServiceImpl implements ProfesiService {
     @Transactional
     @Override
     public SavedStatus<?> save(ProfesiPostRequest request) {
-        Optional<Level> level = levelRepository.findById(request.getLevelId());
-        if (level.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Level");
-        Optional<Profesi> cari = repository.findOne(request.getSpecification());
-        if (cari.isPresent())
-            return SavedStatus.build(ESaveStatus.DUPLICATE, "Profesi sudah ada");
+        try {
+            boolean exists = repository.exists(request.getSpecification());
+            if (exists)
+                return SavedStatus.build(ESaveStatus.DUPLICATE, "Profesi sudah ada");
+            Organisasi organisasi = organisasiRepository.findById(request.getOrganisasiId())
+                    .orElseThrow(() -> new RuntimeException("Unknown Organisasi"));
+            Jabatan jabatan = jabatanRepository.findById(request.getJabatanId())
+                    .orElseThrow(() -> new RuntimeException("Unknown Jabatan"));
+            Grade grade = gradeRepository.findById(request.getGradeId())
+                    .orElseThrow(() -> new RuntimeException("Unknown Grade"));
 
-        Profesi entity = ProfesiPostRequest.toEntity(request);
-        Profesi save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            Profesi entity = ProfesiPostRequest.toEntity(request, organisasi, jabatan, grade);
+            Profesi save = repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        } catch (Exception e) {
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+        }
     }
 
     @Transactional
     @Override
-    public SavedStatus<?> saveBatch(List<ProfesiPostRequest> requests) {
-        List<Profesi> entities = ProfesiPostRequest.toEntities(requests);
-        repository.saveAll(entities);
-        return SavedStatus.build(ESaveStatus.SUCCESS, "Success Saving Batch Data");
-    }
+    public SavedStatus<?> update(Long id, ProfesiPutRequest request) {
+        try {
+            Optional<Profesi> byId = repository.findById(id);
+            if (byId.isEmpty())
+                return SavedStatus.build(ESaveStatus.FAILED, "Unknown Profesi");
 
-    @Transactional
-    @Override
-    public SavedStatus<?> update(Long id, ProfesiPostRequest request) {
-        Optional<Level> level = levelRepository.findById(request.getLevelId());
-        if (level.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Level");
-        Optional<Profesi> byId = repository.findById(id);
-        if (byId.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Profesi");
-        Profesi entity = ProfesiPostRequest.toEntity(request, id);
-        Profesi save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            Organisasi organisasi = organisasiRepository.findById(request.getOrganisasiId())
+                    .orElseThrow(() -> new RuntimeException("Unknown Organisasi"));
+            Jabatan jabatan = jabatanRepository.findById(request.getJabatanId())
+                    .orElseThrow(() -> new RuntimeException("Unknown Jabatan"));
+            Grade grade = gradeRepository.findById(request.getGradeId())
+                    .orElseThrow(() -> new RuntimeException("Unknown Grade"));
+
+            Profesi entity = ProfesiPutRequest.toEntity(byId.get(), request, organisasi, jabatan, grade);
+            Profesi save = repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        } catch (Exception e) {
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+        }
     }
 
     @Transactional
@@ -82,7 +96,8 @@ public class ProfesiServiceImpl implements ProfesiService {
         Optional<Profesi> byId = repository.findById(id);
         if (byId.isEmpty())
             return false;
-        repository.deleteById(id);
+        byId.get().setIsDeleted(true);
+        repository.save(byId.get());
         return true;
     }
 }

@@ -45,6 +45,7 @@ public class KeahlianPostRequest {
         entity.setBiodata(biodata);
         entity.setJenisKeahlian(jenisKeahlian);
         entity.setKualifikasi(request.getKualifikasi());
+        entity.setSertifikasi(request.getSertifikasi());
         entity.setInstitusi(request.getInstitusi());
         entity.setTahun(request.getTahun());
         entity.setMasaBerlaku(request.getMasaBerlaku());

@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.controllers.master;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiPostRequest;
+import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiPutRequest;
 import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiRequest;
 import id.perumdamts.kepegawaian.services.master.profesi.ProfesiService;
 import jakarta.validation.Valid;
@@ -12,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,6 +30,11 @@ public class ProfesiController {
         return CustomResult.list(profesiService.findAll());
     }
 
+    @GetMapping("/level/{id}")
+    public ResponseEntity<?> findByLevel(@PathVariable Long id) {
+        return CustomResult.list(profesiService.findByLevel(id));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
         return CustomResult.any(profesiService.findById(id));
@@ -44,15 +48,8 @@ public class ProfesiController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/batch")
-    public ResponseEntity<?> saveBatch(@Valid @RequestBody List<ProfesiPostRequest> requests, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(profesiService.saveBatch(requests));
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody ProfesiPostRequest request, Errors errors) {
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody ProfesiPutRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         return CustomResult.save(profesiService.update(id, request));
     }

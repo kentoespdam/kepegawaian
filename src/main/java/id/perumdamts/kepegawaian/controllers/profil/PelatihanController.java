@@ -36,8 +36,8 @@ public class PelatihanController {
     }
 
     @GetMapping("/{nik}/biodata")
-    public ResponseEntity<?> findByBiodataId(@PathVariable String nik) {
-        return CustomResult.list(service.findByBiodataId(nik));
+    public ResponseEntity<?> findByBiodataId(@PathVariable String nik, @ParameterObject PelatihanRequest request) {
+        return CustomResult.any(service.findByBiodataId(nik, request));
     }
 
     @PostMapping

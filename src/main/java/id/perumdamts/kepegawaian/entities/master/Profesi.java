@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.entities.master;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,9 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 import java.util.List;
 
@@ -22,19 +26,43 @@ import java.util.List;
 @SQLDelete(sql = "UPDATE profesi SET is_deleted=true WHERE id=?")
 @SQLRestriction("is_deleted <> 1")
 @EqualsAndHashCode(callSuper = true)
+@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class Profesi extends IdsAbstract {
-    @ManyToOne
-    @JoinColumn(name = "level_id", referencedColumnName = "id")
-    private Level level;
     private String nama;
     private String detail;
     private String resiko;
-    @OneToMany(mappedBy = "profesi")
-    private List<Apd> apdList;
+    @ManyToOne
+    @JoinColumn(name = "organisasi_id", referencedColumnName = "id")
+    private Organisasi organisasi;
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "jabatan_id", referencedColumnName = "id")
+    private Jabatan jabatan;
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "level_id", referencedColumnName = "id")
+    private Level level;
+    @ManyToOne
+    private Grade grade;
+
+    @NotAudited
+    @JsonBackReference
     @OneToMany(mappedBy = "profesi")
     private List<AlatKerja> alatKerjaList;
+    @NotAudited
+    @JsonBackReference
+    @OneToMany(mappedBy = "profesi")
+    private List<Apd> apdList;
 
     public Profesi(Long id) {
         super(id);
+    }
+
+    public Profesi(Long id, Level level, String nama, String detail, String resiko) {
+        super(id);
+        this.level = level;
+        this.nama = nama;
+        this.detail = detail;
+        this.resiko = resiko;
     }
 }

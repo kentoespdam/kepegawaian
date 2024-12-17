@@ -12,6 +12,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.envers.Audited;
 
 import java.time.LocalDateTime;
 
@@ -27,14 +28,16 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 @SQLDelete(sql = "UPDATE lampiran_profil SET is_deleted = TRUE WHERE id = ?")
 @SQLRestriction("is_deleted = FALSE")
+@Audited
 public class LampiranProfil extends IdsAbstract {
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     @Column(nullable = false)
     private EJenisLampiranProfil ref;
     @Column(nullable = false)
     private Long refId;
     private String mimeType;
     private String fileName;
+    private String notes;
     private String hashedFileName;
     private Boolean disetujui;
     @JsonSerialize(using = LocalDateTimeSerializer.class)

@@ -12,7 +12,7 @@ public interface PengalamanKerjaService {
     List<PengalamanKerjaResponse> findAll();
     Page<PengalamanKerjaResponse> findPage(PengalamanKerjaRequest request);
     PengalamanKerjaResponse findById(Long id);
-    List<PengalamanKerjaResponse> findByBiodataId(String biodataId);
+    Page<PengalamanKerjaResponse> findByBiodataId(String biodataId);
     SavedStatus<?> save(PengalamanKerjaPostRequest request);
     SavedStatus<?> update(Long id, PengalamanKerjaPutRequest request);
     SavedStatus<?> acceptPengalamanKerja(Long id, PengalamanKerjaAcceptRequest request, String username);

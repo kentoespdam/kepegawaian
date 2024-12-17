@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.entities.master;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,6 +10,10 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
+
+import java.util.List;
 
 @Entity
 @Table(indexes = {
@@ -20,19 +26,38 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLDelete(sql = "UPDATE jabatan SET is_deleted=true WHERE id=?")
 @SQLRestriction("is_deleted <> 1")
 @EqualsAndHashCode(callSuper = true)
+@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class Jabatan extends IdsAbstract {
-    @ManyToOne
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
     private Jabatan parent;
-    @ManyToOne
+
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organisasi_id", referencedColumnName = "id")
     private Organisasi organisasi;
-    @ManyToOne
+
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "level_id", referencedColumnName = "id")
     private Level level;
     private String nama;
 
+    @JsonManagedReference
+    @OneToMany(mappedBy = "jabatan")
+    public List<Profesi> profesiList;
+
     public Jabatan(Long id) {
         super(id);
+    }
+
+    public Jabatan(long id, Jabatan parent, Organisasi organisasi, Level level, String direkturUtama) {
+        super(id);
+        if (parent != null)
+            this.parent = parent;
+        this.organisasi = organisasi;
+        this.level = level;
+        this.nama = direkturUtama;
     }
 }

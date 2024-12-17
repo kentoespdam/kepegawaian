@@ -70,4 +70,20 @@ public class OpenApiConfig {
                 .pathsToMatch("/pegawai/**")
                 .build();
     }
+
+    @Bean
+    public GroupedOpenApi kepegawaianApi() {
+        return GroupedOpenApi.builder()
+                .group("kepegawaian")
+                .pathsToMatch("/kepegawaian/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi penggajianApi() {
+        return GroupedOpenApi.builder()
+                .group("penggajian")
+                .pathsToMatch("/penggajian/**")
+                .build();
+    }
 }

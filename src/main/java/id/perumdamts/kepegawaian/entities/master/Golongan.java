@@ -8,8 +8,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.envers.Audited;
 
 @Entity
 @Table(indexes = {
@@ -23,6 +25,8 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLDelete(sql = "UPDATE golongan SET is_deleted = TRUE WHERE id=?")
 @SQLRestriction("is_deleted = FALSE")
 @EqualsAndHashCode(callSuper = true)
+@Audited
+@Slf4j
 public class Golongan extends IdsAbstract {
     private String golongan;
     private String pangkat;
@@ -31,5 +35,18 @@ public class Golongan extends IdsAbstract {
         super(id);
         this.golongan = golongan;
         this.pangkat = pangkat;
+    }
+
+    public Golongan(Long id) {
+        super(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Golongan{" +
+                "golongan='" + golongan + '\'' +
+                ", pangkat='" + pangkat + '\'' +
+                ", isDeleted='" + getIsDeleted() + '\'' +
+                "} " + super.toString();
     }
 }

@@ -23,6 +23,7 @@ public class LampiranProfilPostRequest implements Serializable {
     private Long refId;
     @NotNull(message = "File Name is required")
     private MultipartFile fileName;
+    private String notes;
 
     @JsonIgnore
     public Specification<LampiranProfil> getSpecification() {
@@ -40,6 +41,7 @@ public class LampiranProfilPostRequest implements Serializable {
         entity.setRef(request.getRef());
         entity.setRefId(request.getRefId());
         entity.setFileName(fileName);
+        entity.setNotes(request.getNotes());
         entity.setHashedFileName(hashedFileName);
         entity.setMimeType(mimeType);
         entity.setDisetujui(false);

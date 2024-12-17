@@ -12,7 +12,7 @@ import java.util.Optional;
 @Configuration
 @EnableJpaAuditing(auditorAwareRef = "auditorProvider")
 public class AuditConfig {
-    @Bean
+    @Bean("auditorProvider")
     public AuditorAware<String> auditorProvider() {
         return new AuditAwareImpl();
     }
@@ -21,4 +21,5 @@ public class AuditConfig {
     public DateTimeProvider dateTimeProvider(){
         return ()-> Optional.of(LocalDateTime.now());
     }
+
 }

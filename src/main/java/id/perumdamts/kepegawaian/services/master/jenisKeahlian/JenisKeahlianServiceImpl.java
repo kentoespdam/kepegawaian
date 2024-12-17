@@ -68,10 +68,11 @@ public class JenisKeahlianServiceImpl implements JenisKeahlianService {
 
     @Override
     public Boolean deleteById(Long id) {
-        Optional<JenisKeahlian> one = repository.findById(id);
-        if (one.isEmpty())
+        Optional<JenisKeahlian> byId = repository.findById(id);
+        if (byId.isEmpty())
             return false;
-        repository.deleteById(id);
+        byId.get().setIsDeleted(true);
+        repository.save(byId.get());
         return true;
     }
 }

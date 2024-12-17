@@ -1,18 +1,21 @@
 package id.perumdamts.kepegawaian.config.security;
 
 import id.perumdamts.kepegawaian.dto.appwrite.AppwriteUser;
+import id.perumdamts.kepegawaian.dto.appwrite.Prefs;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 @Component
@@ -22,11 +25,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtTokenService service;
     private static final String BEARER = "Bearer ";
     private static final String AUTHORIZATION = "Authorization";
+    @Value("${spring.profiles.active}")
+    String profile;
 
     @SuppressWarnings("NullableProblems")
     @Override
-    protected void doFilterInternal(HttpServletRequest request,HttpServletResponse response,FilterChain filterChain) throws ServletException, IOException {
-        UsernamePasswordAuthenticationToken authentication = getAuthentication(request);
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        UsernamePasswordAuthenticationToken authentication = profile.equals("development") ?
+                getDevelopmentAuthentication() :
+                getAuthentication(request);
         if (Objects.isNull(authentication)) {
             filterChain.doFilter(request, response);
             return;
@@ -57,6 +64,22 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 //            log.error("invalid token: {}", token);
             return null;
         }
+        return new UsernamePasswordAuthenticationToken(
+                userFromToken,
+                null,
+                userFromToken.getAuthorities());
+    }
+
+    private UsernamePasswordAuthenticationToken getDevelopmentAuthentication() {
+        List<String> roles = List.of("ADMIN");
+        Prefs prefs = new Prefs();
+        prefs.setRoles(roles);
+
+        AppwriteUser userFromToken = new AppwriteUser();
+        userFromToken.set$id("DEV");
+        userFromToken.setName("DEVELOPMENT");
+        userFromToken.setPrefs(prefs);
+
         return new UsernamePasswordAuthenticationToken(
                 userFromToken,
                 null,

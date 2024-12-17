@@ -22,6 +22,7 @@ public class PendidikanPostRequest {
     private String jurusan;
     @NotEmpty(message = "Institusi is required")
     private String institusi;
+    private String kota;
     @Min(value = 1970, message = "Tahun Masuk is required")
     private Integer tahunMasuk;
     @Min(value = 1970, message = "Tahun Lulus is required")
@@ -46,6 +47,7 @@ public class PendidikanPostRequest {
         entity.setGelarBelakang(request.gelarBelakang);
         entity.setJurusan(request.jurusan);
         entity.setInstitusi(request.institusi);
+        entity.setKota(request.kota);
         entity.setTahunMasuk(request.tahunMasuk);
         entity.setTahunLulus(request.tahunLulus);
         entity.setGpa(request.gpa);
