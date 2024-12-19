@@ -9,16 +9,24 @@ public class MimeTypesUtilsImpl implements MimeTypesUtils {
             "image/png",
     };
 
-    private final String[] documentMimeTypes = {
+    private final String[] pdfMimeTypes = {
             "application/pdf",
+    };
+
+    private final String[] wordMimeTypes = {
             "application/msword",
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    };
+
+    private final String[] excelMimeTypes = {
             "application/vnd.ms-excel",
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "application/vnd.oasis.opendocument.spreadsheet",
+    };
+
+    private final String[] powerpointMimeTypes = {
             "application/vnd.ms-powerpoint",
             "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-            "application/vnd.oasis.opendocument.text",
-            "application/vnd.oasis.opendocument.spreadsheet",
             "application/vnd.oasis.opendocument.presentation"
     };
 
@@ -38,11 +46,41 @@ public class MimeTypesUtilsImpl implements MimeTypesUtils {
         return false;
     }
 
-    public boolean isDocument(String mimeType) {
-        for (String documentMimeType : documentMimeTypes) {
-            if (documentMimeType.equals(mimeType)) return true;
+    @Override
+    public boolean isPdf(String mimeType) {
+        for (String pdfMimeType : pdfMimeTypes) {
+            if (pdfMimeType.equals(mimeType)) return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean isWord(String mimeType) {
+        for (String wordMimeType : wordMimeTypes) {
+            if (wordMimeType.equals(mimeType)) return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isExcel(String mimeType) {
+        for (String excelMimeType : excelMimeTypes) {
+            if (excelMimeType.equals(mimeType)) return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isPowerpoint(String mimeType) {
+        for (String powerpointMimeType : powerpointMimeTypes) {
+            if (powerpointMimeType.equals(mimeType)) return true;
+        }
+        return false;
+    }
+
+    public boolean isDocument(String mimeType) {
+        return isPdf(mimeType) || isWord(mimeType) ||
+                isExcel(mimeType) || isPowerpoint(mimeType);
     }
 
     public boolean isCompressed(String mimeType) {
@@ -59,12 +97,15 @@ public class MimeTypesUtilsImpl implements MimeTypesUtils {
 
     @Override
     public String isSupported(String mimeType) {
-//        String extension = mimeType.substring(mimeType.indexOf("/") + 1);
-
         if (isImage(mimeType) || isDocument(mimeType) || isCompressed(mimeType)) {
             return mimeType;
         } else {
             return null;
         }
+    }
+
+    @Override
+    public String isSupportedExcel(String mimeType) {
+        return isExcel(mimeType) ? mimeType : null;
     }
 }
