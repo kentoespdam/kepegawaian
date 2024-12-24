@@ -21,6 +21,7 @@ public class ProfilKeluargaPutRequest extends ProfilKeluargaPostRequest {
         entity.setTanggalLahir(request.getTanggalLahir());
         entity.setTanggungan(request.getTanggungan());
         entity.setPendidikan(pendidikan);
+        entity.setStatusPendidikan(request.getStatusPendidikan());
         entity.setStatusKawin(request.getStatusKawin());
         entity.setNotes(request.getNotes());
         return entity;

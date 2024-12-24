@@ -33,7 +33,7 @@ import java.time.LocalDate;
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class ProfilKeluarga extends IdsAbstract {
     @ManyToOne
-    @JoinColumn(name="biodata_id", referencedColumnName = "nik")
+    @JoinColumn(name = "biodata_id", referencedColumnName = "nik")
     private Biodata biodata;
     private String nik;
     private String nama;
@@ -47,10 +47,12 @@ public class ProfilKeluarga extends IdsAbstract {
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tanggalLahir;
-    private Boolean tanggungan=false;
+    private Boolean tanggungan = false;
     @ManyToOne
     @JoinColumn(name = "pendidikan_id", referencedColumnName = "id")
     private JenjangPendidikan pendidikan;
+    @Enumerated(EnumType.ORDINAL)
+    private EStatusPendidikan statusPendidikan;
     @Enumerated(EnumType.ORDINAL)
     private EStatusKawin statusKawin;
     private String notes;

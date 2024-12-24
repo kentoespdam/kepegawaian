@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.dto.master.jenjangPendidikan.JenjangPendidikanMiniResponse;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataMiniResponse;
-import id.perumdamts.kepegawaian.entities.commons.EAgama;
-import id.perumdamts.kepegawaian.entities.commons.EHubunganKeluarga;
-import id.perumdamts.kepegawaian.entities.commons.EJenisKelamin;
-import id.perumdamts.kepegawaian.entities.commons.EStatusKawin;
+import id.perumdamts.kepegawaian.entities.commons.*;
 import id.perumdamts.kepegawaian.entities.profil.ProfilKeluarga;
 import jakarta.persistence.Enumerated;
 import lombok.Data;
@@ -34,6 +31,8 @@ public class ProfilKeluargaResponse {
     private Boolean tanggungan;
     private JenjangPendidikanMiniResponse pendidikan;
     @Enumerated
+    private EStatusPendidikan statusPendidikan;
+    @Enumerated
     private EStatusKawin statusKawin;
     private String notes;
 
@@ -52,6 +51,7 @@ public class ProfilKeluargaResponse {
         response.setTanggalLahir(profilKeluarga.getTanggalLahir());
         response.setTanggungan(profilKeluarga.getTanggungan());
         response.setPendidikan(pendidikan);
+        response.setStatusPendidikan(profilKeluarga.getStatusPendidikan());
         response.setStatusKawin(profilKeluarga.getStatusKawin());
         response.setNotes(profilKeluarga.getNotes());
         return response;
