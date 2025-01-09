@@ -6,7 +6,8 @@ public enum EProsesGaji {
     WAIT_VERIFICATION_PHASE_1("Menunggu Verifikasi Tahap 1"),
     WAIT_VERIFICATION_PHASE_2("Menunggu Verifikasi Tahap 2"),
     WAIT_APPROVAL("Menunggu Approval"),
-    FINISHED("Selesai");
+    FINISHED("Selesai"),
+    FAILED("Gagal");
 
 
     public final String value;
