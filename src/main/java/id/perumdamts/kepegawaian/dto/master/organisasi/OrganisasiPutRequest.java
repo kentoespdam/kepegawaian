@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class OrganisasiPutRequest extends OrganisasiPostRequest {
     public static Organisasi toEntity(Organisasi entity, OrganisasiPutRequest request, Organisasi parent) {
+        entity.setKode(request.getKode());
         if (parent != null)
             entity.setParent(parent);
         entity.setLevelOrg(request.getLevelOrganisasi());

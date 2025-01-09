@@ -14,6 +14,7 @@ import org.hibernate.envers.RelationTargetAuditMode;
 
 @Entity
 @Table(indexes = {
+        @Index(columnList = "kode"),
         @Index(columnList = "nama"),
         @Index(columnList = "levelOrg"),
         @Index(columnList = "is_deleted")
@@ -26,6 +27,7 @@ import org.hibernate.envers.RelationTargetAuditMode;
 @EqualsAndHashCode(callSuper = true)
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class Organisasi extends IdsAbstract {
+    private String kode;
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id", referencedColumnName = "id")

@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 public class OrganisasiResponse {
     private Long id;
+    private String kode;
     private OrganisasiMiniResponse parent;
     private Integer levelOrganisasi;
     private String nama;
@@ -13,9 +14,9 @@ public class OrganisasiResponse {
     public static OrganisasiResponse from(Organisasi organisasi) {
         OrganisasiResponse response = new OrganisasiResponse();
         response.setId(organisasi.getId());
-        if (organisasi.getParent() != null) {
+        response.setKode(organisasi.getKode());
+        if (organisasi.getParent() != null)
             response.setParent(OrganisasiMiniResponse.from(organisasi.getParent()));
-        }
         response.setLevelOrganisasi(organisasi.getLevelOrg());
         response.setNama(organisasi.getNama());
         return response;
