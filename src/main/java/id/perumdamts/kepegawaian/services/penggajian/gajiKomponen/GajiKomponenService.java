@@ -1,11 +1,7 @@
 package id.perumdamts.kepegawaian.services.penggajian.gajiKomponen;
 
-import id.perumdamts.kepegawaian.dto.commons.CommonPageRequest;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
-import id.perumdamts.kepegawaian.dto.penggajian.gajiKomponen.GajiKomponenMiniProjection;
-import id.perumdamts.kepegawaian.dto.penggajian.gajiKomponen.GajiKomponenPostRequest;
-import id.perumdamts.kepegawaian.dto.penggajian.gajiKomponen.GajiKomponenPutRequest;
-import id.perumdamts.kepegawaian.dto.penggajian.gajiKomponen.GajiKomponenResponse;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiKomponen.*;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiProfil;
 import org.springframework.data.domain.Page;
 
@@ -14,7 +10,7 @@ import java.util.List;
 public interface GajiKomponenService {
     List<GajiKomponenMiniProjection> findAllKode(Long profilId);
 
-    Page<GajiKomponenResponse> findByProfil(Long id, CommonPageRequest request);
+    Page<GajiKomponenResponse> findByProfil(Long id, GajiKomponenRequest request);
 
     Integer findLastUrut(Long profilId);
 
