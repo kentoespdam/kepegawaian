@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.services.penggajian;
+package id.perumdamts.kepegawaian.services.penggajian.gajiParameterSetting;
 
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiParameterSetting.GajiParameterSettingPostRequest;
