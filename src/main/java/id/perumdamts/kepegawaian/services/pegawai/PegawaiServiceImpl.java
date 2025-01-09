@@ -174,6 +174,21 @@ public class PegawaiServiceImpl implements PegawaiService {
     }
 
     @Override
+    public SavedStatus<?> patchProfil(Long id, PegawaiPatchProfil request) {
+        try {
+            Optional<Pegawai> pegawai = repository.findById(id);
+            if (pegawai.isEmpty()) return SavedStatus.build(ESaveStatus.FAILED, "Unknown Pegawai");
+            Golongan golongan = golonganRepository.findById(request.getId()).orElse(null);
+
+            Pegawai entity = PegawaiPatchProfil.toEntity(pegawai.get(), request, golongan);
+            Pegawai save = repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        } catch (Exception e) {
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+        }
+    }
+
+    @Override
     public boolean deleteById(Long id) {
         boolean exists = repository.existsById(id);
         if (!exists) return false;

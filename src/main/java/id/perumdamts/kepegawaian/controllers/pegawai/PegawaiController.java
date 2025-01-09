@@ -2,10 +2,7 @@ package id.perumdamts.kepegawaian.controllers.pegawai;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
-import id.perumdamts.kepegawaian.dto.pegawai.PegawaiPatchGaji;
-import id.perumdamts.kepegawaian.dto.pegawai.PegawaiPostRequest;
-import id.perumdamts.kepegawaian.dto.pegawai.PegawaiPutRequest;
-import id.perumdamts.kepegawaian.dto.pegawai.PegawaiRequest;
+import id.perumdamts.kepegawaian.dto.pegawai.*;
 import id.perumdamts.kepegawaian.services.pegawai.PegawaiService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -69,6 +66,14 @@ public class PegawaiController {
     public ResponseEntity<?> patchGaji(@PathVariable Long id, @Valid @RequestBody PegawaiPatchGaji request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         return CustomResult.save(service.patchGaji(id, request));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PatchMapping("/{id}/profil")
+    public ResponseEntity<?> patchProfil(@PathVariable Long id, @Valid @RequestBody PegawaiPatchProfil request, Errors errors) {
+        if (errors.hasErrors()) return ErrorResult.build(errors);
+        if (!id.equals(request.getId())) return ErrorResult.build("Unknown Pegawai");
+        return CustomResult.save(service.patchProfil(id, request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
