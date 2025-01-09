@@ -2,7 +2,7 @@ package id.perumdamts.kepegawaian.entities.penggajian;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import id.perumdamts.kepegawaian.entities.commons.EProsesGaji;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -19,6 +19,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @NoArgsConstructor
@@ -44,26 +45,30 @@ public class GajiBatchRoot implements Serializable {
     @Enumerated(EnumType.ORDINAL)
     private EProsesGaji status = EProsesGaji.PENDING;
     private Integer totalPegawai;
-    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime tglProses;
     private String diProsesOleh;
     private String jabatanPemroses;
-    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime tglVerifikasiTahap1;
     private String diVerifikasiOlehTahap1;
     private String jabatanVerifikasiTahap1;
-    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime tglVerifikasiTahap2;
     private String diVerifikasiOlehTahap2;
     private String jabatanVerifikasiTahap2;
-    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime tglPersetujuan;
     private String diSetujuiOleh;
     private String jabatanPenyetuju;
+    @OneToMany(mappedBy = "gajiBatchRoot")
+    private List<GajiBatchRootErrorLogs> errorLogs;
+    @Column(columnDefinition = "TEXT")
+    private String notes;
     private String mimeType;
     private String fileName;
     private String hashedFileName;
@@ -71,6 +76,7 @@ public class GajiBatchRoot implements Serializable {
     @Column(updatable = false)
     private String createdBy;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
@@ -78,6 +84,7 @@ public class GajiBatchRoot implements Serializable {
     @LastModifiedBy
     private String updatedBy;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     @LastModifiedDate
     private LocalDateTime updatedAt;
     @Audited

@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.services.penggajian.gajiBatchRoot;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRoot.GajiBatchRootPostRequest;
@@ -12,19 +13,22 @@ import id.perumdamts.kepegawaian.utils.FileUploadUtil;
 import id.perumdamts.kepegawaian.utils.ProcessPotonganTkk;
 import id.perumdamts.kepegawaian.utils.UploadResultUtil;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import static id.perumdamts.kepegawaian.config.KafkaConfig.PENGGAJIAN_TOPIC;
+
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class GajiBatchRootServiceImpl implements GajiBatchRootService {
     private final GajiBatchRootRepository repository;
     private final FileUploadUtil fileUploadUtil;
     private final ProcessPotonganTkk processPotonganTkk;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
+    private final ObjectMapper mapper = new ObjectMapper();
 
     @Override
     public Page<GajiBatchRootResponse> findAll(GajiBatchRootRequest request) {
@@ -63,6 +67,7 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
 
             GajiBatchRoot save = repository.save(entity);
             processPotonganTkk.process(save);
+            kafkaTemplate.send(PENGGAJIAN_TOPIC, mapper.writeValueAsString(save));
             return SavedStatus.build(ESaveStatus.SUCCESS, save);
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
@@ -83,6 +88,7 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
 
             GajiBatchRoot save = repository.save(gajiBatchRoot);
             processPotonganTkk.process(save);
+            kafkaTemplate.send(PENGGAJIAN_TOPIC, mapper.writeValueAsString(save));
             return SavedStatus.build(ESaveStatus.SUCCESS, save);
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());

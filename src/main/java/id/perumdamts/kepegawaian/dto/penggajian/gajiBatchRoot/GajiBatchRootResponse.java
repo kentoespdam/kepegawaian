@@ -3,11 +3,13 @@ package id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRoot;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRootErrorLogs.GajiBatchRootErrorLogsResponse;
 import id.perumdamts.kepegawaian.entities.commons.EProsesGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchRoot;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class GajiBatchRootResponse {
@@ -35,6 +37,8 @@ public class GajiBatchRootResponse {
     private LocalDateTime tglPersetujuan;
     private String diSetujuiOleh;
     private String jabatanPenyetuju;
+    private List<GajiBatchRootErrorLogsResponse> errorLogs;
+    private String notes;
     private String mimeType;
     private String fileName;
 
@@ -56,6 +60,9 @@ public class GajiBatchRootResponse {
         response.setTglPersetujuan(entity.getTglPersetujuan());
         response.setDiSetujuiOleh(entity.getDiSetujuiOleh());
         response.setJabatanPenyetuju(entity.getJabatanPenyetuju());
+        if (!entity.getErrorLogs().isEmpty())
+            response.setErrorLogs(GajiBatchRootErrorLogsResponse.from(entity.getErrorLogs()));
+        response.setNotes(entity.getNotes());
         response.setMimeType(entity.getMimeType());
         response.setFileName(entity.getFileName());
         return response;
