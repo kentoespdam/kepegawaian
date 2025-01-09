@@ -12,6 +12,7 @@ import java.util.Objects;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class JabatanRequest extends CommonPageRequest {
+    private String kode;
     private Long parentId;
     private Long organisasiId;
     private Long levelId;
@@ -19,12 +20,18 @@ public class JabatanRequest extends CommonPageRequest {
 
     @JsonIgnore
     public Specification<Jabatan> getSpecification() {
-        Specification<Jabatan> parentSpec = Objects.isNull(parentId) ? null : (root, query, cb) -> cb.equal(root.get("parent").get("id"), parentId);
-        Specification<Jabatan> organisasiSpec = Objects.isNull(organisasiId) ? null : (root, query, cb) -> cb.equal(root.get("organisasi").get("id"), organisasiId);
-        Specification<Jabatan> levelSpec = Objects.isNull(levelId) ? null : (root, query, cb) -> cb.equal(root.get("level").get("id"), levelId);
-        Specification<Jabatan> namaSpec = Objects.isNull(nama) ? null : (root, query, cb) -> cb.like(root.get("nama"), "%" + nama + "%");
+        Specification<Jabatan> kodeSpec = Objects.isNull(kode) ? null :
+                (root, query, cb) -> cb.equal(root.get("kode"), kode);
+        Specification<Jabatan> parentSpec = Objects.isNull(parentId) ? null :
+                (root, query, cb) -> cb.equal(root.get("parent").get("id"), parentId);
+        Specification<Jabatan> organisasiSpec = Objects.isNull(organisasiId) ? null :
+                (root, query, cb) -> cb.equal(root.get("organisasi").get("id"), organisasiId);
+        Specification<Jabatan> levelSpec = Objects.isNull(levelId) ? null :
+                (root, query, cb) -> cb.equal(root.get("level").get("id"), levelId);
+        Specification<Jabatan> namaSpec = Objects.isNull(nama) ? null :
+                (root, query, cb) -> cb.like(root.get("nama"), "%" + nama + "%");
 
-        return Specification.where(parentSpec).and(organisasiSpec).and(levelSpec)
+        return Specification.where(kodeSpec).and(parentSpec).and(organisasiSpec).and(levelSpec)
                 .and(namaSpec);
     }
 }

@@ -7,12 +7,14 @@ import lombok.Data;
 @Data
 public class JabatanMiniResponse {
     private Long id;
+    private String kode;
     private LevelResponse level;
     private String nama;
 
     public static JabatanMiniResponse from(Jabatan entity) {
         JabatanMiniResponse response = new JabatanMiniResponse();
         response.setId(entity.getId());
+        response.setKode(entity.getKode());
         response.setLevel(LevelResponse.from(entity.getLevel()));
         response.setNama(entity.getNama());
         return response;
