@@ -7,7 +7,6 @@ import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.ProfilKeluarga;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -38,10 +37,9 @@ public class ProfilKeluargaPostRequest {
     private LocalDate tanggalLahir;
     @NotNull(message = "Tanggungan is required")
     private Boolean tanggungan;
-    @Min(value = 1, message = "Pendidikan is required")
     private Long pendidikanId;
     @Enumerated(EnumType.ORDINAL)
-    private EStatusPendidikan statusPendidikan=EStatusPendidikan.SEKOLAH;
+    private EStatusPendidikan statusPendidikan = EStatusPendidikan.SEKOLAH;
     @NotNull(message = "Status Kawin is required")
     @Enumerated(EnumType.ORDINAL)
     private EStatusKawin statusKawin;
@@ -74,7 +72,7 @@ public class ProfilKeluargaPostRequest {
         entity.setTempatLahir(request.getTempatLahir());
         entity.setTanggalLahir(request.getTanggalLahir());
         entity.setTanggungan(request.getTanggungan());
-        entity.setPendidikan(pendidikan);
+        if (pendidikan != null) entity.setPendidikan(pendidikan);
         entity.setStatusPendidikan(request.getStatusPendidikan());
         entity.setStatusKawin(request.getStatusKawin());
         entity.setNotes(request.getNotes());

@@ -36,24 +36,23 @@ public class ProfilKeluargaResponse {
     private EStatusKawin statusKawin;
     private String notes;
 
-    public static ProfilKeluargaResponse from(ProfilKeluarga profilKeluarga) {
-        BiodataMiniResponse biodata = BiodataMiniResponse.from(profilKeluarga.getBiodata());
-        JenjangPendidikanMiniResponse pendidikan = JenjangPendidikanMiniResponse.from(profilKeluarga.getPendidikan());
+    public static ProfilKeluargaResponse from(ProfilKeluarga entity) {
         ProfilKeluargaResponse response = new ProfilKeluargaResponse();
-        response.setId(profilKeluarga.getId());
-        response.setBiodata(biodata);
-        response.setNik(profilKeluarga.getNik());
-        response.setNama(profilKeluarga.getNama());
-        response.setJenisKelamin(profilKeluarga.getJenisKelamin());
-        response.setAgama(profilKeluarga.getAgama());
-        response.setHubunganKeluarga(profilKeluarga.getHubunganKeluarga());
-        response.setTempatLahir(profilKeluarga.getTempatLahir());
-        response.setTanggalLahir(profilKeluarga.getTanggalLahir());
-        response.setTanggungan(profilKeluarga.getTanggungan());
-        response.setPendidikan(pendidikan);
-        response.setStatusPendidikan(profilKeluarga.getStatusPendidikan());
-        response.setStatusKawin(profilKeluarga.getStatusKawin());
-        response.setNotes(profilKeluarga.getNotes());
+        response.setId(entity.getId());
+        response.setBiodata(BiodataMiniResponse.from(entity.getBiodata()));
+        response.setNik(entity.getNik());
+        response.setNama(entity.getNama());
+        response.setJenisKelamin(entity.getJenisKelamin());
+        response.setAgama(entity.getAgama());
+        response.setHubunganKeluarga(entity.getHubunganKeluarga());
+        response.setTempatLahir(entity.getTempatLahir());
+        response.setTanggalLahir(entity.getTanggalLahir());
+        response.setTanggungan(entity.getTanggungan());
+        if (entity.getPendidikan() != null)
+            response.setPendidikan(JenjangPendidikanMiniResponse.from(entity.getPendidikan()));
+        response.setStatusPendidikan(entity.getStatusPendidikan());
+        response.setStatusKawin(entity.getStatusKawin());
+        response.setNotes(entity.getNotes());
         return response;
     }
 }
