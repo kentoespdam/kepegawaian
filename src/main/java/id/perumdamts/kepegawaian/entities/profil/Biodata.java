@@ -64,7 +64,7 @@ public class Biodata implements Serializable {
     private EAgama agama;
     private String ibuKandung;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pendidikan_id", referencedColumnName = "id")
     private JenjangPendidikan pendidikanTerakhir;
     @Enumerated(EnumType.STRING)
