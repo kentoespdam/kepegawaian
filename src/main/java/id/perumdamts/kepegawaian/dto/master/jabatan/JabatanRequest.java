@@ -21,7 +21,7 @@ public class JabatanRequest extends CommonPageRequest {
     @JsonIgnore
     public Specification<Jabatan> getSpecification() {
         Specification<Jabatan> kodeSpec = Objects.isNull(kode) ? null :
-                (root, query, cb) -> cb.equal(root.get("kode"), kode);
+                (root, query, cb) -> cb.like(root.get("kode"), kode + "%");
         Specification<Jabatan> parentSpec = Objects.isNull(parentId) ? null :
                 (root, query, cb) -> cb.equal(root.get("parent").get("id"), parentId);
         Specification<Jabatan> organisasiSpec = Objects.isNull(organisasiId) ? null :
