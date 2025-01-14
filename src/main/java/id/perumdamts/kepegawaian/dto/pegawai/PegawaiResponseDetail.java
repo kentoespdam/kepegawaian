@@ -12,7 +12,7 @@ import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.rumahDinas.RumahDinasResponse;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiPendapatanNonPajak.GajiPendapatanNonPajakResponse;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiProfil.GajiProfilResponse;
-import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataMiniResponse;
+import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataResponse;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
@@ -29,7 +29,7 @@ import java.util.Objects;
 public class PegawaiResponseDetail {
     private Long id;
     private String nipam;
-    private BiodataMiniResponse biodata;
+    private BiodataResponse biodata;
     @Enumerated(EnumType.ORDINAL)
     private EStatusPegawai statusPegawai;
     private OrganisasiMiniResponse organisasi;
@@ -72,7 +72,7 @@ public class PegawaiResponseDetail {
         PegawaiResponseDetail response = new PegawaiResponseDetail();
         response.setId(pegawai.getId());
         response.setNipam(pegawai.getNipam());
-        response.setBiodata(BiodataMiniResponse.from(pegawai.getBiodata()));
+        response.setBiodata(BiodataResponse.from(pegawai.getBiodata()));
         response.setStatusPegawai(pegawai.getStatusPegawai());
         response.setOrganisasi(OrganisasiMiniResponse.from(pegawai.getOrganisasi()));
         if (Objects.nonNull(pegawai.getJabatan()))
