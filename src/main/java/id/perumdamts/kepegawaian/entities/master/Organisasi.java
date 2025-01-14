@@ -39,16 +39,10 @@ public class Organisasi extends IdsAbstract {
         super(id);
     }
 
-    public Organisasi(Long id, Integer levelOrg, String nama) {
+    public Organisasi(Long id, String kode, Organisasi organisasi, Integer levelOrg, String nama) {
         super(id);
-        this.levelOrg = levelOrg;
-        this.nama = nama;
-    }
-
-    public Organisasi(Long id, Organisasi organisasi, Integer levelOrg, String nama) {
-        super(id);
-        if (organisasi != null)
-            this.parent = organisasi;
+        this.kode = kode;
+        this.parent = organisasi;
         this.levelOrg = levelOrg;
         this.nama = nama;
     }

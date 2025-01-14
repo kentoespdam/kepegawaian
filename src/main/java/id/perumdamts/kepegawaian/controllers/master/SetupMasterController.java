@@ -16,13 +16,12 @@ public class SetupMasterController {
     private final SetupLevel setupLevel;
     private final SetupGolongan setupGolongan;
     private final SetupGrade setupGrade;
-//    private final SetupProfesi setupProfesi;
+    private final SetupProfesi setupProfesi;
     private final SetupJabatan setupJabatan;
     private final SetupJenisKeahlian setupJenisKeahlian;
     private final SetupJenisKitas setupJenisKitas;
     private final SetupJenisPelatihan setupJenisPelatihan;
     private final SetupJenjangPendidikan setupJenjangPendidikan;
-    private final SetupKodePajak setupKodePajak;
     private final SetupAlasanBerhenti setupAlasanBerhenti;
     private final SetupDasarGaji setupDasarGaji;
     private final SetupDetailDasarGaji setupDetailDasarGaji;
@@ -30,19 +29,17 @@ public class SetupMasterController {
     @GetMapping
     public ResponseEntity<?> initialData() {
         try {
+            setupLevel.insertBatch();
             setupOrganisasi.insertBatch();
-            setupLevel.insertBatch();
-            setupLevel.insertBatch();
+            setupJabatan.insertBatch();
             setupGolongan.insertBatch();
             setupDasarGaji.insertBatch();
             setupGrade.insertBatch();
-//            setupProfesi.insertBatch();
-            setupJabatan.insertBatch();
+            setupProfesi.insertBatch();
             setupJenisKeahlian.insertBatch();
             setupJenisKitas.insertBatch();
             setupJenisPelatihan.insertBatch();
             setupJenjangPendidikan.insertBatch();
-            setupKodePajak.insertBatch();
             setupAlasanBerhenti.insertBatch();
             setupDetailDasarGaji.insertBatch();
             return ResponseEntity.ok().build();

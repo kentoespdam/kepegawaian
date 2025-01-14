@@ -19,7 +19,7 @@ public class OrganisasiRequest extends CommonPageRequest {
     @JsonIgnore
     public Specification<Organisasi> getSpecification() {
         Specification<Organisasi> kodeSpec = Objects.isNull(kode) ? null :
-                (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("kode"), "%" + kode + "%");
+                (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("kode"),  kode + "%");
         Specification<Organisasi> namaSpec = Objects.isNull(nama) ? null :
                 (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("nama"), "%" + nama + "%");
         Specification<Organisasi> parentIdSpec = Objects.isNull(parentId) ? null :
