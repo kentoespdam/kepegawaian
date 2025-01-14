@@ -6,6 +6,9 @@ import id.perumdamts.kepegawaian.entities.commons.EStatusKawin;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -13,8 +16,14 @@ import java.util.Objects;
 
 @Data
 public class PegawaiPatchProfil {
+    @NotNull(message = "ID is required")
+    @Min(value = 1, message = "ID is required")
     private Long id;
+    @NotEmpty(message = "NIPAM is required")
+    @NotNull(message = "NIPAM is required")
     private String nipam;
+    @NotEmpty(message = "Nama is required")
+    @NotNull(message = "Nama is required")
     private String nama;
     private EJenisKelamin jenisKelamin;
     private EStatusKawin statusKawin;
