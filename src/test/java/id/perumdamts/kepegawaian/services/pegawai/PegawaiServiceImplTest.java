@@ -116,7 +116,6 @@ class PegawaiServiceImplTest {
         request.setOrganisasiId(39L);
         request.setJabatanId(59L);
         request.setProfesiId(44L);
-        request.setGradeId(8L);
         request.setNomorSk("01/01/2024");
         request.setTanggalSk(LocalDate.of(2024, 1, 24));
         request.setTmtBerlakuSk(LocalDate.of(2024, 2, 1));
@@ -188,8 +187,6 @@ class PegawaiServiceImplTest {
                 golongan = golonganRepository.findById(request.getGolonganId())
                         .orElseThrow(() -> new RuntimeException("Unknown Golongan"));
             }
-            Grade grade = gradeRepository.findById(request.getGradeId())
-                    .orElseThrow(() -> new RuntimeException("Unknown Grade"));
 
             Pegawai entity = PegawaiPostRequest.toEntity(
                     request,
@@ -197,8 +194,7 @@ class PegawaiServiceImplTest {
                     jabatan,
                     organisasi,
                     profesi,
-                    golongan,
-                    grade
+                    golongan
             );
             Pegawai save = repository.save(entity);
             Pegawai pegawai;

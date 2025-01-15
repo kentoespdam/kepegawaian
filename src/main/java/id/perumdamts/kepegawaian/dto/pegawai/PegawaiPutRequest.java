@@ -4,6 +4,8 @@ import id.perumdamts.kepegawaian.entities.master.*;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 
+import java.util.Objects;
+
 public class PegawaiPutRequest extends PegawaiPostRequest {
     public static Pegawai toEntity(
             Pegawai entity,
@@ -12,17 +14,18 @@ public class PegawaiPutRequest extends PegawaiPostRequest {
             Jabatan jabatan,
             Organisasi organisasi,
             Profesi profesi,
-            Golongan golongan,
-            Grade grade
+            Golongan golongan
     ) {
         entity.setNipam(request.getNipam());
         entity.setBiodata(biodata);
         entity.setStatusPegawai(request.getStatusPegawai());
         entity.setJabatan(jabatan);
         entity.setOrganisasi(organisasi);
-        entity.setProfesi(profesi);
+        if (Objects.nonNull(profesi)) {
+            entity.setProfesi(profesi);
+            entity.setGrade(profesi.getGrade());
+        }
         entity.setGolongan(golongan);
-        entity.setGrade(grade);
         entity.setStatusKerja(request.getStatusKerja());
         entity.setTmtKerja(request.getTmtBerlakuSk());
 

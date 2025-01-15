@@ -71,7 +71,6 @@ class PegawaiServiceTest {
         postRequest.setOrganisasiId(39L);
         postRequest.setJabatanId(59L);
         postRequest.setProfesiId(44L);
-        postRequest.setGradeId(8L);
         postRequest.setGolonganId(0L);
         postRequest.setNomorSk("01/01/2024");
         postRequest.setTanggalSk(LocalDate.of(2024, 1, 1));

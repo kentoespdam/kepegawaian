@@ -38,7 +38,6 @@ public class PegawaiServiceImpl implements PegawaiService {
     private final OrganisasiRepository organisasiRepository;
     private final ProfesiRepository profesiRepository;
     private final GolonganRepository golonganRepository;
-    private final GradeRepository gradeRepository;
     private final BiodataService biodataService;
     private final RiwayatSkService riwayatSkService;
     private final GenericKontrakService genericKontrakService;
@@ -87,14 +86,16 @@ public class PegawaiServiceImpl implements PegawaiService {
                 return SavedStatus.build(ESaveStatus.SUCCESS, biodata);
             }
 
-            Jabatan jabatan = jabatanRepository.findById(request.getJabatanId()).orElseThrow();
-            Organisasi organisasi = organisasiRepository.findById(request.getOrganisasiId()).orElseThrow();
-            Profesi profesi = profesiRepository.findById(request.getProfesiId()).orElseThrow();
+            Jabatan jabatan = jabatanRepository.findById(request.getJabatanId())
+                    .orElseThrow(() -> new RuntimeException("Unknown Jabatan"));
+            Organisasi organisasi = organisasiRepository.findById(request.getOrganisasiId())
+                    .orElseThrow(() -> new RuntimeException("Unknown Organisasi"));
+            Profesi profesi = profesiRepository.findById(request.getProfesiId())
+                    .orElseThrow(() -> new RuntimeException("Unknown Profesi"));
             Golongan golongan = request.getStatusPegawai().equals(EStatusPegawai.KONTRAK) ? null
-                    : golonganRepository.findById(request.getGolonganId()).orElseThrow();
-            Grade grade = gradeRepository.findById(request.getGradeId()).orElseThrow();
+                    : golonganRepository.findById(request.getGolonganId()).orElseThrow(() -> new RuntimeException("Unknown Golongan"));
 
-            Pegawai entity = PegawaiPostRequest.toEntity(request, biodata, jabatan, organisasi, profesi, golongan, grade);
+            Pegawai entity = PegawaiPostRequest.toEntity(request, biodata, jabatan, organisasi, profesi, golongan);
             Pegawai pegawai = repository.save(entity);
 
             switch (request.getStatusPegawai()) {
@@ -145,9 +146,8 @@ public class PegawaiServiceImpl implements PegawaiService {
             Organisasi organisasi = organisasiRepository.findById(request.getOrganisasiId()).orElseThrow(() -> new RuntimeException("Unknown Organisasi"));
             Profesi profesi = profesiRepository.findById(request.getProfesiId()).orElseThrow(() -> new RuntimeException("Unknown Profesi"));
             Golongan golongan = golonganRepository.findById(request.getGolonganId()).orElseThrow(() -> new RuntimeException("Unknown Golongan"));
-            Grade grade = gradeRepository.findById(request.getGradeId()).orElseThrow(() -> new RuntimeException("Unknown Grade"));
 
-            Pegawai entity = PegawaiPutRequest.toEntity(pegawai.get(), request, biodata, jabatan, organisasi, profesi, golongan, grade);
+            Pegawai entity = PegawaiPutRequest.toEntity(pegawai.get(), request, biodata, jabatan, organisasi, profesi, golongan);
             Pegawai save = repository.save(entity);
             return SavedStatus.build(ESaveStatus.SUCCESS, save);
         } catch (Exception e) {

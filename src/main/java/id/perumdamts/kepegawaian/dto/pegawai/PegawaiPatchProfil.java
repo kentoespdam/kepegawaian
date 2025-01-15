@@ -51,8 +51,10 @@ public class PegawaiPatchProfil {
             entity.setGolongan(golongan);
         entity.setOrganisasi(organisasi);
         entity.setJabatan(jabatan);
-        if (Objects.nonNull(profesi))
+        if (Objects.nonNull(profesi)) {
             entity.setProfesi(profesi);
+            entity.setGrade(profesi.getGrade());
+        }
         entity.setAbsensiId(request.getAbsensiId());
         return entity;
     }

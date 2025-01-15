@@ -40,18 +40,9 @@ public class PegawaiPostRequest extends BiodataPostRequest {
     @NotNull(message = "Golongan is required", groups = PegawaiKontrak.class)
     @Min(value = 1, message = "Golongan is required", groups = PegawaiKontrak.class)
     private Long golonganId;
-    @NotNull(message = "Grade is required")
-    @Min(value = 1, message = "Grade is required")
-    private Long gradeId;
     private String nomorSk;
-//    @JsonSerialize(using = LocalDateSerializer.class)
-//    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tanggalSk;
-//    @JsonSerialize(using = LocalDateSerializer.class)
-//    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tmtBerlakuSk;
-//    @JsonSerialize(using = LocalDateSerializer.class)
-//    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tmtKontrakSelesai;
     private Double gajiPokok;
     private String notes;
@@ -69,8 +60,7 @@ public class PegawaiPostRequest extends BiodataPostRequest {
             Jabatan jabatan,
             Organisasi organisasi,
             Profesi profesi,
-            Golongan golongan,
-            Grade grade
+            Golongan golongan
     ) {
         LocalDate pensiun = biodata.getTanggalLahir().plusYears(56);
         pensiun = LocalDate.of(pensiun.getYear(), pensiun.getMonth(), 1);
@@ -81,10 +71,12 @@ public class PegawaiPostRequest extends BiodataPostRequest {
         entity.setStatusPegawai(request.getStatusPegawai());
         entity.setJabatan(jabatan);
         entity.setOrganisasi(organisasi);
-        entity.setProfesi(profesi);
+        if (Objects.nonNull(profesi)) {
+            entity.setProfesi(profesi);
+            entity.setGrade(profesi.getGrade());
+        }
         if (!request.getStatusPegawai().equals(EStatusPegawai.KONTRAK))
             entity.setGolongan(golongan);
-        entity.setGrade(grade);
         entity.setStatusKerja(EStatusKerja.KARYAWAN_AKTIF);
         entity.setTmtKerja(request.getTmtBerlakuSk());
         entity.setTmtPensiun(pensiun);
