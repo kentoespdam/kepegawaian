@@ -28,4 +28,10 @@ import org.hibernate.envers.RelationTargetAuditMode;
 public class RumahDinas extends IdsAbstract {
     private String nama;
     private Double nilai;
+
+    public RumahDinas(Long id, String nama, double nilai) {
+        super(id);
+        this.nama = nama;
+        this.nilai = nilai;
+    }
 }
