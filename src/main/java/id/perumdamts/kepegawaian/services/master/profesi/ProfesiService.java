@@ -12,7 +12,7 @@ import java.util.List;
 public interface ProfesiService {
     List<ProfesiResponse> findAll();
 
-    List<ProfesiResponse> findByLevel(Long id);
+    List<ProfesiResponse> findByJabatan(Long id);
 
     Page<ProfesiResponse> findPage(ProfesiRequest request);
 

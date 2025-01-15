@@ -179,8 +179,10 @@ public class PegawaiServiceImpl implements PegawaiService {
             Optional<Pegawai> pegawai = repository.findById(id);
             if (pegawai.isEmpty()) return SavedStatus.build(ESaveStatus.FAILED, "Unknown Pegawai");
             Golongan golongan = golonganRepository.findById(request.getId()).orElse(null);
-
-            Pegawai entity = PegawaiPatchProfil.toEntity(pegawai.get(), request, golongan);
+            Organisasi organisasi = organisasiRepository.findById(request.getOrganisasiId()).orElseThrow(() -> new RuntimeException("Unknown Organisasi"));
+            Jabatan jabatan = jabatanRepository.findById(request.getJabatanId()).orElseThrow(() -> new RuntimeException("Unknown Jabatan"));
+            Profesi profesi = profesiRepository.findById(request.getProfesiId()).orElse(null);
+            Pegawai entity = PegawaiPatchProfil.toEntity(pegawai.get(), request, golongan, organisasi, jabatan, profesi);
             Pegawai save = repository.save(entity);
             return SavedStatus.build(ESaveStatus.SUCCESS, save);
         } catch (Exception e) {

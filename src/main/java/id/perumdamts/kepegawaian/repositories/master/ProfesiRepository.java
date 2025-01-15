@@ -10,5 +10,5 @@ import java.util.List;
 public interface ProfesiRepository extends JpaRepository<Profesi, Long>,
         JpaSpecificationExecutor<Profesi>,
         RevisionRepository<Profesi, Long, Long> {
-    List<Profesi> findByLevel_Id(Long id);
+    List<Profesi> findByJabatan_Id(Long id);
 }

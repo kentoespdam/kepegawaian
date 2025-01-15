@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.dto.pegawai;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.dto.commons.CommonPageRequest;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
@@ -9,6 +10,9 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.Objects;
@@ -27,7 +31,7 @@ public class PegawaiRequest extends CommonPageRequest {
     private Long golonganId;
     private Long gradeId;
     @Enumerated(EnumType.ORDINAL)
-    private EStatusKerja statusKerja=EStatusKerja.KARYAWAN_AKTIF;
+    private EStatusKerja statusKerja = EStatusKerja.KARYAWAN_AKTIF;
 
     public Specification<Pegawai> getSpecification() {
         Specification<Pegawai> pegawaiSpec = Objects.isNull(nipam) ? null :
@@ -54,5 +58,24 @@ public class PegawaiRequest extends CommonPageRequest {
         return Specification.where(pegawaiSpec).or(namaSpec).and(nikSpec).and(statusPegawaiSpec)
                 .and(jabatanSpec).and(organisasiSpec).and(profesiSpec).and(golonganSpec)
                 .and(gradeSpec).and(statusPegawaiIdsSpec);
+    }
+
+    @JsonIgnore
+    @Override
+    public Pageable getPageable() {
+        if (sortBy == null || sortBy.isEmpty()) {
+            return PageRequest.of(page, size);
+        }
+        switch (sortBy) {
+            case "nik" -> sortBy = "biodata.nik";
+            case "nama" -> sortBy = "biodata.nama";
+            case "jabatanId" -> sortBy = "jabatan.nama";
+            case "organisasiId" -> sortBy = "organisasi.nama";
+            case "profesiId" -> sortBy = "profesi.nama";
+            case "golonganId" -> sortBy = "golongan.golongan";
+            case "gradeId" -> sortBy = "grade.grade";
+        }
+        return PageRequest.of(page, size,
+                Sort.by(Sort.Direction.fromString(sortDirection), sortBy));
     }
 }

@@ -4,6 +4,9 @@ import id.perumdamts.kepegawaian.entities.commons.EAgama;
 import id.perumdamts.kepegawaian.entities.commons.EJenisKelamin;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKawin;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
+import id.perumdamts.kepegawaian.entities.master.Jabatan;
+import id.perumdamts.kepegawaian.entities.master.Organisasi;
+import id.perumdamts.kepegawaian.entities.master.Profesi;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import jakarta.validation.constraints.Min;
@@ -34,9 +37,27 @@ public class PegawaiPatchProfil {
     private String ibuKandung;
     private String telp;
     private Long golonganId;
+    private Long organisasiId;
+    private Long jabatanId;
+    private Long profesiId;
     private Long absensiId;
 
-    public static Pegawai toEntity(Pegawai entity, PegawaiPatchProfil request, Golongan golongan) {
+    public static Pegawai toEntity(Pegawai entity, PegawaiPatchProfil request, Golongan golongan, Organisasi organisasi, Jabatan jabatan, Profesi profesi) {
+        Biodata biodata = getBiodata(entity, request);
+
+        entity.setNipam(request.getNipam());
+        entity.setBiodata(biodata);
+        if (Objects.nonNull(golongan))
+            entity.setGolongan(golongan);
+        entity.setOrganisasi(organisasi);
+        entity.setJabatan(jabatan);
+        if (Objects.nonNull(profesi))
+            entity.setProfesi(profesi);
+        entity.setAbsensiId(request.getAbsensiId());
+        return entity;
+    }
+
+    private static Biodata getBiodata(Pegawai entity, PegawaiPatchProfil request) {
         Biodata biodata = entity.getBiodata();
         biodata.setNama(request.getNama());
         biodata.setJenisKelamin(request.getJenisKelamin());
@@ -47,12 +68,6 @@ public class PegawaiPatchProfil {
         biodata.setAlamat(request.getAlamat());
         biodata.setIbuKandung(request.getIbuKandung());
         biodata.setTelp(request.getTelp());
-
-        entity.setNipam(request.getNipam());
-        entity.setBiodata(biodata);
-        if (Objects.nonNull(golongan))
-            entity.setGolongan(golongan);
-        entity.setAbsensiId(request.getAbsensiId());
-        return entity;
+        return biodata;
     }
 }

@@ -45,6 +45,8 @@ public class PegawaiResponseRingkasan {
     private String mkg;
     private String unitKerja;
     private String jabatan;
+    private String profesi;
+    private String grade;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tmtKerja;
@@ -97,6 +99,10 @@ public class PegawaiResponseRingkasan {
             response.setUnitKerja(entity.getOrganisasi().getNama());
         if (Objects.nonNull(entity.getJabatan()))
             response.setJabatan(entity.getJabatan().getNama());
+        if (Objects.nonNull(entity.getProfesi()))
+            response.setProfesi(entity.getProfesi().getNama());
+        if (Objects.nonNull(entity.getGrade()))
+            response.setGrade("Grade " + entity.getGrade().getGrade());
         response.setTmtKerja(entity.getTmtKerja());
         response.setTmtPegawai(entity.getTmtPegawai());
         response.setTmtPensiun(entity.getTmtPensiun());
