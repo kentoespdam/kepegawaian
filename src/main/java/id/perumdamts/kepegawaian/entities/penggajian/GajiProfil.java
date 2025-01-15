@@ -26,4 +26,13 @@ import org.hibernate.envers.RelationTargetAuditMode;
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class GajiProfil extends IdsAbstract {
     private String nama;
+
+    public GajiProfil(Long id, String nama) {
+        super(id);
+        this.nama = nama;
+    }
+
+    public GajiProfil(Long id) {
+        super(id);
+    }
 }
