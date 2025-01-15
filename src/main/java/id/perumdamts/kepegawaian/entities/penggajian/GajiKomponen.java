@@ -36,4 +36,16 @@ public class GajiKomponen extends IdsAbstract {
     // if isReference true, formula will be ignored because data come from another table
     private Boolean isReference = false;
     private String formula;
+
+    public GajiKomponen(Long id, int urut, GajiProfil gajiProfil, String kode, String nama, String jenisGaji, double nilai, Boolean isReference, String formula) {
+        super(id);
+        this.urut = urut;
+        this.profilGaji = gajiProfil;
+        this.kode = kode;
+        this.nama = nama;
+        this.jenisGaji = EJenisGaji.valueOf(jenisGaji);
+        this.nilai = nilai;
+        this.isReference = isReference;
+        this.formula = formula;
+    }
 }
