@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.entities.commons;
 
+@SuppressWarnings("ALL")
 public enum EAgama {
     TIDAK_TAHU("Tidak Tahu"),
     ISLAM("Islam"),
