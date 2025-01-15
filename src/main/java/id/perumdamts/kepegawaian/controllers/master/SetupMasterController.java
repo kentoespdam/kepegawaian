@@ -25,6 +25,10 @@ public class SetupMasterController {
     private final SetupAlasanBerhenti setupAlasanBerhenti;
     private final SetupDasarGaji setupDasarGaji;
     private final SetupDetailDasarGaji setupDetailDasarGaji;
+    private final SetupPendapatanNonPajak setupPendapatanNonPajak;
+    private final SetupGajiProfil setupGajiProfil;
+    private final SetupGajiKomponen setupGajiKomponen;
+    private final SetupRumahDinas setupRumahDinas;
 
     @GetMapping
     public ResponseEntity<?> initialData() {
@@ -42,6 +46,10 @@ public class SetupMasterController {
             setupJenjangPendidikan.insertBatch();
             setupAlasanBerhenti.insertBatch();
             setupDetailDasarGaji.insertBatch();
+            setupPendapatanNonPajak.insertBatch();
+            setupGajiProfil.insertBatch();
+            setupGajiKomponen.insertBatch();
+            setupRumahDinas.insertBatch();
             return ResponseEntity.ok().build();
         } catch (JsonProcessingException e) {
             return ResponseEntity.status(500).body(e.getMessage());
