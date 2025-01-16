@@ -5,14 +5,11 @@ import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkResponse;
 import id.perumdamts.kepegawaian.dto.pegawai.PegawaiPostRequest;
-import id.perumdamts.kepegawaian.dto.pegawai.PegawaiResponse;
 import id.perumdamts.kepegawaian.dto.pegawai.PegawaiResponseDetail;
 import id.perumdamts.kepegawaian.entities.commons.*;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatKontrak;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
-import id.perumdamts.kepegawaian.entities.master.*;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
-import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.master.*;
 import id.perumdamts.kepegawaian.services.kepegawaian.riwayatKontrak.GenericKontrakService;
@@ -30,7 +27,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 @SpringBootTest
@@ -155,62 +153,6 @@ class PegawaiServiceImplTest {
         PegawaiResponseDetail byId = service.findById(id);
         assertNotNull(byId);
         log.info("pegawai : {}", byId);
-    }
-
-    //    @Test
-    @Transactional
-    public void testSave() {
-        try {
-            if (request.getStatusPegawai().equals(EStatusPegawai.PEGAWAI)) request.setIsPegawai(true);
-            Biodata biodata = biodataService.saveFromPegawai(request);
-            if (request.getStatusPegawai().equals(EStatusPegawai.NON_PEGAWAI)) {
-                assertEquals(EStatusPegawai.NON_PEGAWAI, request.getStatusPegawai());
-                log.info("Success Non Pegawai : {}", biodata);
-                return;
-            }
-            assertNotEquals(EStatusPegawai.NON_PEGAWAI, request.getStatusPegawai());
-            boolean exists = repository.exists(request.getSpecificationPegawai());
-            assertFalse(exists);
-//            if (exists) {
-//                log.error("Error : {} Pegawai sudah ada", ESaveStatus.DUPLICATE);
-//                return;
-//            }
-
-            Jabatan jabatan = jabatanRepository.findById(request.getJabatanId())
-                    .orElseThrow(() -> new RuntimeException("Unknown Jabatan"));
-            Organisasi organisasi = organisasiRepository.findById(request.getOrganisasiId())
-                    .orElseThrow(() -> new RuntimeException("Unknown Organisasi"));
-            Profesi profesi = profesiRepository.findById(request.getProfesiId())
-                    .orElseThrow(() -> new RuntimeException("Unknown Profesi"));
-            Golongan golongan = null;
-            if (!request.getStatusPegawai().equals(EStatusPegawai.KONTRAK)) {
-                golongan = golonganRepository.findById(request.getGolonganId())
-                        .orElseThrow(() -> new RuntimeException("Unknown Golongan"));
-            }
-
-            Pegawai entity = PegawaiPostRequest.toEntity(
-                    request,
-                    biodata,
-                    jabatan,
-                    organisasi,
-                    profesi,
-                    golongan
-            );
-            Pegawai save = repository.save(entity);
-            Pegawai pegawai;
-            if (!request.getStatusPegawai().equals(EStatusPegawai.KONTRAK))
-                pegawai = saveCapeg(request, save);
-            else {
-                pegawai = saveKontrak(request, save);
-//                pegawai = save;
-            }
-            assertNotNull(pegawai);
-            log.info("Success save pegawai : {}", PegawaiResponse.from(pegawai));
-
-        } catch (Exception e) {
-            log.error("Error Save Pegawai : {}", e.getMessage());
-            assertNull(e);
-        }
     }
 
     private Pegawai saveCapeg(PegawaiPostRequest request, Pegawai pegawai) {
