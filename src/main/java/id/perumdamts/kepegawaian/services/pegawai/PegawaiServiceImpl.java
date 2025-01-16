@@ -94,8 +94,9 @@ public class PegawaiServiceImpl implements PegawaiService {
                     .orElseThrow(() -> new RuntimeException("Unknown Profesi"));
             Golongan golongan = request.getStatusPegawai().equals(EStatusPegawai.KONTRAK) ? null
                     : golonganRepository.findById(request.getGolonganId()).orElseThrow(() -> new RuntimeException("Unknown Golongan"));
+            GajiPendapatanNonPajak kodePajak = gajiPendapatanNonPajakRepository.findById(request.getKodePajakId()).orElseThrow(() -> new RuntimeException("Unknown Kode Pajak"));
 
-            Pegawai entity = PegawaiPostRequest.toEntity(request, biodata, jabatan, organisasi, profesi, golongan);
+            Pegawai entity = PegawaiPostRequest.toEntity(request, biodata, jabatan, organisasi, profesi, golongan, kodePajak);
             Pegawai pegawai = repository.save(entity);
 
             switch (request.getStatusPegawai()) {
@@ -146,8 +147,9 @@ public class PegawaiServiceImpl implements PegawaiService {
             Organisasi organisasi = organisasiRepository.findById(request.getOrganisasiId()).orElseThrow(() -> new RuntimeException("Unknown Organisasi"));
             Profesi profesi = profesiRepository.findById(request.getProfesiId()).orElseThrow(() -> new RuntimeException("Unknown Profesi"));
             Golongan golongan = golonganRepository.findById(request.getGolonganId()).orElseThrow(() -> new RuntimeException("Unknown Golongan"));
+            GajiPendapatanNonPajak kodePajak = gajiPendapatanNonPajakRepository.findById(request.getKodePajakId()).orElseThrow(() -> new RuntimeException("Unknown Kode Pajak"));
 
-            Pegawai entity = PegawaiPutRequest.toEntity(pegawai.get(), request, biodata, jabatan, organisasi, profesi, golongan);
+            Pegawai entity = PegawaiPutRequest.toEntity(pegawai.get(), request, biodata, jabatan, organisasi, profesi, golongan, kodePajak);
             Pegawai save = repository.save(entity);
             return SavedStatus.build(ESaveStatus.SUCCESS, save);
         } catch (Exception e) {

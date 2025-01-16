@@ -6,6 +6,7 @@ import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.master.*;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
+import id.perumdamts.kepegawaian.entities.penggajian.GajiPendapatanNonPajak;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -40,6 +41,9 @@ public class PegawaiPostRequest extends BiodataPostRequest {
     @NotNull(message = "Golongan is required", groups = PegawaiKontrak.class)
     @Min(value = 1, message = "Golongan is required", groups = PegawaiKontrak.class)
     private Long golonganId;
+    @NotNull(message = "Kode Pajak is required")
+    @Min(value = 1, message = "Kode Pajak is required")
+    private Long kodePajakId;
     private String nomorSk;
     private LocalDate tanggalSk;
     private LocalDate tmtBerlakuSk;
@@ -60,7 +64,8 @@ public class PegawaiPostRequest extends BiodataPostRequest {
             Jabatan jabatan,
             Organisasi organisasi,
             Profesi profesi,
-            Golongan golongan
+            Golongan golongan,
+            GajiPendapatanNonPajak pendapatanNonPajak
     ) {
         LocalDate pensiun = biodata.getTanggalLahir().plusYears(56);
         pensiun = LocalDate.of(pensiun.getYear(), pensiun.getMonth(), 1);
@@ -77,6 +82,7 @@ public class PegawaiPostRequest extends BiodataPostRequest {
         }
         if (!request.getStatusPegawai().equals(EStatusPegawai.KONTRAK))
             entity.setGolongan(golongan);
+        entity.setKodePajak(pendapatanNonPajak);
         entity.setStatusKerja(EStatusKerja.KARYAWAN_AKTIF);
         entity.setTmtKerja(request.getTmtBerlakuSk());
         entity.setTmtPensiun(pensiun);
