@@ -20,6 +20,7 @@ import id.perumdamts.kepegawaian.services.kepegawaian.riwayatKontrak.GenericKont
 import id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk.RiwayatSkService;
 import id.perumdamts.kepegawaian.services.profil.biodata.BiodataService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,6 +73,11 @@ public class PegawaiServiceImpl implements PegawaiService {
     }
 
     @Override
+    public PegawaiResponse findByNipam(String nipam) {
+        return repository.findOneByNipam(nipam).map(PegawaiResponse::from).orElse(null);
+    }
+
+    @Override
     public PegawaiResponseRingkasan findRingkasan(Long id) {
         return repository.findById(id)
                 .map(PegawaiResponseRingkasan::from).orElse(null);
@@ -86,13 +92,17 @@ public class PegawaiServiceImpl implements PegawaiService {
                 return SavedStatus.build(ESaveStatus.SUCCESS, biodata);
             }
 
+            EStatusPegawai[] excludeGolonganStatus = {EStatusPegawai.KONTRAK, EStatusPegawai.CALON_HONORER, EStatusPegawai.HONORER};
+            Long[] excludeGolonganJabatan = {1L, 2L, 3L, 4L};
+
             Jabatan jabatan = jabatanRepository.findById(request.getJabatanId())
                     .orElseThrow(() -> new RuntimeException("Unknown Jabatan"));
             Organisasi organisasi = organisasiRepository.findById(request.getOrganisasiId())
                     .orElseThrow(() -> new RuntimeException("Unknown Organisasi"));
             Profesi profesi = profesiRepository.findById(request.getProfesiId())
                     .orElseThrow(() -> new RuntimeException("Unknown Profesi"));
-            Golongan golongan = request.getStatusPegawai().equals(EStatusPegawai.KONTRAK) ? null
+            Golongan golongan = ArrayUtils.contains(excludeGolonganStatus, request.getStatusPegawai()) ||
+                    ArrayUtils.contains(excludeGolonganJabatan, request.getJabatanId()) ? null
                     : golonganRepository.findById(request.getGolonganId()).orElseThrow(() -> new RuntimeException("Unknown Golongan"));
             GajiPendapatanNonPajak kodePajak = gajiPendapatanNonPajakRepository.findById(request.getKodePajakId()).orElseThrow(() -> new RuntimeException("Unknown Kode Pajak"));
 

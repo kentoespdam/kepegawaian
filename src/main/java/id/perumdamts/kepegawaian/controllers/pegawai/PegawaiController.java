@@ -35,6 +35,11 @@ public class PegawaiController {
         return CustomResult.any(service.findById(id));
     }
 
+    @GetMapping("/{nipam}/nipam")
+    public ResponseEntity<?> findByNipam(@PathVariable String nipam) {
+        return CustomResult.any(service.findByNipam(nipam));
+    }
+
     @GetMapping("/{id}/ringkasan")
     public ResponseEntity<?> findRingkasan(@PathVariable Long id) {
         return CustomResult.any(service.findRingkasan(id));

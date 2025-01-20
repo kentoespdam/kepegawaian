@@ -13,6 +13,8 @@ public interface PegawaiService {
 
     PegawaiResponseDetail findById(Long id);
 
+    PegawaiResponse findByNipam(String nipam);
+
     PegawaiResponseRingkasan findRingkasan(Long id);
 
     SavedStatus<?> save(PegawaiPostRequest request);
@@ -26,4 +28,5 @@ public interface PegawaiService {
     SavedStatus<?> patchProfil(Long id, PegawaiPatchProfil request);
 
     boolean deleteById(Long id);
+
 }

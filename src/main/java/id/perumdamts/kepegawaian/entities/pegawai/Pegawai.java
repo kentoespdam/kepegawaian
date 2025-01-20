@@ -49,9 +49,9 @@ public class Pegawai extends IdsAbstract {
     private String nipam;
     @JsonBackReference
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "biodata_id", unique = true, referencedColumnName = "nik", columnDefinition = "VARCHAR(16)")
+    @JoinColumn(name = "nik", unique = true, referencedColumnName = "nik", columnDefinition = "VARCHAR(16)")
     private Biodata biodata;
-    @Column(name = "status_pegawai", nullable = false, columnDefinition = "varchar(20)")
+    @Column(name = "status_pegawai", nullable = false)
     @Enumerated(EnumType.ORDINAL)
     private EStatusPegawai statusPegawai;
     @JsonBackReference
