@@ -45,7 +45,7 @@ public class GajiBatchRootPostRequest {
     }
 
     public static GajiBatchRoot toEntityPhase2(GajiBatchRoot entity) {
-        entity.setTglProses(LocalDateTime.now());
+        entity.setTanggalProses(LocalDateTime.now());
         entity.setStatus(EProsesGaji.PROSES);
         return entity;
     }

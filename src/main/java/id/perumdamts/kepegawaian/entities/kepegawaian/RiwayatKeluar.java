@@ -20,8 +20,8 @@ import java.time.LocalDate;
 
 @Entity
 @Table(indexes = {
-        @Index(columnList = "tglPermohonan"),
-        @Index(columnList = "tglPersetujuan"),
+        @Index(columnList = "tanggalPermohonan"),
+        @Index(columnList = "tanggalPersetujuan"),
         @Index(columnList = "is_deleted")
 })
 @Data
@@ -47,10 +47,10 @@ public class RiwayatKeluar extends IdsAbstract {
     private String namaJabatan;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate tglPermohonan;
+    private LocalDate tanggalPermohonan;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate tglPersetujuan;
+    private LocalDate tanggalPersetujuan;
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name="disetujui_oleh", referencedColumnName = "id")

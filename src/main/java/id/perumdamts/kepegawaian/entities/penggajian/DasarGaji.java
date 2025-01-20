@@ -34,10 +34,10 @@ public class DasarGaji extends IdsAbstract {
     private String deskripsi;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate tglAwal;
+    private LocalDate tanggalAwal;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate tglAkhir;
+    private LocalDate tanggalAkhir;
     private boolean aktif;
 
     public DasarGaji(Long id) {

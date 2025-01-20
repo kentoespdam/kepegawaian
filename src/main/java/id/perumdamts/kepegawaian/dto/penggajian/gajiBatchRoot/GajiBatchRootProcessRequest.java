@@ -36,7 +36,7 @@ public class GajiBatchRootProcessRequest {
 
     public static GajiBatchRoot verifyPhase1(GajiBatchRoot entity, GajiBatchRootProcessRequest request) {
         entity.setStatus(EProsesGaji.WAIT_VERIFICATION_PHASE_2);
-        entity.setTglVerifikasiTahap1(LocalDateTime.now());
+        entity.setTanggalVerifikasiTahap1(LocalDateTime.now());
         entity.setDiVerifikasiOlehTahap1(request.getNama());
         entity.setJabatanVerifikasiTahap1(request.getJabatan());
         return entity;
@@ -44,14 +44,14 @@ public class GajiBatchRootProcessRequest {
 
     public static GajiBatchRoot verifyPhase2(GajiBatchRoot entity, GajiBatchRootProcessRequest request) {
         entity.setStatus(EProsesGaji.FINISHED);
-        entity.setTglVerifikasiTahap2(LocalDateTime.now());
+        entity.setTanggalVerifikasiTahap2(LocalDateTime.now());
         entity.setDiVerifikasiOlehTahap2(request.getNama());
         entity.setJabatanVerifikasiTahap2(request.getJabatan());
         return entity;
     }
 
     public static GajiBatchRoot accept(GajiBatchRoot entity, GajiBatchRootProcessRequest request) {
-        entity.setTglPersetujuan(LocalDateTime.now());
+        entity.setTanggalPersetujuan(LocalDateTime.now());
         entity.setDiSetujuiOleh(request.getNama());
         entity.setJabatanPenyetuju(request.getJabatan());
         return entity;

@@ -25,8 +25,8 @@ public class DasarGajiResponse {
         response.setId(entity.getId());
         response.setDeskripsi(entity.getDeskripsi());
         response.setAktif(entity.isAktif());
-        response.setTanggalAkhir(entity.getTglAkhir());
-        response.setTanggalMulai(entity.getTglAwal());
+        response.setTanggalAkhir(entity.getTanggalAkhir());
+        response.setTanggalMulai(entity.getTanggalAwal());
         return response;
     }
 }

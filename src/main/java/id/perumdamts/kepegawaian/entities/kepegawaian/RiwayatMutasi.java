@@ -50,7 +50,7 @@ public class RiwayatMutasi extends IdsAbstract {
     private LocalDate tmtBerlaku;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate tglBerakhir;
+    private LocalDate tanggalBerakhir;
     @Enumerated(EnumType.ORDINAL)
     private EJenisMutasi jenisMutasi;
 

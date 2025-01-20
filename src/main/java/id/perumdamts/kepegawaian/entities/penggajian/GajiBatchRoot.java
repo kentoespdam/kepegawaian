@@ -26,11 +26,11 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(indexes = {
-        @Index(columnList = "is_deleted"),
-        @Index(columnList = "tgl_proses"),
-        @Index(columnList = "tglVerifikasiTahap1"),
-        @Index(columnList = "tglVerifikasiTahap2"),
-        @Index(columnList = "tglPersetujuan"),
+        @Index(columnList = "isDeleted"),
+        @Index(columnList = "tanggalProses"),
+        @Index(columnList = "tanggalVerifikasiTahap1"),
+        @Index(columnList = "tanggalVerifikasiTahap2"),
+        @Index(columnList = "tanggalPersetujuan"),
         @Index(columnList = "status"),
         @Index(columnList = "periode")
 })
@@ -47,22 +47,22 @@ public class GajiBatchRoot implements Serializable {
     private Integer totalPegawai;
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime tglProses;
+    private LocalDateTime tanggalProses;
     private String diProsesOleh;
     private String jabatanPemroses;
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime tglVerifikasiTahap1;
+    private LocalDateTime tanggalVerifikasiTahap1;
     private String diVerifikasiOlehTahap1;
     private String jabatanVerifikasiTahap1;
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime tglVerifikasiTahap2;
+    private LocalDateTime tanggalVerifikasiTahap2;
     private String diVerifikasiOlehTahap2;
     private String jabatanVerifikasiTahap2;
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime tglPersetujuan;
+    private LocalDateTime tanggalPersetujuan;
     private String diSetujuiOleh;
     private String jabatanPenyetuju;
     @OneToMany(mappedBy = "gajiBatchRoot")

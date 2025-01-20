@@ -28,7 +28,7 @@ import java.util.Objects;
 public class RiwayatMutasiPostRequest extends RiwayatSkPostRequest {
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate tglBerakhir;
+    private LocalDate tanggalBerakhir;
     @NotNull(message = "Jenis Mutasi is required")
     @Enumerated(EnumType.ORDINAL)
     private EJenisMutasi jenisMutasi;
@@ -64,7 +64,7 @@ public class RiwayatMutasiPostRequest extends RiwayatSkPostRequest {
         entity.setRiwayatSk(riwayatSk);
         entity.setPegawai(riwayatSk.getPegawai());
         entity.setTmtBerlaku(request.getTmtBerlaku());
-        entity.setTglBerakhir(request.getTglBerakhir());
+        entity.setTanggalBerakhir(request.getTanggalBerakhir());
         entity.setJenisMutasi(request.getJenisMutasi());
         entity.setNotes(request.getNotes());
         return entity;

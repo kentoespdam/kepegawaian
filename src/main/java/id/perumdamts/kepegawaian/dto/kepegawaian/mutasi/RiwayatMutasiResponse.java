@@ -28,7 +28,7 @@ public class RiwayatMutasiResponse {
     private LocalDate tmtBerlaku;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate tglBerakhir;
+    private LocalDate tanggalBerakhir;
     private GolonganResponse golongan;
     private OrganisasiMiniResponse organisasi;
     private String namaOrganisasi;
@@ -52,7 +52,7 @@ public class RiwayatMutasiResponse {
         if (Objects.nonNull(entity.getRiwayatSk()))
             response.setSkMutasi(RiwayatSkResponse.from(entity.getRiwayatSk()));
         response.setTmtBerlaku(entity.getTmtBerlaku());
-        response.setTglBerakhir(entity.getTglBerakhir());
+        response.setTanggalBerakhir(entity.getTanggalBerakhir());
         if (Objects.nonNull(entity.getGolongan())) {
             response.setGolongan(GolonganResponse.from(entity.getGolongan()));
             response.setGolonganLama(GolonganResponse.from(entity.getGolonganLama()));
