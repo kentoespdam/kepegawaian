@@ -15,6 +15,7 @@ import id.perumdamts.kepegawaian.repositories.profil.KartuIdentitasRepository;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -60,7 +61,8 @@ public class KartuIdentitasServiceImpl implements KartuIdentitasService {
 
     @Override
     public KartuIdentitas execSave(KartuIdentitas kartuIdentitas) {
-        return repository.save(kartuIdentitas);
+        return repository.findOne(Example.of(kartuIdentitas))
+                .orElseGet(() -> repository.save(kartuIdentitas));
     }
 
     @Transactional

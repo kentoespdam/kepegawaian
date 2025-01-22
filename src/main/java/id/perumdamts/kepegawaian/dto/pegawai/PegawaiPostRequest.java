@@ -1,10 +1,12 @@
 package id.perumdamts.kepegawaian.dto.pegawai;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPostRequest;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
-import id.perumdamts.kepegawaian.entities.master.*;
+import id.perumdamts.kepegawaian.entities.master.Golongan;
+import id.perumdamts.kepegawaian.entities.master.Jabatan;
+import id.perumdamts.kepegawaian.entities.master.Organisasi;
+import id.perumdamts.kepegawaian.entities.master.Profesi;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiPendapatanNonPajak;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
@@ -15,7 +17,6 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -35,11 +36,9 @@ public class PegawaiPostRequest extends BiodataPostRequest {
     @NotNull(message = "Organisasi is required")
     @Min(value = 1, message = "Organisasi is required")
     private Long organisasiId;
-    @NotNull(message = "Profesi is required")
-    @Min(value = 1, message = "Profesi is required")
     private Long profesiId;
-    @NotNull(message = "Golongan is required", groups = PegawaiKontrak.class)
-    @Min(value = 1, message = "Golongan is required", groups = PegawaiKontrak.class)
+    @NotNull(message = "Golongan is required", groups = PegawaiTetap.class)
+    @Min(value = 1, message = "Golongan is required", groups = PegawaiTetap.class)
     private Long golonganId;
     @NotNull(message = "Kode Pajak is required")
     @Min(value = 1, message = "Kode Pajak is required")
@@ -50,13 +49,6 @@ public class PegawaiPostRequest extends BiodataPostRequest {
     private LocalDate tmtKontrakSelesai;
     private Double gajiPokok;
     private String notes;
-
-    @JsonIgnore
-    public Specification<Pegawai> getSpecificationPegawai() {
-        Specification<Pegawai> pegawaiSpec = Objects.isNull(nipam) ? null :
-                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("nipam"), nipam);
-        return Specification.where(pegawaiSpec);
-    }
 
     public static Pegawai toEntity(
             PegawaiPostRequest request,

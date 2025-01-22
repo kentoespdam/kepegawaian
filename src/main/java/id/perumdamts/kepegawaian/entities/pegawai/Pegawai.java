@@ -49,7 +49,7 @@ public class Pegawai extends IdsAbstract {
     private String nipam;
     @JsonBackReference
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "nik", unique = true, referencedColumnName = "nik", columnDefinition = "VARCHAR(16)")
+    @JoinColumn(name = "nik", unique = true, referencedColumnName = "nik")
     private Biodata biodata;
     @Column(name = "status_pegawai", nullable = false)
     @Enumerated(EnumType.ORDINAL)

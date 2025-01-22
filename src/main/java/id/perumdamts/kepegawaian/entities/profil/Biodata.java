@@ -107,4 +107,30 @@ public class Biodata implements Serializable {
     public Biodata(String nik) {
         this.nik = nik;
     }
+
+    @Override
+    public String toString() {
+        return "Biodata{" +
+                "nik='" + nik + '\'' +
+                ", nama='" + nama + '\'' +
+                ", jenisKelamin=" + jenisKelamin +
+                ", tempatLahir='" + tempatLahir + '\'' +
+                ", tanggalLahir=" + tanggalLahir +
+                ", alamat='" + alamat + '\'' +
+                ", telp='" + telp + '\'' +
+                ", agama=" + agama +
+                ", ibuKandung='" + ibuKandung + '\'' +
+                ", golonganDarah=" + golonganDarah +
+                ", statusKawin=" + statusKawin +
+                ", fotoProfil='" + fotoProfil + '\'' +
+                ", notes='" + notes + '\'' +
+                ", isPegawai=" + isPegawai +
+                ", createdBy='" + createdBy + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedBy='" + updatedBy + '\'' +
+                ", updatedAt=" + updatedAt +
+                ", isDeleted=" + isDeleted +
+                ", version=" + version +
+                '}';
+    }
 }

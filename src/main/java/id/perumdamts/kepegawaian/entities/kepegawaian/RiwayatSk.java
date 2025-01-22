@@ -38,7 +38,6 @@ import java.time.LocalDate;
 @EqualsAndHashCode(callSuper = true)
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class RiwayatSk extends IdsAbstract {
-    
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "pegawai_id", referencedColumnName = "id")
