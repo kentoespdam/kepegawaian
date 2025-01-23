@@ -58,6 +58,7 @@ public class GajiBatchMaster extends IdsAbstract {
     private GajiPendapatanNonPajak gajiPendapatanNonPajak;
     private String kodePajak;
     private Double gajiPokok;
+    private Double phdp;
     @Enumerated(EnumType.ORDINAL)
     private EStatusKawin statusKawin;
     private Integer jmlTanggungan;
