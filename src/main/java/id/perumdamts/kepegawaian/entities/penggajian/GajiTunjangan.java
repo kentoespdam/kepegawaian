@@ -35,4 +35,20 @@ public class GajiTunjangan extends IdsAbstract {
     @JoinColumn(name = "golongan_id", referencedColumnName = "id")
     private Golongan golongan;
     private Double nominal;
+
+    public GajiTunjangan(Long id, EJenisTunjangan jenisTunjangan, Level level, Golongan golongan, Double nominal) {
+        super(id);
+        this.jenisTunjangan = jenisTunjangan;
+        this.level = level;
+        if (golongan != null)
+            this.golongan = golongan;
+        this.nominal = nominal;
+    }
+
+    public GajiTunjangan(Long id, EJenisTunjangan jenisTunjangan, Level level, Double nominal) {
+        super(id);
+        this.jenisTunjangan = jenisTunjangan;
+        this.level = level;
+        this.nominal = nominal;
+    }
 }
