@@ -41,6 +41,7 @@ public class GajiBatchMaster extends IdsAbstract {
     @JoinColumn(name = "jabatan_id", referencedColumnName = "id")
     private Jabatan jabatan;
     private String namaJabatan;
+    private Long levelId;
     @ManyToOne
     @JoinColumn(name = "organisasi_id", referencedColumnName = "id")
     private Organisasi organisasi;
