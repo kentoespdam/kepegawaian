@@ -30,6 +30,7 @@ public class SetupMasterController {
     private final SetupGajiKomponen setupGajiKomponen;
     private final SetupRumahDinas setupRumahDinas;
     private final SetupGajiTunjangan setupGajiTunjangan;
+    private final SetupGajiPotonganTkk setupGajiPotonganTkk;
 
     @GetMapping
     public ResponseEntity<?> initialData() {
@@ -52,6 +53,7 @@ public class SetupMasterController {
             setupGajiKomponen.insertBatch();
             setupRumahDinas.insertBatch();
             setupGajiTunjangan.insertBatch();
+            setupGajiPotonganTkk.insertBatch();
             return ResponseEntity.ok().build();
         } catch (JsonProcessingException e) {
             return ResponseEntity.status(500).body(e.getMessage());
