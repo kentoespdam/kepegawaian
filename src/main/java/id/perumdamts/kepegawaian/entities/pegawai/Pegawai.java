@@ -135,7 +135,7 @@ public class Pegawai extends IdsAbstract {
     private RumahDinas rumahDinas;
     @Column(name = "gaji_pokok")
     private Double gajiPokok;
-    @Column(name = "tmt_gaji_pokok")
+    @Column(name = "is_askes")
     private Boolean isAskes = false;
     @Column(name = "phdp")
     private Double phdp;
