@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -31,6 +32,7 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Override
+    @Transactional
     public Page<GajiBatchRootResponse> findAll(GajiBatchRootRequest request) {
         if (request.getSortBy() == null) {
             request.setSortBy("batchId");
@@ -82,8 +84,6 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
                 return SavedStatus.build(ESaveStatus.FAILED, "Unknown Batch Process");
 
             GajiBatchRoot gajiBatchRoot = GajiBatchRootProcessRequest.reProcess(byId.get(), request);
-            // save old data as deleted
-            byId.get().setIsDeleted(true);
             repository.save(byId.get());
 
             GajiBatchRoot save = repository.save(gajiBatchRoot);

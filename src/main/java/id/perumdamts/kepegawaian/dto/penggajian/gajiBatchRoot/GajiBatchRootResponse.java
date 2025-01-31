@@ -2,7 +2,7 @@ package id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRoot;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRootErrorLogs.GajiBatchRootErrorLogsResponse;
 import id.perumdamts.kepegawaian.entities.commons.EProsesGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchRoot;
@@ -17,22 +17,22 @@ public class GajiBatchRootResponse {
     private String periode;
     private EProsesGaji status;
     private Integer totalPegawai;
-    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime tanggalProses;
     private String diProsesOleh;
     private String jabatanPemroses;
-    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime tanggalVerifikasiTahap1;
     private String diVerifikasiOlehTahap1;
     private String jabatanVerifikasiTahap1;
-    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime tanggalVerifikasiTahap2;
     private String diVerifikasiOlehTahap2;
     private String jabatanVerifikasiTahap2;
-    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime tanggalPersetujuan;
     private String diSetujuiOleh;
@@ -60,8 +60,7 @@ public class GajiBatchRootResponse {
         response.setTanggalPersetujuan(entity.getTanggalPersetujuan());
         response.setDiSetujuiOleh(entity.getDiSetujuiOleh());
         response.setJabatanPenyetuju(entity.getJabatanPenyetuju());
-        if (!entity.getErrorLogs().isEmpty())
-            response.setErrorLogs(GajiBatchRootErrorLogsResponse.from(entity.getErrorLogs()));
+        response.setErrorLogs(entity.getErrorLogs() == null ? null : GajiBatchRootErrorLogsResponse.from(entity.getErrorLogs()));
         response.setNotes(entity.getNotes());
         response.setMimeType(entity.getMimeType());
         response.setFileName(entity.getFileName());
