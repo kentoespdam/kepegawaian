@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.entities.penggajian;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import id.perumdamts.kepegawaian.entities.commons.EJenisGaji;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(indexes = {
-        @Index(columnList = "seq"),
+        @Index(columnList = "urut"),
         @Index(columnList = "kode"),
         @Index(columnList = "nama"),
 })
@@ -21,12 +22,14 @@ public class GajiBatchMasterProses {
     private Long id;
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name = "master_batch_id", referencedColumnName = "id")
-    private GajiBatchMaster masterBatch;
-    private Integer seq;
+    @JoinColumn(name = "master_batch_id", referencedColumnName = "id",
+            foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+    private GajiBatchMaster gajiBatchMaster;
+    private Integer urut;
     private String kode;
     private String nama;
-    private String ctype;
+    @Enumerated(EnumType.STRING)
+    private EJenisGaji jenisGaji;
     private Double nilai;
     private String formula;
     private String nilaiFormula;
