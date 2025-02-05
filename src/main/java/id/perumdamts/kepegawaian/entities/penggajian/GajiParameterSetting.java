@@ -26,4 +26,10 @@ import org.hibernate.envers.Audited;
 public class GajiParameterSetting extends IdsAbstract {
     private String kode;
     private Double nominal;
+
+    public GajiParameterSetting(Long id, String kode, Double nominal) {
+        super(id);
+        this.kode = kode;
+        this.nominal = nominal;
+    }
 }
