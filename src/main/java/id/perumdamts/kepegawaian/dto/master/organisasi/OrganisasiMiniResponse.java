@@ -8,12 +8,14 @@ public class OrganisasiMiniResponse {
     private Long id;
     private String kode;
     private String nama;
+    private String ShortName;
 
     public static OrganisasiMiniResponse from(Organisasi organisasi) {
         OrganisasiMiniResponse response = new OrganisasiMiniResponse();
         response.setId(organisasi.getId());
         response.setKode(organisasi.getKode());
         response.setNama(organisasi.getNama());
+        response.setShortName(organisasi.getShortName());
         return response;
     }
 }

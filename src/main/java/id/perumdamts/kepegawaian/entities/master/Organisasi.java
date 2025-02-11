@@ -34,16 +34,18 @@ public class Organisasi extends IdsAbstract {
     private Organisasi parent;
     private Integer levelOrg;
     private String nama;
+    private String shortName;
 
     public Organisasi(Long id) {
         super(id);
     }
 
-    public Organisasi(Long id, String kode, Organisasi organisasi, Integer levelOrg, String nama) {
+    public Organisasi(Long id, String kode, Organisasi organisasi, Integer levelOrg, String nama, String shortName) {
         super(id);
         this.kode = kode;
         this.parent = organisasi;
         this.levelOrg = levelOrg;
         this.nama = nama;
+        this.shortName = shortName;
     }
 }

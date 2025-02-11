@@ -13,6 +13,7 @@ public class OrganisasiPutRequest extends OrganisasiPostRequest {
             entity.setParent(parent);
         entity.setLevelOrg(request.getLevelOrganisasi());
         entity.setNama(request.getNama());
+        entity.setShortName(request.getShortName());
         return entity;
     }
 }

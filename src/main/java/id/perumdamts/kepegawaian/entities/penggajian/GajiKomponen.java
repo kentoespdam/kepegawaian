@@ -37,13 +37,13 @@ public class GajiKomponen extends IdsAbstract {
     private Boolean isReference = false;
     private String formula;
 
-    public GajiKomponen(Long id, int urut, GajiProfil gajiProfil, String kode, String nama, String jenisGaji, double nilai, Boolean isReference, String formula) {
+    public GajiKomponen(Long id, int urut, GajiProfil gajiProfil, String kode, String nama, EJenisGaji jenisGaji, double nilai, Boolean isReference, String formula) {
         super(id);
         this.urut = urut;
         this.profilGaji = gajiProfil;
         this.kode = kode;
         this.nama = nama;
-        this.jenisGaji = EJenisGaji.valueOf(jenisGaji);
+        this.jenisGaji = jenisGaji;
         this.nilai = nilai;
         this.isReference = isReference;
         this.formula = formula;
