@@ -1,0 +1,65 @@
+package id.perumdamts.kepegawaian.services.penggajian.gajiBatchMaster;
+
+import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterRequest;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterResponse;
+import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchMasterRepository;
+import id.perumdamts.kepegawaian.utils.DownloadPenggajian;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
+
+@Service
+@Slf4j
+@RequiredArgsConstructor
+public class GajiBatchMasterServiceImpl implements GajiBatchMasterService {
+    private final GajiBatchMasterRepository repository;
+    private final DownloadPenggajian downloadPenggajian;
+
+
+    @Override
+    public Page<GajiBatchMasterResponse> findPage(GajiBatchMasterRequest request) {
+        return repository.findAll(request.getSpecification(), request.getPageable()).map(GajiBatchMasterResponse::from);
+    }
+
+    @Override
+    public GajiBatchMasterResponse findById(Long id) {
+        return repository.findById(id).map(GajiBatchMasterResponse::from).orElse(null);
+    }
+
+    @Override
+    public ResponseEntity<?> downloadTableGaji(String rootBatchId) {
+        try {
+            Flux<ByteArrayResource> byteArrayResourceFlux = downloadPenggajian.downloadTableGaji(rootBatchId);
+            ByteArrayResource byteArrayResource = byteArrayResourceFlux.blockFirst();
+            assert byteArrayResource != null;
+            return ResponseEntity.ok()
+                    .contentLength(byteArrayResource.contentLength())
+                    .header("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                    .header("Content-Disposition", "attachment; filename=\"table_gaji_" + rootBatchId + ".xlsx\"")
+                    .body(byteArrayResource);
+        } catch (Exception e) {
+            return ErrorResult.build(e.getMessage());
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> downloadPotonganGaji(String rootBatchId) {
+        try {
+            Flux<ByteArrayResource> byteArrayResourceFlux = downloadPenggajian.downloadPotonganGaji(rootBatchId);
+            ByteArrayResource byteArrayResource = byteArrayResourceFlux.blockFirst();
+            assert byteArrayResource != null;
+            return ResponseEntity.ok()
+                    .contentLength(byteArrayResource.contentLength())
+                    .header("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                    .header("Content-Disposition", "attachment; filename=\"potongan_gaji_" + rootBatchId + ".xlsx\"")
+                    .body(byteArrayResource);
+        } catch (Exception e) {
+            return ErrorResult.build(e.getMessage());
+        }
+    }
+}

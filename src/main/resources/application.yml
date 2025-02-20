@@ -66,6 +66,9 @@ appwrite:
   project_id: ${APPWRITE_PROJECT_ID:65cd62cc3385d8434a53}
   api_key: ${APPWRITE_API_KEY:061b4abb7743ecc570cc693483b36bc0f50616b2631c5f7cec3825e15cd196d703434b9c7d6a9bb0d44ef7d8ca9eb9d570a916c2e4867993b37fc29d9579278acdba9d2ad485eca0381e975aedf5f3217cf6653f4234265975c38186aa53ef572702a298e16576843d7dfd47cb77a649fff0f4460876c52b4c7d84c0b2c74706}
 
+penggajian:
+  endpoint: ${PENGGAJIAN_URL:http://192.168.1.214:81}
+
 custom:
   protected:
     delete:

@@ -30,7 +30,7 @@ import org.hibernate.annotations.SQLRestriction;
 public class GajiBatchMaster extends IdsAbstract {
     @ManyToOne
     @JoinColumn(name = "root_batch_id", referencedColumnName = "batchId")
-    private GajiBatchRoot rootBatchId;
+    private GajiBatchRoot gajiBatchRoot;
     private String periode;
     @ManyToOne
     @JoinColumn(name = "pegawai_id", referencedColumnName = "id")
