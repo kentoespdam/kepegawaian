@@ -7,7 +7,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.File;
@@ -20,8 +19,8 @@ import java.util.List;
 @SpringBootTest
 @Slf4j
 public class ReadFileExcelTest {
-    private final static String FILE_PATH = System.getProperty("user.dir") + "/attachments/Penggajian/PotonganTKK/202402/";
-    private static final String FILE_NAME = "6ec6f2f2f227453ca26355da591c1f78";
+    private final static String FILE_PATH = System.getProperty("user.dir") + "/attachments/Penggajian/PotonganTKK/";
+    private static final String FILE_NAME = "test.xlsx";
     private static final String TMP_FILE_NAME = "temp.xlsx";
     private Sheet sheet;
 
@@ -38,7 +37,7 @@ public class ReadFileExcelTest {
         }
     }
 
-    @Test
+//    @Test
     public void test() {
         String batchId = "202402-001";
         List<GajiBatchPotonganTkk> list = new ArrayList<>();

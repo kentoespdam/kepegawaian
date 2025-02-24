@@ -5,12 +5,16 @@ import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRoot.GajiBatchRootPostR
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRoot.GajiBatchRootProcessRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRoot.GajiBatchRootRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRoot.GajiBatchRootResponse;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRootErrorLogs.GajiBatchRootErrorLogsResponse;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 
-public interface GajiBatchRootService {
+import java.util.List;
 
+public interface GajiBatchRootService {
     Page<GajiBatchRootResponse> findAll(GajiBatchRootRequest request);
+
+    List<GajiBatchRootErrorLogsResponse> findErrorLogs(String id);
 
     SavedStatus<?> save(GajiBatchRootPostRequest request);
 

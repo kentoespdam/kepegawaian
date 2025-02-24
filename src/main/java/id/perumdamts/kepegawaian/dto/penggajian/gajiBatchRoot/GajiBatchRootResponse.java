@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRootErrorLogs.GajiBatchRootErrorLogsResponse;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRootLampiran.GajiBatchRootLampiranMiniResponse;
 import id.perumdamts.kepegawaian.entities.commons.EProsesGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchRoot;
 import lombok.Data;
@@ -39,8 +40,7 @@ public class GajiBatchRootResponse {
     private String jabatanPenyetuju;
     private List<GajiBatchRootErrorLogsResponse> errorLogs;
     private String notes;
-    private String mimeType;
-    private String fileName;
+    private List<GajiBatchRootLampiranMiniResponse> lampiran;
 
     public static GajiBatchRootResponse from(GajiBatchRoot entity) {
         GajiBatchRootResponse response = new GajiBatchRootResponse();
@@ -62,8 +62,8 @@ public class GajiBatchRootResponse {
         response.setJabatanPenyetuju(entity.getJabatanPenyetuju());
         response.setErrorLogs(entity.getErrorLogs() == null ? null : GajiBatchRootErrorLogsResponse.from(entity.getErrorLogs()));
         response.setNotes(entity.getNotes());
-        response.setMimeType(entity.getMimeType());
-        response.setFileName(entity.getFileName());
+        if (entity.getLampiran() != null)
+            response.setLampiran(GajiBatchRootLampiranMiniResponse.from(entity.getLampiran()));
         return response;
     }
 }
