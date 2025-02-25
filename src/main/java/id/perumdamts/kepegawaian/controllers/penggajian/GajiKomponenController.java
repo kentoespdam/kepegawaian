@@ -50,4 +50,9 @@ public class GajiKomponenController {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         return CustomResult.save(service.update(id, request));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        return CustomResult.delete(service.delete(id));
+    }
 }
