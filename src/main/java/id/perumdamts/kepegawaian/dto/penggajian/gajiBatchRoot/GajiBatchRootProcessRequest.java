@@ -13,14 +13,14 @@ public class GajiBatchRootProcessRequest {
     private String jabatan;
 
     public static GajiBatchRoot reProcess(GajiBatchRoot entity, GajiBatchRootProcessRequest request) {
-        entity.setStatus(EProsesGaji.PENDING);
+        entity.setStatus(EProsesGaji.PENDING.value());
         entity.setDiProsesOleh(request.getNama());
         entity.setJabatanPemroses(request.getJabatan());
         return entity;
     }
 
     public static GajiBatchRoot verifyPhase1(GajiBatchRoot entity, GajiBatchRootProcessRequest request) {
-        entity.setStatus(EProsesGaji.WAIT_VERIFICATION_PHASE_2);
+        entity.setStatus(EProsesGaji.WAIT_VERIFICATION_PHASE_2.value());
         entity.setTanggalVerifikasiTahap1(LocalDateTime.now());
         entity.setDiVerifikasiOlehTahap1(request.getNama());
         entity.setJabatanVerifikasiTahap1(request.getJabatan());
@@ -28,7 +28,7 @@ public class GajiBatchRootProcessRequest {
     }
 
     public static GajiBatchRoot verifyPhase2(GajiBatchRoot entity, GajiBatchRootProcessRequest request) {
-        entity.setStatus(EProsesGaji.FINISHED);
+        entity.setStatus(EProsesGaji.FINISHED.value());
         entity.setTanggalVerifikasiTahap2(LocalDateTime.now());
         entity.setDiVerifikasiOlehTahap2(request.getNama());
         entity.setJabatanVerifikasiTahap2(request.getJabatan());

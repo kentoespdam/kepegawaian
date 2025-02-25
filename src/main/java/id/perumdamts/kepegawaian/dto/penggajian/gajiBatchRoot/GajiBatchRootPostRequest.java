@@ -38,7 +38,7 @@ public class GajiBatchRootPostRequest {
         GajiBatchRoot entity = new GajiBatchRoot();
         entity.setBatchId(request.getBatchId());
         entity.setPeriode(request.getPeriode());
-        entity.setStatus(EProsesGaji.PENDING);
+        entity.setStatus(EProsesGaji.PENDING.value());
         entity.setDiProsesOleh(request.getDiProsesOleh());
         entity.setJabatanPemroses(request.getJabatanPemroses());
         return entity;
@@ -46,7 +46,7 @@ public class GajiBatchRootPostRequest {
 
     public static GajiBatchRoot toEntityPhase2(GajiBatchRoot entity) {
         entity.setTanggalProses(LocalDateTime.now());
-        entity.setStatus(EProsesGaji.PROSES);
+        entity.setStatus(EProsesGaji.PROSES.value());
         return entity;
     }
 }
