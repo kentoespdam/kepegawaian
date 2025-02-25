@@ -25,8 +25,8 @@ public class OrganisasiServiceImpl implements OrganisasiService {
     private final OrganisasiRepository repository;
 
     @Override
-    public List<OrganisasiResponse> findAll() {
-        return repository.findAll().stream().map(OrganisasiResponse::from).toList();
+    public List<OrganisasiResponse> findAll(OrganisasiRequest request) {
+        return repository.findAll(request.getSpecification()).stream().map(OrganisasiResponse::from).toList();
     }
 
     @Override

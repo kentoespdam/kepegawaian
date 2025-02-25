@@ -10,7 +10,7 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 public interface OrganisasiService {
-    List<OrganisasiResponse> findAll();
+    List<OrganisasiResponse> findAll(OrganisasiRequest request);
 
     Page<OrganisasiResponse> findPage(OrganisasiRequest request);
 
