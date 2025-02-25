@@ -13,6 +13,7 @@ public class GajiBatchMasterResponse {
     private String nipam;
     private String nama;
     private Long organisasiId;
+    private String organisasiKode;
     private String namaOrganisasi;
     private Long jabatanId;
     private String namaJabatan;
@@ -42,6 +43,7 @@ public class GajiBatchMasterResponse {
         result.setNipam(entity.getNipam());
         result.setNama(entity.getNama());
         result.setOrganisasiId(entity.getOrganisasi().getId());
+        result.setOrganisasiKode(entity.getOrganisasi().getKode());
         result.setNamaOrganisasi(entity.getNamaOrganisasi());
         result.setJabatanId(entity.getJabatan().getId());
         result.setNamaJabatan(entity.getNamaJabatan());
