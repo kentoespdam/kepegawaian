@@ -20,7 +20,7 @@ public class GajiBatchRootRequest extends CommonPageRequest {
 
     public Specification<GajiBatchRoot> getSpecification() {
         Specification<GajiBatchRoot> periodeSpec = Objects.isNull(periode) ? null :
-                (root, query, cb) -> cb.equal(root.get("periode"), periode);
+                (root, query, cb) -> cb.like(root.get("periode"), periode+"%");
         Specification<GajiBatchRoot> statusSpec = Objects.isNull(status) ? null :
                 (root, query, cb) -> cb.equal(root.get("status"), status);
         return Specification.where(periodeSpec).and(statusSpec);
