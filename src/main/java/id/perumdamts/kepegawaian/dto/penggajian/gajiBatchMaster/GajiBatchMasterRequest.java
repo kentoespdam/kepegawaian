@@ -28,9 +28,9 @@ public class GajiBatchMasterRequest extends CommonPageRequest {
     @JsonIgnore
     public Specification<GajiBatchMaster> getSpecification() {
         Specification<GajiBatchMaster> batchIdSpec = Objects.isNull(periode) ? null :
-                (root, query, cb) -> cb.equal(root.get("periode"), periode);
+                (root, query, cb) -> cb.equal(root.get("gajiBatchRoot").get("periode"), periode);
         Specification<GajiBatchMaster> statusSpec = Objects.isNull(status) ? null :
-                (root, query, cb) -> cb.equal(root.get("gajiBatchRoot").get("status"), status);
+                (root, query, cb) -> cb.greaterThanOrEqualTo(root.get("gajiBatchRoot").get("status"), status.value());
         Specification<GajiBatchMaster> nipamSpec = Objects.isNull(nipam) ? null :
                 (root, query, cb) -> cb.equal(root.get("nipam"), nipam);
         Specification<GajiBatchMaster> namaSpec = Objects.isNull(nama) ? null :
