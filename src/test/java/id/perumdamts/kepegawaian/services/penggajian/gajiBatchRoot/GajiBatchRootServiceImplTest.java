@@ -24,7 +24,7 @@ class GajiBatchRootServiceImplTest {
         GajiBatchRoot gajiBatchRoot = new GajiBatchRoot();
         gajiBatchRoot.setBatchId("202401-001");
         gajiBatchRoot.setPeriode("202401");
-        gajiBatchRoot.setStatus(EProsesGaji.PENDING);
+        gajiBatchRoot.setStatus(EProsesGaji.PENDING.value());
         gajiBatchRoot.setTanggalProses(LocalDateTime.now());
         gajiBatchRoot.setDiProsesOleh("test");
         gajiBatchRoot.setJabatanPemroses("test");
