@@ -15,4 +15,8 @@ public enum EProsesGaji {
     EProsesGaji(String value) {
         this.value = value;
     }
+    public int value() {
+        return this.ordinal();
+    }
+
 }
