@@ -1,10 +1,15 @@
 package id.perumdamts.kepegawaian.services.penggajian.gajiBatchMaster;
 
+import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
+import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterPostRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterResponse;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchMasterRepository;
+import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchRootRepository;
 import id.perumdamts.kepegawaian.utils.DownloadPenggajian;
+import id.perumdamts.kepegawaian.utils.FileUploadUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
@@ -19,7 +24,8 @@ import reactor.core.publisher.Flux;
 public class GajiBatchMasterServiceImpl implements GajiBatchMasterService {
     private final GajiBatchMasterRepository repository;
     private final DownloadPenggajian downloadPenggajian;
-
+    private final GajiBatchRootRepository gajiBatchRootRepository;
+    private final FileUploadUtil fileUploadUtil;
 
     @Override
     public Page<GajiBatchMasterResponse> findPage(GajiBatchMasterRequest request) {
@@ -60,6 +66,20 @@ public class GajiBatchMasterServiceImpl implements GajiBatchMasterService {
                     .body(byteArrayResource);
         } catch (Exception e) {
             return ErrorResult.build(e.getMessage());
+        }
+    }
+
+    @Override
+    public SavedStatus<?> uploadPotonganTambahan(String rootBatchId, GajiBatchMasterPostRequest request) {
+        try {
+            boolean exist = gajiBatchRootRepository.existsById(rootBatchId);
+            if (!exist)
+                throw new RuntimeException("Unknown Batch Id");
+            fileUploadUtil.uploadPenggajian(request.getFile(), "potongan_tambahan" + rootBatchId.split("-")[0]);
+            return null;
+
+        } catch (Exception e) {
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
     }
 }

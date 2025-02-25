@@ -2,18 +2,17 @@ package id.perumdamts.kepegawaian.controllers.penggajian;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterPostRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterRequest;
 import id.perumdamts.kepegawaian.services.penggajian.gajiBatchMaster.GajiBatchMasterService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -40,4 +39,12 @@ public class GajiBatchMasterController {
     public ResponseEntity<?> downloadPotonganGaji(@PathVariable String rootBatchId){
         return service.downloadPotonganGaji(rootBatchId);
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PatchMapping(name = "upload/{rootBatchId}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> uploadPotonganTambahan(@PathVariable String rootBatchId, @Valid @ModelAttribute GajiBatchMasterPostRequest request, Errors errors) {
+        return CustomResult.save(service.uploadPotonganTambahan(rootBatchId, request));
+    }
+
+
 }

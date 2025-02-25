@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 public interface GajiBatchMasterRepository extends JpaRepository<GajiBatchMaster, Long>, JpaSpecificationExecutor<GajiBatchMaster> {
 
+
 }

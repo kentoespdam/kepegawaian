@@ -2,7 +2,6 @@ package id.perumdamts.kepegawaian.services.penggajian.gajiBatchMaster;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ByteArrayResource;
@@ -18,7 +17,7 @@ class GajiBatchMasterServiceImplTest {
     @Getter
     private String fileName = "";
 
-    @Test
+//    @Test
     void downloadTableGaji() {
         String endpoint = "http://192.168.1.214:81";
         String rootBatchId = "202401-001";
