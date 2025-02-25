@@ -18,7 +18,7 @@ import java.util.Objects;
 @Data
 public class GajiBatchMasterRequest extends CommonPageRequest {
     @NotEmpty(message = "is Required")
-    private String rootBatchId;
+    private String periode;
     @NotNull(message = "is Required")
     @Enumerated(EnumType.STRING)
     private EProsesGaji status;
@@ -27,8 +27,8 @@ public class GajiBatchMasterRequest extends CommonPageRequest {
 
     @JsonIgnore
     public Specification<GajiBatchMaster> getSpecification() {
-        Specification<GajiBatchMaster> batchIdSpec = Objects.isNull(rootBatchId) ? null :
-                (root, query, cb) -> cb.equal(root.get("gajiBatchRoot").get("batchId"), rootBatchId);
+        Specification<GajiBatchMaster> batchIdSpec = Objects.isNull(periode) ? null :
+                (root, query, cb) -> cb.equal(root.get("periode"), periode);
         Specification<GajiBatchMaster> statusSpec = Objects.isNull(status) ? null :
                 (root, query, cb) -> cb.equal(root.get("gajiBatchRoot").get("status"), status);
         Specification<GajiBatchMaster> nipamSpec = Objects.isNull(nipam) ? null :

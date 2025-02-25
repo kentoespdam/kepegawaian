@@ -13,10 +13,11 @@ import id.perumdamts.kepegawaian.utils.FileUploadUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
+
+import java.util.List;
 
 @Service
 @Slf4j
@@ -28,8 +29,8 @@ public class GajiBatchMasterServiceImpl implements GajiBatchMasterService {
     private final FileUploadUtil fileUploadUtil;
 
     @Override
-    public Page<GajiBatchMasterResponse> findPage(GajiBatchMasterRequest request) {
-        return repository.findAll(request.getSpecification(), request.getPageable()).map(GajiBatchMasterResponse::from);
+    public List<GajiBatchMasterResponse> findAll(GajiBatchMasterRequest request) {
+        return repository.findAll(request.getSpecification()).stream().map(GajiBatchMasterResponse::from).toList();
     }
 
     @Override

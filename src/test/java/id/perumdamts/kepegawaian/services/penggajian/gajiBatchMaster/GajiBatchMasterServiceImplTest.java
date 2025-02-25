@@ -20,7 +20,7 @@ class GajiBatchMasterServiceImplTest {
 //    @Test
     void downloadTableGaji() {
         String endpoint = "http://192.168.1.214:81";
-        String rootBatchId = "202401-001";
+        String rootBatchId = "202401";
 
         ByteArrayResource resource = webClient.get()
                 .uri(endpoint + "/export/table_gaji/" + rootBatchId)

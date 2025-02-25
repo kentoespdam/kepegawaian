@@ -22,10 +22,10 @@ public class GajiBatchMasterController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
-    public ResponseEntity<?> getGajiBatchMaster(@Valid @ParameterObject GajiBatchMasterRequest request, Errors errors) {
+    public ResponseEntity<?> getGajiBatchMasterByPeriode(@Valid @ParameterObject GajiBatchMasterRequest request, Errors errors) {
         if (errors.hasErrors())
             return ErrorResult.build(errors);
-        return CustomResult.page(service.findPage(request));
+        return CustomResult.list(service.findAll(request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
