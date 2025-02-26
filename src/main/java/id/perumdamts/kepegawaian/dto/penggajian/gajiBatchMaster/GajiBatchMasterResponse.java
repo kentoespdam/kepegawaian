@@ -37,6 +37,7 @@ public class GajiBatchMasterResponse {
 
     public static GajiBatchMasterResponse from(GajiBatchMaster entity) {
         GajiBatchMasterResponse result = new GajiBatchMasterResponse();
+        result.setId(entity.getId());
         result.setRootBatchId(entity.getGajiBatchRoot().getBatchId());
         result.setPeriode(entity.getPeriode());
         result.setPegawaiId(entity.getPegawai().getId());
