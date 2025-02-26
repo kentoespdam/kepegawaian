@@ -42,7 +42,7 @@ public class GajiBatchMasterServiceImpl implements GajiBatchMasterService {
     @Override
     public ResponseEntity<?> downloadTableGaji(String periode) {
         try {
-            GajiBatchMaster byBatchRootPeriode = repository.findByBatchRoot_Periode(periode).orElseThrow(() -> new RuntimeException("Unknown Batch Id"));
+            GajiBatchMaster byBatchRootPeriode = repository.findByGajiBatchRoot_Periode(periode).orElseThrow(() -> new RuntimeException("Unknown Batch Id"));
             Flux<ByteArrayResource> byteArrayResourceFlux = downloadPenggajian.downloadTableGaji(byBatchRootPeriode.getGajiBatchRoot().getBatchId());
             ByteArrayResource byteArrayResource = byteArrayResourceFlux.blockFirst();
             assert byteArrayResource != null;
@@ -59,7 +59,7 @@ public class GajiBatchMasterServiceImpl implements GajiBatchMasterService {
     @Override
     public ResponseEntity<?> downloadPotonganGaji(String periode) {
         try {
-            GajiBatchMaster byBatchRootPeriode = repository.findByBatchRoot_Periode(periode).orElseThrow(() -> new RuntimeException("Unknown Batch Id"));
+            GajiBatchMaster byBatchRootPeriode = repository.findByGajiBatchRoot_Periode(periode).orElseThrow(() -> new RuntimeException("Unknown Batch Id"));
             Flux<ByteArrayResource> byteArrayResourceFlux = downloadPenggajian.downloadPotonganGaji(byBatchRootPeriode.getGajiBatchRoot().getBatchId());
             ByteArrayResource byteArrayResource = byteArrayResourceFlux.blockFirst();
             assert byteArrayResource != null;

@@ -9,5 +9,5 @@ import java.util.Optional;
 public interface GajiBatchMasterRepository extends JpaRepository<GajiBatchMaster, Long>, JpaSpecificationExecutor<GajiBatchMaster> {
 
 
-    Optional<GajiBatchMaster> findByBatchRoot_Periode(String periode);
+    Optional<GajiBatchMaster> findByGajiBatchRoot_Periode(String periode);
 }
