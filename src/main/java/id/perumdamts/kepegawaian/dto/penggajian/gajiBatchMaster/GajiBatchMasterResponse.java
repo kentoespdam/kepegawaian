@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster;
 
 import id.perumdamts.kepegawaian.entities.commons.EStatusKawin;
+import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchMaster;
 import lombok.Data;
 
@@ -12,6 +13,7 @@ public class GajiBatchMasterResponse {
     private Long pegawaiId;
     private String nipam;
     private String nama;
+    private EStatusPegawai statusPegawai;
     private Long organisasiId;
     private String organisasiKode;
     private String namaOrganisasi;
@@ -43,6 +45,7 @@ public class GajiBatchMasterResponse {
         result.setPegawaiId(entity.getPegawai().getId());
         result.setNipam(entity.getNipam());
         result.setNama(entity.getNama());
+        result.setStatusPegawai(entity.getStatusPegawai());
         result.setOrganisasiId(entity.getOrganisasi().getId());
         result.setOrganisasiKode(entity.getOrganisasi().getKode());
         result.setNamaOrganisasi(entity.getNamaOrganisasi());
