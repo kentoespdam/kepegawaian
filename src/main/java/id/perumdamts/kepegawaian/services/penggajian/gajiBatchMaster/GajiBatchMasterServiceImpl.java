@@ -6,6 +6,7 @@ import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterPostRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterResponse;
+import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchMaster;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchMasterRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchRootRepository;
 import id.perumdamts.kepegawaian.utils.DownloadPenggajian;
@@ -39,15 +40,16 @@ public class GajiBatchMasterServiceImpl implements GajiBatchMasterService {
     }
 
     @Override
-    public ResponseEntity<?> downloadTableGaji(String rootBatchId) {
+    public ResponseEntity<?> downloadTableGaji(String periode) {
         try {
-            Flux<ByteArrayResource> byteArrayResourceFlux = downloadPenggajian.downloadTableGaji(rootBatchId);
+            GajiBatchMaster byBatchRootPeriode = repository.findByBatchRoot_Periode(periode).orElseThrow(() -> new RuntimeException("Unknown Batch Id"));
+            Flux<ByteArrayResource> byteArrayResourceFlux = downloadPenggajian.downloadTableGaji(byBatchRootPeriode.getGajiBatchRoot().getBatchId());
             ByteArrayResource byteArrayResource = byteArrayResourceFlux.blockFirst();
             assert byteArrayResource != null;
             return ResponseEntity.ok()
                     .contentLength(byteArrayResource.contentLength())
                     .header("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-                    .header("Content-Disposition", "attachment; filename=\"table_gaji_" + rootBatchId + ".xlsx\"")
+                    .header("Content-Disposition", "attachment; filename=\"table_gaji_" + periode + ".xlsx\"")
                     .body(byteArrayResource);
         } catch (Exception e) {
             return ErrorResult.build(e.getMessage());
@@ -55,15 +57,16 @@ public class GajiBatchMasterServiceImpl implements GajiBatchMasterService {
     }
 
     @Override
-    public ResponseEntity<?> downloadPotonganGaji(String rootBatchId) {
+    public ResponseEntity<?> downloadPotonganGaji(String periode) {
         try {
-            Flux<ByteArrayResource> byteArrayResourceFlux = downloadPenggajian.downloadPotonganGaji(rootBatchId);
+            GajiBatchMaster byBatchRootPeriode = repository.findByBatchRoot_Periode(periode).orElseThrow(() -> new RuntimeException("Unknown Batch Id"));
+            Flux<ByteArrayResource> byteArrayResourceFlux = downloadPenggajian.downloadPotonganGaji(byBatchRootPeriode.getGajiBatchRoot().getBatchId());
             ByteArrayResource byteArrayResource = byteArrayResourceFlux.blockFirst();
             assert byteArrayResource != null;
             return ResponseEntity.ok()
                     .contentLength(byteArrayResource.contentLength())
                     .header("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-                    .header("Content-Disposition", "attachment; filename=\"potongan_gaji_" + rootBatchId + ".xlsx\"")
+                    .header("Content-Disposition", "attachment; filename=\"potongan_gaji_" + periode + ".xlsx\"")
                     .body(byteArrayResource);
         } catch (Exception e) {
             return ErrorResult.build(e.getMessage());
@@ -71,12 +74,12 @@ public class GajiBatchMasterServiceImpl implements GajiBatchMasterService {
     }
 
     @Override
-    public SavedStatus<?> uploadPotonganTambahan(String rootBatchId, GajiBatchMasterPostRequest request) {
+    public SavedStatus<?> uploadPotonganTambahan(String periode, GajiBatchMasterPostRequest request) {
         try {
-            boolean exist = gajiBatchRootRepository.existsById(rootBatchId);
+            boolean exist = gajiBatchRootRepository.existsById(periode);
             if (!exist)
                 throw new RuntimeException("Unknown Batch Id");
-            fileUploadUtil.uploadPenggajian(request.getFile(), "potongan_tambahan" + rootBatchId.split("-")[0]);
+            fileUploadUtil.uploadPenggajian(request.getFile(), "potongan_tambahan" + periode.split("-")[0]);
             return null;
 
         } catch (Exception e) {
