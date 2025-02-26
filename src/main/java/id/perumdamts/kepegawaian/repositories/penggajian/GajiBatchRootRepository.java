@@ -14,4 +14,6 @@ public interface GajiBatchRootRepository extends JpaRepository<GajiBatchRoot, St
             nativeQuery = true
     )
     Optional<GajiBatchRoot> findDeletedBatchRoot(String periode);
+
+    Optional<GajiBatchRoot> findByPeriode(String periode);
 }

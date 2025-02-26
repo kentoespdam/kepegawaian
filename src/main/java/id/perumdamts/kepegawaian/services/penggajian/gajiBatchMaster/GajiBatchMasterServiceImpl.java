@@ -6,7 +6,7 @@ import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterPostRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterResponse;
-import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchMaster;
+import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchRoot;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchMasterRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchRootRepository;
 import id.perumdamts.kepegawaian.utils.DownloadPenggajian;
@@ -42,8 +42,8 @@ public class GajiBatchMasterServiceImpl implements GajiBatchMasterService {
     @Override
     public ResponseEntity<?> downloadTableGaji(String periode) {
         try {
-            GajiBatchMaster byBatchRootPeriode = repository.findByGajiBatchRoot_Periode(periode).orElseThrow(() -> new RuntimeException("Unknown Batch Id"));
-            Flux<ByteArrayResource> byteArrayResourceFlux = downloadPenggajian.downloadTableGaji(byBatchRootPeriode.getGajiBatchRoot().getBatchId());
+            GajiBatchRoot gajiBatchRoot = gajiBatchRootRepository.findByPeriode(periode).orElseThrow(() -> new RuntimeException("Unknown Batch Id"));
+            Flux<ByteArrayResource> byteArrayResourceFlux = downloadPenggajian.downloadTableGaji(gajiBatchRoot.getBatchId());
             ByteArrayResource byteArrayResource = byteArrayResourceFlux.blockFirst();
             assert byteArrayResource != null;
             return ResponseEntity.ok()
@@ -59,8 +59,8 @@ public class GajiBatchMasterServiceImpl implements GajiBatchMasterService {
     @Override
     public ResponseEntity<?> downloadPotonganGaji(String periode) {
         try {
-            GajiBatchMaster byBatchRootPeriode = repository.findByGajiBatchRoot_Periode(periode).orElseThrow(() -> new RuntimeException("Unknown Batch Id"));
-            Flux<ByteArrayResource> byteArrayResourceFlux = downloadPenggajian.downloadPotonganGaji(byBatchRootPeriode.getGajiBatchRoot().getBatchId());
+            GajiBatchRoot gajiBatchRoot = gajiBatchRootRepository.findByPeriode(periode).orElseThrow(() -> new RuntimeException("Unknown Batch Id"));
+            Flux<ByteArrayResource> byteArrayResourceFlux = downloadPenggajian.downloadPotonganGaji(gajiBatchRoot.getBatchId());
             ByteArrayResource byteArrayResource = byteArrayResourceFlux.blockFirst();
             assert byteArrayResource != null;
             return ResponseEntity.ok()
