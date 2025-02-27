@@ -29,21 +29,21 @@ public class GajiBatchMasterController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/download/table-gaji/{periode}")
-    public ResponseEntity<?> downloadTableGaji(@PathVariable String periode){
-        return service.downloadTableGaji(periode);
+    @GetMapping("/download/table-gaji/{rootBatchId}")
+    public ResponseEntity<?> downloadTableGaji(@PathVariable String rootBatchId){
+        return service.downloadTableGaji(rootBatchId);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/download/potongan-gaji/{periode}")
-    public ResponseEntity<?> downloadPotonganGaji(@PathVariable String periode){
-        return service.downloadPotonganGaji(periode);
+    @GetMapping("/download/potongan-gaji/{rootBatchId}")
+    public ResponseEntity<?> downloadPotonganGaji(@PathVariable String rootBatchId){
+        return service.downloadPotonganGaji(rootBatchId);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PatchMapping(name = "upload/{periode}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> uploadPotonganTambahan(@PathVariable String periode, @Valid @ModelAttribute GajiBatchMasterPostRequest request, Errors errors) {
-        return CustomResult.save(service.uploadPotonganTambahan(periode, request));
+    @PatchMapping(name = "upload/{rootBatchId}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> uploadPotonganTambahan(@PathVariable String rootBatchId, @Valid @ModelAttribute GajiBatchMasterPostRequest request, Errors errors) {
+        return CustomResult.save(service.uploadPotonganTambahan(rootBatchId, request));
     }
 
 

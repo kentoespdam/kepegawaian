@@ -13,9 +13,9 @@ public interface GajiBatchMasterService {
 
     GajiBatchMasterResponse findById(Long id);
 
-    ResponseEntity<?> downloadTableGaji(String periode);
+    ResponseEntity<?> downloadTableGaji(String rootBatchId);
 
-    ResponseEntity<?> downloadPotonganGaji(String periode);
+    ResponseEntity<?> downloadPotonganGaji(String rootBatchId);
 
-    SavedStatus<?> uploadPotonganTambahan(String periode, GajiBatchMasterPostRequest request);
+    SavedStatus<?> uploadPotonganTambahan(String rootBatchId, GajiBatchMasterPostRequest request);
 }
