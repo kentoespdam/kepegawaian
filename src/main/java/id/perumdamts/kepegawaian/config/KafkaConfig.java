@@ -8,10 +8,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class KafkaConfig {
     public final static String PENGGAJIAN_TOPIC = "penggajian";
+    public final static String HITUNG_ULANG_TOPIC = "hitung_ulang";
 
     @Bean
     public NewTopic penggajianTopic() {
         return TopicBuilder.name(PENGGAJIAN_TOPIC)
+                .partitions(1)
+                .replicas(1)
+                .build();
+    }
+
+    @Bean
+    public NewTopic hitungUlangTopic() {
+        return TopicBuilder.name(HITUNG_ULANG_TOPIC)
                 .partitions(1)
                 .replicas(1)
                 .build();

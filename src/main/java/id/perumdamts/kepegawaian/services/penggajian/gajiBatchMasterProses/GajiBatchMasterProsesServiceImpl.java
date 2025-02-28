@@ -12,15 +12,19 @@ import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchMasterReposito
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static id.perumdamts.kepegawaian.config.KafkaConfig.HITUNG_ULANG_TOPIC;
 
 @Service
 @RequiredArgsConstructor
 public class GajiBatchMasterProsesServiceImpl implements GajiBatchMasterProsesService {
     private final GajiBatchMasterProsesRepository repository;
     private final GajiBatchMasterRepository gajiBatchMasterRepository;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
     @Override
     public Page<GajiBatchMasterProsesResponse> findPage(GajiBatchMasterProsesRequest request) {
@@ -44,8 +48,9 @@ public class GajiBatchMasterProsesServiceImpl implements GajiBatchMasterProsesSe
             if (exists) return SavedStatus.build(ESaveStatus.DUPLICATE, "Gaji Batch Master Proses sudah ada");
             GajiBatchMaster gajiBatchMaster = gajiBatchMasterRepository.findById(request.getMasterBatchId()).orElseThrow(() -> new RuntimeException("Unknown Gaji Batch Master"));
             GajiBatchMasterProses entity = GajiBatchMasterProsesPostRequest.toEntity(request, gajiBatchMaster);
-            GajiBatchMasterProses save = repository.save(entity);
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            repository.save(entity);
+            kafkaTemplate.send(HITUNG_ULANG_TOPIC, gajiBatchMaster.getGajiBatchRoot().getBatchId());
+            return SavedStatus.build(ESaveStatus.SUCCESS, "OK");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
