@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.services.penggajian.gajiBatchMasterProses;
 
+import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMasterProses.GajiBatchMasterProsesPostRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMasterProses.GajiBatchMasterProsesRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMasterProses.GajiBatchMasterProsesResponse;
 import org.springframework.data.domain.Page;
@@ -11,4 +13,10 @@ public interface GajiBatchMasterProsesService {
 
     GajiBatchMasterProsesResponse findById(Long id);
     List<GajiBatchMasterProsesResponse> findByMasterId(Long id);
+
+    SavedStatus<?> save(GajiBatchMasterProsesPostRequest request);
+
+    SavedStatus<?> rollback(Long batchMasterId);
+
+    boolean delete(Long id);
 }
