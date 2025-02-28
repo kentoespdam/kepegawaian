@@ -40,6 +40,7 @@ public class GajiBatchMasterResponse {
     private Double pembulatan2;
     private Double penghasilanBersihFinal;
     private Double penghasilanBersihFinal2;
+    private Double pajak;
     private Boolean isDifferent;
 
     public static GajiBatchMasterResponse from(GajiBatchMaster entity) {
@@ -76,6 +77,7 @@ public class GajiBatchMasterResponse {
         result.setPembulatan2(entity.getPembulatan2());
         result.setPenghasilanBersihFinal(entity.getPenghasilanBersihFinal());
         result.setPenghasilanBersihFinal2(entity.getPenghasilanBersihFinal2());
+        result.setPajak(entity.getPajak());
         result.setIsDifferent(entity.getIsDifferent());
         return result;
     }
