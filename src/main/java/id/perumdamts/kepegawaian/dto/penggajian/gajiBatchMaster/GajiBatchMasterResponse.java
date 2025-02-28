@@ -35,8 +35,11 @@ public class GajiBatchMasterResponse {
     private Double totalAddTambahan;
     private Double totalAddPotongan;
     private Double penghasilanBersih;
+    private Double penghasilanBersih2;
     private Double pembulatan;
+    private Double pembulatan2;
     private Double penghasilanBersihFinal;
+    private Double penghasilanBersihFinal2;
     private Boolean isDifferent;
 
     public static GajiBatchMasterResponse from(GajiBatchMaster entity) {
@@ -68,8 +71,11 @@ public class GajiBatchMasterResponse {
         result.setTotalAddTambahan(entity.getTotalAddTambahan());
         result.setTotalAddPotongan(entity.getTotalAddPotongan());
         result.setPenghasilanBersih(entity.getPenghasilanBersih());
+        result.setPenghasilanBersih2(entity.getPenghasilanBersih2());
         result.setPembulatan(entity.getPembulatan());
+        result.setPembulatan2(entity.getPembulatan2());
         result.setPenghasilanBersihFinal(entity.getPenghasilanBersihFinal());
+        result.setPenghasilanBersihFinal2(entity.getPenghasilanBersihFinal2());
         result.setIsDifferent(entity.getIsDifferent());
         return result;
     }

@@ -69,7 +69,10 @@ public class GajiBatchMaster extends IdsAbstract {
     private Double totalAddTambahan;
     private Double totalAddPotongan;
     private Double penghasilanBersih;
+    private Double penghasilanBersih2;
     private Double pembulatan;
+    private Double pembulatan2;
     private Double penghasilanBersihFinal;
+    private Double penghasilanBersihFinal2;
     private Boolean isDifferent = false;
 }
