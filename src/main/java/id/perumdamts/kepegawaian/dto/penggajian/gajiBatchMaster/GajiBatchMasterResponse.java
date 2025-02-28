@@ -30,11 +30,13 @@ public class GajiBatchMasterResponse {
     private EStatusKawin statusKawin;
     private Integer jmlTanggungan;
     private Integer jmlJiwa;
-    private Double totalTambahan;
     private Double penghasilanKotor;
     private Double totalPotongan;
-    private Double pembulatan;
+    private Double totalAddTambahan;
+    private Double totalAddPotongan;
     private Double penghasilanBersih;
+    private Double pembulatan;
+    private Double penghasilanBersihFinal;
     private Boolean isDifferent;
 
     public static GajiBatchMasterResponse from(GajiBatchMaster entity) {
@@ -61,11 +63,13 @@ public class GajiBatchMasterResponse {
         result.setStatusKawin(entity.getStatusKawin());
         result.setJmlTanggungan(entity.getJmlTanggungan());
         result.setJmlJiwa(entity.getJmlJiwa());
-        result.setTotalTambahan(entity.getTotalTambahan());
         result.setPenghasilanKotor(entity.getPenghasilanKotor());
         result.setTotalPotongan(entity.getTotalPotongan());
-        result.setPembulatan(entity.getPembulatan());
+        result.setTotalAddTambahan(entity.getTotalAddTambahan());
+        result.setTotalAddPotongan(entity.getTotalAddPotongan());
         result.setPenghasilanBersih(entity.getPenghasilanBersih());
+        result.setPembulatan(entity.getPembulatan());
+        result.setPenghasilanBersihFinal(entity.getPenghasilanBersihFinal());
         result.setIsDifferent(entity.getIsDifferent());
         return result;
     }
