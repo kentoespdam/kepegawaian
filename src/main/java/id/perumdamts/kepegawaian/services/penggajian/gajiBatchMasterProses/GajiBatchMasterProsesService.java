@@ -12,6 +12,7 @@ public interface GajiBatchMasterProsesService {
     Page<GajiBatchMasterProsesResponse> findPage(GajiBatchMasterProsesRequest request);
 
     GajiBatchMasterProsesResponse findById(Long id);
+
     List<GajiBatchMasterProsesResponse> findByMasterId(Long id);
 
     SavedStatus<?> save(GajiBatchMasterProsesPostRequest request);
@@ -19,4 +20,6 @@ public interface GajiBatchMasterProsesService {
     SavedStatus<?> rollback(Long batchMasterId);
 
     boolean delete(Long id);
+
+    void recalculate(Long batchMasterId);
 }

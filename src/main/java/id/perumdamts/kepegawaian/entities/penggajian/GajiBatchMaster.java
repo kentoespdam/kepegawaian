@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.entities.penggajian;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKawin;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
@@ -32,16 +33,19 @@ public class GajiBatchMaster extends IdsAbstract {
     @JoinColumn(name = "root_batch_id", referencedColumnName = "batchId")
     private GajiBatchRoot gajiBatchRoot;
     private String periode;
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "pegawai_id", referencedColumnName = "id")
     private Pegawai pegawai;
     private String nipam;
     private String nama;
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "jabatan_id", referencedColumnName = "id")
     private Jabatan jabatan;
     private String namaJabatan;
     private Long levelId;
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "organisasi_id", referencedColumnName = "id")
     private Organisasi organisasi;
@@ -51,9 +55,11 @@ public class GajiBatchMaster extends IdsAbstract {
     private String pangkat;
     @Enumerated(EnumType.ORDINAL)
     private EStatusPegawai statusPegawai;
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "gaji_profil_id", referencedColumnName = "id")
     private GajiProfil gajiProfil;
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "gaji_pendapatan_non_pajak_id", referencedColumnName = "id")
     private GajiPendapatanNonPajak gajiPendapatanNonPajak;
@@ -76,4 +82,5 @@ public class GajiBatchMaster extends IdsAbstract {
     private Double penghasilanBersihFinal2;
     private Double pajak;
     private Boolean isDifferent = false;
+
 }

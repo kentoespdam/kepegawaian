@@ -5,6 +5,7 @@ import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMasterProses.GajiBatchMasterProsesPostRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMasterProses.GajiBatchMasterProsesRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMasterProses.GajiBatchMasterProsesResponse;
+import id.perumdamts.kepegawaian.entities.commons.EJenisGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchMaster;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchMasterProses;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchMasterProsesRepository;
@@ -12,19 +13,15 @@ import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchMasterReposito
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import static id.perumdamts.kepegawaian.config.KafkaConfig.HITUNG_ULANG_TOPIC;
 
 @Service
 @RequiredArgsConstructor
 public class GajiBatchMasterProsesServiceImpl implements GajiBatchMasterProsesService {
     private final GajiBatchMasterProsesRepository repository;
     private final GajiBatchMasterRepository gajiBatchMasterRepository;
-    private final KafkaTemplate<String, Object> kafkaTemplate;
 
     @Override
     public Page<GajiBatchMasterProsesResponse> findPage(GajiBatchMasterProsesRequest request) {
@@ -49,7 +46,7 @@ public class GajiBatchMasterProsesServiceImpl implements GajiBatchMasterProsesSe
             GajiBatchMaster gajiBatchMaster = gajiBatchMasterRepository.findById(request.getMasterBatchId()).orElseThrow(() -> new RuntimeException("Unknown Gaji Batch Master"));
             GajiBatchMasterProses entity = GajiBatchMasterProsesPostRequest.toEntity(request, gajiBatchMaster);
             repository.save(entity);
-            kafkaTemplate.send(HITUNG_ULANG_TOPIC, gajiBatchMaster.getGajiBatchRoot().getBatchId());
+            recalculate(gajiBatchMaster.getId());
             return SavedStatus.build(ESaveStatus.SUCCESS, "OK");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
@@ -72,5 +69,40 @@ public class GajiBatchMasterProsesServiceImpl implements GajiBatchMasterProsesSe
             return false;
         repository.deleteById(id);
         return true;
+    }
+
+    @Override
+    public void recalculate(Long batchMasterId) {
+        List<GajiBatchMasterProses> byGajiBatchMasterId = repository.findByGajiBatchMaster_Id(10294L);
+        if (byGajiBatchMasterId.isEmpty()) return;
+        double addPemasukan = getAdditional(byGajiBatchMasterId, EJenisGaji.PEMASUKAN);
+        double addPotongan = getAdditional(byGajiBatchMasterId, EJenisGaji.POTONGAN);
+        double penghasilanKotor = byGajiBatchMasterId.stream().filter(gbp -> gbp.getKode().equals("PENGHASILAN_KOTOR"))
+                .mapToDouble(GajiBatchMasterProses::getNilai).sum();
+        double potongan = byGajiBatchMasterId.stream().filter(gbp -> gbp.getJenisGaji().equals(EJenisGaji.POTONGAN))
+                .mapToDouble(GajiBatchMasterProses::getNilai).sum() + addPotongan;
+        double penghasilanBersih = penghasilanKotor - potongan;
+        updateGajiBatchMaster(penghasilanBersih, addPemasukan, addPotongan);
+    }
+
+    private double getAdditional(List<GajiBatchMasterProses> processes, EJenisGaji gajiType) {
+        return processes.stream()
+                .filter(process -> process.getJenisGaji().equals(gajiType) && process.getKode().startsWith("ADD_"))
+                .mapToDouble(GajiBatchMasterProses::getNilai)
+                .sum();
+    }
+
+    private void updateGajiBatchMaster(double penghasilanBersih, double addPemasukan, double addPotongan) {
+        double pembulatan = Math.ceil(penghasilanBersih / 100) * 100 - penghasilanBersih;
+        double penghasilanBersihFinal = penghasilanBersih + pembulatan;
+
+        gajiBatchMasterRepository.findById(10294L).ifPresent(gbm -> {
+            gbm.setTotalAddTambahan(addPemasukan);
+            gbm.setTotalAddPotongan(addPotongan);
+            gbm.setPenghasilanBersih2(penghasilanBersih);
+            gbm.setPembulatan2(pembulatan);
+            gbm.setPenghasilanBersihFinal2(penghasilanBersihFinal);
+            gajiBatchMasterRepository.save(gbm);
+        });
     }
 }
