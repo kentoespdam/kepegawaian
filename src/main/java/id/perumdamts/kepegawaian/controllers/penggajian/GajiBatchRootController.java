@@ -5,6 +5,7 @@ import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRoot.GajiBatchRootPostRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRoot.GajiBatchRootProcessRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRoot.GajiBatchRootRequest;
+import id.perumdamts.kepegawaian.entities.commons.EProsesGaji;
 import id.perumdamts.kepegawaian.services.penggajian.gajiBatchRoot.GajiBatchRootService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,15 @@ public class GajiBatchRootController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/{periode}/periode/{status}/status")
+    public ResponseEntity<?> byPeriode(@PathVariable String periode, @PathVariable EProsesGaji status) {
+        GajiBatchRootRequest request = new GajiBatchRootRequest();
+        request.setPeriode(periode);
+        request.setGtStatus(status);
+        return CustomResult.any(service.findAll(request));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}/errors")
     public ResponseEntity<?> errorLogs(@PathVariable String id) {
         return CustomResult.list(service.findErrorLogs(id));
@@ -45,7 +55,7 @@ public class GajiBatchRootController {
     public ResponseEntity<?> reprocess(@PathVariable String id, @Valid @RequestBody GajiBatchRootProcessRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         if (!request.getBatchId().equals(id)) return ErrorResult.build("Error Process");
-        return CustomResult.save(service.reprocess(id,request));
+        return CustomResult.save(service.reprocess(id, request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -53,7 +63,7 @@ public class GajiBatchRootController {
     public ResponseEntity<?> verify1(@PathVariable String id, @Valid @RequestBody GajiBatchRootProcessRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         if (!request.getBatchId().equals(id)) return ErrorResult.build("Error Process");
-        return CustomResult.save(service.verify1(id,request));
+        return CustomResult.save(service.verify1(id, request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -61,7 +71,7 @@ public class GajiBatchRootController {
     public ResponseEntity<?> verify2(@PathVariable String id, @Valid @RequestBody GajiBatchRootProcessRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         if (!request.getBatchId().equals(id)) return ErrorResult.build("Error Process");
-        return CustomResult.save(service.verify2(id,request));
+        return CustomResult.save(service.verify2(id, request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -69,7 +79,7 @@ public class GajiBatchRootController {
     public ResponseEntity<?> accept(@PathVariable String id, @Valid @RequestBody GajiBatchRootProcessRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         if (!request.getBatchId().equals(id)) return ErrorResult.build("Error Process");
-        return CustomResult.save(service.accept(id,request));
+        return CustomResult.save(service.accept(id, request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
