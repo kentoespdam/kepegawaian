@@ -46,7 +46,7 @@ public class GajiBatchMasterProsesController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{rootBatchId}/rollback")
-    public ResponseEntity<?> rollback(@PathVariable Long rootBatchId) {
+    public ResponseEntity<?> rollback(@PathVariable String rootBatchId) {
         return CustomResult.delete(service.rollback(rootBatchId));
     }
 

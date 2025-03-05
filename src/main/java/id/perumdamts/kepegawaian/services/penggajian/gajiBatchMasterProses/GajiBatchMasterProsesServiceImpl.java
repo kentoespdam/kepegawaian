@@ -60,7 +60,7 @@ public class GajiBatchMasterProsesServiceImpl implements GajiBatchMasterProsesSe
     }
 
     @Override
-    public boolean rollback(Long rootBatchId) {
+    public boolean rollback(String rootBatchId) {
         Specification<GajiBatchMasterProses> rootBatchIdSpec = (root, query, cb) -> cb.equal(root.get("gajiBatchMaster").get("gajiBatchRoot").get("id"), rootBatchId);
         Specification<GajiBatchMasterProses> kodeSpec = (root, query, cb) -> cb.like(root.get("kode"), "ADD_%");
         Specification<GajiBatchMasterProses> spec = Specification.where(rootBatchIdSpec).and(kodeSpec);
