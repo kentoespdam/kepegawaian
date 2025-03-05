@@ -77,7 +77,7 @@ public class GajiBatchMasterServiceImpl implements GajiBatchMasterService {
             if (!exist)
                 throw new RuntimeException("Unknown Batch Id");
             fileUploadUtil.uploadPenggajian(request.getFile(), "potongan_tambahan" + rootBatchId.split("-")[0]);
-            return null;
+            return SavedStatus.build(ESaveStatus.SUCCESS, "OK");
 
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
