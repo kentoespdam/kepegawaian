@@ -1,8 +1,6 @@
 package id.perumdamts.kepegawaian.entities.penggajian;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import jakarta.persistence.*;
@@ -12,7 +10,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
-import org.hibernate.envers.NotAudited;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -21,7 +18,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
 
 
 @NoArgsConstructor
@@ -66,10 +62,6 @@ public class GajiBatchRoot implements Serializable {
     private LocalDateTime tanggalPersetujuan;
     private String diSetujuiOleh;
     private String jabatanPenyetuju;
-    @JsonBackReference
-    @OneToMany(mappedBy = "gajiBatchRoot")
-    @JsonIdentityReference(alwaysAsId = true)
-    private List<GajiBatchRootErrorLogs> errorLogs;
     @Column(columnDefinition = "TEXT")
     private String notes;
     @CreatedBy
@@ -90,10 +82,4 @@ public class GajiBatchRoot implements Serializable {
     @Audited
     @Column(columnDefinition = "boolean default false")
     private Boolean isDeleted = false;
-
-    @NotAudited
-    @JsonBackReference
-    @OneToMany(mappedBy = "gajiBatchRoot")
-    @JsonIdentityReference(alwaysAsId = true)
-    private List<GajiBatchRootLampiran> lampiran;
 }

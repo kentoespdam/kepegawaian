@@ -22,8 +22,7 @@ public class GajiBatchMasterProses {
     private Long id;
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name = "master_batch_id", referencedColumnName = "id",
-            foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+    @JoinColumn(name = "master_batch_id", referencedColumnName = "id")
     private GajiBatchMaster gajiBatchMaster;
     private Integer urut;
     private String kode;

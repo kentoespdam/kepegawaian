@@ -17,9 +17,7 @@ public interface GajiBatchMasterProsesService {
 
     SavedStatus<?> save(GajiBatchMasterProsesPostRequest request);
 
-    SavedStatus<?> rollback(Long batchMasterId);
+    boolean rollback(Long batchMasterId);
 
     boolean delete(Long id);
-
-    void recalculate(Long batchMasterId);
 }

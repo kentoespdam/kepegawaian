@@ -7,6 +7,7 @@ import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRootErrorLogs.GajiBatch
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRootLampiran.GajiBatchRootLampiranMiniResponse;
 import id.perumdamts.kepegawaian.entities.commons.EProsesGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchRoot;
+import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchRootErrorLogs;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -42,7 +43,7 @@ public class GajiBatchRootResponse {
     private String notes;
     private List<GajiBatchRootLampiranMiniResponse> lampiran;
 
-    public static GajiBatchRootResponse from(GajiBatchRoot entity) {
+    public static GajiBatchRootResponse from(GajiBatchRoot entity, List<GajiBatchRootErrorLogs> errorLogs) {
         GajiBatchRootResponse response = new GajiBatchRootResponse();
         response.setBatchId(entity.getBatchId());
         response.setPeriode(entity.getPeriode());
@@ -60,10 +61,9 @@ public class GajiBatchRootResponse {
         response.setTanggalPersetujuan(entity.getTanggalPersetujuan());
         response.setDiSetujuiOleh(entity.getDiSetujuiOleh());
         response.setJabatanPenyetuju(entity.getJabatanPenyetuju());
-        response.setErrorLogs(entity.getErrorLogs() == null ? null : GajiBatchRootErrorLogsResponse.from(entity.getErrorLogs()));
+        if (errorLogs != null)
+            response.setErrorLogs(errorLogs.stream().map(GajiBatchRootErrorLogsResponse::from).toList());
         response.setNotes(entity.getNotes());
-        if (entity.getLampiran() != null)
-            response.setLampiran(GajiBatchRootLampiranMiniResponse.from(entity.getLampiran()));
         return response;
     }
 }

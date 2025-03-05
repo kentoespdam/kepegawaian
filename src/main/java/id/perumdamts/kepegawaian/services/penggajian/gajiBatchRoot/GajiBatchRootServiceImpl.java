@@ -12,6 +12,7 @@ import id.perumdamts.kepegawaian.entities.commons.EJenisPotonganGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchRoot;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchRootErrorLogs;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchRootLampiran;
+import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchRootErrorLogsRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchRootLampiranRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchRootRepository;
 import id.perumdamts.kepegawaian.utils.FileUploadUtil;
@@ -23,7 +24,6 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +33,7 @@ import static id.perumdamts.kepegawaian.config.KafkaConfig.PENGGAJIAN_TOPIC;
 @RequiredArgsConstructor
 public class GajiBatchRootServiceImpl implements GajiBatchRootService {
     private final GajiBatchRootRepository repository;
+    private final GajiBatchRootErrorLogsRepository errorLogsRepository;
     private final FileUploadUtil fileUploadUtil;
     private final ProcessPotonganTkk processPotonganTkk;
     private final GajiBatchRootLampiranRepository gajiBatchRootLampiranRepository;
@@ -48,17 +49,20 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
         }
 
         return repository.findAll(request.getSpecification(), request.getPageable())
-                .map(GajiBatchRootResponse::from);
+                .map(batchRoot -> {
+                    List<GajiBatchRootErrorLogs> errorLogs = errorLogsRepository.findByGajiBatchRoot_BatchId(batchRoot.getBatchId());
+                    return GajiBatchRootResponse.from(batchRoot, errorLogs);
+                });
     }
+
 
     @Transactional
     @Override
     public List<GajiBatchRootErrorLogsResponse> findErrorLogs(String id) {
-        GajiBatchRoot gajiBatchRoot = repository.findById(id).orElse(null);
-        if (gajiBatchRoot == null)
-            return new ArrayList<>();
-        List<GajiBatchRootErrorLogs> errorLogs = gajiBatchRoot.getErrorLogs();
-        return errorLogs.stream().map(GajiBatchRootErrorLogsResponse::from).toList();
+        return errorLogsRepository.findByGajiBatchRoot_BatchId(id)
+                .stream()
+                .map(GajiBatchRootErrorLogsResponse::from)
+                .toList();
     }
 
     @Override
