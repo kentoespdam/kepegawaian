@@ -60,13 +60,13 @@ public class GajiBatchMasterProsesServiceImpl implements GajiBatchMasterProsesSe
     }
 
     @Override
-    public boolean rollback(Long batchMasterId) {
-        Specification<GajiBatchMasterProses> masterBatchIdSpec = (root, query, cb) -> cb.equal(root.get("gajiBatchMaster").get("id"), batchMasterId);
+    public boolean rollback(Long rootBatchId) {
+        Specification<GajiBatchMasterProses> rootBatchIdSpec = (root, query, cb) -> cb.equal(root.get("gajiBatchMaster").get("gajiBatchRoot").get("id"), rootBatchId);
         Specification<GajiBatchMasterProses> kodeSpec = (root, query, cb) -> cb.like(root.get("kode"), "ADD_%");
-        Specification<GajiBatchMasterProses> spec = Specification.where(masterBatchIdSpec).and(kodeSpec);
+        Specification<GajiBatchMasterProses> spec = Specification.where(rootBatchIdSpec).and(kodeSpec);
         List<GajiBatchMasterProses> all = repository.findAll(spec);
         repository.deleteAll(all);
-        recalculate(batchMasterId);
+        all.forEach(gajiBatchMasterProses -> recalculate(gajiBatchMasterProses.getGajiBatchMaster().getId()));
         return true;
     }
 
@@ -84,8 +84,6 @@ public class GajiBatchMasterProsesServiceImpl implements GajiBatchMasterProsesSe
     private void recalculate(Long masterBatchId) {
         webClient.get()
                 .uri(ENDPOINT + "/recalculate/" + masterBatchId)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
+                .retrieve();
     }
 }

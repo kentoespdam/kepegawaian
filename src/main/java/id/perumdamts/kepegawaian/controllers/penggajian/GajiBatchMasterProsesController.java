@@ -45,9 +45,9 @@ public class GajiBatchMasterProsesController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/{batchMasterId}/rollback")
-    public ResponseEntity<?> rollback(@PathVariable Long batchMasterId) {
-        return CustomResult.delete(service.rollback(batchMasterId));
+    @GetMapping("/{rootBatchId}/rollback")
+    public ResponseEntity<?> rollback(@PathVariable Long rootBatchId) {
+        return CustomResult.delete(service.rollback(rootBatchId));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
