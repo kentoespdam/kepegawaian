@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster;
 
 import id.perumdamts.kepegawaian.entities.commons.EStatusKawin;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
+import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchMaster;
 import lombok.Data;
 
@@ -43,24 +44,26 @@ public class GajiBatchMasterResponse {
     private Double pajak;
     private Boolean isDifferent;
 
-    public static GajiBatchMasterResponse from(GajiBatchMaster entity) {
+    public static GajiBatchMasterResponse from(GajiBatchMaster entity, Organisasi organisasi) {
         GajiBatchMasterResponse result = new GajiBatchMasterResponse();
         result.setId(entity.getId());
-        result.setRootBatchId(entity.getGajiBatchRoot().getBatchId());
+        result.setRootBatchId(entity.getRootBatchId());
         result.setPeriode(entity.getPeriode());
-        result.setPegawaiId(entity.getPegawai().getId());
+        result.setPegawaiId(entity.getPegawaiId());
         result.setNipam(entity.getNipam());
         result.setNama(entity.getNama());
         result.setStatusPegawai(entity.getStatusPegawai());
-        result.setOrganisasiId(entity.getOrganisasi().getId());
-        result.setOrganisasiKode(entity.getOrganisasi().getKode());
-        result.setNamaOrganisasi(entity.getNamaOrganisasi());
-        result.setJabatanId(entity.getJabatan().getId());
+        if (organisasi != null) {
+            result.setOrganisasiId(organisasi.getId());
+            result.setOrganisasiKode(organisasi.getKode());
+            result.setNamaOrganisasi(organisasi.getNama());
+        }
+        result.setJabatanId(entity.getJabatanId());
         result.setNamaJabatan(entity.getNamaJabatan());
         result.setLevelId(entity.getLevelId());
         result.setGolonganId(entity.getGolonganId());
         result.setGolongan(entity.getGolongan());
-        result.setGajiProfilId(entity.getGajiProfil().getId());
+        result.setGajiProfilId(entity.getGajiProfilId());
         result.setKodePajak(entity.getKodePajak());
         result.setGajiPokok(entity.getGajiPokok());
         result.setPhdp(entity.getPhdp());

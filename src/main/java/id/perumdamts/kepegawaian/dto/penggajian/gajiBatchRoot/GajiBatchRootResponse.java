@@ -43,9 +43,9 @@ public class GajiBatchRootResponse {
     private String notes;
     private List<GajiBatchRootLampiranMiniResponse> lampiran;
 
-    public static GajiBatchRootResponse from(GajiBatchRoot entity, List<GajiBatchRootErrorLogs> errorLogs) {
+    public static GajiBatchRootResponse from(GajiBatchRoot entity) {
         GajiBatchRootResponse response = new GajiBatchRootResponse();
-        response.setBatchId(entity.getBatchId());
+        response.setBatchId(entity.getId());
         response.setPeriode(entity.getPeriode());
         response.setStatus(EProsesGaji.values()[entity.getStatus()]);
         response.setTotalPegawai(entity.getTotalPegawai());
@@ -61,6 +61,12 @@ public class GajiBatchRootResponse {
         response.setTanggalPersetujuan(entity.getTanggalPersetujuan());
         response.setDiSetujuiOleh(entity.getDiSetujuiOleh());
         response.setJabatanPenyetuju(entity.getJabatanPenyetuju());
+        response.setNotes(entity.getNotes());
+        return response;
+    }
+
+    public static GajiBatchRootResponse from(GajiBatchRoot entity, List<GajiBatchRootErrorLogs> errorLogs) {
+        GajiBatchRootResponse response = from(entity);
         if (errorLogs != null)
             response.setErrorLogs(errorLogs.stream().map(GajiBatchRootErrorLogsResponse::from).toList());
         response.setNotes(entity.getNotes());

@@ -52,7 +52,7 @@ class GajiBatchMasterProsesServiceImplTest {
             gbm.setPenghasilanBersih2(penghasilanBersih);
             gbm.setPembulatan2(pembulatan);
             gbm.setPenghasilanBersihFinal2(penghasilanBersihFinal);
-            log.info("gbm: {}", gbm.getGajiBatchRoot().getBatchId());
+            log.info("gbm: {}", gbm.getRootBatchId());
 //            batchMasterRepository.save(gbm);
         });
     }

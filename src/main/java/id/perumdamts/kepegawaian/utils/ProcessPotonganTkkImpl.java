@@ -31,7 +31,7 @@ public class ProcessPotonganTkkImpl implements ProcessPotonganTkk {
     @Override
     public void process(String rootBatchId) {
         log.info("Starting Process Potongan TKK, {}", rootBatchId);
-        List<GajiBatchRootLampiran> list = gajiBatchRootLampiranRepository.findByGajiBatchRoot_BatchIdAndJenisLampiranGaji(rootBatchId, EJenisPotonganGaji.POTONGAN_TKK);
+        List<GajiBatchRootLampiran> list = gajiBatchRootLampiranRepository.findByGajiBatchRoot_IdAndJenisLampiranGaji(rootBatchId, EJenisPotonganGaji.POTONGAN_TKK);
         list.sort((l1, l2) -> l2.getId().compareTo(l1.getId()));
         GajiBatchRootLampiran last = list.getLast();
         if (last == null) return;

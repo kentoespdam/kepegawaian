@@ -5,6 +5,7 @@ import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchPotonganTkk;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchRoot;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchRootLampiran;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchPotonganTkkRepository;
+import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchRootLampiranRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchRootRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -35,19 +36,22 @@ class ProcessPotonganTkkImplTest {
     private GajiBatchRootRepository gajiBatchRootRepository;
     @Autowired
     private ProcessPotonganTkk processPotonganTkk;
+    @Autowired
+    private GajiBatchRootLampiranRepository gajiBatchRootLampiranRepository;
 
-//    @Test
+
+    //    @Test
     @Transactional
     void process() {
         GajiBatchRoot gajiBatchRoot = gajiBatchRootRepository.findById("202401-003").orElse(null);
         assert gajiBatchRoot != null;
-        List<GajiBatchRootLampiran> lampiran = gajiBatchRoot.getLampiran();
+        List<GajiBatchRootLampiran> lampiran = gajiBatchRootLampiranRepository.findByGajiBatchRoot_IdAndJenisLampiranGaji(gajiBatchRoot.getId(), EJenisPotonganGaji.POTONGAN_TKK);
         assert lampiran != null;
         GajiBatchRootLampiran last = lampiran.stream().filter(l -> l.getJenisLampiranGaji().equals(EJenisPotonganGaji.POTONGAN_TKK)).toList().getLast();
         log.info("debugging: {}", last.getFileName());
         Sheet sheet1 = setSheetFile(gajiBatchRoot.getPeriode(), last);
         assert sheet1 != null;
-        List<GajiBatchPotonganTkk> potonganTkkList = readingData(gajiBatchRoot.getBatchId(), sheet1);
+        List<GajiBatchPotonganTkk> potonganTkkList = readingData(gajiBatchRoot.getId(), sheet1);
     }
 
     private Sheet setSheetFile(String periode, GajiBatchRootLampiran lampiran) {
@@ -83,8 +87,8 @@ class ProcessPotonganTkkImplTest {
         return list;
     }
 
-//    @Test
-    void execute_proses(){
+    //    @Test
+    void execute_proses() {
         processPotonganTkk.process("202401-004");
     }
 }

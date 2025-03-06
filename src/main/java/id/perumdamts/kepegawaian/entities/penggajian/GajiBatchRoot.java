@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.entities.penggajian;
 
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
@@ -19,7 +20,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -38,7 +38,8 @@ import java.time.LocalDateTime;
 @SQLRestriction("is_deleted = false")
 public class GajiBatchRoot implements Serializable {
     @Id
-    private String batchId;
+    @Column(name = "batch_id", updatable = false, nullable = false)
+    private String id;
     private String periode;
     private Integer status = 0;
     private Integer totalPegawai;

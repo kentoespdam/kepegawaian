@@ -16,7 +16,7 @@ public class GajiBatchRootErrorLogs  {
     private Long id;
     @JsonManagedReference
     @ManyToOne
-    @JoinColumn(name = "root_batch_id", referencedColumnName = "batchId")
+    @JoinColumn(name = "root_batch_id", referencedColumnName = "batch_id")
     private GajiBatchRoot gajiBatchRoot;
     private String nipam;
     private String nama;

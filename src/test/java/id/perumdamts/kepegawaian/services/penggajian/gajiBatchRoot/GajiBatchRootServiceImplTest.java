@@ -6,11 +6,14 @@ import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchRoot;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchRootLampiran;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchRootRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -19,10 +22,10 @@ class GajiBatchRootServiceImplTest {
     @Autowired
     private GajiBatchRootRepository repository;
 
-//    @Test
+    //    @Test
     void simpan() {
         GajiBatchRoot gajiBatchRoot = new GajiBatchRoot();
-        gajiBatchRoot.setBatchId("202401-001");
+        gajiBatchRoot.setId("202401-001");
         gajiBatchRoot.setPeriode("202401");
         gajiBatchRoot.setStatus(EProsesGaji.PENDING.value());
         gajiBatchRoot.setTanggalProses(LocalDateTime.now());
@@ -39,7 +42,12 @@ class GajiBatchRootServiceImplTest {
         gajiBatchRootLampiran.setHashedFileName("randomStringInHere");
 
         log.info("entity: {}", gajiBatchRootLampiran);
-        gajiBatchRoot.getLampiran().add(gajiBatchRootLampiran);
-        log.info("final entity: {}", gajiBatchRoot);
+    }
+
+    @Test
+    void getByBatchId() {
+        GajiBatchRoot gajiBatchRoot = repository.findById("202401-001").orElse(null);
+        assertNotNull(gajiBatchRoot);
+        log.info("entity: {}", gajiBatchRoot);
     }
 }

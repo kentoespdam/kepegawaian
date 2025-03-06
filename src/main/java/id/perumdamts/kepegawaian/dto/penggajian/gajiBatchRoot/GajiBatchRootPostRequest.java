@@ -36,7 +36,7 @@ public class GajiBatchRootPostRequest {
 
     public static GajiBatchRoot toEntityPhase1(GajiBatchRootPostRequest request) {
         GajiBatchRoot entity = new GajiBatchRoot();
-        entity.setBatchId(request.getBatchId());
+        entity.setId(request.getBatchId());
         entity.setPeriode(request.getPeriode());
         entity.setStatus(EProsesGaji.PENDING.value());
         entity.setDiProsesOleh(request.getDiProsesOleh());

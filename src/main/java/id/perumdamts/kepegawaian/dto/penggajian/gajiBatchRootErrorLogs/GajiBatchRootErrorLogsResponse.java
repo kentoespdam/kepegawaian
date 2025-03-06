@@ -16,7 +16,7 @@ public class GajiBatchRootErrorLogsResponse {
     public static GajiBatchRootErrorLogsResponse from(GajiBatchRootErrorLogs entity) {
         GajiBatchRootErrorLogsResponse response = new GajiBatchRootErrorLogsResponse();
         response.setId(entity.getId());
-        response.setBatchId(entity.getGajiBatchRoot().getBatchId());
+        response.setBatchId(entity.getGajiBatchRoot().getId());
         response.setNipam(entity.getNipam());
         response.setNama(entity.getNama());
         response.setNotes(entity.getNotes());

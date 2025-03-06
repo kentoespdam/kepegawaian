@@ -50,7 +50,7 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
 
         return repository.findAll(request.getSpecification(), request.getPageable())
                 .map(batchRoot -> {
-                    List<GajiBatchRootErrorLogs> errorLogs = errorLogsRepository.findByGajiBatchRoot_BatchId(batchRoot.getBatchId());
+                    List<GajiBatchRootErrorLogs> errorLogs = errorLogsRepository.findByGajiBatchRoot_Id(batchRoot.getId());
                     return GajiBatchRootResponse.from(batchRoot, errorLogs);
                 });
     }
@@ -59,7 +59,7 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
     @Transactional
     @Override
     public List<GajiBatchRootErrorLogsResponse> findErrorLogs(String id) {
-        return errorLogsRepository.findByGajiBatchRoot_BatchId(id)
+        return errorLogsRepository.findByGajiBatchRoot_Id(id)
                 .stream()
                 .map(GajiBatchRootErrorLogsResponse::from)
                 .toList();
@@ -75,8 +75,8 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
             GajiBatchRoot entity = GajiBatchRootPostRequest.toEntityPhase1(request);
             repository.findDeletedBatchRoot(request.getPeriode())
                     .ifPresent(gajiBatchRoot -> {
-                        String nextBatchId = request.nextBatchId(gajiBatchRoot.getBatchId());
-                        entity.setBatchId(nextBatchId);
+                        String nextBatchId = request.nextBatchId(gajiBatchRoot.getId());
+                        entity.setId(nextBatchId);
                     });
 
             GajiBatchRoot save = repository.save(entity);
@@ -93,7 +93,7 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
                         uploadResultUtil.getFileName(),
                         uploadResultUtil.getHashedFileName());
                 gajiBatchRootLampiranRepository.save(gajiBatchRootLampiran);
-                processPotonganTkk.process(entity.getBatchId());
+                processPotonganTkk.process(entity.getId());
             }
             kafkaTemplate.send(PENGGAJIAN_TOPIC, mapper.writeValueAsString(save));
             return SavedStatus.build(ESaveStatus.SUCCESS, save);

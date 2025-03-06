@@ -65,8 +65,21 @@ public class GajiBatchMasterProsesServiceImpl implements GajiBatchMasterProsesSe
         Specification<GajiBatchMasterProses> kodeSpec = (root, query, cb) -> cb.like(root.get("kode"), "ADD_%");
         Specification<GajiBatchMasterProses> spec = Specification.where(rootBatchIdSpec).and(kodeSpec);
         List<GajiBatchMasterProses> all = repository.findAll(spec);
-        repository.deleteAll(all);
-        all.forEach(gajiBatchMasterProses -> recalculate(gajiBatchMasterProses.getGajiBatchMaster().getId()));
+        if (!all.isEmpty())
+            repository.deleteAll(all);
+//        all.forEach(gajiBatchMasterProses -> recalculate(gajiBatchMasterProses.getGajiBatchMaster().getId()));
+//        Specification<GajiBatchMaster> rootBatchIdSpec2 = (root, query, cb) -> cb.equal(root.get("gajiBatchRoot").get("id"), rootBatchId);
+//        Specification<GajiBatchMaster> spec2 = Specification.where(rootBatchIdSpec2);
+//        List<GajiBatchMaster> gbmList = gajiBatchMasterRepository.findAll(spec2);
+//        Stream<GajiBatchMaster> peek = gbmList.stream().peek(gajiBatchMaster -> {
+//            gajiBatchMaster.setTotalAddTambahan(0D);
+//            gajiBatchMaster.setTotalAddPotongan(0D);
+//            gajiBatchMaster.setPenghasilanBersih2(0D);
+//            gajiBatchMaster.setPembulatan2(0D);
+//            gajiBatchMaster.setPenghasilanBersihFinal2(0D);
+//        });
+//        System.out.println(gbmList.size());
+//        gajiBatchMasterRepository.saveAll(gbmList);
         return true;
     }
 

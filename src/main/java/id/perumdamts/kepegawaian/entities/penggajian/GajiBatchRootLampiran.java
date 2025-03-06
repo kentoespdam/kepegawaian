@@ -24,7 +24,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class GajiBatchRootLampiran extends IdsAbstract {
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "root_batch_id", referencedColumnName = "batchId")
+    @JoinColumn(name = "root_batch_id", referencedColumnName = "batch_id")
     private GajiBatchRoot gajiBatchRoot;
     @Enumerated(EnumType.ORDINAL)
     private EJenisPotonganGaji jenisLampiranGaji;
