@@ -93,7 +93,7 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
                 gajiBatchRootLampiranRepository.save(gajiBatchRootLampiran);
                 processPotonganTkk.process(entity.getId());
             }
-//            kafkaTemplate.send(PENGGAJIAN_TOPIC, mapper.writeValueAsString(save.getId()));
+            kafkaTemplate.send(PENGGAJIAN_TOPIC, mapper.writeValueAsString(save));
             return SavedStatus.build(ESaveStatus.SUCCESS, save);
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
@@ -103,7 +103,7 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
     @Override
     public SavedStatus<?> reprocess(String id, GajiBatchRootProcessRequest request) {
         try {
-            Optional<GajiBatchRoot> optionalBatchRoot = repository.findById(request.getBatchId());
+            Optional<GajiBatchRoot> optionalBatchRoot = repository.findById(request.getId());
             if (optionalBatchRoot.isEmpty())
                 return SavedStatus.build(ESaveStatus.FAILED, "Unknown Batch Process");
 
@@ -121,7 +121,7 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
     @Override
     public SavedStatus<?> verify1(String id, GajiBatchRootProcessRequest request) {
         try {
-            Optional<GajiBatchRoot> byId = repository.findById(request.getBatchId());
+            Optional<GajiBatchRoot> byId = repository.findById(request.getId());
             if (byId.isEmpty())
                 return SavedStatus.build(ESaveStatus.FAILED, "Unknown Batch Process");
             GajiBatchRoot gajiBatchRoot = GajiBatchRootProcessRequest.verifyPhase1(byId.get(), request);
@@ -135,7 +135,7 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
     @Override
     public SavedStatus<?> verify2(String id, GajiBatchRootProcessRequest request) {
         try {
-            Optional<GajiBatchRoot> byId = repository.findById(request.getBatchId());
+            Optional<GajiBatchRoot> byId = repository.findById(request.getId());
             if (byId.isEmpty())
                 return SavedStatus.build(ESaveStatus.FAILED, "Unknown Batch Process");
             GajiBatchRoot gajiBatchRoot = GajiBatchRootProcessRequest.verifyPhase2(byId.get(), request);
@@ -149,7 +149,7 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
     @Override
     public SavedStatus<?> accept(String id, GajiBatchRootProcessRequest request) {
         try {
-            Optional<GajiBatchRoot> byId = repository.findById(request.getBatchId());
+            Optional<GajiBatchRoot> byId = repository.findById(request.getId());
             if (byId.isEmpty())
                 return SavedStatus.build(ESaveStatus.FAILED, "Unknown Batch Process");
             GajiBatchRoot gajiBatchRoot = GajiBatchRootProcessRequest.accept(byId.get(), request);

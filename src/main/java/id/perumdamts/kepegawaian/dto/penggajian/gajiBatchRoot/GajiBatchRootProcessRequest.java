@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class GajiBatchRootProcessRequest {
-    private String batchId;
+    private String id;
     private String nama;
     private String jabatan;
 
