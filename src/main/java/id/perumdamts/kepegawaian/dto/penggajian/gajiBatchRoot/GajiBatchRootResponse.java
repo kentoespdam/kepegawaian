@@ -61,8 +61,8 @@ public class GajiBatchRootResponse {
         response.setDiSetujuiOleh(entity.getDiSetujuiOleh());
         response.setJabatanPenyetuju(entity.getJabatanPenyetuju());
         response.setNotes(entity.getNotes());
-//        response.setErrorLogs(entity.getErrorLogs().stream().map(GajiBatchRootErrorLogsResponse::from).toList());
-//        response.setLampiran(entity.getLampiranList().stream().map(GajiBatchRootLampiranMiniResponse::from).toList());
+        response.setErrorLogs(entity.getErrorLogs().stream().map(GajiBatchRootErrorLogsResponse::from).toList());
+        response.setLampiran(entity.getLampiranList().stream().map(GajiBatchRootLampiranMiniResponse::from).toList());
         return response;
     }
 

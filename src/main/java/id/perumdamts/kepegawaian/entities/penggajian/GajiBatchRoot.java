@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.entities.penggajian;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import jakarta.persistence.*;
@@ -18,6 +19,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -82,10 +85,10 @@ public class GajiBatchRoot implements Serializable {
     @Column(columnDefinition = "boolean default false")
     private Boolean isDeleted = false;
 
-//    @JsonIgnore
-//    @OneToMany(mappedBy = "gajiBatchRoot", cascade = CascadeType.ALL)
-//    private Set<GajiBatchRootLampiran> lampiranList = new HashSet<>();
-//    @JsonIgnore
-//    @OneToMany(mappedBy = "gajiBatchRoot", cascade = CascadeType.ALL)
-//    private Set<GajiBatchRootErrorLogs> errorLogs = new HashSet<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "gajiBatchRoot", cascade = CascadeType.ALL)
+    private Set<GajiBatchRootLampiran> lampiranList = new HashSet<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "gajiBatchRoot", cascade = CascadeType.ALL)
+    private Set<GajiBatchRootErrorLogs> errorLogs = new HashSet<>();
 }
