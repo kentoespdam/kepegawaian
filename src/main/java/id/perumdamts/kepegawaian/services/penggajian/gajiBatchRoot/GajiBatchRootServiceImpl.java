@@ -29,7 +29,6 @@ import static id.perumdamts.kepegawaian.config.KafkaConfig.PENGGAJIAN_TOPIC;
 @RequiredArgsConstructor
 public class GajiBatchRootServiceImpl implements GajiBatchRootService {
     private final GajiBatchRootRepository repository;
-//    private final GajiBatchRootErrorLogsRepository errorLogsRepository;
     private final FileUploadUtil fileUploadUtil;
     private final ProcessPotonganTkk processPotonganTkk;
     private final GajiBatchRootLampiranRepository gajiBatchRootLampiranRepository;
@@ -93,7 +92,7 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
                 gajiBatchRootLampiranRepository.save(gajiBatchRootLampiran);
                 processPotonganTkk.process(entity.getId());
             }
-            kafkaTemplate.send(PENGGAJIAN_TOPIC, mapper.writeValueAsString(save));
+            kafkaTemplate.send(PENGGAJIAN_TOPIC, mapper.writeValueAsString(save.getId()));
             return SavedStatus.build(ESaveStatus.SUCCESS, save);
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
@@ -111,7 +110,7 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
             repository.save(batchRoot);
 
             GajiBatchRoot savedBatchRoot = repository.save(batchRoot);
-            kafkaTemplate.send(PENGGAJIAN_TOPIC, mapper.writeValueAsString(savedBatchRoot));
+            kafkaTemplate.send(PENGGAJIAN_TOPIC, mapper.writeValueAsString(savedBatchRoot.getId()));
             return SavedStatus.build(ESaveStatus.SUCCESS, savedBatchRoot);
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
