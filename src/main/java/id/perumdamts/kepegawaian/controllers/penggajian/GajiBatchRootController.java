@@ -54,7 +54,7 @@ public class GajiBatchRootController {
     @PatchMapping("/{id}/reprocess")
     public ResponseEntity<?> reprocess(@PathVariable String id, @Valid @RequestBody GajiBatchRootProcessRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
-        if (!request.getBatchId().equals(id)) return ErrorResult.build("Error Process");
+        if (!request.getId().equals(id)) return ErrorResult.build("Error Process");
         return CustomResult.save(service.reprocess(id, request));
     }
 
@@ -62,7 +62,7 @@ public class GajiBatchRootController {
     @PatchMapping("/{id}/verify1")
     public ResponseEntity<?> verify1(@PathVariable String id, @Valid @RequestBody GajiBatchRootProcessRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
-        if (!request.getBatchId().equals(id)) return ErrorResult.build("Error Process");
+        if (!request.getId().equals(id)) return ErrorResult.build("Error Process");
         return CustomResult.save(service.verify1(id, request));
     }
 
@@ -70,7 +70,7 @@ public class GajiBatchRootController {
     @PatchMapping("/{id}/verify2")
     public ResponseEntity<?> verify2(@PathVariable String id, @Valid @RequestBody GajiBatchRootProcessRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
-        if (!request.getBatchId().equals(id)) return ErrorResult.build("Error Process");
+        if (!request.getId().equals(id)) return ErrorResult.build("Error Process");
         return CustomResult.save(service.verify2(id, request));
     }
 
@@ -78,7 +78,7 @@ public class GajiBatchRootController {
     @PatchMapping("/{id}/accept")
     public ResponseEntity<?> accept(@PathVariable String id, @Valid @RequestBody GajiBatchRootProcessRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
-        if (!request.getBatchId().equals(id)) return ErrorResult.build("Error Process");
+        if (!request.getId().equals(id)) return ErrorResult.build("Error Process");
         return CustomResult.save(service.accept(id, request));
     }
 
