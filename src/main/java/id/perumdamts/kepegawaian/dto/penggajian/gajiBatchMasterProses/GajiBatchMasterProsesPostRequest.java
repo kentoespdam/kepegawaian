@@ -2,7 +2,6 @@ package id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMasterProses;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.commons.EJenisGaji;
-import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchMaster;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchMasterProses;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -23,7 +22,7 @@ public class GajiBatchMasterProsesPostRequest {
     @JsonIgnore
     public Specification<GajiBatchMasterProses> getSpecification() {
         Specification<GajiBatchMasterProses> masterBatchIdSpec = Objects.isNull(masterBatchId) ? null :
-                (root, query, cb) -> cb.equal(root.get("gajiBatchMaster").get("id"), masterBatchId);
+                (root, query, cb) -> cb.equal(root.get("masterBatchId"), masterBatchId);
         Specification<GajiBatchMasterProses> namaSpec = Objects.isNull(nama) ? null :
                 (root, query, cb) -> cb.equal(root.get("nama"), nama);
         Specification<GajiBatchMasterProses> jenisGajiSpec = Objects.isNull(jenisGaji) ? null :
@@ -31,9 +30,9 @@ public class GajiBatchMasterProsesPostRequest {
         return Specification.where(masterBatchIdSpec).and(namaSpec).and(jenisGajiSpec);
     }
 
-    public static GajiBatchMasterProses toEntity(GajiBatchMasterProsesPostRequest request, GajiBatchMaster gajiBatchMaster) {
+    public static GajiBatchMasterProses toEntity(GajiBatchMasterProsesPostRequest request) {
         GajiBatchMasterProses entity = new GajiBatchMasterProses();
-        entity.setGajiBatchMaster(gajiBatchMaster);
+        entity.setBatchMasterId(request.getMasterBatchId());
         entity.setKode("ADD_" + request.getNama());
         entity.setUrut(99);
         entity.setNama(request.getNama());

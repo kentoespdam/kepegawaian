@@ -20,7 +20,7 @@ public class GajiBatchMasterProsesResponse {
 
     public static GajiBatchMasterProsesResponse from(GajiBatchMasterProses entity) {
         GajiBatchMasterProsesResponse response = new GajiBatchMasterProsesResponse();
-        response.setGajiBatchMasterId(entity.getGajiBatchMaster().getId());
+        response.setGajiBatchMasterId(entity.getBatchMasterId());
         response.setKode(entity.getKode());
         response.setUrut(entity.getUrut());
         response.setNama(entity.getNama());

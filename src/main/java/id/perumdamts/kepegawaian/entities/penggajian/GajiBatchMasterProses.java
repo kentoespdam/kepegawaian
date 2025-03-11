@@ -1,6 +1,5 @@
 package id.perumdamts.kepegawaian.entities.penggajian;
 
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import id.perumdamts.kepegawaian.entities.commons.EJenisGaji;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,6 +11,7 @@ import lombok.NoArgsConstructor;
         @Index(columnList = "urut"),
         @Index(columnList = "kode"),
         @Index(columnList = "nama"),
+        @Index(columnList = "batchMasterId")
 })
 @Data
 @NoArgsConstructor
@@ -20,11 +20,7 @@ public class GajiBatchMasterProses {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "batch_master_id", referencedColumnName = "id")
-    @JsonIdentityReference(alwaysAsId = true)
-    private GajiBatchMaster gajiBatchMaster;
-    @Column(name = "kode")
+    private Long batchMasterId;
     private String kode;
     private Integer urut;
     private String nama;

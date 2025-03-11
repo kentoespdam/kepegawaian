@@ -1,35 +1,36 @@
 package id.perumdamts.kepegawaian.entities.penggajian;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKawin;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
-import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
+import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.hibernate.envers.Audited;
-import org.hibernate.envers.RelationTargetAuditMode;
 
-@EqualsAndHashCode(callSuper = true)
+import java.io.Serializable;
+
 @Entity
 @Table(indexes = {
         @Index(columnList = "periode"),
         @Index(columnList = "nipam"),
-        @Index(columnList = "nama"),
-        @Index(columnList = "is_deleted")
+        @Index(columnList = "nama")
 })
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
-public class GajiBatchMaster extends IdsAbstract {
-//    @ManyToOne
-//    @JoinColumn(name = "batch_root_id", referencedColumnName = "id")
-//    @JsonBackReference
-//    @JsonIdentityReference(alwaysAsId = true)
-//    private GajiBatchRoot gajiBatchRoot;
-    private Long batch_root_id;
+public class GajiBatchMaster implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @ManyToOne
+    @JoinColumn(name = "batch_root_id", referencedColumnName = "id")
+    @JsonBackReference
+    @JsonIdentityReference(alwaysAsId = true)
+    private GajiBatchRoot gajiBatchRoot;
+//    private Long batch_root_id;
     private String periode;
     private Long pegawaiId;
     private String nipam;
@@ -37,11 +38,11 @@ public class GajiBatchMaster extends IdsAbstract {
     private Long jabatanId;
     private String namaJabatan;
     private Long levelId;
-//    @JsonBackReference
-//    @ManyToOne
-//    @JoinColumn(name = "organisasi_id", referencedColumnName = "id")
-//    @JsonIdentityReference(alwaysAsId = true)
-//    private Organisasi organisasi;
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "organisasi_id", referencedColumnName = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    private Organisasi organisasi;
     private String namaOrganisasi;
     private Long golonganId;
     private String golongan;
@@ -49,11 +50,11 @@ public class GajiBatchMaster extends IdsAbstract {
     @Enumerated(EnumType.ORDINAL)
     private EStatusPegawai statusPegawai;
     private Long gajiProfilId;
-//    @JsonBackReference
-//    @ManyToOne
-//    @JoinColumn(name = "gaji_pendapatan_non_pajak_id", referencedColumnName = "id")
-//    @JsonIdentityReference(alwaysAsId = true)
-//    private GajiPendapatanNonPajak gajiPendapatanNonPajakId;
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "gaji_pendapatan_non_pajak_id", referencedColumnName = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    private GajiPendapatanNonPajak gajiPendapatanNonPajakId;
     private String kodePajak;
     private Double gajiPokok;
     private Double phdp;

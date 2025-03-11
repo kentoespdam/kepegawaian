@@ -5,7 +5,6 @@ import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMasterProses.GajiBatchMasterProsesPostRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMasterProses.GajiBatchMasterProsesRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMasterProses.GajiBatchMasterProsesResponse;
-import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchMaster;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchMasterProses;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchMasterProsesRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchMasterRepository;
@@ -52,9 +51,9 @@ public class GajiBatchMasterProsesServiceImpl implements GajiBatchMasterProsesSe
     public SavedStatus<?> save(GajiBatchMasterProsesPostRequest request) {
         boolean exists = repository.exists(request.getSpecification());
         if (exists) return SavedStatus.build(ESaveStatus.DUPLICATE, "Komponen Gaji sudah ada");
-        GajiBatchMaster gajiBatchMaster = gajiBatchMasterRepository.findById(request.getMasterBatchId())
+        gajiBatchMasterRepository.findById(request.getMasterBatchId())
                 .orElseThrow(() -> new RuntimeException("Unknown Gaji Batch Master"));
-        GajiBatchMasterProses entity = GajiBatchMasterProsesPostRequest.toEntity(request, gajiBatchMaster);
+        GajiBatchMasterProses entity = GajiBatchMasterProsesPostRequest.toEntity(request);
         repository.save(entity);
         return SavedStatus.build(ESaveStatus.SUCCESS, entity);
     }
