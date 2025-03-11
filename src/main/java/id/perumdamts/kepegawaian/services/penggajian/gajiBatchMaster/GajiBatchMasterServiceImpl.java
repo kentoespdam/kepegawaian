@@ -108,7 +108,9 @@ public class GajiBatchMasterServiceImpl implements GajiBatchMasterService {
             webClient.patch()
                     .uri(ENDPOINT + "/upload/" + rootBatchId + "/additional_gaji")
                     .body(request, GajiBatchMasterPostRequest.class)
-                    .retrieve();
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
             return SavedStatus.build(ESaveStatus.SUCCESS, "OK");
 
         } catch (Exception e) {
