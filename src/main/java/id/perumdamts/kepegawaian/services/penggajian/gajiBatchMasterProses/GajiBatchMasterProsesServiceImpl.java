@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Optional;
@@ -61,9 +62,12 @@ public class GajiBatchMasterProsesServiceImpl implements GajiBatchMasterProsesSe
     @Override
     public boolean rollback(String rootBatchId) {
         webClient.delete()
-                .uri(ENDPOINT+"/rollback/"+rootBatchId+"/additional_gaji")
-                .retrieve()
-                .bodyToMono(String.class);
+                .uri(ENDPOINT + "/rollback/" + rootBatchId + "/additional_gaji")
+                .exchangeToMono(clientResponse -> {
+                    Mono<String> stringMono = clientResponse.bodyToMono(String.class);
+                    stringMono.subscribe(log::info);
+                    return stringMono;
+                });
 
         return true;
     }
@@ -74,9 +78,12 @@ public class GajiBatchMasterProsesServiceImpl implements GajiBatchMasterProsesSe
         if (byId.isEmpty())
             return false;
         webClient.delete()
-                .uri(ENDPOINT+"/rollback/"+byId.get().getId()+"/master_batch")
-                .retrieve()
-                .bodyToMono(String.class);
+                .uri(ENDPOINT + "/rollback/" + byId.get().getId() + "/master_batch")
+                .exchangeToMono(clientResponse -> {
+                    Mono<String> stringMono = clientResponse.bodyToMono(String.class);
+                    stringMono.subscribe(log::info);
+                    return stringMono;
+                });
         repository.deleteById(id);
         return true;
     }
