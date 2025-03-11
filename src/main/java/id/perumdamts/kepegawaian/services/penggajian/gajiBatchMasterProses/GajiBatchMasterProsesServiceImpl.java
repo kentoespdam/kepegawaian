@@ -43,7 +43,7 @@ public class GajiBatchMasterProsesServiceImpl implements GajiBatchMasterProsesSe
     @Override
     public List<GajiBatchMasterProsesResponse> findByMasterId(Long id) {
         Specification<GajiBatchMasterProses> where = Specification.where((root, query, cb) ->
-                cb.equal(root.get("gajiBatchMaster").get("id"), id));
+                cb.equal(root.get("batchMasterId"), id));
         return repository.findAll(where).stream().map(GajiBatchMasterProsesResponse::from).toList();
     }
 

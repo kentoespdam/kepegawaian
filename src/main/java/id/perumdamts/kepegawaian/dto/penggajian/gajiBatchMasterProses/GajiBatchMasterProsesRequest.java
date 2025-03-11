@@ -23,7 +23,7 @@ public class GajiBatchMasterProsesRequest extends CommonPageRequest {
     @JsonIgnore
     public Specification<GajiBatchMasterProses> getSpecification() {
         Specification<GajiBatchMasterProses> batchMasterIdSpec = Objects.isNull(batchMasterId) ? null :
-                (root, query, cb) -> cb.equal(root.get("gajiBatchMaster").get("id"), batchMasterId);
+                (root, query, cb) -> cb.equal(root.get("batchMasterId"), batchMasterId);
         Specification<GajiBatchMasterProses> jenisGajiSpec = Objects.isNull(jenisGaji) ? null :
                 (root, query, cb) -> cb.equal(root.get("jenisGaji"), jenisGaji);
         Specification<GajiBatchMasterProses> kodeSpec = Objects.isNull(kode) ? null :
