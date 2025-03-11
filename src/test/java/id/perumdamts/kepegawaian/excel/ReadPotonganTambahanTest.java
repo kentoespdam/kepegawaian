@@ -22,12 +22,12 @@ import java.util.List;
 @ActiveProfiles(value = "test")
 public class ReadPotonganTambahanTest {
     @Autowired
-    private GajiBatchRootLampiranRepository repository;
+    private GajiBatchRootLampiranRepository gajiBatchRootLampiranRepository;
     private final static String FILE_PATH = System.getProperty("user.dir") + "/attachments/Penggajian/potongan/tambahan/";
 
     @Test
     public void test() {
-        List<GajiBatchRootLampiran> list = repository.findByGajiBatchRoot_IdAndJenisLampiranGaji("202401-001", EJenisPotonganGaji.POTONGAN_TAMBAHAN);
+        List<GajiBatchRootLampiran> list = gajiBatchRootLampiranRepository.findByGajiBatchRoot_IdAndJenisLampiranGaji("202401-001", EJenisPotonganGaji.POTONGAN_TAMBAHAN);
         if (list.isEmpty()) return;
         GajiBatchRootLampiran last = list.getLast();
         try {
@@ -59,15 +59,23 @@ public class ReadPotonganTambahanTest {
         log.info("headers: {}", headers);
 
         // Iterate over all rows in the sheet
-//        for (int rowIndex = 10; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
-//            Row row = sheet.getRow(rowIndex);
-//            if (row == null) continue;
-//
+        for (int rowIndex = 10; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
+            Row row = sheet.getRow(rowIndex);
+            if (row == null) continue;
+
 //            Cell cell = row.getCell(0);
 //            // Skip blank cells
 //            if (cell == null || cell.getCellType() == CellType.BLANK) continue;
 //
-//        }
+//            log.info("cell: {}", cell.getStringCellValue());
+            for (int colIndex = 0; colIndex < headers.size(); colIndex++) {
+                Cell cell = row.getCell(colIndex);
+                // Skip blank cells
+                if (cell == null || cell.getCellType() == CellType.BLANK) continue;
+                log.info("cell: {}, {}", headers.get(colIndex), getStrValue(cell));
+            }
+
+        }
     }
 
     private List<String> getHeaders(Sheet sheet) {

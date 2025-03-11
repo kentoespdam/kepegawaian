@@ -19,7 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
@@ -105,12 +107,17 @@ public class GajiBatchMasterServiceImpl implements GajiBatchMasterService {
             gajiBatchRootLampiran.setMimeType(uploadResultUtil.getMimeType());
             gajiBatchRootLampiran.setHashedFileName(uploadResultUtil.getHashedFileName());
             gajiBatchRootLampiranRepository.save(gajiBatchRootLampiran);
-            webClient.patch()
+
+            MultipartBodyBuilder multipartBodyBuilder = new MultipartBodyBuilder();
+            multipartBodyBuilder.part("file", request.getFile().getResource());
+            String block = webClient.patch()
                     .uri(ENDPOINT + "/upload/" + rootBatchId + "/additional_gaji")
-                    .body(request, GajiBatchMasterPostRequest.class)
-                    .retrieve()
-                    .bodyToMono(String.class)
-                    .block();
+                    .body(BodyInserters.fromMultipartData(multipartBodyBuilder.build()))
+                    .exchangeToMono(clientResponse -> {
+                        log.info("debugging: {}", clientResponse.statusCode());
+                        return clientResponse.bodyToMono(String.class);
+                    }).block();
+            log.info("debugging: {}", block);
             return SavedStatus.build(ESaveStatus.SUCCESS, "OK");
 
         } catch (Exception e) {
