@@ -1,6 +1,5 @@
 package id.perumdamts.kepegawaian.services.penggajian.gajiBatchRoot;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRoot.GajiBatchRootPostRequest;
@@ -33,7 +32,6 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
     private final ProcessPotonganTkk processPotonganTkk;
     private final GajiBatchRootLampiranRepository gajiBatchRootLampiranRepository;
     private final KafkaTemplate<String, Object> kafkaTemplate;
-    private final ObjectMapper mapper = new ObjectMapper();
 
     @Override
     @Transactional
@@ -44,23 +42,8 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
         }
         return repository.findAll(request.getSpecification(), request.getPageable())
                 .map(GajiBatchRootResponse::from);
-
-//        return repository.findAll(request.getSpecification(), request.getPageable())
-//                .map(batchRoot -> {
-//                    List<GajiBatchRootErrorLogs> errorLogs = errorLogsRepository.findByGajiBatchRoot_Id(batchRoot.getId());
-//                    return GajiBatchRootResponse.from(batchRoot, errorLogs);
-//                });
     }
 
-
-//    @Transactional
-//    @Override
-//    public List<GajiBatchRootErrorLogsResponse> findErrorLogs(String id) {
-//        return errorLogsRepository.findByGajiBatchRoot_Id(id)
-//                .stream()
-//                .map(GajiBatchRootErrorLogsResponse::from)
-//                .toList();
-//    }
 
     @Override
     public SavedStatus<?> save(GajiBatchRootPostRequest request) {
@@ -92,7 +75,7 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
                 gajiBatchRootLampiranRepository.save(gajiBatchRootLampiran);
                 processPotonganTkk.process(entity.getId());
             }
-            kafkaTemplate.send(PENGGAJIAN_TOPIC, mapper.writeValueAsString(save.getId()));
+            kafkaTemplate.send(PENGGAJIAN_TOPIC, save.getId());
             return SavedStatus.build(ESaveStatus.SUCCESS, save);
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
@@ -110,7 +93,7 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
             repository.save(batchRoot);
 
             GajiBatchRoot savedBatchRoot = repository.save(batchRoot);
-            kafkaTemplate.send(PENGGAJIAN_TOPIC, mapper.writeValueAsString(savedBatchRoot.getId()));
+            kafkaTemplate.send(PENGGAJIAN_TOPIC, savedBatchRoot.getId());
             return SavedStatus.build(ESaveStatus.SUCCESS, savedBatchRoot);
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());

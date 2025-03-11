@@ -37,12 +37,6 @@ public class GajiBatchRootController {
         return CustomResult.any(service.findAll(request));
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
-//    @GetMapping("/{id}/errors")
-//    public ResponseEntity<?> errorLogs(@PathVariable String id) {
-//        return CustomResult.list(service.findErrorLogs(id));
-//    }
-
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> create(@Valid @ModelAttribute GajiBatchRootPostRequest request, Errors errors) {

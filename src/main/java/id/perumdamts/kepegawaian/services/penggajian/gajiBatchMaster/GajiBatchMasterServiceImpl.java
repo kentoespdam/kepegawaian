@@ -16,17 +16,20 @@ import id.perumdamts.kepegawaian.utils.FileUploadUtil;
 import id.perumdamts.kepegawaian.utils.UploadResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
 
 @Service
 @Slf4j
-
 public class GajiBatchMasterServiceImpl implements GajiBatchMasterService {
+    @Value("${penggajian.endpoint}")
+    private String ENDPOINT;
     @Autowired
     private GajiBatchMasterRepository repository;
     @Autowired
@@ -37,6 +40,8 @@ public class GajiBatchMasterServiceImpl implements GajiBatchMasterService {
     private FileUploadUtil fileUploadUtil;
     @Autowired
     private GajiBatchRootLampiranRepository gajiBatchRootLampiranRepository;
+    @Autowired
+    private WebClient webClient;
 
     @Override
     public List<GajiBatchMasterResponse> findAll(GajiBatchMasterRequest request) {
@@ -87,7 +92,10 @@ public class GajiBatchMasterServiceImpl implements GajiBatchMasterService {
             boolean exist = gajiBatchRootRepository.existsById(rootBatchId);
             if (!exist)
                 throw new RuntimeException("Unknown Batch Id");
-            UploadResultUtil uploadResultUtil = fileUploadUtil.uploadPenggajian(request.getFile(), "potongan/tambahan/" + rootBatchId.split("-")[0]);
+            UploadResultUtil uploadResultUtil = fileUploadUtil.uploadPenggajian(
+                    request.getFile(),
+                    "potongan/tambahan/" + rootBatchId.split("-")[0]
+            );
             if (!uploadResultUtil.isSuccess())
                 throw new RuntimeException(uploadResultUtil.getMessage());
             GajiBatchRootLampiran gajiBatchRootLampiran = new GajiBatchRootLampiran();
@@ -97,6 +105,10 @@ public class GajiBatchMasterServiceImpl implements GajiBatchMasterService {
             gajiBatchRootLampiran.setMimeType(uploadResultUtil.getMimeType());
             gajiBatchRootLampiran.setHashedFileName(uploadResultUtil.getHashedFileName());
             gajiBatchRootLampiranRepository.save(gajiBatchRootLampiran);
+            webClient.patch()
+                    .uri(ENDPOINT + "/upload/" + rootBatchId + "/additional_gaji")
+                    .body(request, GajiBatchMasterPostRequest.class)
+                    .retrieve();
             return SavedStatus.build(ESaveStatus.SUCCESS, "OK");
 
         } catch (Exception e) {
