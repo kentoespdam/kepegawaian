@@ -40,7 +40,7 @@ public class GajiBatchMasterServiceImpl implements GajiBatchMasterService {
 
     @Override
     public List<GajiBatchMasterResponse> findAll(GajiBatchMasterRequest request) {
-        return repository.findAll().stream()
+        return repository.findAll(request.getSpecification()).stream()
                 .map(GajiBatchMasterResponse::from).toList();
     }
 
