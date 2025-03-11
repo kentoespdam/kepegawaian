@@ -5,6 +5,7 @@ import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMasterProses.GajiBatchMasterProsesPostRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMasterProses.GajiBatchMasterProsesRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMasterProses.GajiBatchMasterProsesResponse;
+import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchMaster;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchMasterProses;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchMasterProsesRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchMasterRepository;
@@ -14,8 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +27,6 @@ public class GajiBatchMasterProsesServiceImpl implements GajiBatchMasterProsesSe
     private String ENDPOINT;
     private final GajiBatchMasterProsesRepository repository;
     private final GajiBatchMasterRepository gajiBatchMasterRepository;
-    private final WebClient webClient;
 
     @Override
     public Page<GajiBatchMasterProsesResponse> findPage(GajiBatchMasterProsesRequest request) {
@@ -61,13 +59,27 @@ public class GajiBatchMasterProsesServiceImpl implements GajiBatchMasterProsesSe
 
     @Override
     public boolean rollback(String rootBatchId) {
-        webClient.delete()
-                .uri(ENDPOINT + "/rollback/" + rootBatchId + "/additional_gaji")
-                .exchangeToMono(clientResponse -> {
-                    Mono<String> stringMono = clientResponse.bodyToMono(String.class);
-                    stringMono.subscribe(log::info);
-                    return stringMono;
-                });
+        List<GajiBatchMaster> gbmList = gajiBatchMasterRepository.findByGajiBatchRoot_Id(rootBatchId);
+        if (gbmList.isEmpty())
+            return false;
+
+        Specification<GajiBatchMasterProses> kodeSpec = (root, query, cb) ->
+                cb.like(root.get("kode"), "ADD_%");
+        Specification<GajiBatchMasterProses> gbmSpec = (root, query, cb) ->
+                cb.in(root.get("batchMasterId")).value(gbmList.stream().map(GajiBatchMaster::getId).toList());
+        Specification<GajiBatchMasterProses> where = kodeSpec.and(gbmSpec);
+        List<GajiBatchMasterProses> gbpList = repository.findAll(where);
+        if (!gbpList.isEmpty())
+            repository.deleteAll(gbpList);
+
+        List<GajiBatchMaster> list = gbmList.stream().peek(gbm -> {
+            gbm.setTotalAddTambahan(0D);
+            gbm.setTotalAddPotongan(0D);
+            gbm.setPenghasilanBersih2(0D);
+            gbm.setPembulatan2(0D);
+            gbm.setPenghasilanBersihFinal2(0D);
+        }).toList();
+        gajiBatchMasterRepository.saveAll(list);
 
         return true;
     }
@@ -77,12 +89,15 @@ public class GajiBatchMasterProsesServiceImpl implements GajiBatchMasterProsesSe
         Optional<GajiBatchMasterProses> byId = repository.findById(id);
         if (byId.isEmpty())
             return false;
-        webClient.delete()
-                .uri(ENDPOINT + "/rollback/" + byId.get().getId() + "/master_batch")
-                .exchangeToMono(clientResponse -> {
-                    Mono<String> stringMono = clientResponse.bodyToMono(String.class);
-                    stringMono.subscribe(log::info);
-                    return stringMono;
+        Long batchMasterId = byId.get().getBatchMasterId();
+        gajiBatchMasterRepository.findById(batchMasterId)
+                .ifPresent(gbm -> {
+                    gbm.setTotalAddTambahan(0D);
+                    gbm.setTotalAddPotongan(0D);
+                    gbm.setPenghasilanBersih2(0D);
+                    gbm.setPembulatan2(0D);
+                    gbm.setPenghasilanBersihFinal2(0D);
+                    gajiBatchMasterRepository.save(gbm);
                 });
         repository.deleteById(id);
         return true;
