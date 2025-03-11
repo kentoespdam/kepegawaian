@@ -8,6 +8,7 @@ import lombok.Data;
 
 @Data
 public class GajiBatchMasterProsesResponse {
+    private Long id;
     private Long gajiBatchMasterId;
     private String kode;
     private Integer urut;
@@ -20,6 +21,7 @@ public class GajiBatchMasterProsesResponse {
 
     public static GajiBatchMasterProsesResponse from(GajiBatchMasterProses entity) {
         GajiBatchMasterProsesResponse response = new GajiBatchMasterProsesResponse();
+        response.setId(entity.getId());
         response.setGajiBatchMasterId(entity.getBatchMasterId());
         response.setKode(entity.getKode());
         response.setUrut(entity.getUrut());
