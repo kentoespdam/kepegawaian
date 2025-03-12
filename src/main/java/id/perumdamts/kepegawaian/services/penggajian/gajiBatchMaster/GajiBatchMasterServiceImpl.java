@@ -7,9 +7,7 @@ import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterP
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterResponse;
 import id.perumdamts.kepegawaian.entities.commons.EJenisPotonganGaji;
-import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchRootLampiran;
-import id.perumdamts.kepegawaian.repositories.master.OrganisasiRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchMasterRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchRootLampiranRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchRootRepository;
@@ -28,7 +26,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -47,21 +44,9 @@ public class GajiBatchMasterServiceImpl implements GajiBatchMasterService {
     private GajiBatchRootLampiranRepository gajiBatchRootLampiranRepository;
     @Autowired
     private WebClient webClient;
-    @Autowired
-    private OrganisasiRepository organisasiRepository;
 
     @Override
     public List<GajiBatchMasterResponse> findAll(GajiBatchMasterRequest request) {
-        Optional<Organisasi> organisasiOptional = organisasiRepository.findById(request.getOrganisasiId());
-        if (organisasiOptional.isPresent()) {
-            Organisasi organisasi = organisasiOptional.get();
-            if (organisasi.getLevelOrg() == 4) {
-                request.setOrganisasiKode(organisasi.getKode());
-            } else if (organisasi.getLevelOrg() == 5) {
-                Organisasi parent = organisasi.getParent();
-                request.setOrganisasiKode(parent.getKode());
-            }
-        }
         return repository.findAll(request.getSpecification()).stream()
                 .map(GajiBatchMasterResponse::from)
                 .toList();
