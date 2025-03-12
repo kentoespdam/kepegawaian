@@ -24,6 +24,7 @@ public class GajiBatchMasterRequest extends CommonPageRequest {
     private EProsesGaji status;
     private String nipam;
     private String nama;
+    private Long organisasiId;
 
     @JsonIgnore
     public Specification<GajiBatchMaster> getSpecification() {
@@ -35,7 +36,8 @@ public class GajiBatchMasterRequest extends CommonPageRequest {
                 (root, query, cb) -> cb.equal(root.get("nipam"), nipam);
         Specification<GajiBatchMaster> namaSpec = Objects.isNull(nama) ? null :
                 (root, query, cb) -> cb.like(root.get("nama"), "%" + nama + "%");
-
-        return Specification.where(batchIdSpec).and(statusSpec).and(nipamSpec).and(namaSpec);
+        Specification<GajiBatchMaster> organisasiIdSpec = Objects.isNull(organisasiId) ? null :
+                (root, query, cb) -> cb.equal(root.get("organisasi").get("id"), organisasiId);
+        return Specification.where(batchIdSpec).and(statusSpec).and(nipamSpec).and(namaSpec).and(organisasiIdSpec);
     }
 }
