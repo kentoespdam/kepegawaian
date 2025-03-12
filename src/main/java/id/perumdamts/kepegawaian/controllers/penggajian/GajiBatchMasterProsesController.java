@@ -51,8 +51,8 @@ public class GajiBatchMasterProsesController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/{masterId}/master_batch_id/{kode}/kode")
-    public ResponseEntity<?> delete(@PathVariable Long masterId, @PathVariable String kode) {
-        return CustomResult.delete(service.delete(masterId));
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        return CustomResult.delete(service.delete(id));
     }
 }
