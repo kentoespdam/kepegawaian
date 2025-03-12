@@ -5,6 +5,7 @@ import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMasterProses.GajiBatchMasterProsesPostRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMasterProses.GajiBatchMasterProsesRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMasterProses.GajiBatchMasterProsesResponse;
+import id.perumdamts.kepegawaian.entities.commons.EJenisGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchMaster;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchMasterProses;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchMasterProsesRepository;
@@ -50,10 +51,13 @@ public class GajiBatchMasterProsesServiceImpl implements GajiBatchMasterProsesSe
     public SavedStatus<?> save(GajiBatchMasterProsesPostRequest request) {
         boolean exists = repository.exists(request.getSpecification());
         if (exists) return SavedStatus.build(ESaveStatus.DUPLICATE, "Komponen Gaji sudah ada");
-        gajiBatchMasterRepository.findById(request.getBatchMasterId())
+
+        GajiBatchMaster gajiBatchMaster = gajiBatchMasterRepository.findById(request.getBatchMasterId())
                 .orElseThrow(() -> new RuntimeException("Unknown Gaji Batch Master"));
         GajiBatchMasterProses entity = GajiBatchMasterProsesPostRequest.toEntity(request);
         repository.save(entity);
+
+        recalculateAdditional(gajiBatchMaster);
         return SavedStatus.build(ESaveStatus.SUCCESS, entity);
     }
 
@@ -101,5 +105,44 @@ public class GajiBatchMasterProsesServiceImpl implements GajiBatchMasterProsesSe
                 });
         repository.deleteById(id);
         return true;
+    }
+
+    private void recalculateAdditional(GajiBatchMaster gajiBatchMaster) {
+        List<GajiBatchMasterProses> gajiBatchMasterProsesList = repository.findByBatchMasterId(gajiBatchMaster.getId());
+        double addPemasukan = getSumAdditionalByJenisGaji(gajiBatchMasterProsesList, EJenisGaji.PEMASUKAN);
+        double addPotongan = getSumAdditionalByJenisGaji(gajiBatchMasterProsesList, EJenisGaji.POTONGAN);
+        double totalPemasukan = getSumByJenisGaji(gajiBatchMasterProsesList, EJenisGaji.PEMASUKAN);
+        double totalPotongan = getSumByJenisGaji(gajiBatchMasterProsesList, EJenisGaji.POTONGAN);
+
+        double penghasilanBersih2 = totalPemasukan - totalPotongan;
+        double pembulatan2 = Math.round((Math.ceil(penghasilanBersih2 / 100) * 100) - penghasilanBersih2);
+        double penghasilanBersihFinal2 = penghasilanBersih2 - pembulatan2;
+
+        gajiBatchMaster.setTotalAddTambahan(addPemasukan);
+        gajiBatchMaster.setTotalAddPotongan(addPotongan);
+        gajiBatchMaster.setPenghasilanBersih2(penghasilanBersih2);
+        gajiBatchMaster.setPembulatan2(pembulatan2);
+        gajiBatchMaster.setPenghasilanBersihFinal2(penghasilanBersihFinal2);
+        gajiBatchMasterRepository.save(gajiBatchMaster);
+    }
+
+    private List<GajiBatchMasterProses> filterGajiBatchMasterProses(List<GajiBatchMasterProses> list, EJenisGaji jenisGaji) {
+        return list.stream()
+                .filter(gbr -> gbr.getJenisGaji().equals(jenisGaji))
+                .toList();
+    }
+
+    private Double getSumByJenisGaji(List<GajiBatchMasterProses> list, EJenisGaji jenisGaji) {
+        return filterGajiBatchMasterProses(list, jenisGaji)
+                .stream()
+                .mapToDouble(GajiBatchMasterProses::getNilai)
+                .sum();
+    }
+
+    private Double getSumAdditionalByJenisGaji(List<GajiBatchMasterProses> list, EJenisGaji jenisGaji) {
+        return filterGajiBatchMasterProses(list, jenisGaji)
+                .stream().filter(gbr -> gbr.getKode().startsWith("ADD_"))
+                .mapToDouble(GajiBatchMasterProses::getNilai)
+                .sum();
     }
 }
