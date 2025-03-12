@@ -14,15 +14,15 @@ import java.util.Objects;
 public class GajiBatchMasterProsesPostRequest {
     @Min(value = 1, message = "Master Batch ID required")
     @NotNull(message = "Master Batch ID required")
-    private Long masterBatchId;
+    private Long batchMasterId;
     private String nama;
     private EJenisGaji jenisGaji;
     private Double nilai;
 
     @JsonIgnore
     public Specification<GajiBatchMasterProses> getSpecification() {
-        Specification<GajiBatchMasterProses> masterBatchIdSpec = Objects.isNull(masterBatchId) ? null :
-                (root, query, cb) -> cb.equal(root.get("masterBatchId"), masterBatchId);
+        Specification<GajiBatchMasterProses> masterBatchIdSpec = Objects.isNull(batchMasterId) ? null :
+                (root, query, cb) -> cb.equal(root.get("batchMasterId"), batchMasterId);
         Specification<GajiBatchMasterProses> namaSpec = Objects.isNull(nama) ? null :
                 (root, query, cb) -> cb.equal(root.get("nama"), nama);
         Specification<GajiBatchMasterProses> jenisGajiSpec = Objects.isNull(jenisGaji) ? null :
@@ -32,7 +32,7 @@ public class GajiBatchMasterProsesPostRequest {
 
     public static GajiBatchMasterProses toEntity(GajiBatchMasterProsesPostRequest request) {
         GajiBatchMasterProses entity = new GajiBatchMasterProses();
-        entity.setBatchMasterId(request.getMasterBatchId());
+        entity.setBatchMasterId(request.getBatchMasterId());
         entity.setKode("ADD_" + request.getNama());
         entity.setUrut(99);
         entity.setNama(request.getNama());

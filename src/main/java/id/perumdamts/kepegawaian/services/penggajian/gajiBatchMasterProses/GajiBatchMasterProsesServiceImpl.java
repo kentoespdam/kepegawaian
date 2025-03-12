@@ -50,7 +50,7 @@ public class GajiBatchMasterProsesServiceImpl implements GajiBatchMasterProsesSe
     public SavedStatus<?> save(GajiBatchMasterProsesPostRequest request) {
         boolean exists = repository.exists(request.getSpecification());
         if (exists) return SavedStatus.build(ESaveStatus.DUPLICATE, "Komponen Gaji sudah ada");
-        gajiBatchMasterRepository.findById(request.getMasterBatchId())
+        gajiBatchMasterRepository.findById(request.getBatchMasterId())
                 .orElseThrow(() -> new RuntimeException("Unknown Gaji Batch Master"));
         GajiBatchMasterProses entity = GajiBatchMasterProsesPostRequest.toEntity(request);
         repository.save(entity);
