@@ -18,7 +18,7 @@ import java.time.LocalDate;
 public class ProfilKeluargaPostRequest {
     @NotEmpty(message = "Biodata ID is required")
     private String biodataId;
-    @NotEmpty(message = "Nik is required")
+//    @NotEmpty(message = "Nik is required")
     private String nik;
     @NotEmpty(message = "Nama is required")
     private String nama;
