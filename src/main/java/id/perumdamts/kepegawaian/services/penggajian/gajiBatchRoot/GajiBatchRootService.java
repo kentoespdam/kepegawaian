@@ -10,8 +10,6 @@ import org.springframework.data.domain.Page;
 public interface GajiBatchRootService {
     Page<GajiBatchRootResponse> findAll(GajiBatchRootRequest request);
 
-//    List<GajiBatchRootErrorLogsResponse> findErrorLogs(String id);
-
     SavedStatus<?> save(GajiBatchRootPostRequest request);
 
     SavedStatus<?> reprocess(String id, GajiBatchRootProcessRequest request);

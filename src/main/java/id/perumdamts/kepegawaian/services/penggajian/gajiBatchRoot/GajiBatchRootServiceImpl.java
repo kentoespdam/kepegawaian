@@ -7,6 +7,7 @@ import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRoot.GajiBatchRootProce
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRoot.GajiBatchRootRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRoot.GajiBatchRootResponse;
 import id.perumdamts.kepegawaian.entities.commons.EJenisPotonganGaji;
+import id.perumdamts.kepegawaian.entities.commons.EProsesGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchRoot;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchRootLampiran;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchRootLampiranRepository;
@@ -145,7 +146,9 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
     @Override
     public boolean delete(String id) {
         Optional<GajiBatchRoot> byId = repository.findById(id);
-        if (byId.isEmpty())
+        if (byId.isEmpty()
+                || byId.get().getStatus().equals(EProsesGaji.PROSES.value())
+                || byId.get().getStatus().equals(EProsesGaji.FINISHED.value()))
             return false;
         byId.get().setIsDeleted(true);
         repository.save(byId.get());
