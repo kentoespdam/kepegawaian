@@ -16,14 +16,19 @@ public class PelatihanResponse {
     private BiodataMiniResponse biodata;
     private JenisPelatihanResponse jenisPelatihan;
     private String nama;
-    private String nilai;
-    private Boolean lulus;
+    private String lembaga;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tanggalMulai;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tanggalSelesai;
+    private Boolean lulus;
+    private String nilai;
+    private Boolean ikatanDinas;
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate tanggalAkhirIkatan;
     private String notes;
     private Boolean disetujui;
     private String disetujuiOleh;
@@ -36,10 +41,13 @@ public class PelatihanResponse {
         response.setBiodata(biodata);
         response.setJenisPelatihan(jenisPelatihan);
         response.setNama(entity.getNama());
-        response.setNilai(entity.getNilai());
-        response.setLulus(entity.getLulus());
+        response.setLembaga(entity.getLembaga());
         response.setTanggalMulai(entity.getTanggalMulai());
         response.setTanggalSelesai(entity.getTanggalSelesai());
+        response.setLulus(entity.getLulus());
+        response.setNilai(entity.getNilai());
+        response.setIkatanDinas(entity.getIkatanDinas());
+        response.setTanggalAkhirIkatan(entity.getTanggalAkhirIkatan());
         response.setNotes(entity.getNotes());
         response.setDisetujui(entity.getDisetujui());
         response.setDisetujuiOleh(entity.getDisetujuiOleh());

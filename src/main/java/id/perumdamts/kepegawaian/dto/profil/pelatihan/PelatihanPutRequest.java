@@ -11,10 +11,13 @@ public class PelatihanPutRequest extends PelatihanPostRequest {
         entity.setBiodata(biodata);
         entity.setJenisPelatihan(jenisPelatihan);
         entity.setNama(request.getNama());
-        entity.setNilai(request.getNilai());
-        entity.setLulus(request.getLulus());
+        entity.setLembaga(request.getLembaga());
         entity.setTanggalMulai(request.getTanggalMulai());
         entity.setTanggalSelesai(request.getTanggalSelesai());
+        entity.setLulus(request.getLulus());
+        entity.setNilai(request.getNilai());
+        entity.setIkatanDinas(request.getIkatanDinas());
+        entity.setTanggalAkhirIkatan(request.getTanggalAkhirIkatan());
         entity.setNotes(request.getNotes());
         entity.setDisetujui(false);
         entity.setTanggalPengajuan(LocalDateTime.now());
