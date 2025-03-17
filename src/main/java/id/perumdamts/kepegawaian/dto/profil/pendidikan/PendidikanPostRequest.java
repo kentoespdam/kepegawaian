@@ -23,7 +23,6 @@ public class PendidikanPostRequest {
     @NotEmpty(message = "Institusi is required")
     private String institusi;
     private String kota;
-    @Min(value = 1970, message = "Tahun Masuk is required")
     private Integer tahunMasuk;
     @Min(value = 1970, message = "Tahun Lulus is required")
     private Integer tahunLulus;
