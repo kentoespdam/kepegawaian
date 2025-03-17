@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface RiwayatSkRepository extends JpaRepository<RiwayatSk, Long>, JpaSpecificationExecutor<RiwayatSk> {
     List<RiwayatSk> findByIdIn(List<Long> riwayatIds);
+
+    List<RiwayatSk> findByPegawai_Id(Long pegawaiId);
 }

@@ -20,12 +20,14 @@ import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
 @Data
+@Slf4j
 public class PegawaiResponseDetail {
     private Long id;
     private String nipam;
@@ -50,6 +52,7 @@ public class PegawaiResponseDetail {
     private RiwayatSkResponse skGolongan;
     private RiwayatSkResponse skJabatan;
     private RiwayatSkResponse skMutasi;
+    private RiwayatSkResponse skKontrak;
     private Double gajiPokok;
     private Double phdp;
     private Integer jmlTanggungan;
@@ -99,7 +102,8 @@ public class PegawaiResponseDetail {
                 response.setSkJabatan(riwayatSkResponse);
             if (riwayatSkResponse.getJenisSk().equals(EJenisSk.SK_MUTASI))
                 response.setSkMutasi(riwayatSkResponse);
-
+            if (riwayatSkResponse.getJenisSk().equals(EJenisSk.SK_LAINNYA) && pegawai.getStatusPegawai().equals(EStatusPegawai.KONTRAK))
+                response.setSkKontrak(riwayatSkResponse);
         }
         response.setTmtPensiun(pegawai.getTmtPensiun());
         response.setGajiPokok(pegawai.getGajiPokok());

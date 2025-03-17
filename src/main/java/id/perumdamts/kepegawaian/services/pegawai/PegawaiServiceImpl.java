@@ -26,9 +26,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -71,13 +69,7 @@ public class PegawaiServiceImpl implements PegawaiService {
     @Override
     public PegawaiResponseDetail findById(Long id) {
         return repository.findById(id).map(pegawai -> {
-            List<Long> riwayatIds = new ArrayList<>();
-            if (Objects.nonNull(pegawai.getRefSkCapegId())) riwayatIds.add(pegawai.getRefSkCapegId());
-            if (Objects.nonNull(pegawai.getRefSkPegawaiId())) riwayatIds.add(pegawai.getRefSkPegawaiId());
-            if (Objects.nonNull(pegawai.getRefSkGolId())) riwayatIds.add(pegawai.getRefSkGolId());
-            if (Objects.nonNull(pegawai.getRefSkJabatanId())) riwayatIds.add(pegawai.getRefSkJabatanId());
-            if (Objects.nonNull(pegawai.getRefSkMutasiId())) riwayatIds.add(pegawai.getRefSkMutasiId());
-            List<RiwayatSkResponse> riwayatSkResponses = riwayatSkService.findByIds(riwayatIds);
+            List<RiwayatSkResponse> riwayatSkResponses = riwayatSkService.findByPegawai(pegawai.getId());
             return PegawaiResponseDetail.from(pegawai, riwayatSkResponses);
         }).orElse(null);
     }
