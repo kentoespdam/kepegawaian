@@ -13,13 +13,11 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
 @Data
 public class RiwayatKontrakPostRequest {
-//    @Enumerated(EnumType.ORDINAL)
     private EJenisKontrak jenisKontrak;
     @NotNull(message = "Pegawai ID is required")
     @Min(value = 1, message = "Pegawai ID must be greater than or equal to 1")
@@ -49,7 +47,6 @@ public class RiwayatKontrakPostRequest {
     private Double gajiPokok;
     private Boolean isLatest = false;
     private String notes;
-    private MultipartFile fileName;
 
     @JsonIgnore
     public Specification<RiwayatKontrak> getSpecification() {
