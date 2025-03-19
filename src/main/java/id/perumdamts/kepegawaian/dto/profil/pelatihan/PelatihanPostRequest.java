@@ -30,11 +30,10 @@ public class PelatihanPostRequest {
     @NotNull(message = "Tanggal Selesai is required")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tanggalSelesai;
-    private Boolean lulus=true;
+    private Boolean lulus = true;
     @NotEmpty(message = "Nilai is required")
     private String nilai;
-    private Boolean ikatanDinas=false;
-    @NotNull(message = "Tanggal Akhir Ikatan is required")
+    private Boolean ikatanDinas = false;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tanggalAkhirIkatan;
     private String notes;
@@ -46,8 +45,10 @@ public class PelatihanPostRequest {
         Specification<Pelatihan> pelatihanSpec = (root, query, cb) ->
                 cb.equal(root.get("jenisPelatihan").get("id"), jenisPelatihanId);
         Specification<Pelatihan> namaSpec = (root, query, cb) ->
-                cb.equal(root.get("nama"),  nama);
-        return Specification.where(biodataSpec).and(pelatihanSpec).and(namaSpec);
+                cb.equal(root.get("nama"), nama);
+        Specification<Pelatihan> tanggalSpec = (root, query, cb) ->
+                cb.equal(root.get("tanggalMulai"), tanggalMulai);
+        return Specification.where(biodataSpec).and(pelatihanSpec).and(namaSpec).and(tanggalSpec);
     }
 
     public static Pelatihan toEntity(PelatihanPostRequest request, Biodata biodata, JenisPelatihan jenisPelatihan) {

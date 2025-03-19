@@ -40,7 +40,7 @@ public class PegawaiPatchGaji {
         entity.setIsAskes(request.getIsAskes());
         entity.setKodePajak(kodePajak);
         entity.setGajiProfil(gajiProfil);
-        entity.setRumahDinas(rumahDinas);
+        if (rumahDinas != null) entity.setRumahDinas(rumahDinas);
         return entity;
     }
 }

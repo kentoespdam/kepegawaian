@@ -35,7 +35,7 @@ public class PegawaiRequest extends CommonPageRequest {
 
     public Specification<Pegawai> getSpecification() {
         Specification<Pegawai> pegawaiSpec = Objects.isNull(nipam) ? null :
-                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("nipam"), nipam);
+                (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("nipam"), nipam + "%");
         Specification<Pegawai> nikSpec = Objects.isNull(nik) ? null :
                 (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("biodata").get("nik"), nik);
         Specification<Pegawai> namaSpec = Objects.isNull(nama) ? null :
