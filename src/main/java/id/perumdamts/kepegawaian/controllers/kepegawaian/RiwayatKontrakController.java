@@ -32,14 +32,14 @@ public class RiwayatKontrakController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<?> save(@Valid @RequestBody RiwayatKontrakPostRequest request, Errors errors) {
+    public ResponseEntity<?> save(@Valid @ModelAttribute RiwayatKontrakPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         return CustomResult.save(service.save(request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody RiwayatKontrakPutRequest request, Errors errors) {
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @ModelAttribute RiwayatKontrakPutRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         return CustomResult.save(service.update(id, request));
     }

@@ -151,11 +151,12 @@ public class GenericSkService {
         pegawai.setStatusKerja(EStatusKerja.BERHENTI_OR_KELUAR);
         pegawaiService.updatePegawai(pegawai);
         if (request.getFileName() != null) {
-            LampiranSkPostRequest lampiranSkPostRequest = new LampiranSkPostRequest();
-            lampiranSkPostRequest.setRef(EJenisSk.SK_PENSIUN);
-            lampiranSkPostRequest.setRefId(riwayatSk.getId());
-            lampiranSkPostRequest.setFileName(request.getFileName());
-            lampiranSkPostRequest.setNotes(request.getNotes());
+            LampiranSkPostRequest lampiranSkPostRequest = LampiranSkPostRequest.builder()
+                    .ref(EJenisSk.SK_PENSIUN)
+                    .refId(riwayatSk.getId())
+                    .fileName(request.getFileName())
+                    .notes(request.getNotes())
+                    .build();
             lampiranSkService.addLampiran(lampiranSkPostRequest);
         }
         return riwayatSk;
@@ -176,11 +177,12 @@ public class GenericSkService {
                 if (oldLampiran != null)
                     lampiranSkService.deleteById(oldLampiran.getId());
 
-                LampiranSkPostRequest lampiranSkPostRequest = new LampiranSkPostRequest();
-                lampiranSkPostRequest.setRef(EJenisSk.SK_PENSIUN);
-                lampiranSkPostRequest.setRefId(skTerminasi.getId());
-                lampiranSkPostRequest.setFileName(request.getFileName());
-                lampiranSkPostRequest.setNotes(request.getNotes());
+                LampiranSkPostRequest lampiranSkPostRequest = LampiranSkPostRequest.builder()
+                        .ref(EJenisSk.SK_PENSIUN)
+                        .refId(skTerminasi.getId())
+                        .fileName(request.getFileName())
+                        .notes(request.getNotes())
+                        .build();
                 lampiranSkService.addLampiran(lampiranSkPostRequest);
             }
             return repository.save(skTerminasi);
