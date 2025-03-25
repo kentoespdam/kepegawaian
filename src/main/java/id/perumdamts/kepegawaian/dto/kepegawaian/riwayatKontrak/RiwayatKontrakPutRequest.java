@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class RiwayatKontrakPutRequest extends RiwayatKontrakPostRequest {
     public static RiwayatKontrak toEntity(RiwayatKontrak entity, RiwayatKontrakPutRequest request, Pegawai pegawai) {
+        entity.setJenisKontrak(request.getJenisKontrak());
         entity.setPegawai(pegawai);
         entity.setNipam(request.getNipam());
         entity.setNama(request.getNama());

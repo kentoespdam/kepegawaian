@@ -67,5 +67,6 @@ public class RiwayatSk extends IdsAbstract {
     private Integer mkgbTahun=0;
     private Integer mkgbBulan=0;
     private Boolean updateMaster = false;
+    @Column(columnDefinition = "TEXT")
     private String notes;
 }

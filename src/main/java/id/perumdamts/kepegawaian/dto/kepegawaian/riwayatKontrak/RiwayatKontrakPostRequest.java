@@ -60,6 +60,7 @@ public class RiwayatKontrakPostRequest {
 
     public static RiwayatKontrak toEntity(RiwayatKontrakPostRequest request, Pegawai pegawai) {
         RiwayatKontrak entity = new RiwayatKontrak();
+        entity.setJenisKontrak(request.getJenisKontrak());
         entity.setPegawai(pegawai);
         entity.setNipam(request.getNipam());
         entity.setNama(request.getNama());
@@ -74,6 +75,7 @@ public class RiwayatKontrakPostRequest {
 
     public static RiwayatKontrak toEntity(PegawaiPostRequest request, Pegawai pegawai) {
         RiwayatKontrak entity = new RiwayatKontrak();
+        entity.setJenisKontrak(EJenisKontrak.PENGANGKATAN);
         entity.setPegawai(pegawai);
         entity.setNipam(pegawai.getNipam());
         entity.setNama(pegawai.getBiodata().getNama());
