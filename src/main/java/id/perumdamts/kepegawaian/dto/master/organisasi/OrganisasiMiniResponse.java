@@ -11,6 +11,7 @@ public class OrganisasiMiniResponse {
     private String ShortName;
 
     public static OrganisasiMiniResponse from(Organisasi organisasi) {
+        if (organisasi == null) return null;
         OrganisasiMiniResponse response = new OrganisasiMiniResponse();
         response.setId(organisasi.getId());
         response.setKode(organisasi.getKode());

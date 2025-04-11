@@ -54,6 +54,10 @@ public class Jabatan extends IdsAbstract {
         super(id);
     }
 
+    public Jabatan(String nama) {
+        this.nama = nama;
+    }
+
     public Jabatan(Long id, String kode, Jabatan jabatan, Organisasi organisasi, Level level, String nama) {
         super(id);
         this.kode = kode;

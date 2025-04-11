@@ -11,6 +11,7 @@ public class ProfesiMiniResponse {
     private String nama;
 
     public static ProfesiMiniResponse from(Profesi profesi) {
+        if (profesi == null) return null;
         ProfesiMiniResponse response = new ProfesiMiniResponse();
         response.setId(profesi.getId());
         response.setNama(profesi.getNama());

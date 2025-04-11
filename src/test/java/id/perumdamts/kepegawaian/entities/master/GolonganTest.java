@@ -11,8 +11,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -34,7 +34,7 @@ class GolonganTest {
     @BeforeEach
     public void setup() {
         openMocks(this);
-        List<String> roles = List.of("ADMIN");
+        Set<String> roles = Set.of("ADMIN");
         Prefs prefs = new Prefs();
         prefs.setRoles(roles);
 

@@ -12,6 +12,7 @@ public class JabatanMiniResponse {
     private String nama;
 
     public static JabatanMiniResponse from(Jabatan entity) {
+        if (entity == null) return null;
         JabatanMiniResponse response = new JabatanMiniResponse();
         response.setId(entity.getId());
         response.setKode(entity.getKode());

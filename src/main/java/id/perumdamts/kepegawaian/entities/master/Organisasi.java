@@ -48,4 +48,8 @@ public class Organisasi extends IdsAbstract {
         this.nama = nama;
         this.shortName = shortName;
     }
+
+    public Organisasi(String nama) {
+        this.nama = nama;
+    }
 }
