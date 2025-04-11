@@ -51,7 +51,7 @@ public class PendidikanPostRequest {
         entity.setTahunLulus(request.tahunLulus);
         entity.setGpa(request.gpa);
         entity.setIsLatest(request.isLatest);
-        entity.setDisetujui(false);
+        entity.setDisetujui(true);
         entity.setTanggalPengajuan(LocalDateTime.now());
         return entity;
     }

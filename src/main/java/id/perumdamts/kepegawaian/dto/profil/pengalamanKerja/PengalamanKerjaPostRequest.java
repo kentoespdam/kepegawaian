@@ -57,7 +57,7 @@ public class PengalamanKerjaPostRequest {
         entity.setTanggalMasuk(request.getTanggalMasuk());
         entity.setTanggalKeluar(request.getTanggalKeluar());
         entity.setNotes(request.getNotes());
-        entity.setDisetujui(false);
+        entity.setDisetujui(true);
         entity.setTanggalPengajuan(LocalDateTime.now());
         return entity;
     }

@@ -51,7 +51,7 @@ public class KeahlianPostRequest {
         entity.setInstitusi(request.getInstitusi());
         entity.setTahun(request.getTahun());
         entity.setMasaBerlaku(request.getMasaBerlaku());
-        entity.setDisetujui(false);
+        entity.setDisetujui(true);
         entity.setTanggalPengajuan(LocalDateTime.now());
         return entity;
     }

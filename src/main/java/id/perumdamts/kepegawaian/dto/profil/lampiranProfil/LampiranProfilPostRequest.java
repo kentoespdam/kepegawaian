@@ -44,7 +44,7 @@ public class LampiranProfilPostRequest implements Serializable {
         entity.setNotes(request.getNotes());
         entity.setHashedFileName(hashedFileName);
         entity.setMimeType(mimeType);
-        entity.setDisetujui(false);
+        entity.setDisetujui(true);
         entity.setTanggalPengajuan(LocalDateTime.now());
         return entity;
     }
