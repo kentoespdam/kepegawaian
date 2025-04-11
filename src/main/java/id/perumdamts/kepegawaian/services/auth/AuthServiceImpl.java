@@ -66,13 +66,16 @@ public class AuthServiceImpl implements AuthService {
                 .name(pegawai.getBiodata().getNama())
                 .build();
 
-        webClient.post()
+        WebClient.ResponseSpec responseSpec = webClient.post()
                 .uri(appwriteUrl + "/users")
                 .header("X-Appwrite-Project", appwriteProjectId)
                 .header("X-Appwrite-Key", appwriteApiKey)
                 .bodyValue(user)
                 .retrieve();
 
+        responseSpec
+                .bodyToMono(String.class)
+                .block();
         List<PrefRole> prefRoles = List.of(new PrefRole("ADMIN"), new PrefRole("USER"));
         updatePref(pegawai.getId().toString(), prefRoles);
     }
@@ -84,12 +87,17 @@ public class AuthServiceImpl implements AuthService {
         Map<String, Object> wrapper = Map.of("prefs", prefs);
 
         try {
-            webClient.patch()
+            WebClient.ResponseSpec responseSpec = webClient.patch()
                     .uri(appwriteUrl + "/users/" + id + "/prefs")
                     .header("X-Appwrite-Project", appwriteProjectId)
                     .header("X-Appwrite-Key", appwriteApiKey)
                     .bodyValue(wrapper)
                     .retrieve();
+
+            responseSpec
+                    .bodyToMono(String.class)
+                    .block();
+
         } catch (Exception e) {
             log.info(e.getMessage());
         }
