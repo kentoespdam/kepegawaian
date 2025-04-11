@@ -16,6 +16,7 @@ import id.perumdamts.kepegawaian.repositories.master.*;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiPendapatanNonPajakRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiProfilRepository;
 import id.perumdamts.kepegawaian.repositories.profil.BiodataRepository;
+import id.perumdamts.kepegawaian.services.auth.AuthService;
 import id.perumdamts.kepegawaian.services.kepegawaian.riwayatKontrak.GenericKontrakService;
 import id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk.RiwayatSkService;
 import id.perumdamts.kepegawaian.services.profil.biodata.BiodataService;
@@ -45,6 +46,7 @@ public class PegawaiServiceImpl implements PegawaiService {
     private final GajiPendapatanNonPajakRepository gajiPendapatanNonPajakRepository;
     private final GajiProfilRepository gajiProfilRepository;
     private final RumahDinasRepository rumahDinasRepository;
+    private final AuthService authService;
 
     private static final EStatusPegawai[] EXCLUDED_GOLONGAN_STATUSES = {
             EStatusPegawai.KONTRAK,
@@ -122,16 +124,16 @@ public class PegawaiServiceImpl implements PegawaiService {
                     pegawai.setRefSkPegawaiId(riwayatSk.getId());
                     pegawai.setMkgTahun(0);
                     pegawai.setMkgBulan(0);
-
-                    pegawai = repository.save(pegawai);
-
+                    repository.save(pegawai);
                     break;
                 default:
-                    pegawai = saveCapeg(request, pegawai);
+                    saveCapeg(request, pegawai);
                     break;
             }
 
-            return SavedStatus.build(ESaveStatus.SUCCESS, pegawai);
+            authService.createUser(pegawai);
+
+            return SavedStatus.build(ESaveStatus.SUCCESS, "ok");
 
         } catch (Exception e) {
             log.error("pegawai: {}", e.getMessage());
@@ -220,12 +222,12 @@ public class PegawaiServiceImpl implements PegawaiService {
         return true;
     }
 
-    private Pegawai saveCapeg(PegawaiPostRequest request, Pegawai pegawai) {
+    private void saveCapeg(PegawaiPostRequest request, Pegawai pegawai) {
         RiwayatSk riwayatSk = riwayatSkService.saveCapeg(request, pegawai);
         pegawai.setRefSkCapegId(riwayatSk.getId());
         pegawai.setMkgTahun(0);
         pegawai.setMkgBulan(0);
 
-        return repository.save(pegawai);
+        repository.save(pegawai);
     }
 }

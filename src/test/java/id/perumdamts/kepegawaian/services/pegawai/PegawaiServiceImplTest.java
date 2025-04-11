@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.services.pegawai;
 
+import id.perumdamts.kepegawaian.dto.appwrite.AppwriteUser;
+import id.perumdamts.kepegawaian.dto.appwrite.PrefRole;
 import id.perumdamts.kepegawaian.dto.appwrite.Prefs;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
@@ -11,14 +13,16 @@ import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatKontrak;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
-import id.perumdamts.kepegawaian.repositories.master.*;
 import id.perumdamts.kepegawaian.services.kepegawaian.riwayatKontrak.GenericKontrakService;
 import id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk.RiwayatSkService;
-import id.perumdamts.kepegawaian.services.profil.biodata.BiodataService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -26,36 +30,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.when;
 
 
 @SpringBootTest
 //@AutoConfigureMockMvc
 @Slf4j
 class PegawaiServiceImplTest {
-//    @Mock
-//    private SecurityContext securityContext;
-//    @Mock
-//    private Authentication authentication;
+    @Mock
+    private SecurityContext securityContext;
+    @Mock
+    private Authentication authentication;
 
     @Autowired
     private PegawaiServiceImpl service;
     @Autowired
     private PegawaiRepository repository;
-    @Autowired
-    private JabatanRepository jabatanRepository;
-    @Autowired
-    private OrganisasiRepository organisasiRepository;
-    @Autowired
-    private ProfesiRepository profesiRepository;
-    @Autowired
-    private GolonganRepository golonganRepository;
-    @Autowired
-    private GradeRepository gradeRepository;
-    @Autowired
-    private BiodataService biodataService;
     @Autowired
     private RiwayatSkService riwayatSkService;
     @Autowired
@@ -64,36 +58,6 @@ class PegawaiServiceImplTest {
     private PegawaiPostRequest request;
 
     private void setupRequest() {
-        /*
-{
-    "nik": "1234567890123450",
-    "nama": "Test Kontrak",
-    "jenisKelamin": "LAKI_LAKI",
-    "tempatLahir": "BANYUMAS",
-    "tanggalLahir": "2000-09-14",
-    "alamat": "umah",
-    "telp": "081234567890",
-    "agama": "ISLAM",
-    "ibuKandung": "BIYUNGE",
-    "pendidikanTerakhirId": 7,
-    "golonganDarah": "B",
-    "statusKawin": "BELUM_KAWIN",
-    "notes": "coba test tenaga kontrak",
-    "statusPegawai": "KONTRAK",
-    "nipam": "KO-001",
-    "statusKerja": "KARYAWAN_AKTIF",
-    "organisasiId": 39,
-    "jabatanId": 59,
-    "profesiId": 44,
-    "gradeId": 8,
-    "golonganId": 0,
-    "nomorSk": "01/01/2024",
-    "tanggalSk": "2024-01-24",
-    "tmtBerlakuSk": "2024-02-01",
-    "tmtKontrakSelesai": "2026-02-01",
-    "gajiPokok": 1250000
-  }
- */
         request = new PegawaiPostRequest();
         request.setNik("1234567890123450");
         request.setNama("Test Kontrak");
@@ -124,19 +88,19 @@ class PegawaiServiceImplTest {
     @BeforeEach
     public void setup() {
 //        openMocks(this);
-        List<String> roles = List.of("ADMIN");
+        List<PrefRole> roles = List.of(new PrefRole("ADMIN"));
         Prefs prefs = new Prefs();
-        prefs.setRoles(roles);
+        prefs.setRoles(roles.stream().map(PrefRole::getId).collect(Collectors.toSet()));
 
-//        AppwriteUser user = new AppwriteUser();
-//        user.set$id("ADMIN");
-//        user.setName("Bagus Sudrajat");
-//        user.setPrefs(prefs);
-//
-//        when(securityContext.getAuthentication()).thenReturn(authentication);
-//        SecurityContextHolder.setContext(securityContext);
-//        when(authentication.isAuthenticated()).thenReturn(true);
-//        when(authentication.getPrincipal()).thenReturn(user);
+        AppwriteUser user = new AppwriteUser();
+        user.set$id("ADMIN");
+        user.setName("Bagus Sudrajat");
+        user.setPrefs(prefs);
+
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        when(authentication.isAuthenticated()).thenReturn(true);
+        when(authentication.getPrincipal()).thenReturn(user);
 //
 //        setupRequest();
     }
