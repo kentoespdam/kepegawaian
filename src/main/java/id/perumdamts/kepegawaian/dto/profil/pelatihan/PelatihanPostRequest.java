@@ -64,7 +64,7 @@ public class PelatihanPostRequest {
         entity.setIkatanDinas(request.getIkatanDinas());
         entity.setTanggalAkhirIkatan(request.getTanggalAkhirIkatan());
         entity.setNotes(request.getNotes());
-        entity.setDisetujui(false);
+        entity.setDisetujui(true);
         entity.setTanggalPengajuan(LocalDateTime.now());
         return entity;
     }
