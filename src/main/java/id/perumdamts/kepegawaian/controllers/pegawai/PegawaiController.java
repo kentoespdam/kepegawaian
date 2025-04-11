@@ -55,7 +55,7 @@ public class PegawaiController {
     public ResponseEntity<?> save(@Valid @RequestBody PegawaiPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
 
-        Long[] ignoreJabatan={1L,2L,3L,4L};
+        Long[] ignoreJabatan={1L,2L,3L,25L};
 
         if (request.getStatusPegawai().equals(EStatusPegawai.PEGAWAI) && !ArrayUtils.contains(ignoreJabatan, request.getJabatanId())) {
             Set<ConstraintViolation<PegawaiPostRequest>> validate = validator.validate(request, PegawaiTetap.class);

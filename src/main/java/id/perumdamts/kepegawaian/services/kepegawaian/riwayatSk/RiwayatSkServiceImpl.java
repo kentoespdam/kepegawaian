@@ -122,7 +122,7 @@ public class RiwayatSkServiceImpl implements RiwayatSkService {
 
     @Override
     public RiwayatSk savePegawai(PegawaiPostRequest request, Pegawai pegawai) {
-        Long[] excludeGolonganJabatan = {1L, 2L, 3L, 4L};
+        Long[] excludeGolonganJabatan = {1L, 2L, 3L, 25L};
         Golongan golongan = ArrayUtils.contains(excludeGolonganJabatan, request.getJabatanId()) ||
                 pegawai.getStatusPegawai() != EStatusPegawai.PEGAWAI ? null : golonganService.findGolonganById(request.getGolonganId());
         LocalDate kenaikanBerikutnya = LocalDate.now().plusYears(2);
