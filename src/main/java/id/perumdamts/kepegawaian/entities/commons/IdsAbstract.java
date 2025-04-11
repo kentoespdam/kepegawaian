@@ -31,7 +31,7 @@ public abstract class IdsAbstract implements Serializable {
     private String createdBy;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @CreatedDate
-    @Column(name = "created_at", updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    @Column(name = "created_at", updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
     @Audited
     @LastModifiedBy
