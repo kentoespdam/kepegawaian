@@ -22,6 +22,7 @@ public class SetupJabatan implements SetupMaster {
     public void insertBatch() throws JsonProcessingException {
         initializeData();
         updateData();
+        cleanup();
     }
 
     private void initializeData() {
