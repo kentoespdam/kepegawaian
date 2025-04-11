@@ -86,4 +86,12 @@ public class OpenApiConfig {
                 .pathsToMatch("/penggajian/**")
                 .build();
     }
+
+    @Bean
+    public GroupedOpenApi userApi() {
+        return GroupedOpenApi.builder()
+                .group("auth")
+                .pathsToMatch("/auth/**")
+                .build();
+    }
 }
