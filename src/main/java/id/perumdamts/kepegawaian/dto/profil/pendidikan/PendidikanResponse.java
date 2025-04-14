@@ -21,7 +21,7 @@ public class PendidikanResponse {
     private String institusi;
     private String kota;
     private Integer tahunMasuk;
-    private Boolean lulus;
+    private Boolean isLulus;
     private Integer tahunLulus;
     private Double gpa;
     private Boolean isLatest;
@@ -47,7 +47,7 @@ public class PendidikanResponse {
         response.setInstitusi(entity.getInstitusi());
         response.setKota(entity.getKota());
         response.setTahunMasuk(entity.getTahunMasuk());
-        response.setLulus(entity.getLulus());
+        response.setIsLulus(entity.getIsLulus());
         response.setTahunLulus(entity.getTahunLulus());
         response.setGpa(entity.getGpa());
         response.setIsLatest(entity.getIsLatest());

@@ -45,7 +45,7 @@ public class Pendidikan extends IdsAbstract {
     private String institusi;
     private String kota;
     private Integer tahunMasuk;
-    private Boolean lulus;
+    private Boolean isLulus;
     private Integer tahunLulus;
     private Double gpa;
     @Column(columnDefinition = "boolean default false")
