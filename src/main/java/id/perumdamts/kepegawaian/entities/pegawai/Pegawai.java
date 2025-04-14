@@ -29,8 +29,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(
-        name = "pegawai",
+@Table(name = "pegawai",
         indexes = {
                 @Index(columnList = "nipam", unique = true),
                 @Index(columnList = "tmt_pensiun"),
@@ -45,11 +44,11 @@ import java.util.List;
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class Pegawai extends IdsAbstract {
     @NotEmpty
-    @Column(name = "nipam", unique = true, columnDefinition = "VARCHAR(9)")
+    @Column(name = "nipam", columnDefinition = "VARCHAR(32)", nullable = false)
     private String nipam;
     @JsonBackReference
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "nik", unique = true, referencedColumnName = "nik")
+    @JoinColumn(name = "nik", referencedColumnName = "nik")
     private Biodata biodata;
     @Column(name = "status_pegawai", nullable = false)
     @Enumerated(EnumType.ORDINAL)
