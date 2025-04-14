@@ -24,7 +24,7 @@ public class PendidikanPostRequest {
     private String institusi;
     private String kota;
     private Integer tahunMasuk;
-    @Min(value = 1970, message = "Tahun Lulus is required")
+    private Boolean lulus;
     private Integer tahunLulus;
     private Double gpa;
     private Boolean isLatest=false;
@@ -48,6 +48,7 @@ public class PendidikanPostRequest {
         entity.setInstitusi(request.institusi);
         entity.setKota(request.kota);
         entity.setTahunMasuk(request.tahunMasuk);
+        entity.setLulus(request.lulus);
         entity.setTahunLulus(request.tahunLulus);
         entity.setGpa(request.gpa);
         entity.setIsLatest(request.isLatest);
