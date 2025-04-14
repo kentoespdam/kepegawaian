@@ -44,7 +44,7 @@ import java.util.List;
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class Pegawai extends IdsAbstract {
     @NotEmpty
-    @Column(name = "nipam", columnDefinition = "VARCHAR(32)", nullable = false)
+    @Column(name = "nipam", unique = true, columnDefinition = "VARCHAR(32)", nullable = false)
     private String nipam;
     @JsonBackReference
     @OneToOne(fetch = FetchType.EAGER)
