@@ -14,7 +14,6 @@ import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -36,10 +35,8 @@ public class PengalamanKerja extends IdsAbstract {
     private String typePerusahaan;
     private String jabatan;
     private String lokasi;
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate tanggalMasuk;
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate tanggalKeluar;
+    private Integer tahunMasuk;
+    private Integer tahunKeluar;
     private String notes;
     @Column(columnDefinition = "boolean default false")
     private Boolean disetujui;

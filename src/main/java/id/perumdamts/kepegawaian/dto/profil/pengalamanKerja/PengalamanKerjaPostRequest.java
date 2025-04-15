@@ -1,15 +1,12 @@
 package id.perumdamts.kepegawaian.dto.profil.pengalamanKerja;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.PengalamanKerja;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -25,12 +22,8 @@ public class PengalamanKerjaPostRequest {
     private String jabatan;
     @NotEmpty(message = "Lokasi is required")
     private String lokasi;
-    @NotNull(message = "Tanggal Masuk is required")
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate tanggalMasuk;
-    @NotNull(message = "Tanggal Keluar is required")
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate tanggalKeluar;
+    private Integer tahunMasuk;
+    private Integer tahunKeluar;
     private String notes;
 
     @JsonIgnore
@@ -54,8 +47,8 @@ public class PengalamanKerjaPostRequest {
         entity.setTypePerusahaan(request.getTypePerusahaan());
         entity.setJabatan(request.getJabatan());
         entity.setLokasi(request.getLokasi());
-        entity.setTanggalMasuk(request.getTanggalMasuk());
-        entity.setTanggalKeluar(request.getTanggalKeluar());
+        entity.setTahunMasuk(request.getTahunMasuk());
+        entity.setTahunKeluar(request.getTahunKeluar());
         entity.setNotes(request.getNotes());
         entity.setDisetujui(true);
         entity.setTanggalPengajuan(LocalDateTime.now());
