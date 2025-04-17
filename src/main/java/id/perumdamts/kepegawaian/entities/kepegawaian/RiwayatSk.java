@@ -29,8 +29,6 @@ import java.time.LocalDate;
         @Index(columnList = "mkgTahun"),
         @Index(columnList = "mkgbTahun"),
         @Index(columnList = "is_deleted"),
-}, uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"nipam", "nomorSk"})
 })
 @Data
 @NoArgsConstructor
