@@ -12,7 +12,7 @@ public class UserResponse {
     private String nipam;
     private String nama;
     private Prefs prefs;
-    private Boolean isBlocked;
+    private Boolean isActive;
     private Boolean isVerified;
 
     public static UserResponse build(Pegawai pegawai, @Nullable AppwriteUser user) {
@@ -23,7 +23,7 @@ public class UserResponse {
         if (user!=null) {
             response.setPrefs(user.getPrefs());
             response.setIsVerified(user.getEmailVerification());
-            response.setIsBlocked(!user.getStatus());
+            response.setIsActive(user.getStatus());
         }
         return response;
     }
