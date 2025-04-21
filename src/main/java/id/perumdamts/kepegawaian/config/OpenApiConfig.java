@@ -94,4 +94,12 @@ public class OpenApiConfig {
                 .pathsToMatch("/auth/**")
                 .build();
     }
+
+    @Bean
+    public GroupedOpenApi systemApi() {
+        return GroupedOpenApi.builder()
+                .group("System")
+                .pathsToMatch("/system/**")
+                .build();
+    }
 }

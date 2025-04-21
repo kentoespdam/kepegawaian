@@ -1,11 +1,13 @@
 package id.perumdamts.kepegawaian.services.auth;
 
+import id.perumdamts.kepegawaian.dto.appwrite.AppwriteUser;
 import id.perumdamts.kepegawaian.dto.appwrite.AppwriteUserPostRequest;
 import id.perumdamts.kepegawaian.dto.appwrite.PrefRole;
 import id.perumdamts.kepegawaian.dto.appwrite.Prefs;
 import id.perumdamts.kepegawaian.dto.auth.AuthPostRequest;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
+import id.perumdamts.kepegawaian.dto.users.UserPatchStatusRequest;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +31,18 @@ public class AuthServiceImpl implements AuthService {
     private String appwriteApiKey;
 
     private final WebClient webClient;
+
+    @Override
+    public AppwriteUser getUser(String id) {
+        return webClient.get()
+                .uri(appwriteUrl + "/users/" + id)
+                .header("Content-Type", "application/json")
+                .header("X-Appwrite-Response-Format", "1.0.0")
+                .header("X-Appwrite-Project", appwriteProjectId)
+                .header("X-Appwrite-Key", appwriteApiKey)
+                .exchangeToMono(response -> response.bodyToMono(AppwriteUser.class))
+                .block();
+    }
 
     @Override
     public SavedStatus<?> createUser(AuthPostRequest request) {
@@ -78,6 +92,18 @@ public class AuthServiceImpl implements AuthService {
                 .block();
         List<PrefRole> prefRoles = List.of(new PrefRole("ADMIN"), new PrefRole("USER"));
         updatePref(pegawai.getId().toString(), prefRoles);
+    }
+
+    @Override
+    public AppwriteUser updateStatus(String id, UserPatchStatusRequest status) {
+        return webClient.patch()
+                .uri(appwriteUrl + "/users/" + id + "/status")
+                .header("X-Appwrite-Project", appwriteProjectId)
+                .header("X-Appwrite-Key", appwriteApiKey)
+                .bodyValue(status)
+                .retrieve()
+                .bodyToMono(AppwriteUser.class)
+                .block();
     }
 
     @Override

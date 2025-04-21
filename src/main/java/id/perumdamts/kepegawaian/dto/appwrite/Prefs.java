@@ -14,6 +14,8 @@ public class Prefs {
     private Set<String> roles;
 
     public List<String> getRoles() {
+        if (roles == null)
+            return List.of();
         return roles.stream()
                 .map(String::toUpperCase)
                 .toList();

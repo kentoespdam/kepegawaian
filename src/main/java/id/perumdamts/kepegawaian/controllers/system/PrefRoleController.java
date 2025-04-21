@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.controllers.auth;
+package id.perumdamts.kepegawaian.controllers.system;
 
 import id.perumdamts.kepegawaian.dto.appwrite.PrefRole;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/auth/prefs/roles")
+@RequestMapping("/system/roles")
 @RequiredArgsConstructor
 public class PrefRoleController {
     private final PrefRoleRepository repository;
