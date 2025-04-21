@@ -69,7 +69,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     }
 
     private UsernamePasswordAuthenticationToken getDevelopmentAuthentication() {
-        Set<String> roles = Set.of("ADMIN");
+        Set<String> roles = Set.of("ADMIN","SYSTEM");
         Prefs prefs = new Prefs();
         prefs.setRoles(roles);
 
