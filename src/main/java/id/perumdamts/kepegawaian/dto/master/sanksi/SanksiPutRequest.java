@@ -18,6 +18,7 @@ public class SanksiPutRequest extends SanksiPostRequest {
         entity.setIsPendingGaji(request.getIsPendingGaji());
         entity.setIsTurunPangkat(request.getIsTurunPangkat());
         entity.setIsTurunJabatan(request.getIsTurunJabatan());
+        entity.setIsSuspension(request.getIsSuspension());
         entity.setIsTerminateDh(request.getIsTerminateDh());
         entity.setIsTerminateTh(request.getIsTerminateTh());
         return entity;

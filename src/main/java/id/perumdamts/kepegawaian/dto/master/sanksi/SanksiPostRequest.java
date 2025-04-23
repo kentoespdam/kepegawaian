@@ -26,6 +26,7 @@ public class SanksiPostRequest {
     private Boolean isPendingGaji;
     private Boolean isTurunPangkat;
     private Boolean isTurunJabatan;
+    private Boolean isSuspension;
     private Boolean isTerminateDh;
     private Boolean isTerminateTh;
 
@@ -51,6 +52,7 @@ public class SanksiPostRequest {
         sanksi.setIsPendingGaji(request.getIsPendingGaji());
         sanksi.setIsTurunPangkat(request.getIsTurunPangkat());
         sanksi.setIsTurunJabatan(request.getIsTurunJabatan());
+        sanksi.setIsSuspension(request.getIsSuspension());
         sanksi.setIsTerminateDh(request.getIsTerminateDh());
         sanksi.setIsTerminateTh(request.getIsTerminateTh());
         return sanksi;

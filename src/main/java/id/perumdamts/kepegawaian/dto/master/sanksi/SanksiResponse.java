@@ -14,6 +14,7 @@ public class SanksiResponse {
     private Boolean isPendingGaji;
     private Boolean isTurunPangkat;
     private Boolean isTurunJabatan;
+    private Boolean isSuspension;
     private Boolean isTerminateDh;
     private Boolean isTerminateTh;
 
@@ -28,6 +29,7 @@ public class SanksiResponse {
         response.setIsPendingGaji(sanksi.getIsPendingGaji());
         response.setIsTurunPangkat(sanksi.getIsTurunPangkat());
         response.setIsTurunJabatan(sanksi.getIsTurunJabatan());
+        response.setIsSuspension(sanksi.getIsSuspension());
         response.setIsTerminateDh(sanksi.getIsTerminateDh());
         response.setIsTerminateTh(sanksi.getIsTerminateTh());
         return response;
