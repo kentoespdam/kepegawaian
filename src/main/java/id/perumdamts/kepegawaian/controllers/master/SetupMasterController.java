@@ -22,6 +22,8 @@ public class SetupMasterController {
     private final SetupJenisKitas setupJenisKitas;
     private final SetupJenisPelatihan setupJenisPelatihan;
     private final SetupJenjangPendidikan setupJenjangPendidikan;
+    private final SetupJenisSp setupJenisSp;
+    private final SetupSanksi setupSanksi;
     private final SetupAlasanBerhenti setupAlasanBerhenti;
     private final SetupDasarGaji setupDasarGaji;
     private final SetupDetailDasarGaji setupDetailDasarGaji;
@@ -48,6 +50,8 @@ public class SetupMasterController {
             setupJenisKitas.insertBatch();
             setupJenisPelatihan.insertBatch();
             setupJenjangPendidikan.insertBatch();
+            setupJenisSp.insertBatch();
+            setupSanksi.insertBatch();
             setupAlasanBerhenti.insertBatch();
             setupDetailDasarGaji.insertBatch();
             setupPendapatanNonPajak.insertBatch();

@@ -1,10 +1,10 @@
 package id.perumdamts.kepegawaian.controllers.master;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
-import id.perumdamts.kepegawaian.dto.master.jenisSp.JenisSpPostRequest;
-import id.perumdamts.kepegawaian.dto.master.jenisSp.JenisSpPutRequest;
-import id.perumdamts.kepegawaian.dto.master.jenisSp.JenisSpRequest;
-import id.perumdamts.kepegawaian.services.master.jenisSp.JenisSpService;
+import id.perumdamts.kepegawaian.dto.master.sanksi.SanksiPostRequest;
+import id.perumdamts.kepegawaian.dto.master.sanksi.SanksiPutRequest;
+import id.perumdamts.kepegawaian.dto.master.sanksi.SanksiRequest;
+import id.perumdamts.kepegawaian.services.master.sanksi.SanksiService;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
@@ -12,18 +12,18 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/master/jenis-sp")
-public class JenisSpController {
-    private final JenisSpService service;
+@RequestMapping("/master/sanksi")
+public class SanksiController {
+    private final SanksiService service;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject JenisSpRequest request) {
+    public ResponseEntity<?> index(@ParameterObject SanksiRequest request) {
         return CustomResult.page(service.findPage(request));
     }
 
     @GetMapping("/list")
     public ResponseEntity<?> list() {
-        return CustomResult.list(service.findList());
+        return CustomResult.any(service.list());
     }
 
     @GetMapping("/{id}")
@@ -32,12 +32,12 @@ public class JenisSpController {
     }
 
     @PostMapping
-    public ResponseEntity<?> store(@RequestBody JenisSpPostRequest request) {
+    public ResponseEntity<?> store(@RequestBody SanksiPostRequest request) {
         return CustomResult.any(service.save(request));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody JenisSpPutRequest request) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody SanksiPutRequest request) {
         return CustomResult.any(service.update(id, request));
     }
 
@@ -45,5 +45,4 @@ public class JenisSpController {
     public ResponseEntity<?> delete(@PathVariable Long id) {
         return CustomResult.any(service.delete(id));
     }
-
 }
