@@ -11,4 +11,6 @@ public interface PegawaiRepository extends JpaRepository<Pegawai, Long>,
         JpaSpecificationExecutor<Pegawai>,
         RevisionRepository<Pegawai, Long, Long> {
     Optional<Pegawai> findByBiodata_Nik(String nik);
+
+    Optional<Pegawai> findOneByNipam(String nipam);
 }

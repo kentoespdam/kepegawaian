@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.entities.penggajian;
 
+
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -31,4 +32,11 @@ public class GajiPendapatanNonPajak extends IdsAbstract {
     private String kode;
     private Double nominal;
     private String notes;
+
+    public GajiPendapatanNonPajak(Long id, String kode, Double nominal, String notes) {
+        super(id);
+        this.kode = kode;
+        this.nominal = nominal;
+        this.notes = notes;
+    }
 }

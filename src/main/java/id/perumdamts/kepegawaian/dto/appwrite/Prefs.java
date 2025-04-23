@@ -1,18 +1,23 @@
 package id.perumdamts.kepegawaian.dto.appwrite;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
+import java.util.Set;
 
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
+@ToString
 public class Prefs {
-    private List<String> roles;
+    private Set<String> roles;
 
     public List<String> getRoles() {
-        return roles.stream().map(r -> "ROLE_" + r).toList();
+        if (roles == null)
+            return List.of();
+        return roles.stream()
+                .map(String::toUpperCase)
+                .toList();
     }
 }

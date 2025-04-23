@@ -12,6 +12,6 @@ public class GolonganResponse {
     private String pangkat;
 
     public static GolonganResponse from(Golongan golongan) {
-        return new GolonganResponse(golongan.getId(), golongan.getGolongan(), golongan.getPangkat());
+        return golongan == null ? null : new GolonganResponse(golongan.getId(), golongan.getGolongan(), golongan.getPangkat());
     }
 }

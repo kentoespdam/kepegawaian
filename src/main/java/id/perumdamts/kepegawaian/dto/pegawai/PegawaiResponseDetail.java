@@ -12,7 +12,7 @@ import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.rumahDinas.RumahDinasResponse;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiPendapatanNonPajak.GajiPendapatanNonPajakResponse;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiProfil.GajiProfilResponse;
-import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataMiniResponse;
+import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataResponse;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
@@ -20,16 +20,18 @@ import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
 @Data
+@Slf4j
 public class PegawaiResponseDetail {
     private Long id;
     private String nipam;
-    private BiodataMiniResponse biodata;
+    private BiodataResponse biodata;
     @Enumerated(EnumType.ORDINAL)
     private EStatusPegawai statusPegawai;
     private OrganisasiMiniResponse organisasi;
@@ -50,6 +52,7 @@ public class PegawaiResponseDetail {
     private RiwayatSkResponse skGolongan;
     private RiwayatSkResponse skJabatan;
     private RiwayatSkResponse skMutasi;
+    private RiwayatSkResponse skKontrak;
     private Double gajiPokok;
     private Double phdp;
     private Integer jmlTanggungan;
@@ -72,7 +75,7 @@ public class PegawaiResponseDetail {
         PegawaiResponseDetail response = new PegawaiResponseDetail();
         response.setId(pegawai.getId());
         response.setNipam(pegawai.getNipam());
-        response.setBiodata(BiodataMiniResponse.from(pegawai.getBiodata()));
+        response.setBiodata(BiodataResponse.from(pegawai.getBiodata()));
         response.setStatusPegawai(pegawai.getStatusPegawai());
         response.setOrganisasi(OrganisasiMiniResponse.from(pegawai.getOrganisasi()));
         if (Objects.nonNull(pegawai.getJabatan()))
@@ -99,7 +102,8 @@ public class PegawaiResponseDetail {
                 response.setSkJabatan(riwayatSkResponse);
             if (riwayatSkResponse.getJenisSk().equals(EJenisSk.SK_MUTASI))
                 response.setSkMutasi(riwayatSkResponse);
-
+            if (riwayatSkResponse.getJenisSk().equals(EJenisSk.SK_LAINNYA) && pegawai.getStatusPegawai().equals(EStatusPegawai.KONTRAK))
+                response.setSkKontrak(riwayatSkResponse);
         }
         response.setTmtPensiun(pegawai.getTmtPensiun());
         response.setGajiPokok(pegawai.getGajiPokok());

@@ -21,7 +21,7 @@ public class KeahlianPostRequest {
     private String biodataId;
     @Min(value = 1, message = "Keahlian ID is required")
     private Long keahlianId;
-    @NotNull(message = "Kualifikasi ID is required")
+    @NotNull(message = "Kualifikasi is required")
     @Enumerated(EnumType.ORDINAL)
     private EKualifikasi kualifikasi;
     private Boolean sertifikasi = false;
@@ -37,7 +37,9 @@ public class KeahlianPostRequest {
                 cb.equal(root.get("biodata").get("nik"), biodataId);
         Specification<Keahlian> keahlianSpec = (root, query, cb) ->
                 cb.equal(root.get("jenisKeahlian").get("id"), keahlianId);
-        return Specification.where(biodataSpec).and(keahlianSpec);
+        Specification<Keahlian> tahunSpec = (root, query, cb) ->
+                cb.equal(root.get("tahun"), tahun);
+        return Specification.where(biodataSpec).and(keahlianSpec).and(tahunSpec);
     }
 
     public static Keahlian toEntity(KeahlianPostRequest request, Biodata biodata, JenisKeahlian jenisKeahlian) {
@@ -49,7 +51,7 @@ public class KeahlianPostRequest {
         entity.setInstitusi(request.getInstitusi());
         entity.setTahun(request.getTahun());
         entity.setMasaBerlaku(request.getMasaBerlaku());
-        entity.setDisetujui(false);
+        entity.setDisetujui(true);
         entity.setTanggalPengajuan(LocalDateTime.now());
         return entity;
     }

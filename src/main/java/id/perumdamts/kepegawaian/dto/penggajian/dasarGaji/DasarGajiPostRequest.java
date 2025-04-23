@@ -32,17 +32,17 @@ public class DasarGajiPostRequest {
         Specification<DasarGaji> deskripsiSpec = Objects.isNull(deskripsi) ? null :
                 (root, query, cb) -> cb.equal(root.get("deskripsi"), deskripsi);
 
-        Specification<DasarGaji> tglAwalSpec = Objects.isNull(tanggalAwal) ? null :
-                (root, query, cb) -> cb.equal(root.get("tglAwal"), tanggalAwal);
+        Specification<DasarGaji> tanggalAwalSpec = Objects.isNull(tanggalAwal) ? null :
+                (root, query, cb) -> cb.equal(root.get("tanggalAwal"), tanggalAwal);
 
-        return Specification.where(deskripsiSpec).and(tglAwalSpec);
+        return Specification.where(deskripsiSpec).and(tanggalAwalSpec);
     }
 
     public static DasarGaji toEntity(DasarGajiPostRequest request) {
         DasarGaji dasarGaji = new DasarGaji();
         dasarGaji.setDeskripsi(request.getDeskripsi());
-        dasarGaji.setTglAwal(request.getTanggalAwal());
-        dasarGaji.setTglAkhir(request.getTanggalAkhir());
+        dasarGaji.setTanggalAwal(request.getTanggalAwal());
+        dasarGaji.setTanggalAkhir(request.getTanggalAkhir());
         dasarGaji.setAktif(request.getAktif());
         return dasarGaji;
     }

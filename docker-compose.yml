@@ -1,0 +1,15 @@
+volumes:
+  attachments:
+
+services:
+  kpi-api:
+    image: kepegawaian:1.0.0
+    container_name: kepegawaian-v1.0.0
+    build: .
+    env_file:
+      - .env
+    volumes:
+     - attachments:/app/attachments
+    ports:
+      - 8080:8080
+

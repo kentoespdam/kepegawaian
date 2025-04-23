@@ -3,60 +3,6 @@ server:
 
 spring:
   profiles:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     active: ${PROFILE:development}
   main:
     banner-mode: off
@@ -72,30 +18,56 @@ spring:
 #    url: jdbc:mysql://${DB_HOST:192.168.230.254}:${DB_PORT:4006}/${DB_SCHEMA:kepegawaian}?useSSL=false
     username: ${DB_USER:dev}
     password: ${DB_PASSWORD:password}
-#    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       connection-timeout: 20000
       maximum-pool-size: ${DB_POOL_SIZE:10}
   jpa:
     show-sql: true
     hibernate:
-#      ddl-auto: ${DDL_AUTO:create-drop}
-      ddl-auto: ${DDL_AUTO:none}
+      ddl-auto: ${DDL_AUTO:create-drop}
+#      ddl-auto: ${DDL_AUTO:none}
     properties:
       hibernate:
         format_sql: true
-#        dialect: org.hibernate.dialect.MySQLDialect
+        dialect: org.hibernate.dialect.MySQLDialect
+        column_ordering_strategy: legacy
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:192.168.1.214:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+#    consumer:
+#      group-id: kepegawaian
+#      auto-offset-reset: latest
+#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      properties:
+#        spring:
+#          json:
+#            trusted:
+#              packages: id.perumdamts.kepegawaian
 
 logging:
   level:
     org:
       spring:
         security: DEBUG
+      hibernate:
+        sql: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
 
 appwrite:
   endpoint: ${APPWRITE_ENDPOINT:http://192.168.230.254:82/v1}
   project_id: ${APPWRITE_PROJECT_ID:65cd62cc3385d8434a53}
   api_key: ${APPWRITE_API_KEY:061b4abb7743ecc570cc693483b36bc0f50616b2631c5f7cec3825e15cd196d703434b9c7d6a9bb0d44ef7d8ca9eb9d570a916c2e4867993b37fc29d9579278acdba9d2ad485eca0381e975aedf5f3217cf6653f4234265975c38186aa53ef572702a298e16576843d7dfd47cb77a649fff0f4460876c52b4c7d84c0b2c74706}
+
+penggajian:
+  endpoint: ${PENGGAJIAN_URL:http://192.168.1.214:81}
 
 custom:
   protected:

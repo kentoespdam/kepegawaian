@@ -16,35 +16,52 @@ public class SetupMasterController {
     private final SetupLevel setupLevel;
     private final SetupGolongan setupGolongan;
     private final SetupGrade setupGrade;
-//    private final SetupProfesi setupProfesi;
+    private final SetupProfesi setupProfesi;
     private final SetupJabatan setupJabatan;
     private final SetupJenisKeahlian setupJenisKeahlian;
     private final SetupJenisKitas setupJenisKitas;
     private final SetupJenisPelatihan setupJenisPelatihan;
     private final SetupJenjangPendidikan setupJenjangPendidikan;
-    private final SetupKodePajak setupKodePajak;
+    private final SetupJenisSp setupJenisSp;
+    private final SetupSanksi setupSanksi;
     private final SetupAlasanBerhenti setupAlasanBerhenti;
     private final SetupDasarGaji setupDasarGaji;
     private final SetupDetailDasarGaji setupDetailDasarGaji;
+    private final SetupPendapatanNonPajak setupPendapatanNonPajak;
+    private final SetupGajiProfil setupGajiProfil;
+    private final SetupGajiKomponen setupGajiKomponen;
+    private final SetupRumahDinas setupRumahDinas;
+    private final SetupGajiTunjangan setupGajiTunjangan;
+    private final SetupGajiPotonganTkk setupGajiPotonganTkk;
+    private final SetupGajiParameterSetting setupGajiParameterSetting;
+    private final SetupPrefRole setupPrefRole;
 
     @GetMapping
     public ResponseEntity<?> initialData() {
         try {
+            setupLevel.insertBatch();
             setupOrganisasi.insertBatch();
-            setupLevel.insertBatch();
-            setupLevel.insertBatch();
+            setupJabatan.insertBatch();
             setupGolongan.insertBatch();
             setupDasarGaji.insertBatch();
             setupGrade.insertBatch();
-//            setupProfesi.insertBatch();
-            setupJabatan.insertBatch();
+            setupProfesi.insertBatch();
             setupJenisKeahlian.insertBatch();
             setupJenisKitas.insertBatch();
             setupJenisPelatihan.insertBatch();
             setupJenjangPendidikan.insertBatch();
-            setupKodePajak.insertBatch();
+            setupJenisSp.insertBatch();
+            setupSanksi.insertBatch();
             setupAlasanBerhenti.insertBatch();
             setupDetailDasarGaji.insertBatch();
+            setupPendapatanNonPajak.insertBatch();
+            setupGajiProfil.insertBatch();
+            setupGajiKomponen.insertBatch();
+            setupRumahDinas.insertBatch();
+            setupGajiTunjangan.insertBatch();
+            setupGajiPotonganTkk.insertBatch();
+            setupGajiParameterSetting.insertBatch();
+            setupPrefRole.insertBatch();
             return ResponseEntity.ok().build();
         } catch (JsonProcessingException e) {
             return ResponseEntity.status(500).body(e.getMessage());

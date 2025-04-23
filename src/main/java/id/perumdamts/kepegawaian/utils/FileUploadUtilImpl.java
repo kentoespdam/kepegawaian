@@ -72,6 +72,32 @@ public class FileUploadUtilImpl implements FileUploadUtil {
     }
 
     @Override
+    public UploadResultUtil uploadPenggajian(MultipartFile file, String subFolder) {
+        String mimeType = mimeTypesUtils.isSupportedExcel(file.getContentType());
+        if (mimeType == null)
+            throw new RuntimeException("File type not supported");
+
+        String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
+        String hashedFileName = randomStringHelper.generate();
+        String originalFilename = file.getOriginalFilename();
+
+        Path dir = createDirectoryPenggajian(subFolder);
+        boolean saved = saveToStorage(file, dir, hashedFileName);
+
+        if (!saved)
+            return UploadResultUtil.build(false, "Failed to save file");
+
+        return UploadResultUtil.build(
+                true,
+                "File uploaded successfully",
+                originalFilename,
+                fileExtension,
+                mimeType,
+                hashedFileName
+        );
+    }
+
+    @Override
     public Path generatePath(Enum<?> ref, String subFolder, String fileName) {
         String directoryPath = BASE_PATH + ref.name() + "/" + subFolder + "/" + fileName;
         return Paths.get(directoryPath);
@@ -105,6 +131,11 @@ public class FileUploadUtilImpl implements FileUploadUtil {
         return Paths.get(directoryPath);
     }
 
+    private Path generatePathPenggajian(String subFolder) {
+        String directoryPath = BASE_PATH + "Penggajian/" + subFolder;
+        return Paths.get(directoryPath);
+    }
+
     private Path createDirectory(Enum<?> ref, String subFolder) {
         try {
             Path directory = this.generatePath(ref, subFolder);
@@ -118,6 +149,15 @@ public class FileUploadUtilImpl implements FileUploadUtil {
     private Path createDirectorySp(String subFolder) {
         try {
             Path directory = this.generatePathSp(subFolder);
+            Files.createDirectories(directory);
+            return directory;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private Path createDirectoryPenggajian(String subFolder) {
+        try {
+            Path directory = this.generatePathPenggajian(subFolder);
             Files.createDirectories(directory);
             return directory;
         } catch (IOException e) {

@@ -35,4 +35,25 @@ public class GajiPotonganTkk extends IdsAbstract {
     @JoinColumn(name = "golongan_id", referencedColumnName = "id")
     private Golongan golongan;
     private Double nominal;
+
+    public GajiPotonganTkk(Long id, EStatusPegawai statusPegawai, Level level, Golongan golongan, Double nominal) {
+        super(id);
+        this.statusPegawai = statusPegawai;
+        this.level = level;
+        this.golongan = golongan;
+        this.nominal = nominal;
+    }
+
+    public GajiPotonganTkk(Long id, EStatusPegawai stat, Level level, Double nominal) {
+        super(id);
+        this.statusPegawai = stat;
+        this.level = level;
+        this.nominal = nominal;
+    }
+
+    public GajiPotonganTkk(Long id, EStatusPegawai statusPegawai, Double nominal) {
+        super(id);
+        this.statusPegawai = statusPegawai;
+        this.nominal = nominal;
+    }
 }

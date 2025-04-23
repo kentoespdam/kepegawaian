@@ -1,0 +1,1 @@
+rsync -P /mnt/d/idea/kepegawaian/build/libs/kepegawaian-1.0.0.jar dev@192.168.1.214:/home/dev/docker/kepegawaian/BE

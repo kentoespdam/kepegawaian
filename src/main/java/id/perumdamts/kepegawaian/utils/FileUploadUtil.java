@@ -12,6 +12,8 @@ public interface FileUploadUtil {
 
     UploadResultUtil uploadFileSp(MultipartFile file, String subFolder);
 
+    UploadResultUtil uploadPenggajian(MultipartFile file, String subFolder);
+
     Path generatePath(Enum<?> ref, String subFolder, String fileName);
     Path generatePathSp(String subFolder, String fileName);
 

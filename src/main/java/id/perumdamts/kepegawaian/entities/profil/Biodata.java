@@ -64,7 +64,7 @@ public class Biodata implements Serializable {
     private EAgama agama;
     private String ibuKandung;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pendidikan_id", referencedColumnName = "id")
     private JenjangPendidikan pendidikanTerakhir;
     @Enumerated(EnumType.STRING)
@@ -84,13 +84,14 @@ public class Biodata implements Serializable {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @CreatedDate
-    @Column(updatable = false)
+    @Column(name = "created_at", updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
     @LastModifiedBy
     private String updatedBy;
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @LastModifiedDate
+    @Column(name = "updated_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private LocalDateTime updatedAt;
     private Boolean isDeleted = false;
     @Version
@@ -106,5 +107,31 @@ public class Biodata implements Serializable {
 
     public Biodata(String nik) {
         this.nik = nik;
+    }
+
+    @Override
+    public String toString() {
+        return "Biodata{" +
+                "nik='" + nik + '\'' +
+                ", nama='" + nama + '\'' +
+                ", jenisKelamin=" + jenisKelamin +
+                ", tempatLahir='" + tempatLahir + '\'' +
+                ", tanggalLahir=" + tanggalLahir +
+                ", alamat='" + alamat + '\'' +
+                ", telp='" + telp + '\'' +
+                ", agama=" + agama +
+                ", ibuKandung='" + ibuKandung + '\'' +
+                ", golonganDarah=" + golonganDarah +
+                ", statusKawin=" + statusKawin +
+                ", fotoProfil='" + fotoProfil + '\'' +
+                ", notes='" + notes + '\'' +
+                ", isPegawai=" + isPegawai +
+                ", createdBy='" + createdBy + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedBy='" + updatedBy + '\'' +
+                ", updatedAt=" + updatedAt +
+                ", isDeleted=" + isDeleted +
+                ", version=" + version +
+                '}';
     }
 }

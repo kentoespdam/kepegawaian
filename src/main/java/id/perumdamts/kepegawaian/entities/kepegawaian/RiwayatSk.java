@@ -28,7 +28,7 @@ import java.time.LocalDate;
         @Index(columnList = "tanggalSk"),
         @Index(columnList = "mkgTahun"),
         @Index(columnList = "mkgbTahun"),
-        @Index(columnList = "is_deleted")
+        @Index(columnList = "is_deleted"),
 })
 @Data
 @NoArgsConstructor
@@ -38,7 +38,6 @@ import java.time.LocalDate;
 @EqualsAndHashCode(callSuper = true)
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class RiwayatSk extends IdsAbstract {
-    
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "pegawai_id", referencedColumnName = "id")
@@ -54,19 +53,20 @@ public class RiwayatSk extends IdsAbstract {
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tmtBerlaku;
-    
+
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "golongan_id", referencedColumnName = "id")
     private Golongan golongan;
     private Double gajiPokok;
-    private Integer mkgTahun=0;
-    private Integer mkgBulan=0;
+    private Integer mkgTahun = 0;
+    private Integer mkgBulan = 0;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate kenaikanBerikutnya;
-    private Integer mkgbTahun=0;
-    private Integer mkgbBulan=0;
+    private Integer mkgbTahun = 0;
+    private Integer mkgbBulan = 0;
     private Boolean updateMaster = false;
+    @Column(columnDefinition = "TEXT")
     private String notes;
 }

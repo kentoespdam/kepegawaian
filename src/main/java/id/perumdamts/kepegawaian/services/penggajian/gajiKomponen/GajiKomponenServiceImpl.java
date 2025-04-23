@@ -1,12 +1,8 @@
 package id.perumdamts.kepegawaian.services.penggajian.gajiKomponen;
 
-import id.perumdamts.kepegawaian.dto.commons.CommonPageRequest;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
-import id.perumdamts.kepegawaian.dto.penggajian.gajiKomponen.GajiKomponenMiniProjection;
-import id.perumdamts.kepegawaian.dto.penggajian.gajiKomponen.GajiKomponenPostRequest;
-import id.perumdamts.kepegawaian.dto.penggajian.gajiKomponen.GajiKomponenPutRequest;
-import id.perumdamts.kepegawaian.dto.penggajian.gajiKomponen.GajiKomponenResponse;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiKomponen.*;
 import id.perumdamts.kepegawaian.entities.commons.EJenisGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiKomponen;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiProfil;
@@ -14,7 +10,6 @@ import id.perumdamts.kepegawaian.repositories.penggajian.GajiKomponenRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiProfilRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,9 +27,9 @@ public class GajiKomponenServiceImpl implements GajiKomponenService {
     }
 
     @Override
-    public Page<GajiKomponenResponse> findByProfil(Long id, CommonPageRequest request) {
-        Specification<GajiKomponen> specification = (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("profilGaji").get("id"), id);
-        return repository.findAll(specification, request.getPageable()).map(GajiKomponenResponse::from);
+    public Page<GajiKomponenResponse> findByProfil(Long id, GajiKomponenRequest request) {
+        request.setProfilId(id);
+        return repository.findAll(request.getSpecification(), request.getPageable()).map(GajiKomponenResponse::from);
     }
 
     @Override

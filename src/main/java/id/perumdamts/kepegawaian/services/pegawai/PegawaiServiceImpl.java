@@ -16,19 +16,21 @@ import id.perumdamts.kepegawaian.repositories.master.*;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiPendapatanNonPajakRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiProfilRepository;
 import id.perumdamts.kepegawaian.repositories.profil.BiodataRepository;
+import id.perumdamts.kepegawaian.services.auth.AuthService;
 import id.perumdamts.kepegawaian.services.kepegawaian.riwayatKontrak.GenericKontrakService;
 import id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk.RiwayatSkService;
 import id.perumdamts.kepegawaian.services.profil.biodata.BiodataService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PegawaiServiceImpl implements PegawaiService {
@@ -38,13 +40,21 @@ public class PegawaiServiceImpl implements PegawaiService {
     private final OrganisasiRepository organisasiRepository;
     private final ProfesiRepository profesiRepository;
     private final GolonganRepository golonganRepository;
-    private final GradeRepository gradeRepository;
     private final BiodataService biodataService;
     private final RiwayatSkService riwayatSkService;
     private final GenericKontrakService genericKontrakService;
     private final GajiPendapatanNonPajakRepository gajiPendapatanNonPajakRepository;
     private final GajiProfilRepository gajiProfilRepository;
     private final RumahDinasRepository rumahDinasRepository;
+    private final AuthService authService;
+
+    private static final EStatusPegawai[] EXCLUDED_GOLONGAN_STATUSES = {
+            EStatusPegawai.KONTRAK,
+            EStatusPegawai.CALON_HONORER,
+            EStatusPegawai.HONORER
+    };
+    private static final Long[] EXCLUDED_JABATAN_IDS = {1L, 2L, 3L, 4L};
+
 
     @Override
     public Page<PegawaiResponse> findPage(PegawaiRequest request) {
@@ -61,15 +71,14 @@ public class PegawaiServiceImpl implements PegawaiService {
     @Override
     public PegawaiResponseDetail findById(Long id) {
         return repository.findById(id).map(pegawai -> {
-            List<Long> riwayatIds = new ArrayList<>();
-            if (Objects.nonNull(pegawai.getRefSkCapegId())) riwayatIds.add(pegawai.getRefSkCapegId());
-            if (Objects.nonNull(pegawai.getRefSkPegawaiId())) riwayatIds.add(pegawai.getRefSkPegawaiId());
-            if (Objects.nonNull(pegawai.getRefSkGolId())) riwayatIds.add(pegawai.getRefSkGolId());
-            if (Objects.nonNull(pegawai.getRefSkJabatanId())) riwayatIds.add(pegawai.getRefSkJabatanId());
-            if (Objects.nonNull(pegawai.getRefSkMutasiId())) riwayatIds.add(pegawai.getRefSkMutasiId());
-            List<RiwayatSkResponse> riwayatSkResponses = riwayatSkService.findByIds(riwayatIds);
+            List<RiwayatSkResponse> riwayatSkResponses = riwayatSkService.findByPegawai(pegawai.getId());
             return PegawaiResponseDetail.from(pegawai, riwayatSkResponses);
         }).orElse(null);
+    }
+
+    @Override
+    public PegawaiResponse findByNipam(String nipam) {
+        return repository.findOneByNipam(nipam).map(PegawaiResponse::from).orElse(null);
     }
 
     @Override
@@ -78,45 +87,56 @@ public class PegawaiServiceImpl implements PegawaiService {
                 .map(PegawaiResponseRingkasan::from).orElse(null);
     }
 
-    @Transactional
     @Override
     public SavedStatus<?> save(PegawaiPostRequest request) {
         try {
-            Biodata biodata = biodataService.saveFromPegawai(request);
-            if (request.getStatusPegawai().equals(EStatusPegawai.NON_PEGAWAI)) {
+            Optional<Pegawai> oneByNipam = repository.findOneByNipam(request.getNipam());
+            if (oneByNipam.isPresent())
+                return SavedStatus.build(ESaveStatus.DUPLICATE, "Pegawai is Exist");
+            Biodata biodata = biodataRepository.findById(request.getNik())
+                    .orElseGet(() -> biodataService.saveFromPegawai(request));
+            if (request.getStatusPegawai().equals(EStatusPegawai.NON_PEGAWAI))
                 return SavedStatus.build(ESaveStatus.SUCCESS, biodata);
-            }
 
-            Jabatan jabatan = jabatanRepository.findById(request.getJabatanId()).orElseThrow();
-            Organisasi organisasi = organisasiRepository.findById(request.getOrganisasiId()).orElseThrow();
-            Profesi profesi = profesiRepository.findById(request.getProfesiId()).orElseThrow();
-            Golongan golongan = request.getStatusPegawai().equals(EStatusPegawai.KONTRAK) ? null
-                    : golonganRepository.findById(request.getGolonganId()).orElseThrow();
-            Grade grade = gradeRepository.findById(request.getGradeId()).orElseThrow();
+            Jabatan jabatan = jabatanRepository.findById(request.getJabatanId())
+                    .orElseThrow(() -> new RuntimeException("Unknown Jabatan"));
+            Organisasi organisasi = organisasiRepository.findById(request.getOrganisasiId())
+                    .orElseThrow(() -> new RuntimeException("Unknown Organisasi"));
+            Profesi profesi = request.getProfesiId() == null ? null : profesiRepository.findById(request.getProfesiId())
+                    .orElse(null);
+            Golongan golongan = request.getGolonganId() == null || ArrayUtils.contains(EXCLUDED_GOLONGAN_STATUSES, request.getStatusPegawai()) ||
+                    ArrayUtils.contains(EXCLUDED_JABATAN_IDS, request.getJabatanId()) ? null :
+                    golonganRepository.findById(request.getGolonganId())
+                            .orElseThrow(() -> new RuntimeException("Unknown Golongan"));
+            GajiPendapatanNonPajak kodePajak = gajiPendapatanNonPajakRepository
+                    .findById(request.getKodePajakId()).orElseThrow(() -> new RuntimeException("Unknown Kode Pajak"));
 
-            Pegawai entity = PegawaiPostRequest.toEntity(request, biodata, jabatan, organisasi, profesi, golongan, grade);
+            Pegawai entity = PegawaiPostRequest.toEntity(request, biodata, jabatan, organisasi, profesi, golongan, kodePajak);
             Pegawai pegawai = repository.save(entity);
 
             switch (request.getStatusPegawai()) {
                 case KONTRAK:
                     genericKontrakService.saveFromPegawai(request, pegawai);
                     break;
+                case HONORER:
                 case PEGAWAI:
                     RiwayatSk riwayatSk = riwayatSkService.savePegawai(request, pegawai);
                     pegawai.setRefSkPegawaiId(riwayatSk.getId());
                     pegawai.setMkgTahun(0);
                     pegawai.setMkgBulan(0);
-
-                    pegawai = repository.save(pegawai);
+                    repository.save(pegawai);
                     break;
                 default:
-                    pegawai = saveCapeg(request, pegawai);
+                    saveCapeg(request, pegawai);
                     break;
             }
 
-            return SavedStatus.build(ESaveStatus.SUCCESS, pegawai);
+            authService.createUser(pegawai);
+
+            return SavedStatus.build(ESaveStatus.SUCCESS, "ok");
 
         } catch (Exception e) {
+            log.error("pegawai: {}", e.getMessage());
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
     }
@@ -143,11 +163,15 @@ public class PegawaiServiceImpl implements PegawaiService {
             Biodata biodata = biodataRepository.findById(request.getNik()).orElseThrow(() -> new RuntimeException("Unknown Biodata"));
             Jabatan jabatan = jabatanRepository.findById(request.getJabatanId()).orElseThrow(() -> new RuntimeException("Unknown Jabatan"));
             Organisasi organisasi = organisasiRepository.findById(request.getOrganisasiId()).orElseThrow(() -> new RuntimeException("Unknown Organisasi"));
-            Profesi profesi = profesiRepository.findById(request.getProfesiId()).orElseThrow(() -> new RuntimeException("Unknown Profesi"));
-            Golongan golongan = golonganRepository.findById(request.getGolonganId()).orElseThrow(() -> new RuntimeException("Unknown Golongan"));
-            Grade grade = gradeRepository.findById(request.getGradeId()).orElseThrow(() -> new RuntimeException("Unknown Grade"));
+            Profesi profesi = request.getProfesiId() == null ? null :
+                    profesiRepository.findById(request.getProfesiId()).orElse(null);
+            Golongan golongan = request.getGolonganId() == null || ArrayUtils.contains(EXCLUDED_GOLONGAN_STATUSES, request.getStatusPegawai()) ||
+                    ArrayUtils.contains(EXCLUDED_JABATAN_IDS, request.getJabatanId()) ? null :
+                    golonganRepository.findById(request.getGolonganId())
+                            .orElseThrow(() -> new RuntimeException("Unknown Golongan"));
+            GajiPendapatanNonPajak kodePajak = gajiPendapatanNonPajakRepository.findById(request.getKodePajakId()).orElseThrow(() -> new RuntimeException("Unknown Kode Pajak"));
 
-            Pegawai entity = PegawaiPutRequest.toEntity(pegawai.get(), request, biodata, jabatan, organisasi, profesi, golongan, grade);
+            Pegawai entity = PegawaiPutRequest.toEntity(pegawai.get(), request, biodata, jabatan, organisasi, profesi, golongan, kodePajak);
             Pegawai save = repository.save(entity);
             return SavedStatus.build(ESaveStatus.SUCCESS, save);
         } catch (Exception e) {
@@ -174,6 +198,23 @@ public class PegawaiServiceImpl implements PegawaiService {
     }
 
     @Override
+    public SavedStatus<?> patchProfil(Long id, PegawaiPatchProfil request) {
+        try {
+            Optional<Pegawai> pegawai = repository.findById(id);
+            if (pegawai.isEmpty()) return SavedStatus.build(ESaveStatus.FAILED, "Unknown Pegawai");
+            Golongan golongan = golonganRepository.findById(request.getId()).orElse(null);
+            Organisasi organisasi = organisasiRepository.findById(request.getOrganisasiId()).orElseThrow(() -> new RuntimeException("Unknown Organisasi"));
+            Jabatan jabatan = jabatanRepository.findById(request.getJabatanId()).orElseThrow(() -> new RuntimeException("Unknown Jabatan"));
+            Profesi profesi = profesiRepository.findById(request.getProfesiId()).orElse(null);
+            Pegawai entity = PegawaiPatchProfil.toEntity(pegawai.get(), request, golongan, organisasi, jabatan, profesi);
+            Pegawai save = repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        } catch (Exception e) {
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+        }
+    }
+
+    @Override
     public boolean deleteById(Long id) {
         boolean exists = repository.existsById(id);
         if (!exists) return false;
@@ -181,12 +222,12 @@ public class PegawaiServiceImpl implements PegawaiService {
         return true;
     }
 
-    private Pegawai saveCapeg(PegawaiPostRequest request, Pegawai pegawai) {
+    private void saveCapeg(PegawaiPostRequest request, Pegawai pegawai) {
         RiwayatSk riwayatSk = riwayatSkService.saveCapeg(request, pegawai);
         pegawai.setRefSkCapegId(riwayatSk.getId());
         pegawai.setMkgTahun(0);
         pegawai.setMkgBulan(0);
 
-        return repository.save(pegawai);
+        repository.save(pegawai);
     }
 }

@@ -4,7 +4,6 @@ import lombok.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,7 +27,7 @@ public class AppwriteUser {
     private Prefs prefs;
 
     public Collection<SimpleGrantedAuthority> getAuthorities() {
-        return prefs.getRoles().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
+        return prefs.getRoles().stream().map(r -> new SimpleGrantedAuthority("ROLE_" + r)).toList();
     }
 
     @Override

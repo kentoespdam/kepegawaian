@@ -12,11 +12,11 @@ import id.perumdamts.kepegawaian.entities.penggajian.DetailDasarGaji;
 import id.perumdamts.kepegawaian.repositories.master.GolonganRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.DasarGajiRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.DetailDasarGajiRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -19,8 +19,8 @@ public class SetupDasarGaji implements SetupMaster {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         DasarGaji dasarGaji = new DasarGaji();
         dasarGaji.setDeskripsi("Skala Gaji - PP No.30 Thn 2015");
-        dasarGaji.setTglAwal(LocalDate.of(2015, 1, 1));
-        dasarGaji.setTglAkhir(LocalDate.of(2025, 12, 31));
+        dasarGaji.setTanggalAwal(LocalDate.of(2015, 1, 1));
+        dasarGaji.setTanggalAkhir(LocalDate.of(2025, 12, 31));
         dasarGaji.setAktif(true);
         repository.save(dasarGaji);
     }

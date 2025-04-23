@@ -17,11 +17,11 @@ public interface RiwayatSkService {
     Page<RiwayatSkResponse> findPage(RiwayatSkRequest request);
     RiwayatSkResponse findById(Long id);
     List<RiwayatSkResponse> findByIds(List<Long> riwayatIds);
+    List<RiwayatSkResponse> findByPegawai(Long pegawaiId);
     Page<RiwayatSkResponse> findByPegawaiId(Long pegawaiId, RiwayatSkRequest request);
     SavedStatus<?> save(RiwayatSkPostRequest request);
     RiwayatSk saveCapeg(PegawaiPostRequest request, Pegawai pegawai);
     RiwayatSk savePegawai(PegawaiPostRequest request, Pegawai pegawai);
     SavedStatus<?> update(Long id, RiwayatSkPutRequest request);
-
     Boolean delete(Long id);
 }

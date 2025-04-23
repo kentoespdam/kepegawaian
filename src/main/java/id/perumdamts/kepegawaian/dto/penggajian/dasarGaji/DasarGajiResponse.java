@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.dto.penggajian.dasarGaji;
 
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
@@ -25,8 +26,9 @@ public class DasarGajiResponse {
         response.setId(entity.getId());
         response.setDeskripsi(entity.getDeskripsi());
         response.setAktif(entity.isAktif());
-        response.setTanggalAkhir(entity.getTglAkhir());
-        response.setTanggalMulai(entity.getTglAwal());
+        response.setTanggalAkhir(entity.getTanggalAkhir());
+        response.setTanggalMulai(entity.getTanggalAwal());
         return response;
     }
 }
+

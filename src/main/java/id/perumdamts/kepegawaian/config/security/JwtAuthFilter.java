@@ -15,8 +15,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
@@ -54,16 +54,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
         String tokenString = request.getHeader(AUTHORIZATION);
-        if (Objects.isNull(tokenString) || !tokenString.startsWith(BEARER)) {
-//            log.error("invalid header: {}", tokenString);
+        if (Objects.isNull(tokenString) || !tokenString.startsWith(BEARER))
             return null;
-        }
+
         String token = tokenString.substring(BEARER.length());
         AppwriteUser userFromToken = service.getUserFromToken(token);
-        if (Objects.isNull(userFromToken)) {
-//            log.error("invalid token: {}", token);
+        if (Objects.isNull(userFromToken))
             return null;
-        }
+
         return new UsernamePasswordAuthenticationToken(
                 userFromToken,
                 null,
@@ -71,7 +69,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     }
 
     private UsernamePasswordAuthenticationToken getDevelopmentAuthentication() {
-        List<String> roles = List.of("ADMIN");
+        Set<String> roles = Set.of("ADMIN","SYSTEM");
         Prefs prefs = new Prefs();
         prefs.setRoles(roles);
 

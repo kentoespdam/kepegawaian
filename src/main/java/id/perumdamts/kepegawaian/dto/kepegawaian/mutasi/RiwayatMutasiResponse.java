@@ -28,7 +28,7 @@ public class RiwayatMutasiResponse {
     private LocalDate tmtBerlaku;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate tglBerakhir;
+    private LocalDate tanggalBerakhir;
     private GolonganResponse golongan;
     private OrganisasiMiniResponse organisasi;
     private String namaOrganisasi;
@@ -52,35 +52,21 @@ public class RiwayatMutasiResponse {
         if (Objects.nonNull(entity.getRiwayatSk()))
             response.setSkMutasi(RiwayatSkResponse.from(entity.getRiwayatSk()));
         response.setTmtBerlaku(entity.getTmtBerlaku());
-        response.setTglBerakhir(entity.getTglBerakhir());
-        if (Objects.nonNull(entity.getGolongan())) {
-            response.setGolongan(GolonganResponse.from(entity.getGolongan()));
-            response.setGolonganLama(GolonganResponse.from(entity.getGolonganLama()));
-        }
-        if (entity.getOrganisasi() != null) {
-            response.setOrganisasi(OrganisasiMiniResponse.from(entity.getOrganisasi()));
-            response.setNamaOrganisasi(entity.getNamaOrganisasi());
-        }
-        if (entity.getJabatan() != null) {
-            response.setJabatan(JabatanMiniResponse.from(entity.getJabatan()));
-            response.setNamaJabatan(entity.getNamaJabatan());
-        }
-        if (entity.getProfesi() != null) {
-            response.setProfesi(ProfesiMiniResponse.from(entity.getProfesi()));
-            response.setNamaProfesi(entity.getNamaProfesi());
-        }
-        if (entity.getOrganisasiLama() != null) {
-            response.setOrganisasiLama(OrganisasiMiniResponse.from(entity.getOrganisasiLama()));
-            response.setNamaOrganisasiLama(entity.getNamaOrganisasiLama());
-        }
-        if (entity.getJabatanLama() != null) {
-            response.setJabatanLama(JabatanMiniResponse.from(entity.getJabatanLama()));
-            response.setNamaJabatanLama(entity.getNamaJabatanLama());
-        }
-        if (entity.getProfesiLama() != null) {
-            response.setProfesiLama(ProfesiMiniResponse.from(entity.getProfesiLama()));
-            response.setNamaProfesiLama(entity.getNamaProfesiLama());
-        }
+        response.setTanggalBerakhir(entity.getTanggalBerakhir());
+        response.setGolongan(GolonganResponse.from(entity.getGolongan()));
+        response.setGolonganLama(GolonganResponse.from(entity.getGolonganLama()));
+        response.setOrganisasi(OrganisasiMiniResponse.from(entity.getOrganisasi()));
+        response.setNamaOrganisasi(entity.getNamaOrganisasi());
+        response.setJabatan(JabatanMiniResponse.from(entity.getJabatan()));
+        response.setNamaJabatan(entity.getNamaJabatan());
+        response.setProfesi(ProfesiMiniResponse.from(entity.getProfesi()));
+        response.setNamaProfesi(entity.getNamaProfesi());
+        response.setOrganisasiLama(OrganisasiMiniResponse.from(entity.getOrganisasiLama()));
+        response.setNamaOrganisasiLama(entity.getNamaOrganisasiLama());
+        response.setJabatanLama(JabatanMiniResponse.from(entity.getJabatanLama()));
+        response.setNamaJabatanLama(entity.getNamaJabatanLama());
+        response.setProfesiLama(ProfesiMiniResponse.from(entity.getProfesiLama()));
+        response.setNamaProfesiLama(entity.getNamaProfesiLama());
 
         response.setNotes(entity.getNotes());
         return response;

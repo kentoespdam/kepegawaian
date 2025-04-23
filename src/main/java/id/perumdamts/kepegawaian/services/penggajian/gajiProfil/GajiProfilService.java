@@ -9,7 +9,6 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 public interface GajiProfilService {
-
     Page<GajiProfilResponse> findAll();
 
     List<GajiProfilResponse> list();

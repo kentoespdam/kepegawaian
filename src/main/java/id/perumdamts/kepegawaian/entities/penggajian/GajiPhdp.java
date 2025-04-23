@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.entities.penggajian;
 
+
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

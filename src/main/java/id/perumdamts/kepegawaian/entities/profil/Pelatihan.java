@@ -37,12 +37,16 @@ public class Pelatihan extends IdsAbstract {
     @JoinColumn(name = "jenis_pelatihan_id", referencedColumnName = "id")
     private JenisPelatihan jenisPelatihan;
     private String nama;
-    private String nilai;
-    private Boolean lulus;
+    private String lembaga;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tanggalMulai;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tanggalSelesai;
+    private Boolean lulus;
+    private String nilai;
+    private Boolean ikatanDinas = false;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate tanggalAkhirIkatan;
     private String notes;
     private Boolean disetujui;
     @JsonSerialize(using = LocalDateTimeSerializer.class)

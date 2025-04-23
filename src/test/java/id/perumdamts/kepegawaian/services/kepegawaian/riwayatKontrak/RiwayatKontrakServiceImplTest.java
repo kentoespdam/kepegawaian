@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.services.kepegawaian.riwayatKontrak;
 
 import id.perumdamts.kepegawaian.dto.appwrite.AppwriteUser;
+import id.perumdamts.kepegawaian.dto.appwrite.PrefRole;
 import id.perumdamts.kepegawaian.dto.appwrite.Prefs;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatKontrak.RiwayatKontrakPostRequest;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -38,9 +40,9 @@ class RiwayatKontrakServiceImplTest {
     RiwayatKontrakPutRequest putRequest;
 
     private void setupAuthentication() {
-        List<String> roles = List.of("ADMIN");
+        List<PrefRole> roles = List.of(new PrefRole("ADMIN"));
         Prefs prefs = new Prefs();
-        prefs.setRoles(roles);
+        prefs.setRoles(roles.stream().map(PrefRole::getId).collect(Collectors.toSet()));
 
         AppwriteUser user = new AppwriteUser();
         user.set$id("900800456");

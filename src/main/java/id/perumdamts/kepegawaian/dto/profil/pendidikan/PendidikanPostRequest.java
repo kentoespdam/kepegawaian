@@ -23,9 +23,8 @@ public class PendidikanPostRequest {
     @NotEmpty(message = "Institusi is required")
     private String institusi;
     private String kota;
-    @Min(value = 1970, message = "Tahun Masuk is required")
     private Integer tahunMasuk;
-    @Min(value = 1970, message = "Tahun Lulus is required")
+    private Boolean isLulus;
     private Integer tahunLulus;
     private Double gpa;
     private Boolean isLatest=false;
@@ -43,16 +42,17 @@ public class PendidikanPostRequest {
         Pendidikan entity = new Pendidikan();
         entity.setBiodata(biodata);
         entity.setJenjangPendidikan(jenjangPendidikan);
-        entity.setGelarDepan(request.gelarDepan);
-        entity.setGelarBelakang(request.gelarBelakang);
-        entity.setJurusan(request.jurusan);
-        entity.setInstitusi(request.institusi);
-        entity.setKota(request.kota);
-        entity.setTahunMasuk(request.tahunMasuk);
-        entity.setTahunLulus(request.tahunLulus);
-        entity.setGpa(request.gpa);
-        entity.setIsLatest(request.isLatest);
-        entity.setDisetujui(false);
+        entity.setGelarDepan(request.getGelarDepan());
+        entity.setGelarBelakang(request.getGelarBelakang());
+        entity.setJurusan(request.getJurusan());
+        entity.setInstitusi(request.getInstitusi());
+        entity.setKota(request.getKota());
+        entity.setTahunMasuk(request.getTahunMasuk());
+        entity.setIsLulus(request.getIsLulus());
+        entity.setTahunLulus(request.getTahunLulus());
+        entity.setGpa(request.getGpa());
+        entity.setIsLatest(request.getIsLatest());
+        entity.setDisetujui(true);
         entity.setTanggalPengajuan(LocalDateTime.now());
         return entity;
     }

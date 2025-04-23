@@ -30,8 +30,8 @@ public class ProfesiServiceImpl implements ProfesiService {
     }
 
     @Override
-    public List<ProfesiResponse> findByLevel(Long id) {
-        return repository.findByLevel_Id(id).stream().map(ProfesiResponse::from).toList();
+    public List<ProfesiResponse> findByJabatan(Long id) {
+        return repository.findByJabatan_Id(id).stream().map(ProfesiResponse::from).toList();
     }
 
     @Override

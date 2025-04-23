@@ -8,10 +8,10 @@ import id.perumdamts.kepegawaian.dto.penggajian.dasarGaji.DasarGajiRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.dasarGaji.DasarGajiResponse;
 import id.perumdamts.kepegawaian.entities.penggajian.DasarGaji;
 import id.perumdamts.kepegawaian.repositories.penggajian.DasarGajiRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;

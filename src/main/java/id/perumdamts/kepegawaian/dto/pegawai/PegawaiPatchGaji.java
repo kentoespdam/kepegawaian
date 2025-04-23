@@ -21,6 +21,7 @@ public class PegawaiPatchGaji {
     @Enumerated(EnumType.ORDINAL)
     private EStatusPegawai statusPegawai;
     private Double gajiPokok;
+    private Double phdp;
     private Boolean isAskes;
     @Min(value = 1, message = "Kode Pajak is required")
     @NotNull(message = "Kode Pajak is required")
@@ -35,10 +36,11 @@ public class PegawaiPatchGaji {
         entity.setTmtPensiun(request.getTmtPensiun());
         entity.setStatusPegawai(request.getStatusPegawai());
         entity.setGajiPokok(request.getGajiPokok());
+        entity.setPhdp(request.getPhdp());
         entity.setIsAskes(request.getIsAskes());
         entity.setKodePajak(kodePajak);
         entity.setGajiProfil(gajiProfil);
-        entity.setRumahDinas(rumahDinas);
+        if (rumahDinas != null) entity.setRumahDinas(rumahDinas);
         return entity;
     }
 }

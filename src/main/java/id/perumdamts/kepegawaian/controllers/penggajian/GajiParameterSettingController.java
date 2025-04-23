@@ -5,7 +5,7 @@ import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiParameterSetting.GajiParameterSettingPostRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiParameterSetting.GajiParameterSettingPutRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiParameterSetting.GajiParameterSettingRequest;
-import id.perumdamts.kepegawaian.services.penggajian.GajiParameterSettingService;
+import id.perumdamts.kepegawaian.services.penggajian.gajiParameterSetting.GajiParameterSettingService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;

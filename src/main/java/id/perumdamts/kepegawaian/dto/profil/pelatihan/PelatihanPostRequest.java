@@ -22,15 +22,20 @@ public class PelatihanPostRequest {
     private Long jenisPelatihanId;
     @NotEmpty(message = "Nama is required")
     private String nama;
-    @NotEmpty(message = "Nilai is required")
-    private String nilai;
-    private Boolean lulus=true;
+    @NotEmpty(message = "Lembaga is required")
+    private String lembaga;
     @NotNull(message = "Tanggal Mulai is required")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tanggalMulai;
     @NotNull(message = "Tanggal Selesai is required")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tanggalSelesai;
+    private Boolean lulus = true;
+    @NotEmpty(message = "Nilai is required")
+    private String nilai;
+    private Boolean ikatanDinas = false;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate tanggalAkhirIkatan;
     private String notes;
 
     @JsonIgnore
@@ -40,8 +45,10 @@ public class PelatihanPostRequest {
         Specification<Pelatihan> pelatihanSpec = (root, query, cb) ->
                 cb.equal(root.get("jenisPelatihan").get("id"), jenisPelatihanId);
         Specification<Pelatihan> namaSpec = (root, query, cb) ->
-                cb.equal(root.get("nama"),  nama);
-        return Specification.where(biodataSpec).and(pelatihanSpec).and(namaSpec);
+                cb.equal(root.get("nama"), nama);
+        Specification<Pelatihan> tanggalSpec = (root, query, cb) ->
+                cb.equal(root.get("tanggalMulai"), tanggalMulai);
+        return Specification.where(biodataSpec).and(pelatihanSpec).and(namaSpec).and(tanggalSpec);
     }
 
     public static Pelatihan toEntity(PelatihanPostRequest request, Biodata biodata, JenisPelatihan jenisPelatihan) {
@@ -49,12 +56,15 @@ public class PelatihanPostRequest {
         entity.setBiodata(biodata);
         entity.setJenisPelatihan(jenisPelatihan);
         entity.setNama(request.getNama());
-        entity.setNilai(request.getNilai());
-        entity.setLulus(request.getLulus());
+        entity.setLembaga(request.getLembaga());
         entity.setTanggalMulai(request.getTanggalMulai());
         entity.setTanggalSelesai(request.getTanggalSelesai());
+        entity.setLulus(request.getLulus());
+        entity.setNilai(request.getNilai());
+        entity.setIkatanDinas(request.getIkatanDinas());
+        entity.setTanggalAkhirIkatan(request.getTanggalAkhirIkatan());
         entity.setNotes(request.getNotes());
-        entity.setDisetujui(false);
+        entity.setDisetujui(true);
         entity.setTanggalPengajuan(LocalDateTime.now());
         return entity;
     }

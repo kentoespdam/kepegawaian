@@ -10,3 +10,4 @@ public class GajiPendapatanNonPajakPutRequest extends GajiPendapatanNonPajakPost
         return entity;
     }
 }
+

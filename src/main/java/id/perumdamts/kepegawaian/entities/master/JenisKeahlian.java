@@ -23,4 +23,9 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLRestriction("is_deleted = FALSE")
 public class JenisKeahlian extends IdsAbstract {
     private String nama;
+
+    public JenisKeahlian(Long id, String nama) {
+        super(id);
+        this.nama = nama;
+    }
 }

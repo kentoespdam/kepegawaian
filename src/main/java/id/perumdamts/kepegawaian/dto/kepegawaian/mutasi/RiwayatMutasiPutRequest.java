@@ -18,7 +18,7 @@ public class RiwayatMutasiPutRequest extends RiwayatMutasiPostRequest {
         entity.setRiwayatSk(riwayatSk);
         entity.setPegawai(riwayatSk.getPegawai());
         entity.setTmtBerlaku(request.getTmtBerlaku());
-        entity.setTglBerakhir(request.getTglBerakhir());
+        entity.setTanggalBerakhir(request.getTanggalBerakhir());
         entity.setJenisMutasi(request.getJenisMutasi());
         entity.setNotes(request.getNotes());
         return entity;

@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.entities.penggajian;
 
+
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Index;
@@ -26,4 +27,10 @@ import org.hibernate.envers.Audited;
 public class GajiParameterSetting extends IdsAbstract {
     private String kode;
     private Double nominal;
+
+    public GajiParameterSetting(Long id, String kode, Double nominal) {
+        super(id);
+        this.kode = kode;
+        this.nominal = nominal;
+    }
 }

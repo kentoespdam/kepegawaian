@@ -22,13 +22,13 @@ public class DasarGajiRequest extends CommonPageRequest {
     public Specification<DasarGaji> getSpecification() {
         Specification<DasarGaji> deskripsiSpec = Objects.isNull(deskripsi) ? null :
                 (root, query, cb) -> cb.like(root.get("deskripsi"), "%" + deskripsi + "%");
-        Specification<DasarGaji> tglAwalSpec = Objects.isNull(tanggalAwal) ? null :
-                (root, query, cb) -> cb.greaterThanOrEqualTo(root.get("tglAwal"), tanggalAwal);
-        Specification<DasarGaji> tglAkhirSpec = Objects.isNull(tanggalAkhir) ? null :
-                (root, query, cb) -> cb.lessThanOrEqualTo(root.get("tglAkhir"), tanggalAkhir);
+        Specification<DasarGaji> tanggalAwalSpec = Objects.isNull(tanggalAwal) ? null :
+                (root, query, cb) -> cb.greaterThanOrEqualTo(root.get("tanggalAwal"), tanggalAwal);
+        Specification<DasarGaji> tanggalAkhirSpec = Objects.isNull(tanggalAkhir) ? null :
+                (root, query, cb) -> cb.lessThanOrEqualTo(root.get("tanggalAkhir"), tanggalAkhir);
         Specification<DasarGaji> aktifSpec = Objects.isNull(aktif) ? null :
                 (root, query, cb) -> cb.equal(root.get("aktif"), aktif);
-        return Specification.where(deskripsiSpec).and(tglAwalSpec)
-                .and(tglAkhirSpec).and(aktifSpec);
+        return Specification.where(deskripsiSpec).and(tanggalAwalSpec)
+                .and(tanggalAkhirSpec).and(aktifSpec);
     }
 }

@@ -71,6 +71,7 @@ public class RiwayatKontrakServiceImpl implements RiwayatKontrakService {
             RiwayatKontrak riwayatKontrak = repository.findById(id).orElseThrow(() -> new RuntimeException("Unknown Riwayat Kontrak"));
             Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId()).orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
             RiwayatKontrak update = genericKontrakService.update(riwayatKontrak, request, pegawai);
+
             return SavedStatus.build(ESaveStatus.SUCCESS, update);
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());

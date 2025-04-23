@@ -18,7 +18,6 @@ import java.time.LocalDate;
 
 @Data
 public class RiwayatKontrakPostRequest {
-//    @Enumerated(EnumType.ORDINAL)
     private EJenisKontrak jenisKontrak;
     @NotNull(message = "Pegawai ID is required")
     @Min(value = 1, message = "Pegawai ID must be greater than or equal to 1")
@@ -61,6 +60,7 @@ public class RiwayatKontrakPostRequest {
 
     public static RiwayatKontrak toEntity(RiwayatKontrakPostRequest request, Pegawai pegawai) {
         RiwayatKontrak entity = new RiwayatKontrak();
+        entity.setJenisKontrak(request.getJenisKontrak());
         entity.setPegawai(pegawai);
         entity.setNipam(request.getNipam());
         entity.setNama(request.getNama());
@@ -75,6 +75,7 @@ public class RiwayatKontrakPostRequest {
 
     public static RiwayatKontrak toEntity(PegawaiPostRequest request, Pegawai pegawai) {
         RiwayatKontrak entity = new RiwayatKontrak();
+        entity.setJenisKontrak(EJenisKontrak.PENGANGKATAN);
         entity.setPegawai(pegawai);
         entity.setNipam(pegawai.getNipam());
         entity.setNama(pegawai.getBiodata().getNama());

@@ -12,8 +12,8 @@ public class PengalamanKerjaPutRequest extends PengalamanKerjaPostRequest {
         entity.setTypePerusahaan(request.getTypePerusahaan());
         entity.setJabatan(request.getJabatan());
         entity.setLokasi(request.getLokasi());
-        entity.setTanggalMasuk(request.getTanggalMasuk());
-        entity.setTanggalKeluar(request.getTanggalKeluar());
+        entity.setTahunMasuk(request.getTahunMasuk());
+        entity.setTahunKeluar(request.getTahunKeluar());
         entity.setNotes(request.getNotes());
         entity.setDisetujui(false);
         entity.setTanggalPengajuan(LocalDateTime.now());

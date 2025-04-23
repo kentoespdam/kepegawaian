@@ -4,7 +4,6 @@ import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.profil.keluarga.*;
 import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilResponse;
-import id.perumdamts.kepegawaian.entities.commons.EHubunganKeluarga;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
@@ -61,44 +60,41 @@ public class ProfilKeluargaServiceImpl implements ProfilKeluargaService {
     @Transactional
     @Override
     public SavedStatus<?> save(ProfilKeluargaPostRequest request) {
-
-        Optional<Biodata> biodata = biodataRepository.findById(request.getBiodataId());
-        if (biodata.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Biodata");
-        Optional<JenjangPendidikan> jenjangPendidikan = jenjangPendidikanRepository.findById(request.getPendidikanId());
-        if (jenjangPendidikan.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jenjang Pendidikan");
-        ProfilKeluarga entity = ProfilKeluargaPostRequest.toEntity(request, biodata.get(), jenjangPendidikan.get());
-        boolean profilKeluargaExist = repository.exists(request.getSpecification());
-        if (profilKeluargaExist)
-            return SavedStatus.build(ESaveStatus.DUPLICATE, "Profil Keluarga sudah ada");
-        ProfilKeluarga save = repository.save(entity);
-        if ((!request.getHubunganKeluarga().equals(EHubunganKeluarga.ISTRI) &&
-                !request.getHubunganKeluarga().equals(EHubunganKeluarga.SUAMI)) &&
-                entity.getTanggungan().equals(true))
-            this.updateTanggunganPegawai(request.getBiodataId());
-        return SavedStatus.build(ESaveStatus.SUCCESS, ProfilKeluargaResponse.from(save));
+        try {
+            boolean profilKeluargaExist = repository.exists(request.getSpecification());
+            if (profilKeluargaExist)
+                return SavedStatus.build(ESaveStatus.DUPLICATE, "Profil Keluarga sudah ada");
+            System.out.println("NIK: " + request.getBiodataId());
+            Biodata biodata = biodataRepository.findById(request.getBiodataId()).orElseThrow(() -> new Exception("Unknown Biodata"));
+            JenjangPendidikan jenjangPendidikan = jenjangPendidikanRepository.findById(request.getPendidikanId()).orElse(null);
+            ProfilKeluarga entity = ProfilKeluargaPostRequest.toEntity(request, biodata, jenjangPendidikan);
+            ProfilKeluarga save = repository.save(entity);
+//            if ((!request.getHubunganKeluarga().equals(EHubunganKeluarga.ISTRI) &&
+//                    !request.getHubunganKeluarga().equals(EHubunganKeluarga.SUAMI)) &&
+//                    entity.getTanggungan().equals(true))
+//                this.updateTanggunganPegawai(request.getBiodataId());
+            return SavedStatus.build(ESaveStatus.SUCCESS, ProfilKeluargaResponse.from(save));
+        } catch (Exception e) {
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+        }
     }
 
     @Transactional
     @Override
     public SavedStatus<?> update(Long id, ProfilKeluargaPutRequest request) {
-        Optional<ProfilKeluarga> profilKeluarga = repository.findById(id);
-        if (profilKeluarga.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Profil Keluarga");
-        Optional<Biodata> biodata = biodataRepository.findById(request.getBiodataId());
-        if (biodata.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Biodata");
-        Optional<JenjangPendidikan> jenjangPendidikan = jenjangPendidikanRepository.findById(request.getPendidikanId());
-        if (jenjangPendidikan.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jenjang Pendidikan");
-        ProfilKeluarga entity = ProfilKeluargaPutRequest.toEntity(request, profilKeluarga.get(), biodata.get(), jenjangPendidikan.get());
-        ProfilKeluarga save = repository.save(entity);
-        if ((!request.getHubunganKeluarga().equals(EHubunganKeluarga.ISTRI) &&
-                !request.getHubunganKeluarga().equals(EHubunganKeluarga.SUAMI)) &&
-                entity.getTanggungan().equals(true))
-            this.updateTanggunganPegawai(request.getBiodataId());
-        return SavedStatus.build(ESaveStatus.SUCCESS, ProfilKeluargaResponse.from(save));
+        try {
+            ProfilKeluarga profilKeluarga = repository.findById(id).orElseThrow(() -> new Exception("Unknown Profil Keluarga"));
+            JenjangPendidikan jenjangPendidikan = jenjangPendidikanRepository.findById(request.getPendidikanId()).orElse(null);
+            ProfilKeluarga entity = ProfilKeluargaPutRequest.toEntity(request, profilKeluarga, jenjangPendidikan);
+            ProfilKeluarga save = repository.save(entity);
+//            if ((!request.getHubunganKeluarga().equals(EHubunganKeluarga.ISTRI) &&
+//                    !request.getHubunganKeluarga().equals(EHubunganKeluarga.SUAMI)) &&
+//                    entity.getTanggungan().equals(true))
+//                this.updateTanggunganPegawai(request.getBiodataId());
+            return SavedStatus.build(ESaveStatus.SUCCESS, ProfilKeluargaResponse.from(save));
+        } catch (Exception e) {
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+        }
     }
 
     @Transactional

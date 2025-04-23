@@ -17,6 +17,7 @@ import java.util.List;
 
 @Entity
 @Table(indexes = {
+        @Index(columnList = "kode"),
         @Index(columnList = "nama"),
         @Index(columnList = "is_deleted")
 })
@@ -28,6 +29,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class Jabatan extends IdsAbstract {
+    private String kode;
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
@@ -52,12 +54,16 @@ public class Jabatan extends IdsAbstract {
         super(id);
     }
 
-    public Jabatan(long id, Jabatan parent, Organisasi organisasi, Level level, String direkturUtama) {
+    public Jabatan(String nama) {
+        this.nama = nama;
+    }
+
+    public Jabatan(Long id, String kode, Jabatan jabatan, Organisasi organisasi, Level level, String nama) {
         super(id);
-        if (parent != null)
-            this.parent = parent;
+        this.kode = kode;
+        this.parent = jabatan;
         this.organisasi = organisasi;
         this.level = level;
-        this.nama = direkturUtama;
+        this.nama = nama;
     }
 }

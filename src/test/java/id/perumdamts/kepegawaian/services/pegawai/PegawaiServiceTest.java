@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.services.pegawai;
 
 import id.perumdamts.kepegawaian.dto.appwrite.AppwriteUser;
+import id.perumdamts.kepegawaian.dto.appwrite.PrefRole;
 import id.perumdamts.kepegawaian.dto.appwrite.Prefs;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.pegawai.PegawaiPostRequest;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
@@ -35,9 +37,9 @@ class PegawaiServiceTest {
     PegawaiPostRequest postRequest;
 
     private void setupAuthentication() {
-        List<String> roles = List.of("ADMIN");
+        List<PrefRole> roles = List.of(new PrefRole("ADMIN"));
         Prefs prefs = new Prefs();
-        prefs.setRoles(roles);
+        prefs.setRoles(roles.stream().map(PrefRole::getId).collect(Collectors.toSet()));
 
         AppwriteUser user = new AppwriteUser();
         user.set$id("900800456");
@@ -71,7 +73,6 @@ class PegawaiServiceTest {
         postRequest.setOrganisasiId(39L);
         postRequest.setJabatanId(59L);
         postRequest.setProfesiId(44L);
-        postRequest.setGradeId(8L);
         postRequest.setGolonganId(0L);
         postRequest.setNomorSk("01/01/2024");
         postRequest.setTanggalSk(LocalDate.of(2024, 1, 1));

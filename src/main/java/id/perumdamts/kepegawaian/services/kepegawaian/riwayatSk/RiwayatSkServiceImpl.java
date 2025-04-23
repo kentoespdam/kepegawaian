@@ -18,12 +18,14 @@ import id.perumdamts.kepegawaian.repositories.master.GolonganRepository;
 import id.perumdamts.kepegawaian.services.kepegawaian.lampiran.LampiranSkService;
 import id.perumdamts.kepegawaian.services.master.golongan.GolonganService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -57,6 +59,11 @@ public class RiwayatSkServiceImpl implements RiwayatSkService {
     }
 
     @Override
+    public List<RiwayatSkResponse> findByPegawai(Long pegawaiId) {
+        return repository.findByPegawai_Id(pegawaiId).stream().map(RiwayatSkResponse::from).toList();
+    }
+
+    @Override
     public Page<RiwayatSkResponse> findByPegawaiId(Long pegawaiId, RiwayatSkRequest request) {
         request.setPegawaiId(pegawaiId);
         return repository.findAll(request.getSpecification(), request.getPageable())
@@ -68,7 +75,7 @@ public class RiwayatSkServiceImpl implements RiwayatSkService {
     public SavedStatus<?> save(RiwayatSkPostRequest request) {
         try {
             if (request.getTmtBerlaku().isBefore(request.getTanggalSk()))
-                throw new RuntimeException("TMT Berlaku must be greater than Tgl. SK");
+                throw new RuntimeException("TMT Berlaku must be greater than tanggal. SK");
             Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId())
                     .orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
             Golongan golongan = golonganRepository.findById(request.getGolonganId())
@@ -115,7 +122,9 @@ public class RiwayatSkServiceImpl implements RiwayatSkService {
 
     @Override
     public RiwayatSk savePegawai(PegawaiPostRequest request, Pegawai pegawai) {
-        Golongan golongan = golonganService.findGolonganById(request.getGolonganId());
+        Long[] excludeGolonganJabatan = {1L, 2L, 3L, 25L};
+        Golongan golongan = ArrayUtils.contains(excludeGolonganJabatan, request.getJabatanId()) ||
+                pegawai.getStatusPegawai() != EStatusPegawai.PEGAWAI ? null : golonganService.findGolonganById(request.getGolonganId());
         LocalDate kenaikanBerikutnya = LocalDate.now().plusYears(2);
 
         RiwayatSk entity = new RiwayatSk();
@@ -126,7 +135,8 @@ public class RiwayatSkServiceImpl implements RiwayatSkService {
         entity.setJenisSk(EJenisSk.SK_PEGAWAI_TETAP);
         entity.setTanggalSk(request.getTanggalSk());
         entity.setTmtBerlaku(request.getTmtBerlakuSk());
-        entity.setGolongan(golongan);
+        if (Objects.nonNull(golongan))
+            entity.setGolongan(golongan);
         entity.setMkgTahun(0);
         entity.setMkgBulan(0);
         entity.setKenaikanBerikutnya(kenaikanBerikutnya);

@@ -30,9 +30,9 @@ public class ProfesiController {
         return CustomResult.list(profesiService.findAll());
     }
 
-    @GetMapping("/level/{id}")
-    public ResponseEntity<?> findByLevel(@PathVariable Long id) {
-        return CustomResult.list(profesiService.findByLevel(id));
+    @GetMapping("/jabatan/{id}")
+    public ResponseEntity<?> findByJabatan(@PathVariable Long id) {
+        return CustomResult.list(profesiService.findByJabatan(id));
     }
 
     @GetMapping("/{id}")
