@@ -4,15 +4,14 @@ import id.perumdamts.kepegawaian.dto.master.sanksi.SanksiMiniResponse;
 import id.perumdamts.kepegawaian.entities.master.JenisSp;
 import lombok.Data;
 
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @Data
 public class JenisSpMiniResponse {
     private Long id;
     private String kode;
     private String nama;
-    private Set<SanksiMiniResponse> sanksiSp;
+    private List<SanksiMiniResponse> sanksiSp;
 
     public static JenisSpMiniResponse from(JenisSp jenisSp) {
         JenisSpMiniResponse response = new JenisSpMiniResponse();
@@ -21,7 +20,7 @@ public class JenisSpMiniResponse {
         response.setNama(jenisSp.getNama());
         response.setSanksiSp(jenisSp.getSanksiSp()
                 .stream().map(SanksiMiniResponse::from)
-                .collect(Collectors.toSet()));
+                .toList());
         return response;
     }
 }

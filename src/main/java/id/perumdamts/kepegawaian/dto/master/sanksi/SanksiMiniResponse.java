@@ -7,13 +7,13 @@ import lombok.Data;
 public class SanksiMiniResponse {
     private Long id;
     private String kode;
-    private String nama;
+    private String keterangan;
 
     public static SanksiMiniResponse from(Sanksi sanksi) {
         SanksiMiniResponse response = new SanksiMiniResponse();
         response.setId(sanksi.getId());
         response.setKode(sanksi.getKode());
-        response.setNama(sanksi.getKeterangan());
+        response.setKeterangan(sanksi.getKeterangan());
         return response;
     }
 }

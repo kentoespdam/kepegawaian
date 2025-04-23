@@ -12,8 +12,8 @@ import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 import org.hibernate.envers.RelationTargetAuditMode;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -33,7 +33,7 @@ public class JenisSp extends IdsAbstract {
     private String nama;
     @NotAudited
     @OneToMany(mappedBy = "jenisSp")
-    private Set<Sanksi> sanksiSp = new HashSet<>();
+    private List<Sanksi> sanksiSp = new ArrayList<>();
 
     public JenisSp(Long id) {
         super(id);

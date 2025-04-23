@@ -42,9 +42,9 @@ public class Sanksi extends IdsAbstract {
     @JoinColumn(name = "jenis_sp_id", referencedColumnName = "id")
     private JenisSp jenisSp;
 
-    public Sanksi(String kode, String nama) {
+    public Sanksi(String kode, String keterangan) {
         this.kode = kode;
-        this.keterangan = nama;
+        this.keterangan = keterangan;
     }
 
     public Sanksi(Long id, String kode, String keterangan, JenisSp jenisSp, Boolean potTkk, Integer jmlPotTkk, Boolean isPendingPangkat, Boolean isPendingGaji, Boolean isTurunPangkat, Boolean isTurunJabatan, Boolean isSuspension, Boolean isTerminateDh, Boolean isTerminateTh) {

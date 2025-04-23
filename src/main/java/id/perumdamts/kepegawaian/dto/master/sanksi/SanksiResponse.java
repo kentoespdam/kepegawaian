@@ -7,7 +7,7 @@ import lombok.Data;
 public class SanksiResponse {
     private Long id;
     private String kode;
-    private String nama;
+    private String keterangan;
     private Boolean potTkk;
     private Integer jmlPotTkk;
     private Boolean isPendingPangkat;
@@ -21,7 +21,7 @@ public class SanksiResponse {
         SanksiResponse response = new SanksiResponse();
         response.setId(sanksi.getId());
         response.setKode(sanksi.getKode());
-        response.setNama(sanksi.getKeterangan());
+        response.setKeterangan(sanksi.getKeterangan());
         response.setPotTkk(sanksi.getPotTkk());
         response.setJmlPotTkk(sanksi.getJmlPotTkk());
         response.setIsPendingPangkat(sanksi.getIsPendingPangkat());
