@@ -8,12 +8,14 @@ public class SanksiMiniResponse {
     private Long id;
     private String kode;
     private String keterangan;
+    private Long jenisSpId;
 
     public static SanksiMiniResponse from(Sanksi sanksi) {
         SanksiMiniResponse response = new SanksiMiniResponse();
         response.setId(sanksi.getId());
         response.setKode(sanksi.getKode());
         response.setKeterangan(sanksi.getKeterangan());
+        response.setJenisSpId(sanksi.getJenisSp().getId());
         return response;
     }
 }
