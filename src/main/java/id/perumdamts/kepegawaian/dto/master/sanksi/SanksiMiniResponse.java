@@ -15,7 +15,8 @@ public class SanksiMiniResponse {
         response.setId(sanksi.getId());
         response.setKode(sanksi.getKode());
         response.setKeterangan(sanksi.getKeterangan());
-        response.setJenisSpId(sanksi.getJenisSp().getId());
+        if (sanksi.getJenisSp() != null)
+            response.setJenisSpId(sanksi.getJenisSp().getId());
         return response;
     }
 }
