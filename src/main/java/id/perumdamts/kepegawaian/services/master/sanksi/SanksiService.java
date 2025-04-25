@@ -16,5 +16,7 @@ public interface SanksiService {
     SavedStatus<?> save(SanksiPostRequest request);
     SavedStatus<?> update(Long id, SanksiPutRequest request);
 
+    SavedStatus<?> updateJenisSp(Long id, PatchSanksiJenisSpRequest request);
+
     boolean delete(Long id);
 }

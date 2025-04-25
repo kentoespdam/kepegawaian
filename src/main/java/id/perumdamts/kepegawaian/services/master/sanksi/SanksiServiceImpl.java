@@ -63,6 +63,15 @@ public class SanksiServiceImpl implements SanksiService {
     }
 
     @Override
+    public SavedStatus<?> updateJenisSp(Long id, PatchSanksiJenisSpRequest request) {
+        Optional<Sanksi> byId = repository.findById(id);
+        if (byId.isEmpty()) return SavedStatus.build(ESaveStatus.FAILED, "Unknown Sanksi");
+        JenisSp jenisSp = jenisSpRepository.findById(request.getJenisSpId()).orElse(null);
+        repository.save(PatchSanksiJenisSpRequest.toEntity(byId.get(), jenisSp));
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Jenis SP berhasil diupdate");
+    }
+
+    @Override
     public boolean delete(Long id) {
         Optional<Sanksi> byId = repository.findById(id);
         if (byId.isEmpty()) return false;

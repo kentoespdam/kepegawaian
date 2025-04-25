@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 public class SanksiResponse {
     private Long id;
+    private Long jenisSpId;
     private String kode;
     private String keterangan;
     private Boolean potTkk;
@@ -21,6 +22,8 @@ public class SanksiResponse {
     public static SanksiResponse from(Sanksi sanksi) {
         SanksiResponse response = new SanksiResponse();
         response.setId(sanksi.getId());
+        if (sanksi.getJenisSp() != null)
+            response.setJenisSpId(sanksi.getJenisSp().getId());
         response.setKode(sanksi.getKode());
         response.setKeterangan(sanksi.getKeterangan());
         response.setPotTkk(sanksi.getPotTkk());

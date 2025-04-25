@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.master;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
+import id.perumdamts.kepegawaian.dto.master.sanksi.PatchSanksiJenisSpRequest;
 import id.perumdamts.kepegawaian.dto.master.sanksi.SanksiPostRequest;
 import id.perumdamts.kepegawaian.dto.master.sanksi.SanksiPutRequest;
 import id.perumdamts.kepegawaian.dto.master.sanksi.SanksiRequest;
@@ -39,6 +40,11 @@ public class SanksiController {
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody SanksiPutRequest request) {
         return CustomResult.any(service.update(id, request));
+    }
+
+    @PatchMapping("/{id}/jenis-sp")
+    public ResponseEntity<?> updateJenisSp(@PathVariable Long id, @RequestBody PatchSanksiJenisSpRequest request) {
+        return CustomResult.any(service.updateJenisSp(id, request));
     }
 
     @DeleteMapping("/{id}")
