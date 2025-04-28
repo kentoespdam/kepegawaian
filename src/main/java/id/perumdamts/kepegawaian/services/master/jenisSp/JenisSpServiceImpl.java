@@ -38,8 +38,8 @@ public class JenisSpServiceImpl implements JenisSpService {
         boolean exists = repository.exists(request.getSpecification());
         if (exists) return SavedStatus.build(ESaveStatus.DUPLICATE, "Jenis SP sudah ada");
         JenisSp entity = JenisSpPostRequest.toEntity(request);
-        JenisSp save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Data Saved!");
     }
 
     @Override
@@ -47,8 +47,8 @@ public class JenisSpServiceImpl implements JenisSpService {
         Optional<JenisSp> one = repository.findById(id);
         if (one.isEmpty()) return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jenis SP");
         JenisSp entity = JenisSpPutRequest.toEntity(one.get(), request);
-        JenisSp save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Data Updated!");
     }
 
     @Override
