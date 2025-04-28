@@ -16,9 +16,7 @@ public class JenisSpPostRequest {
     public Specification<JenisSp> getSpecification() {
         Specification<JenisSp> kodeSpec = Objects.isNull(kode) ? null :
                 (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("kode"), kode);
-        Specification<JenisSp> namaSpec = Objects.isNull(nama) ? null :
-                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("nama"), nama);
-        return Specification.where(kodeSpec).and(namaSpec);
+        return Specification.where(kodeSpec);
     }
 
     public static JenisSp toEntity(JenisSpPostRequest request) {

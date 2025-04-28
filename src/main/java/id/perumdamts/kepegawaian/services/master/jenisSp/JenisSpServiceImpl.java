@@ -44,7 +44,7 @@ public class JenisSpServiceImpl implements JenisSpService {
 
     @Override
     public SavedStatus<?> update(Long id, JenisSpPutRequest request) {
-        Optional<JenisSp> one = repository.findOne(request.getSpecification());
+        Optional<JenisSp> one = repository.findById(id);
         if (one.isEmpty()) return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jenis SP");
         JenisSp entity = JenisSpPutRequest.toEntity(one.get(), request);
         JenisSp save = repository.save(entity);
