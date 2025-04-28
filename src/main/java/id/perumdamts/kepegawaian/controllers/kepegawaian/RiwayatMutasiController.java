@@ -13,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
 import java.util.Set;
 
 @RestController
@@ -23,9 +24,14 @@ public class RiwayatMutasiController {
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     Validator validator = factory.getValidator();
 
-    @GetMapping
-    public ResponseEntity<?> index(@ParameterObject RiwayatMutasiRequest request) {
-        return CustomResult.page(service.findPage(request));
+    @GetMapping("/pegawai/{id}")
+    public ResponseEntity<?> index(@PathVariable Long id, @ParameterObject RiwayatMutasiRequest request) {
+        request.setPegawaiId(id);
+        if (Objects.isNull(request.getSortBy()) || request.getSortBy().isEmpty()) {
+            request.setSortBy("id");
+            request.setSortDirection("DESC");
+        }
+        return CustomResult.any(service.findPage(request));
     }
 
     @GetMapping("/{id}")
@@ -33,10 +39,7 @@ public class RiwayatMutasiController {
         return CustomResult.any(service.findById(id));
     }
 
-    @GetMapping("/pegawai/{id}")
-    public ResponseEntity<?> findByPegawaiId(@PathVariable Long id, @ParameterObject RiwayatMutasiRequest request) {
-        return CustomResult.any(service.findByPegawaiId(id, request));
-    }
+
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping

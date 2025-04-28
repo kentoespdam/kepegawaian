@@ -11,26 +11,20 @@ import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatMutasi;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.RiwayatMutasiRepository;
 import id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk.RiwayatSkService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class RiwayatMutasiServiceImpl implements RiwayatMutasiService {
     private final RiwayatMutasiRepository repository;
     private final RiwayatSkService riwayatSkService;
     private final GenericMutasiService genericMutasiService;
-
-    @Override
-    public List<RiwayatMutasiResponse> findAll(RiwayatMutasiRequest request) {
-        return repository.findAll(request.getSpecification()).stream()
-                .map(RiwayatMutasiResponse::from).toList();
-    }
 
     @Override
     public Page<RiwayatMutasiResponse> findPage(RiwayatMutasiRequest request) {
@@ -41,17 +35,6 @@ public class RiwayatMutasiServiceImpl implements RiwayatMutasiService {
     @Override
     public RiwayatMutasiResponse findById(Long id) {
         return repository.findById(id).map(RiwayatMutasiResponse::from).orElse(null);
-    }
-
-    @Override
-    public Page<RiwayatMutasiResponse> findByPegawaiId(Long pegawaiId, RiwayatMutasiRequest request) {
-        if (Objects.isNull(request.getSortBy()) || request.getSortBy().isEmpty()) {
-            request.setSortBy("id");
-            request.setSortDirection("DESC");
-        }
-        request.setPegawaiId(pegawaiId);
-        return repository.findAll(request.getSpecification(), request.getPageable())
-                .map(RiwayatMutasiResponse::from);
     }
 
     @Transactional
