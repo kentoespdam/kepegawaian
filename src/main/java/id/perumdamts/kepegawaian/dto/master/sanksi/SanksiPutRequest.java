@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 public class SanksiPutRequest extends SanksiPostRequest {
     public static Sanksi toEntity(Sanksi entity, SanksiPutRequest request, JenisSp jenisSp) {
         entity.setKode(request.getKode());
-        entity.setKeterangan(request.getNama());
+        entity.setKeterangan(request.getKeterangan());
         entity.setJenisSp(jenisSp);
         entity.setPotTkk(request.getPotTkk());
         entity.setJmlPotTkk(request.getJmlPotTkk());
