@@ -25,7 +25,7 @@ public class RiwayatMutasiController {
 
     @GetMapping
     public ResponseEntity<?> index(@ParameterObject RiwayatMutasiRequest request) {
-        return CustomResult.any(service.findPage(request));
+        return CustomResult.page(service.findPage(request));
     }
 
     @GetMapping("/{id}")
@@ -74,6 +74,6 @@ public class RiwayatMutasiController {
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        return CustomResult.any(service.delete(id));
+        return CustomResult.delete(service.delete(id));
     }
 }
