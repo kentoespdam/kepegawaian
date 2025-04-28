@@ -9,11 +9,13 @@ import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSp.RiwayatSpRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSp.RiwayatSpResponse;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSp;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
+import id.perumdamts.kepegawaian.entities.master.JenisSp;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.riwayatSp.RiwayatSpRepository;
 import id.perumdamts.kepegawaian.repositories.master.JabatanRepository;
+import id.perumdamts.kepegawaian.repositories.master.JenisSpRepository;
 import id.perumdamts.kepegawaian.repositories.master.OrganisasiRepository;
 import id.perumdamts.kepegawaian.utils.FileUploadUtil;
 import id.perumdamts.kepegawaian.utils.UploadResultUtil;
@@ -36,6 +38,7 @@ public class RiwayatSpServiceImpl implements RiwayatSpService {
     private final PegawaiRepository pegawaiRepository;
     private final OrganisasiRepository organisasiRepository;
     private final JabatanRepository jabatanRepository;
+    private final JenisSpRepository jenisSpRepository;
     private final FileUploadUtil fileUploadUtil;
 
     @Override
@@ -81,7 +84,8 @@ public class RiwayatSpServiceImpl implements RiwayatSpService {
             Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId()).orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
             Organisasi organisasi = organisasiRepository.findById(request.getOrganisasiId()).orElseThrow(() -> new RuntimeException("Unknown Organisasi"));
             Jabatan jabatan = jabatanRepository.findById(request.getJabatanId()).orElseThrow(() -> new RuntimeException("Unknown Jabatan"));
-            RiwayatSp entity = RiwayatSpPostRequest.toEntity(request, pegawai, jabatan, organisasi);
+            JenisSp jenisSp = jenisSpRepository.findById(request.getJenisSpId()).orElseThrow(() -> new RuntimeException("Unknown Jenis SP"));
+            RiwayatSp entity = RiwayatSpPostRequest.toEntity(request, jenisSp, pegawai, jabatan, organisasi);
             RiwayatSp entity1 = saveFile(entity, request);
             RiwayatSp save = repository.save(entity1);
             return SavedStatus.build(ESaveStatus.SUCCESS, save);
@@ -98,7 +102,8 @@ public class RiwayatSpServiceImpl implements RiwayatSpService {
             Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId()).orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
             Organisasi organisasi = organisasiRepository.findById(request.getOrganisasiId()).orElseThrow(() -> new RuntimeException("Unknown Organisasi"));
             Jabatan jabatan = jabatanRepository.findById(request.getJabatanId()).orElseThrow(() -> new RuntimeException("Unknown Jabatan"));
-            RiwayatSp entity = RiwayatSpPutRequest.toEntity(riwayatSp.get(), request, pegawai, jabatan, organisasi);
+            JenisSp jenisSp = jenisSpRepository.findById(request.getJenisSpId()).orElseThrow(() -> new RuntimeException("Unknown Jenis SP"));
+            RiwayatSp entity = RiwayatSpPutRequest.toEntity(riwayatSp.get(), request, jenisSp, pegawai, jabatan, organisasi);
             RiwayatSp entity1 = saveFile(entity, request);
             RiwayatSp save = repository.save(entity1);
             return SavedStatus.build(ESaveStatus.SUCCESS, save);
@@ -119,7 +124,7 @@ public class RiwayatSpServiceImpl implements RiwayatSpService {
     private RiwayatSp saveFile(RiwayatSp entity, RiwayatSpPostRequest request) {
         if (Objects.isNull(request.getFileName()))
             return entity;
-        UploadResultUtil uploadResultUtil = fileUploadUtil.uploadFileSp(request.getFileName(), String.valueOf(request.getJenisSp()));
+        UploadResultUtil uploadResultUtil = fileUploadUtil.uploadFileSp(request.getFileName(), entity.getJenisSp().getKode());
         if (!uploadResultUtil.isSuccess())
             throw new RuntimeException(uploadResultUtil.getMessage());
 

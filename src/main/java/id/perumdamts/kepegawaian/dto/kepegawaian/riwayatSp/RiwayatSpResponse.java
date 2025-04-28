@@ -4,11 +4,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;
+import id.perumdamts.kepegawaian.dto.master.jenisSp.JenisSpMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiMiniResponse;
-import id.perumdamts.kepegawaian.entities.commons.EJenisSp;
+import id.perumdamts.kepegawaian.dto.master.sanksi.SanksiMiniResponse;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSp;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -27,8 +26,10 @@ public class RiwayatSpResponse {
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tanggalSp;
-    @Enumerated(EnumType.ORDINAL)
-    private EJenisSp jenisSp;
+    private JenisSpMiniResponse jenisSp;
+    private SanksiMiniResponse sanksi;
+    private String sanksiNotes;
+    private LocalDate tanggalEksekusiSanksi;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tanggalMulai;
@@ -53,7 +54,10 @@ public class RiwayatSpResponse {
         response.setNamaJabatan(entity.getNamaJabatan());
         response.setNomorSp(entity.getNomorSp());
         response.setTanggalSp(entity.getTanggalSp());
-        response.setJenisSp(entity.getJenisSp());
+        response.setJenisSp(JenisSpMiniResponse.from(entity.getJenisSp()));
+        response.setSanksi(SanksiMiniResponse.from(entity.getSanksi()));
+        response.setSanksiNotes(entity.getSanksiNotes());
+        response.setTanggalEksekusiSanksi(entity.getTanggalEksekusiSanksi());
         response.setTanggalMulai(entity.getTanggalMulai());
         response.setTanggalSelesai(entity.getTanggalSelesai());
         response.setPenandaTangan(entity.getPenandaTangan());

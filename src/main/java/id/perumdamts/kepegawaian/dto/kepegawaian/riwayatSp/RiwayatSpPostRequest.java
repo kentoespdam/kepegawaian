@@ -4,13 +4,12 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import id.perumdamts.kepegawaian.entities.commons.EJenisSp;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSp;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
+import id.perumdamts.kepegawaian.entities.master.JenisSp;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
+import id.perumdamts.kepegawaian.entities.master.Sanksi;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -26,21 +25,27 @@ public class RiwayatSpPostRequest {
     @NotEmpty(message = "Nomor SP is required")
     private String nomorSp;
     @NotNull(message = "Pegawai ID is required")
-    @Min(value = 1, message = "Pegawai ID must be greater than or equal to 1")
+    @Min(value = 1, message = "Pegawai ID required")
     private Long pegawaiId;
     @NotNull(message = "Organisasi ID is required")
-    @Min(value = 1, message = "Organisasi ID must be greater than or equal to 1")
+    @Min(value = 1, message = "Organisasi ID required")
     private Long organisasiId;
     @NotNull(message = "Jabatan ID is required")
-    @Min(value = 1, message = "Jabatan ID must be greater than or equal to 1")
+    @Min(value = 1, message = "Jabatan ID required")
     private Long jabatanId;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "Tanggal SP is required")
     private LocalDate tanggalSp;
     @NotNull(message = "Jenis SP is required")
-    @Enumerated(EnumType.ORDINAL)
-    private EJenisSp jenisSp;
+    @Min(value = 1, message = "Jenis SP required")
+    private Long jenisSpId;
+    @NotNull(message = "Sanksi is required")
+    @Min(value = 1, message = "Sanksi required")
+    private Long sanksiId;
+    private String sanksiNotes;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate tanggalEksekusiSanksi;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "Tanggal Mulai is required")
@@ -60,10 +65,13 @@ public class RiwayatSpPostRequest {
 
     public static RiwayatSp toEntity(
             RiwayatSpPostRequest request,
+            JenisSp jenisSp,
             Pegawai pegawai,
             Jabatan jabatan,
             Organisasi organisasi
     ) {
+        Sanksi sanksi = jenisSp.getSanksiSp().stream().filter(s -> s.getId().equals(request.getSanksiId()))
+                .findFirst().orElse(null);
         RiwayatSp entity = new RiwayatSp();
         entity.setNomorSp(request.getNomorSp());
         entity.setPegawai(pegawai);
@@ -74,7 +82,10 @@ public class RiwayatSpPostRequest {
         entity.setJabatan(jabatan);
         entity.setNamaJabatan(jabatan.getNama());
         entity.setTanggalSp(request.getTanggalSp());
-        entity.setJenisSp(request.getJenisSp());
+        entity.setJenisSp(jenisSp);
+        entity.setSanksi(sanksi);
+        entity.setSanksiNotes(request.getSanksiNotes());
+        entity.setTanggalEksekusiSanksi(request.getTanggalEksekusiSanksi());
         entity.setTanggalMulai(request.getTanggalMulai());
         entity.setTanggalSelesai(request.getTanggalSelesai());
         entity.setPenandaTangan(request.getPenandaTangan());

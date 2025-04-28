@@ -4,9 +4,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import id.perumdamts.kepegawaian.entities.commons.EJenisSp;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
+import id.perumdamts.kepegawaian.entities.master.JenisSp;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
+import id.perumdamts.kepegawaian.entities.master.Sanksi;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -54,8 +55,15 @@ public class RiwayatSp extends LampiranSp {
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tanggalSp;
-    @Enumerated(EnumType.ORDINAL)
-    private EJenisSp jenisSp;
+    @ManyToOne
+    @JoinColumn(name = "jenis_sp_id", referencedColumnName = "id")
+    private JenisSp jenisSp;
+    @ManyToOne
+    @JoinColumn(name = "sanksi_id", referencedColumnName = "id")
+    private Sanksi sanksi;
+    @Column(columnDefinition = "TEXT")
+    private String sanksiNotes;
+    private LocalDate tanggalEksekusiSanksi;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tanggalMulai;
