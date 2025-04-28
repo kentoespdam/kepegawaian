@@ -31,7 +31,7 @@ public class RiwayatMutasiController {
             request.setSortBy("id");
             request.setSortDirection("DESC");
         }
-        return CustomResult.any(service.findPage(request));
+        return CustomResult.page(service.findPage(request));
     }
 
     @GetMapping("/{id}")

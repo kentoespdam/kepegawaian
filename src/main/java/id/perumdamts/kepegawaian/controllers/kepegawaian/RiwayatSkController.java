@@ -28,7 +28,7 @@ public class RiwayatSkController {
 
     @GetMapping
     public ResponseEntity<?> index(@ParameterObject RiwayatSkRequest request) {
-        return CustomResult.any(riwayatSkService.findPage(request));
+        return CustomResult.page(riwayatSkService.findPage(request));
     }
 
     @GetMapping("/list")

@@ -22,7 +22,7 @@ public class RiwayatKontrakController {
 
     @GetMapping("/pegawai/{id}")
     public ResponseEntity<?> index(@PathVariable Long id, @ParameterObject RiwayatKontrakRequest request) {
-        return CustomResult.any(service.findByPegawaiId(id, request));
+        return CustomResult.page(service.findByPegawaiId(id, request));
     }
 
     @GetMapping("/{id}")
