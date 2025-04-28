@@ -33,17 +33,17 @@ public class JenisSpController {
 
     @PostMapping
     public ResponseEntity<?> store(@RequestBody JenisSpPostRequest request) {
-        return CustomResult.any(service.save(request));
+        return CustomResult.save(service.save(request));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody JenisSpPutRequest request) {
-        return CustomResult.any(service.update(id, request));
+        return CustomResult.save(service.update(id, request));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        return CustomResult.any(service.delete(id));
+        return CustomResult.delete(service.delete(id));
     }
 
 }

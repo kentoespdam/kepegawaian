@@ -24,7 +24,7 @@ public class SanksiController {
 
     @GetMapping("/list")
     public ResponseEntity<?> list() {
-        return CustomResult.any(service.list());
+        return CustomResult.list(service.list());
     }
 
     @GetMapping("/{id}")
@@ -34,21 +34,21 @@ public class SanksiController {
 
     @PostMapping
     public ResponseEntity<?> store(@RequestBody SanksiPostRequest request) {
-        return CustomResult.any(service.save(request));
+        return CustomResult.save(service.save(request));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody SanksiPutRequest request) {
-        return CustomResult.any(service.update(id, request));
+        return CustomResult.save(service.update(id, request));
     }
 
     @PatchMapping("/{id}/jenis-sp")
     public ResponseEntity<?> updateJenisSp(@PathVariable Long id, @RequestBody PatchSanksiJenisSpRequest request) {
-        return CustomResult.any(service.updateJenisSp(id, request));
+        return CustomResult.save(service.updateJenisSp(id, request));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        return CustomResult.any(service.delete(id));
+        return CustomResult.delete(service.delete(id));
     }
 }
