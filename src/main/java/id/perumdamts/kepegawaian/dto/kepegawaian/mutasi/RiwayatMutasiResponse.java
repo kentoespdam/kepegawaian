@@ -53,19 +53,28 @@ public class RiwayatMutasiResponse {
             response.setSkMutasi(RiwayatSkResponse.from(entity.getRiwayatSk()));
         response.setTmtBerlaku(entity.getTmtBerlaku());
         response.setTanggalBerakhir(entity.getTanggalBerakhir());
-        response.setGolongan(GolonganResponse.from(entity.getGolongan()));
-        response.setGolonganLama(GolonganResponse.from(entity.getGolonganLama()));
-        response.setOrganisasi(OrganisasiMiniResponse.from(entity.getOrganisasi()));
+        if (Objects.nonNull(entity.getGolongan())) {
+            response.setGolongan(GolonganResponse.from(entity.getGolongan()));
+            response.setGolonganLama(GolonganResponse.from(entity.getGolonganLama()));
+        }
+        if (Objects.nonNull(entity.getOrganisasi()))
+            response.setOrganisasi(OrganisasiMiniResponse.from(entity.getOrganisasi()));
+
         response.setNamaOrganisasi(entity.getNamaOrganisasi());
-        response.setJabatan(JabatanMiniResponse.from(entity.getJabatan()));
+        if (Objects.nonNull(entity.getOrganisasiLama()))
+            response.setJabatan(JabatanMiniResponse.from(entity.getJabatan()));
         response.setNamaJabatan(entity.getNamaJabatan());
-        response.setProfesi(ProfesiMiniResponse.from(entity.getProfesi()));
+        if (Objects.nonNull(entity.getProfesi()))
+            response.setProfesi(ProfesiMiniResponse.from(entity.getProfesi()));
         response.setNamaProfesi(entity.getNamaProfesi());
-        response.setOrganisasiLama(OrganisasiMiniResponse.from(entity.getOrganisasiLama()));
+        if (Objects.nonNull(entity.getOrganisasiLama()))
+            response.setOrganisasiLama(OrganisasiMiniResponse.from(entity.getOrganisasiLama()));
         response.setNamaOrganisasiLama(entity.getNamaOrganisasiLama());
-        response.setJabatanLama(JabatanMiniResponse.from(entity.getJabatanLama()));
+        if (Objects.nonNull(entity.getJabatanLama()))
+            response.setJabatanLama(JabatanMiniResponse.from(entity.getJabatanLama()));
         response.setNamaJabatanLama(entity.getNamaJabatanLama());
-        response.setProfesiLama(ProfesiMiniResponse.from(entity.getProfesiLama()));
+        if (Objects.nonNull(entity.getProfesiLama()))
+            response.setProfesiLama(ProfesiMiniResponse.from(entity.getProfesiLama()));
         response.setNamaProfesiLama(entity.getNamaProfesiLama());
 
         response.setNotes(entity.getNotes());

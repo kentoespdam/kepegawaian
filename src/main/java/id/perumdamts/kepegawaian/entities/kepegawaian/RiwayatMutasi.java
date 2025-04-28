@@ -16,6 +16,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
@@ -54,51 +56,59 @@ public class RiwayatMutasi extends IdsAbstract {
     @Enumerated(EnumType.ORDINAL)
     private EJenisMutasi jenisMutasi;
 
-    @JsonBackReference
+//    @JsonBackReference
     @ManyToOne
     @JoinColumn(name="organisasi_id", referencedColumnName = "id")
+    @NotFound(action = NotFoundAction.IGNORE)
     private Organisasi organisasi;
     private String namaOrganisasi;
 
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name="jabatan_id", referencedColumnName = "id")
+    @NotFound(action = NotFoundAction.IGNORE)
     private Jabatan jabatan;
     private String namaJabatan;
 
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name="profesi_id", referencedColumnName = "id")
+    @NotFound(action = NotFoundAction.IGNORE)
     private Profesi profesi;
     private String namaProfesi;
 
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name="golongan_id", referencedColumnName = "id")
+    @NotFound(action = NotFoundAction.IGNORE)
     private Golongan golongan;
     private String namaGolongan;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="organisasi_lama_id", referencedColumnName = "id")
+    @NotFound(action = NotFoundAction.IGNORE)
     private Organisasi organisasiLama;
     private String namaOrganisasiLama;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="jabatan_lama_id", referencedColumnName = "id")
+    @NotFound(action = NotFoundAction.IGNORE)
     private Jabatan jabatanLama;
     private String namaJabatanLama;
 
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name="profesi_lama_id", referencedColumnName = "id")
+    @NotFound(action = NotFoundAction.IGNORE)
     private Profesi profesiLama;
     private String namaProfesiLama;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="golongan_lama_id", referencedColumnName = "id")
+    @NotFound(action = NotFoundAction.IGNORE)
     private Golongan golonganLama;
     private String namaGolonganLama;
     private String notes;
