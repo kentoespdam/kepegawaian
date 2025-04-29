@@ -16,6 +16,7 @@ import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataResponse;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
+import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -53,6 +54,7 @@ public class PegawaiResponseDetail {
     private RiwayatSkResponse skJabatan;
     private RiwayatSkResponse skMutasi;
     private RiwayatSkResponse skKontrak;
+    private RiwayatSkResponse skGajiBerkala;
     private Double gajiPokok;
     private Double phdp;
     private Integer jmlTanggungan;
@@ -71,7 +73,7 @@ public class PegawaiResponseDetail {
     private RumahDinasResponse rumahDinas;
     private String notes;
 
-    public static PegawaiResponseDetail from(Pegawai pegawai, List<RiwayatSkResponse> list) {
+    public static PegawaiResponseDetail from(Pegawai pegawai, List<RiwayatSk> list) {
         PegawaiResponseDetail response = new PegawaiResponseDetail();
         response.setId(pegawai.getId());
         response.setNipam(pegawai.getNipam());
@@ -89,22 +91,15 @@ public class PegawaiResponseDetail {
         response.setStatusKerja(pegawai.getStatusKerja());
         response.setTmtKerja(pegawai.getTmtKerja());
         response.setTanggalSk(pegawai.getTmtPegawai());
-        for (RiwayatSkResponse riwayatSkResponse : list) {
-            if (riwayatSkResponse.getJenisSk().equals(EJenisSk.SK_CAPEG)) {
-                response.setSkCapeg(riwayatSkResponse);
-                response.setTanggalSk(riwayatSkResponse.getTmtBerlaku());
-            }
-            if (riwayatSkResponse.getJenisSk().equals(EJenisSk.SK_PEGAWAI_TETAP))
-                response.setSkPegawai(riwayatSkResponse);
-            if (riwayatSkResponse.getJenisSk().equals(EJenisSk.SK_KENAIKAN_PANGKAT_GOLONGAN))
-                response.setSkGolongan(riwayatSkResponse);
-            if (riwayatSkResponse.getJenisSk().equals(EJenisSk.SK_JABATAN))
-                response.setSkJabatan(riwayatSkResponse);
-            if (riwayatSkResponse.getJenisSk().equals(EJenisSk.SK_MUTASI))
-                response.setSkMutasi(riwayatSkResponse);
-            if (riwayatSkResponse.getJenisSk().equals(EJenisSk.SK_LAINNYA) && pegawai.getStatusPegawai().equals(EStatusPegawai.KONTRAK))
-                response.setSkKontrak(riwayatSkResponse);
-        }
+        response.setSkCapeg(RiwayatSkResponse.getLastFromList(list, EJenisSk.SK_CAPEG));
+        if (Objects.nonNull(response.getSkCapeg()))
+            response.setTanggalSk(response.getSkCapeg().getTmtBerlaku());
+        response.setSkPegawai(RiwayatSkResponse.getLastFromList(list, EJenisSk.SK_PEGAWAI_TETAP));
+        response.setSkGolongan(RiwayatSkResponse.getLastFromList(list, EJenisSk.SK_KENAIKAN_PANGKAT_GOLONGAN));
+        response.setSkJabatan(RiwayatSkResponse.getLastFromList(list, EJenisSk.SK_JABATAN));
+        response.setSkMutasi(RiwayatSkResponse.getLastFromList(list, EJenisSk.SK_MUTASI));
+        response.setSkKontrak(RiwayatSkResponse.getLastFromList(list, EJenisSk.SK_LAINNYA));
+        response.setSkGajiBerkala(RiwayatSkResponse.getLastFromList(list, EJenisSk.SK_KENAIKAN_GAJI_BERKALA));
         response.setTmtPensiun(pegawai.getTmtPensiun());
         response.setGajiPokok(pegawai.getGajiPokok());
         response.setPhdp(pegawai.getPhdp());

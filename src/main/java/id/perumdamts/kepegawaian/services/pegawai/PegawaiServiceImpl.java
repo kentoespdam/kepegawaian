@@ -2,7 +2,6 @@ package id.perumdamts.kepegawaian.services.pegawai;
 
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
-import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkResponse;
 import id.perumdamts.kepegawaian.dto.pegawai.*;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
@@ -12,6 +11,7 @@ import id.perumdamts.kepegawaian.entities.penggajian.GajiPendapatanNonPajak;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiProfil;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
+import id.perumdamts.kepegawaian.repositories.kepegawaian.RiwayatSkRepository;
 import id.perumdamts.kepegawaian.repositories.master.*;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiPendapatanNonPajakRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiProfilRepository;
@@ -47,6 +47,7 @@ public class PegawaiServiceImpl implements PegawaiService {
     private final GajiProfilRepository gajiProfilRepository;
     private final RumahDinasRepository rumahDinasRepository;
     private final AuthService authService;
+    private final RiwayatSkRepository riwayatSkRepository;
 
     private static final EStatusPegawai[] EXCLUDED_GOLONGAN_STATUSES = {
             EStatusPegawai.KONTRAK,
@@ -71,8 +72,8 @@ public class PegawaiServiceImpl implements PegawaiService {
     @Override
     public PegawaiResponseDetail findById(Long id) {
         return repository.findById(id).map(pegawai -> {
-            List<RiwayatSkResponse> riwayatSkResponses = riwayatSkService.findByPegawai(pegawai.getId());
-            return PegawaiResponseDetail.from(pegawai, riwayatSkResponses);
+            List<RiwayatSk> list = riwayatSkRepository.findByPegawai_Id(pegawai.getId());
+            return PegawaiResponseDetail.from(pegawai, list);
         }).orElse(null);
     }
 

@@ -14,7 +14,8 @@ spring:
       max-file-size: 100MB
       max-request-size: 100MB
   datasource:
-    url: jdbc:mysql://${DB_HOST:192.168.230.84}:${DB_PORT:3307}/${DB_SCHEMA:kepegawaian}?useSSL=false&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://${DB_HOST:192.168.230.84}:${DB_PORT:3306}/${DB_SCHEMA:kepegawaian}?useSSL=false&zeroDateTimeBehavior=convertToNull
+    #    url: jdbc:mysql://${DB_HOST:192.168.230.84}:${DB_PORT:3307}/${DB_SCHEMA:kepegawaian_migrasi}?useSSL=false&zeroDateTimeBehavior=convertToNull
     #    url: jdbc:mysql://${DB_HOST:192.168.230.254}:${DB_PORT:4006}/${DB_SCHEMA:kepegawaian}?useSSL=false
     username: ${DB_USER:dev}
     password: ${DB_PASSWORD:password}

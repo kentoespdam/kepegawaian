@@ -11,7 +11,9 @@ import jakarta.persistence.Enumerated;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Data
 public class RiwayatSkResponse {
@@ -59,5 +61,11 @@ public class RiwayatSkResponse {
         response.setUpdateMaster(entity.getUpdateMaster());
         response.setNotes(entity.getNotes());
         return response;
+    }
+
+    public static RiwayatSkResponse getLastFromList(List<RiwayatSk> list, EJenisSk jenisSk){
+        list.sort((o1, o2) -> o2.getTmtBerlaku().compareTo(o1.getTmtBerlaku()));
+        Optional<RiwayatSk> first = list.stream().filter(riwayatSk -> riwayatSk.getJenisSk().equals(jenisSk)).findFirst();
+        return first.map(RiwayatSkResponse::from).orElse(null);
     }
 }
