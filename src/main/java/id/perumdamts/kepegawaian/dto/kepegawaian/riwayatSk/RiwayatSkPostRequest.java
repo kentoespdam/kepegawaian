@@ -27,7 +27,7 @@ import java.util.Objects;
 @Data
 public class RiwayatSkPostRequest {
     @NotNull(message = "Pegawai ID is required")
-    @Min(value = 1, message = "Pegawai ID must be greater than or equal to 1")
+    @Min(value = 1, message = "Pegawai ID is required")
     private Long pegawaiId;
     @NotEmpty(message = "Nomor SK is required")
     private String nomorSk;
@@ -43,13 +43,13 @@ public class RiwayatSkPostRequest {
     @NotNull(message = "TMT Berlaku is required")
     private LocalDate tmtBerlaku;
     @NotNull(message = "Golongan ID is required", groups = GajiSk.class)
-    @Min(value = 1, message = "Golongan ID must be greater than or equal to 1", groups = GajiSk.class)
+    @Min(value = 1, message = "Golongan ID is required", groups = GajiSk.class)
     private Long golonganId;
     @NotNull(message = "Gaji Pokok is required", groups = GajiSk.class)
     private Double gajiPokok;
-    @Min(value = 0, message = "MKG Tahun must be greater than or equal to 1", groups = GajiSk.class)
+    @Min(value = 0, message = "MKG Tahun is required", groups = GajiSk.class)
     private Integer mkgTahun;
-    @Min(value = 0, message = "MKG Bulan must be greater than or equal to 1", groups = GajiSk.class)
+    @Min(value = 0, message = "MKG Bulan is required", groups = GajiSk.class)
     private Integer mkgBulan;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")

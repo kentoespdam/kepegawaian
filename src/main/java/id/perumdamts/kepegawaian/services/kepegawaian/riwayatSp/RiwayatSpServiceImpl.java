@@ -87,8 +87,8 @@ public class RiwayatSpServiceImpl implements RiwayatSpService {
             JenisSp jenisSp = jenisSpRepository.findById(request.getJenisSpId()).orElseThrow(() -> new RuntimeException("Unknown Jenis SP"));
             RiwayatSp entity = RiwayatSpPostRequest.toEntity(request, jenisSp, pegawai, jabatan, organisasi);
             RiwayatSp entity1 = saveFile(entity, request);
-            RiwayatSp save = repository.save(entity1);
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            repository.save(entity1);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Riwayat SP berhasil disimpan");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
@@ -105,8 +105,8 @@ public class RiwayatSpServiceImpl implements RiwayatSpService {
             JenisSp jenisSp = jenisSpRepository.findById(request.getJenisSpId()).orElseThrow(() -> new RuntimeException("Unknown Jenis SP"));
             RiwayatSp entity = RiwayatSpPutRequest.toEntity(riwayatSp.get(), request, jenisSp, pegawai, jabatan, organisasi);
             RiwayatSp entity1 = saveFile(entity, request);
-            RiwayatSp save = repository.save(entity1);
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            repository.save(entity1);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Riwayat SP berhasil diupdate");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
