@@ -10,4 +10,6 @@ public interface RiwayatSkRepository extends JpaRepository<RiwayatSk, Long>, Jpa
     List<RiwayatSk> findByIdIn(List<Long> riwayatIds);
 
     List<RiwayatSk> findByPegawai_Id(Long pegawaiId);
+
+    List<RiwayatSk> findByPegawai_IdOrderByTmtBerlakuDesc(Long id);
 }

@@ -72,7 +72,7 @@ public class PegawaiServiceImpl implements PegawaiService {
     @Override
     public PegawaiResponseDetail findById(Long id) {
         return repository.findById(id).map(pegawai -> {
-            List<RiwayatSk> list = riwayatSkRepository.findByPegawai_Id(pegawai.getId());
+            List<RiwayatSk> list = riwayatSkRepository.findByPegawai_IdOrderByTmtBerlakuDesc(pegawai.getId());
             return PegawaiResponseDetail.from(pegawai, list);
         }).orElse(null);
     }
