@@ -61,7 +61,7 @@ public class RiwayatSpServiceImpl implements RiwayatSpService {
         if (Objects.isNull(byId.get().getFileName()))
             return ErrorResult.build("File not found");
         try {
-            Path path = fileUploadUtil.generatePathSp(String.valueOf(byId.get().getJenisSp()), byId.get().getHashedFileName());
+            Path path = fileUploadUtil.generatePathSp(String.valueOf(byId.get().getJenisSp().getKode()), byId.get().getHashedFileName());
             FileInputStream stream = new FileInputStream(path.toFile());
             ByteArrayResource resource = new ByteArrayResource(stream.readAllBytes());
             stream.close();
