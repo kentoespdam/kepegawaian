@@ -36,7 +36,7 @@ public class BiodataMiniResponse {
 
         if (biodata.getKartuIdentitas() != null)
             biodata.getKartuIdentitas().stream()
-                    .filter(item -> item.getJenisKartu().getId() == 2)
+                    .filter(item -> item.getJenisKartu().getNama().equalsIgnoreCase("ASKES"))
                     .findFirst()
                     .ifPresent(item -> response.setBpjs(KartuIdentitasMiniResponse.from(item)));
 

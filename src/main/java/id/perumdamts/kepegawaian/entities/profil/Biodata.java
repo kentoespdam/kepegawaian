@@ -1,8 +1,6 @@
 package id.perumdamts.kepegawaian.entities.profil;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
@@ -74,9 +72,9 @@ public class Biodata implements Serializable {
     private String fotoProfil;
     private String notes;
 
-    @JsonBackReference
-    @OneToMany(mappedBy = "biodata")
-    private List<KartuIdentitas> kartuIdentitas;
+    @OneToMany(mappedBy = "biodata", fetch = FetchType.LAZY)
+    private List<KartuIdentitas> kartuIdentitas=new ArrayList<>();
+
     private Boolean isPegawai = false;
     @CreatedBy
     @Column(updatable = false)
@@ -97,13 +95,8 @@ public class Biodata implements Serializable {
     @Version
     private Long version = 1L;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "biodata")
+    @OneToMany(mappedBy = "biodata", fetch = FetchType.LAZY)
     List<Pendidikan> pendidikanList=new ArrayList<>();
-
-    @JsonManagedReference
-    @OneToMany(mappedBy = "biodata")
-    List<KartuIdentitas> kartuIdentitasList=new ArrayList<>();
 
     public Biodata(String nik) {
         this.nik = nik;
