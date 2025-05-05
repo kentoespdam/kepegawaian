@@ -1,13 +1,14 @@
 package id.perumdamts.kepegawaian.entities.master;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
@@ -33,6 +34,7 @@ public class Jabatan extends IdsAbstract {
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
+    @NotFound(action = NotFoundAction.IGNORE)
     private Jabatan parent;
 
     @JsonBackReference
@@ -46,8 +48,7 @@ public class Jabatan extends IdsAbstract {
     private Level level;
     private String nama;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "jabatan")
+    @OneToMany(mappedBy = "jabatan", fetch = FetchType.LAZY)
     public List<Profesi> profesiList;
 
     public Jabatan(Long id) {

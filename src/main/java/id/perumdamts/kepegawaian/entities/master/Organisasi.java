@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
@@ -31,6 +33,7 @@ public class Organisasi extends IdsAbstract {
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
+    @NotFound(action = NotFoundAction.IGNORE)
     private Organisasi parent;
     private Integer levelOrg;
     private String nama;
