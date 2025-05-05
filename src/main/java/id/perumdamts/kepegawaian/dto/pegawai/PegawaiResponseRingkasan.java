@@ -107,8 +107,8 @@ public class PegawaiResponseRingkasan {
         response.setTmtPegawai(entity.getTmtPegawai());
         response.setTmtPensiun(entity.getTmtPensiun());
         response.setIsAskes(entity.getIsAskes());
-        if (!entity.getBiodata().getKartuIdentitasList().isEmpty()) {
-            List<KartuIdentitas> list = entity.getBiodata().getKartuIdentitasList();
+        if (!entity.getBiodata().getKartuIdentitas().isEmpty()) {
+            List<KartuIdentitas> list = entity.getBiodata().getKartuIdentitas();
             response.setNoKontrak("");
             response.setNoNpwp(PegawaiResponseRingkasan.getIdNumber(list, "NPWP"));
             response.setNoJamsostek(PegawaiResponseRingkasan.getIdNumber(list, "JPn"));
