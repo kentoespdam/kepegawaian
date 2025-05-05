@@ -74,8 +74,6 @@ public class RiwayatSkServiceImpl implements RiwayatSkService {
     @Override
     public SavedStatus<?> save(RiwayatSkPostRequest request) {
         try {
-            if (request.getTmtBerlaku().isBefore(request.getTanggalSk()))
-                throw new RuntimeException("TMT Berlaku must be greater than tanggal. SK");
             Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId())
                     .orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
             Golongan golongan = golonganRepository.findById(request.getGolonganId())
