@@ -36,14 +36,14 @@ public class Grade extends IdsAbstract {
     private Double tukin;
 
     @JsonBackReference
-    @OneToMany(mappedBy = "grade")
+    @OneToMany(mappedBy = "grade", fetch = FetchType.LAZY)
     private List<Profesi> profesiList;
 
     public Grade(Long id) {
         super(id);
     }
 
-    public Grade(Level level, Integer grade, Double tukin) {
+    public Grade(Level level, int grade, double tukin) {
         this.level = level;
         this.grade = grade;
         this.tukin = tukin;
