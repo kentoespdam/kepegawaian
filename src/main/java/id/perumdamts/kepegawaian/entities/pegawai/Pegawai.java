@@ -2,7 +2,6 @@ package id.perumdamts.kepegawaian.entities.pegawai;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
@@ -151,11 +150,9 @@ public class Pegawai extends IdsAbstract {
     @Column(name = "notes", columnDefinition = "TEXT")
     private String notes;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "pegawai")
+    @OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY)
     private List<RiwayatSk> riwayatSkList;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "pegawai")
+    @OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY)
     private List<RiwayatMutasi> riwayatMutasiList;
 }
