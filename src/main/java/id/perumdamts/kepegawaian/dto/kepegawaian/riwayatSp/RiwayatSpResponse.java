@@ -29,6 +29,8 @@ public class RiwayatSpResponse {
     private JenisSpMiniResponse jenisSp;
     private SanksiMiniResponse sanksi;
     private String sanksiNotes;
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tanggalEksekusiSanksi;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
