@@ -53,11 +53,11 @@ public class Pegawai extends IdsAbstract {
     @Enumerated(EnumType.ORDINAL)
     private EStatusPegawai statusPegawai;
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "organisasi_id", referencedColumnName = "id")
     private Organisasi organisasi;
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "jabatan_id", referencedColumnName = "id")
     private Jabatan jabatan;
 
@@ -80,12 +80,18 @@ public class Pegawai extends IdsAbstract {
     @Enumerated(EnumType.ORDINAL)
     private EStatusKerja statusKerja;
 
-    @Column(name = "ref_sk_capeg_id")
-    private Long refSkCapegId;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "tmt_kerja")
     private LocalDate tmtKerja;
+    @JsonSerialize(using = LocalDateSerializer.class)
+
+    @Column(name = "ref_sk_capeg_id")
+    private Long refSkCapegId;
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "tanggal_pengangkatan")
+    private LocalDate tanggalPengangkatan;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "tmt_pensiun")
