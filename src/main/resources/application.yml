@@ -15,7 +15,7 @@ spring:
       max-request-size: 100MB
   datasource:
     url: jdbc:mysql://${DB_HOST:192.168.230.84}:${DB_PORT:3306}/${DB_SCHEMA:kepegawaian}?useSSL=false&zeroDateTimeBehavior=convertToNull
-#    url: jdbc:mysql://${DB_HOST:192.168.230.254}:${DB_PORT:4006}/${DB_SCHEMA:kepegawaian}?useSSL=false
+    #    url: jdbc:mysql://${DB_HOST:192.168.230.254}:${DB_PORT:4006}/${DB_SCHEMA:kepegawaian}?useSSL=false
     username: ${DB_USER:dev}
     password: ${DB_PASSWORD:password}
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -26,7 +26,7 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: ${DDL_AUTO:create-drop}
-#      ddl-auto: ${DDL_AUTO:none}
+    #      ddl-auto: ${DDL_AUTO:none}
     properties:
       hibernate:
         format_sql: true
@@ -68,6 +68,9 @@ appwrite:
 
 penggajian:
   endpoint: ${PENGGAJIAN_URL:http://192.168.1.214:81}
+laporan:
+  kepegawaian:
+    endpoint: ${LAPORAN_KEPEGAWAIAN_URL:http://192.168.1.214:82}
 
 custom:
   protected:

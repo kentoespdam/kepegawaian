@@ -102,4 +102,12 @@ public class OpenApiConfig {
                 .pathsToMatch("/system/**")
                 .build();
     }
+
+    @Bean
+    public GroupedOpenApi laporanKepegawaianApi() {
+        return GroupedOpenApi.builder()
+                .group("Laporan Kepegawaian")
+                .pathsToMatch("/laporan/kepegawaian/**")
+                .build();
+    }
 }
