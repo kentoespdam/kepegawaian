@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /*
@@ -52,8 +51,8 @@ public class LaporanKepegawaianController {
     }
 
     @GetMapping("/so")
-    public ResponseEntity<?> lapSO(@RequestParam String script_url) {
-        return service.getHtml("/so/template?script_url=" + script_url);
+    public ResponseEntity<?> lapSO() {
+        return CustomResult.any(service.getHtml("/so/"));
     }
 
     @GetMapping("/statistik/golongan")
