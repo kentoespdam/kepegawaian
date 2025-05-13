@@ -52,7 +52,7 @@ public class LaporanKepegawaianController {
 
     @GetMapping("/so")
     public ResponseEntity<?> lapSO() {
-        return CustomResult.any(service.getHtml("/so/"));
+        return CustomResult.any(service.getObject("/so/"));
     }
 
     @GetMapping("/statistik/golongan")
