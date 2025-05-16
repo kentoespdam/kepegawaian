@@ -12,8 +12,6 @@ import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.entities.master.Profesi;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -30,7 +28,6 @@ public class RiwayatMutasiPostRequest extends RiwayatSkPostRequest {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tanggalBerakhir;
     @NotNull(message = "Jenis Mutasi is required")
-    @Enumerated(EnumType.STRING)
     private EJenisMutasi jenisMutasi;
     @NotNull(message = "Organisasi ID is required", groups = MutasiJabatan.class)
     @Min(value = 1, message = "Organisasi ID is required", groups = MutasiJabatan.class)
