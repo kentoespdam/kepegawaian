@@ -99,8 +99,8 @@ public class RiwayatTerminasiServiceImpl implements RiwayatTerminasiService {
 
             RiwayatSk riwayatSk = skService.saveSkTerminasi(request, pegawai, golongan);
             RiwayatTerminasi entity = RiwayatTerminasiPostRequest.toEntity(request, alasanBerhenti, riwayatSk, golongan, jabatan, organisasi);
-            RiwayatTerminasi save = repository.save(entity);
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Terminasi pegawai berhasil disimpan");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
@@ -125,8 +125,8 @@ public class RiwayatTerminasiServiceImpl implements RiwayatTerminasiService {
 
             RiwayatSk riwayatSk = skService.updateTerminasi(request, terminasi, pegawai, golongan);
             RiwayatTerminasi entity = RiwayatTerminasiPutRequest.toEntity(request, terminasi, alasanTerminasi, riwayatSk, golongan, jabatan, organisasi);
-            RiwayatTerminasi save = repository.save(entity);
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Terminasi pegawai berhasil diupdate");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }

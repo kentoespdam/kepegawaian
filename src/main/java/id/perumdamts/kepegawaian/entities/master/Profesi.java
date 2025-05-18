@@ -46,11 +46,9 @@ public class Profesi extends IdsAbstract {
     private Grade grade;
 
     @NotAudited
-    @JsonBackReference
     @OneToMany(mappedBy = "profesi")
     private List<AlatKerja> alatKerjaList;
     @NotAudited
-    @JsonBackReference
     @OneToMany(mappedBy = "profesi")
     private List<Apd> apdList;
 

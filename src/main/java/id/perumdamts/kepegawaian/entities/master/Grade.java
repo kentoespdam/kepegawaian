@@ -35,7 +35,6 @@ public class Grade extends IdsAbstract {
     private Integer grade;
     private Double tukin;
 
-    @JsonBackReference
     @OneToMany(mappedBy = "grade", fetch = FetchType.LAZY)
     private List<Profesi> profesiList;
 
