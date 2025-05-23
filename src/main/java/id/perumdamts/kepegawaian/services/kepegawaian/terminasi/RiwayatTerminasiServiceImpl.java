@@ -3,12 +3,14 @@ package id.perumdamts.kepegawaian.services.kepegawaian.terminasi;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.kepegawaian.lampiran.LampiranSkResponse;
+import id.perumdamts.kepegawaian.dto.kepegawaian.mutasi.RiwayatMutasiPostRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiPostRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiPutRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiResponse;
 import id.perumdamts.kepegawaian.dto.pegawai.PegawaiResponse;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
+import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatMutasi;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatTerminasi;
 import id.perumdamts.kepegawaian.entities.master.AlasanBerhenti;
@@ -17,6 +19,7 @@ import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
+import id.perumdamts.kepegawaian.repositories.kepegawaian.RiwayatMutasiRepository;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.RiwayatTerminasiRepository;
 import id.perumdamts.kepegawaian.repositories.master.AlasanBerhentiRepository;
 import id.perumdamts.kepegawaian.repositories.master.GolonganRepository;
@@ -43,6 +46,7 @@ public class RiwayatTerminasiServiceImpl implements RiwayatTerminasiService {
     private final JabatanRepository jabatanRepository;
     private final PegawaiRepository pegawaiRepository;
     private final LampiranSkService lampiranSkService;
+    private final RiwayatMutasiRepository riwayatMutasiRepository;
 
     @Override
     public Page<RiwayatTerminasiResponse> findPage(RiwayatTerminasiRequest request) {
@@ -99,7 +103,9 @@ public class RiwayatTerminasiServiceImpl implements RiwayatTerminasiService {
 
             RiwayatSk riwayatSk = skService.saveSkTerminasi(request, pegawai, golongan);
             RiwayatTerminasi entity = RiwayatTerminasiPostRequest.toEntity(request, alasanBerhenti, riwayatSk, golongan, jabatan, organisasi);
-            repository.save(entity);
+            RiwayatTerminasi save = repository.save(entity);
+            RiwayatMutasi riwayatMutasi = RiwayatMutasiPostRequest.toEntity(save);
+            riwayatMutasiRepository.save(riwayatMutasi);
             return SavedStatus.build(ESaveStatus.SUCCESS, "Terminasi pegawai berhasil disimpan");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());

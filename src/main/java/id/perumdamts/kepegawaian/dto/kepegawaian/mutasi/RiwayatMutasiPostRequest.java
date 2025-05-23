@@ -8,10 +8,12 @@ import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkPostRequest;
 import id.perumdamts.kepegawaian.entities.commons.EJenisMutasi;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatMutasi;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
+import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatTerminasi;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.entities.master.Profesi;
+import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -101,5 +103,21 @@ public class RiwayatMutasiPostRequest extends RiwayatSkPostRequest {
         return entity;
     }
 
+    public static RiwayatMutasi toEntity(RiwayatTerminasi riwayatTerminasi){
+        RiwayatMutasi entity = new RiwayatMutasi();
+        Pegawai pegawai = riwayatTerminasi.getPegawai();
+        entity.setPegawai(pegawai);
+        entity.setTmtBerlaku(riwayatTerminasi.getTanggalTerminasi());
+        entity.setTanggalBerakhir(riwayatTerminasi.getTanggalTerminasi());
+        entity.setJenisMutasi(EJenisMutasi.TERMINASI);
+        entity.setNotes(riwayatTerminasi.getNotes());
 
+        entity.setOrganisasiLama(pegawai.getOrganisasi());
+        entity.setNamaOrganisasiLama(pegawai.getOrganisasi().getNama());
+        entity.setJabatanLama(pegawai.getJabatan());
+        entity.setNamaJabatanLama(pegawai.getJabatan().getNama());
+        entity.setProfesiLama(pegawai.getProfesi());
+        entity.setNamaProfesiLama(pegawai.getProfesi().getNama());
+        return entity;
+    }
 }
