@@ -20,6 +20,8 @@ import java.util.Objects;
 @Data
 public class RiwayatMutasiResponse {
     private Long id;
+    private String nipam;
+    private String nama;
     private RiwayatSkResponse skMutasi;
     @Enumerated(EnumType.ORDINAL)
     private EJenisMutasi jenisMutasi;
@@ -48,6 +50,8 @@ public class RiwayatMutasiResponse {
     public static RiwayatMutasiResponse from(RiwayatMutasi entity) {
         RiwayatMutasiResponse response = new RiwayatMutasiResponse();
         response.setId(entity.getId());
+        response.setNipam(entity.getNipam());
+        response.setNama(entity.getNama());
         response.setJenisMutasi(entity.getJenisMutasi());
         if (Objects.nonNull(entity.getRiwayatSk()))
             response.setSkMutasi(RiwayatSkResponse.from(entity.getRiwayatSk()));

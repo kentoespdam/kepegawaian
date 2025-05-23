@@ -42,6 +42,8 @@ public class RiwayatMutasi extends IdsAbstract {
     @ManyToOne
     @JoinColumn(name="pegawai_id", referencedColumnName = "id")
     private Pegawai pegawai;
+    private String nipam;
+    private String nama;
 
     @JsonBackReference
     @ManyToOne

@@ -26,6 +26,8 @@ import java.util.Objects;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class RiwayatMutasiPostRequest extends RiwayatSkPostRequest {
+    private String nipam;
+    private String nama;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tanggalBerakhir;
@@ -60,6 +62,8 @@ public class RiwayatMutasiPostRequest extends RiwayatSkPostRequest {
 
     public static RiwayatMutasi toEntity(RiwayatMutasiPostRequest request, RiwayatSk riwayatSk) {
         RiwayatMutasi entity = new RiwayatMutasi();
+        entity.setNipam(riwayatSk.getNipam());
+        entity.setNama(riwayatSk.getNama());
         entity.setRiwayatSk(riwayatSk);
         entity.setPegawai(riwayatSk.getPegawai());
         entity.setTmtBerlaku(request.getTmtBerlaku());
@@ -103,10 +107,12 @@ public class RiwayatMutasiPostRequest extends RiwayatSkPostRequest {
         return entity;
     }
 
-    public static RiwayatMutasi toEntity(RiwayatTerminasi riwayatTerminasi){
+    public static RiwayatMutasi toEntity(RiwayatTerminasi riwayatTerminasi) {
         RiwayatMutasi entity = new RiwayatMutasi();
         Pegawai pegawai = riwayatTerminasi.getPegawai();
         entity.setPegawai(pegawai);
+        entity.setNipam(pegawai.getNipam());
+        entity.setNama(pegawai.getBiodata().getNama());
         entity.setTmtBerlaku(riwayatTerminasi.getTanggalTerminasi());
         entity.setTanggalBerakhir(riwayatTerminasi.getTanggalTerminasi());
         entity.setJenisMutasi(EJenisMutasi.TERMINASI);

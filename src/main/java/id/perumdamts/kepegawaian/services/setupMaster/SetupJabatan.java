@@ -173,7 +173,7 @@ public class SetupJabatan implements SetupMaster {
     }
 
     private void cleanup() {
-        List<Long> ids = List.of(23L, 24L, 33L, 58L, 59L, 60L, 65L, 68L, 69L, 73L, 74L, 82L, 83L, 91L, 92L, 100L, 101L, 109L, 110L, 115L, 116L, 117L, 120L, 122L, 129L);
+        List<Long> ids = List.of(23L, 24L, 33L, 36L, 58L, 59L, 60L, 65L, 68L, 69L, 73L, 74L, 82L, 83L, 91L, 92L, 100L, 101L, 109L, 110L, 115L, 116L, 117L, 120L, 122L, 129L);
         Specification<Jabatan> where = (root, query, criteriaBuilder) ->
                 criteriaBuilder.in(root.get("id")).value(ids);
         repository.findAll(where).stream().peek(j -> j.setIsDeleted(true))
