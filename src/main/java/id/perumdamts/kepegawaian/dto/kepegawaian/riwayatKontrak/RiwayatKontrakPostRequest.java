@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiPostRequest;
 import id.perumdamts.kepegawaian.dto.pegawai.PegawaiPostRequest;
 import id.perumdamts.kepegawaian.entities.commons.EJenisKontrak;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatKontrak;
@@ -83,6 +84,21 @@ public class RiwayatKontrakPostRequest {
         entity.setTanggalSk(request.getTanggalSk());
         entity.setTanggalMulai(request.getTmtBerlakuSk());
         entity.setTanggalSelesai(request.getTmtKontrakSelesai());
+        entity.setIsLatest(true);
+        entity.setNotes(request.getNotes());
+        return entity;
+    }
+
+    public static RiwayatKontrak toEntity(RiwayatTerminasiPostRequest request, Pegawai pegawai) {
+        RiwayatKontrak entity = new RiwayatKontrak();
+        entity.setJenisKontrak(EJenisKontrak.TERMINASI);
+        entity.setPegawai(pegawai);
+        entity.setNipam(pegawai.getNipam());
+        entity.setNama(pegawai.getBiodata().getNama());
+        entity.setNomorKontrak(request.getNomorSk());
+        entity.setTanggalSk(request.getTanggalSk());
+        entity.setTanggalMulai(request.getTanggalSk());
+        entity.setTanggalSelesai(request.getTanggalSk());
         entity.setIsLatest(true);
         entity.setNotes(request.getNotes());
         return entity;

@@ -4,12 +4,14 @@ import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.kepegawaian.lampiran.LampiranSkResponse;
 import id.perumdamts.kepegawaian.dto.kepegawaian.mutasi.RiwayatMutasiPostRequest;
+import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatKontrak.RiwayatKontrakPostRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiPostRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiPutRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiResponse;
 import id.perumdamts.kepegawaian.dto.pegawai.PegawaiResponse;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
+import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatMutasi;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatTerminasi;
@@ -26,6 +28,7 @@ import id.perumdamts.kepegawaian.repositories.master.GolonganRepository;
 import id.perumdamts.kepegawaian.repositories.master.JabatanRepository;
 import id.perumdamts.kepegawaian.repositories.master.OrganisasiRepository;
 import id.perumdamts.kepegawaian.services.kepegawaian.lampiran.LampiranSkService;
+import id.perumdamts.kepegawaian.services.kepegawaian.riwayatKontrak.GenericKontrakService;
 import id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk.GenericSkService;
 import id.perumdamts.kepegawaian.utils.DetailFromList;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +50,7 @@ public class RiwayatTerminasiServiceImpl implements RiwayatTerminasiService {
     private final PegawaiRepository pegawaiRepository;
     private final LampiranSkService lampiranSkService;
     private final RiwayatMutasiRepository riwayatMutasiRepository;
+    private final GenericKontrakService genericKontrakService;
 
     @Override
     public Page<RiwayatTerminasiResponse> findPage(RiwayatTerminasiRequest request) {
@@ -106,6 +110,8 @@ public class RiwayatTerminasiServiceImpl implements RiwayatTerminasiService {
             RiwayatTerminasi save = repository.save(entity);
             RiwayatMutasi riwayatMutasi = RiwayatMutasiPostRequest.toEntity(save);
             riwayatMutasiRepository.save(riwayatMutasi);
+            if (pegawai.getStatusPegawai().equals(EStatusPegawai.KONTRAK))
+                genericKontrakService.save(RiwayatKontrakPostRequest.toEntity(request, pegawai));
             return SavedStatus.build(ESaveStatus.SUCCESS, "Terminasi pegawai berhasil disimpan");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());

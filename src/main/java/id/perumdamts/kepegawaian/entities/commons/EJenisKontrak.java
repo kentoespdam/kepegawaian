@@ -2,7 +2,8 @@ package id.perumdamts.kepegawaian.entities.commons;
 
 public enum EJenisKontrak {
     PERPANJANGAN("Perpanjangan Kontrak"),
-    PENGANGKATAN("Pengangkatan Menjadi Karyawan");
+    PENGANGKATAN("Pengangkatan Menjadi Karyawan"),
+    TERMINASI("Terminasi Kontrak");
 
     public final String value;
 
