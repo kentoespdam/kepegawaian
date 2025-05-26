@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.entities.commons.EJenisKontrak;
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
+import id.perumdamts.kepegawaian.entities.master.Jabatan;
+import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -51,6 +53,12 @@ public class RiwayatKontrak extends IdsAbstract {
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tanggalSelesai;
+    @ManyToOne
+    @JoinColumn(name = "organisasi_id", referencedColumnName = "id")
+    private Organisasi organisasi;
+    @ManyToOne
+    @JoinColumn(name = "jabatan_id", referencedColumnName = "id")
+    private Jabatan jabatan;
     private Boolean isLatest = false;
     private String notes;
 }

@@ -21,7 +21,7 @@ import java.time.LocalDate;
 public class RiwayatKontrakPostRequest {
     private EJenisKontrak jenisKontrak;
     @NotNull(message = "Pegawai ID is required")
-    @Min(value = 1, message = "Pegawai ID must be greater than or equal to 1")
+    @Min(value = 1, message = "Pegawai is required")
     private Long pegawaiId;
     @NotEmpty(message = "NIPAM is required")
     private String nipam;
@@ -41,8 +41,8 @@ public class RiwayatKontrakPostRequest {
     @JsonFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "Tanggal Selesai is required", groups = PerpanjanganKontrak.class)
     private LocalDate tanggalSelesai;
-    @NotNull(message = "Golongan ID is required", groups = KontrakToCapeg.class)
-    @Min(value = 1, message = "Golongan ID must be greater than or equal to 1", groups = KontrakToCapeg.class)
+    @NotNull(message = "Golongan ID is required")
+    @Min(value = 1, message = "Golongan is required")
     private Long golonganId;
     @Min(value = 0, message = "Gaji Pokok must be greater than or equal to 0")
     private Double gajiPokok;
@@ -69,6 +69,8 @@ public class RiwayatKontrakPostRequest {
         entity.setTanggalSk(request.getTanggalSk());
         entity.setTanggalMulai(request.getTanggalMulai());
         entity.setTanggalSelesai(request.getTanggalSelesai());
+        entity.setOrganisasi(pegawai.getOrganisasi());
+        entity.setJabatan(pegawai.getJabatan());
         entity.setIsLatest(request.getIsLatest());
         entity.setNotes(request.getNotes());
         return entity;
