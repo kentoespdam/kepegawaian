@@ -77,7 +77,10 @@ public class PegawaiPostRequest extends BiodataPostRequest {
         entity.setKodePajak(pendapatanNonPajak);
         entity.setStatusKerja(EStatusKerja.KARYAWAN_AKTIF);
         entity.setTmtKerja(request.getTmtBerlakuSk());
-        entity.setTmtPensiun(pensiun);
+        if (request.getStatusPegawai().equals(EStatusPegawai.KONTRAK))
+            entity.setTmtPensiun(request.getTmtKontrakSelesai());
+        else
+            entity.setTmtPensiun(pensiun);
         entity.setGajiPokok(request.getGajiPokok());
         entity.setNotes(request.getNotes());
 

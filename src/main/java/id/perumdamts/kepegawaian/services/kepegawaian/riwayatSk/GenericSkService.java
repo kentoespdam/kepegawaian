@@ -107,7 +107,7 @@ public class GenericSkService {
         entity.setNotes(request.getNotes());
 
         RiwayatSk save = this.saveSK(entity);
-        pegawaiService.updateKontrak(pegawai, save);
+        pegawaiService.updateKontrak(pegawai, save, request.getTanggalSelesai());
     }
 
     public void saveSkKontrakFromPegawai(PegawaiPostRequest request, Pegawai pegawai) {
@@ -142,7 +142,7 @@ public class GenericSkService {
         entity.setNotes(request.getNotes());
 
         RiwayatSk save = this.saveSK(entity);
-        pegawaiService.updateGolongan(pegawai, save);
+        pegawaiService.updateGolongan(pegawai, save, request.getTanggalSelesai());
     }
 
     public RiwayatSk saveSkTerminasi(RiwayatTerminasiPostRequest request, Pegawai pegawai, Golongan golongan) {

@@ -11,6 +11,8 @@ import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Service
 @RequiredArgsConstructor
 public class GenericPegawaiService {
@@ -26,10 +28,15 @@ public class GenericPegawaiService {
                 riwayatSk.getJenisSk().equals(EJenisSk.SK_PENYESUAIAN_GAJI) ||
                 riwayatSk.getJenisSk().equals(EJenisSk.SK_CAPEG))
             pegawai.setGajiPokok(riwayatSk.getGajiPokok());
-        if(riwayatSk.getJenisSk().equals(EJenisSk.SK_CAPEG))
+        if (riwayatSk.getJenisSk().equals(EJenisSk.SK_CAPEG))
             pegawai.setStatusPegawai(EStatusPegawai.CAPEG);
 
         this.updatePegawai(pegawai);
+    }
+
+    public void updateGolongan(Pegawai pegawai, RiwayatSk riwayatSk, LocalDate tanggalPensiun) {
+        pegawai.setTmtPensiun(tanggalPensiun);
+        this.updateGolongan(pegawai, riwayatSk);
     }
 
     public void updateJabatan(
@@ -59,7 +66,8 @@ public class GenericPegawaiService {
         repository.save(pegawai);
     }
 
-    public void updateKontrak(Pegawai pegawai, RiwayatSk riwayatSk) {
+    public void updateKontrak(Pegawai pegawai, RiwayatSk riwayatSk, LocalDate tanggalSelesai) {
+        pegawai.setTmtPensiun(tanggalSelesai);
         pegawai.setGajiPokok(riwayatSk.getGajiPokok());
 
         this.updatePegawai(pegawai);
