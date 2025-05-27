@@ -24,6 +24,8 @@ import java.time.LocalDateTime;
         @Index(columnList = "is_deleted"),
         @Index(columnList = "is_latest"),
         @Index(columnList = "disetujuiOleh")
+},uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"biodata_id", "jenjang_id","tahun_masuk"})
 })
 @Data
 @NoArgsConstructor
