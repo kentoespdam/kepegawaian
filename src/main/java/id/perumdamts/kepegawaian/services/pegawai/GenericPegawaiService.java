@@ -30,6 +30,10 @@ public class GenericPegawaiService {
             pegawai.setGajiPokok(riwayatSk.getGajiPokok());
         if (riwayatSk.getJenisSk().equals(EJenisSk.SK_CAPEG))
             pegawai.setStatusPegawai(EStatusPegawai.CAPEG);
+        if (riwayatSk.getJenisSk().equals(EJenisSk.SK_KENAIKAN_GAJI_BERKALA)){
+            pegawai.setRefSkGajiBerkalaId(riwayatSk.getId());
+            pegawai.setTmtGajiBerkala(riwayatSk.getTmtBerlaku());
+        }
 
         this.updatePegawai(pegawai);
     }

@@ -125,6 +125,13 @@ public class Pegawai extends IdsAbstract {
     @Column(name = "tmt_mutasi")
     private LocalDate tmtMutasi;
 
+    @Column(name="ref_sk_gaji_berkala_id")
+    private Long refSkGajiBerkalaId;
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "tmt_gaji_berkala")
+    private LocalDate tmtGajiBerkala;
+
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "gaji_profil_id", referencedColumnName = "id")
