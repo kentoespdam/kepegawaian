@@ -1,13 +1,17 @@
 package id.perumdamts.kepegawaian.controllers.laporan.kepegawaian;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
+import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.EFilterKenaikanBerkala;
+import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.EFilterKontrak;
+import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.EFilterLta;
+import id.perumdamts.kepegawaian.entities.commons.EJenisMutasi;
 import id.perumdamts.kepegawaian.services.laporan.kepegawaian.LaporanKepegawaianService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Objects;
 
 /*
 *
@@ -95,4 +99,58 @@ public class LaporanKepegawaianController {
         return CustomResult.any(service.getObject("/statistik/status_pegawai"));
     }
 
+    @GetMapping("/mutasi/{from_date}/{to_date}")
+    public ResponseEntity<?> lapMutasi(@PathVariable String from_date, @PathVariable String to_date, @RequestParam(required = false) EJenisMutasi jenis_mutasi) {
+        String url = "/mutasi/" + from_date + "/" + to_date;
+        if (Objects.nonNull(jenis_mutasi)) url += "?jenis_mutasi=" + jenis_mutasi.name();
+        return CustomResult.any(service.getObject(url));
+    }
+
+    @GetMapping("/mutasi/{from_date}/{to_date}/excel")
+    public ResponseEntity<?> lapMutasiExcel(@PathVariable String from_date, @PathVariable String to_date, @RequestParam(required = false) EJenisMutasi jenis_mutasi) {
+        String url = "/mutasi/" + from_date + "/" + to_date;
+        if (Objects.nonNull(jenis_mutasi)) url += "?jenis_mutasi=" + jenis_mutasi.name();
+        return service.getExport(url);
+    }
+
+    @GetMapping("/kontrak")
+    public ResponseEntity<?> lapKontrak(@RequestParam(required = false, defaultValue = "AKTIF") EFilterKontrak filter) {
+        String url = "/kontrak/";
+        if (Objects.nonNull(filter)) url += "?filter=" + filter.name();
+        return CustomResult.any(service.getObject(url));
+    }
+
+    @GetMapping("/kontrak/excel")
+    public ResponseEntity<?> lapKontrakExcel(@RequestParam(required = false, defaultValue = "AKTIF") EFilterKontrak filter) {
+        String url = "/kontrak/excel";
+        if (Objects.nonNull(filter)) url += "?filter=" + filter.name();
+        return service.getExport(url);
+    }
+    @GetMapping("/lepas_tanggungan_anak")
+    public ResponseEntity<?> lapLta(@RequestParam(required = false, defaultValue = "BULAN_INI") EFilterLta filter) {
+        String url = "/lepas_tanggungan_anak/";
+        if (Objects.nonNull(filter)) url += "?filter=" + filter.name();
+        return CustomResult.any(service.getObject(url));
+    }
+
+    @GetMapping("/lepas_tanggungan_anak/excel")
+    public ResponseEntity<?> lapLtaExcel(@RequestParam(required = false, defaultValue = "BULAN_INI") EFilterLta filter) {
+        String url = "/lepas_tanggungan_anak/excel";
+        if (Objects.nonNull(filter)) url += "?filter=" + filter.name();
+        return service.getExport(url);
+    }
+
+    @GetMapping("/kenaikan_berkala")
+    public ResponseEntity<?> lapKenaikanBerkala(@RequestParam(required = false, defaultValue = "BULAN_INI") EFilterKenaikanBerkala filter) {
+        String url = "/kenaikan_berkala/";
+        if (Objects.nonNull(filter)) url += "?filter=" + filter.name();
+        return CustomResult.any(service.getObject(url));
+    }
+
+    @GetMapping("/kenaikan_berkala/excel")
+    public ResponseEntity<?> lapKenaikanBerkalaExcel(@RequestParam(required = false, defaultValue = "BULAN_INI") EFilterKenaikanBerkala filter) {
+        String url = "/kenaikan_berkala/excel";
+        if (Objects.nonNull(filter)) url += "?filter=" + filter.name();
+        return service.getExport(url);
+    }
 }

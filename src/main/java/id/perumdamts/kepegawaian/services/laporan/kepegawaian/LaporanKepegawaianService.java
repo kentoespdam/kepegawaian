@@ -44,6 +44,7 @@ public class LaporanKepegawaianService {
                     .bodyToMono(Object.class)
                     .block();
         } catch (Exception e) {
+            log.error(e.getMessage());
             return null;
         }
     }
