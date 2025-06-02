@@ -106,9 +106,9 @@ public class LaporanKepegawaianController {
         return CustomResult.any(service.getObject(url));
     }
 
-    @GetMapping("/mutasi/{from_date}/{to_date}/excel")
+    @GetMapping("/mutasi/excel/{from_date}/{to_date}")
     public ResponseEntity<?> lapMutasiExcel(@PathVariable String from_date, @PathVariable String to_date, @RequestParam(required = false) EJenisMutasi jenis_mutasi) {
-        String url = "/mutasi/" + from_date + "/" + to_date;
+        String url = "/mutasi/excel/" + from_date + "/" + to_date;
         if (Objects.nonNull(jenis_mutasi)) url += "?jenis_mutasi=" + jenis_mutasi.name();
         return service.getExport(url);
     }
