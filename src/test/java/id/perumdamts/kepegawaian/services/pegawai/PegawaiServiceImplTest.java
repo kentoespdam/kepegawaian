@@ -5,7 +5,6 @@ import id.perumdamts.kepegawaian.dto.appwrite.PrefRole;
 import id.perumdamts.kepegawaian.dto.appwrite.Prefs;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
-import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkResponse;
 import id.perumdamts.kepegawaian.dto.pegawai.PegawaiPostRequest;
 import id.perumdamts.kepegawaian.dto.pegawai.PegawaiResponseDetail;
 import id.perumdamts.kepegawaian.entities.commons.*;
@@ -13,6 +12,7 @@ import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatKontrak;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
+import id.perumdamts.kepegawaian.repositories.kepegawaian.RiwayatSkRepository;
 import id.perumdamts.kepegawaian.services.kepegawaian.riwayatKontrak.GenericKontrakService;
 import id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk.RiwayatSkService;
 import lombok.extern.slf4j.Slf4j;
@@ -52,6 +52,8 @@ class PegawaiServiceImplTest {
     private PegawaiRepository repository;
     @Autowired
     private RiwayatSkService riwayatSkService;
+    @Autowired
+    private RiwayatSkRepository riwayatSkRepository;
     @Autowired
     private GenericKontrakService genericKontrakService;
 
@@ -134,7 +136,7 @@ class PegawaiServiceImplTest {
         return pegawai;
     }
 
-//    @Transactional
+    //    @Transactional
 //    @Test
     public void detail() {
         Long id = 1L;
@@ -145,9 +147,10 @@ class PegawaiServiceImplTest {
             if (Objects.nonNull(pegawai.getRefSkGolId())) riwayatIds.add(pegawai.getRefSkGolId());
             if (Objects.nonNull(pegawai.getRefSkJabatanId())) riwayatIds.add(pegawai.getRefSkJabatanId());
             if (Objects.nonNull(pegawai.getRefSkMutasiId())) riwayatIds.add(pegawai.getRefSkMutasiId());
-            List<RiwayatSkResponse> riwayatSkResponses = riwayatSkService.findByIds(riwayatIds);
-            log.info("list riwayat : {}", riwayatSkResponses);
-            return PegawaiResponseDetail.from(pegawai, riwayatSkResponses);
+//            List<RiwayatSkResponse> riwayatSkResponses = riwayatSkService.findByIds(riwayatIds);
+//            log.info("list riwayat : {}", riwayatSkResponses);
+            List<RiwayatSk> riwayatSkList = riwayatSkRepository.findAllById(riwayatIds);
+            return PegawaiResponseDetail.from(pegawai, riwayatSkList);
         });
         assertNotNull(pegawaiResponseDetail);
     }

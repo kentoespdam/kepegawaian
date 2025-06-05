@@ -125,7 +125,7 @@ public class Pegawai extends IdsAbstract {
     @Column(name = "tmt_mutasi")
     private LocalDate tmtMutasi;
 
-    @Column(name="ref_sk_gaji_berkala_id")
+    @Column(name = "ref_sk_gaji_berkala_id")
     private Long refSkGajiBerkalaId;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -168,4 +168,8 @@ public class Pegawai extends IdsAbstract {
 
     @OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY)
     private List<RiwayatMutasi> riwayatMutasiList;
+
+    public Pegawai(Long id) {
+        super(id);
+    }
 }
