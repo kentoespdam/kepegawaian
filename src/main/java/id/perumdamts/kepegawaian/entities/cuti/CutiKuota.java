@@ -1,6 +1,9 @@
 package id.perumdamts.kepegawaian.entities.cuti;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import jakarta.persistence.*;
@@ -12,6 +15,8 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(indexes = {
     @Index(name = "is_deleted_idx", columnList = "is_deleted")
@@ -19,17 +24,21 @@ import org.hibernate.envers.Audited;
 @Data
 @Audited
 @EqualsAndHashCode(callSuper = true)
-@SQLDelete(sql = "UPDATE kuota_cuti SET is_deleted = true where id = ?")
-@SQLRestriction("WHERE is_deleted = false")
+@SQLDelete(sql = "UPDATE cuti_kuota SET is_deleted = true where id = ?")
+@SQLRestriction("is_deleted = false")
 @NoArgsConstructor
 @AllArgsConstructor
-public class KuotaCuti extends IdsAbstract {
+public class CutiKuota extends IdsAbstract {
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "pegawai_id", referencedColumnName = "id")
     private Pegawai pegawai;
     private Integer tahun;
     private Integer kuota;
-    private Integer terpakai;
-    private Integer sisa;
+    private Integer kuotaTerpakai;
+    private Integer kuotaTambahan=0;
+    private Integer sisaKuota=0;
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate expired;
 }
