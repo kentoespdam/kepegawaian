@@ -110,4 +110,12 @@ public class OpenApiConfig {
                 .pathsToMatch("/laporan/kepegawaian/**")
                 .build();
     }
+
+    @Bean
+    public GroupedOpenApi cutiApi() {
+        return GroupedOpenApi.builder()
+                .group("Cuti")
+                .pathsToMatch("/cuti/**")
+                .build();
+    }
 }

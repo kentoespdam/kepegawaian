@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.dto.master.hariLibur;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLibur;
@@ -24,6 +25,7 @@ public class HariLiburPostRequest {
     private EJenisLibur jenisLibur;
     private String notes;
 
+    @JsonIgnore
     public Specification<HariLibur> getSpecification() {
         return (root, query, cb) -> cb.and(
                 cb.equal(root.get("tanggal"), this.tanggal),
