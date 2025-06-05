@@ -2,7 +2,6 @@ package id.perumdamts.kepegawaian.entities.master;
 
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -14,6 +13,7 @@ import org.hibernate.envers.RelationTargetAuditMode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -22,7 +22,6 @@ import java.util.List;
         @Index(columnList = "is_deleted")
 })
 @NoArgsConstructor
-@AllArgsConstructor
 @Data
 @SQLDelete(sql = "UPDATE jenis_sp SET is_deleted = TRUE WHERE id = ?")
 @SQLRestriction("is_deleted = FALSE")
@@ -37,6 +36,12 @@ public class JenisSp extends IdsAbstract {
 
     public JenisSp(Long id) {
         super(id);
+    }
+
+    public JenisSp(String kode, String nama, Set<Sanksi> sanksiList) {
+        this.kode = kode;
+        this.nama = nama;
+        this.sanksiSp = sanksiList.stream().toList();
     }
 
     public JenisSp(Long id, String kode, String nama) {
