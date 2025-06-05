@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,6 +26,12 @@ public class HariLiburServiceImpl implements HariLiburService {
     public Page<HariLiburResponse> findPage(HariLiburRequest request) {
         return repository.findAll(request.getSpecification(), request.getPageable())
                 .map(HariLiburResponse::from);
+    }
+
+    @Override
+    public List<HariLiburResponse> findList(HariLiburRequest request) {
+        return repository.findAll(request.getSpecification()).stream()
+                .map(HariLiburResponse::from).toList();
     }
 
     @Override

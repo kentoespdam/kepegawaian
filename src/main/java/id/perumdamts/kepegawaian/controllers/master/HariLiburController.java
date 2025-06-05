@@ -23,6 +23,10 @@ public class HariLiburController {
     public ResponseEntity<?> index(@ParameterObject HariLiburRequest request) {
         return CustomResult.page(service.findPage(request));
     }
+    @GetMapping("/list")
+    public ResponseEntity<?> list(@ParameterObject HariLiburRequest request) {
+        return CustomResult.page(service.findList(request));
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
