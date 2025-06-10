@@ -48,6 +48,7 @@ public class PegawaiPostRequest extends BiodataPostRequest {
     private LocalDate tmtBerlakuSk;
     private LocalDate tmtKontrakSelesai;
     private Double gajiPokok;
+    private String email;
     private String notes;
 
     public static Pegawai toEntity(
@@ -82,6 +83,7 @@ public class PegawaiPostRequest extends BiodataPostRequest {
         else
             entity.setTmtPensiun(pensiun);
         entity.setGajiPokok(request.getGajiPokok());
+        entity.setEmail(request.getEmail());
         entity.setNotes(request.getNotes());
 
         return entity;

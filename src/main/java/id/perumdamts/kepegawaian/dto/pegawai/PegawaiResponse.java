@@ -71,6 +71,7 @@ public class PegawaiResponse {
     private Integer mkgTahun;
     private Integer mkgBulan;
 
+    private String email;
     private Long absensiId;
     private String notes;
 
@@ -108,6 +109,7 @@ public class PegawaiResponse {
         response.setIsAskes(pegawai.getIsAskes());
         response.setMkgTahun(pegawai.getMkgTahun());
         response.setMkgBulan(pegawai.getMkgBulan());
+        response.setEmail(pegawai.getEmail());
         response.setAbsensiId(pegawai.getAbsensiId());
         response.setNotes(pegawai.getNotes());
         return response;

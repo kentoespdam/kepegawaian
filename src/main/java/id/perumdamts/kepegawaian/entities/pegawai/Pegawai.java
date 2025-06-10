@@ -158,6 +158,8 @@ public class Pegawai extends IdsAbstract {
     @Column(name = "mkg_bulan")
     private Integer mkgBulan;
 
+    @Column(name = "email")
+    private String email;
     @Column(name = "absensi_id")
     private Long absensiId;
     @Column(name = "notes", columnDefinition = "TEXT")

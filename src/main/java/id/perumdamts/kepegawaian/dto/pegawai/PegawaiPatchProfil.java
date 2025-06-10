@@ -40,6 +40,7 @@ public class PegawaiPatchProfil {
     private Long organisasiId;
     private Long jabatanId;
     private Long profesiId;
+    private String email;
     private Long absensiId;
 
     public static Pegawai toEntity(Pegawai entity, PegawaiPatchProfil request, Golongan golongan, Organisasi organisasi, Jabatan jabatan, Profesi profesi) {
@@ -55,6 +56,7 @@ public class PegawaiPatchProfil {
             entity.setProfesi(profesi);
             entity.setGrade(profesi.getGrade());
         }
+        entity.setEmail(request.getEmail());
         entity.setAbsensiId(request.getAbsensiId());
         return entity;
     }

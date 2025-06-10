@@ -32,7 +32,6 @@ public class PegawaiPutRequest extends PegawaiPostRequest {
         entity.setKodePajak(pendapatanNonPajak);
         entity.setStatusKerja(request.getStatusKerja());
         entity.setTmtKerja(request.getTmtBerlakuSk());
-
         return entity;
     }
 }

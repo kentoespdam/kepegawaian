@@ -71,6 +71,7 @@ public class PegawaiResponseDetail {
     private GajiPendapatanNonPajakResponse kodePajak;
     private GajiProfilResponse gajiProfil;
     private RumahDinasResponse rumahDinas;
+    private String email;
     private String notes;
 
     public static PegawaiResponseDetail from(Pegawai pegawai, List<RiwayatSk> list) {
@@ -107,14 +108,18 @@ public class PegawaiResponseDetail {
         response.setMkgTahun(pegawai.getMkgTahun());
         response.setMkgBulan(pegawai.getMkgBulan());
         response.setAbsensiId(pegawai.getAbsensiId());
+        response.setEmail(pegawai.getEmail());
         response.setNotes(pegawai.getNotes());
         response.setIsAskes(pegawai.getIsAskes());
-        if (pegawai.getKodePajak() != null)
+        if (pegawai.getKodePajak() != null) {
             response.setKodePajak(GajiPendapatanNonPajakResponse.from(pegawai.getKodePajak()));
-        if (pegawai.getGajiProfil() != null)
+        }
+        if (pegawai.getGajiProfil() != null) {
             response.setGajiProfil(GajiProfilResponse.from(pegawai.getGajiProfil()));
-        if (pegawai.getRumahDinas() != null)
+        }
+        if (pegawai.getRumahDinas() != null) {
             response.setRumahDinas(RumahDinasResponse.from(pegawai.getRumahDinas()));
+        }
         return response;
     }
 }
