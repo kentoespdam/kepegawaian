@@ -12,5 +12,6 @@ public interface CutiKuotaRepository extends JpaRepository<CutiKuota, Long>,
         RevisionRepository<CutiKuota, Long, Long> {
     List<CutiKuota> findByPegawai_Id(Long pegawaiId);
 
-    boolean findExistByTahun(Integer tahun);
+    boolean existsByTahun(Integer tahun);
+
 }

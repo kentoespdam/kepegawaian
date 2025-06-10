@@ -19,6 +19,7 @@ import java.util.Optional;
 public class CutiKuotaServiceImpl implements CutiKuotaService {
     private final CutiKuotaRepository repository;
     private final PegawaiRepository pegawaiRepository;
+    private final ProcessCutiKuotaService processCutiKuotaService;
 
     @Override
     public Page<CutiKuotaResponse> findPage(CutiKuotaRequest request) {
@@ -69,7 +70,7 @@ public class CutiKuotaServiceImpl implements CutiKuotaService {
 
     @Override
     public SavedStatus<?> importData(CutiKuotaImportRequest request) {
-        return null;
+        return processCutiKuotaService.processCutiKuota(request);
     }
 
     @Override
