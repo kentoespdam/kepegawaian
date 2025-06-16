@@ -49,8 +49,8 @@ public class GajiKomponenServiceImpl implements GajiKomponenService {
             if (exists) return SavedStatus.build(ESaveStatus.DUPLICATE, "Gaji Komponen sudah ada");
             GajiProfil gajiProfil = gajiProfilRepository.findById(request.getProfilGajiId()).orElseThrow(() -> new RuntimeException("Unknown Profil Gaji"));
             GajiKomponen entity = GajiKomponenPostRequest.toEntity(request, gajiProfil);
-            GajiKomponen save = repository.save(entity);
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Komponen Gaji Saved");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
@@ -62,8 +62,8 @@ public class GajiKomponenServiceImpl implements GajiKomponenService {
             GajiKomponen gajiKomponen = repository.findById(id).orElseThrow(() -> new RuntimeException("Unknown Gaji Komponen"));
             GajiProfil gajiProfil = gajiProfilRepository.findById(request.getProfilGajiId()).orElseThrow(() -> new RuntimeException("Unknown Profil Gaji"));
             GajiKomponen entity = GajiKomponenPutRequest.toEntity(gajiKomponen, request, gajiProfil);
-            GajiKomponen save = repository.save(entity);
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Komponen Gaji Updated");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }

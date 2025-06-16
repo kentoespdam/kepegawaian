@@ -60,8 +60,8 @@ public class ProfesiServiceImpl implements ProfesiService {
                     .orElseThrow(() -> new RuntimeException("Unknown Grade"));
 
             Profesi entity = ProfesiPostRequest.toEntity(request, organisasi, jabatan, grade);
-            Profesi save = repository.save(entity);
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Profesi Saved");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
@@ -83,8 +83,8 @@ public class ProfesiServiceImpl implements ProfesiService {
                     .orElseThrow(() -> new RuntimeException("Unknown Grade"));
 
             Profesi entity = ProfesiPutRequest.toEntity(byId.get(), request, organisasi, jabatan, grade);
-            Profesi save = repository.save(entity);
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Profesi Updated");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }

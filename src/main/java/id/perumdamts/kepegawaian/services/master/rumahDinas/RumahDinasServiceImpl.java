@@ -43,8 +43,8 @@ public class RumahDinasServiceImpl implements RumahDinasService {
         boolean exists = repository.exists(request.getSpecification());
         if (exists) return SavedStatus.build(ESaveStatus.DUPLICATE, "Rumah Dinas sudah ada");
         RumahDinas entity = RumahDinasPostRequest.toEntity(request);
-        RumahDinas save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Rumah Dinas Saved");
     }
 
     @Override
@@ -53,8 +53,8 @@ public class RumahDinasServiceImpl implements RumahDinasService {
         if (byId.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Rumah Dinas");
         RumahDinas entity = RumahDinasPutRequest.toEntity(byId.get(), request);
-        RumahDinas save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Rumah Dinas Updated");
     }
 
     @Override

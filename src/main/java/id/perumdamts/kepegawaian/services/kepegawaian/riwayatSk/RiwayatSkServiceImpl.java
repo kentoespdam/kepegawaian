@@ -88,7 +88,7 @@ public class RiwayatSkServiceImpl implements RiwayatSkService {
             if (request.getUpdateMaster())
                 this.updatePegawai(request, pegawai, save, golongan);
 
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Riwayat SK Saved");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
@@ -156,7 +156,7 @@ public class RiwayatSkServiceImpl implements RiwayatSkService {
             RiwayatSk save = repository.save(entity);
             this.updatePegawai(request, pegawai, save, golongan);
 
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Riwayat SK Updated");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }

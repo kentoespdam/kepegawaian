@@ -65,8 +65,8 @@ public class JabatanServiceImpl implements JabatanService {
                     organisasi,
                     level
             );
-            Jabatan save = repository.save(entity);
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Jabatan Saved");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
@@ -120,8 +120,8 @@ public class JabatanServiceImpl implements JabatanService {
                     organisasi,
                     level
             );
-            Jabatan save = repository.save(entity);
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Jabatan Updated");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }

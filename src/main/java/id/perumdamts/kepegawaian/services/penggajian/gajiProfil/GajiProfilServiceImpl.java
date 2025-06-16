@@ -45,7 +45,7 @@ public class GajiProfilServiceImpl implements GajiProfilService {
         GajiProfil entity = GajiProfilPostRequest.toEntity(request);
         GajiProfil save = repository.save(entity);
         gajiKomponenService.generateDefaultValue(save);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Gaji Profil Saved");
     }
 
     @Override
@@ -53,8 +53,8 @@ public class GajiProfilServiceImpl implements GajiProfilService {
         Optional<GajiProfil> byId = repository.findById(id);
         if (byId.isEmpty()) return SavedStatus.build(ESaveStatus.FAILED, "Gaji Profil not found");
         GajiProfil entity = GajiProfilPutRequest.toEntity(byId.get(), request);
-        GajiProfil save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Gaji Profil Updated");
     }
 
     @Override

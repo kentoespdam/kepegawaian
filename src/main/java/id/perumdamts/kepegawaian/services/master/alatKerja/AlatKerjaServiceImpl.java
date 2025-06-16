@@ -55,8 +55,8 @@ public class AlatKerjaServiceImpl implements AlatKerjaService {
             if (exists)
                 return SavedStatus.build(ESaveStatus.DUPLICATE, "Alat Kerja sudah ada");
             AlatKerja entity = AlatKerjaPostRequest.toEntity(request, profesi);
-            AlatKerja save = repository.save(entity);
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Alat Kerja Saved");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
@@ -78,8 +78,8 @@ public class AlatKerjaServiceImpl implements AlatKerjaService {
             if (AlatKerja.isEmpty())
                 return SavedStatus.build(ESaveStatus.FAILED, "Unknown Alat Kerja");
             AlatKerja entity = AlatKerjaPutRequest.toEntity(AlatKerja.get(), request, profesi);
-            AlatKerja save = repository.save(entity);
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Alat Kerja Updated");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }

@@ -46,8 +46,8 @@ public class GajiParameterSettingServiceImpl implements GajiParameterSettingServ
         if (one.isPresent())
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Pendapatan Non Pajak sudah ada");
         GajiParameterSetting entity = GajiParameterSettingPostRequest.toEntity(request);
-        GajiParameterSetting save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Setting Parameter Gaji Saved");
     }
 
     @Override
@@ -56,8 +56,8 @@ public class GajiParameterSettingServiceImpl implements GajiParameterSettingServ
         if (byId.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Pendapatan Non Pajak");
         GajiParameterSetting entity = GajiParameterSettingPutRequest.toEntity(byId.get(), request);
-        GajiParameterSetting save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Setting Parameter Gaji Updated");
     }
 
     @Override

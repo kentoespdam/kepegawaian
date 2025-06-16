@@ -46,8 +46,8 @@ public class GajiPendapatanNonPajakServiceImpl implements GajiPendapatanNonPajak
         if (one.isPresent())
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Pendapatan Non Pajak sudah ada");
         GajiPendapatanNonPajak entity = GajiPendapatanNonPajakPostRequest.toEntity(request);
-        GajiPendapatanNonPajak save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Pendapatan Non Pajak Saved");
     }
 
     @Override
@@ -56,8 +56,8 @@ public class GajiPendapatanNonPajakServiceImpl implements GajiPendapatanNonPajak
         if (byId.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Pendapatan Non Pajak");
         GajiPendapatanNonPajak entity = GajiPendapatanNonPajakPutRequest.toEntity(byId.get(), request);
-        GajiPendapatanNonPajak save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Pendapatan Non Pajak Updated");
     }
 
     @Override

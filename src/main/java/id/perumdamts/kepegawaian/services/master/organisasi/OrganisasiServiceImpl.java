@@ -58,8 +58,8 @@ public class OrganisasiServiceImpl implements OrganisasiService {
         if (cari.isPresent())
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Organisasi sudah ada");
         Organisasi entity = OrganisasiPostRequest.toEntity(request, parent);
-        Organisasi save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Organisasi Saved");
     }
 
     @Transactional
@@ -83,8 +83,8 @@ public class OrganisasiServiceImpl implements OrganisasiService {
         if (byId.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Organisasi");
         Organisasi entity = OrganisasiPutRequest.toEntity(byId.get(), request, parent);
-        Organisasi save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Organisasi Updated");
     }
 
     @Transactional

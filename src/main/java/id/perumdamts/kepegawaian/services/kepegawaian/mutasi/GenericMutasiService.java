@@ -46,9 +46,8 @@ public class GenericMutasiService {
             RiwayatSk riwayatSk = skService.saveSkGolongan(request, golonganBaru);
             RiwayatMutasi entity = RiwayatMutasiPostRequest.toEntity(request, riwayatSk, golonganBaru, golonganLama);
 
-            RiwayatMutasi save = repository.save(entity);
-
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Mutasi Golongan Saved");
 
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
@@ -65,10 +64,8 @@ public class GenericMutasiService {
             if (golonganLama == null) throw new RuntimeException("Unknown Golongan");
             RiwayatSk riwayatSk = skService.updateSkGolongan(riwayatMutasi, request, golonganBaru);
             RiwayatMutasi entity = RiwayatMutasiPutRequest.toEntity(riwayatMutasi, riwayatSk, request, golonganBaru, golonganLama);
-
-            RiwayatMutasi save = repository.save(entity);
-
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Mutasi Golongan Updated");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
@@ -96,14 +93,11 @@ public class GenericMutasiService {
             if (profesiBaru == null) throw new RuntimeException("Unknown Profesi");
             Profesi profesiLama = DetailFromList.findExistProfesi(profesiList, request.getProfesiLamaId());
             if (profesiLama == null) throw new RuntimeException("Unknown Profesi");
-
             RiwayatSk riwayatSk = skService.saveSkJabatan(request, organisasiBaru, jabatanBaru, profesiBaru);
-
             RiwayatMutasi entity = RiwayatMutasiPostRequest.toEntity(request, riwayatSk, organisasiBaru, jabatanBaru, profesiBaru, organisasiLama, jabatanLama, profesiLama);
 
-            RiwayatMutasi save = repository.save(entity);
-
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Mutasi Jabatan Saved");
 
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
@@ -148,8 +142,8 @@ public class GenericMutasiService {
                     jabatanLama,
                     profesiLama
             );
-            RiwayatMutasi save = repository.save(entity);
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Mutasi Jabatan Updated");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }

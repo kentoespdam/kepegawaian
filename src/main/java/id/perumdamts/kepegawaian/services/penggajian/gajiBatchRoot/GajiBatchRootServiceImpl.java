@@ -77,7 +77,7 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
                 processPotonganTkk.process(entity.getId());
             }
             kafkaTemplate.send(PENGGAJIAN_TOPIC, save.getId());
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Batch Gaji Saved");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
@@ -108,8 +108,8 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
             if (byId.isEmpty())
                 return SavedStatus.build(ESaveStatus.FAILED, "Unknown Batch Process");
             GajiBatchRoot gajiBatchRoot = GajiBatchRootProcessRequest.verifyPhase1(byId.get(), request);
-            GajiBatchRoot save = repository.save(gajiBatchRoot);
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            repository.save(gajiBatchRoot);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Verifikasi Tahap 1 Saved");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
@@ -122,8 +122,8 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
             if (byId.isEmpty())
                 return SavedStatus.build(ESaveStatus.FAILED, "Unknown Batch Process");
             GajiBatchRoot gajiBatchRoot = GajiBatchRootProcessRequest.verifyPhase2(byId.get(), request);
-            GajiBatchRoot save = repository.save(gajiBatchRoot);
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            repository.save(gajiBatchRoot);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Verifikasi Tahap 2 Saved");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
@@ -136,8 +136,8 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
             if (byId.isEmpty())
                 return SavedStatus.build(ESaveStatus.FAILED, "Unknown Batch Process");
             GajiBatchRoot gajiBatchRoot = GajiBatchRootProcessRequest.accept(byId.get(), request);
-            GajiBatchRoot save = repository.save(gajiBatchRoot);
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            repository.save(gajiBatchRoot);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Batch Accepted");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }

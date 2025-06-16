@@ -29,7 +29,7 @@ public class DasarGajiServiceImpl implements DasarGajiService {
 
     @Override
     public Page<DasarGajiResponse> findPage(DasarGajiRequest request) {
-        return  repository.findAll(request.getSpecification(), request.getPageable())
+        return repository.findAll(request.getSpecification(), request.getPageable())
                 .map(DasarGajiResponse::from);
     }
 
@@ -45,16 +45,16 @@ public class DasarGajiServiceImpl implements DasarGajiService {
         if (exists)
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Dasar Gaji sudah ada");
         DasarGaji entity = DasarGajiPostRequest.toEntity(request);
-        DasarGaji save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Dasar Gaji Saved");
     }
 
     @Override
     public SavedStatus<?> saveBatch(List<DasarGajiPostRequest> requests) {
-        try{
+        try {
             requests.stream().map(DasarGajiPostRequest::toEntity).forEach(repository::save);
             return SavedStatus.build(ESaveStatus.SUCCESS, null);
-        }catch (Exception e){
+        } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
     }

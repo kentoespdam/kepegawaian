@@ -43,8 +43,8 @@ public class LevelServiceImpl implements LevelService {
         if (cari.isPresent())
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Level sudah ada");
         Level entity = LevelPostRequest.toEntity(request);
-        Level save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Level Saved");
     }
 
     @Transactional
@@ -62,8 +62,8 @@ public class LevelServiceImpl implements LevelService {
         if (byId.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Level");
         Level entity = LevelPostRequest.toEntity(request, id);
-        Level save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Level Updated");
     }
 
     @Transactional

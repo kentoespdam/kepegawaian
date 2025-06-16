@@ -48,8 +48,8 @@ public class GolonganServiceImpl implements GolonganService {
         if (cari.isPresent())
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Golongan sudah ada");
         Golongan entity = GolonganPostRequest.toEntity(request);
-        Golongan save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Golongan Saved");
     }
 
     @Transactional
@@ -67,8 +67,8 @@ public class GolonganServiceImpl implements GolonganService {
         if (byId.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Golongan");
         Golongan entity = GolonganPostRequest.toEntity(request, id);
-        Golongan save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Golongan Updated");
     }
 
     @Transactional

@@ -50,9 +50,8 @@ public class GajiTunjanganServiceImpl implements GajiTunjanganService {
                     .orElse(null);
 
             GajiTunjangan entity = GajiTunjanganPostRequest.toEntity(request, level, golongan);
-            GajiTunjangan save = repository.save(entity);
-
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Gaji Tunjangan Saved");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
@@ -70,9 +69,8 @@ public class GajiTunjanganServiceImpl implements GajiTunjanganService {
                     .orElse(null);
 
             GajiTunjangan entity = GajiTunjanganPutRequest.toEntity(byId.get(), request, level, golongan);
-            GajiTunjangan save = repository.save(entity);
-
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Gaji Tunjangan Updated");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }

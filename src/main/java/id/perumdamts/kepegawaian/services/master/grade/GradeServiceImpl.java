@@ -50,8 +50,8 @@ public class GradeServiceImpl implements GradeService {
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Grade sudah ada");
 
         Grade entity = GradePostRequest.toEntity(request);
-        Grade save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Grade Saved");
     }
 
     @Transactional
@@ -72,8 +72,8 @@ public class GradeServiceImpl implements GradeService {
         if (byId.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Grade");
         Grade entity = GradePostRequest.toEntity(request, id);
-        Grade save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Grade Updated");
     }
 
     @Transactional

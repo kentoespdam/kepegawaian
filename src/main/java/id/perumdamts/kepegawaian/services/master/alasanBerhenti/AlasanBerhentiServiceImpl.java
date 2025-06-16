@@ -45,8 +45,8 @@ public class AlasanBerhentiServiceImpl implements AlasanBerhentiService {
             if (exists)
                 return SavedStatus.build(ESaveStatus.DUPLICATE, "Alasan Berhenti sudah ada");
             AlasanBerhenti entity = AlasanBerhentiPostRequest.toEntity(request);
-            AlasanBerhenti save = repository.save(entity);
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Alasan Berhenti Saved");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }

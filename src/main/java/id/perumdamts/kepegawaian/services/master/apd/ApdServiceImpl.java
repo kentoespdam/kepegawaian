@@ -53,8 +53,8 @@ public class ApdServiceImpl implements ApdService {
             if (exists)
                 return SavedStatus.build(ESaveStatus.DUPLICATE, "Apd sudah ada");
             Apd entity = ApdPostRequest.toEntity(request, profesi);
-            Apd save = repository.save(entity);
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Apd Saved");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
@@ -74,8 +74,8 @@ public class ApdServiceImpl implements ApdService {
             if (apd.isEmpty())
                 return SavedStatus.build(ESaveStatus.FAILED, "Unknown Apd");
             Apd entity = ApdPutRequest.toEntity(apd.get(), request, profesi);
-            Apd save = repository.save(entity);
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Apd Updated");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }

@@ -44,8 +44,8 @@ public class JenjangPendidikanServiceImpl implements JenjangPendidikanService {
         if (one.isPresent())
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Jenjang Pendidikan sudah ada");
         JenjangPendidikan entity = JenjangPendidikanPostRequest.toEntity(request);
-        JenjangPendidikan save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Jenjang Pendidikan Saved");
     }
 
     @Transactional
@@ -62,8 +62,8 @@ public class JenjangPendidikanServiceImpl implements JenjangPendidikanService {
         if (one.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jenjang Pendidikan");
         JenjangPendidikan entity = JenjangPendidikanPutRequest.toEntity(request, one.get());
-        JenjangPendidikan save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Jenjang Pendidikan Updated");
     }
 
     @Override

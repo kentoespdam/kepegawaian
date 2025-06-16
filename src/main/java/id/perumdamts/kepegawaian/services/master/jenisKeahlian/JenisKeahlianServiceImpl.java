@@ -44,8 +44,8 @@ public class JenisKeahlianServiceImpl implements JenisKeahlianService {
         if (one.isPresent())
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Jenis Keahlian sudah ada");
         JenisKeahlian entity = JenisKeahlianPostRequest.toEntity(request);
-        JenisKeahlian save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Jenis Keahlian Saved");
     }
 
     @Transactional
@@ -62,8 +62,8 @@ public class JenisKeahlianServiceImpl implements JenisKeahlianService {
         if (one.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jenis Keahlian");
         JenisKeahlian entity = JenisKeahlianPutRequest.toEntity(request, one.get());
-        JenisKeahlian save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Jenis Keahlian Updated");
     }
 
     @Override

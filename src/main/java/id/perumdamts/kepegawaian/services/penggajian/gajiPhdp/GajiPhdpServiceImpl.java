@@ -48,8 +48,8 @@ public class GajiPhdpServiceImpl implements GajiPhdpService {
         if (one.isPresent())
             return SavedStatus.build(ESaveStatus.DUPLICATE, "PhDP sudah ada");
         GajiPhdp entity = GajiPhdpPostRequest.toEntity(request);
-        GajiPhdp save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "PhDP Saved");
     }
 
     @Override
@@ -58,8 +58,8 @@ public class GajiPhdpServiceImpl implements GajiPhdpService {
         if (byId.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown PhDP");
         GajiPhdp entity = GajiPhdpPutRequest.toEntity(byId.get(), request);
-        GajiPhdp save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "PhDP Updated");
     }
 
     @Override

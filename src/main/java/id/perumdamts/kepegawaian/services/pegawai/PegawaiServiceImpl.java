@@ -173,8 +173,8 @@ public class PegawaiServiceImpl implements PegawaiService {
             GajiPendapatanNonPajak kodePajak = gajiPendapatanNonPajakRepository.findById(request.getKodePajakId()).orElseThrow(() -> new RuntimeException("Unknown Kode Pajak"));
 
             Pegawai entity = PegawaiPutRequest.toEntity(pegawai.get(), request, biodata, jabatan, organisasi, profesi, golongan, kodePajak);
-            Pegawai save = repository.save(entity);
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Pegawai Updated");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
@@ -191,8 +191,8 @@ public class PegawaiServiceImpl implements PegawaiService {
             RumahDinas rumahDinas = rumahDinasRepository.findById(request.getRumahDinasId()).orElse(null);
 
             Pegawai entity = PegawaiPatchGaji.toEntity(pegawai.get(), request, kodePajak, profilGaji, rumahDinas);
-            Pegawai save = repository.save(entity);
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Gaji Pegawai Updated");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
@@ -208,8 +208,8 @@ public class PegawaiServiceImpl implements PegawaiService {
             Jabatan jabatan = jabatanRepository.findById(request.getJabatanId()).orElseThrow(() -> new RuntimeException("Unknown Jabatan"));
             Profesi profesi = profesiRepository.findById(request.getProfesiId()).orElse(null);
             Pegawai entity = PegawaiPatchProfil.toEntity(pegawai.get(), request, golongan, organisasi, jabatan, profesi);
-            Pegawai save = repository.save(entity);
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Profil Pegawai Updated");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }

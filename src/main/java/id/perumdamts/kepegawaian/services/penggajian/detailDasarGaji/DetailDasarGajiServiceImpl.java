@@ -72,8 +72,8 @@ public class DetailDasarGajiServiceImpl implements DetailDasarGajiService {
             if (golongan.isEmpty())
                 return SavedStatus.build(ESaveStatus.FAILED, "Golongan not found");
             DetailDasarGaji entity = DetailDasarGajiPostRequest.toEntity(request, dasarGaji.get(), golongan.get());
-            DetailDasarGaji save = repository.save(entity);
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Detail Dasar Gaji Saved");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
@@ -115,8 +115,8 @@ public class DetailDasarGajiServiceImpl implements DetailDasarGajiService {
             if (byId.isEmpty())
                 return SavedStatus.build(ESaveStatus.FAILED, "Detail Dasar Gaji not found");
             DetailDasarGaji entity = DetailDasarGajiPutRequest.toEntity(byId.get(), request, dasarGaji.get(), golongan.get());
-            DetailDasarGaji save = repository.save(entity);
-            return SavedStatus.build(ESaveStatus.SUCCESS, save);
+            repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Detail Dasar Gaji Updated");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }

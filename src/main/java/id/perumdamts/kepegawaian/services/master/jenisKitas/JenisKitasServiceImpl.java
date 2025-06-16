@@ -40,10 +40,10 @@ public class JenisKitasServiceImpl implements JenisKitasService {
     public SavedStatus<?> save(JenisKitasPostRequest request) {
         Optional<JenisKitas> one = repository.findOne(request.getSpecification());
         if (one.isPresent())
-            return  SavedStatus.build(ESaveStatus.DUPLICATE, "Jenis Kitas sudah ada");
+            return SavedStatus.build(ESaveStatus.DUPLICATE, "Jenis Kitas sudah ada");
         JenisKitas entity = JenisKitasPostRequest.toEntity(request);
-        JenisKitas save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Jenis Kitas Saved");
     }
 
     @Override
@@ -59,8 +59,8 @@ public class JenisKitasServiceImpl implements JenisKitasService {
         if (one.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jenis Kartu Identitas");
         JenisKitas entity = JenisKitasPutRequest.toEntity(request, one.get());
-        JenisKitas save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Jenis Kartu Identitas Updated");
     }
 
     @Override

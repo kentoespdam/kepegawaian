@@ -44,8 +44,8 @@ public class GajiPotonganTkkServiceImpl implements GajiPotonganTkkService {
         Level level = levelRepository.findById(request.getLevelId()).orElse(null);
         Golongan golongan = golonganRepository.findById(request.getGolonganId()).orElse(null);
         GajiPotonganTkk entity = GajiPotonganTkkPostRequest.toEntity(request, level, golongan);
-        GajiPotonganTkk save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Gaji Potongan Tkk Saved");
     }
 
     @Override
@@ -55,8 +55,8 @@ public class GajiPotonganTkkServiceImpl implements GajiPotonganTkkService {
         Level level = levelRepository.findById(request.getLevelId()).orElse(null);
         Golongan golongan = golonganRepository.findById(request.getGolonganId()).orElse(null);
         GajiPotonganTkk entity = GajiPotonganTkkPutRequest.toEntity(byId.get(), request, level, golongan);
-        GajiPotonganTkk save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, save);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Gaji Potongan Tkk Updated");
     }
 
     @Override
