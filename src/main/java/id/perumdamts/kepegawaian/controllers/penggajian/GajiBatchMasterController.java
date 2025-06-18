@@ -29,6 +29,11 @@ public class GajiBatchMasterController {
         return CustomResult.list(service.findAll(request));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getGajiBatchMasterById(@PathVariable Long id) {
+        return CustomResult.any(service.findById(id));
+    }
+
     @GetMapping("/pegawai/{pegawaiId}")
     public ResponseEntity<?> getGajiBatchMasterByPegawaiId(@PathVariable Long pegawaiId, @ParameterObject CommonPageRequest pageRequest) {
         return CustomResult.page(service.findByPegawaiId(pegawaiId, pageRequest));
