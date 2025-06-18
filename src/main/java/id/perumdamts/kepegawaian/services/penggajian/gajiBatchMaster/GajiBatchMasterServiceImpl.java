@@ -65,7 +65,7 @@ public class GajiBatchMasterServiceImpl implements GajiBatchMasterService {
     @Override
     public Page<GajiBatchMasterResponse> findByPegawaiId(Long pegawaiId, CommonPageRequest pageRequest) {
         Specification<GajiBatchMaster> pegawaiSpecification = (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("pegawai").get("id"), pegawaiId);
+                criteriaBuilder.equal(root.get("pegawaiId"), pegawaiId);
         Specification<GajiBatchMaster> statusSpecification = (root, query, criteriaBuilder) ->
                 criteriaBuilder.greaterThanOrEqualTo(root.get("gajiBatchRoot").get("status"), EProsesGaji.FINISHED);
         Specification<GajiBatchMaster> combinedSpecification = Specification.where(pegawaiSpecification).and(statusSpecification);
