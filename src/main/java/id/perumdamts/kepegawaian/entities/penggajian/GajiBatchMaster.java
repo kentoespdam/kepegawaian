@@ -15,6 +15,7 @@ import java.io.Serializable;
 @Entity
 @Table(indexes = {
         @Index(columnList = "periode"),
+        @Index(columnList = "pegawaiId"),
         @Index(columnList = "nipam"),
         @Index(columnList = "nama")
 })

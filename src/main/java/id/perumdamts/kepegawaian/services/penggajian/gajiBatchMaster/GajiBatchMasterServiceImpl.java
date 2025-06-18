@@ -67,7 +67,7 @@ public class GajiBatchMasterServiceImpl implements GajiBatchMasterService {
         Specification<GajiBatchMaster> pegawaiSpecification = (root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("pegawaiId"), pegawaiId);
         Specification<GajiBatchMaster> statusSpecification = (root, query, criteriaBuilder) ->
-                criteriaBuilder.greaterThanOrEqualTo(root.get("gajiBatchRoot").get("status"), EProsesGaji.FINISHED);
+                criteriaBuilder.greaterThanOrEqualTo(root.get("gajiBatchRoot").get("status"), EProsesGaji.FINISHED.value());
         Specification<GajiBatchMaster> combinedSpecification = Specification.where(pegawaiSpecification).and(statusSpecification);
 
         return repository.findAll(combinedSpecification, pageRequest.getPageable())
