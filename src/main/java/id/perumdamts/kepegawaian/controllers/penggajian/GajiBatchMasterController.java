@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.controllers.penggajian;
 
+import id.perumdamts.kepegawaian.dto.commons.CommonPageRequest;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterPostRequest;
@@ -26,6 +27,11 @@ public class GajiBatchMasterController {
         if (errors.hasErrors())
             return ErrorResult.build(errors);
         return CustomResult.list(service.findAll(request));
+    }
+
+    @GetMapping("/pegawai/{pegawaiId}")
+    public ResponseEntity<?> getGajiBatchMasterByPegawaiId(@PathVariable Long pegawaiId, @ParameterObject CommonPageRequest pageRequest) {
+        return CustomResult.page(service.findByPegawaiId(pegawaiId, pageRequest));
     }
 
     @PreAuthorize("hasRole('ADMIN')")

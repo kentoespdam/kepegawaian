@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.services.penggajian.gajiBatchMaster;
 
+import id.perumdamts.kepegawaian.dto.commons.CommonPageRequest;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
@@ -7,6 +8,8 @@ import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterP
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterResponse;
 import id.perumdamts.kepegawaian.entities.commons.EJenisPotonganGaji;
+import id.perumdamts.kepegawaian.entities.commons.EProsesGaji;
+import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchMaster;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchRootLampiran;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchMasterRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchRootLampiranRepository;
@@ -18,6 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Service;
@@ -55,6 +60,18 @@ public class GajiBatchMasterServiceImpl implements GajiBatchMasterService {
     @Override
     public GajiBatchMasterResponse findById(Long id) {
         return repository.findById(id).map(GajiBatchMasterResponse::from).orElse(null);
+    }
+
+    @Override
+    public Page<GajiBatchMasterResponse> findByPegawaiId(Long pegawaiId, CommonPageRequest pageRequest) {
+        Specification<GajiBatchMaster> pegawaiSpecification = (root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("pegawai").get("id"), pegawaiId);
+        Specification<GajiBatchMaster> statusSpecification = (root, query, criteriaBuilder) ->
+                criteriaBuilder.greaterThanOrEqualTo(root.get("gajiBatchRoot").get("status"), EProsesGaji.FINISHED);
+        Specification<GajiBatchMaster> combinedSpecification = Specification.where(pegawaiSpecification).and(statusSpecification);
+
+        return repository.findAll(combinedSpecification, pageRequest.getPageable())
+                .map(GajiBatchMasterResponse::from);
     }
 
     @Override
