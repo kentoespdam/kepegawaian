@@ -94,14 +94,6 @@ public class GajiBatchMasterProsesServiceImpl implements GajiBatchMasterProsesSe
         if (byId.isEmpty())
             return false;
         Long batchMasterId = byId.get().getBatchMasterId();
-//                .ifPresent(gbm -> {
-//                    gbm.setTotalAddTambahan(0D);
-//                    gbm.setTotalAddPotongan(0D);
-//                    gbm.setPenghasilanBersih2(0D);
-//                    gbm.setPembulatan2(0D);
-//                    gbm.setPenghasilanBersihFinal2(0D);
-//                    gajiBatchMasterRepository.save(gbm);
-//                });
         repository.deleteById(id);
         gajiBatchMasterRepository.findById(batchMasterId).ifPresent(this::recalculateAdditional);
         return true;
@@ -114,9 +106,10 @@ public class GajiBatchMasterProsesServiceImpl implements GajiBatchMasterProsesSe
         double totalPemasukan = getSumByJenisGaji(gajiBatchMasterProsesList, EJenisGaji.PEMASUKAN);
         double totalPotongan = getSumByJenisGaji(gajiBatchMasterProsesList, EJenisGaji.POTONGAN);
 
-        double penghasilanBersih2 = totalPemasukan - totalPotongan;
-        double pembulatan2 = Math.round((Math.ceil(penghasilanBersih2 / 100) * 100) - penghasilanBersih2);
-        double penghasilanBersihFinal2 = penghasilanBersih2 - pembulatan2;
+        double penghasilanBersih2 = Math.round(totalPemasukan - totalPotongan);
+        log.info("penghasilanBersih2: {} = {} - {}", penghasilanBersih2, totalPemasukan, totalPotongan);
+        double pembulatan2 = Math.round((Math.ceil(penghasilanBersih2 / 100)) * 100 - penghasilanBersih2);
+        double penghasilanBersihFinal2 = penghasilanBersih2 + pembulatan2;
 
         gajiBatchMaster.setTotalAddTambahan(addPemasukan);
         gajiBatchMaster.setTotalAddPotongan(addPotongan);
@@ -133,8 +126,7 @@ public class GajiBatchMasterProsesServiceImpl implements GajiBatchMasterProsesSe
     }
 
     private Double getSumByJenisGaji(List<GajiBatchMasterProses> list, EJenisGaji jenisGaji) {
-        return filterGajiBatchMasterProses(list, jenisGaji)
-                .stream()
+        return list.stream().filter(gbr -> gbr.getJenisGaji().equals(jenisGaji))
                 .mapToDouble(GajiBatchMasterProses::getNilai)
                 .sum();
     }
