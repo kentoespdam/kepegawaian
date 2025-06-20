@@ -58,7 +58,7 @@ public class GajiBatchMasterProsesServiceImpl implements GajiBatchMasterProsesSe
         repository.save(entity);
 
         recalculateAdditional(gajiBatchMaster);
-        return SavedStatus.build(ESaveStatus.SUCCESS, entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Komponen Gaji Saved");
     }
 
     @Override
@@ -94,16 +94,16 @@ public class GajiBatchMasterProsesServiceImpl implements GajiBatchMasterProsesSe
         if (byId.isEmpty())
             return false;
         Long batchMasterId = byId.get().getBatchMasterId();
-        gajiBatchMasterRepository.findById(batchMasterId)
-                .ifPresent(gbm -> {
-                    gbm.setTotalAddTambahan(0D);
-                    gbm.setTotalAddPotongan(0D);
-                    gbm.setPenghasilanBersih2(0D);
-                    gbm.setPembulatan2(0D);
-                    gbm.setPenghasilanBersihFinal2(0D);
-                    gajiBatchMasterRepository.save(gbm);
-                });
+//                .ifPresent(gbm -> {
+//                    gbm.setTotalAddTambahan(0D);
+//                    gbm.setTotalAddPotongan(0D);
+//                    gbm.setPenghasilanBersih2(0D);
+//                    gbm.setPembulatan2(0D);
+//                    gbm.setPenghasilanBersihFinal2(0D);
+//                    gajiBatchMasterRepository.save(gbm);
+//                });
         repository.deleteById(id);
+        gajiBatchMasterRepository.findById(batchMasterId).ifPresent(this::recalculateAdditional);
         return true;
     }
 
