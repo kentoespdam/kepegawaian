@@ -107,7 +107,6 @@ public class GajiBatchMasterProsesServiceImpl implements GajiBatchMasterProsesSe
         double totalPotongan = getSumByJenisGaji(gajiBatchMasterProsesList, EJenisGaji.POTONGAN);
 
         double penghasilanBersih2 = Math.round(totalPemasukan - totalPotongan);
-        log.info("penghasilanBersih2: {} = {} - {}", penghasilanBersih2, totalPemasukan, totalPotongan);
         double pembulatan2 = Math.round((Math.ceil(penghasilanBersih2 / 100)) * 100 - penghasilanBersih2);
         double penghasilanBersihFinal2 = penghasilanBersih2 + pembulatan2;
 
