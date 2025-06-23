@@ -33,4 +33,17 @@ public class CutiJenis extends IdsAbstract {
     private String nama;
     private Integer maxHari;
     private Boolean potongKuotaTahunan = false;
+
+    public CutiJenis(Long id) {
+        super(id);
+    }
+
+    public CutiJenis(Long id, CutiJenis parent, String nama, Integer maxHari, Boolean potongKuotaTahunan) {
+        super(id);
+        if (parent != null)
+            this.parent = parent;
+        this.nama = nama;
+        this.maxHari = maxHari;
+        this.potongKuotaTahunan = potongKuotaTahunan;
+    }
 }
