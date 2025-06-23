@@ -32,11 +32,6 @@ public class CutiKuotaController {
         return CustomResult.any(service.findById(id));
     }
 
-    @GetMapping("/pegawai/{id}")
-    public ResponseEntity<?> showByPegawai(@PathVariable Long id) {
-        return CustomResult.list(service.findByPegawai(id));
-    }
-
     @GetMapping("/template")
     public ResponseEntity<?> template() {
         return cutiKuotaTemplateBuilder.build();

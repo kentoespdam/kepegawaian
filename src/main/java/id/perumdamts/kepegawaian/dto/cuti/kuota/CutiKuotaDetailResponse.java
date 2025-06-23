@@ -3,15 +3,16 @@ package id.perumdamts.kepegawaian.dto.cuti.kuota;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import id.perumdamts.kepegawaian.dto.pegawai.PegawaiResponse;
 import id.perumdamts.kepegawaian.entities.cuti.CutiKuota;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
-public class CutiKuotaResponse {
+public class CutiKuotaDetailResponse {
     private Long id;
+    private PegawaiResponse pegawai;
     private Integer tahun;
     private Integer kuota;
     private Integer kuotaTerpakai;
@@ -21,9 +22,10 @@ public class CutiKuotaResponse {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate expired;
 
-    public static CutiKuotaResponse from(CutiKuota entity) {
-        CutiKuotaResponse response = new CutiKuotaResponse();
+    public static CutiKuotaDetailResponse from(CutiKuota entity) {
+        CutiKuotaDetailResponse response = new CutiKuotaDetailResponse();
         response.setId(entity.getId());
+        response.setPegawai(PegawaiResponse.from(entity.getPegawai()));
         response.setTahun(entity.getTahun());
         response.setKuota(entity.getKuota());
         response.setKuotaTerpakai(entity.getKuotaTerpakai());
@@ -31,9 +33,5 @@ public class CutiKuotaResponse {
         response.setSisaKuota(entity.getSisaKuota());
         response.setExpired(entity.getExpired());
         return response;
-    }
-
-    public static List<CutiKuotaResponse> fromList(List<CutiKuota> cutiKuota) {
-        return cutiKuota.stream().map(CutiKuotaResponse::from).toList();
     }
 }

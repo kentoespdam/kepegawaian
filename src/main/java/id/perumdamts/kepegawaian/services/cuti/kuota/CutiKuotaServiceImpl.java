@@ -22,20 +22,16 @@ public class CutiKuotaServiceImpl implements CutiKuotaService {
     private final ProcessCutiKuotaService processCutiKuotaService;
 
     @Override
-    public Page<CutiKuotaResponse> findPage(CutiKuotaRequest request) {
-        return repository.findAll(request.getSpecification(), request.getPageable())
-                .map(CutiKuotaResponse::from);
+    public Page<CutiKuotaPegawaiResponse> findPage(CutiKuotaRequest request) {
+        Page<Pegawai> pegawaiPage = pegawaiRepository.findAll(request.getPegawaiSpecification(), request.getPageable());
+        List<Long> pegawaiIdList = pegawaiPage.getContent().stream().map(Pegawai::getId).toList();
+        List<CutiKuota> cutiKuotaList = repository.findAll(request.getSpecificationFromPegawai(pegawaiIdList));
+        return pegawaiPage.map(peg -> CutiKuotaPegawaiResponse.from(peg, cutiKuotaList));
     }
 
     @Override
-    public CutiKuotaResponse findById(Long id) {
-        return repository.findById(id).map(CutiKuotaResponse::from).orElse(null);
-    }
-
-    @Override
-    public List<CutiKuotaResponse> findByPegawai(Long pegawaiId) {
-        return repository.findByPegawai_Id(pegawaiId).stream()
-                .map(CutiKuotaResponse::from).toList();
+    public CutiKuotaDetailResponse findById(Long id) {
+        return repository.findById(id).map(CutiKuotaDetailResponse::from).orElse(null);
     }
 
     @Override

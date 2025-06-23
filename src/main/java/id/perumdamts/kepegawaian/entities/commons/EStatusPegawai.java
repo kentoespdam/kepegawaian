@@ -1,5 +1,8 @@
 package id.perumdamts.kepegawaian.entities.commons;
 
+import lombok.Getter;
+
+@Getter
 public enum EStatusPegawai {
     KONTRAK("Pegawai Kontrak"),
     CAPEG("Calon Pegawai"),
