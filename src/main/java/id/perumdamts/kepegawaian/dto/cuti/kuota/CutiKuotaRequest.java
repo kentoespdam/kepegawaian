@@ -22,8 +22,10 @@ import java.util.Objects;
 @Data
 @Slf4j
 public class CutiKuotaRequest extends CommonPageRequest {
-    public Long pegawaiId;
-    public Integer tahun = LocalDate.now().getYear();
+    private Long pegawaiId;
+    private String nipam;
+    private String nama;
+    private Integer tahun = LocalDate.now().getYear();
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate expired;
@@ -34,9 +36,15 @@ public class CutiKuotaRequest extends CommonPageRequest {
         Specification<Pegawai> pegawaiSpec = Objects.isNull(pegawaiId) ? null :
                 (root, query, criteriaBuilder) ->
                         criteriaBuilder.equal(root.get("id"), pegawaiId);
+        Specification<Pegawai> nipamSpec = Objects.isNull(nipam) ? null :
+                (root, query, criteriaBuilder) ->
+                        criteriaBuilder.like(root.get("nipam"), nipam + "%");
+        Specification<Pegawai> namaSpec = Objects.isNull(nama) ? null :
+                (root, query, criteriaBuilder) ->
+                        criteriaBuilder.like(root.get("biodata").get("nama"), "%" + nama + "%");
         Specification<Pegawai> statusKerjaSpec = (root, query, criteriaBuilder) ->
                 criteriaBuilder.in(root.get("statusKerja")).value(List.of(EStatusKerja.KARYAWAN_AKTIF, EStatusKerja.DIRUMAHKAN));
-        return Specification.where(pegawaiSpec).and(statusKerjaSpec);
+        return Specification.where(pegawaiSpec).and(nipamSpec).and(namaSpec).and(statusKerjaSpec);
     }
 
     @JsonIgnore
