@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.dto.commons.CommonPageRequest;
+import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
 import id.perumdamts.kepegawaian.entities.cuti.CutiKuota;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import lombok.Data;
@@ -33,7 +34,9 @@ public class CutiKuotaRequest extends CommonPageRequest {
         Specification<Pegawai> pegawaiSpec = Objects.isNull(pegawaiId) ? null :
                 (root, query, criteriaBuilder) ->
                         criteriaBuilder.equal(root.get("id"), pegawaiId);
-        return Specification.where(pegawaiSpec);
+        Specification<Pegawai> statusKerjaSpec = (root, query, criteriaBuilder) ->
+                criteriaBuilder.in(root.get("statusKerja")).value(List.of(EStatusKerja.KARYAWAN_AKTIF, EStatusKerja.DIRUMAHKAN));
+        return Specification.where(pegawaiSpec).and(statusKerjaSpec);
     }
 
     @JsonIgnore
