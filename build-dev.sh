@@ -1,2 +1,2 @@
 #!/bin/bash
-./gradlew bootJar && docker compose up -d --build
+./gradlew bootJar && docker buildx bake
