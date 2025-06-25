@@ -33,6 +33,7 @@ public class PegawaiRequest extends CommonPageRequest {
     @Enumerated(EnumType.ORDINAL)
     private EStatusKerja statusKerja = EStatusKerja.KARYAWAN_AKTIF;
 
+    @JsonIgnore
     public Specification<Pegawai> getSpecification() {
         Specification<Pegawai> pegawaiSpec = Objects.isNull(nipam) ? null :
                 (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("nipam"), nipam + "%");
@@ -52,8 +53,8 @@ public class PegawaiRequest extends CommonPageRequest {
                 (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("golongan").get("id"), golonganId);
         Specification<Pegawai> gradeSpec = Objects.isNull(gradeId) ? null :
                 (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("grade").get("id"), gradeId);
-        Specification<Pegawai> statusPegawaiIdsSpec = Objects.isNull(statusKerja) ? null :
-                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("statusKerja"), statusKerja);
+        Specification<Pegawai> statusPegawaiIdsSpec = (root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("statusKerja"), statusKerja);
 
         return Specification.where(pegawaiSpec).or(namaSpec).and(nikSpec).and(statusPegawaiSpec)
                 .and(jabatanSpec).and(organisasiSpec).and(profesiSpec).and(golonganSpec)

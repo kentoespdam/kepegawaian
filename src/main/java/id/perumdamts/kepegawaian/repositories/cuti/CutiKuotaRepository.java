@@ -10,8 +10,7 @@ import java.util.List;
 public interface CutiKuotaRepository extends JpaRepository<CutiKuota, Long>,
         JpaSpecificationExecutor<CutiKuota>,
         RevisionRepository<CutiKuota, Long, Long> {
-    List<CutiKuota> findByPegawai_Id(Long pegawaiId);
-
     boolean existsByTahun(Integer tahun);
 
+    List<CutiKuota> findByPegawaiIdInAndTahun(List<Long> pegawaiIdList, Integer tahun);
 }

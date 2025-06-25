@@ -1,5 +1,8 @@
 package id.perumdamts.kepegawaian.entities.commons;
 
+import lombok.Getter;
+
+@Getter
 public enum EStatusKerja {
     BERHENTI_OR_KELUAR("Berhenti / Keluar"),
     DIRUMAHKAN("Dirumahkan"),

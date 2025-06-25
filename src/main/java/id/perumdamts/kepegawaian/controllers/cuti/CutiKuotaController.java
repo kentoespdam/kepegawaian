@@ -24,7 +24,7 @@ public class CutiKuotaController {
 
     @GetMapping
     public ResponseEntity<?> index(@ParameterObject CutiKuotaRequest request) {
-        return CustomResult.page(service.findPage(request));
+        return CustomResult.any(service.findPage(request));
     }
 
     @GetMapping("/{id}")

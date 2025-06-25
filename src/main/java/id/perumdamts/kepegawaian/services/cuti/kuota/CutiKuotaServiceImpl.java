@@ -22,16 +22,20 @@ public class CutiKuotaServiceImpl implements CutiKuotaService {
     private final ProcessCutiKuotaService processCutiKuotaService;
 
     @Override
-    public Page<CutiKuotaPegawaiResponse> findPage(CutiKuotaRequest request) {
-        Page<Pegawai> pegawaiPage = pegawaiRepository.findAll(request.getPegawaiSpecification(), request.getPageable());
-        List<Long> pegawaiIdList = pegawaiPage.getContent().stream().map(Pegawai::getId).toList();
-        List<CutiKuota> cutiKuotaList = repository.findAll(request.getSpecificationFromPegawai(pegawaiIdList));
-        return pegawaiPage.map(peg -> CutiKuotaPegawaiResponse.from(peg, cutiKuotaList));
+    public CutiKuotaPegawaiResponse findPage(CutiKuotaRequest request) {
+        Page<CutiKuotaResponse> page = repository.findAll(request.getSpecification(), request.getPageable()).map(CutiKuotaResponse::from);
+        if (page.isEmpty()) return null;
+        List<Long> pegawaiIdList = page.getContent().stream().map(c -> c.getPegawai().getId()).toList();
+        List<CutiKuota> additionalData = repository.findByPegawaiIdInAndTahun(pegawaiIdList, request.getTahun() - 1);
+        return CutiKuotaPegawaiResponse.builder()
+                .page(page)
+                .additional(CutiKuotaResponse.fromList(additionalData))
+                .build();
     }
 
     @Override
-    public CutiKuotaDetailResponse findById(Long id) {
-        return repository.findById(id).map(CutiKuotaDetailResponse::from).orElse(null);
+    public CutiKuotaResponse findById(Long id) {
+        return repository.findById(id).map(CutiKuotaResponse::from).orElse(null);
     }
 
     @Override
