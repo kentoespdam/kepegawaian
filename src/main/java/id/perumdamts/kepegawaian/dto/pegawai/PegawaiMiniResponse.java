@@ -8,6 +8,7 @@ public class PegawaiMiniResponse {
     private Long id;
     private String nipam;
     private String nama;
+    private String statusPegawai;
     private String jabatan;
     private String organisasi;
 
@@ -16,6 +17,7 @@ public class PegawaiMiniResponse {
         response.setId(entity.getId());
         response.setNipam(entity.getNipam());
         response.setNama(entity.getBiodata().getNama());
+        response.setStatusPegawai(entity.getStatusPegawai().getValue());
         response.setJabatan(entity.getJabatan().getNama());
         response.setOrganisasi(entity.getOrganisasi().getNama());
         return response;
