@@ -105,11 +105,5 @@ class PegawaiServiceTest {
 
         pegawai.getRiwayatSkList().add(entity);
         assertEquals(1, pegawai.getRiwayatSkList().size());
-
-
-//        when(riwayatSkRepository.save(any(RiwayatSk.class))).thenReturn(entity);
-
-
-
     }
 }

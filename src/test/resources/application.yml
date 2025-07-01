@@ -14,7 +14,7 @@ spring:
       max-file-size: 100MB
       max-request-size: 100MB
   datasource:
-    url: jdbc:mysql://${DB_HOST:192.168.230.84}:${DB_PORT:3306}/${DB_SCHEMA:kepegawaian}?useSSL=false&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://${DB_HOST:192.168.230.84}:${DB_PORT:3307}/${DB_SCHEMA:kepegawaian}?useSSL=false&zeroDateTimeBehavior=convertToNull
     #    url: jdbc:mysql://${DB_HOST:192.168.230.84}:${DB_PORT:3307}/${DB_SCHEMA:kepegawaian_migrasi}?useSSL=false&zeroDateTimeBehavior=convertToNull
     #    url: jdbc:mysql://${DB_HOST:192.168.230.254}:${DB_PORT:4006}/${DB_SCHEMA:kepegawaian}?useSSL=false
     username: ${DB_USER:dev}
@@ -78,3 +78,7 @@ custom:
     delete:
       kartuIdentitas:
         ktp: ${PROTECTED_DELETE_KTP:1}
+  jenisCuti:
+    tahunan: ${JENIS_CUTI_TAHUNAN:1}
+    besar: ${JENIS_CUTI_BESAR:2}
+    ibadah: ${JENIS_CUTI_IBADAH:4}

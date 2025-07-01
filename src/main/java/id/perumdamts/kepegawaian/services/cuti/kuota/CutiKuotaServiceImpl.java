@@ -26,7 +26,7 @@ public class CutiKuotaServiceImpl implements CutiKuotaService {
         Page<CutiKuotaResponse> page = repository.findAll(request.getSpecification(), request.getPageable()).map(CutiKuotaResponse::from);
         if (page.isEmpty()) return null;
         List<Long> pegawaiIdList = page.getContent().stream().map(c -> c.getPegawai().getId()).toList();
-        List<CutiKuota> additionalData = repository.findByPegawaiIdInAndTahun(pegawaiIdList, request.getTahun() - 1);
+        List<CutiKuota> additionalData = repository.findByPegawai_IdInAndTahun(pegawaiIdList, request.getTahun() - 1);
         return CutiKuotaPegawaiResponse.builder()
                 .page(page)
                 .additional(CutiKuotaResponse.fromList(additionalData))

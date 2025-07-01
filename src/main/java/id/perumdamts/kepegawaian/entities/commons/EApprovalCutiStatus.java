@@ -6,6 +6,7 @@ import lombok.Getter;
 public enum EApprovalCutiStatus {
     PENDING("Menunggu Persetujuan"),
     APPROVED("Disetujui"),
+    CONFIRMED("Dikonfirmasi"),
     REJECTED("Ditolak"),
     CANCELLED("Dibatalkan"),
     RETURNED("Dikembalikan");

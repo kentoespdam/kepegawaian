@@ -80,3 +80,7 @@ custom:
     delete:
       kartuIdentitas:
         ktp: ${PROTECTED_DELETE_KTP:1}
+  jenisCuti:
+    tahunan: ${JENIS_CUTI_TAHUNAN:1}
+    besar: ${JENIS_CUTI_BESAR:2}
+    ibadah: ${JENIS_CUTI_IBADAH:4}

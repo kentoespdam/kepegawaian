@@ -26,7 +26,7 @@ import java.time.LocalDate;
 @Audited
 @EqualsAndHashCode(callSuper = true)
 @SQLDelete(sql = "UPDATE cuti_pegawai SET is_deleted = true where id = ?")
-@SQLRestriction("WHERE is_deleted = false")
+@SQLRestriction("is_deleted = false")
 @NoArgsConstructor
 @AllArgsConstructor
 public class CutiPegawai extends IdsAbstract {
@@ -50,6 +50,9 @@ public class CutiPegawai extends IdsAbstract {
     @ManyToOne
     @JoinColumn(name = "jenis_cuti_id", referencedColumnName = "id")
     private CutiJenis jenisCuti;
+    @ManyToOne
+    @JoinColumn(name = "sub_jenis_cuti_id", referencedColumnName = "id")
+    private CutiJenis subJenisCuti;
     private LocalDate tanggalMulai;
     private LocalDate tanggalSelesai;
     private Integer jumlahHari;
@@ -60,5 +63,13 @@ public class CutiPegawai extends IdsAbstract {
     @Enumerated(EnumType.ORDINAL)
     private EApprovalCutiStatus approvalCutiStatus = EApprovalCutiStatus.PENDING;
     private Integer approvalLevel;
-
+    @ManyToOne
+    @JoinColumn(name = "pic_saat_ini_id", referencedColumnName = "id")
+    private Jabatan picSaatIni;
+    private Integer riwayatKuota0;
+    private Integer riwayatKuota1;
+    private Integer riwayatPakai0;
+    private Integer riwayatPakai1;
+    private Integer riwayatSisa0;
+    private Integer riwayatSisa1;
 }

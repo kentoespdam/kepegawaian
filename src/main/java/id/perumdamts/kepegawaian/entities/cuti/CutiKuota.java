@@ -34,8 +34,8 @@ public class CutiKuota extends IdsAbstract {
     @JoinColumn(name = "pegawai_id", referencedColumnName = "id")
     private Pegawai pegawai;
     private Integer tahun;
-    private Integer kuota;
-    private Integer kuotaTerpakai;
+    private Integer kuota=0;
+    private Integer kuotaTerpakai=0;
     private Integer kuotaTambahan=0;
     private Integer sisaKuota=0;
     @JsonSerialize(using = LocalDateSerializer.class)
