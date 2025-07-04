@@ -32,7 +32,7 @@ public class CutiKuotaController {
         return CustomResult.any(service.findById(id));
     }
 
-    @GetMapping("/{pegawaiId}/pegawai/{tahun}")
+    @GetMapping("/{pegawaiId}/{tahun}/sisa-kuota")
     public ResponseEntity<?> showByPegawai(@PathVariable Long pegawaiId, @PathVariable Integer tahun) {
         return CustomResult.any(service.findByPegawai(pegawaiId, tahun));
     }
