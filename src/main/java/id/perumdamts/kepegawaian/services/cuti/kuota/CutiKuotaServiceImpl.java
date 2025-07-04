@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +37,21 @@ public class CutiKuotaServiceImpl implements CutiKuotaService {
     @Override
     public CutiKuotaResponse findById(Long id) {
         return repository.findById(id).map(CutiKuotaResponse::from).orElse(null);
+    }
+
+    @Override
+    public CutiKuotaSisa findByPegawai(Long id, Integer tahun) {
+        Integer sisaTahunIni = repository.findRecordByPegawai_IdAndTahun(id, tahun, SisaCutiRecord.class)
+                .map(SisaCutiRecord::sisaKuota)
+                .orElse(0);
+        Integer sisaTahunLalu = repository
+                .findRecordByPegawai_IdAndTahunAndExpiredGreaterThan(id, tahun - 1, LocalDate.now(), SisaCutiRecord.class)
+                .map(SisaCutiRecord::sisaKuota)
+                .orElse(0);
+        return CutiKuotaSisa.builder()
+                .sisaCutiTahunIni(sisaTahunIni)
+                .sisaCutiTahunLalu(sisaTahunLalu)
+                .build();
     }
 
     @Override

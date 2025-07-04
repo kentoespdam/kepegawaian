@@ -34,7 +34,7 @@ public class CutiPengajuanController {
     @GetMapping("/{tanggalMulai}/{tanggalSelesai}/total-hari-kerja")
     public ResponseEntity<?> findTotalHariKerja(@PathVariable LocalDate tanggalMulai, @PathVariable LocalDate tanggalSelesai) {
         if (Objects.isNull(tanggalMulai) || Objects.isNull(tanggalSelesai))
-            return ErrorResult.build("Tanggal mulai dan selesai harus diisi");
+            return ErrorResult.build("Tanggal mulai dan selesai harus di isi");
         if (tanggalMulai.isBefore(tanggalSelesai))
             return ErrorResult.build("Tanggal selesai tidak boleh dibuat sebelum tanggal mulai");
         return CustomResult.any(service.findTotalHariKerja(tanggalMulai, tanggalSelesai));
