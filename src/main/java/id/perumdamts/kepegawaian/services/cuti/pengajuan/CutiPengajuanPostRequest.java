@@ -54,6 +54,20 @@ public class CutiPengajuanPostRequest {
 
     @JsonIgnore
     public Specification<CutiPegawai> getSpecificationByJenisCuti(Long jenisCutiId) {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.and(
+                criteriaBuilder.equal(root.get("pegawai").get("id"), pegawaiId),
+                criteriaBuilder.equal(root.get("jenisCuti").get("id"), jenisCutiId),
+                criteriaBuilder.in(root.get("approvalCutiStatus")).value(List.of(
+                        EApprovalCutiStatus.PENDING,
+                        EApprovalCutiStatus.APPROVED,
+                        EApprovalCutiStatus.CONFIRMED,
+                        EApprovalCutiStatus.RETURNED
+                ))
+        );
+    }
+
+    @JsonIgnore
+    public Specification<CutiPegawai> getSpecificationByJenisCuti(Long jenisCutiId, LocalDate tanggalMulai) {
         return (root, query, criteriaBuilder) -> {
             Expression<LocalDate> tanggalExpression = root.get("tanggalMulai");
             Expression<Integer> yearExpression = criteriaBuilder.function("YEAR", Integer.class, tanggalExpression);

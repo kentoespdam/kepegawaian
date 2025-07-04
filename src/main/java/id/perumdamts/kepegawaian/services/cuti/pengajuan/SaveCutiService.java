@@ -1,200 +1,381 @@
 package id.perumdamts.kepegawaian.services.cuti.pengajuan;
 
-import id.perumdamts.kepegawaian.entities.cuti.CutiJenis;
-import id.perumdamts.kepegawaian.entities.cuti.CutiKuota;
+import id.perumdamts.kepegawaian.config.DefConfig;
+import id.perumdamts.kepegawaian.dto.cuti.kuota.SisaCutiRecord;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
-import id.perumdamts.kepegawaian.entities.master.Jabatan;
-import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.helpers.DateHelper;
-import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
-import id.perumdamts.kepegawaian.repositories.cuti.CutiJenisRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.CutiKuotaRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.CutiPegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.master.HariLiburRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Service
 @RequiredArgsConstructor
 public class SaveCutiService {
     private final CutiPegawaiRepository repository;
     private final ValidatePengajuanCutiService validatePengajuanCutiService;
-    private final PegawaiRepository pegawaiRepository;
     private final CutiKuotaRepository cutiKuotaRepository;
     private final HariLiburRepository hariLiburRepository;
-    private final CutiJenisRepository cutiJenisRepository;
+    private final DefConfig defConfig;
 
     /**
-     * Processes a leave request for the next year, calculating total days and workdays,
-     * validating leave quotas, and adjusting quota usage accordingly.
+     * Pengajuan cuti untuk tahun depan.
+     * Pengajuan diasumsikan pada tahun depan, maka:
+     * 1. Jika ada, ambil jatah cuti tahun berjalan, atau
+     * 2. Jika ada, ambil jatah cuti tahun depan, atau
+     * 3. Jika jumlah cuti tahun berjalan dan/atau jatah cuti tahun depan tidak ada maka batalkan.
      *
      * @param request the leave request containing details such as employee ID, leave type,
      *                start and end dates, and sub-type of leave.
+     * @param entity  the entity containing the leave information.
      * @throws RuntimeException if the employee or leave type is unknown, or if leave quotas
      *                          are insufficient for the requested leave period.
      */
-    public void forNextYear(CutiPengajuanPostRequest request) {
-        int totalDays = DateHelper.countWeekdaysBetween(request.getTanggalMulai(), request.getTanggalSelesai());
-        int totalHariCuti = totalDays - hariLiburRepository.countByTanggalBetween(request.getTanggalMulai(), request.getTanggalSelesai());
+    public void forNextYear(CutiPengajuanPostRequest request, CutiPegawai entity) {
+        int totalDays = entity.getJumlahHariKerja();
 
-        Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId()).orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
-        CutiJenis jenisCuti = cutiJenisRepository.findById(request.getJenisCutiId()).orElseThrow(() -> new RuntimeException("Unknown Jenis Cuti"));
-        CutiJenis subJenisCuti = cutiJenisRepository.findById(request.getSubJenisCutiId()).orElse(null);
-        Jabatan atasanLangsung = new Jabatan(pegawai.getJabatan().getParent().getId());
+        int currentYear = request.getTanggalMulai().getYear() - 1;
+        int nextYear = request.getTanggalSelesai().getYear();
+        this.separateCutiWithNextYear(entity, currentYear, nextYear, request.getPegawaiId(), totalDays);
+        repository.save(entity);
+    }
 
-        CutiPegawai entity = CutiPengajuanPostRequest.toEntity(request, pegawai, jenisCuti, subJenisCuti, atasanLangsung);
-        entity.setJumlahHari(totalDays);
-        entity.setJumlahHariKerja(totalHariCuti);
+    /**
+     * Pengajuan Cuti menyebrang tahun (sebagian tahun ini, sebagian tahun depan)
+     * 1. pengajuan diasumsikan pada akhir tahun berjalan sampai awal tahun depan
+     * 2. jika ada, ambil jatah cuti tahun berjalan, atau
+     * 3. jika ada, ambil jatah cuti tahun depan, atau
+     * 4. jika jumlah cuti tahun berjalan dan/atau jatah cuti tahun depan tidak ada maka batalkan
+     * 5. cuti tahun berjalan harus ambil dari jatah cuti tahun berjalan
+     *
+     * @param request the leave request containing employee ID, leave type, start and end dates, and sub-type of leave.
+     * @param entity  the entity containing the leave information.
+     * @throws RuntimeException if the employee or leave type is unknown, or if leave quotas are insufficient.
+     */
+    public void overlappingYear(CutiPengajuanPostRequest request, CutiPegawai entity) {
+        // total cuti yang diambil
+        int totalDays = entity.getJumlahHariKerja();
 
+        // ambil jatah cuti tahun berjalan dan tahun depan
         int currentYear = request.getTanggalMulai().getYear();
-        CutiKuota currentYearQuota = cutiKuotaRepository.findByPegawai_IdAndTahun(request.getPegawaiId(), currentYear - 1)
-                .orElseThrow(() -> new RuntimeException("Tahun Cuti Tidak Ditemukan"));
-        entity.setRiwayatKuota0(currentYearQuota.getSisaKuota());
-        CutiKuota nextYearQuota = cutiKuotaRepository.findByPegawai_IdAndTahun(request.getPegawaiId(), currentYear)
-                .orElse(null);
+        int nextYear = request.getTanggalSelesai().getYear();
 
-        int totalRemainingQuota = currentYearQuota.getSisaKuota() + (nextYearQuota == null ? 0 : nextYearQuota.getSisaKuota());
+        this.separateCutiWithNextYear(entity, currentYear, nextYear, request.getPegawaiId(), totalDays);
+        repository.save(entity);
+    }
+
+    /**
+     * Pengajuan cuti antara 1 januari s/d 30 juni maka cek kuota tahun ini + sisa tahun lalu jika ada
+     * 1. pengajuan diasumsikan pada tanggal 1 januari sampai 30 juni
+     * 2. jika ada, ambil jatah cuti tahun lalu, atau
+     * 3. jika ada, ambil jatah cuti tahun berjalan, atau
+     * 4. jika jumlah cuti tahun lalu dan/atau jatah cuti tahun berjalan tidak ada maka batalkan
+     *
+     * @param request the leave request containing details such as employee ID, leave type,
+     *                start and end dates, and sub-type of leave.
+     * @param entity  the entity containing the leave information.
+     * @throws RuntimeException if the employee or leave type is unknown, or if leave quotas
+     *                          are insufficient for the requested leave period.
+     */
+    public void between1JanAnd30Jun(CutiPengajuanPostRequest request, CutiPegawai entity) {
+        // total cuti yang diambil
+        int totalDays = entity.getJumlahHariKerja();
+
+        // ambil tahun
+        int prevYear = request.getTanggalMulai().getYear() - 1;
+        int currentYear = request.getTanggalMulai().getYear();
+
+        this.separateCutiWithPreviousYear(entity, prevYear, currentYear, request.getPegawaiId(), totalDays, request.getTanggalSelesai());
+        // simpan cuti
+        repository.save(entity);
+    }
+
+    /**
+     * Pengajuan cuti antara 1 juli s/d 31 desember maka selalu cek kuota tahun berjalan
+     * 1. pengajuan diasumsikan pada tanggal 1 juli sampai 30 desember
+     * 2. jika ada, ambil jatah cuti tahun berjalan
+     * 3. jika tidak ada, batalkan
+     *
+     * @param request the leave request containing details such as employee ID, leave type,
+     *                start and end dates, and sub-type of leave.
+     * @param entity  the entity containing the leave information.
+     * @throws RuntimeException if the employee or leave type is unknown, or if leave quotas
+     *                          are insufficient for the requested leave period.
+     */
+    public void between1JulAnd31Dec(CutiPengajuanPostRequest request, CutiPegawai entity) {
+        // total cuti yang diambil
+        int totalHariCuti = entity.getJumlahHariKerja();
+
+        // ambil tahun
+        int year = request.getTanggalMulai().getYear();
+
+        // ambil jatah cuti tahun berjalan
+        int totalRemainingQuota = cutiKuotaRepository.findRecordByPegawai_IdAndTahun(request.getPegawaiId(), year, SisaCutiRecord.class)
+                .map(SisaCutiRecord::sisaKuota)
+                .orElseThrow(() -> new RuntimeException("Kuota Cuti Tahun " + year + " tidak tersedia!"));
+
+        // validasi minimal cuti
         validatePengajuanCutiService.validateMinimalCuti(totalHariCuti, totalRemainingQuota);
 
-        entity.setKuotaAwal(totalRemainingQuota);
-        entity.setKuotaAkhir(totalRemainingQuota - totalHariCuti);
-
+        // jika kuota tahun berjalan tidak mencukupi maka batalkan
         if (totalRemainingQuota < totalHariCuti) {
             throw new RuntimeException("Kuota Cuti tidak tersedia! sisa kuota: " + totalRemainingQuota + " hari");
         }
 
-        if (currentYearQuota.getSisaKuota() >= totalHariCuti) {
-            entity.setRiwayatKuota0(currentYearQuota.getSisaKuota());
-            entity.setRiwayatPakai0(totalHariCuti);
-            entity.setRiwayatSisa0(currentYearQuota.getSisaKuota() - totalHariCuti);
+        // set kuota awal dan akhir
+        entity.setKuotaAwal(totalRemainingQuota);
+        entity.setKuotaAkhir(totalRemainingQuota - totalHariCuti);
 
-            currentYearQuota.setKuotaTerpakai(currentYearQuota.getKuotaTerpakai() + totalHariCuti);
-            currentYearQuota.setSisaKuota(currentYearQuota.getSisaKuota() - totalHariCuti);
-        } else {
-            entity.setRiwayatKuota0(currentYearQuota.getSisaKuota());
-            entity.setRiwayatPakai0(currentYearQuota.getSisaKuota());
-            entity.setRiwayatSisa0(0);
+        // set riwayat kuota tahun berjalan
+        entity.setRiwayatKuota0(totalRemainingQuota);
+        entity.setRiwayatPakai0(totalHariCuti);
+        entity.setRiwayatSisa0(totalRemainingQuota - totalHariCuti);
 
-            int sisaKuota = totalHariCuti - currentYearQuota.getSisaKuota();
-
-            if (nextYearQuota == null) {
-                throw new RuntimeException("Kuota Cuti Tahun depan belum dibuat!");
-            } else if (nextYearQuota.getSisaKuota() < sisaKuota) {
-                throw new RuntimeException("Kuota Cuti Tahun depan tidak tersedia! sisa kuota: " + nextYearQuota.getSisaKuota() + " hari");
-            }
-
-            entity.setRiwayatKuota1(nextYearQuota.getSisaKuota());
-            entity.setRiwayatPakai1(sisaKuota);
-            entity.setRiwayatSisa1(nextYearQuota.getSisaKuota() - sisaKuota);
-
-            nextYearQuota.setKuotaTerpakai(nextYearQuota.getKuotaTerpakai() + sisaKuota);
-            nextYearQuota.setSisaKuota(nextYearQuota.getSisaKuota() - sisaKuota);
-
-            currentYearQuota.setKuotaTerpakai(currentYearQuota.getSisaKuota());
-        }
-
+        // simpan cuti
         repository.save(entity);
-        cutiKuotaRepository.save(currentYearQuota);
-        if (nextYearQuota != null) cutiKuotaRepository.save(nextYearQuota);
-
-    }
-
-
-    public void overlappingYear(CutiPengajuanPostRequest request) {
-
-    }
-
-    public void between1JanAnd30Jun(CutiPengajuanPostRequest request) {
-
-    }
-
-    public void between1JulAnd31Dec(CutiPengajuanPostRequest request) {
-
     }
 
     /**
-     * Processes a leave request overlapping the mid-year transition, adjusting leave quotas accordingly.
-     * Validates the request, checks and deducts from the current and previous year's leave quotas.
+     * Pengajuan Cuti menyebrang tanggal 30 juni sampai 1 juli
+     * 1. pengajuan diasumsikan pada akhir bulan juni tahun berjalan sampai awal bulan juli
+     * 2. jika ada, ambil jatah cuti tahun lalu untuk bulan juni dan ambil jatah cuti tahun berjalan untuk bulan juli
+     * 3. atau jika ada, ambil jatah cuti tahun depan untuk bulan juni dan juli
+     * 4. jika jumlah cuti tahun berjalan dan/atau jatah cuti tahun depan tidak ada maka batalkan
+     * 5. cuti tahun berjalan harus ambil dari jatah cuti tahun berjalan
      *
      * @param request the leave request containing details such as employee ID, leave type,
      *                start and end dates, and sub-type of leave.
+     * @param entity  the entity containing the leave information.
      * @throws RuntimeException if the leave quotas are insufficient or if required data is missing.
      */
-//    @Transactional
-    public void between30JunAnd1Jul(CutiPengajuanPostRequest request) {
-        validatePengajuanCutiService.validate(request);
-
-        Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId()).orElseThrow();
-        CutiJenis jenisCuti = cutiJenisRepository.findById(request.getJenisCutiId()).orElseThrow();
-        CutiJenis subJenisCuti = cutiJenisRepository.findById(request.getSubJenisCutiId()).orElse(null);
-        Jabatan atasanLangsung = pegawai.getJabatan().getParent();
-
-        CutiPegawai entity = CutiPengajuanPostRequest.toEntity(request, pegawai, jenisCuti, subJenisCuti, atasanLangsung);
-        int totalHari = DateHelper.countWeekdaysBetween(request.getTanggalMulai(), request.getTanggalSelesai());
-        int totalCutiDiambil = totalHari - hariLiburRepository.countByTanggalBetween(request.getTanggalMulai(), request.getTanggalSelesai());
-        entity.setJumlahHari(totalHari);
-        entity.setJumlahHariKerja(totalCutiDiambil);
-
+    public void between30JunAnd1Jul(CutiPengajuanPostRequest request, CutiPegawai entity) {
+        // total cuti yang diambil
+        int totalHariCuti = entity.getJumlahHariKerja();
         int year = request.getTanggalMulai().getYear();
-        CutiKuota currentYearKuota = cutiKuotaRepository.findByPegawai_IdAndTahun(request.getPegawaiId(), year).orElseThrow();
-        entity.setRiwayatKuota1(currentYearKuota.getSisaKuota());
-        CutiKuota previousYearKuota = cutiKuotaRepository.findByPegawai_IdAndTahun(request.getPegawaiId(), year - 1).orElse(null);
 
-        int totalRemainingQuota = currentYearKuota.getSisaKuota() + (previousYearKuota == null ? 0 : previousYearKuota.getSisaKuota());
-        validatePengajuanCutiService.validateMinimalCuti(totalCutiDiambil, totalRemainingQuota);
+        // ambil jatah cuti tahun lalu
+        int prevKuota = cutiKuotaRepository
+                .findRecordByPegawai_IdAndTahunAndExpiredGreaterThan(request.getPegawaiId(), year - 1, request.getTanggalSelesai(), SisaCutiRecord.class)
+                .map(SisaCutiRecord::sisaKuota).orElse(0);
 
-        entity.setKuotaAwal(totalRemainingQuota);
-        entity.setKuotaAkhir(totalRemainingQuota - totalCutiDiambil);
+        // ambil jatah cuti tahun berjalan
+        int currentKuota = cutiKuotaRepository.findRecordByPegawai_IdAndTahun(request.getPegawaiId(), year, SisaCutiRecord.class)
+                .map(SisaCutiRecord::sisaKuota)
+                .orElseThrow(() -> new RuntimeException("Kuota Cuti Tahun " + year + " tidak tersedia!"));
 
-        if (totalRemainingQuota < totalCutiDiambil) {
+        // total jatah cuti yang tersedia
+        int totalRemainingQuota = currentKuota + prevKuota;
+
+        // validasi minimal cuti
+        validatePengajuanCutiService.validateMinimalCuti(totalHariCuti, totalRemainingQuota);
+
+        // jika kuota tidak mencukupi maka batalkan
+        if (totalRemainingQuota < totalHariCuti) {
             throw new RuntimeException("Kuota Cuti tidak tersedia! sisa kuota: " + totalRemainingQuota + " hari");
         }
 
+        // set kuota awal dan akhir
+        entity.setKuotaAwal(totalRemainingQuota);
+        entity.setKuotaAkhir(totalRemainingQuota - totalHariCuti);
+        entity.setRiwayatKuota0(prevKuota);
+        entity.setRiwayatKuota1(currentKuota);
+
         // jika kuota tahun lalu tidak ada maka ambil tahun ini
-        if (previousYearKuota == null || previousYearKuota.getSisaKuota() == 0) {
-            entity.setRiwayatPakai1(totalCutiDiambil);
-            entity.setRiwayatSisa1(currentYearKuota.getSisaKuota() - totalCutiDiambil);
-
-            currentYearKuota.setKuotaTerpakai(currentYearKuota.getKuotaTerpakai() + totalCutiDiambil);
-            currentYearKuota.setSisaKuota(currentYearKuota.getSisaKuota() - totalCutiDiambil);
-
+        if (prevKuota == 0) {
+            entity.setRiwayatPakai1(totalHariCuti);
+            entity.setRiwayatSisa1(currentKuota - totalHariCuti);
         } else {
-            entity.setRiwayatKuota0(previousYearKuota.getSisaKuota());
-
+            // hitung total cuti juni dan juli
             int totalCutiJuni = DateHelper.countWeekdaysBetween(request.getTanggalMulai(), DateHelper.generateDate(year, 6, 30))
                     - hariLiburRepository.countByTanggalBetween(request.getTanggalMulai(), DateHelper.generateDate(year, 6, 30));
             int totalCutiJuli = DateHelper.countWeekdaysBetween(DateHelper.generateDate(year, 7, 1), request.getTanggalSelesai())
                     - hariLiburRepository.countByTanggalBetween(DateHelper.generateDate(year, 7, 1), request.getTanggalSelesai());
 
-
             // jika kuota tahun lalu tidak mencukupi total cuti juni
-            if (previousYearKuota.getSisaKuota() < totalCutiJuni) {
+            if (prevKuota < totalCutiJuni) {
                 int prevTotalCutiJuni = totalCutiJuni;
-                totalCutiJuni = previousYearKuota.getSisaKuota();
+                totalCutiJuni = prevKuota;
                 int sisaHariKerjaJuni = prevTotalCutiJuni - totalCutiJuni;
                 totalCutiJuli = totalCutiJuli + sisaHariKerjaJuni;
 
-                if (totalCutiJuli > currentYearKuota.getSisaKuota())
-                    throw new RuntimeException("Kuota Cuti Tahun Ini tidak tersedia! sisa kuota: " + currentYearKuota.getSisaKuota() + " hari");
+                if (totalCutiJuli > currentKuota)
+                    throw new RuntimeException("Kuota Cuti Tahun Ini tidak tersedia! sisa kuota: " + currentKuota + " hari");
             }
 
+            // set riwayat pakai dan sisa
             entity.setRiwayatPakai0(totalCutiJuni);
-            entity.setRiwayatSisa0(previousYearKuota.getSisaKuota() - totalCutiJuni);
+            entity.setRiwayatSisa0(prevKuota - totalCutiJuni);
             entity.setRiwayatPakai1(totalCutiJuli);
-            entity.setRiwayatSisa1(currentYearKuota.getSisaKuota() - totalCutiJuli);
+            entity.setRiwayatSisa1(currentKuota - totalCutiJuli);
+        }
 
-            previousYearKuota.setKuotaTerpakai(previousYearKuota.getKuotaTerpakai() + totalCutiJuni);
-            previousYearKuota.setSisaKuota(previousYearKuota.getSisaKuota() - totalCutiJuni);
+        // simpan entity
+        repository.save(entity);
+    }
 
-            currentYearKuota.setKuotaTerpakai(currentYearKuota.getKuotaTerpakai() + totalCutiJuli);
-            currentYearKuota.setSisaKuota(currentYearKuota.getSisaKuota() - totalCutiJuli);
+    /**
+     * Pengajuan Cuti selain cuti tahunan
+     * 1. pengajuan diasumsikan jenis cuti bukan tahunan
+     * 2. total jatah cuti yang tersedia adalah jatah cuti tahun berjalan ditambah sisa jatah cuti
+     * tahun lalu, jika ada
+     * 3. cek apakah kuota cuti yang diinginkan kurang dari jatah cuti yang tersedia
+     * 4. jika kurang, maka batalkan pengajuan
+     * 5. jika lebih, maka pakai jatah cuti tahun berjalan
+     * 6. jika jatah cuti tahun berjalan tidak mencukupi, maka pakai jatah cuti tahun lalu
+     * 7. simpan entity
+     *
+     * @param request the leave request containing details such as employee ID, leave type,
+     *                start and end dates, and sub-type of leave.
+     * @param entity  the entity containing the leave information.
+     * @throws RuntimeException if the leave quotas are insufficient or if required data is missing.
+     */
+    public void saveCutiNonTahunan(CutiPengajuanPostRequest request, CutiPegawai entity) {
+        // total cuti yang diambil
+        int totalHariCuti = entity.getJumlahHariKerja();
 
+        // ambil tahun
+        int year = request.getTanggalMulai().getYear();
+
+        // ambil jatah cuti tahun lalu
+        int prevKuota = cutiKuotaRepository.findRecordByPegawai_IdAndTahunAndExpiredGreaterThan(
+                        request.getPegawaiId(),
+                        year - 1,
+                        LocalDate.of(year, 6, 30),
+                        SisaCutiRecord.class)
+                .map(SisaCutiRecord::sisaKuota)
+                .orElse(0);
+        // ambil jatah cuti tahun berjalan
+        int currentKuota = cutiKuotaRepository.findRecordByPegawai_IdAndTahun(request.getPegawaiId(), year, SisaCutiRecord.class)
+                .map(SisaCutiRecord::sisaKuota)
+                .orElseThrow(() -> new RuntimeException("Kuota Cuti Tahun " + year + " tidak tersedia!"));
+
+        // total jatah cuti yang tersedia
+        int totalRemainingQuota = currentKuota + prevKuota;
+        // validasi minimal cuti
+        validatePengajuanCutiService.validateMinimalCuti(totalHariCuti, totalRemainingQuota);
+
+        if (request.getJenisCutiId().equals(defConfig.getJenisCutiIbadah())) {
+            entity.setKuotaAkhir(totalRemainingQuota - currentKuota);
+            entity.setRiwayatPakai1(currentKuota);
+            entity.setRiwayatKuota0(prevKuota);
+            entity.setRiwayatKuota1(currentKuota);
+            entity.setRiwayatPakai1(currentKuota);
+            entity.setRiwayatSisa1(0);
+        } else {
+            entity.setKuotaAwal(totalRemainingQuota);
+            entity.setKuotaAwal(totalRemainingQuota);
+            entity.setRiwayatKuota0(prevKuota);
+            entity.setRiwayatKuota1(currentKuota);
         }
 
         repository.save(entity);
-        cutiKuotaRepository.save(currentYearKuota);
-        if (previousYearKuota != null) cutiKuotaRepository.save(previousYearKuota);
+    }
+
+    /**
+     * Separate the cuti with the next year.
+     *
+     * @param entity      the cuti entity.
+     * @param currentYear the current year.
+     * @param nextYear    the next year.
+     * @param pegawaiId   the employee ID.
+     * @param totalDays   the total days of cuti.
+     * @throws RuntimeException if the cuti quotas are insufficient or if required data is missing.
+     */
+    private void separateCutiWithNextYear(CutiPegawai entity, int currentYear, int nextYear, long pegawaiId, int totalDays) {
+        // Kuota cuti tahun berjalan
+        int currentYearRemaining = cutiKuotaRepository.findRecordByPegawai_IdAndTahun(pegawaiId, currentYear, SisaCutiRecord.class)
+                .map(SisaCutiRecord::sisaKuota)
+                .orElseThrow(() -> new RuntimeException("Tahun Cuti Tidak Ditemukan"));
+        // Kuota cuti tahun depan
+        int nextYearRemaining = cutiKuotaRepository.findRecordByPegawai_IdAndTahun(pegawaiId, nextYear, SisaCutiRecord.class)
+                .map(SisaCutiRecord::sisaKuota).orElse(0);
+
+        // Total kuota cuti yang tersedia
+        int totalRemaining = currentYearRemaining + nextYearRemaining;
+
+        // Validasi minimal cuti
+        validatePengajuanCutiService.validateMinimalCuti(totalDays, totalRemaining);
+
+        // Jika ada kuota cuti tahun berjalan yang tersedia, maka pakai kuota cuti tahun berjalan
+        int remainingAfterCurrentYear = totalDays - currentYearRemaining;
+        if (remainingAfterCurrentYear > 0) {
+            if (nextYearRemaining < remainingAfterCurrentYear) {
+                throw new RuntimeException("Kuota Cuti Tahun depan tidak tersedia! sisa kuota: " + nextYearRemaining + " hari");
+            }
+
+            entity.setRiwayatPakai0(currentYearRemaining);
+            entity.setRiwayatSisa0(0);
+            entity.setRiwayatPakai1(remainingAfterCurrentYear);
+            entity.setRiwayatSisa1(nextYearRemaining - remainingAfterCurrentYear);
+        } else {
+            entity.setRiwayatPakai0(totalDays);
+            entity.setRiwayatSisa0(currentYearRemaining - totalDays);
+        }
+
+        // Simpan entity
+        entity.setKuotaAwal(totalRemaining);
+        entity.setKuotaAkhir(totalRemaining - totalDays);
     }
 
 
+    /**
+     * Separates the cuti with the previous year.
+     *
+     * @param entity      the cuti entity.
+     * @param prevYear    the previous year.
+     * @param currentYear the current year.
+     * @param pegawaiId   the employee ID.
+     * @param totalDays   the total days of cuti.
+     * @param expiredDate the expired date of previous year cuti quota.
+     * @throws RuntimeException if the cuti quotas are insufficient or if required data is missing.
+     */
+    private void separateCutiWithPreviousYear(CutiPegawai entity, int prevYear, int currentYear, long pegawaiId, int totalDays, LocalDate expiredDate) {
+        // Ambil jatah cuti tahun lalu
+        int prevKuota = cutiKuotaRepository.findRecordByPegawai_IdAndTahunAndExpiredGreaterThan(pegawaiId, prevYear, expiredDate, SisaCutiRecord.class)
+                .map(SisaCutiRecord::sisaKuota).orElse(0);
+
+        // Ambil jatah cuti tahun berjalan
+        int currentKuota = cutiKuotaRepository.findRecordByPegawai_IdAndTahun(pegawaiId, currentYear, SisaCutiRecord.class)
+                .map(SisaCutiRecord::sisaKuota)
+                .orElseThrow(() -> new RuntimeException("Kuota Cuti Tahun " + currentYear + " tidak tersedia!"));
+
+        // Total jatah cuti yang tersedia
+        int totalRemainingQuota = currentKuota + prevKuota;
+        // Validasi minimal cuti
+        validatePengajuanCutiService.validateMinimalCuti(totalDays, totalRemainingQuota);
+
+        // Cek apakah ada jatah cuti tahun lalu yang tersedia
+        if (totalRemainingQuota < totalDays) {
+            throw new RuntimeException("Kuota Cuti tidak tersedia! sisa kuota: " + totalRemainingQuota + " hari");
+        }
+
+        // Cek apakah ada jatah cuti tahun berjalan yang tersedia
+        int remainingDays = totalDays - prevKuota;
+        if (remainingDays > 0) {
+            if (currentKuota < remainingDays) {
+                throw new RuntimeException("Kuota Cuti tidak tersedia! sisa kuota tahun berjalan: " + currentKuota + " hari");
+            }
+
+            // Set riwayat pakai dan sisa
+            entity.setRiwayatPakai0(prevKuota);
+            entity.setRiwayatSisa0(0);
+            entity.setRiwayatPakai1(remainingDays);
+            entity.setRiwayatSisa1(currentKuota - remainingDays);
+        } else {
+            // Set riwayat pakai dan sisa
+            entity.setRiwayatPakai0(totalDays);
+            entity.setRiwayatSisa0(prevKuota - totalDays);
+        }
+
+        // Set riwayat kuota
+        entity.setRiwayatKuota0(prevKuota);
+        entity.setRiwayatKuota1(currentKuota);
+
+        // Set kuota awal dan akhir
+        entity.setKuotaAwal(totalRemainingQuota);
+        entity.setKuotaAkhir(totalRemainingQuota - totalDays);
+    }
 }

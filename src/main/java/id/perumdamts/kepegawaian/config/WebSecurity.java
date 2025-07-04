@@ -23,9 +23,23 @@ public class WebSecurity {
     private final DeniedHandler deniedHandler;
     private final JwtAuthFilter jwtAuthFilter;
 
+    /**
+     * Security filter chain bean.
+     *
+     * @param http http security builder
+     * @return security filter chain
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) {
         try {
+            // Disable CORS
+            // Disable CSRF
+            // Disable form login
+            // Disable HTTP basic auth
+            // Configure exception handling
+            // Add JWT auth filter
+            // Set session creation policy to STATELESS
+            // Authorize HTTP requests
             return http
                     .cors(AbstractHttpConfigurer::disable)
                     .csrf(AbstractHttpConfigurer::disable)
@@ -36,10 +50,14 @@ public class WebSecurity {
                     .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                     .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                     .authorizeHttpRequests(authorization -> authorization
+                            // Allow API docs
                             .requestMatchers("/api-docs/**").permitAll()
                             .requestMatchers("/swagger-ui.html").permitAll()
                             .requestMatchers("/swagger-ui/**").permitAll()
                             .requestMatchers("/v3/api-docs/**").permitAll()
+                            // Allow auth endpoints
+                            .requestMatchers("/auth/**").permitAll()
+                            // All other requests require authentication
                             .anyRequest().authenticated()
                     )
                     .build();

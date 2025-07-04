@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.auth;
 
+import id.perumdamts.kepegawaian.dto.commons.CustomResult;
+import id.perumdamts.kepegawaian.helpers.RedisHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ public class AuthController {
     @Value("${appwrite.api_key}")
     private String appwriteApiKey;
     private final WebClient webClient;
+    private final RedisHelper redisHelper;
 
     @GetMapping("/session")
     public ResponseEntity<?> index(@RequestHeader(value = "X-Appwrite-JWT") String token) {
@@ -31,5 +34,10 @@ public class AuthController {
                 .exchangeToMono(response -> response.bodyToMono(String.class))
                 .block();
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/csrf-token")
+    public ResponseEntity<?> csrfToken() {
+        return CustomResult.any(redisHelper.generateToken());
     }
 }
