@@ -40,12 +40,12 @@ public class CutiKuotaServiceImpl implements CutiKuotaService {
     }
 
     @Override
-    public CutiKuotaSisa findByPegawai(Long id, Integer tahun) {
-        Integer sisaTahunIni = repository.findRecordByPegawai_IdAndTahun(id, tahun, SisaCutiRecord.class)
+    public CutiKuotaSisa findByPegawai(Long pegawaiId, Integer tahun) {
+        Integer sisaTahunIni = repository.findRecordByPegawai_IdAndTahun(pegawaiId, tahun, SisaCutiRecord.class)
                 .map(SisaCutiRecord::sisaKuota)
                 .orElse(0);
         Integer sisaTahunLalu = repository
-                .findRecordByPegawai_IdAndTahunAndExpiredGreaterThan(id, tahun - 1, LocalDate.now(), SisaCutiRecord.class)
+                .findRecordByPegawai_IdAndTahunAndExpiredGreaterThan(pegawaiId, tahun - 1, LocalDate.now(), SisaCutiRecord.class)
                 .map(SisaCutiRecord::sisaKuota)
                 .orElse(0);
         return CutiKuotaSisa.builder()
