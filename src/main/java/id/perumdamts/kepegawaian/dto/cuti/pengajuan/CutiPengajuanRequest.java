@@ -3,10 +3,12 @@ package id.perumdamts.kepegawaian.dto.cuti.pengajuan;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.dto.commons.CommonPageRequest;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
+import jakarta.persistence.criteria.Expression;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 @EqualsAndHashCode(callSuper = true)
@@ -22,6 +24,7 @@ public class CutiPengajuanRequest extends CommonPageRequest {
 
     @JsonIgnore
     public Specification<CutiPegawai> getSpecification() {
+
         Specification<CutiPegawai> idSpec = Objects.isNull(id) ? null :
                 (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("id"), id);
         Specification<CutiPegawai> pegawaiSpec = Objects.isNull(pegawaiId) ? null :
@@ -31,7 +34,16 @@ public class CutiPengajuanRequest extends CommonPageRequest {
         Specification<CutiPegawai> namaSpec = Objects.isNull(nama) ? null :
                 (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("pegawai").get("nama"), "%" + nama + "%");
         Specification<CutiPegawai> tahunSpec = Objects.isNull(tahun) ? null :
-                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("tahun"), tahun);
+                (root, query, criteriaBuilder) -> {
+                    Expression<LocalDate> createdAtPengajuanExpression = root.get("createdAt");
+                    Expression<Integer> createdAtPengajuan = criteriaBuilder.function("YEAR", Integer.class, createdAtPengajuanExpression);
+                    Expression<LocalDate> tanggalPengajuanExpression = root.get("tanggalMulai");
+                    Expression<Integer> tahunPengajuan = criteriaBuilder.function("YEAR", Integer.class, tanggalPengajuanExpression);
+                    return criteriaBuilder.or(
+                            criteriaBuilder.equal(createdAtPengajuan, tahun),
+                            criteriaBuilder.equal(tahunPengajuan, tahun)
+                    );
+                };
         Specification<CutiPegawai> jabatanSpec = Objects.isNull(jabatanId) ? null :
                 (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("jabatan").get("id"), jabatanId);
         Specification<CutiPegawai> picSaatIniSpec = Objects.isNull(picSaatIniId) ? null :

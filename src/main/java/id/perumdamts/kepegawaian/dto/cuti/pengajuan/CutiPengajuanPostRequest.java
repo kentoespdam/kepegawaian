@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.services.cuti.pengajuan;
+package id.perumdamts.kepegawaian.dto.cuti.pengajuan;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;

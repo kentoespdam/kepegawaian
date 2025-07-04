@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.services.cuti.pengajuan;
 
 import id.perumdamts.kepegawaian.config.DefConfig;
+import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPostRequest;
 import id.perumdamts.kepegawaian.repositories.cuti.CutiPegawaiRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

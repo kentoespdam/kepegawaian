@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.services.cuti.pengajuan;
 
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
+import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPostRequest;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanRequest;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanResponse;
 import org.springframework.data.domain.Page;

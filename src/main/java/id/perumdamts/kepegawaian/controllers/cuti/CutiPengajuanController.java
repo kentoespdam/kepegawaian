@@ -3,7 +3,7 @@ package id.perumdamts.kepegawaian.controllers.cuti;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanRequest;
-import id.perumdamts.kepegawaian.services.cuti.pengajuan.CutiPengajuanPostRequest;
+import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPostRequest;
 import id.perumdamts.kepegawaian.services.cuti.pengajuan.CutiPengajuanService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -13,7 +13,8 @@ public class JenisCutiResponse extends JenisCutiMiniResponse {
         JenisCutiResponse response = new JenisCutiResponse();
         response.setId(entity.getId());
         response.setNama(entity.getNama());
-        response.setParent(JenisCutiMiniResponse.from(entity.getParent()));
+        if (entity.getParent() != null)
+            response.setParent(JenisCutiMiniResponse.from(entity.getParent()));
         return response;
     }
 }

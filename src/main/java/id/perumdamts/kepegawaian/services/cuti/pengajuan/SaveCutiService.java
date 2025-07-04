@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.services.cuti.pengajuan;
 
 import id.perumdamts.kepegawaian.config.DefConfig;
 import id.perumdamts.kepegawaian.dto.cuti.kuota.SisaCutiRecord;
+import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPostRequest;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import id.perumdamts.kepegawaian.helpers.DateHelper;
 import id.perumdamts.kepegawaian.repositories.cuti.CutiKuotaRepository;
