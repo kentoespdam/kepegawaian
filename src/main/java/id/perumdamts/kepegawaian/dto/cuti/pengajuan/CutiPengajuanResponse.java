@@ -16,6 +16,7 @@ import java.util.Objects;
 
 @Data
 public class CutiPengajuanResponse {
+    private Long id;
     private Long pegawaiId;
     private String nama;
     private String nipam;
@@ -40,6 +41,7 @@ public class CutiPengajuanResponse {
 
     public static CutiPengajuanResponse from(CutiPegawai entity) {
         CutiPengajuanResponse response = new CutiPengajuanResponse();
+        response.setId(entity.getId());
         response.setPegawaiId(entity.getPegawai().getId());
         response.setNipam(entity.getPegawai().getNipam());
         response.setNama(entity.getPegawai().getBiodata().getNama());
