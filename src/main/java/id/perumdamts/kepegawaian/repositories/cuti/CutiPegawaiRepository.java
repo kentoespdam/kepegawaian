@@ -12,4 +12,5 @@ public interface CutiPegawaiRepository extends JpaRepository<CutiPegawai, Long>,
         JpaSpecificationExecutor<CutiPegawai>,
         RevisionRepository<CutiPegawai, Long, Long> {
     Optional<CutiPegawai> findByIdAndApprovalCutiStatus(Long id, EApprovalCutiStatus eApprovalCutiStatus);
+
 }

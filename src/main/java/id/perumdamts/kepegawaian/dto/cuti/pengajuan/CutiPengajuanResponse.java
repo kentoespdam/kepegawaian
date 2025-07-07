@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.dto.cuti.jenis.JenisCutiResponse;
-import id.perumdamts.kepegawaian.dto.pegawai.PegawaiResponse;
+import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;
+import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiMiniResponse;
+import id.perumdamts.kepegawaian.dto.pegawai.PegawaiMiniResponse;
 import id.perumdamts.kepegawaian.entities.commons.EJenisPengajuanCuti;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import lombok.Data;
@@ -14,7 +16,11 @@ import java.util.Objects;
 
 @Data
 public class CutiPengajuanResponse {
-    private PegawaiResponse pegawai;
+    private Long pegawaiId;
+    private String nama;
+    private String nipam;
+    private OrganisasiMiniResponse organisasi;
+    private JabatanMiniResponse jabatan;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tanggalPengajuan;
@@ -30,10 +36,13 @@ public class CutiPengajuanResponse {
     private String alasan;
     private Integer jumlahHari;
     private Integer jumlahHariKerja;
+    private PegawaiMiniResponse picSaatIni;
 
     public static CutiPengajuanResponse from(CutiPegawai entity) {
         CutiPengajuanResponse response = new CutiPengajuanResponse();
-        response.setPegawai(PegawaiResponse.from(entity.getPegawai()));
+        response.setPegawaiId(entity.getPegawai().getId());
+        response.setNipam(entity.getPegawai().getNipam());
+        response.setNama(entity.getPegawai().getBiodata().getNama());
         response.setTanggalPengajuan(entity.getCreatedAt().toLocalDate());
         response.setJenisPengajuanCuti(entity.getJenisPengajuanCuti());
         response.setJenisCuti(JenisCutiResponse.from(entity.getJenisCuti()));
