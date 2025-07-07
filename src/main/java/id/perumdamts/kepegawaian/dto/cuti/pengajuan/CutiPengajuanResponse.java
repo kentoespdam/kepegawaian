@@ -6,6 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.dto.cuti.jenis.JenisCutiResponse;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiMiniResponse;
+import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
 import id.perumdamts.kepegawaian.entities.commons.EJenisPengajuanCuti;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import lombok.Data;
@@ -25,6 +26,7 @@ public class CutiPengajuanResponse {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tanggalPengajuan;
     private EJenisPengajuanCuti jenisPengajuanCuti;
+    private EApprovalCutiStatus approvalCutiStatus;
     private JenisCutiResponse jenisCuti;
     private JenisCutiResponse subJenisCuti;
     @JsonSerialize(using = LocalDateSerializer.class)
@@ -48,6 +50,7 @@ public class CutiPengajuanResponse {
         response.setJabatan(JabatanMiniResponse.from(entity.getPegawai().getJabatan()));
         response.setTanggalPengajuan(entity.getCreatedAt().toLocalDate());
         response.setJenisPengajuanCuti(entity.getJenisPengajuanCuti());
+        response.setApprovalCutiStatus(entity.getApprovalCutiStatus());
         response.setJenisCuti(JenisCutiResponse.from(entity.getJenisCuti()));
         if (Objects.nonNull(entity.getSubJenisCuti()))
             response.setSubJenisCuti(JenisCutiResponse.from(entity.getSubJenisCuti()));
