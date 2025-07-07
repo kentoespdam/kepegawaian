@@ -6,7 +6,6 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.dto.cuti.jenis.JenisCutiResponse;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiMiniResponse;
-import id.perumdamts.kepegawaian.dto.pegawai.PegawaiMiniResponse;
 import id.perumdamts.kepegawaian.entities.commons.EJenisPengajuanCuti;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import lombok.Data;
@@ -37,7 +36,7 @@ public class CutiPengajuanResponse {
     private String alasan;
     private Integer jumlahHari;
     private Integer jumlahHariKerja;
-    private PegawaiMiniResponse picSaatIni;
+    private JabatanMiniResponse picSaatIni;
 
     public static CutiPengajuanResponse from(CutiPegawai entity) {
         CutiPengajuanResponse response = new CutiPengajuanResponse();
@@ -45,6 +44,8 @@ public class CutiPengajuanResponse {
         response.setPegawaiId(entity.getPegawai().getId());
         response.setNipam(entity.getPegawai().getNipam());
         response.setNama(entity.getPegawai().getBiodata().getNama());
+        response.setOrganisasi(OrganisasiMiniResponse.from(entity.getPegawai().getOrganisasi()));
+        response.setJabatan(JabatanMiniResponse.from(entity.getPegawai().getJabatan()));
         response.setTanggalPengajuan(entity.getCreatedAt().toLocalDate());
         response.setJenisPengajuanCuti(entity.getJenisPengajuanCuti());
         response.setJenisCuti(JenisCutiResponse.from(entity.getJenisCuti()));
@@ -55,6 +56,7 @@ public class CutiPengajuanResponse {
         response.setAlasan(entity.getAlasan());
         response.setJumlahHari(entity.getJumlahHari());
         response.setJumlahHariKerja(entity.getJumlahHariKerja());
+        response.setPicSaatIni(JabatanMiniResponse.from(entity.getPicSaatIni()));
         return response;
     }
 }

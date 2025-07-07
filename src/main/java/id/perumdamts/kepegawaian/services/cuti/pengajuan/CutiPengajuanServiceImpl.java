@@ -9,7 +9,6 @@ import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanResponse;
 import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
 import id.perumdamts.kepegawaian.entities.cuti.CutiJenis;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
-import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.helpers.DateHelper;
 import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
@@ -62,7 +61,6 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
             Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId()).orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
             CutiJenis jenisCuti = cutiJenisRepository.findById(request.getJenisCutiId()).orElseThrow(() -> new RuntimeException("Unknown Jenis Cuti"));
             CutiJenis subJenisCuti = cutiJenisRepository.findById(request.getSubJenisCutiId()).orElse(null);
-            Jabatan atasanLangsung = new Jabatan(pegawai.getJabatan().getParent().getId());
 
             int nowYear = LocalDate.now().getYear();
             int startYear = request.getTanggalMulai().getYear();
@@ -71,7 +69,7 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
             int totalDays = DateHelper.countWeekdaysBetween(request.getTanggalMulai(), request.getTanggalSelesai());
             int totalHariCuti = totalDays - hariLiburRepository.countByTanggalBetween(request.getTanggalMulai(), request.getTanggalSelesai());
 
-            CutiPegawai entity = CutiPengajuanPostRequest.toEntity(request, pegawai, jenisCuti, subJenisCuti, atasanLangsung);
+            CutiPegawai entity = CutiPengajuanPostRequest.toEntity(request, pegawai, jenisCuti, subJenisCuti);
             entity.setJumlahHari(totalDays);
             entity.setJumlahHariKerja(totalHariCuti);
 
