@@ -26,6 +26,12 @@ public class CutiPengajuanController {
         return CustomResult.page(service.findPage(request));
     }
 
+    @GetMapping("/{pegawaiId}/pegawai")
+    public ResponseEntity<?> index(@PathVariable Long pegawaiId, @ParameterObject CutiPengajuanRequest request) {
+        request.setPegawaiId(pegawaiId);
+        return CustomResult.page(service.findPage(request));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> detail(Long id) {
         return CustomResult.any(service.findById(id));
