@@ -33,7 +33,7 @@ public class CutiPengajuanController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> detail(Long id) {
+    public ResponseEntity<?> detail(@PathVariable Long id) {
         return CustomResult.any(service.findById(id));
     }
 
