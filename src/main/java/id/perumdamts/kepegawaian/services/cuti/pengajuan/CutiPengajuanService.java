@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.services.cuti.pengajuan;
 
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPostRequest;
+import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPutRequest;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanRequest;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanResponse;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,8 @@ public interface CutiPengajuanService {
     CutiPengajuanResponse findById(Long id);
 
     SavedStatus<?> save(CutiPengajuanPostRequest request);
+
+    SavedStatus<?> update(Long id, CutiPengajuanPutRequest request);
 
     SavedStatus<?> pembatalan(Long id);
 

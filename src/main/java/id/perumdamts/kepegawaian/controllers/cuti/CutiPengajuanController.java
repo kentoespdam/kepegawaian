@@ -2,8 +2,9 @@ package id.perumdamts.kepegawaian.controllers.cuti;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
-import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanRequest;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPostRequest;
+import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPutRequest;
+import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanRequest;
 import id.perumdamts.kepegawaian.services.cuti.pengajuan.CutiPengajuanService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -54,6 +55,16 @@ public class CutiPengajuanController {
         if (request.getTanggalMulai().isBefore(LocalDate.now()))
             return ErrorResult.build("Pengajuan cuti tidak boleh dibuat sebelum tanggal sekarang");
         return CustomResult.save(service.save(request));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody CutiPengajuanPutRequest request, Errors errors) {
+        if (errors.hasErrors()) return ErrorResult.build(errors);
+        if (request.getTanggalMulai().isAfter(request.getTanggalSelesai()))
+            return ErrorResult.build("Tanggal selesai tidak boleh dibuat sebelum tanggal mulai");
+        if (request.getTanggalMulai().isBefore(LocalDate.now()))
+            return ErrorResult.build("Pengajuan cuti tidak boleh dibuat sebelum tanggal sekarang");
+        return CustomResult.save(service.update(id, request));
     }
 
     @PatchMapping("/{id}/pembatalan")
