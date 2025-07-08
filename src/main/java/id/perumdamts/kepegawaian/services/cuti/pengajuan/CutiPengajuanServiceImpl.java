@@ -198,7 +198,7 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
         Optional<CutiPegawai> entity = repository.findByIdAndApprovalCutiStatus(id, EApprovalCutiStatus.PENDING);
         if (entity.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Cuti Pegawai");
-        entity.get().setApprovalCutiStatus(EApprovalCutiStatus.CANCELLED);
+        entity.get().setApprovalCutiStatus(EApprovalCutiStatus.CANCELED);
         repository.save(entity.get());
         return SavedStatus.build(ESaveStatus.SUCCESS, "Cuti Pengajuan berhasil dibatalkan");
     }

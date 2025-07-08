@@ -8,7 +8,7 @@ public enum EApprovalCutiStatus {
     APPROVED("Disetujui"),
     CONFIRMED("Dikonfirmasi"),
     REJECTED("Ditolak"),
-    CANCELLED("Dibatalkan"),
+    CANCELED("Dibatalkan"),
     RETURNED("Dikembalikan");
 
     private final String label;
