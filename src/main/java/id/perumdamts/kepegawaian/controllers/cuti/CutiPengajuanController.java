@@ -67,14 +67,8 @@ public class CutiPengajuanController {
         return CustomResult.save(service.update(id, request));
     }
 
-    @PatchMapping("/{id}/pembatalan")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> pembatalan(@PathVariable Long id) {
         return CustomResult.save(service.pembatalan(id));
-    }
-
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
-        return CustomResult.delete(service.delete(id));
     }
 }
