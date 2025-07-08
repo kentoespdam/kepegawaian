@@ -27,6 +27,7 @@ public class CutiPengajuanResponse {
     private LocalDate tanggalPengajuan;
     private EJenisPengajuanCuti jenisPengajuanCuti;
     private EApprovalCutiStatus approvalCutiStatus;
+    private Integer approvalLevel;
     private JenisCutiResponse jenisCuti;
     private JenisCutiResponse subJenisCuti;
     @JsonSerialize(using = LocalDateSerializer.class)
@@ -51,6 +52,7 @@ public class CutiPengajuanResponse {
         response.setTanggalPengajuan(entity.getCreatedAt().toLocalDate());
         response.setJenisPengajuanCuti(entity.getJenisPengajuanCuti());
         response.setApprovalCutiStatus(entity.getApprovalCutiStatus());
+        response.setApprovalLevel(entity.getApprovalLevel());
         response.setJenisCuti(JenisCutiResponse.from(entity.getJenisCuti()));
         if (Objects.nonNull(entity.getSubJenisCuti()))
             response.setSubJenisCuti(JenisCutiResponse.from(entity.getSubJenisCuti()));
