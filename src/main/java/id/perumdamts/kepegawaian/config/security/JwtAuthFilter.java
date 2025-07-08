@@ -2,7 +2,6 @@ package id.perumdamts.kepegawaian.config.security;
 
 import id.perumdamts.kepegawaian.dto.appwrite.AppwriteUser;
 import id.perumdamts.kepegawaian.dto.appwrite.Prefs;
-import id.perumdamts.kepegawaian.helpers.RedisHelper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,7 +9,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -24,7 +22,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Slf4j
 public class JwtAuthFilter extends OncePerRequestFilter {
-    private final RedisHelper redisHelper;
+//    private final RedisHelper redisHelper;
     private final JwtTokenService service;
     private static final String BEARER = "Bearer ";
     private static final String AUTHORIZATION = "Authorization";
@@ -54,15 +52,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         // check if the request is a POST request and if the CSRF token is valid
         // if it is, set the response to 409 Conflict and return
-        if (request.getMethod().equals("POST")) {
-            String csrfToken = request.getHeader("X-CSRF-TOKEN");
-            if (redisHelper.validateToken(csrfToken)) {
-                response.setStatus(HttpServletResponse.SC_CONFLICT);
-                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                response.getWriter().write("{\"message\": \"Duplicate request detected\"}");
-                return;
-            }
-        }
+//        if (request.getMethod().equals("POST")) {
+//            String csrfToken = request.getHeader("X-CSRF-TOKEN");
+//            if (redisHelper.validateToken(csrfToken)) {
+//                response.setStatus(HttpServletResponse.SC_CONFLICT);
+//                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+//                response.getWriter().write("{\"message\": \"Duplicate request detected\"}");
+//                return;
+//            }
+//        }
 
         // if everything is valid, set the authentication token and continue with the request
         SecurityContextHolder.getContext().setAuthentication(authentication);

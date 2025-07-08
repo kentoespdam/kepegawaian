@@ -11,6 +11,7 @@ import id.perumdamts.kepegawaian.entities.cuti.CutiJenis;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.helpers.DateHelper;
+import id.perumdamts.kepegawaian.helpers.RedisHelper;
 import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.CutiJenisRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.CutiPegawaiRepository;
@@ -27,6 +28,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class CutiPengajuanServiceImpl implements CutiPengajuanService {
+    private final RedisHelper redisHelper;
     private final CutiPegawaiRepository repository;
     private final DefConfig defConfig;
     private final SaveCutiService saveCutiService;
@@ -56,11 +58,17 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
     @Override
     public SavedStatus<?> save(CutiPengajuanPostRequest request) {
         try {
+            if (redisHelper.validateToken(request.getCsrfToken())) {
+                return SavedStatus.build(ESaveStatus.DUPLICATE, "Duplicate request detected");
+            }
             validatePengajuanCutiService.validate(request);
 
-            Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId()).orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
-            CutiJenis jenisCuti = cutiJenisRepository.findById(request.getJenisCutiId()).orElseThrow(() -> new RuntimeException("Unknown Jenis Cuti"));
-            CutiJenis subJenisCuti = cutiJenisRepository.findById(request.getSubJenisCutiId()).orElse(null);
+            Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId())
+                    .orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
+            CutiJenis jenisCuti = cutiJenisRepository.findById(request.getJenisCutiId())
+                    .orElseThrow(() -> new RuntimeException("Unknown Jenis Cuti"));
+            CutiJenis subJenisCuti = cutiJenisRepository.findById(request.getSubJenisCutiId())
+                    .orElse(null);
 
             int nowYear = LocalDate.now().getYear();
             int startYear = request.getTanggalMulai().getYear();

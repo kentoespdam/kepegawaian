@@ -19,6 +19,9 @@ import java.util.Objects;
 
 @Data
 public class CutiPengajuanPostRequest {
+    @NotNull(message = "CSRF token is required")
+    @NotBlank(message = "CSRF token is required")
+    private String csrfToken;
     @NotNull(message = "Pegawai is required")
     @Min(value = 1, message = "Pegawai is required")
     private Long pegawaiId;
