@@ -2,7 +2,7 @@ package id.perumdamts.kepegawaian.controllers.cuti;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
-import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanKlaimRequest;
+import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanKlaimPostRequest;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPostRequest;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPutRequest;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanRequest;
@@ -69,9 +69,15 @@ public class CutiPengajuanController {
     }
 
     @PostMapping("/klaim")
-    public ResponseEntity<?> klaim(@Valid @RequestBody CutiPengajuanKlaimRequest request, Errors errors) {
+    public ResponseEntity<?> klaim(@Valid @RequestBody CutiPengajuanKlaimPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         return CustomResult.save(service.klaim(request));
+    }
+
+    @PutMapping("/klaim/{id}")
+    public ResponseEntity<?> updateKlaim(@PathVariable Long id, @Valid @RequestBody CutiPengajuanKlaimPostRequest request, Errors errors) {
+        if (errors.hasErrors()) return ErrorResult.build(errors);
+        return CustomResult.save(service.updateKlaim(id, request));
     }
 
     @DeleteMapping("/{id}")

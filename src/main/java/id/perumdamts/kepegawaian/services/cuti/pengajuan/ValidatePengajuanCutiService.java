@@ -1,7 +1,7 @@
 package id.perumdamts.kepegawaian.services.cuti.pengajuan;
 
 import id.perumdamts.kepegawaian.config.DefConfig;
-import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanKlaimRequest;
+import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanKlaimPostRequest;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPostRequest;
 import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
@@ -82,7 +82,7 @@ public class ValidatePengajuanCutiService {
      *                          besar, or if the employee has any leave request
      *                          that is not approved.
      */
-    public CutiPegawai validateKlaim(CutiPengajuanKlaimRequest request) {
+    public CutiPegawai validateKlaim(CutiPengajuanKlaimPostRequest request) {
         // cek apakah cuti ini sudah disetujui
         CutiPegawai cutiPegawai = repository.findByIdAndApprovalCutiStatus(
                 request.getRefCutiId(), EApprovalCutiStatus.APPROVED

@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Data
-public class CutiPengajuanKlaimRequest {
+public class CutiPengajuanKlaimPostRequest {
 //    @NotNull(message = "CSRF token is required")
 //    @NotBlank(message = "CSRF token is required")
 //    private String csrfToken;
@@ -48,7 +48,7 @@ public class CutiPengajuanKlaimRequest {
         );
     }
 
-    public static CutiPegawai toEntity(CutiPegawai cutiPegawai, CutiPengajuanKlaimRequest request) {
+    public static CutiPegawai toEntity(CutiPegawai cutiPegawai, CutiPengajuanKlaimPostRequest request) {
         CutiPegawai entity = new CutiPegawai();
         entity.setRefCuti(cutiPegawai);
         entity.setPegawai(cutiPegawai.getPegawai());
@@ -59,8 +59,6 @@ public class CutiPengajuanKlaimRequest {
         entity.setJenisPengajuanCuti(EJenisPengajuanCuti.KLAIM_CUTI);
         entity.setJenisCuti(cutiPegawai.getJenisCuti());
         entity.setSubJenisCuti(cutiPegawai.getSubJenisCuti());
-        entity.setTanggalMulai(cutiPegawai.getTanggalMulai());
-        entity.setTanggalSelesai(cutiPegawai.getTanggalSelesai());
         entity.setAlasan(request.getKeterangan());
         entity.setApprovalCutiStatus(EApprovalCutiStatus.PENDING);
         entity.setApprovalLevel(1);

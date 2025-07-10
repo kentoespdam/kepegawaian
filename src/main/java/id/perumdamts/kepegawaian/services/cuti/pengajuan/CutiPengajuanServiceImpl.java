@@ -192,11 +192,16 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
     }
 
     @Override
-    public SavedStatus<?> klaim(CutiPengajuanKlaimRequest request) {
+    public SavedStatus<?> klaim(CutiPengajuanKlaimPostRequest request) {
 //        if (redisHelper.validateToken(request.getCsrfToken())) {
 //            return SavedStatus.build(ESaveStatus.DUPLICATE, "Duplicate request detected");
 //        }
         return klaimCutiService.save(request);
+    }
+
+    @Override
+    public SavedStatus<?> updateKlaim(Long id, CutiPengajuanKlaimPostRequest request) {
+        return null;
     }
 
     @Override

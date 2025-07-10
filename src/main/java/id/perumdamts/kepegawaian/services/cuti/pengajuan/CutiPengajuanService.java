@@ -15,7 +15,9 @@ public interface CutiPengajuanService {
 
     SavedStatus<?> update(Long id, CutiPengajuanPutRequest request);
 
-    SavedStatus<?> klaim(CutiPengajuanKlaimRequest request);
+    SavedStatus<?> klaim(CutiPengajuanKlaimPostRequest request);
+
+    SavedStatus<?> updateKlaim(Long id, CutiPengajuanKlaimPostRequest request);
 
     SavedStatus<?> pembatalan(Long id);
 
