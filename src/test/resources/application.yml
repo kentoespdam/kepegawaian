@@ -88,3 +88,6 @@ custom:
     tahunan: ${JENIS_CUTI_TAHUNAN:1}
     besar: ${JENIS_CUTI_BESAR:2}
     ibadah: ${JENIS_CUTI_IBADAH:4}
+  jabatan:
+    managerSdm: ${JABATAN_MANAGER_SDM:48}
+    supervisorSdm: ${JABATAN_SUPERVISOR_SDM:49}

@@ -55,10 +55,10 @@ public class CutiPegawai extends IdsAbstract {
     private CutiJenis subJenisCuti;
     private LocalDate tanggalMulai;
     private LocalDate tanggalSelesai;
-    private Integer jumlahHari;
-    private Integer jumlahHariKerja;
-    private Integer kuotaAwal;
-    private Integer kuotaAkhir;
+    private Integer jumlahHari=0;
+    private Integer jumlahHariKerja=0;
+    private Integer kuotaAwal=0;
+    private Integer kuotaAkhir=0;
     private String alasan;
     @Enumerated(EnumType.ORDINAL)
     private EApprovalCutiStatus approvalCutiStatus = EApprovalCutiStatus.PENDING;
@@ -66,10 +66,10 @@ public class CutiPegawai extends IdsAbstract {
     @ManyToOne
     @JoinColumn(name = "pic_saat_ini_id", referencedColumnName = "id")
     private Jabatan picSaatIni;
-    private Integer riwayatKuota0;
-    private Integer riwayatKuota1;
-    private Integer riwayatPakai0;
-    private Integer riwayatPakai1;
-    private Integer riwayatSisa0;
-    private Integer riwayatSisa1;
+    private Integer riwayatKuota0=0;
+    private Integer riwayatKuota1=0;
+    private Integer riwayatPakai0=0;
+    private Integer riwayatPakai1=0;
+    private Integer riwayatSisa0=0;
+    private Integer riwayatSisa1=0;
 }

@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.controllers.cuti;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
+import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanKlaimRequest;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPostRequest;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPutRequest;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanRequest;
@@ -65,6 +66,12 @@ public class CutiPengajuanController {
         if (request.getTanggalMulai().isBefore(LocalDate.now()))
             return ErrorResult.build("Pengajuan cuti tidak boleh dibuat sebelum tanggal sekarang");
         return CustomResult.save(service.update(id, request));
+    }
+
+    @PostMapping("/klaim")
+    public ResponseEntity<?> klaim(@Valid @RequestBody CutiPengajuanKlaimRequest request, Errors errors) {
+        if (errors.hasErrors()) return ErrorResult.build(errors);
+        return CustomResult.save(service.klaim(request));
     }
 
     @DeleteMapping("/{id}")

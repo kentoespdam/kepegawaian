@@ -3,10 +3,7 @@ package id.perumdamts.kepegawaian.services.cuti.pengajuan;
 import id.perumdamts.kepegawaian.config.DefConfig;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
-import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPostRequest;
-import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPutRequest;
-import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanRequest;
-import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanResponse;
+import id.perumdamts.kepegawaian.dto.cuti.pengajuan.*;
 import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
 import id.perumdamts.kepegawaian.entities.cuti.CutiJenis;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
@@ -37,6 +34,7 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
     private final PegawaiRepository pegawaiRepository;
     private final CutiJenisRepository cutiJenisRepository;
     private final ValidatePengajuanCutiService validatePengajuanCutiService;
+    private final SaveKlaimCutiService klaimCutiService;
 
     @Override
     public Page<CutiPengajuanResponse> findPage(CutiPengajuanRequest request) {
@@ -191,6 +189,14 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
         } catch (RuntimeException e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
+    }
+
+    @Override
+    public SavedStatus<?> klaim(CutiPengajuanKlaimRequest request) {
+//        if (redisHelper.validateToken(request.getCsrfToken())) {
+//            return SavedStatus.build(ESaveStatus.DUPLICATE, "Duplicate request detected");
+//        }
+        return klaimCutiService.save(request);
     }
 
     @Override

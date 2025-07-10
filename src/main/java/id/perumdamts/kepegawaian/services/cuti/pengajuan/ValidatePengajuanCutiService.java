@@ -1,16 +1,25 @@
 package id.perumdamts.kepegawaian.services.cuti.pengajuan;
 
 import id.perumdamts.kepegawaian.config.DefConfig;
+import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanKlaimRequest;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPostRequest;
+import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
+import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import id.perumdamts.kepegawaian.repositories.cuti.CutiPegawaiRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ValidatePengajuanCutiService {
     private final CutiPegawaiRepository repository;
     private final DefConfig defConfig;
+
+    @Value("${custom.jenisCuti.besar}")
+    private Long jenisCutiBesar;
 
     /**
      * Validate the leave request. This validation is done to check if the employee
@@ -58,5 +67,44 @@ public class ValidatePengajuanCutiService {
                 throw new RuntimeException("Sisa Kuota Cuti " + totalSisaKuota + " hari harus diambil semua");
             }
         }
+    }
+
+    /**
+     * Validates a leave claim request.
+     * This method checks if the employee has taken a leave, if the employee has
+     * any pending claim request, if the employee has any pending/returned cuti
+     * besar, and if the employee has any leave request that is not approved.
+     *
+     * @param request the leave claim request
+     * @return the leave that is claimed
+     * @throws RuntimeException if the employee has any pending claim request or
+     *                          if the employee has any pending/returned cuti
+     *                          besar, or if the employee has any leave request
+     *                          that is not approved.
+     */
+    public CutiPegawai validateKlaim(CutiPengajuanKlaimRequest request) {
+        // cek apakah cuti ini sudah disetujui
+        CutiPegawai cutiPegawai = repository.findByIdAndApprovalCutiStatus(
+                request.getRefCutiId(), EApprovalCutiStatus.APPROVED
+        ).orElseThrow(() -> new RuntimeException("Unknown Cuti Pegawai"));
+
+        // Check if the employee has any pending claim request
+        boolean exists = repository.exists(request.getSpecification());
+        if (exists) {
+            throw new RuntimeException("Pengajuan Klaim Cuti ini sudah ada");
+        }
+
+        // check if the employee has any pending/returned cuti besar
+        boolean existCutiIbadah = repository.existsByPegawai_IdAndJenisCuti_IdAndApprovalCutiStatusIn(
+                request.getPegawaiId(),
+                jenisCutiBesar,
+                List.of(EApprovalCutiStatus.PENDING,
+                        EApprovalCutiStatus.RETURNED)
+        );
+        if (existCutiIbadah) {
+            throw new RuntimeException("Klaim cuti tidak dapat diproses karena masih ada pengajuan cuti melaksanakan ibadah yang masih berlangsung");
+        }
+
+        return cutiPegawai;
     }
 }

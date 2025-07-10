@@ -1,10 +1,7 @@
 package id.perumdamts.kepegawaian.services.cuti.pengajuan;
 
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
-import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPostRequest;
-import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPutRequest;
-import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanRequest;
-import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanResponse;
+import id.perumdamts.kepegawaian.dto.cuti.pengajuan.*;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
@@ -17,6 +14,8 @@ public interface CutiPengajuanService {
     SavedStatus<?> save(CutiPengajuanPostRequest request);
 
     SavedStatus<?> update(Long id, CutiPengajuanPutRequest request);
+
+    SavedStatus<?> klaim(CutiPengajuanKlaimRequest request);
 
     SavedStatus<?> pembatalan(Long id);
 
