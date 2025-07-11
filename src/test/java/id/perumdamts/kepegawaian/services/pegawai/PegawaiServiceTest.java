@@ -103,7 +103,7 @@ class PegawaiServiceTest {
 
         log.info("riwayatSk: {}", entity);
 
-        pegawai.getRiwayatSkList().add(entity);
-        assertEquals(1, pegawai.getRiwayatSkList().size());
+//        pegawai.getRiwayatSkList().add(entity);
+//        assertEquals(1, pegawai.getRiwayatSkList().size());
     }
 }

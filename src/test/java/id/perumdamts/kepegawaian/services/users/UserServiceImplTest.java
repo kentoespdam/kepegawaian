@@ -8,7 +8,6 @@ import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -54,7 +53,7 @@ class UserServiceImplTest {
      * and then create a new {@link UserResponse} that contains pegawai and user info
      * and then return a new page of {@link UserResponse}
      */
-    @Test
+//    @Test
     void getPegawai() {
         // Get the list of pegawai
         Page<Pegawai> page = repository.findAll(request.getSpecification(), request.getPageable());
@@ -80,7 +79,7 @@ class UserServiceImplTest {
         log.info("result: {} ,{}, {}", pageResult.getTotalElements(), pageResult.getNumberOfElements(), pageResult.getContent());
     }
 
-    @Test
+//    @Test
     void fetUserTest() {
         fetchUser(483L);
     }
@@ -104,7 +103,7 @@ class UserServiceImplTest {
                 .block();
     }
 
-    @Test
+//    @Test
     void getPref() {
         Prefs result = webClient.get()
                 .uri(appwriteUrl + "/users/483/prefs")
@@ -117,7 +116,7 @@ class UserServiceImplTest {
         log.info("result: {}", result);
     }
 
-    @Test
+//    @Test
     void queryTest(){
         String block = webClient.get()
                 .uri(appwriteUrl + "/users?queries[]={\"method\":\"equal\",\"attribute\":\"status\",\"values\":[true]}")

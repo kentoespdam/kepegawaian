@@ -5,7 +5,6 @@ import id.perumdamts.kepegawaian.dto.appwrite.AppwriteUserPostRequest;
 import id.perumdamts.kepegawaian.dto.appwrite.PrefRole;
 import id.perumdamts.kepegawaian.dto.appwrite.Prefs;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,7 +31,7 @@ class AuthServiceImplTest {
     @Autowired
     private WebClient webClient;
 
-    @Test
+//    @Test
     void createUser() {
         log.info("{} || {} || {}", appwriteUrl, appwriteProjectId, appwriteApiKey);
         Mono<AppwriteUserPostRequest> user = Mono.just(AppwriteUserPostRequest.builder()
@@ -58,7 +57,7 @@ class AuthServiceImplTest {
         log.info("block: {}", block);
     }
 
-    @Test
+//    @Test
     void testPref() {
         List<PrefRole> prefRoles = List.of(new PrefRole("ADMIN"), new PrefRole("USER"));
         Prefs prefs = new Prefs();

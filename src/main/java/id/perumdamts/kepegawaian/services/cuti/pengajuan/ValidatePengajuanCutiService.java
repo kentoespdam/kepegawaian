@@ -83,23 +83,22 @@ public class ValidatePengajuanCutiService {
      *                          that is not approved.
      */
     public CutiPegawai validateKlaim(CutiPengajuanKlaimPostRequest request) {
-        // cek apakah cuti ini sudah disetujui
+        // cek apakah referensi cuti ini sudah disetujui
         CutiPegawai cutiPegawai = repository.findByIdAndApprovalCutiStatus(
                 request.getRefCutiId(), EApprovalCutiStatus.APPROVED
         ).orElseThrow(() -> new RuntimeException("Unknown Cuti Pegawai"));
 
-        // Check if the employee has any pending claim request
+        // cek apakah pengajuan klaim cuti ini sudah ada
         boolean exists = repository.exists(request.getSpecification());
         if (exists) {
             throw new RuntimeException("Pengajuan Klaim Cuti ini sudah ada");
         }
 
-        // check if the employee has any pending/returned cuti besar
+        // cek apakah ada cuti melaksanakan ibadah yang masih berlangsung atau belum disetujui
         boolean existCutiIbadah = repository.existsByPegawai_IdAndJenisCuti_IdAndApprovalCutiStatusIn(
                 request.getPegawaiId(),
                 jenisCutiBesar,
-                List.of(EApprovalCutiStatus.PENDING,
-                        EApprovalCutiStatus.RETURNED)
+                List.of(EApprovalCutiStatus.PENDING, EApprovalCutiStatus.RETURNED)
         );
         if (existCutiIbadah) {
             throw new RuntimeException("Klaim cuti tidak dapat diproses karena masih ada pengajuan cuti melaksanakan ibadah yang masih berlangsung");

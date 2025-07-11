@@ -82,36 +82,23 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
 
             // CUTI TAHUNAN
             if (request.getJenisCutiId().equals(defConfig.getJenisCutiTahunan())) {
-                // pengajuan cuti tahunan untuk tahun depan
                 if (startYear > nowYear && endYear > nowYear) {
-                    System.out.println("pengajuan cuti tahunan untuk tahun depan");
+                    // pengajuan cuti tahunan untuk tahun depan
                     saveCutiService.forNextYear(request, entity);
-                }
-
-                // pengajuan cuti menyebrang tahun
-                else if (startYear == nowYear && endYear > startYear) {
-                    System.out.println("pengajuan cuti menyebrang tahun");
+                } else if (startYear == nowYear && endYear > startYear) {
+                    // pengajuan cuti menyebrang tahun
                     saveCutiService.overlappingYear(request, entity);
-                }
-
-                // pengajuan cuti antara 1jan sampai 30 juni
-                else if (request.getTanggalMulai().isAfter(DateHelper.generateDate(startYear, 1, 1).minusDays(1)) &&
+                } else if (request.getTanggalMulai().isAfter(DateHelper.generateDate(startYear, 1, 1).minusDays(1)) &&
                         request.getTanggalSelesai().isBefore(DateHelper.generateDate(startYear, 6, 30).plusDays(1))) {
-                    System.out.println("pengajuan cuti antara 1jan sampai 30 juni");
+                    // pengajuan cuti antara 1jan sampai 30 juni
                     saveCutiService.between1JanAnd30Jun(request, entity);
-                }
-
-                // pengajuan cuti antara 1 juli sampai 31 desember
-                else if (request.getTanggalMulai().isAfter(DateHelper.generateDate(startYear, 7, 1).minusDays(1)) &&
+                } else if (request.getTanggalMulai().isAfter(DateHelper.generateDate(startYear, 7, 1).minusDays(1)) &&
                         request.getTanggalSelesai().isBefore(DateHelper.generateDate(startYear, 12, 31).plusDays(1))) {
-                    System.out.println("pengajuan cuti antara 1 juli sampai 31 desember");
+                    // pengajuan cuti antara 1 juli sampai 31 desember
                     saveCutiService.between1JulAnd31Dec(request, entity);
-                }
-
-                // pengajuan cuti antara tanggal 30 juni sampai 1 juli
-                else if (request.getTanggalMulai().isBefore(DateHelper.generateDate(startYear, 6, 30).plusDays(1)) &&
+                } else if (request.getTanggalMulai().isBefore(DateHelper.generateDate(startYear, 6, 30).plusDays(1)) &&
                         request.getTanggalSelesai().isAfter(DateHelper.generateDate(startYear, 7, 1).minusDays(1))) {
-                    System.out.println("pengajuan cuti antara tanggal 30 juni sampai 1 juli");
+                    // pengajuan cuti antara tanggal 30 juni sampai 1 juli
                     saveCutiService.between30JunAnd1Jul(request, entity);
                 }
             } else {
@@ -123,6 +110,19 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
         }
     }
 
+    /**
+     * Membaharui data pengajuan cuti pegawai berdasarkan id.
+     * <p>
+     * Jika pengajuan cuti pegawai berhasil diubah, maka akan mengembalikan
+     * objek {@link SavedStatus} dengan status {@link ESaveStatus#SUCCESS}.
+     * Jika terjadi kesalahan, maka akan mengembalikan objek {@link SavedStatus}
+     * dengan status {@link ESaveStatus#FAILED} dan pesan error.
+     *
+     * @param id      id pengajuan cuti pegawai yang akan diubah
+     * @param request data pengajuan cuti yang akan diubah
+     * @return SavedStatus data
+     * @throws RuntimeException jika data pengajuan cuti tidak ditemukan
+     */
     @Override
     public SavedStatus<?> update(Long id, CutiPengajuanPutRequest request) {
         try {
@@ -149,39 +149,27 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
 
             // CUTI TAHUNAN
             if (request.getJenisCutiId().equals(defConfig.getJenisCutiTahunan())) {
-                // pengajuan cuti tahunan untuk tahun depan
                 if (startYear > nowYear && endYear > nowYear) {
-                    System.out.println("pengajuan cuti tahunan untuk tahun depan");
+                    // update cuti tahunan untuk tahun depan
                     saveCutiService.forNextYear(request, entity);
-                }
-
-                // pengajuan cuti menyebrang tahun
-                else if (startYear == nowYear && endYear > startYear) {
-                    System.out.println("pengajuan cuti menyebrang tahun");
+                } else if (startYear == nowYear && endYear > startYear) {
+                    // update cuti menyebrang tahun
                     saveCutiService.overlappingYear(request, entity);
-                }
-
-                // pengajuan cuti antara 1jan sampai 30 juni
-                else if (request.getTanggalMulai().isAfter(DateHelper.generateDate(startYear, 1, 1).minusDays(1)) &&
+                } else if (request.getTanggalMulai().isAfter(DateHelper.generateDate(startYear, 1, 1).minusDays(1)) &&
                         request.getTanggalSelesai().isBefore(DateHelper.generateDate(startYear, 6, 30).plusDays(1))) {
-                    System.out.println("pengajuan cuti antara 1jan sampai 30 juni");
+                    // update cuti antara 1jan sampai 30 juni
                     saveCutiService.between1JanAnd30Jun(request, entity);
-                }
-
-                // pengajuan cuti antara 1 juli sampai 31 desember
-                else if (request.getTanggalMulai().isAfter(DateHelper.generateDate(startYear, 7, 1).minusDays(1)) &&
+                } else if (request.getTanggalMulai().isAfter(DateHelper.generateDate(startYear, 7, 1).minusDays(1)) &&
                         request.getTanggalSelesai().isBefore(DateHelper.generateDate(startYear, 12, 31).plusDays(1))) {
-                    System.out.println("pengajuan cuti antara 1 juli sampai 31 desember");
+                    // update cuti antara 1 juli sampai 31 desember
                     saveCutiService.between1JulAnd31Dec(request, entity);
-                }
-
-                // pengajuan cuti antara tanggal 30 juni sampai 1 juli
-                else if (request.getTanggalMulai().isBefore(DateHelper.generateDate(startYear, 6, 30).plusDays(1)) &&
+                } else if (request.getTanggalMulai().isBefore(DateHelper.generateDate(startYear, 6, 30).plusDays(1)) &&
                         request.getTanggalSelesai().isAfter(DateHelper.generateDate(startYear, 7, 1).minusDays(1))) {
-                    System.out.println("pengajuan cuti antara tanggal 30 juni sampai 1 juli");
+                    // update cuti antara tanggal 30 juni sampai 1 juli
                     saveCutiService.between30JunAnd1Jul(request, entity);
                 }
             } else {
+                // update cuti non tahunan
                 saveCutiService.saveCutiNonTahunan(request, entity);
             }
 
@@ -191,29 +179,87 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
         }
     }
 
+    /**
+     * Processes a leave claim request for an employee.
+     * This method validates the CSRF token to prevent duplicate submissions
+     * and proceeds to save the leave claim request via the klaimCutiService.
+     *
+     * @param request the leave claim request data
+     * @return the status of the save operation, indicating success or duplication
+     */
     @Override
     public SavedStatus<?> klaim(CutiPengajuanKlaimPostRequest request) {
-//        if (redisHelper.validateToken(request.getCsrfToken())) {
-//            return SavedStatus.build(ESaveStatus.DUPLICATE, "Duplicate request detected");
-//        }
+        // Validate the CSRF token to prevent duplicate requests
+        if (redisHelper.validateToken(request.getCsrfToken())) {
+            // Return a duplicate status if the token is already used
+            return SavedStatus.build(ESaveStatus.DUPLICATE, "Duplicate request detected");
+        }
+        // Save the leave claim request using the klaimCutiService
         return klaimCutiService.save(request);
     }
 
+    /**
+     * Updates an existing leave claim request for an employee.
+     * This method validates the CSRF token to prevent duplicate submissions
+     * and proceeds to update the leave claim request via the klaimCutiService.
+     *
+     * @param id      the id of the leave claim request to update
+     * @param request the updated leave claim request data
+     * @return the status of the update operation, indicating success or duplication
+     */
     @Override
     public SavedStatus<?> updateKlaim(Long id, CutiPengajuanKlaimPostRequest request) {
-        return null;
+        // Validate the CSRF token to prevent duplicate submissions
+        if (redisHelper.validateToken(request.getCsrfToken())) {
+            // Return a duplicate status if the token is already used
+            return SavedStatus.build(ESaveStatus.DUPLICATE, "Duplicate request detected");
+        }
+        // Update the leave claim request using the klaimCutiService
+        return klaimCutiService.update(id, request);
     }
 
+    /**
+     * Membatalkan pengajuan cuti pegawai berdasarkan id.
+     * <p>
+     * Jika pengajuan cuti pegawai berhasil dibatalkan, maka akan mengembalikan
+     * objek {@link SavedStatus} dengan status {@link ESaveStatus#SUCCESS}.
+     * Jika terjadi kesalahan, maka akan mengembalikan objek {@link SavedStatus}
+     * dengan status {@link ESaveStatus#FAILED} dan pesan error.
+     *
+     * @param id id pengajuan cuti pegawai yang akan dibatalkan
+     * @return SavedStatus data
+     * @throws RuntimeException jika data pengajuan cuti tidak ditemukan
+     */
     @Override
     public SavedStatus<?> pembatalan(Long id) {
+        // Find the leave request by id and approval status PENDING
         Optional<CutiPegawai> entity = repository.findByIdAndApprovalCutiStatus(id, EApprovalCutiStatus.PENDING);
-        if (entity.isEmpty())
+        if (entity.isEmpty()) {
+            // Return a failed status if the leave request is not found
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Cuti Pegawai");
+        }
+
+        // Set the approval status to CANCELED
         entity.get().setApprovalCutiStatus(EApprovalCutiStatus.CANCELED);
+
+        // Save the updated leave request
         repository.save(entity.get());
+
+        // Return a success status
         return SavedStatus.build(ESaveStatus.SUCCESS, "Cuti Pengajuan berhasil dibatalkan");
     }
 
+    /**
+     * Finds the total number of working days between the given start and end dates.
+     * <p>
+     * This method counts the number of weekdays (Monday to Friday) between the given
+     * start and end dates, and subtracts the number of holidays that fall within
+     * the given date range.
+     *
+     * @param tanggalMulai   the start date of the period
+     * @param tanggalSelesai the end date of the period
+     * @return the total number of working days
+     */
     @Override
     public Integer findTotalHariKerja(LocalDate tanggalMulai, LocalDate tanggalSelesai) {
         int totalDays = DateHelper.countWeekdaysBetween(tanggalMulai, tanggalSelesai);

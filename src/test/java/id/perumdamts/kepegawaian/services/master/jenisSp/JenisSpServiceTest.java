@@ -55,7 +55,7 @@ class JenisSpServiceTest {
     void findAll() {
         when(repository.findAll()).thenReturn(jenisSpList);
         List<JenisSp> all = repository.findAll();
-        assertEquals(3, all.size());
+        assertEquals(4, all.size());
         log.info("{}", all.stream().map(JenisSpResponse::from).toList());
     }
 

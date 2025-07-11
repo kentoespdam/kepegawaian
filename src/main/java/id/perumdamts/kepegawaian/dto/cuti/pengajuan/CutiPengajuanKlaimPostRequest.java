@@ -5,6 +5,7 @@ import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
 import id.perumdamts.kepegawaian.entities.commons.EJenisPengajuanCuti;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -15,9 +16,9 @@ import java.util.List;
 
 @Data
 public class CutiPengajuanKlaimPostRequest {
-//    @NotNull(message = "CSRF token is required")
-//    @NotBlank(message = "CSRF token is required")
-//    private String csrfToken;
+    @NotNull(message = "CSRF token is required")
+    @NotBlank(message = "CSRF token is required")
+    private String csrfToken;
     @NotNull(message = "Referensi Cuti is required")
     @Min(value = 1, message = "Referensi Cuti is required")
     private Long refCutiId;
