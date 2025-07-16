@@ -42,6 +42,7 @@ public class CutiPengajuanMiniResponse {
     private JabatanMiniResponse picSaatIni;
 
     public static CutiPengajuanMiniResponse from(CutiPegawai entity) {
+        if (Objects.isNull(entity)) return null;
         CutiPengajuanMiniResponse response = new CutiPengajuanMiniResponse();
         response.setId(entity.getId());
         response.setPegawaiId(entity.getPegawai().getId());
@@ -54,8 +55,7 @@ public class CutiPengajuanMiniResponse {
         response.setApprovalCutiStatus(entity.getApprovalCutiStatus());
         response.setApprovalLevel(entity.getApprovalLevel());
         response.setJenisCuti(JenisCutiResponse.from(entity.getJenisCuti()));
-        if (Objects.nonNull(entity.getSubJenisCuti()))
-            response.setSubJenisCuti(JenisCutiResponse.from(entity.getSubJenisCuti()));
+        response.setSubJenisCuti(JenisCutiResponse.from(entity.getSubJenisCuti()));
         response.setTanggalMulai(entity.getTanggalMulai());
         response.setTanggalSelesai(entity.getTanggalSelesai());
         response.setAlasan(entity.getAlasan());

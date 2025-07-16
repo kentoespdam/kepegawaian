@@ -86,19 +86,6 @@ public class CutiPengajuanPostRequest {
         };
     }
 
-    @JsonIgnore
-    public Specification<CutiPegawai> getPendingKlaimSpecification() {
-        return (root, query, criteriaBuilder) -> {
-            Expression<LocalDate> tanggalExpression = root.get("tanggalMulai");
-            Expression<Integer> yearExpression = criteriaBuilder.function("YEAR", Integer.class, tanggalExpression);
-            return criteriaBuilder.and(
-                    criteriaBuilder.equal(root.get("pegawai").get("id"), pegawaiId),
-                    criteriaBuilder.equal(yearExpression, tanggalMulai.getYear()),
-                    criteriaBuilder.equal(root.get("approvalCutiStatus"), EApprovalCutiStatus.PENDING)
-            );
-        };
-    }
-
     public static CutiPegawai toEntity(CutiPengajuanPostRequest request, Pegawai pegawai, CutiJenis cutiJenis, CutiJenis subJenisCuti) {
         CutiPegawai entity = new CutiPegawai();
         entity.setPegawai(pegawai);
@@ -115,30 +102,6 @@ public class CutiPengajuanPostRequest {
         entity.setAlasan(request.getAlasan());
         entity.setApprovalCutiStatus(EApprovalCutiStatus.PENDING);
         entity.setApprovalLevel(1);
-        entity.setPicSaatIni(pegawai.getJabatan().getParent());
         return entity;
     }
-
-//    public static CutiPegawai toEntity(CutiPengajuanPostRequest request, int totalKuota, Pegawai pegawai, CutiJenis jenisCuti, Jabatan picSaatIni, @Nullable CutiJenis subJenisCuti) {
-//        CutiPegawai result = new CutiPegawai();
-//        result.setPegawai(pegawai);
-//        result.setNama(pegawai.getBiodata().getNama());
-//        result.setNipam(pegawai.getNipam());
-//        result.setOrganisasi(pegawai.getOrganisasi());
-//        result.setJabatan(pegawai.getJabatan());
-//        result.setJenisPengajuanCuti(EJenisPengajuanCuti.PENGAJUAN_CUTI);
-//        result.setJenisCuti(jenisCuti);
-//        result.setSubJenisCuti(subJenisCuti);
-//        result.setTanggalMulai(request.getTanggalMulai());
-//        result.setTanggalSelesai(request.getTanggalSelesai());
-//        result.setJumlahHariKerja(request.getJumlahHariKerja());
-//        result.setKuotaAwal(totalKuota);
-//        result.setKuotaAkhir(totalKuota - request.getJumlahHariKerja());
-//        result.setAlasan(request.getAlasan());
-//        result.setApprovalCutiStatus(EApprovalCutiStatus.PENDING);
-//        result.setApprovalLevel(1);
-//        result.setPicSaatIni(picSaatIni);
-//        return result;
-//    }
-
 }

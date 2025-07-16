@@ -89,5 +89,15 @@ custom:
     besar: ${JENIS_CUTI_BESAR:2}
     ibadah: ${JENIS_CUTI_IBADAH:4}
   jabatan:
+    direkturUtama: ${JABATAN_DIREKTUR_UTAMA:2}
+    direkturTeknik: ${JABATAN_DIREKTUR_TEKNIK:3}
+    direkturUmum: ${JABATAN_DIREKTUR_UMUM:25}
     managerSdm: ${JABATAN_MANAGER_SDM:48}
     supervisorSdm: ${JABATAN_SUPERVISOR_SDM:49}
+  levelJabatan:
+    direkturUtama: ${LEVEL_DIREKTUR_UTAMA:2}
+    direkturTeknik: ${LEVEL_DIREKTUR_TEKNIK:3}
+    direkturUmum: ${LEVEL_DIREKTUR_UMUM:4}
+    manager: ${LEVEL_MANAGER:5}
+    supervisor: ${LEVEL_SUPERVISOR:6}
+    staff: ${LEVEL_STAFF:7}

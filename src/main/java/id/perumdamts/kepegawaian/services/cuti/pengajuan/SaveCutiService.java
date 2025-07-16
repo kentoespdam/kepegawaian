@@ -4,11 +4,14 @@ import id.perumdamts.kepegawaian.config.DefConfig;
 import id.perumdamts.kepegawaian.dto.cuti.kuota.SisaCutiRecord;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPostRequest;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
+import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.helpers.DateHelper;
 import id.perumdamts.kepegawaian.repositories.cuti.CutiKuotaRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.CutiPegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.master.HariLiburRepository;
+import id.perumdamts.kepegawaian.repositories.master.JabatanRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -20,7 +23,14 @@ public class SaveCutiService {
     private final ValidatePengajuanCutiService validatePengajuanCutiService;
     private final CutiKuotaRepository cutiKuotaRepository;
     private final HariLiburRepository hariLiburRepository;
+    private final JabatanRepository jabatanRepository;
     private final DefConfig defConfig;
+
+    @Value("${custom.levelJabatan.manager}")
+    private Long levelManager;
+
+    @Value("${custom.jabatan.supervisorSdm}")
+    private Long supervisorSdmId;
 
     /**
      * Pengajuan cuti untuk tahun depan.
@@ -32,16 +42,18 @@ public class SaveCutiService {
      * @param request the leave request containing details such as employee ID, leave type,
      *                start and end dates, and sub-type of leave.
      * @param entity  the entity containing the leave information.
+     * @return CutiPegawai
      * @throws RuntimeException if the employee or leave type is unknown, or if leave quotas
      *                          are insufficient for the requested leave period.
      */
-    public void forNextYear(CutiPengajuanPostRequest request, CutiPegawai entity) {
+    public CutiPegawai forNextYear(CutiPengajuanPostRequest request, CutiPegawai entity) {
         int totalDays = entity.getJumlahHariKerja();
 
         int currentYear = request.getTanggalMulai().getYear() - 1;
         int nextYear = request.getTanggalSelesai().getYear();
         this.separateCutiWithNextYear(entity, currentYear, nextYear, request.getPegawaiId(), totalDays);
-        repository.save(entity);
+        setPic(entity);
+        return repository.save(entity);
     }
 
     /**
@@ -54,9 +66,10 @@ public class SaveCutiService {
      *
      * @param request the leave request containing employee ID, leave type, start and end dates, and sub-type of leave.
      * @param entity  the entity containing the leave information.
+     * @return CutiPegawai
      * @throws RuntimeException if the employee or leave type is unknown, or if leave quotas are insufficient.
      */
-    public void overlappingYear(CutiPengajuanPostRequest request, CutiPegawai entity) {
+    public CutiPegawai overlappingYear(CutiPengajuanPostRequest request, CutiPegawai entity) {
         // total cuti yang diambil
         int totalDays = entity.getJumlahHariKerja();
 
@@ -65,7 +78,8 @@ public class SaveCutiService {
         int nextYear = request.getTanggalSelesai().getYear();
 
         this.separateCutiWithNextYear(entity, currentYear, nextYear, request.getPegawaiId(), totalDays);
-        repository.save(entity);
+        setPic(entity);
+        return repository.save(entity);
     }
 
     /**
@@ -78,10 +92,11 @@ public class SaveCutiService {
      * @param request the leave request containing details such as employee ID, leave type,
      *                start and end dates, and sub-type of leave.
      * @param entity  the entity containing the leave information.
+     * @return CutiPegawai
      * @throws RuntimeException if the employee or leave type is unknown, or if leave quotas
      *                          are insufficient for the requested leave period.
      */
-    public void between1JanAnd30Jun(CutiPengajuanPostRequest request, CutiPegawai entity) {
+    public CutiPegawai between1JanAnd30Jun(CutiPengajuanPostRequest request, CutiPegawai entity) {
         // total cuti yang diambil
         int totalDays = entity.getJumlahHariKerja();
 
@@ -90,8 +105,9 @@ public class SaveCutiService {
         int currentYear = request.getTanggalMulai().getYear();
 
         this.separateCutiWithPreviousYear(entity, prevYear, currentYear, request.getPegawaiId(), totalDays, request.getTanggalSelesai());
+        setPic(entity);
         // simpan cuti
-        repository.save(entity);
+        return repository.save(entity);
     }
 
     /**
@@ -103,10 +119,11 @@ public class SaveCutiService {
      * @param request the leave request containing details such as employee ID, leave type,
      *                start and end dates, and sub-type of leave.
      * @param entity  the entity containing the leave information.
+     * @return CutiPegawai
      * @throws RuntimeException if the employee or leave type is unknown, or if leave quotas
      *                          are insufficient for the requested leave period.
      */
-    public void between1JulAnd31Dec(CutiPengajuanPostRequest request, CutiPegawai entity) {
+    public CutiPegawai between1JulAnd31Dec(CutiPengajuanPostRequest request, CutiPegawai entity) {
         // total cuti yang diambil
         int totalHariCuti = entity.getJumlahHariKerja();
 
@@ -135,8 +152,9 @@ public class SaveCutiService {
         entity.setRiwayatPakai0(totalHariCuti);
         entity.setRiwayatSisa0(totalRemainingQuota - totalHariCuti);
 
+        setPic(entity);
         // simpan cuti
-        repository.save(entity);
+        return repository.save(entity);
     }
 
     /**
@@ -150,9 +168,10 @@ public class SaveCutiService {
      * @param request the leave request containing details such as employee ID, leave type,
      *                start and end dates, and sub-type of leave.
      * @param entity  the entity containing the leave information.
+     * @return CutiPegawai
      * @throws RuntimeException if the leave quotas are insufficient or if required data is missing.
      */
-    public void between30JunAnd1Jul(CutiPengajuanPostRequest request, CutiPegawai entity) {
+    public CutiPegawai between30JunAnd1Jul(CutiPengajuanPostRequest request, CutiPegawai entity) {
         // total cuti yang diambil
         int totalHariCuti = entity.getJumlahHariKerja();
         int year = request.getTanggalMulai().getYear();
@@ -213,8 +232,9 @@ public class SaveCutiService {
             entity.setRiwayatSisa1(currentKuota - totalCutiJuli);
         }
 
+        setPic(entity);
         // simpan entity
-        repository.save(entity);
+        return repository.save(entity);
     }
 
     /**
@@ -378,5 +398,28 @@ public class SaveCutiService {
         // Set kuota awal dan akhir
         entity.setKuotaAwal(totalRemainingQuota);
         entity.setKuotaAkhir(totalRemainingQuota - totalDays);
+    }
+
+    /**
+     * Sets the PIC of a cuti based on the employee's level.
+     * <p>
+     * If the employee is a manager, the PIC is the supervisor of the SDM department.
+     * Otherwise, it is the parent of the employee's job title.
+     *
+     * @param cutiPegawai the cuti to set the PIC for
+     */
+    private void setPic(CutiPegawai cutiPegawai) {
+        // Get the job title of the employee
+        Jabatan jabatan = cutiPegawai.getPegawai().getJabatan();
+
+        // If the employee is a manager, set the PIC to the supervisor of the SDM department
+        if (jabatan.getLevel().getId().equals(levelManager)) {
+            // Find the supervisor of the SDM department
+            // Set the PIC of the cuti to the supervisor of the SDM department
+            jabatanRepository.findById(supervisorSdmId).ifPresent(cutiPegawai::setPicSaatIni);
+        } else {
+            // Set the PIC of the cuti to the parent of the employee's job title
+            cutiPegawai.setPicSaatIni(jabatan.getParent());
+        }
     }
 }

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class PageResult<T> implements Serializable {
-    private Integer status;
+    private Integer status = HttpStatus.OK.value();
     private HttpStatus statusText = HttpStatus.OK;
     private T data;
     @JsonSerialize(using = LocalDateTimeSerializer.class)

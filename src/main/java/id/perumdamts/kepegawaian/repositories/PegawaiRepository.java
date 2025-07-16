@@ -19,4 +19,5 @@ public interface PegawaiRepository extends JpaRepository<Pegawai, Long>,
     Optional<Pegawai> findOneByNipam(String nipam);
 
     List<PegawaiIdNipam> findByStatusKerjaInAndStatusPegawai(List<EStatusKerja> dirumahkan, EStatusPegawai eStatusPegawai);
+
 }

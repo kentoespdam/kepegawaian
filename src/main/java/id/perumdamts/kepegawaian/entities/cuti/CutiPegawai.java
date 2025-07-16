@@ -12,6 +12,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
@@ -46,6 +48,7 @@ public class CutiPegawai extends IdsAbstract {
     private EJenisPengajuanCuti jenisPengajuanCuti;
     @ManyToOne
     @JoinColumn(name = "ref_cuti_id", referencedColumnName = "id")
+    @NotFound(action = NotFoundAction.IGNORE)
     private CutiPegawai refCuti;
     @ManyToOne
     @JoinColumn(name = "jenis_cuti_id", referencedColumnName = "id")
@@ -55,10 +58,10 @@ public class CutiPegawai extends IdsAbstract {
     private CutiJenis subJenisCuti;
     private LocalDate tanggalMulai;
     private LocalDate tanggalSelesai;
-    private Integer jumlahHari=0;
-    private Integer jumlahHariKerja=0;
-    private Integer kuotaAwal=0;
-    private Integer kuotaAkhir=0;
+    private Integer jumlahHari = 0;
+    private Integer jumlahHariKerja = 0;
+    private Integer kuotaAwal = 0;
+    private Integer kuotaAkhir = 0;
     private String alasan;
     @Enumerated(EnumType.ORDINAL)
     private EApprovalCutiStatus approvalCutiStatus = EApprovalCutiStatus.PENDING;
@@ -66,10 +69,48 @@ public class CutiPegawai extends IdsAbstract {
     @ManyToOne
     @JoinColumn(name = "pic_saat_ini_id", referencedColumnName = "id")
     private Jabatan picSaatIni;
-    private Integer riwayatKuota0=0;
-    private Integer riwayatKuota1=0;
-    private Integer riwayatPakai0=0;
-    private Integer riwayatPakai1=0;
-    private Integer riwayatSisa0=0;
-    private Integer riwayatSisa1=0;
+    private Integer riwayatKuota0 = 0;
+    private Integer riwayatKuota1 = 0;
+    private Integer riwayatPakai0 = 0;
+    private Integer riwayatPakai1 = 0;
+    private Integer riwayatSisa0 = 0;
+    private Integer riwayatSisa1 = 0;
+
+    @Override
+    public String toString() {
+        return "CutiPegawai{" +
+                "pegawai=Pegawai( id=" + pegawai.getId() +
+                ", nipam='" + pegawai.getNipam() + '\'' +
+                ", nama='" + pegawai.getBiodata().getNama() + '\'' +
+                ", jabatan= Jabatan( id=" + pegawai.getJabatan().getId() +
+                ", nama='" + pegawai.getJabatan().getNama() + '\'' +
+                ")) " +
+                ", nipam='" + nipam + '\'' +
+                ", nama='" + nama + '\'' +
+                ", organisasi=Organisasi( id=" + organisasi.getId() +
+                "', nama='" + organisasi.getNama()
+                + "')" +
+                ", jabatan=Jabatan( id=" + jabatan.getId() + ", nama='" + jabatan.getNama() + "')" +
+                ", jenisPengajuanCuti=" + jenisPengajuanCuti +
+                ", refCuti=" + refCuti +
+                ", jenisCuti=" + jenisCuti +
+                ", subJenisCuti=" + subJenisCuti +
+                ", tanggalMulai=" + tanggalMulai +
+                ", tanggalSelesai=" + tanggalSelesai +
+                ", jumlahHari=" + jumlahHari +
+                ", jumlahHariKerja=" + jumlahHariKerja +
+                ", kuotaAwal=" + kuotaAwal +
+                ", kuotaAkhir=" + kuotaAkhir +
+                ", alasan='" + alasan + '\'' +
+                ", approvalCutiStatus=" + approvalCutiStatus +
+                ", approvalLevel=" + approvalLevel +
+                ", picSaatIni=" + picSaatIni +
+                ", riwayatKuota0=" + riwayatKuota0 +
+                ", riwayatKuota1=" + riwayatKuota1 +
+                ", riwayatPakai0=" + riwayatPakai0 +
+                ", riwayatPakai1=" + riwayatPakai1 +
+                ", riwayatSisa0=" + riwayatSisa0 +
+                ", riwayatSisa1=" + riwayatSisa1 +
+                '}';
+    }
 }

@@ -17,4 +17,6 @@ public interface CutiPegawaiRepository extends JpaRepository<CutiPegawai, Long>,
     Optional<CutiPegawai> findByIdAndApprovalCutiStatus(Long id, EApprovalCutiStatus eApprovalCutiStatus);
 
     boolean existsByPegawai_IdAndJenisCuti_IdAndApprovalCutiStatusIn(@NotNull(message = "Pegawai is required") @Min(value = 1, message = "Pegawai is required") Long pegawaiId, @NotNull(message = "Jenis Cuti is required") @Min(value = 1, message = "Jenis Cuti is required") Long jenisCutiId, List<EApprovalCutiStatus> approvalStatus);
+
+    Optional<CutiPegawai> findByIdAndApprovalCutiStatusIn(@NotNull(message = "Cuti is required") @Min(value = 1, message = "Cuti is required") Long cutiId, List<EApprovalCutiStatus> eApprovalCutiStatus);
 }

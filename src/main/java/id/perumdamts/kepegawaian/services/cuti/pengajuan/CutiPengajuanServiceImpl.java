@@ -14,8 +14,10 @@ import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.CutiJenisRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.CutiPegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.master.HariLiburRepository;
+import id.perumdamts.kepegawaian.services.cuti.approvalChain.CutiApprovalChainService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -33,8 +35,12 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
     private final HariLiburRepository hariLiburRepository;
     private final PegawaiRepository pegawaiRepository;
     private final CutiJenisRepository cutiJenisRepository;
-    private final ValidatePengajuanCutiService validatePengajuanCutiService;
+    private final CutiApprovalChainService cutiApprovalChainService;
     private final SaveKlaimCutiService klaimCutiService;
+    private final ValidatePengajuanCutiService validatePengajuanCutiService;
+
+    @Value("${custom.jabatan.supervisorSdm}")
+    private Long supervisorSdm;
 
     @Override
     public Page<CutiPengajuanResponse> findPage(CutiPengajuanRequest request) {
@@ -70,8 +76,10 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
                     .orElse(null);
 
             int nowYear = LocalDate.now().getYear();
-            int startYear = request.getTanggalMulai().getYear();
-            int endYear = request.getTanggalSelesai().getYear();
+            LocalDate tanggalMulai = request.getTanggalMulai();
+            LocalDate tanggalSelesai = request.getTanggalSelesai();
+            int startYear = tanggalMulai.getYear();
+            int endYear = tanggalSelesai.getYear();
 
             int totalDays = DateHelper.countWeekdaysBetween(request.getTanggalMulai(), request.getTanggalSelesai());
             int totalHariCuti = totalDays - hariLiburRepository.countByTanggalBetween(request.getTanggalMulai(), request.getTanggalSelesai());
@@ -82,25 +90,25 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
 
             // CUTI TAHUNAN
             if (request.getJenisCutiId().equals(defConfig.getJenisCutiTahunan())) {
+                CutiPegawai cutiPegawai = null;
                 if (startYear > nowYear && endYear > nowYear) {
                     // pengajuan cuti tahunan untuk tahun depan
-                    saveCutiService.forNextYear(request, entity);
+                    cutiPegawai = saveCutiService.forNextYear(request, entity);
                 } else if (startYear == nowYear && endYear > startYear) {
                     // pengajuan cuti menyebrang tahun
-                    saveCutiService.overlappingYear(request, entity);
-                } else if (request.getTanggalMulai().isAfter(DateHelper.generateDate(startYear, 1, 1).minusDays(1)) &&
-                        request.getTanggalSelesai().isBefore(DateHelper.generateDate(startYear, 6, 30).plusDays(1))) {
+                    cutiPegawai = saveCutiService.overlappingYear(request, entity);
+                } else if (DateHelper.isBetweenDates(tanggalMulai, tanggalSelesai, startYear, 1, 6, 30)) {
                     // pengajuan cuti antara 1jan sampai 30 juni
-                    saveCutiService.between1JanAnd30Jun(request, entity);
-                } else if (request.getTanggalMulai().isAfter(DateHelper.generateDate(startYear, 7, 1).minusDays(1)) &&
-                        request.getTanggalSelesai().isBefore(DateHelper.generateDate(startYear, 12, 31).plusDays(1))) {
+                    cutiPegawai = saveCutiService.between1JanAnd30Jun(request, entity);
+                } else if (DateHelper.isBetweenDates(tanggalMulai, tanggalSelesai, startYear, 7, 12, 31)) {
                     // pengajuan cuti antara 1 juli sampai 31 desember
-                    saveCutiService.between1JulAnd31Dec(request, entity);
-                } else if (request.getTanggalMulai().isBefore(DateHelper.generateDate(startYear, 6, 30).plusDays(1)) &&
-                        request.getTanggalSelesai().isAfter(DateHelper.generateDate(startYear, 7, 1).minusDays(1))) {
+                    cutiPegawai = saveCutiService.between1JulAnd31Dec(request, entity);
+                } else if (DateHelper.isOverlappingDates(tanggalMulai, tanggalSelesai, startYear)) {
                     // pengajuan cuti antara tanggal 30 juni sampai 1 juli
-                    saveCutiService.between30JunAnd1Jul(request, entity);
+                    cutiPegawai = saveCutiService.between30JunAnd1Jul(request, entity);
                 }
+
+                cutiApprovalChainService.generateApprovalChain(cutiPegawai);
             } else {
                 saveCutiService.saveCutiNonTahunan(request, entity);
             }
@@ -137,8 +145,10 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
                     .orElse(null);
 
             int nowYear = LocalDate.now().getYear();
-            int startYear = request.getTanggalMulai().getYear();
-            int endYear = request.getTanggalSelesai().getYear();
+            LocalDate tanggalMulai = request.getTanggalMulai();
+            LocalDate tanggalSelesai = request.getTanggalSelesai();
+            int startYear = tanggalMulai.getYear();
+            int endYear = tanggalSelesai.getYear();
 
             int totalDays = DateHelper.countWeekdaysBetween(request.getTanggalMulai(), request.getTanggalSelesai());
             int totalHariCuti = totalDays - hariLiburRepository.countByTanggalBetween(request.getTanggalMulai(), request.getTanggalSelesai());
@@ -155,16 +165,13 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
                 } else if (startYear == nowYear && endYear > startYear) {
                     // update cuti menyebrang tahun
                     saveCutiService.overlappingYear(request, entity);
-                } else if (request.getTanggalMulai().isAfter(DateHelper.generateDate(startYear, 1, 1).minusDays(1)) &&
-                        request.getTanggalSelesai().isBefore(DateHelper.generateDate(startYear, 6, 30).plusDays(1))) {
+                } else if (DateHelper.isBetweenDates(tanggalMulai, tanggalSelesai, startYear, 1, 6, 30)) {
                     // update cuti antara 1jan sampai 30 juni
                     saveCutiService.between1JanAnd30Jun(request, entity);
-                } else if (request.getTanggalMulai().isAfter(DateHelper.generateDate(startYear, 7, 1).minusDays(1)) &&
-                        request.getTanggalSelesai().isBefore(DateHelper.generateDate(startYear, 12, 31).plusDays(1))) {
+                } else if (DateHelper.isBetweenDates(tanggalMulai, tanggalSelesai, startYear, 7, 12, 31)) {
                     // update cuti antara 1 juli sampai 31 desember
                     saveCutiService.between1JulAnd31Dec(request, entity);
-                } else if (request.getTanggalMulai().isBefore(DateHelper.generateDate(startYear, 6, 30).plusDays(1)) &&
-                        request.getTanggalSelesai().isAfter(DateHelper.generateDate(startYear, 7, 1).minusDays(1))) {
+                } else if (DateHelper.isOverlappingDates(tanggalMulai, tanggalSelesai, startYear)) {
                     // update cuti antara tanggal 30 juni sampai 1 juli
                     saveCutiService.between30JunAnd1Jul(request, entity);
                 }

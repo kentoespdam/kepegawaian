@@ -21,7 +21,7 @@ import org.hibernate.envers.Audited;
 @Audited
 @EqualsAndHashCode(callSuper = true)
 @SQLDelete(sql = "UPDATE cuti_pegawai SET is_deleted = true where id = ?")
-@SQLRestriction("WHERE is_deleted = false")
+@SQLRestriction("is_deleted = false")
 @NoArgsConstructor
 @AllArgsConstructor
 public class CutiApproval extends IdsAbstract {
@@ -39,4 +39,22 @@ public class CutiApproval extends IdsAbstract {
     private EApprovalCutiStatus approvalStatus;
     @Column(columnDefinition = "TEXT")
     private String notes;
+
+    @Override
+    public String toString() {
+        return "CutiApproval{" +
+                "cutiPegawai=" + cutiPegawai +
+                ", approver= Pegawai( " +
+                "id=" + approver.getId() +
+                ", nipam='" + approver.getNipam() + '\'' +
+                ", nama='" + approver.getBiodata().getNama() + '\'' +
+                ", jabatan= Jabatan( id=" + approver.getJabatan().getId() +
+                ", nama='" + approver.getJabatan().getNama() + '\'' +
+                ")) " +
+                ", jabatan=" + jabatan +
+                ", approvalLevel=" + approvalLevel +
+                ", approvalStatus=" + approvalStatus +
+                ", notes='" + notes + '\'' +
+                '}';
+    }
 }

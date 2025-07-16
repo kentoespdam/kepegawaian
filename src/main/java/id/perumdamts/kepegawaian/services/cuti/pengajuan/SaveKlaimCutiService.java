@@ -61,7 +61,7 @@ public class SaveKlaimCutiService {
                     .stream().map(TanggalHariLibur::getTanggal).toList();
 
             // Calculate the list of working days for the claim
-            List<LocalDate> tanggalKlaimList = DateHelper.countWorkingDays(request.getListHari(), tanggalLiburList);
+            List<LocalDate> tanggalKlaimList = DateHelper.getWorkingDays(request.getListHari(), tanggalLiburList);
             int totalHariCuti = tanggalKlaimList.size();
 
             // Calculate total remaining leave quota
@@ -115,7 +115,7 @@ public class SaveKlaimCutiService {
                     .stream().map(TanggalHariLibur::getTanggal).toList();
 
             // Calculate the list of working days for the claim
-            List<LocalDate> tanggalKlaimList = DateHelper.countWorkingDays(request.getListHari(), tanggalLiburList);
+            List<LocalDate> tanggalKlaimList = DateHelper.getWorkingDays(request.getListHari(), tanggalLiburList);
             int totalHariCuti = tanggalKlaimList.size();
 
             // Calculate the total remaining leave quota
