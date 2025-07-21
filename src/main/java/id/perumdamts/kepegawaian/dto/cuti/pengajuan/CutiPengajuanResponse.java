@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.dto.cuti.pengajuan;
 import id.perumdamts.kepegawaian.dto.cuti.jenis.JenisCutiResponse;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiMiniResponse;
+import id.perumdamts.kepegawaian.dto.pegawai.PegawaiMiniResponse;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,7 +18,7 @@ public class CutiPengajuanResponse extends CutiPengajuanMiniResponse {
     public static CutiPengajuanResponse from(CutiPegawai entity) {
         CutiPengajuanResponse response = new CutiPengajuanResponse();
         response.setId(entity.getId());
-        response.setPegawaiId(entity.getPegawai().getId());
+        response.setPegawai(PegawaiMiniResponse.from(entity.getPegawai()));
         response.setNipam(entity.getPegawai().getNipam());
         response.setNama(entity.getPegawai().getBiodata().getNama());
         response.setOrganisasi(OrganisasiMiniResponse.from(entity.getPegawai().getOrganisasi()));
