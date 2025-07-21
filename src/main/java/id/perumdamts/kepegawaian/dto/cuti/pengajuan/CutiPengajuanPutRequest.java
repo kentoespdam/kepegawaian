@@ -14,11 +14,6 @@ import java.util.Objects;
 @Data
 public class CutiPengajuanPutRequest extends CutiPengajuanPostRequest{
     public static CutiPegawai toEntity(CutiPegawai entity, CutiPengajuanPostRequest request, Pegawai pegawai, CutiJenis cutiJenis, CutiJenis subJenisCuti) {
-        entity.setPegawai(pegawai);
-        entity.setNama(pegawai.getBiodata().getNama());
-        entity.setNipam(pegawai.getNipam());
-        entity.setOrganisasi(pegawai.getOrganisasi());
-        entity.setJabatan(pegawai.getJabatan());
         entity.setJenisPengajuanCuti(EJenisPengajuanCuti.PENGAJUAN_CUTI);
         entity.setJenisCuti(cutiJenis);
         if (Objects.nonNull(subJenisCuti))

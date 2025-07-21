@@ -38,6 +38,7 @@ public class CutiPegawai extends IdsAbstract {
     private Pegawai pegawai;
     private String nipam;
     private String nama;
+    private String pangkatGolongan;
     @ManyToOne
     @JoinColumn(name = "organisasi_id", referencedColumnName = "id")
     private Organisasi organisasi;
@@ -87,6 +88,7 @@ public class CutiPegawai extends IdsAbstract {
                 ")) " +
                 ", nipam='" + nipam + '\'' +
                 ", nama='" + nama + '\'' +
+                ", pangkatGolongan='" + pangkatGolongan + '\'' +
                 ", organisasi=Organisasi( id=" + organisasi.getId() +
                 "', nama='" + organisasi.getNama()
                 + "')" +

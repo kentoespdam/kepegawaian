@@ -91,6 +91,7 @@ public class CutiPengajuanPostRequest {
         entity.setPegawai(pegawai);
         entity.setNama(pegawai.getBiodata().getNama());
         entity.setNipam(pegawai.getNipam());
+        entity.setPangkatGolongan(pegawai.getGolongan().getGolongan() + " - " + pegawai.getGolongan().getPangkat());
         entity.setOrganisasi(pegawai.getOrganisasi());
         entity.setJabatan(pegawai.getJabatan());
         entity.setJenisPengajuanCuti(EJenisPengajuanCuti.PENGAJUAN_CUTI);

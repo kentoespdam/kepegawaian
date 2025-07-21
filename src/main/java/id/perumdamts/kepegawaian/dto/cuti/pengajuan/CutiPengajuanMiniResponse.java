@@ -6,7 +6,6 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.dto.cuti.jenis.JenisCutiResponse;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiMiniResponse;
-import id.perumdamts.kepegawaian.dto.pegawai.PegawaiMiniResponse;
 import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
 import id.perumdamts.kepegawaian.entities.commons.EJenisPengajuanCuti;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
@@ -18,9 +17,10 @@ import java.util.Objects;
 @Data
 public class CutiPengajuanMiniResponse {
     private Long id;
-    private PegawaiMiniResponse pegawai;
+    private Long pegawaiId;
     private String nama;
     private String nipam;
+    private String pangkatGolongan;
     private OrganisasiMiniResponse organisasi;
     private JabatanMiniResponse jabatan;
     @JsonSerialize(using = LocalDateSerializer.class)
@@ -46,9 +46,10 @@ public class CutiPengajuanMiniResponse {
         if (Objects.isNull(entity)) return null;
         CutiPengajuanMiniResponse response = new CutiPengajuanMiniResponse();
         response.setId(entity.getId());
-        response.setPegawai(PegawaiMiniResponse.from(entity.getPegawai()));
+        response.setPegawaiId(entity.getPegawai().getId());
         response.setNipam(entity.getPegawai().getNipam());
         response.setNama(entity.getPegawai().getBiodata().getNama());
+        response.setPangkatGolongan(entity.getPangkatGolongan());
         response.setOrganisasi(OrganisasiMiniResponse.from(entity.getPegawai().getOrganisasi()));
         response.setJabatan(JabatanMiniResponse.from(entity.getPegawai().getJabatan()));
         response.setTanggalPengajuan(entity.getCreatedAt().toLocalDate());
