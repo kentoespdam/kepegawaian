@@ -77,6 +77,10 @@ public class CutiPegawai extends IdsAbstract {
     private Integer riwayatSisa0 = 0;
     private Integer riwayatSisa1 = 0;
 
+    public CutiPegawai(long id) {
+        super(id);
+    }
+
     @Override
     public String toString() {
         return "CutiPegawai{" +

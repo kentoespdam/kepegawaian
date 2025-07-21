@@ -89,7 +89,7 @@ public class CutiApprovalChainServiceImpl implements CutiApprovalChainService {
     ) {
         jabatanRepository.findById(jabatanId)
                 .map(jabatan -> new CutiApprovalChain(
-                        cutiPegawai.getId(),
+                        cutiPegawai,
                         jabatan.getId(),
                         jabatan.getNama(),
                         sequence
@@ -116,8 +116,8 @@ public class CutiApprovalChainServiceImpl implements CutiApprovalChainService {
         Jabatan supervisor = cutiPegawai.getJabatan().getParent();
         Jabatan manager = supervisor.getParent();
 
-        approvalChain.add(new CutiApprovalChain(cutiPegawai.getId(), supervisor.getId(), supervisor.getNama(), 1));
-        approvalChain.add(new CutiApprovalChain(cutiPegawai.getId(), manager.getId(), manager.getNama(), 2));
+        approvalChain.add(new CutiApprovalChain(cutiPegawai, supervisor.getId(), supervisor.getNama(), 1));
+        approvalChain.add(new CutiApprovalChain(cutiPegawai, manager.getId(), manager.getNama(), 2));
 
         addApprovalChainIfJabatanExists(approvalChain, cutiPegawai, supervisorSdm, 3);
         addApprovalChainIfJabatanExists(approvalChain, cutiPegawai, managerSdm, 4);
@@ -144,7 +144,7 @@ public class CutiApprovalChainServiceImpl implements CutiApprovalChainService {
         List<CutiApprovalChain> approvalChain = new ArrayList<>();
 
         Jabatan manager = cutiPegawai.getJabatan().getParent();
-        approvalChain.add(new CutiApprovalChain(cutiPegawai.getId(), manager.getId(), manager.getNama(), 1));
+        approvalChain.add(new CutiApprovalChain(cutiPegawai, manager.getId(), manager.getNama(), 1));
 
         addApprovalChainIfJabatanExists(approvalChain, cutiPegawai, supervisorSdm, 2);
         addApprovalChainIfJabatanExists(approvalChain, cutiPegawai, managerSdm, 3);

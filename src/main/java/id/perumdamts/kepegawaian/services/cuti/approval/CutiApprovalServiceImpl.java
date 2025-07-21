@@ -84,6 +84,7 @@ public class CutiApprovalServiceImpl implements CutiApprovalService {
             Pegawai approver = pegawaiRepository.findById(request.getApproverId())
                     .orElseThrow(() -> new RuntimeException("Unknown Approver Pegawai"));
 
+            log.info("approver: {}, pic: {}", approver.getJabatan().getId(), cutiPegawai.getPicSaatIni().getId());
             // cek jabatan approver sama dengan jabatan request
             if (!approver.getJabatan().getId().equals(supervisorSdmId)
                     && !approver.getJabatan().getId().equals(cutiPegawai.getPicSaatIni().getId())

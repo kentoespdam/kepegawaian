@@ -5,20 +5,24 @@ import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.*;
 import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
+import id.perumdamts.kepegawaian.entities.cuti.CutiApprovalChain;
 import id.perumdamts.kepegawaian.entities.cuti.CutiJenis;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.helpers.DateHelper;
 import id.perumdamts.kepegawaian.helpers.RedisHelper;
 import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
+import id.perumdamts.kepegawaian.repositories.cuti.CutiApprovalChainRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.CutiJenisRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.CutiPegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.master.HariLiburRepository;
 import id.perumdamts.kepegawaian.services.cuti.approvalChain.CutiApprovalChainService;
+import jakarta.persistence.criteria.Expression;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -37,6 +41,7 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
     private final CutiJenisRepository cutiJenisRepository;
     private final CutiApprovalChainService cutiApprovalChainService;
     private final SaveKlaimCutiService klaimCutiService;
+    private final CutiApprovalChainRepository cutiApprovalChainRepository;
     private final ValidatePengajuanCutiService validatePengajuanCutiService;
 
     @Value("${custom.jabatan.supervisorSdm}")
@@ -44,6 +49,26 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
 
     @Override
     public Page<CutiPengajuanResponse> findPage(CutiPengajuanRequest request) {
+        if (request.getPicSaatIniId().equals(supervisorSdm)) {
+            Specification<CutiApprovalChain> spec = (root, query, cb) -> {
+                Expression<Integer> approvalLevel = root.get("refCuti").get("approvalLevel");
+                Expression<LocalDate> createdAtPengajuanExpression = root.get("refCuti").get("createdAt");
+                Expression<Integer> createdAtPengajuan = cb.function("YEAR", Integer.class, createdAtPengajuanExpression);
+                Expression<LocalDate> tanggalPengajuanExpression = root.get("refCuti").get("tanggalMulai");
+                Expression<Integer> tahunPengajuan = cb.function("YEAR", Integer.class, tanggalPengajuanExpression);
+                return cb.and(
+                        cb.equal(root.get("refCuti").get("approvalCutiStatus"), request.getApprovalCutiStatus()),
+                        cb.equal(root.get("jabatanId"), request.getPicSaatIniId()),
+                        cb.greaterThanOrEqualTo(root.get("approvalLevel"), approvalLevel),
+                        cb.or(
+                                cb.equal(createdAtPengajuan, request.getTahun()),
+                                cb.equal(tahunPengajuan, request.getTahun())
+                        )
+                );
+            };
+            return cutiApprovalChainRepository.findAll(spec, request.getPageable())
+                    .map(chain -> CutiPengajuanResponse.from(chain.getRefCuti()));
+        }
         return repository.findAll(request.getSpecification(), request.getPageable())
                 .map(CutiPengajuanResponse::from);
     }

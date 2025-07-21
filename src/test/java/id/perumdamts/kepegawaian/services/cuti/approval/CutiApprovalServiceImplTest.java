@@ -119,11 +119,11 @@ class CutiApprovalServiceImplTest {
 
     private void generateCutiApprovalChains() {
         cutiApprovalChains = new ArrayList<>();
-        cutiApprovalChains.add(new CutiApprovalChain(1L, 1L, 66L, "Supervisor Teknologi Informasi", 1));
-        cutiApprovalChains.add(new CutiApprovalChain(2L, 1L, 48L, "Manajer Sumber Daya Manusia & TI", 2));
-        cutiApprovalChains.add(new CutiApprovalChain(3L, 1L, 49L, "Supervisor Adm. & Pengembangan SDM", 3));
-        cutiApprovalChains.add(new CutiApprovalChain(4L, 1L, 48L, "Manajer Sumber Daya Manusia & TI", 4));
-        cutiApprovalChains.add(new CutiApprovalChain(5L, 1L, 25L, "Direktur Umum", 5));
+        cutiApprovalChains.add(new CutiApprovalChain(1L, new CutiPegawai(1L), 66L, "Supervisor Teknologi Informasi", 1));
+        cutiApprovalChains.add(new CutiApprovalChain(2L, new CutiPegawai(1L), 48L, "Manajer Sumber Daya Manusia & TI", 2));
+        cutiApprovalChains.add(new CutiApprovalChain(3L, new CutiPegawai(1L), 49L, "Supervisor Adm. & Pengembangan SDM", 3));
+        cutiApprovalChains.add(new CutiApprovalChain(4L, new CutiPegawai(1L), 48L, "Manajer Sumber Daya Manusia & TI", 4));
+        cutiApprovalChains.add(new CutiApprovalChain(5L, new CutiPegawai(1L), 25L, "Direktur Umum", 5));
     }
 
     @BeforeEach

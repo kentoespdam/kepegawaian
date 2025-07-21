@@ -14,13 +14,15 @@ public class CutiApprovalChain {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long refCutiId;
+    @ManyToOne
+    @JoinColumn(name = "ref_cuti_id", referencedColumnName = "id")
+    private CutiPegawai refCuti;
     private Long jabatanId;
     private String jabatanNama;
     private Integer approvalLevel;
 
-    public CutiApprovalChain(Long refCutiId, Long jabatanId, String jabatanNama, int approvalLevel) {
-        this.refCutiId = refCutiId;
+    public CutiApprovalChain(CutiPegawai refCutiId, Long jabatanId, String jabatanNama, int approvalLevel) {
+        this.refCuti = refCutiId;
         this.jabatanId = jabatanId;
         this.jabatanNama = jabatanNama;
         this.approvalLevel = approvalLevel;

@@ -28,7 +28,6 @@ public class CutiPengajuanRequest extends CommonPageRequest {
 
     @JsonIgnore
     public Specification<CutiPegawai> getSpecification() {
-
         Specification<CutiPegawai> idSpec = Objects.isNull(id) ? null :
                 (root, query, cb) -> cb.equal(root.get("id"), id);
         Specification<CutiPegawai> pegawaiSpec = Objects.isNull(pegawaiId) ? null :
@@ -51,7 +50,13 @@ public class CutiPengajuanRequest extends CommonPageRequest {
         Specification<CutiPegawai> jabatanSpec = Objects.isNull(jabatanId) ? null :
                 (root, query, cb) -> cb.equal(root.get("jabatan").get("id"), jabatanId);
         Specification<CutiPegawai> picSaatIniSpec = Objects.isNull(picSaatIniId) ? null :
-                (root, query, cb) -> cb.equal(root.get("picSaatIni").get("id"), picSaatIniId);
+                (root, query, cb) -> {
+                    Expression<Long> levelPic = root.get("picSaatIni").get("level").get("id");
+                    return cb.or(
+                            cb.equal(root.get("picSaatIni").get("id"), picSaatIniId),
+                            cb.greaterThan(root.get("jabatan").get("level").get("id"), levelPic)
+                    );
+                };
         Specification<CutiPegawai> approvalCutiStatusSpec = Objects.isNull(approvalCutiStatus) ? null :
                 (root, query, cb) -> cb.equal(root.get("approvalCutiStatus"), approvalCutiStatus);
         Specification<CutiPegawai> jenisPengajuanCutiSpec = Objects.isNull(jenisPengajuanCuti) ? null :
