@@ -2,10 +2,7 @@ package id.perumdamts.kepegawaian.controllers.cuti;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
-import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanKlaimPostRequest;
-import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPostRequest;
-import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPutRequest;
-import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanRequest;
+import id.perumdamts.kepegawaian.dto.cuti.pengajuan.*;
 import id.perumdamts.kepegawaian.services.cuti.pengajuan.CutiPengajuanService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +23,11 @@ public class CutiPengajuanController {
     @GetMapping
     public ResponseEntity<?> index(@ParameterObject CutiPengajuanRequest request) {
         return CustomResult.page(service.findPage(request));
+    }
+
+    @GetMapping("/approval")
+    public ResponseEntity<?> indexApproval(@ParameterObject CutiPengajuanApprovalRequest request) {
+        return CustomResult.page(service.findPageApproval(request));
     }
 
     @GetMapping("/{pegawaiId}/pegawai")

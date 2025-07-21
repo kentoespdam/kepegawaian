@@ -8,5 +8,6 @@ import org.springframework.data.domain.Page;
 
 public interface CutiApprovalService {
     Page<CutiApprovalMiniResponse> findPage(Long cutiId, CutiApprovalRequest request);
+
     SavedStatus<?> savePengajuan(CutiApprovalPostRequest request);
 }
