@@ -119,11 +119,11 @@ class CutiApprovalServiceImplTest {
 
     private void generateCutiApprovalChains() {
         cutiApprovalChains = new ArrayList<>();
-        cutiApprovalChains.add(new CutiApprovalChain(1L, new CutiPegawai(1L), 66L, "Supervisor Teknologi Informasi", 1));
-        cutiApprovalChains.add(new CutiApprovalChain(2L, new CutiPegawai(1L), 48L, "Manajer Sumber Daya Manusia & TI", 2));
-        cutiApprovalChains.add(new CutiApprovalChain(3L, new CutiPegawai(1L), 49L, "Supervisor Adm. & Pengembangan SDM", 3));
-        cutiApprovalChains.add(new CutiApprovalChain(4L, new CutiPegawai(1L), 48L, "Manajer Sumber Daya Manusia & TI", 4));
-        cutiApprovalChains.add(new CutiApprovalChain(5L, new CutiPegawai(1L), 25L, "Direktur Umum", 5));
+        cutiApprovalChains.add(new CutiApprovalChain(1L, new CutiPegawai(1L), 66L, "Supervisor Teknologi Informasi", 1, false));
+        cutiApprovalChains.add(new CutiApprovalChain(2L, new CutiPegawai(1L), 48L, "Manajer Sumber Daya Manusia & TI", 2, false));
+        cutiApprovalChains.add(new CutiApprovalChain(3L, new CutiPegawai(1L), 49L, "Supervisor Adm. & Pengembangan SDM", 3, false));
+        cutiApprovalChains.add(new CutiApprovalChain(4L, new CutiPegawai(1L), 48L, "Manajer Sumber Daya Manusia & TI", 4, false));
+        cutiApprovalChains.add(new CutiApprovalChain(5L, new CutiPegawai(1L), 25L, "Direktur Umum", 5, false));
     }
 
     @BeforeEach
@@ -166,10 +166,10 @@ class CutiApprovalServiceImplTest {
 
     @Test
     void checkApprovalChainIsExist() {
-        when(cutiApprovalChainRepository.findByRefCutiIdAndApprovalLevelGreaterThanEqualOrderByApprovalLevelAsc(request.getCutiId(), request.getApprovalLevel()))
+        when(cutiApprovalChainRepository.findByRefCuti_IdOrderByApprovalLevelAsc(request.getCutiId()))
                 .thenReturn(cutiApprovalChains);
 
-        List<CutiApprovalChain> approvalChains = cutiApprovalChainRepository.findByRefCutiIdAndApprovalLevelGreaterThanEqualOrderByApprovalLevelAsc(request.getCutiId(), request.getApprovalLevel());
+        List<CutiApprovalChain> approvalChains = cutiApprovalChainRepository.findByRefCuti_IdOrderByApprovalLevelAsc(request.getCutiId());
         assertEquals(5, approvalChains.size());
         log.info("approval chains: {}", approvalChains);
     }
@@ -179,7 +179,7 @@ class CutiApprovalServiceImplTest {
         when(cutiPegawaiRepository.findByIdAndApprovalCutiStatus(request.getCutiId(), EApprovalCutiStatus.PENDING))
                 .thenReturn(Optional.of(cutiPegawai));
         when(pegawaiRepository.findById(request.getApproverId())).thenReturn(Optional.of(approver));
-        when(cutiApprovalChainRepository.findByRefCutiIdAndApprovalLevelGreaterThanEqualOrderByApprovalLevelAsc(request.getCutiId(), request.getApprovalLevel()))
+        when(cutiApprovalChainRepository.findByRefCuti_IdOrderByApprovalLevelAsc(request.getCutiId()))
                 .thenReturn(cutiApprovalChains);
 
         Optional<CutiPegawai> cutiPegawaiEntity = cutiPegawaiRepository.findByIdAndApprovalCutiStatus(request.getCutiId(), EApprovalCutiStatus.PENDING);
@@ -188,7 +188,7 @@ class CutiApprovalServiceImplTest {
         assertTrue(cutiPegawaiEntity.isPresent());
         assertTrue(approverEntity.isPresent());
 
-        List<CutiApprovalChain> cutiApprovalChainList = cutiApprovalChainRepository.findByRefCutiIdAndApprovalLevelGreaterThanEqualOrderByApprovalLevelAsc(request.getCutiId(), request.getApprovalLevel());
+        List<CutiApprovalChain> cutiApprovalChainList = cutiApprovalChainRepository.findByRefCuti_IdOrderByApprovalLevelAsc(request.getCutiId());
         boolean approverIsInChains = cutiApprovalChainList.stream().map(CutiApprovalChain::getJabatanId).toList().contains(approverEntity.get().getJabatan().getId());
         assertTrue(approverIsInChains);
 
@@ -206,7 +206,7 @@ class CutiApprovalServiceImplTest {
         when(cutiPegawaiRepository.findByIdAndApprovalCutiStatus(request.getCutiId(), EApprovalCutiStatus.PENDING))
                 .thenReturn(Optional.of(cutiPegawai));
         when(pegawaiRepository.findById(request.getApproverId())).thenReturn(Optional.of(approver));
-        when(cutiApprovalChainRepository.findByRefCutiIdAndApprovalLevelGreaterThanEqualOrderByApprovalLevelAsc(request.getCutiId(), request.getApprovalLevel()))
+        when(cutiApprovalChainRepository.findByRefCuti_IdOrderByApprovalLevelAsc(request.getCutiId()))
                 .thenReturn(cutiApprovalChains);
 
         CutiPegawai cutiPegawaiEntity = cutiPegawaiRepository.findByIdAndApprovalCutiStatus(request.getCutiId(), EApprovalCutiStatus.PENDING)
@@ -216,7 +216,7 @@ class CutiApprovalServiceImplTest {
 
         CutiApproval entity = CutiApprovalPostRequest.toEntity(request, cutiPegawaiEntity, approverEntity);
 
-        List<CutiApprovalChain> cutiApprovalChainList = cutiApprovalChainRepository.findByRefCutiIdAndApprovalLevelGreaterThanEqualOrderByApprovalLevelAsc(request.getCutiId(), request.getApprovalLevel());
+        List<CutiApprovalChain> cutiApprovalChainList = cutiApprovalChainRepository.findByRefCuti_IdOrderByApprovalLevelAsc(request.getCutiId());
         boolean approverIsInChains = cutiApprovalChainList.stream().map(CutiApprovalChain::getJabatanId).toList().contains(approverEntity.getJabatan().getId());
         assertTrue(approverIsInChains);
 
@@ -232,7 +232,7 @@ class CutiApprovalServiceImplTest {
         when(cutiPegawaiRepository.findByIdAndApprovalCutiStatus(request.getCutiId(), EApprovalCutiStatus.PENDING))
                 .thenReturn(Optional.of(cutiPegawai));
         when(pegawaiRepository.findById(request.getApproverId())).thenReturn(Optional.of(approver));
-        when(cutiApprovalChainRepository.findByRefCutiIdAndApprovalLevelGreaterThanEqualOrderByApprovalLevelAsc(request.getCutiId(), request.getApprovalLevel()))
+        when(cutiApprovalChainRepository.findByRefCuti_IdOrderByApprovalLevelAsc(request.getCutiId()))
                 .thenReturn(cutiApprovalChains);
 
         CutiPegawai cutiPegawaiEntity = cutiPegawaiRepository.findByIdAndApprovalCutiStatus(request.getCutiId(), EApprovalCutiStatus.PENDING)
@@ -241,7 +241,7 @@ class CutiApprovalServiceImplTest {
                 .orElseThrow(() -> new RuntimeException("Approver Pegawai not found"));
 
         CutiApproval entity = CutiApprovalPostRequest.toEntity(request, cutiPegawaiEntity, approverEntity);
-        List<CutiApprovalChain> cutiApprovalChainList = cutiApprovalChainRepository.findByRefCutiIdAndApprovalLevelGreaterThanEqualOrderByApprovalLevelAsc(request.getCutiId(), request.getApprovalLevel());
+        List<CutiApprovalChain> cutiApprovalChainList = cutiApprovalChainRepository.findByRefCuti_IdOrderByApprovalLevelAsc(request.getCutiId());
         boolean approverIsInChains = cutiApprovalChainList.stream().map(CutiApprovalChain::getJabatanId).toList().contains(approverEntity.getJabatan().getId());
         assertTrue(approverIsInChains);
         CutiApprovalChain nextApproval = cutiApprovalChainList.get(1);

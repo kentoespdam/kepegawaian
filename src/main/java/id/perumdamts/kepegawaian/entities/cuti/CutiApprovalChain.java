@@ -6,7 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table
+@Table(indexes = {
+        @Index(columnList = "skip"),
+})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,11 +22,25 @@ public class CutiApprovalChain {
     private Long jabatanId;
     private String jabatanNama;
     private Integer approvalLevel;
+    @Column(columnDefinition = "boolean default false")
+    private Boolean skip = false;
 
     public CutiApprovalChain(CutiPegawai refCutiId, Long jabatanId, String jabatanNama, int approvalLevel) {
         this.refCuti = refCutiId;
         this.jabatanId = jabatanId;
         this.jabatanNama = jabatanNama;
         this.approvalLevel = approvalLevel;
+    }
+
+    @Override
+    public String toString() {
+        return "CutiApprovalChain{" +
+                "id=" + id +
+                ", refCuti=" + refCuti.getId() +
+                ", jabatanId=" + jabatanId +
+                ", jabatanNama='" + jabatanNama + '\'' +
+                ", approvalLevel=" + approvalLevel +
+                ", skip=" + skip +
+                '}';
     }
 }
