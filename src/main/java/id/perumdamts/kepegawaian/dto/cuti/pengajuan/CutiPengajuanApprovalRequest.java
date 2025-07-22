@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.dto.commons.CommonPageRequest;
 import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
 import id.perumdamts.kepegawaian.entities.commons.EJenisPengajuanCuti;
-import id.perumdamts.kepegawaian.entities.cuti.CutiApprovalChain;
+import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import jakarta.persistence.criteria.Expression;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -12,6 +12,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 @EqualsAndHashCode(callSuper = true)
@@ -28,31 +29,19 @@ public class CutiPengajuanApprovalRequest extends CommonPageRequest {
     private EJenisPengajuanCuti jenisPengajuanCuti;
 
     @JsonIgnore
-    public Specification<CutiApprovalChain> getSpecification(long supervisorSdmId) {
-        Specification<CutiApprovalChain> yearSpec = (root, query, cb) -> {
-            Expression<Integer> yearCreatedAt = cb.function("YEAR", Integer.class, root.get("refCuti").get("createdAt"));
-            Expression<Integer> yearTanggalMulai = cb.function("YEAR", Integer.class, root.get("refCuti").get("tanggalMulai"));
+    public Specification<CutiPegawai> getSpecification() {
+        Specification<CutiPegawai> yearSpec = (root, query, cb) -> {
+            Expression<LocalDate> createdAtPengajuanExpression = root.get("createdAt");
+            Expression<LocalDate> tanggalMulaiExpression = root.get("tanggalMulai");
             return cb.or(
-                    cb.equal(yearCreatedAt, tahun),
-                    cb.equal(yearTanggalMulai, tahun)
+                    cb.equal(cb.function("YEAR", Integer.class, createdAtPengajuanExpression), tahun),
+                    cb.equal(cb.function("YEAR", Integer.class, tanggalMulaiExpression), tahun)
             );
         };
-
-        Specification<CutiApprovalChain> approvalLevelSpec = (root, query, cb) -> {
-            Expression<Integer> approvalLevel = root.get("refCuti").get("approvalLevel");
-            return cb.greaterThanOrEqualTo(root.get("approvalLevel"), approvalLevel);
-        };
-
-        Specification<CutiApprovalChain> picSaatIniSpec = (picSaatIniId.equals(supervisorSdmId)) ?
-                (root, query, cb) -> cb.greaterThanOrEqualTo(root.get("jabatanId"), picSaatIniId) :
-                (root, query, cb) -> cb.equal(root.get("jabatanId"), picSaatIniId);
-
-        Specification<CutiApprovalChain> jenisPengajuanCutiSpec = (root, query, cb) ->
-                cb.equal(root.get("refCuti").get("jenisPengajuanCuti"), Objects.isNull(jenisPengajuanCuti) ? EJenisPengajuanCuti.PENGAJUAN_CUTI : jenisPengajuanCuti);
-
-        return Specification.where(yearSpec)
-                .and(approvalLevelSpec)
-                .and(picSaatIniSpec)
-                .and(jenisPengajuanCutiSpec);
+        Specification<CutiPegawai> approvalSpec = (root, query, cb) -> cb.equal(root.get("approvalCutiStatus"), approvalCutiStatus);
+        Specification<CutiPegawai> picSaatIniSpec = (root, query, cb) -> cb.equal(root.get("picSaatIni").get("id"), picSaatIniId);
+        Specification<CutiPegawai> jenisPengajuanCutiSpec = Objects.isNull(jenisPengajuanCuti) ? null :
+                (root, query, cb) -> cb.equal(root.get("jenisPengajuanCuti"), jenisPengajuanCuti);
+        return Specification.where(yearSpec).and(approvalSpec).and(picSaatIniSpec).and(jenisPengajuanCutiSpec);
     }
 }

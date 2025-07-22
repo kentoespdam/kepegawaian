@@ -16,4 +16,8 @@ public enum EApprovalCutiStatus {
     EApprovalCutiStatus(String label) {
         this.label = label;
     }
+
+    public int getValue() {
+        return this.ordinal();
+    }
 }

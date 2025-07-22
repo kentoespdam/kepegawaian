@@ -11,7 +11,6 @@ import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.helpers.DateHelper;
 import id.perumdamts.kepegawaian.helpers.RedisHelper;
 import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
-import id.perumdamts.kepegawaian.repositories.cuti.CutiApprovalChainRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.CutiJenisRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.CutiPegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.master.HariLiburRepository;
@@ -38,7 +37,6 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
     private final CutiJenisRepository cutiJenisRepository;
     private final CutiApprovalChainService cutiApprovalChainService;
     private final SaveKlaimCutiService klaimCutiService;
-    private final CutiApprovalChainRepository cutiApprovalChainRepository;
     private final ValidatePengajuanCutiService validatePengajuanCutiService;
 
     @Value("${custom.jabatan.supervisorSdm}")
@@ -53,8 +51,12 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
 
     @Override
     public Page<CutiPengajuanResponse> findPageApproval(CutiPengajuanApprovalRequest request) {
-        return cutiApprovalChainRepository.findAll(request.getSpecification(supervisorSdm), request.getPageable())
-                .map(chain -> CutiPengajuanResponse.from(chain.getRefCuti()));
+        if (request.getPicSaatIniId().equals(supervisorSdm)) {
+            Page<CutiPegawai> result = repository.findForApproval(request.getTahun(), request.getPicSaatIniId(), request.getApprovalCutiStatus().getValue(), request.getPageable());
+            return result.map(CutiPengajuanResponse::from);
+        }
+        return repository.findAll(request.getSpecification(), request.getPageable())
+                .map(CutiPengajuanResponse::from);
     }
 
     @Override
