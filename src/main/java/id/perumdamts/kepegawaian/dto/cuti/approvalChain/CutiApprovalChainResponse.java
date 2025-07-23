@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class CutiApprovalChainResponse {
     private Long id;
+    private Integer approvalLevel;
     private Boolean skip;
     private CutiPengajuanResponse refCuti;
 
@@ -15,6 +16,7 @@ public class CutiApprovalChainResponse {
         response.setId(entity.getId());
         response.setSkip(entity.getSkip());
         response.setRefCuti(CutiPengajuanResponse.from(entity.getRefCuti()));
+        response.setApprovalLevel(entity.getApprovalLevel());
         return response;
     }
 }

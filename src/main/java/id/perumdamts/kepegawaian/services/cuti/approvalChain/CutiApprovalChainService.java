@@ -1,7 +1,7 @@
 package id.perumdamts.kepegawaian.services.cuti.approvalChain;
 
 import id.perumdamts.kepegawaian.dto.cuti.approvalChain.CutiApprovalChainResponse;
-import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiApprovalChainRequest;
+import id.perumdamts.kepegawaian.dto.cuti.approvalChain.CutiApprovalChainRequest;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import org.springframework.data.domain.Page;
 

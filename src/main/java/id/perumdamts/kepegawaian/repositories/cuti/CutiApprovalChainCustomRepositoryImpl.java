@@ -1,7 +1,7 @@
 package id.perumdamts.kepegawaian.repositories.cuti;
 
 import id.perumdamts.kepegawaian.dto.cuti.approvalChain.CutiApprovalChainResponse;
-import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiApprovalChainRequest;
+import id.perumdamts.kepegawaian.dto.cuti.approvalChain.CutiApprovalChainRequest;
 import id.perumdamts.kepegawaian.entities.cuti.CutiApprovalChain;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.controllers.cuti;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
+import id.perumdamts.kepegawaian.dto.cuti.approvalChain.CutiApprovalChainRequest;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.*;
 import id.perumdamts.kepegawaian.services.cuti.approvalChain.CutiApprovalChainService;
 import id.perumdamts.kepegawaian.services.cuti.pengajuan.CutiPengajuanService;

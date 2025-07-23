@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.dto.cuti.pengajuan;
+package id.perumdamts.kepegawaian.dto.cuti.approvalChain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.dto.commons.CommonPageRequest;
@@ -31,23 +31,27 @@ public class CutiApprovalChainRequest extends CommonPageRequest {
     @JsonIgnore
     public Specification<CutiApprovalChain> getApprovalChainSpecification() {
         Specification<CutiApprovalChain> picSaatIniSpec =
-                (root, query, cb) -> cb.equal(root.get("jabatanId"), picSaatIniId);
-        Specification<CutiApprovalChain> tahunSpec = (root, query, cb) -> {
-            Expression<LocalDate> createdAtPengajuanExpression = root.get("refCuti").get("createdAt");
-            Expression<LocalDate> tanggalMulaiExpression = root.get("refCuti").get("tanggalMulai");
-            return cb.or(
-                    cb.equal(cb.function("YEAR", Integer.class, createdAtPengajuanExpression), tahun),
-                    cb.equal(cb.function("YEAR", Integer.class, tanggalMulaiExpression), tahun)
-            );
-        };
-        Specification<CutiApprovalChain> approvalSpec = (root, query, cb) ->
-                cb.equal(root.get("refCuti").get("approvalCutiStatus"), approvalCutiStatus);
+                (root, query, cb) ->
+                        cb.equal(root.get("jabatanId"), picSaatIniId);
+        Specification<CutiApprovalChain> tahunSpec =
+                (root, query, cb) -> {
+                    Expression<LocalDate> createdAtPengajuanExpression = root.get("refCuti").get("createdAt");
+                    Expression<LocalDate> tanggalMulaiExpression = root.get("refCuti").get("tanggalMulai");
+                    return cb.or(
+                            cb.equal(cb.function("YEAR", Integer.class, createdAtPengajuanExpression), tahun),
+                            cb.equal(cb.function("YEAR", Integer.class, tanggalMulaiExpression), tahun)
+                    );
+                };
+        Specification<CutiApprovalChain> approvalSpec =
+                (root, query, cb) ->
+                        cb.equal(root.get("refCuti").get("approvalCutiStatus"), approvalCutiStatus);
         Specification<CutiApprovalChain> jenisPengajuanCutiSpec = Objects.isNull(jenisPengajuanCuti) ? null :
-                (root, query, cb) -> cb.equal(root.get("refCuti").get("jenisPengajuanCuti"), jenisPengajuanCuti);
-        Specification<CutiApprovalChain> levelSpec = (root, query, cb) -> cb.or(
-                cb.equal(root.get("refCuti").get("approvalLevel"), root.get("approvalLevel"))
-//                cb.equal(root.get("skip"), approvalCutiStatus.equals(EApprovalCutiStatus.PENDING))
-        );
+                (root, query, cb) ->
+                        cb.equal(root.get("refCuti").get("jenisPengajuanCuti"), jenisPengajuanCuti);
+        Specification<CutiApprovalChain> levelSpec = approvalCutiStatus.equals(EApprovalCutiStatus.PENDING) ?
+                (root, query, cb) ->
+                        cb.equal(root.get("refCuti").get("approvalLevel"), root.get("approvalLevel")) : null;
+
         return Specification.where(picSaatIniSpec).and(tahunSpec).and(approvalSpec).and(jenisPengajuanCutiSpec).and(levelSpec);
     }
 }
