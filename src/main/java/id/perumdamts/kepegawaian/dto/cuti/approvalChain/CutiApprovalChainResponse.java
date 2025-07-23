@@ -12,13 +12,13 @@ public class CutiApprovalChainResponse {
     private Long id;
     private Integer approvalLevel;
     @Enumerated(EnumType.ORDINAL)
-    private EReadWriteStatus readWrite;
+    private EReadWriteStatus readWriteStatus;
     private CutiPengajuanResponse refCuti;
 
     public static CutiApprovalChainResponse from(CutiApprovalChain entity) {
         CutiApprovalChainResponse response = new CutiApprovalChainResponse();
         response.setId(entity.getId());
-        response.setReadWrite(entity.getReadWriteStatus());
+        response.setReadWriteStatus(entity.getReadWriteStatus());
         response.setRefCuti(CutiPengajuanResponse.from(entity.getRefCuti()));
         response.setApprovalLevel(entity.getApprovalLevel());
         return response;

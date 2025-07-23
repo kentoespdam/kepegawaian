@@ -5,8 +5,11 @@ import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.*;
 import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
+import id.perumdamts.kepegawaian.entities.commons.EReadWriteStatus;
+import id.perumdamts.kepegawaian.entities.cuti.CutiApprovalChain;
 import id.perumdamts.kepegawaian.entities.cuti.CutiJenis;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
+import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.helpers.DateHelper;
 import id.perumdamts.kepegawaian.helpers.RedisHelper;
@@ -22,6 +25,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -91,7 +95,7 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
 
             // CUTI TAHUNAN
             if (request.getJenisCutiId().equals(defConfig.getJenisCutiTahunan())) {
-                CutiPegawai cutiPegawai = null;
+                CutiPegawai cutiPegawai;
                 if (startYear > nowYear && endYear > nowYear) {
                     // pengajuan cuti tahunan untuk tahun depan
                     cutiPegawai = saveCutiService.forNextYear(request, entity);
@@ -107,9 +111,20 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
                 } else if (DateHelper.isOverlappingDates(tanggalMulai, tanggalSelesai, startYear)) {
                     // pengajuan cuti antara tanggal 30 juni sampai 1 juli
                     cutiPegawai = saveCutiService.between30JunAnd1Jul(request, entity);
+                } else {
+                    throw new RuntimeException("Invalid request");
                 }
 
-                cutiApprovalChainService.generateApprovalChain(cutiPegawai);
+                List<CutiApprovalChain> cutiApprovalChains = cutiApprovalChainService.generateApprovalChain(cutiPegawai);
+                Optional<CutiApprovalChain> writeChain = cutiApprovalChains.stream().filter(chain -> chain.getReadWriteStatus().equals(EReadWriteStatus.WRITE))
+                        .findFirst();
+                if (writeChain.isPresent()) {
+                    CutiApprovalChain writeChainEntity = writeChain.get();
+                    cutiPegawai.setApprovalLevel(writeChainEntity.getApprovalLevel());
+                    cutiPegawai.setPicSaatIni(new Jabatan(writeChainEntity.getJabatanId()));
+                    repository.save(cutiPegawai);
+                }
+
             } else {
                 saveCutiService.saveCutiNonTahunan(request, entity);
             }

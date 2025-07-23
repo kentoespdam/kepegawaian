@@ -45,11 +45,7 @@ public class CutiApprovalChainServiceImpl implements CutiApprovalChainService {
 
     @Override
     public Page<CutiApprovalChainResponse> findCutiPegawai(CutiApprovalChainRequest request) {
-//        return repository.findAll(request.getApprovalChainSpecification(), request.getPageable())
-//                .map(CutiApprovalChainResponse::from);
         return repository.findPage(request);
-//        return repository.findAll(request.getApprovalChainSpecification(), request.getPageable())
-//                .map(CutiApprovalChainResponse::from);
     }
 
     /**
@@ -78,14 +74,14 @@ public class CutiApprovalChainServiceImpl implements CutiApprovalChainService {
      * @param cutiPegawai the {@link CutiPegawai} to generate the approval chain for
      */
     @Override
-    public void generateApprovalChain(CutiPegawai cutiPegawai) {
+    public List<CutiApprovalChain> generateApprovalChain(CutiPegawai cutiPegawai) {
         Long jabatanLevelId = cutiPegawai.getJabatan().getLevel().getId();
         if (jabatanLevelId.equals(levelManager))
-            this.levelManager(cutiPegawai);
+            return this.levelManagerList(cutiPegawai);
         else if (jabatanLevelId.equals(levelSupervisor))
-            this.levelSupervisor(cutiPegawai);
+            return this.levelSupervisorList(cutiPegawai);
         else
-            this.levelStaf(cutiPegawai);
+            return this.levelStafList(cutiPegawai);
     }
 
 
@@ -125,22 +121,30 @@ public class CutiApprovalChainServiceImpl implements CutiApprovalChainService {
      *     <li>The direktur umum if it exists</li>
      * </ol>
      *
-     * @param cutiPegawai the {@link CutiPegawai} to generate the approval chain for
+     * @param cutiPegawai the {@link CutiPegawai} to generate the approval chain for (staff)
+     * @return the list of approval chains
      */
-    private void levelStaf(CutiPegawai cutiPegawai) {
+    private List<CutiApprovalChain> levelStafList(CutiPegawai cutiPegawai) {
         List<CutiApprovalChain> approvalChain = new ArrayList<>();
 
+        // Get the supervisor and manager of the given CutiPegawai
         Jabatan supervisor = cutiPegawai.getJabatan().getParent();
         boolean supervisorExists = pegawaiRepository.existsByJabatanId(supervisor.getId());
         Jabatan manager = supervisor.getParent();
         boolean managerExists = pegawaiRepository.existsByJabatanId(manager.getId());
 
+        // Add the approval chain for the supervisor
         addApprovalChainIfJabatanExists(approvalChain, cutiPegawai, supervisor.getId(), 1);
+        // Add the approval chain for the manager
         addApprovalChainIfJabatanExists(approvalChain, cutiPegawai, manager.getId(), 2);
+        // Add the approval chain for the supervisor SDM
         addApprovalChainIfJabatanExists(approvalChain, cutiPegawai, supervisorSdm, 3);
+        // Add the approval chain for the manager SDM
         addApprovalChainIfJabatanExists(approvalChain, cutiPegawai, managerSdm, 4);
+        // Add the approval chain for the direktur umum
         addApprovalChainIfJabatanExists(approvalChain, cutiPegawai, direkturUmum, 5);
 
+        // Set the read/write status of the approval chain based on the existence of the supervisor and manager
         if (supervisorExists) {
             approvalChain.getFirst().setReadWriteStatus(EReadWriteStatus.WRITE);
         } else if (managerExists) {
@@ -154,8 +158,7 @@ public class CutiApprovalChainServiceImpl implements CutiApprovalChainService {
             approvalChain.get(1).setApprovalStatus(EApprovalCutiStatus.APPROVED);
             approvalChain.get(2).setReadWriteStatus(EReadWriteStatus.WRITE);
         }
-
-        repository.saveAll(approvalChain);
+        return repository.saveAll(approvalChain);
     }
 
 
@@ -170,21 +173,30 @@ public class CutiApprovalChainServiceImpl implements CutiApprovalChainService {
      *     <li>The direktur utama if it exists</li>
      * </ol>
      *
-     * @param cutiPegawai the {@link CutiPegawai} to generate the approval chain for
+     * @param cutiPegawai the {@link CutiPegawai} to generate the approval chain for (supervisor)
+     * @return the list of approval chains
      */
-    private void levelSupervisor(CutiPegawai cutiPegawai) {
+    private List<CutiApprovalChain> levelSupervisorList(CutiPegawai cutiPegawai) {
         List<CutiApprovalChain> approvalChain = new ArrayList<>();
 
         Jabatan manager = cutiPegawai.getJabatan().getParent();
         boolean isMgrExists = pegawaiRepository.existsByJabatanId(manager.getId());
-        approvalChain.add(new CutiApprovalChain(cutiPegawai, manager.getId(), manager.getNama(), 1, EApprovalCutiStatus.PENDING, isMgrExists ? EReadWriteStatus.WRITE : EReadWriteStatus.READ));
+        approvalChain.add(new CutiApprovalChain(cutiPegawai, manager.getId(), manager.getNama(), 1));
 
         addApprovalChainIfJabatanExists(approvalChain, cutiPegawai, supervisorSdm, 2);
         addApprovalChainIfJabatanExists(approvalChain, cutiPegawai, managerSdm, 3);
         addApprovalChainIfJabatanExists(approvalChain, cutiPegawai, direkturUmum, 4);
         addApprovalChainIfJabatanExists(approvalChain, cutiPegawai, direkturUtama, 5);
 
-        repository.saveAll(approvalChain);
+        if (isMgrExists) {
+            approvalChain.getFirst().setReadWriteStatus(EReadWriteStatus.WRITE);
+        } else {
+            approvalChain.getFirst().setReadWriteStatus(EReadWriteStatus.READ);
+            approvalChain.getFirst().setApprovalStatus(EApprovalCutiStatus.APPROVED);
+            approvalChain.get(1).setReadWriteStatus(EReadWriteStatus.WRITE);
+        }
+
+        return repository.saveAll(approvalChain);
     }
 
     /**
@@ -197,9 +209,10 @@ public class CutiApprovalChainServiceImpl implements CutiApprovalChainService {
      *     <li>The direktur utama if it exists</li>
      * </ol>
      *
-     * @param cutiPegawai the {@link CutiPegawai} to generate the approval chain for
+     * @param cutiPegawai the {@link CutiPegawai} to generate the approval chain for (manager)
+     * @return the list of approval chains
      */
-    private void levelManager(CutiPegawai cutiPegawai) {
+    private List<CutiApprovalChain> levelManagerList(CutiPegawai cutiPegawai) {
         List<CutiApprovalChain> approvalChain = new ArrayList<>();
         approvalChain.add(new CutiApprovalChain(cutiPegawai, supervisorSdm, "Supervisor Adm. & Pengembangan SDM", 1, EApprovalCutiStatus.PENDING, EReadWriteStatus.WRITE));
 
@@ -207,6 +220,6 @@ public class CutiApprovalChainServiceImpl implements CutiApprovalChainService {
         addApprovalChainIfJabatanExists(approvalChain, cutiPegawai, direkturUmum, 3);
         addApprovalChainIfJabatanExists(approvalChain, cutiPegawai, direkturUtama, 4);
 
-        repository.saveAll(approvalChain);
+        return repository.saveAll(approvalChain);
     }
 }
