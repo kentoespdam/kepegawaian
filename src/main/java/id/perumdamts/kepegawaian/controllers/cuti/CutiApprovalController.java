@@ -18,7 +18,7 @@ public class CutiApprovalController {
     private final CutiApprovalService service;
 
     @GetMapping("/{cutiId}")
-    public ResponseEntity<?> findApproval(Long cutiId, @ParameterObject CutiApprovalRequest request) {
+    public ResponseEntity<?> findApproval(@PathVariable Long cutiId, @ParameterObject CutiApprovalRequest request) {
         request.setCutiId(cutiId);
         return CustomResult.page(service.findPage(cutiId, request));
     }
