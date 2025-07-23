@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.services.cuti.approvalChain;
 
+import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanApprovalRequest;
+import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanResponse;
 import id.perumdamts.kepegawaian.entities.cuti.CutiApprovalChain;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
@@ -7,6 +9,7 @@ import id.perumdamts.kepegawaian.repositories.cuti.CutiApprovalChainRepository;
 import id.perumdamts.kepegawaian.repositories.master.JabatanRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -35,6 +38,13 @@ public class CutiApprovalChainServiceImpl implements CutiApprovalChainService {
     private Long levelSupervisor;
     @Value("${custom.levelJabatan.manager}")
     private Long levelManager;
+
+    @Override
+    public Page<CutiPengajuanResponse> findCutiPegawai(CutiPengajuanApprovalRequest request) {
+        return repository.findAll(request.getApprovalChainSpecification(), request.getPageable())
+                .map(CutiApprovalChain::getRefCuti)
+                .map(CutiPengajuanResponse::from);
+    }
 
     /**
      * Generates the approval chain for a given {@link CutiPegawai}
@@ -71,6 +81,7 @@ public class CutiApprovalChainServiceImpl implements CutiApprovalChainService {
         else
             this.levelStaf(cutiPegawai);
     }
+
 
     /**
      * Adds a new {@link CutiApprovalChain} to the given list of chains if the given

@@ -55,8 +55,7 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
             Page<CutiPegawai> result = repository.findForApproval(request.getTahun(), request.getPicSaatIniId(), request.getApprovalCutiStatus().getValue(), request.getPageable());
             return result.map(CutiPengajuanResponse::from);
         }
-        return repository.findAll(request.getSpecification(), request.getPageable())
-                .map(CutiPengajuanResponse::from);
+        return cutiApprovalChainService.findCutiPegawai(request);
     }
 
     @Override
