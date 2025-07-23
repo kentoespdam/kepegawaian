@@ -12,7 +12,9 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface CutiApprovalChainRepository extends JpaRepository<CutiApprovalChain, Long>, JpaSpecificationExecutor<CutiApprovalChain> {
+public interface CutiApprovalChainRepository extends JpaRepository<CutiApprovalChain, Long>,
+        JpaSpecificationExecutor<CutiApprovalChain>,
+        CutiApprovalChainCustomRepository {
     List<CutiApprovalChain> findByRefCuti_IdOrderByApprovalLevelAsc(Long refCutiId);
 
     List<CutiApprovalChain> findByRefCuti_IdAndSkipOrderByApprovalLevelAsc(Long cutiPegawaiId, boolean skip);

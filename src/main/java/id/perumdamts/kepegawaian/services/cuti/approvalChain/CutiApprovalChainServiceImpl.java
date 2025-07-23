@@ -41,8 +41,9 @@ public class CutiApprovalChainServiceImpl implements CutiApprovalChainService {
 
     @Override
     public Page<CutiApprovalChainResponse> findCutiPegawai(CutiApprovalChainRequest request) {
-        return repository.findAll(request.getApprovalChainSpecification(), request.getPageable())
-                .map(CutiApprovalChainResponse::from);
+//        return repository.findAll(request.getApprovalChainSpecification(), request.getPageable())
+//                .map(CutiApprovalChainResponse::from);
+        return repository.findPage(request);
     }
 
     /**
