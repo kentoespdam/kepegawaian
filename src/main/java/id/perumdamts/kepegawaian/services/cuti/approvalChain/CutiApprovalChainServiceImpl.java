@@ -7,6 +7,7 @@ import id.perumdamts.kepegawaian.entities.commons.EReadWriteStatus;
 import id.perumdamts.kepegawaian.entities.cuti.CutiApprovalChain;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
+import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.CutiApprovalChainRepository;
 import id.perumdamts.kepegawaian.repositories.master.JabatanRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import java.util.List;
 public class CutiApprovalChainServiceImpl implements CutiApprovalChainService {
     private final CutiApprovalChainRepository repository;
     private final JabatanRepository jabatanRepository;
+    private final PegawaiRepository pegawaiRepository;
 
     @Value("${custom.jabatan.supervisorSdm}")
     private Long supervisorSdm;
@@ -113,7 +115,7 @@ public class CutiApprovalChainServiceImpl implements CutiApprovalChainService {
     }
 
     /**
-     * Generates the approval chain for a given {@link CutiPegawai} who is a staf.
+     * Generates the approval chain for a given {@link CutiPegawai} who is a staff.
      * The approval chain consists of the following:
      * <ol>
      *     <li>The supervisor of the given {@link CutiPegawai}</li>
@@ -129,14 +131,29 @@ public class CutiApprovalChainServiceImpl implements CutiApprovalChainService {
         List<CutiApprovalChain> approvalChain = new ArrayList<>();
 
         Jabatan supervisor = cutiPegawai.getJabatan().getParent();
+        boolean supervisorExists = pegawaiRepository.existsByJabatanId(supervisor.getId());
         Jabatan manager = supervisor.getParent();
+        boolean managerExists = pegawaiRepository.existsByJabatanId(manager.getId());
 
-        approvalChain.add(new CutiApprovalChain(cutiPegawai, supervisor.getId(), supervisor.getNama(), 1, EApprovalCutiStatus.PENDING, EReadWriteStatus.WRITE));
-        approvalChain.add(new CutiApprovalChain(cutiPegawai, manager.getId(), manager.getNama(), 2));
-
+        addApprovalChainIfJabatanExists(approvalChain, cutiPegawai, supervisor.getId(), 1);
+        addApprovalChainIfJabatanExists(approvalChain, cutiPegawai, manager.getId(), 2);
         addApprovalChainIfJabatanExists(approvalChain, cutiPegawai, supervisorSdm, 3);
         addApprovalChainIfJabatanExists(approvalChain, cutiPegawai, managerSdm, 4);
         addApprovalChainIfJabatanExists(approvalChain, cutiPegawai, direkturUmum, 5);
+
+        if (supervisorExists) {
+            approvalChain.getFirst().setReadWriteStatus(EReadWriteStatus.WRITE);
+        } else if (managerExists) {
+            approvalChain.getFirst().setReadWriteStatus(EReadWriteStatus.READ);
+            approvalChain.getFirst().setApprovalStatus(EApprovalCutiStatus.APPROVED);
+            approvalChain.get(1).setReadWriteStatus(EReadWriteStatus.WRITE);
+        } else {
+            approvalChain.getFirst().setReadWriteStatus(EReadWriteStatus.READ);
+            approvalChain.getFirst().setApprovalStatus(EApprovalCutiStatus.APPROVED);
+            approvalChain.get(1).setReadWriteStatus(EReadWriteStatus.READ);
+            approvalChain.get(1).setApprovalStatus(EApprovalCutiStatus.APPROVED);
+            approvalChain.get(2).setReadWriteStatus(EReadWriteStatus.WRITE);
+        }
 
         repository.saveAll(approvalChain);
     }
@@ -159,7 +176,8 @@ public class CutiApprovalChainServiceImpl implements CutiApprovalChainService {
         List<CutiApprovalChain> approvalChain = new ArrayList<>();
 
         Jabatan manager = cutiPegawai.getJabatan().getParent();
-        approvalChain.add(new CutiApprovalChain(cutiPegawai, manager.getId(), manager.getNama(), 1, EApprovalCutiStatus.PENDING, EReadWriteStatus.WRITE));
+        boolean isMgrExists = pegawaiRepository.existsByJabatanId(manager.getId());
+        approvalChain.add(new CutiApprovalChain(cutiPegawai, manager.getId(), manager.getNama(), 1, EApprovalCutiStatus.PENDING, isMgrExists ? EReadWriteStatus.WRITE : EReadWriteStatus.READ));
 
         addApprovalChainIfJabatanExists(approvalChain, cutiPegawai, supervisorSdm, 2);
         addApprovalChainIfJabatanExists(approvalChain, cutiPegawai, managerSdm, 3);

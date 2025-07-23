@@ -48,10 +48,14 @@ public class CutiApprovalChainRequest extends CommonPageRequest {
                         cb.equal(root.get("refCuti").get("jenisPengajuanCuti"), jenisPengajuanCuti);
         Specification<CutiApprovalChain> readWriteSpec = (root, query, cb) ->
                 cb.notEqual(root.get("readWriteStatus"), EReadWriteStatus.NONE);
-        Specification<CutiApprovalChain> approvalChainSpec = (root, query, cb) ->
-                cb.equal(root.get("approvalStatus"), approvalCutiStatus);
+        Specification<CutiApprovalChain> approvalCutiSpec = (root, query, cb) ->
+                cb.equal(root.get("refCuti").get("approvalCutiStatus"), approvalCutiStatus);
+//        Specification<CutiApprovalChain> approvalChainSpec = (root, query, cb) ->
+//                cb.equal(root.get("approvalStatus"), approvalCutiStatus);
 
         return Specification.where(picSaatIniSpec).and(tahunSpec)
-                .and(jenisPengajuanCutiSpec).and(readWriteSpec).and(approvalChainSpec);
+                .and(approvalCutiSpec)
+                .and(jenisPengajuanCutiSpec).and(readWriteSpec);
+//                .or(approvalChainSpec);
     }
 }
