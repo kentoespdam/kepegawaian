@@ -33,7 +33,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class CutiPegawai extends IdsAbstract {
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "pegawai_id", referencedColumnName = "id")
     private Pegawai pegawai;
     private String nipam;
@@ -42,7 +42,7 @@ public class CutiPegawai extends IdsAbstract {
     @ManyToOne
     @JoinColumn(name = "organisasi_id", referencedColumnName = "id")
     private Organisasi organisasi;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "jabatan_id", referencedColumnName = "id")
     private Jabatan jabatan;
     @Enumerated(EnumType.ORDINAL)
@@ -67,7 +67,7 @@ public class CutiPegawai extends IdsAbstract {
     @Enumerated(EnumType.ORDINAL)
     private EApprovalCutiStatus approvalCutiStatus = EApprovalCutiStatus.PENDING;
     private Integer approvalLevel;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "pic_saat_ini_id", referencedColumnName = "id")
     private Jabatan picSaatIni;
     private Integer riwayatKuota0 = 0;

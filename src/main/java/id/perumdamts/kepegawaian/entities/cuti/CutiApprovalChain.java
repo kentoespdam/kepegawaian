@@ -3,7 +3,6 @@ package id.perumdamts.kepegawaian.entities.cuti;
 import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
 import id.perumdamts.kepegawaian.entities.commons.EReadWriteStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,7 +13,6 @@ import lombok.NoArgsConstructor;
 })
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class CutiApprovalChain {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +27,16 @@ public class CutiApprovalChain {
     private EApprovalCutiStatus approvalStatus;
     @Enumerated(EnumType.ORDINAL)
     private EReadWriteStatus readWriteStatus;
+
+    public CutiApprovalChain(Long id, CutiPegawai refCuti, Long jabatanId, String jabatanNama, Integer approvalLevel, EApprovalCutiStatus approvalStatus, EReadWriteStatus readWriteStatus) {
+        this.id = id;
+        this.refCuti = refCuti;
+        this.jabatanId = jabatanId;
+        this.jabatanNama = jabatanNama;
+        this.approvalLevel = approvalLevel;
+        this.approvalStatus = approvalStatus;
+        this.readWriteStatus = readWriteStatus;
+    }
 
     public CutiApprovalChain(CutiPegawai refCutiId, Long jabatanId, String jabatanNama, int approvalLevel) {
         this.refCuti = refCutiId;

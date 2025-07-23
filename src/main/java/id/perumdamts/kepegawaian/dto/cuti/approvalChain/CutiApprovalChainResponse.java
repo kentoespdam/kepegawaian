@@ -5,8 +5,12 @@ import id.perumdamts.kepegawaian.entities.commons.EReadWriteStatus;
 import id.perumdamts.kepegawaian.entities.cuti.CutiApprovalChain;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class CutiApprovalChainResponse {
     private Long id;
