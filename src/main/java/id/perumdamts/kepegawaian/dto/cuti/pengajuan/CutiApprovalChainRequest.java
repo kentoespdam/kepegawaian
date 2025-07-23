@@ -45,11 +45,9 @@ public class CutiApprovalChainRequest extends CommonPageRequest {
         Specification<CutiApprovalChain> jenisPengajuanCutiSpec = Objects.isNull(jenisPengajuanCuti) ? null :
                 (root, query, cb) -> cb.equal(root.get("refCuti").get("jenisPengajuanCuti"), jenisPengajuanCuti);
         Specification<CutiApprovalChain> levelSpec = (root, query, cb) -> cb.or(
-                cb.equal(root.get("refCuti").get("approvalLevel"), root.get("approvalLevel")),
-                cb.equal(root.get("skip"), approvalCutiStatus.equals(EApprovalCutiStatus.PENDING))
+                cb.equal(root.get("refCuti").get("approvalLevel"), root.get("approvalLevel"))
+//                cb.equal(root.get("skip"), approvalCutiStatus.equals(EApprovalCutiStatus.PENDING))
         );
-//        Specification<CutiApprovalChain> groupBySpec = (root, query, cb) -> query.groupBy(root.get("id"));
         return Specification.where(picSaatIniSpec).and(tahunSpec).and(approvalSpec).and(jenisPengajuanCutiSpec).and(levelSpec);
-//        Specification<CutiApprovalChain> groupBySpec = (root, query, cb) -> query.groupBy(root.get("id"));
     }
 }
