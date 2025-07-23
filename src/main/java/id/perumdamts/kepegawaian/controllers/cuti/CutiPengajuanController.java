@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.controllers.cuti;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.*;
+import id.perumdamts.kepegawaian.services.cuti.approvalChain.CutiApprovalChainService;
 import id.perumdamts.kepegawaian.services.cuti.pengajuan.CutiPengajuanService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class CutiPengajuanController {
     private final CutiPengajuanService service;
+    private final CutiApprovalChainService cutiApprovalChainService;
 
     @GetMapping
     public ResponseEntity<?> index(@ParameterObject CutiPengajuanRequest request) {
@@ -26,8 +28,8 @@ public class CutiPengajuanController {
     }
 
     @GetMapping("/approval")
-    public ResponseEntity<?> indexApproval(@ParameterObject CutiPengajuanApprovalRequest request) {
-        return CustomResult.page(service.findPageApproval(request));
+    public ResponseEntity<?> indexApproval(@ParameterObject CutiApprovalChainRequest request) {
+        return CustomResult.page(cutiApprovalChainService.findCutiPegawai(request));
     }
 
     @GetMapping("/{pegawaiId}/pegawai")

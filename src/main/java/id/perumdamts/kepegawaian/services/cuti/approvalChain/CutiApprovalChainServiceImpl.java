@@ -1,7 +1,7 @@
 package id.perumdamts.kepegawaian.services.cuti.approvalChain;
 
-import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanApprovalRequest;
-import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanResponse;
+import id.perumdamts.kepegawaian.dto.cuti.approvalChain.CutiApprovalChainResponse;
+import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiApprovalChainRequest;
 import id.perumdamts.kepegawaian.entities.cuti.CutiApprovalChain;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
@@ -40,10 +40,9 @@ public class CutiApprovalChainServiceImpl implements CutiApprovalChainService {
     private Long levelManager;
 
     @Override
-    public Page<CutiPengajuanResponse> findCutiPegawai(CutiPengajuanApprovalRequest request) {
+    public Page<CutiApprovalChainResponse> findCutiPegawai(CutiApprovalChainRequest request) {
         return repository.findAll(request.getApprovalChainSpecification(), request.getPageable())
-                .map(CutiApprovalChain::getRefCuti)
-                .map(CutiPengajuanResponse::from);
+                .map(CutiApprovalChainResponse::from);
     }
 
     /**

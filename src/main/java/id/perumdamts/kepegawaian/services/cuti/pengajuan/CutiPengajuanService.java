@@ -9,8 +9,6 @@ import java.time.LocalDate;
 public interface CutiPengajuanService {
     Page<CutiPengajuanResponse> findPage(CutiPengajuanRequest request);
 
-    Page<CutiPengajuanResponse> findPageApproval(CutiPengajuanApprovalRequest request);
-
     CutiPengajuanResponse findById(Long id);
 
     SavedStatus<?> save(CutiPengajuanPostRequest request);

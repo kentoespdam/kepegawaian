@@ -50,15 +50,6 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
     }
 
     @Override
-    public Page<CutiPengajuanResponse> findPageApproval(CutiPengajuanApprovalRequest request) {
-        if (request.getPicSaatIniId().equals(supervisorSdm)) {
-            Page<CutiPegawai> result = repository.findForApproval(request.getTahun(), request.getPicSaatIniId(), request.getApprovalCutiStatus().getValue(), request.getPageable());
-            return result.map(CutiPengajuanResponse::from);
-        }
-        return cutiApprovalChainService.findCutiPegawai(request);
-    }
-
-    @Override
     public CutiPengajuanResponse findById(Long id) {
         return repository.findById(id).map(CutiPengajuanResponse::from)
                 .orElse(null);
