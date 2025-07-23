@@ -26,8 +26,9 @@ public class CutiApprovalChainCustomRepositoryImpl implements CutiApprovalChainC
         Root<CutiApprovalChain> root = query.from(CutiApprovalChain.class);
 
         Predicate predicate = request.getApprovalChainSpecification().toPredicate(root, query, cb);
-        query.groupBy(root.get("refCuti").get("id"));
         query.where(predicate);
+        query.groupBy(root.get("refCuti").get("id"));
+        query.orderBy(cb.desc(root.get("readWriteStatus")));
 
         List<CutiApprovalChainResponse> values = em.createQuery(query)
                 .setFirstResult(request.getPageable().getPageNumber() * request.getPageable().getPageSize())
