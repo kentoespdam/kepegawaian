@@ -6,6 +6,7 @@ import id.perumdamts.kepegawaian.dto.cuti.approval.CutiApprovalMiniResponse;
 import id.perumdamts.kepegawaian.dto.cuti.approval.CutiApprovalPostRequest;
 import id.perumdamts.kepegawaian.dto.cuti.approval.CutiApprovalRequest;
 import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
+import id.perumdamts.kepegawaian.entities.commons.EReadWriteStatus;
 import id.perumdamts.kepegawaian.entities.cuti.CutiApproval;
 import id.perumdamts.kepegawaian.entities.cuti.CutiApprovalChain;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
@@ -24,6 +25,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -89,8 +91,8 @@ public class CutiApprovalServiceImpl implements CutiApprovalService {
             // Validate approver's jabatan
             Long approverJabatanId = approver.getJabatan().getId();
             Long currentPicJabatanId = leaveRequest.getPicSaatIni().getId();
-            if (!approverJabatanId.equals(supervisorSdmId) && !approverJabatanId.equals(currentPicJabatanId)) {
-                throw new RuntimeException("Permission Denied");
+            if (!approverJabatanId.equals(currentPicJabatanId)) {
+                throw new RuntimeException("You are not allowed to approve this leave request");
             }
 
             // Create new cuti approval entity
@@ -100,7 +102,7 @@ public class CutiApprovalServiceImpl implements CutiApprovalService {
             switch (request.getApprovalStatus()) {
                 case APPROVED -> acceptPengajuan(approvalEntity, leaveRequest);
                 case REJECTED -> rejectCutiPegawai(approvalEntity, leaveRequest);
-                case RETURNED -> returnPengajuan(approvalEntity, leaveRequest);
+//                case RETURNED -> returnPengajuan(approvalEntity, leaveRequest);
                 default -> throw new RuntimeException("Unknown Approval Status");
             }
 
@@ -113,49 +115,36 @@ public class CutiApprovalServiceImpl implements CutiApprovalService {
     }
 
     private void acceptPengajuan(CutiApproval cutiApproval, CutiPegawai cutiPegawai) {
-        // fetch the approval chain with levels greater than the leave request's current approval level
-        List<CutiApprovalChain> approvalChainList = cutiApprovalChainRepository
-                .findByRefCuti_IdAndSkipOrderByApprovalLevelAsc(cutiPegawai.getId(), false);
-
-        // check if the approval chain is empty
-        if (approvalChainList.isEmpty()) {
-            throw new RuntimeException("You have no permission to approve this request");
-        }
-
-        // get the user's approval level
-        Integer userApprovalLevel = approvalChainList.stream()
-                .filter(chain -> chain.getJabatanId().equals(cutiApproval.getJabatan().getId()))
+        List<CutiApprovalChain> chains = cutiApprovalChainRepository.findByRefCuti_Id(cutiPegawai.getId());
+        CutiApprovalChain currentChain = chains.stream()
+                .filter(chain -> chain.getReadWriteStatus().equals(EReadWriteStatus.WRITE))
                 .findFirst()
-                .map(CutiApprovalChain::getApprovalLevel)
-                .orElse(0);
+                .orElseThrow(() -> new RuntimeException("You are not allowed to approve this leave request"));
+        Integer currentLevel = currentChain.getApprovalLevel();
+        Optional<CutiApprovalChain> nextChain = chains.stream()
+                .filter(chain -> chain.getApprovalLevel().equals(currentLevel + 1))
+                .findFirst();
 
-        // filter the approval chain to get the current and next approval chain
-        List<CutiApprovalChain> filteredChains = approvalChainList.stream()
-                .filter(chain -> chain.getApprovalLevel() >= userApprovalLevel)
-                .toList();
-
-        // get the current and next approval chain
-        CutiApprovalChain currentChain = filteredChains.get(0);
-        CutiApprovalChain nextChain = filteredChains.size() > 1 ? filteredChains.get(1) : null;
-
-        // check if the current approval level is less than the cuti pegawai's approval level
-        if (currentChain.getApprovalLevel() < cutiPegawai.getApprovalLevel()) {
-            throw new RuntimeException("You have no permission to approve this request");
+        if (nextChain.isPresent()) {
+            currentChain.setApprovalStatus(cutiApproval.getApprovalStatus());
+            currentChain.setReadWriteStatus(EReadWriteStatus.READ);
+            CutiApprovalChain nextApprovalChain = nextChain.get();
+            nextApprovalChain.setReadWriteStatus(EReadWriteStatus.WRITE);
+            cutiPegawai.setApprovalLevel(nextApprovalChain.getApprovalLevel());
+            cutiPegawai.setPicSaatIni(new Jabatan(nextApprovalChain.getJabatanId()));
+            repository.save(cutiApproval);
+            cutiPegawaiRepository.save(cutiPegawai);
+            cutiApprovalChainRepository.save(currentChain);
+            cutiApprovalChainRepository.save(nextApprovalChain);
+        } else {
+            currentChain.setReadWriteStatus(EReadWriteStatus.READ);
+            currentChain.setApprovalStatus(cutiApproval.getApprovalStatus());
+            cutiPegawai.setApprovalCutiStatus(cutiApproval.getApprovalStatus());
+            repository.save(cutiApproval);
+            cutiPegawaiRepository.save(cutiPegawai);
+            cutiApprovalChainRepository.save(currentChain);
+            cutiKuotaUpdateByCutiService.updateKuota(cutiPegawai);
         }
-
-        // set the approval level of the cuti approval entity
-        cutiApproval.setApprovalLevel(currentChain.getApprovalLevel());
-
-        // get the approver's position id
-        Long approverPositionId = cutiApproval.getJabatan().getId();
-
-        // check if the approver's position is in the approval chain
-        if (!filteredChains.stream().map(CutiApprovalChain::getJabatanId).toList().contains(approverPositionId)) {
-            throw new RuntimeException("You have no permission to approve this request");
-        }
-
-        // save the changes to the database
-        saveAccept(cutiApproval, cutiPegawai, nextChain);
     }
 
     /**
@@ -172,44 +161,40 @@ public class CutiApprovalServiceImpl implements CutiApprovalService {
      * @param cutiApproval Entity cuti approval that is being returned
      * @param cutiPegawai  Entity cuti pegawai that is being returned
      */
-    private void returnPengajuan(CutiApproval cutiApproval, CutiPegawai cutiPegawai) {
-        // fetch the approval chain whose approval level is less than or equal to
-        // the approval level of the cuti pegawai and sort them in descending order
-        List<CutiApprovalChain> approvalChains = cutiApprovalChainRepository
-                .findByRefCuti_IdAndApprovalLevelLessThanEqualAndSkipOrderByApprovalLevelDesc(cutiPegawai.getId(), cutiPegawai.getApprovalLevel(), true);
-
-        if (approvalChains.isEmpty()) {
-            throw new RuntimeException("You have no permission to return this request");
-        }
-
-        // get the current and next approval chain
-        CutiApprovalChain currentApprovalChain = approvalChains.get(0);
-        CutiApprovalChain nextApprovalChain = approvalChains.size() > 1 ? approvalChains.get(1) : currentApprovalChain;
-
-        // check if the jabatan of the pegawai who is returning the cuti is in the approval chain
-        if (!approvalChains.stream().map(CutiApprovalChain::getJabatanId).toList().contains(cutiApproval.getJabatan().getId())) {
-            throw new RuntimeException("You have no permission to return this request");
-        }
-
-        // set the approval level and jabatan of the cuti approval entity
-        cutiApproval.setApprovalLevel(currentApprovalChain.getApprovalLevel());
-        cutiApproval.setJabatan(new Jabatan(currentApprovalChain.getJabatanId()));
-
-        // if there is a next approval chain, then set the approval level of the cuti pegawai to the approval level of the next approval chain
-        if (nextApprovalChain != null) {
-            cutiPegawai.setApprovalLevel(nextApprovalChain.getApprovalLevel());
-            cutiPegawai.setPicSaatIni(new Jabatan(nextApprovalChain.getJabatanId()));
-        }
-        cutiPegawai.setApprovalCutiStatus(cutiApproval.getApprovalStatus());
-
-        // save the changes to the database
-        repository.save(cutiApproval);
-        cutiPegawaiRepository.save(cutiPegawai);
-        if (nextApprovalChain != null) {
-            currentApprovalChain.setSkip(false);
-            cutiApprovalChainRepository.save(currentApprovalChain);
-        }
-    }
+//    private void returnPengajuan(CutiApproval cutiApproval, CutiPegawai cutiPegawai) {
+//        // fetch the approval chain whose approval level is less than or equal to
+//        // the approval level of the cuti pegawai and sort them in descending order
+//        List<CutiApprovalChain> approvalChains = cutiApprovalChainRepository
+//                .findByRefCuti_IdAndApprovalLevelLessThanEqualAndSkipOrderByApprovalLevelDesc(cutiPegawai.getId(), cutiPegawai.getApprovalLevel(), true);
+//
+//        if (approvalChains.isEmpty()) {
+//            throw new RuntimeException("You have no permission to return this request");
+//        }
+//
+//        // get the current and next approval chain
+//        CutiApprovalChain currentApprovalChain = approvalChains.get(0);
+//        CutiApprovalChain nextApprovalChain = approvalChains.size() > 1 ? approvalChains.get(1) : currentApprovalChain;
+//
+//        // check if the jabatan of the pegawai who is returning the cuti is in the approval chain
+//        if (!approvalChains.stream().map(CutiApprovalChain::getJabatanId).toList().contains(cutiApproval.getJabatan().getId())) {
+//            throw new RuntimeException("You have no permission to return this request");
+//        }
+//
+//        // set the approval level and jabatan of the cuti approval entity
+//        cutiApproval.setApprovalLevel(currentApprovalChain.getApprovalLevel());
+//        cutiApproval.setJabatan(new Jabatan(currentApprovalChain.getJabatanId()));
+//
+//        // if there is a next approval chain, then set the approval level of the cuti pegawai to the approval level of the next approval chain
+//        if (nextApprovalChain != null) {
+//            cutiPegawai.setApprovalLevel(nextApprovalChain.getApprovalLevel());
+//            cutiPegawai.setPicSaatIni(new Jabatan(nextApprovalChain.getJabatanId()));
+//        }
+//        cutiPegawai.setApprovalCutiStatus(cutiApproval.getApprovalStatus());
+//
+//        // save the changes to the database
+//        repository.save(cutiApproval);
+//        cutiPegawaiRepository.save(cutiPegawai);
+//    }
 
     /**
      * Rejects a cuti pegawai.
@@ -233,44 +218,5 @@ public class CutiApprovalServiceImpl implements CutiApprovalService {
         // Save the updated cuti approval and cuti pegawai entities to the database
         repository.save(cutiApproval);
         cutiPegawaiRepository.save(cutiPegawai);
-    }
-
-    /**
-     * Saves the cuti approval and updates the cuti pegawai status and approval level
-     * based on the approval chain.
-     *
-     * @param cutiApproval  the cuti approval to be saved
-     * @param cutiPegawai   the cuti pegawai to be updated
-     * @param approvalChain the approval chain
-     */
-    private void saveAccept(CutiApproval cutiApproval, CutiPegawai cutiPegawai, CutiApprovalChain approvalChain) {
-        // Determine the new approval level based on the approval chain
-        int newApprovalLevel = approvalChain == null
-                ? cutiPegawai.getApprovalLevel() + 1
-                : approvalChain.getApprovalLevel();
-
-        // Update the cuti pegawai's approval level and position in charge if there is an approval chain
-        if (approvalChain != null) {
-            cutiPegawai.setApprovalLevel(newApprovalLevel);
-            cutiPegawai.setPicSaatIni(new Jabatan(approvalChain.getJabatanId()));
-        } else {
-            // If there is no approval chain, update the cuti pegawai's status to the approval status
-            cutiPegawai.setApprovalCutiStatus(cutiApproval.getApprovalStatus());
-        }
-
-        // Save the updated cuti approval and cuti pegawai entities to the database
-        repository.save(cutiApproval);
-        cutiPegawaiRepository.save(cutiPegawai);
-
-        // Fetch the approval chains that need to be updated to skip and set them to skip
-        List<CutiApprovalChain> chainsToUpdate = cutiApprovalChainRepository
-                .findByRefCuti_IdAndApprovalLevelLessThanEqualOrderByApprovalLevelDesc(cutiPegawai.getId(), newApprovalLevel - 1);
-
-        // Mark the fetched approval chains as skipped and save them
-        chainsToUpdate.forEach(chain -> chain.setSkip(true));
-        cutiApprovalChainRepository.saveAll(chainsToUpdate);
-        if (approvalChain != null) {
-            cutiKuotaUpdateByCutiService.updateKuota(cutiPegawai);
-        }
     }
 }

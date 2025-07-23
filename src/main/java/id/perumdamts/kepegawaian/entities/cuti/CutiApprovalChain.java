@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.entities.cuti;
 
+import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
+import id.perumdamts.kepegawaian.entities.commons.EReadWriteStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +9,8 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(indexes = {
-        @Index(columnList = "skip"),
+        @Index(columnList = "readWriteStatus"),
+        @Index(columnList = "approvalStatus"),
 })
 @Data
 @NoArgsConstructor
@@ -22,14 +25,27 @@ public class CutiApprovalChain {
     private Long jabatanId;
     private String jabatanNama;
     private Integer approvalLevel;
-    @Column(columnDefinition = "boolean default false")
-    private Boolean skip = false;
+    @Enumerated(EnumType.ORDINAL)
+    private EApprovalCutiStatus approvalStatus;
+    @Enumerated(EnumType.ORDINAL)
+    private EReadWriteStatus readWriteStatus;
 
     public CutiApprovalChain(CutiPegawai refCutiId, Long jabatanId, String jabatanNama, int approvalLevel) {
         this.refCuti = refCutiId;
         this.jabatanId = jabatanId;
         this.jabatanNama = jabatanNama;
         this.approvalLevel = approvalLevel;
+        this.approvalStatus = EApprovalCutiStatus.PENDING;
+        this.readWriteStatus = EReadWriteStatus.NONE;
+    }
+
+    public CutiApprovalChain(CutiPegawai refCutiId, Long jabatanId, String jabatanNama, int approvalLevel, EApprovalCutiStatus approvalStatus, EReadWriteStatus readWrite) {
+        this.refCuti = refCutiId;
+        this.jabatanId = jabatanId;
+        this.jabatanNama = jabatanNama;
+        this.approvalLevel = approvalLevel;
+        this.approvalStatus = approvalStatus;
+        this.readWriteStatus = readWrite;
     }
 
     @Override
@@ -40,7 +56,8 @@ public class CutiApprovalChain {
                 ", jabatanId=" + jabatanId +
                 ", jabatanNama='" + jabatanNama + '\'' +
                 ", approvalLevel=" + approvalLevel +
-                ", skip=" + skip +
+                ", approvalStatus=" + approvalStatus +
+                ", readWriteStatus=" + readWriteStatus +
                 '}';
     }
 }

@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.services.cuti.approval;
 import id.perumdamts.kepegawaian.dto.cuti.approval.CutiApprovalPostRequest;
 import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
 import id.perumdamts.kepegawaian.entities.commons.EJenisPengajuanCuti;
+import id.perumdamts.kepegawaian.entities.commons.EReadWriteStatus;
 import id.perumdamts.kepegawaian.entities.cuti.CutiApproval;
 import id.perumdamts.kepegawaian.entities.cuti.CutiApprovalChain;
 import id.perumdamts.kepegawaian.entities.cuti.CutiJenis;
@@ -119,11 +120,11 @@ class CutiApprovalServiceImplTest {
 
     private void generateCutiApprovalChains() {
         cutiApprovalChains = new ArrayList<>();
-        cutiApprovalChains.add(new CutiApprovalChain(1L, new CutiPegawai(1L), 66L, "Supervisor Teknologi Informasi", 1, false));
-        cutiApprovalChains.add(new CutiApprovalChain(2L, new CutiPegawai(1L), 48L, "Manajer Sumber Daya Manusia & TI", 2, false));
-        cutiApprovalChains.add(new CutiApprovalChain(3L, new CutiPegawai(1L), 49L, "Supervisor Adm. & Pengembangan SDM", 3, false));
-        cutiApprovalChains.add(new CutiApprovalChain(4L, new CutiPegawai(1L), 48L, "Manajer Sumber Daya Manusia & TI", 4, false));
-        cutiApprovalChains.add(new CutiApprovalChain(5L, new CutiPegawai(1L), 25L, "Direktur Umum", 5, false));
+        cutiApprovalChains.add(new CutiApprovalChain(1L, new CutiPegawai(1L), 66L, "Supervisor Teknologi Informasi", 1, EApprovalCutiStatus.PENDING, EReadWriteStatus.WRITE));
+        cutiApprovalChains.add(new CutiApprovalChain(2L, new CutiPegawai(1L), 48L, "Manajer Sumber Daya Manusia & TI", 2, EApprovalCutiStatus.PENDING, EReadWriteStatus.NONE));
+        cutiApprovalChains.add(new CutiApprovalChain(3L, new CutiPegawai(1L), 49L, "Supervisor Adm. & Pengembangan SDM", 3, EApprovalCutiStatus.PENDING, EReadWriteStatus.NONE));
+        cutiApprovalChains.add(new CutiApprovalChain(4L, new CutiPegawai(1L), 48L, "Manajer Sumber Daya Manusia & TI", 4, EApprovalCutiStatus.PENDING, EReadWriteStatus.NONE));
+        cutiApprovalChains.add(new CutiApprovalChain(5L, new CutiPegawai(1L), 25L, "Direktur Umum", 5, EApprovalCutiStatus.PENDING, EReadWriteStatus.NONE));
     }
 
     @BeforeEach

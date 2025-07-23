@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.dto.commons.CommonPageRequest;
 import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
 import id.perumdamts.kepegawaian.entities.commons.EJenisPengajuanCuti;
+import id.perumdamts.kepegawaian.entities.commons.EReadWriteStatus;
 import id.perumdamts.kepegawaian.entities.cuti.CutiApprovalChain;
 import jakarta.persistence.criteria.Expression;
 import jakarta.validation.constraints.Min;
@@ -42,16 +43,15 @@ public class CutiApprovalChainRequest extends CommonPageRequest {
                             cb.equal(cb.function("YEAR", Integer.class, tanggalMulaiExpression), tahun)
                     );
                 };
-        Specification<CutiApprovalChain> approvalSpec =
-                (root, query, cb) ->
-                        cb.equal(root.get("refCuti").get("approvalCutiStatus"), approvalCutiStatus);
         Specification<CutiApprovalChain> jenisPengajuanCutiSpec = Objects.isNull(jenisPengajuanCuti) ? null :
                 (root, query, cb) ->
                         cb.equal(root.get("refCuti").get("jenisPengajuanCuti"), jenisPengajuanCuti);
-        Specification<CutiApprovalChain> levelSpec = approvalCutiStatus.equals(EApprovalCutiStatus.PENDING) ?
-                (root, query, cb) ->
-                        cb.equal(root.get("refCuti").get("approvalLevel"), root.get("approvalLevel")) : null;
+        Specification<CutiApprovalChain> readWriteSpec = (root, query, cb) ->
+                cb.notEqual(root.get("readWriteStatus"), EReadWriteStatus.NONE);
+        Specification<CutiApprovalChain> approvalChainSpec = (root, query, cb) ->
+                cb.equal(root.get("approvalStatus"), approvalCutiStatus);
 
-        return Specification.where(picSaatIniSpec).and(tahunSpec).and(approvalSpec).and(jenisPengajuanCutiSpec).and(levelSpec);
+        return Specification.where(picSaatIniSpec).and(tahunSpec)
+                .and(jenisPengajuanCutiSpec).and(readWriteSpec).and(approvalChainSpec);
     }
 }
