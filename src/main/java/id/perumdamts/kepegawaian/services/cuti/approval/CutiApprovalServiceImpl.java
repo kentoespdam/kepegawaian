@@ -218,5 +218,10 @@ public class CutiApprovalServiceImpl implements CutiApprovalService {
         // Save the updated cuti approval and cuti pegawai entities to the database
         repository.save(cutiApproval);
         cutiPegawaiRepository.save(cutiPegawai);
+        cutiApprovalChainRepository.findByRefCutiIdAndJabatanId(cutiPegawai.getId(), cutiApproval.getJabatan().getId())
+                .ifPresent(chain->{
+                    chain.setReadWriteStatus(EReadWriteStatus.READ);
+                    cutiApprovalChainRepository.save(chain);
+                });
     }
 }
