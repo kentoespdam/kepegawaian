@@ -42,7 +42,7 @@ public class RiwayatKontrakPostRequest {
     @NotNull(message = "Tanggal Selesai is required", groups = PerpanjanganKontrak.class)
     private LocalDate tanggalSelesai;
     @NotNull(message = "Golongan ID is required")
-    @Min(value = 1, message = "Golongan is required")
+    @Min(value = 1, message = "Golongan is required", groups = KontrakToCapeg.class)
     private Long golonganId;
     @Min(value = 0, message = "Gaji Pokok must be greater than or equal to 0")
     private Double gajiPokok;
