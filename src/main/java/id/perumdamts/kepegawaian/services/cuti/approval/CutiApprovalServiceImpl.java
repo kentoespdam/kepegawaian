@@ -49,9 +49,9 @@ public class CutiApprovalServiceImpl implements CutiApprovalService {
     /**
      * Retrieves a page of approval details for the given cuti pegawai.
      *
-     * @param cutiId   the id of the cuti pegawai
-     * @param request  the page request and specification
-     * @return         the page of approval mini responses
+     * @param cutiId  the id of the cuti pegawai
+     * @param request the page request and specification
+     * @return the page of approval mini responses
      */
     @Override
     public Page<CutiApprovalMiniResponse> findPage(Long cutiId, CutiApprovalRequest request) {
@@ -145,7 +145,8 @@ public class CutiApprovalServiceImpl implements CutiApprovalService {
 
         // Determine the next approval level based on the approval status
         int currentLevel = currentChain.getApprovalLevel();
-        int nextLevel = cutiApproval.getApprovalStatus() == EApprovalCutiStatus.APPROVED ? currentLevel - 1 : currentLevel + 1;
+        int nextLevel = cutiApproval.getApprovalStatus().equals(EApprovalCutiStatus.APPROVED) ?
+                currentLevel + 1 : currentLevel - 1;
 
         // Attempt to find the next approval chain
         Optional<CutiApprovalChain> nextChainOpt = approvalChains.stream()
