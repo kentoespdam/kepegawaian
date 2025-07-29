@@ -7,7 +7,6 @@ import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import id.perumdamts.kepegawaian.repositories.cuti.CutiPegawaiRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,9 +16,6 @@ import java.util.List;
 public class ValidatePengajuanCutiService {
     private final CutiPegawaiRepository repository;
     private final DefConfig defConfig;
-
-    @Value("${custom.jenisCuti.besar}")
-    private Long jenisCutiBesar;
 
     /**
      * Validate the leave request. This validation is done to check if the employee
@@ -88,8 +84,7 @@ public class ValidatePengajuanCutiService {
                 request.getRefCutiId(), EApprovalCutiStatus.APPROVED
         ).orElseThrow(() -> new RuntimeException("Unknown Cuti Pegawai"));
 
-        if (!cutiPegawai.getJenisCuti().getId().equals(defConfig.getJenisCutiTahunan()) ||
-                !cutiPegawai.getJenisCuti().getId().equals(defConfig.getJenisCutiIbadah()))
+        if (List.of(defConfig.getJenisCutiTahunan(), defConfig.getJenisCutiIbadah()).contains(cutiPegawai.getJenisCuti().getId()))
             throw new RuntimeException("Cuti ini tidak perlu di klaim");
 
         // cek apakah pengajuan klaim cuti ini sudah ada
@@ -101,7 +96,7 @@ public class ValidatePengajuanCutiService {
         // cek apakah ada cuti melaksanakan ibadah yang masih berlangsung atau belum disetujui
         boolean existCutiIbadah = repository.existsByPegawai_IdAndJenisCuti_IdAndApprovalCutiStatusIn(
                 request.getPegawaiId(),
-                jenisCutiBesar,
+                defConfig.getJenisCutiIbadah(),
                 List.of(EApprovalCutiStatus.PENDING, EApprovalCutiStatus.RETURNED)
         );
         if (existCutiIbadah) {
