@@ -84,7 +84,7 @@ public class ValidatePengajuanCutiService {
                 request.getRefCutiId(), EApprovalCutiStatus.APPROVED
         ).orElseThrow(() -> new RuntimeException("Unknown Cuti Pegawai"));
 
-        if (List.of(defConfig.getJenisCutiTahunan(), defConfig.getJenisCutiIbadah()).contains(cutiPegawai.getJenisCuti().getId()))
+        if (!List.of(defConfig.getJenisCutiTahunan(), defConfig.getJenisCutiIbadah()).contains(cutiPegawai.getJenisCuti().getId()))
             throw new RuntimeException("Cuti ini tidak perlu di klaim");
 
         // cek apakah pengajuan klaim cuti ini sudah ada
