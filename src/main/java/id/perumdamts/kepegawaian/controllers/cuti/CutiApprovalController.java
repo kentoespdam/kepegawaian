@@ -27,4 +27,9 @@ public class CutiApprovalController {
     public ResponseEntity<?> saveApproval(@Valid @RequestBody CutiApprovalPostRequest request, Errors errors) {
         return CustomResult.save(service.savePengajuan(request));
     }
+
+    @PostMapping("/klaim")
+    public ResponseEntity<?> klaim(@Valid @RequestBody CutiApprovalPostRequest request, Errors errors) {
+        return CustomResult.save(service.saveKlaim(request));
+    }
 }

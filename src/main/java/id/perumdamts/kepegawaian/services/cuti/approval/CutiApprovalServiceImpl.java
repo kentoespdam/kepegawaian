@@ -25,7 +25,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -219,9 +218,6 @@ public class CutiApprovalServiceImpl implements CutiApprovalService {
         try {
             CutiPegawai cutiPegawai = cutiPegawaiRepository.findById(request.getCutiId())
                     .orElseThrow(() -> new RuntimeException("Unknown Cuti Pegawai"));
-
-            CutiPegawai refCuti = cutiPegawai.getRefCuti();
-
             Pegawai approver = pegawaiRepository.findById(request.getApproverId())
                     .orElseThrow(() -> new RuntimeException("Approver Pegawai not found"));
 
@@ -229,36 +225,20 @@ public class CutiApprovalServiceImpl implements CutiApprovalService {
                 throw new RuntimeException("Approver Pegawai not found");
             }
 
-            CutiApproval cutiApproval = CutiApprovalPostRequest.toEntity(request, cutiPegawai, approver);
+            CutiApproval entity = CutiApprovalPostRequest.toEntity(request, cutiPegawai, approver);
 
-            LocalDate tanggalMulai = cutiPegawai.getTanggalMulai();
-            LocalDate tanggalSelesai = cutiPegawai.getTanggalSelesai();
-            int startYear = tanggalMulai.getYear();
-            int endYear = tanggalSelesai.getYear();
-            LocalDate now = LocalDate.now();
-            int nowYear = now.getYear();
-            LocalDate endPeriode = LocalDate.of(startYear, 6, 31);
-
-            Integer jumlahHariKerja = cutiPegawai.getJumlahHariKerja();
-            Integer jumlahHariKerjaRef = refCuti.getJumlahHariKerja();
-
-            if(jumlahHariKerja.equals(jumlahHariKerjaRef)){
-                doSaveKlaim(cutiApproval, cutiPegawai);
-            }
-            else{
-                if (startYear > nowYear && endYear > nowYear) {
-
-                }
+            if (!request.getApprovalStatus().equals(EApprovalCutiStatus.APPROVED)) {
+                cutiPegawai.setApprovalCutiStatus(request.getApprovalStatus());
+                repository.save(entity);
+                cutiPegawaiRepository.save(cutiPegawai);
             }
 
-            if (!cutiPegawai.getJenisCuti().getId().equals(defConfig.getJenisCutiTahunan())) {
-                cutiApprovalChainRepository.findByRefCutiIdAndJabatanId(cutiPegawai.getId(), approver.getJabatan().getId())
-                        .ifPresent(chain -> {
-                            chain.setReadWriteStatus(EReadWriteStatus.READ);
-                            chain.setApprovalStatus(request.getApprovalStatus());
-                            cutiApprovalChainRepository.save(chain);
-                        });
-            }
+            cutiApprovalChainRepository.findByRefCutiIdAndJabatanId(cutiPegawai.getId(), approver.getJabatan().getId())
+                    .ifPresent(chain -> {
+                        chain.setReadWriteStatus(EReadWriteStatus.READ);
+                        chain.setApprovalStatus(request.getApprovalStatus());
+                        cutiApprovalChainRepository.save(chain);
+                    });
 
 
             return SavedStatus.build(ESaveStatus.SUCCESS, "Cuti Pengajuan berhasil disetujui");

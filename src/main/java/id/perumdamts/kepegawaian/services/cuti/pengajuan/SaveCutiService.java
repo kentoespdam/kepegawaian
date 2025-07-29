@@ -327,11 +327,14 @@ public class SaveCutiService {
                 throw new RuntimeException("Kuota Cuti Tahun depan tidak tersedia! sisa kuota: " + nextYearRemaining + " hari");
             }
 
+            entity.setRiwayatKuota0(currentYearRemaining);
             entity.setRiwayatPakai0(currentYearRemaining);
             entity.setRiwayatSisa0(0);
+            entity.setRiwayatKuota1(nextYearRemaining);
             entity.setRiwayatPakai1(remainingAfterCurrentYear);
             entity.setRiwayatSisa1(nextYearRemaining - remainingAfterCurrentYear);
         } else {
+            entity.setRiwayatKuota0(currentYearRemaining);
             entity.setRiwayatPakai0(totalDays);
             entity.setRiwayatSisa0(currentYearRemaining - totalDays);
         }

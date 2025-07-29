@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class ApproveKlaimCutiService {
+public class CutiApproveKlaimCutiService {
     private final CutiKuotaRepository cutiKuotaRepository;
 
     public CutiPegawai forNextYear(CutiPegawai cutiPegawai) {

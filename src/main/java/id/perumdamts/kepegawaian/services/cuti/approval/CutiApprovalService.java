@@ -10,4 +10,6 @@ public interface CutiApprovalService {
     Page<CutiApprovalMiniResponse> findPage(Long cutiId, CutiApprovalRequest request);
 
     SavedStatus<?> savePengajuan(CutiApprovalPostRequest request);
+
+    SavedStatus<?> saveKlaim(CutiApprovalPostRequest request);
 }
