@@ -213,10 +213,10 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
     @Override
     public SavedStatus<?> klaim(CutiPengajuanKlaimPostRequest request) {
         // Validate the CSRF token to prevent duplicate requests
-        if (redisHelper.validateToken(request.getCsrfToken())) {
-            // Return a duplicate status if the token is already used
-            return SavedStatus.build(ESaveStatus.DUPLICATE, "Duplicate request detected");
-        }
+//        if (redisHelper.validateToken(request.getCsrfToken())) {
+//            // Return a duplicate status if the token is already used
+//            return SavedStatus.build(ESaveStatus.DUPLICATE, "Duplicate request detected");
+//        }
         // Save the leave claim request using the klaimCutiService
         return klaimCutiService.save(request);
     }

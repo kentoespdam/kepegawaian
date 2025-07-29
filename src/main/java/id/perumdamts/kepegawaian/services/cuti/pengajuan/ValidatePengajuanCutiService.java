@@ -88,6 +88,10 @@ public class ValidatePengajuanCutiService {
                 request.getRefCutiId(), EApprovalCutiStatus.APPROVED
         ).orElseThrow(() -> new RuntimeException("Unknown Cuti Pegawai"));
 
+        if (!cutiPegawai.getJenisCuti().getId().equals(defConfig.getJenisCutiTahunan()) ||
+                !cutiPegawai.getJenisCuti().getId().equals(defConfig.getJenisCutiIbadah()))
+            throw new RuntimeException("Cuti ini tidak perlu di klaim");
+
         // cek apakah pengajuan klaim cuti ini sudah ada
         boolean exists = repository.exists(request.getSpecification());
         if (exists) {

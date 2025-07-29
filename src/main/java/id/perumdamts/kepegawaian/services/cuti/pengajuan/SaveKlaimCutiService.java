@@ -12,6 +12,7 @@ import id.perumdamts.kepegawaian.helpers.DateHelper;
 import id.perumdamts.kepegawaian.repositories.cuti.CutiKlaimDetailRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.CutiPegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.master.HariLiburRepository;
+import id.perumdamts.kepegawaian.services.cuti.approvalChain.CutiApprovalChainService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class SaveKlaimCutiService {
     private final ValidatePengajuanCutiService validatePengajuanCutiService;
     private final HariLiburRepository hariLiburRepository;
     private final CutiKlaimDetailRepository cutiKlaimDetailRepository;
+    private final CutiApprovalChainService cutiApprovalChainService;
 
     @Value("${custom.jabatan.supervisorSdm}")
     private Long supervisorSdm;
@@ -64,15 +66,11 @@ public class SaveKlaimCutiService {
             List<LocalDate> tanggalKlaimList = DateHelper.getWorkingDays(request.getListHari(), tanggalLiburList);
             int totalHariCuti = tanggalKlaimList.size();
 
-            // Calculate total remaining leave quota
             int totalRemainingQuota = validCutiPegawai.getRiwayatKuota0() + validCutiPegawai.getRiwayatKuota1();
 
             // Validate if claimed days are within the remaining quota
-            validatePengajuanCutiService.validateMinimalCuti(totalHariCuti, totalRemainingQuota);
-
-            // If quota is insufficient, throw an exception
-            if (totalRemainingQuota < totalHariCuti) {
-                throw new RuntimeException("Kuota Cuti tidak tersedia! sisa kuota: " + totalRemainingQuota + " hari");
+            if(totalHariCuti <1 || totalHariCuti > entity.getRefCuti().getJumlahHariKerja()) {
+                throw new RuntimeException("Klaim Cuti minimal 1 hari, maksimal " + entity.getRefCuti().getJumlahHariKerja() + "hari");
             }
 
             // Set entity details
@@ -89,6 +87,7 @@ public class SaveKlaimCutiService {
                     .map(tanggal -> new CutiKlaimDetail(save, tanggal))
                     .toList();
             cutiKlaimDetailRepository.saveAll(cutiKlaimDetailList);
+            cutiApprovalChainService.generateApprovalKlaimChain(save);
 
             return SavedStatus.build(ESaveStatus.SUCCESS, "Pengajuan Klaim Cuti Berhasil disimpan");
         } catch (RuntimeException e) {

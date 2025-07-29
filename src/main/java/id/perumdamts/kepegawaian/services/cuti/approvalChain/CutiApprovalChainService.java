@@ -11,4 +11,5 @@ import java.util.List;
 public interface CutiApprovalChainService {
     Page<CutiApprovalChainResponse> findCutiPegawai(CutiApprovalChainRequest request);
     List<CutiApprovalChain> generateApprovalChain(CutiPegawai cutiPegawai);
+    List<CutiApprovalChain> generateApprovalKlaimChain(CutiPegawai cutiPegawai);
 }

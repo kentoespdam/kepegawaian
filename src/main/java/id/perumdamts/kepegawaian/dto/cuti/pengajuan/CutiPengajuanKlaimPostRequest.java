@@ -55,6 +55,7 @@ public class CutiPengajuanKlaimPostRequest {
         entity.setPegawai(cutiPegawai.getPegawai());
         entity.setNipam(cutiPegawai.getNipam());
         entity.setNama(cutiPegawai.getNama());
+        entity.setPangkatGolongan(cutiPegawai.getPangkatGolongan());
         entity.setOrganisasi(cutiPegawai.getOrganisasi());
         entity.setJabatan(cutiPegawai.getJabatan());
         entity.setJenisPengajuanCuti(EJenisPengajuanCuti.KLAIM_CUTI);

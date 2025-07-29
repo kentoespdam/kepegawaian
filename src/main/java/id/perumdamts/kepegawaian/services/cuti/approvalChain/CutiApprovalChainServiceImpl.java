@@ -84,6 +84,16 @@ public class CutiApprovalChainServiceImpl implements CutiApprovalChainService {
             return this.levelStafList(cutiPegawai);
     }
 
+    @Override
+    public List<CutiApprovalChain> generateApprovalKlaimChain(CutiPegawai cutiPegawai) {
+        List<CutiApprovalChain> approvalChain = new ArrayList<>();
+        addApprovalChainIfJabatanExists(approvalChain, cutiPegawai, supervisorSdm, 1);
+        approvalChain.getFirst().setApprovalStatus(EApprovalCutiStatus.PENDING);
+        approvalChain.getFirst().setReadWriteStatus(EReadWriteStatus.WRITE);
+
+        return repository.saveAll(approvalChain);
+    }
+
 
     /**
      * Adds a new {@link CutiApprovalChain} to the given list of chains if the given
