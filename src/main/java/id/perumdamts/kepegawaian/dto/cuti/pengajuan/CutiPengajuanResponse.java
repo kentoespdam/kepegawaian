@@ -37,6 +37,7 @@ public class CutiPengajuanResponse extends CutiPengajuanMiniResponse {
         response.setJumlahHari(entity.getJumlahHari());
         response.setJumlahHariKerja(entity.getJumlahHariKerja());
         response.setPicSaatIni(JabatanMiniResponse.from(entity.getPicSaatIni()));
+        response.setIsClaimed(entity.getIsClaimed());
         return response;
     }
 }
