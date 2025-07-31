@@ -58,8 +58,8 @@ public class CutiPengajuanController {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         if (request.getTanggalMulai().isAfter(request.getTanggalSelesai()))
             return ErrorResult.build("Tanggal selesai tidak boleh dibuat sebelum tanggal mulai");
-        if (request.getTanggalMulai().isBefore(LocalDate.now()))
-            return ErrorResult.build("Pengajuan cuti tidak boleh dibuat sebelum tanggal sekarang");
+//        if (request.getTanggalMulai().isBefore(LocalDate.now()))
+//            return ErrorResult.build("Pengajuan cuti tidak boleh dibuat sebelum tanggal sekarang");
         return CustomResult.save(service.save(request));
     }
 

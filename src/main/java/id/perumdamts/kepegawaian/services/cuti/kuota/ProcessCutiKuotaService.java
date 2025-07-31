@@ -61,7 +61,7 @@ public class ProcessCutiKuotaService {
     }
 
     private List<CutiKuota> readSheetData(Sheet sheet, Integer tahun) {
-        LocalDate expired=LocalDate.of(tahun, 6, 30);
+        LocalDate expired = LocalDate.of(tahun + 1, 6, 30);
         List<CutiKuota> cutiKuotaList = new ArrayList<>();
         List<PegawaiIdNipam> listIdAndNipam = pegawaiRepository.findByStatusKerjaInAndStatusPegawai(List.of(EStatusKerja.DIRUMAHKAN, EStatusKerja.KARYAWAN_AKTIF), EStatusPegawai.PEGAWAI);
 
@@ -69,9 +69,9 @@ public class ProcessCutiKuotaService {
             CutiKuota cutiKuota = new CutiKuota();
 
             String nipam = sheet.getRow(rowIndex).getCell(0).getStringCellValue();
-            Integer kuota= (int) sheet.getRow(rowIndex).getCell(2).getNumericCellValue();
-            Integer kuotaTerpakai= (int) sheet.getRow(rowIndex).getCell(3).getNumericCellValue();
-            Integer sisaKuota= (int) sheet.getRow(rowIndex).getCell(4).getNumericCellValue();
+            Integer kuota = (int) sheet.getRow(rowIndex).getCell(2).getNumericCellValue();
+            Integer kuotaTerpakai = (int) sheet.getRow(rowIndex).getCell(3).getNumericCellValue();
+            Integer sisaKuota = (int) sheet.getRow(rowIndex).getCell(4).getNumericCellValue();
             Pegawai pegawai = listIdAndNipam.stream()
                     .filter(p -> p.getNipam().equals(nipam))
                     .findFirst()

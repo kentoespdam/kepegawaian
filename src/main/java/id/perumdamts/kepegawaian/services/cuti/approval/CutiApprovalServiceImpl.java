@@ -1,6 +1,5 @@
 package id.perumdamts.kepegawaian.services.cuti.approval;
 
-import id.perumdamts.kepegawaian.config.DefConfig;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.cuti.approval.CutiApprovalMiniResponse;
@@ -13,6 +12,7 @@ import id.perumdamts.kepegawaian.entities.cuti.CutiApprovalChain;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
+import id.perumdamts.kepegawaian.helpers.DateHelper;
 import id.perumdamts.kepegawaian.helpers.RedisHelper;
 import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.CutiApprovalChainRepository;
@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,7 +39,7 @@ public class CutiApprovalServiceImpl implements CutiApprovalService {
     private final CutiApprovalChainRepository cutiApprovalChainRepository;
     private final PegawaiRepository pegawaiRepository;
     private final CutiKuotaUpdateByCutiService cutiKuotaUpdateByCutiService;
-    private final DefConfig defConfig;
+    private final CutiApproveKlaimCutiService cutiApproveKlaimCutiService;
 
     @Value("${custom.jabatan.supervisorSdm}")
     private Long supervisorSdmId;
@@ -227,12 +228,30 @@ public class CutiApprovalServiceImpl implements CutiApprovalService {
 
             CutiApproval entity = CutiApprovalPostRequest.toEntity(request, cutiPegawai, approver);
 
+            cutiPegawai.setApprovalCutiStatus(request.getApprovalStatus());
             if (!request.getApprovalStatus().equals(EApprovalCutiStatus.APPROVED)) {
-                cutiPegawai.setApprovalCutiStatus(request.getApprovalStatus());
-                repository.save(entity);
                 cutiPegawaiRepository.save(cutiPegawai);
-            }
+            } else {
+                int nowYear = LocalDate.now().getYear();
+                LocalDate tanggalMulai = cutiPegawai.getTanggalMulai();
+                LocalDate tanggalSelesai = cutiPegawai.getTanggalSelesai();
+                int startYear = tanggalMulai.getYear();
+                int endYear = tanggalSelesai.getYear();
 
+                if (startYear > nowYear && endYear > nowYear) {
+                    cutiApproveKlaimCutiService.forNextYear(cutiPegawai, entity);
+                } else if (startYear == nowYear && endYear > startYear) {
+                    cutiApproveKlaimCutiService.overlappingYear(cutiPegawai, entity);
+                } else if (DateHelper.isBetweenDates(tanggalMulai, tanggalSelesai, startYear, 1, 6, 30)) {
+                    cutiApproveKlaimCutiService.between1JanAnd30Jun(cutiPegawai, entity);
+                } else if (DateHelper.isBetweenDates(tanggalMulai, tanggalSelesai, startYear, 7, 12, 31)) {
+                    cutiApproveKlaimCutiService.between1JulAnd31Dec(cutiPegawai, entity);
+                } else if (DateHelper.isOverlappingDates(tanggalMulai, tanggalSelesai, startYear)) {
+                    cutiApproveKlaimCutiService.between30JunAnd1Jul(cutiPegawai, entity);
+                } else {
+                    throw new RuntimeException("Invalid request");
+                }
+            }
             cutiApprovalChainRepository.findByRefCutiIdAndJabatanId(cutiPegawai.getId(), approver.getJabatan().getId())
                     .ifPresent(chain -> {
                         chain.setReadWriteStatus(EReadWriteStatus.READ);
@@ -245,19 +264,5 @@ public class CutiApprovalServiceImpl implements CutiApprovalService {
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
-
     }
-
-    private void doSaveKlaim(CutiApproval cutiApproval, CutiPegawai cutiPegawai) {
-        repository.save(cutiApproval);
-        cutiPegawaiRepository.save(cutiPegawai);
-        cutiApprovalChainRepository.findByRefCutiIdAndJabatanId(cutiPegawai.getId(), cutiPegawai.getJabatan().getId())
-                .ifPresent(chain -> {
-                    chain.setReadWriteStatus(EReadWriteStatus.READ);
-                    chain.setApprovalStatus(cutiPegawai.getApprovalCutiStatus());
-                    cutiApprovalChainRepository.save(chain);
-                });
-    }
-
-
 }
