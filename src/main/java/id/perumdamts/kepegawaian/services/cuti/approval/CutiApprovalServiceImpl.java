@@ -217,6 +217,11 @@ public class CutiApprovalServiceImpl implements CutiApprovalService {
 
     public SavedStatus<?> saveKlaim(CutiApprovalPostRequest request) {
         try {
+            // Validate CSRF token
+            if (redisHelper.validateToken(request.getCsrfToken())) {
+                throw new RuntimeException("Duplicate request detected");
+            }
+
             CutiPegawai cutiPegawai = cutiPegawaiRepository.findById(request.getCutiId())
                     .orElseThrow(() -> new RuntimeException("Unknown Cuti Pegawai"));
             Pegawai approver = pegawaiRepository.findById(request.getApproverId())
@@ -258,7 +263,6 @@ public class CutiApprovalServiceImpl implements CutiApprovalService {
                         chain.setApprovalStatus(request.getApprovalStatus());
                         cutiApprovalChainRepository.save(chain);
                     });
-
 
             return SavedStatus.build(ESaveStatus.SUCCESS, "Cuti Pengajuan berhasil disetujui");
         } catch (Exception e) {
