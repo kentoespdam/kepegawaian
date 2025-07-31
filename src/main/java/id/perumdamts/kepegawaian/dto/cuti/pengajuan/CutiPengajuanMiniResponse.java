@@ -41,6 +41,7 @@ public class CutiPengajuanMiniResponse {
     private Integer jumlahHari;
     private Integer jumlahHariKerja;
     private JabatanMiniResponse picSaatIni;
+    private Boolean isClaimed;
 
     public static CutiPengajuanMiniResponse from(CutiPegawai entity) {
         if (Objects.isNull(entity)) return null;
@@ -64,6 +65,7 @@ public class CutiPengajuanMiniResponse {
         response.setJumlahHari(entity.getJumlahHari());
         response.setJumlahHariKerja(entity.getJumlahHariKerja());
         response.setPicSaatIni(JabatanMiniResponse.from(entity.getPicSaatIni()));
+        response.setIsClaimed(entity.getIsClaimed());
         return response;
     }
 }

@@ -76,6 +76,8 @@ public class CutiPegawai extends IdsAbstract {
     private Integer riwayatPakai1 = 0;
     private Integer riwayatSisa0 = 0;
     private Integer riwayatSisa1 = 0;
+    @Column(columnDefinition = "boolean default false")
+    private Boolean isClaimed = false;
 
     public CutiPegawai(long id) {
         super(id);
@@ -117,6 +119,7 @@ public class CutiPegawai extends IdsAbstract {
                 ", riwayatPakai1=" + riwayatPakai1 +
                 ", riwayatSisa0=" + riwayatSisa0 +
                 ", riwayatSisa1=" + riwayatSisa1 +
+                ", isClaimed=" + isClaimed +
                 '}';
     }
 }

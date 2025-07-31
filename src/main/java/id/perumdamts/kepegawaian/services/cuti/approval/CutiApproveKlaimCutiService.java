@@ -69,6 +69,7 @@ public class CutiApproveKlaimCutiService {
         cutiPegawai.setRiwayatKuota1(nextYearQuota);
         cutiPegawai.setRiwayatPakai1(currentYearUsedQuota + remainingCurrentYearQuota);
         cutiPegawai.setRiwayatSisa1(nextYearQuota - (currentYearUsedQuota + remainingCurrentYearQuota));
+        cutiPegawai.getRefCuti().setIsClaimed(true);
 
         cutiKuotaRepository.findByPegawai_IdAndTahun(cutiPegawai.getPegawai().getId(), currentYear).ifPresent(cutiKuota -> {
             cutiKuota.setKuotaTerpakai(cutiKuota.getKuotaTerpakai() - currentYearUsedQuota + remainingCurrentYearQuota);
@@ -86,12 +87,14 @@ public class CutiApproveKlaimCutiService {
         int jumlahHariPengajuan = refCuti.getJumlahHariKerja();
         int riwayatPakai0 = refCuti.getRiwayatPakai0();
 
+        cutiPegawai.getRefCuti().setIsClaimed(true);
         if (jumlahHariKlaim == jumlahHariPengajuan) {
             cutiPegawai.setRiwayatKuota0(refCuti.getRiwayatKuota0());
             cutiPegawai.setRiwayatPakai0(riwayatPakai0);
             cutiPegawai.setRiwayatSisa0(refCuti.getRiwayatSisa0());
             cutiPegawaiRepository.save(cutiPegawai);
             repository.save(cutiApproval);
+            return;
         }
 
         int sisa = jumlahHariPengajuan - jumlahHariKlaim;
@@ -123,12 +126,14 @@ public class CutiApproveKlaimCutiService {
             throw new RuntimeException("Cuti claim rejected due to insufficient leave days compared to previous year's quota");
         }
 
+        cutiPegawai.getRefCuti().setIsClaimed(true);
         if (jumlahHariKlaim == jumlahHariPengajuan) {
             cutiPegawai.setRiwayatKuota0(refCuti.getRiwayatKuota0());
             cutiPegawai.setRiwayatPakai0(riwayatPakai0);
             cutiPegawai.setRiwayatSisa0(refCuti.getRiwayatSisa0());
             cutiPegawaiRepository.save(cutiPegawai);
             repository.save(cutiApproval);
+            return;
         }
 
         int sisa = jumlahHariPengajuan - jumlahHariKlaim;
@@ -147,6 +152,7 @@ public class CutiApproveKlaimCutiService {
 
     private void separateCutiWithNextYear(CutiPegawai cutiPegawai, int currentYear, int nextYear, Long pegawaiId) {
         CutiPegawai refCuti = cutiPegawai.getRefCuti();
+        cutiPegawai.getRefCuti().setIsClaimed(true);
         if (cutiPegawai.getJumlahHariKerja().equals(cutiPegawai.getRefCuti().getJumlahHariKerja())) {
             cutiPegawai.setRiwayatKuota0(refCuti.getRiwayatKuota0());
             cutiPegawai.setRiwayatPakai0(refCuti.getRiwayatPakai0());
