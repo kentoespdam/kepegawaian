@@ -95,7 +95,7 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
 
             GajiBatchRoot savedBatchRoot = repository.save(batchRoot);
             kafkaTemplate.send(PENGGAJIAN_TOPIC, savedBatchRoot.getId());
-            return SavedStatus.build(ESaveStatus.SUCCESS, savedBatchRoot);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Reprocess Penggajian Executed");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
