@@ -62,9 +62,9 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
 
             GajiBatchRoot save = repository.save(entity);
 
-            if (request.getFile() != null) {
+            if (request.getFileName() != null) {
                 UploadResultUtil uploadResultUtil = fileUploadUtil.uploadPenggajian(
-                        request.getFile(),
+                        request.getFileName(),
                         "PotonganTKK/" + entity.getPeriode()
                 );
                 GajiBatchRootLampiran gajiBatchRootLampiran = new GajiBatchRootLampiran(

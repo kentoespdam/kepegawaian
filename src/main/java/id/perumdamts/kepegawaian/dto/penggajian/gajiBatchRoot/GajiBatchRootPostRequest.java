@@ -14,7 +14,7 @@ public class GajiBatchRootPostRequest {
     private String bulan;
     private String diProsesOleh;
     private String jabatanPemroses;
-    private MultipartFile file;
+    private MultipartFile fileName;
 
     @JsonIgnore
     public String getPeriode() {
