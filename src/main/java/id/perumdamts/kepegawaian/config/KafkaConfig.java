@@ -17,8 +17,8 @@ public class KafkaConfig {
     public NewTopic penggajianTopic() {
         log.info("kafka topic: {}", PENGGAJIAN_TOPIC);
         return TopicBuilder.name(PENGGAJIAN_TOPIC)
-                .partitions(3)
-                .replicas(1)
+                .partitions(1)
+//                .replicas(1)
                 .build();
     }
 
