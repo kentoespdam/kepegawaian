@@ -17,17 +17,18 @@ import id.perumdamts.kepegawaian.utils.ProcessPotonganTkk;
 import id.perumdamts.kepegawaian.utils.UploadResultUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-import static id.perumdamts.kepegawaian.config.KafkaConfig.PENGGAJIAN_TOPIC;
-
 @Service
 @RequiredArgsConstructor
 public class GajiBatchRootServiceImpl implements GajiBatchRootService {
+    @Value("${spring.kafka.topic}")
+    private String PENGGAJIAN_TOPIC;
     private final GajiBatchRootRepository repository;
     private final FileUploadUtil fileUploadUtil;
     private final ProcessPotonganTkk processPotonganTkk;
