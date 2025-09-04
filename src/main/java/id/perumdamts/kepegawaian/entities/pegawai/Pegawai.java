@@ -46,7 +46,7 @@ public class Pegawai extends IdsAbstract {
     @Column(name = "nipam", unique = true, columnDefinition = "VARCHAR(32)", nullable = false)
     private String nipam;
     @JsonBackReference
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "nik", referencedColumnName = "nik")
     private Biodata biodata;
     @Column(name = "status_pegawai", nullable = false)

@@ -47,15 +47,15 @@ public class RiwayatTerminasi extends IdsAbstract {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "riwayat_sk_id", referencedColumnName = "id")
     private RiwayatSk skTerminasi;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "organisasi_id", referencedColumnName = "id")
     private Organisasi organisasi;
     private String namaOrganisasi;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "jabatan_id", referencedColumnName = "id")
     private Jabatan jabatan;
     private String namaJabatan;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "golongan_id", referencedColumnName = "id")
     private Golongan golongan;
     private String namaGolongan;
