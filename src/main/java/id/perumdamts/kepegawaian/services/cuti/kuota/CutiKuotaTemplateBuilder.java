@@ -41,7 +41,7 @@ public class CutiKuotaTemplateBuilder {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Content-Disposition", "attachment; filename=\"kuota_cuti.xlsx\"");
         httpHeaders.add("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        httpHeaders.add("Access-Control-Expose-Headers", "Content-Disposition");
+        httpHeaders.add(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "Content-Disposition");
         return ResponseEntity.ok()
                 .headers(httpHeaders)
                 .contentLength(byteArrayResource.contentLength())

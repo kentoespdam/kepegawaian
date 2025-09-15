@@ -31,11 +31,4 @@ public class HariLibur extends IdsAbstract {
     private EJenisLibur jenisLibur;
     @Column(columnDefinition = "TEXT")
     private String notes;
-
-    public HariLibur(Long id, LocalDate tanggal, EJenisLibur jenisLibur, String notes) {
-        super(id);
-        this.tanggal = tanggal;
-        this.jenisLibur = jenisLibur;
-        this.notes = notes;
-    }
 }

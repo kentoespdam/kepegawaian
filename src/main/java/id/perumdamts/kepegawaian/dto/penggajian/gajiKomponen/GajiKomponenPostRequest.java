@@ -50,10 +50,7 @@ public class GajiKomponenPostRequest {
         entity.setJenisGaji(request.getJenisGaji());
         entity.setNilai(request.getNilai());
         entity.setIsReference(request.getIsReference());
-        if (request.getIsReference())
-            entity.setFormula("#SYSTEM");
-        else
-            entity.setFormula(request.getFormula());
+        entity.setFormula(request.getFormula());
         return entity;
     }
 }

@@ -20,7 +20,6 @@ import id.perumdamts.kepegawaian.repositories.master.HariLiburRepository;
 import id.perumdamts.kepegawaian.services.cuti.approvalChain.CutiApprovalChainService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -42,9 +41,6 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
     private final CutiApprovalChainService cutiApprovalChainService;
     private final SaveKlaimCutiService klaimCutiService;
     private final ValidatePengajuanCutiService validatePengajuanCutiService;
-
-    @Value("${custom.jabatan.supervisorSdm}")
-    private Long supervisorSdm;
 
     @Override
     public Page<CutiPengajuanResponse> findPage(CutiPengajuanRequest request) {

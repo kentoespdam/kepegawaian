@@ -40,7 +40,7 @@ public class SaveCutiService {
      * 3. Jika jumlah cuti tahun berjalan dan/atau jatah cuti tahun depan tidak ada maka batalkan.
      *
      * @param request the leave request containing details such as employee ID, leave type,
-     *                start and end dates, and sub-type of leave.
+     *                start and end dates, and subtype of leave.
      * @param entity  the entity containing the leave information.
      * @return CutiPegawai
      * @throws RuntimeException if the employee or leave type is unknown, or if leave quotas
@@ -64,7 +64,7 @@ public class SaveCutiService {
      * 4. jika jumlah cuti tahun berjalan dan/atau jatah cuti tahun depan tidak ada maka batalkan
      * 5. cuti tahun berjalan harus ambil dari jatah cuti tahun berjalan
      *
-     * @param request the leave request containing employee ID, leave type, start and end dates, and sub-type of leave.
+     * @param request the leave request containing employee ID, leave type, start and end dates, and subtype of leave.
      * @param entity  the entity containing the leave information.
      * @return CutiPegawai
      * @throws RuntimeException if the employee or leave type is unknown, or if leave quotas are insufficient.

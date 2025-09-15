@@ -31,7 +31,6 @@ public class GajiBatchMaster implements Serializable {
     @JsonBackReference
     @JsonIdentityReference(alwaysAsId = true)
     private GajiBatchRoot gajiBatchRoot;
-//    private Long batch_root_id;
     private String periode;
     private Long pegawaiId;
     private String nipam;

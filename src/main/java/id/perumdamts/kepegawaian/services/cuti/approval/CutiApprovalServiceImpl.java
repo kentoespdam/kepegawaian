@@ -21,7 +21,6 @@ import id.perumdamts.kepegawaian.repositories.cuti.CutiPegawaiRepository;
 import id.perumdamts.kepegawaian.services.cuti.kuota.CutiKuotaUpdateByCutiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -41,13 +40,6 @@ public class CutiApprovalServiceImpl implements CutiApprovalService {
     private final CutiKuotaUpdateByCutiService cutiKuotaUpdateByCutiService;
     private final CutiApproveKlaimCutiService cutiApproveKlaimCutiService;
 
-    @Value("${custom.jabatan.supervisorSdm}")
-    private Long supervisorSdmId;
-
-    @Value("${custom.jenisCuti.tahunan}")
-    private Long jenisCutiTahunan;
-    @Value("${custom.jenisCuti.ibadah}")
-    private Long jenisCutiIbadah;
 
     /**
      * Retrieves a page of approval details for the given cuti pegawai.

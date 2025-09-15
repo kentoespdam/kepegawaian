@@ -31,13 +31,9 @@ public class CutiApprovalChainServiceImpl implements CutiApprovalChainService {
     private Long managerSdm;
     @Value("${custom.jabatan.direkturUtama}")
     private Long direkturUtama;
-    @Value("${custom.jabatan.direkturTeknik}")
-    private Long direkturTeknik;
     @Value("${custom.jabatan.direkturUmum}")
     private Long direkturUmum;
 
-    @Value("${custom.levelJabatan.staff}")
-    private Long levelStaf;
     @Value("${custom.levelJabatan.supervisor}")
     private Long levelSupervisor;
     @Value("${custom.levelJabatan.manager}")
@@ -85,13 +81,13 @@ public class CutiApprovalChainServiceImpl implements CutiApprovalChainService {
     }
 
     @Override
-    public List<CutiApprovalChain> generateApprovalKlaimChain(CutiPegawai cutiPegawai) {
+    public void generateApprovalKlaimChain(CutiPegawai cutiPegawai) {
         List<CutiApprovalChain> approvalChain = new ArrayList<>();
         addApprovalChainIfJabatanExists(approvalChain, cutiPegawai, supervisorSdm, 1);
         approvalChain.getFirst().setApprovalStatus(EApprovalCutiStatus.PENDING);
         approvalChain.getFirst().setReadWriteStatus(EReadWriteStatus.WRITE);
 
-        return repository.saveAll(approvalChain);
+        repository.saveAll(approvalChain);
     }
 
 

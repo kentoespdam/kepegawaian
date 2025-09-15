@@ -102,14 +102,7 @@ public class CutiApproveKlaimCutiService {
         cutiPegawai.setRiwayatPakai0(jumlahHariKlaim);
         cutiPegawai.setRiwayatSisa0(refCuti.getRiwayatSisa0() + sisa);
         cutiPegawai.getRefCuti().setIsClaimed(true);
-        cutiKuotaRepository.findByPegawai_IdAndTahun(cutiPegawai.getPegawai().getId(), cutiPegawai.getTanggalMulai().getYear())
-                .ifPresent(kuota -> {
-                    kuota.setKuotaTerpakai(kuota.getKuotaTerpakai() - sisa);
-                    kuota.setSisaKuota(kuota.getSisaKuota() + sisa);
-                    cutiKuotaRepository.save(kuota);
-                });
-        cutiPegawaiRepository.save(cutiPegawai);
-        repository.save(cutiApproval);
+        updateKuotaCuti(cutiPegawai, cutiApproval, sisa);
 
     }
 
@@ -141,6 +134,10 @@ public class CutiApproveKlaimCutiService {
         cutiPegawai.setRiwayatKuota0(refCuti.getRiwayatKuota0());
         cutiPegawai.setRiwayatPakai0(jumlahHariKlaim);
         cutiPegawai.setRiwayatSisa0(refCuti.getRiwayatSisa0() + sisa);
+        updateKuotaCuti(cutiPegawai, cutiApproval, sisa);
+    }
+
+    private void updateKuotaCuti(CutiPegawai cutiPegawai, CutiApproval cutiApproval, int sisa) {
         cutiKuotaRepository.findByPegawai_IdAndTahun(cutiPegawai.getPegawai().getId(), cutiPegawai.getTanggalMulai().getYear())
                 .ifPresent(kuota -> {
                     kuota.setKuotaTerpakai(kuota.getKuotaTerpakai() - sisa);
