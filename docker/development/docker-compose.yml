@@ -1,0 +1,17 @@
+volumes:
+  attachments:
+
+services:
+  kpi-api:
+    container_name: kepegawaian-be-dev
+    build:
+      context: .
+      dockerfile: docker/development/Dockerfile
+    image: kepegawaian:dev
+    env_file:
+      - ../../.env
+    volumes:
+      - attachments:/app/attachments
+    ports:
+      - "8080:8080"
+

@@ -1,0 +1,18 @@
+volumes:
+  attachments:
+
+services:
+  kepegawaian-be:
+#    image: kepegawaian:1.0.0
+    container_name: kepegawaian-v1.0.0
+    build:
+      context: .
+      dockerfile: docker/production/Dockerfile
+    image: kepegawaian:1.0.0
+    env_file:
+      - ../../.env
+    volumes:
+     - attachments:/app/attachments
+    ports:
+      - "8080:8080"
+
