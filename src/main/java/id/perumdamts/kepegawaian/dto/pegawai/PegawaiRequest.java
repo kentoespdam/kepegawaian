@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.dto.pegawai;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.dto.commons.CommonPageRequest;
+import id.perumdamts.kepegawaian.entities.commons.EJenisKelamin;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
@@ -32,6 +33,7 @@ public class PegawaiRequest extends CommonPageRequest {
     private Long gradeId;
     @Enumerated(EnumType.ORDINAL)
     private EStatusKerja statusKerja = EStatusKerja.KARYAWAN_AKTIF;
+    private EJenisKelamin jenisKelamin;
 
     @JsonIgnore
     public Specification<Pegawai> getSpecification() {
@@ -55,10 +57,12 @@ public class PegawaiRequest extends CommonPageRequest {
                 (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("grade").get("id"), gradeId);
         Specification<Pegawai> statusPegawaiIdsSpec = (root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("statusKerja"), statusKerja);
+        Specification<Pegawai> jenisKelaminSpec = Objects.isNull(jenisKelamin) ? null :
+                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("biodata").get("jenisKelamin"), jenisKelamin);
 
         return Specification.where(pegawaiSpec).or(namaSpec).and(nikSpec).and(statusPegawaiSpec)
                 .and(jabatanSpec).and(organisasiSpec).and(profesiSpec).and(golonganSpec)
-                .and(gradeSpec).and(statusPegawaiIdsSpec);
+                .and(gradeSpec).and(statusPegawaiIdsSpec).and(jenisKelaminSpec);
     }
 
     @JsonIgnore
