@@ -8,8 +8,6 @@ services:
       context: .
       dockerfile: docker/development/Dockerfile
     image: kepegawaian:dev
-    env_file:
-      - ../../.env
     volumes:
       - attachments:/app/attachments
     ports:
