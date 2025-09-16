@@ -26,9 +26,12 @@ import org.hibernate.envers.RelationTargetAuditMode;
 import java.time.LocalDate;
 
 @Entity
-@Table(indexes = {
-        @Index(columnList = "is_deleted")
-})
+@Table(
+        indexes = {
+                @Index(columnList = "is_deleted")
+        }, uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"pegawai_id", "riwayat_sk_id"})}
+)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -40,7 +43,7 @@ public class RiwayatMutasi extends IdsAbstract {
 
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name="pegawai_id", referencedColumnName = "id")
+    @JoinColumn(name = "pegawai_id", referencedColumnName = "id")
     private Pegawai pegawai;
     private String nipam;
     private String nama;
@@ -58,58 +61,58 @@ public class RiwayatMutasi extends IdsAbstract {
     @Enumerated(EnumType.ORDINAL)
     private EJenisMutasi jenisMutasi;
 
-//    @JsonBackReference
+    //    @JsonBackReference
     @ManyToOne
-    @JoinColumn(name="organisasi_id", referencedColumnName = "id")
+    @JoinColumn(name = "organisasi_id", referencedColumnName = "id")
     @NotFound(action = NotFoundAction.IGNORE)
     private Organisasi organisasi;
     private String namaOrganisasi;
 
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name="jabatan_id", referencedColumnName = "id")
+    @JoinColumn(name = "jabatan_id", referencedColumnName = "id")
     @NotFound(action = NotFoundAction.IGNORE)
     private Jabatan jabatan;
     private String namaJabatan;
 
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name="profesi_id", referencedColumnName = "id")
+    @JoinColumn(name = "profesi_id", referencedColumnName = "id")
     @NotFound(action = NotFoundAction.IGNORE)
     private Profesi profesi;
     private String namaProfesi;
 
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name="golongan_id", referencedColumnName = "id")
+    @JoinColumn(name = "golongan_id", referencedColumnName = "id")
     @NotFound(action = NotFoundAction.IGNORE)
     private Golongan golongan;
     private String namaGolongan;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="organisasi_lama_id", referencedColumnName = "id")
+    @JoinColumn(name = "organisasi_lama_id", referencedColumnName = "id")
     @NotFound(action = NotFoundAction.IGNORE)
     private Organisasi organisasiLama;
     private String namaOrganisasiLama;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="jabatan_lama_id", referencedColumnName = "id")
+    @JoinColumn(name = "jabatan_lama_id", referencedColumnName = "id")
     @NotFound(action = NotFoundAction.IGNORE)
     private Jabatan jabatanLama;
     private String namaJabatanLama;
 
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name="profesi_lama_id", referencedColumnName = "id")
+    @JoinColumn(name = "profesi_lama_id", referencedColumnName = "id")
     @NotFound(action = NotFoundAction.IGNORE)
     private Profesi profesiLama;
     private String namaProfesiLama;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="golongan_lama_id", referencedColumnName = "id")
+    @JoinColumn(name = "golongan_lama_id", referencedColumnName = "id")
     @NotFound(action = NotFoundAction.IGNORE)
     private Golongan golonganLama;
     private String namaGolonganLama;
