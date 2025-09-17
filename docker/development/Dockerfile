@@ -3,7 +3,6 @@ WORKDIR /app
 
 FROM base AS builder
 COPY . .
-RUN chmod +x ./gradlew && ./gradlew wrapper --gradle-version=8.5
 RUN ./gradlew clean build -x test
 
 FROM base AS runner
