@@ -111,8 +111,6 @@ tasks.withType(JavaCompile).configureEach {
 
 tasks.withType(Test).configureEach {
     systemProperty "file.encoding", "UTF-8"
-    systemProperty 'spring.docker.compose.enabled', 'false'
-    systemProperty 'spring.docker.compose.skip', 'true'
 }
 
 tasks.named('bootRun') {
