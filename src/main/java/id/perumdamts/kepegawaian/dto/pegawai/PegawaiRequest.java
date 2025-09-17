@@ -79,6 +79,7 @@ public class PegawaiRequest extends CommonPageRequest {
             case "profesiId" -> sortBy = "profesi.nama";
             case "golonganId" -> sortBy = "golongan.golongan";
             case "gradeId" -> sortBy = "grade.grade";
+            case "jenisKelamin" -> sortBy = "biodata.jenisKelamin";
         }
         return PageRequest.of(page, size,
                 Sort.by(Sort.Direction.fromString(sortDirection), sortBy));
