@@ -7,7 +7,6 @@ services:
     build:
       context: .
       dockerfile: docker/development/Dockerfile
-      target: development
     image: kepegawaian:dev
     env_file:
       - .env
