@@ -1,10 +1,10 @@
 .PHONY: build-dev
 build-dev:
-	docker buildx bake -f ./docker/development/docker-compose.yml
+	docker buildx bake -f docker/development/docker-compose.yml
 
 .PHONY: start-dev
 start-dev:
-	docker compose --env-file ./.env -f ./docker/development/docker-compose.yml up -d
+	docker compose -f ./docker/development/docker-compose.yml up -d
 
 .PHONY: stop-dev
 stop-dev:
