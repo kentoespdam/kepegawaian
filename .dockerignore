@@ -1,0 +1,8 @@
+/docker/
+.gitignore
+.git/
+Makefile
+run.sh
+.idea
+copy.sh
+build-dev.sh
