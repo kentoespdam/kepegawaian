@@ -11,7 +11,8 @@ stop-dev:
 	docker compose -f ./docker/development/docker-compose.yml down
 
 .PHONY: rebuild-dev
-	git pull && stop-dev && build-dev && start-dev
+rebuild-dev:
+	git pull && make stop-dev && make build-dev && make start-dev
 
 .PHONY: build-prod
 build-prod:
