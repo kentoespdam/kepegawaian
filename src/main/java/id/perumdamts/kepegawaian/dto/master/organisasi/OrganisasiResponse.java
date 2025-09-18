@@ -3,6 +3,8 @@ package id.perumdamts.kepegawaian.dto.master.organisasi;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import lombok.Data;
 
+import java.util.Objects;
+
 @Data
 public class OrganisasiResponse {
     private Long id;
@@ -13,6 +15,7 @@ public class OrganisasiResponse {
     private String shortName;
 
     public static OrganisasiResponse from(Organisasi organisasi) {
+        if (Objects.isNull(organisasi)) return null;
         OrganisasiResponse response = new OrganisasiResponse();
         response.setId(organisasi.getId());
         response.setKode(organisasi.getKode());

@@ -1,8 +1,6 @@
 package id.perumdamts.kepegawaian.dto.commons;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.springframework.data.domain.PageRequest;
@@ -21,19 +19,15 @@ import java.util.Objects;
 public class CommonPageRequest implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-    
-    @NotNull(message = "Page number cannot be null")
-    @Min(value = 0, message = "Page number must be greater than or equal to 0")
+
     protected Integer page = 0;
-    
-    @NotNull(message = "Page size cannot be null")
-    @Min(value = 1, message = "Page size must be greater than 0")
+
     protected Integer size = 10;
-    
+
     protected String sortBy;
-    
-    @Pattern(regexp = "asc|desc", flags = Pattern.Flag.CASE_INSENSITIVE, 
-             message = "Sort direction must be 'asc' or 'desc'")
+
+    @Pattern(regexp = "asc|desc", flags = Pattern.Flag.CASE_INSENSITIVE,
+            message = "Sort direction must be 'asc' or 'desc'")
     protected String sortDirection = "asc";
 
     /**
@@ -46,14 +40,17 @@ public class CommonPageRequest implements Serializable {
         if (sortBy == null || sortBy.trim().isEmpty()) {
             return PageRequest.of(page, size);
         }
-        
+
         String direction = Objects.requireNonNullElse(sortDirection, "asc").toLowerCase();
         Sort.Direction sortDir = "desc".equals(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
-        
+
+        int currentPage = Objects.isNull(page) ? 0 : page;
+        int currentSize = Objects.isNull(size) ? 10 : size;
+
         return PageRequest.of(
-            page, 
-            size, 
-            Sort.by(sortDir, sortBy.split(","))
+                currentPage,
+                currentSize,
+                Sort.by(sortDir, sortBy.split(","))
         );
     }
 }
