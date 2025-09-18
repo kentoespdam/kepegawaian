@@ -12,6 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,6 +30,7 @@ public class ProfesiResponse {
     private List<AlatKerjaMiniResponse> alatKerjaList;
 
     public static ProfesiResponse from(Profesi profesi) {
+        if (Objects.isNull(profesi)) return null;
         ProfesiResponse response = new ProfesiResponse();
         response.setId(profesi.getId());
         response.setOrganisasi(OrganisasiMiniResponse.from(profesi.getOrganisasi()));

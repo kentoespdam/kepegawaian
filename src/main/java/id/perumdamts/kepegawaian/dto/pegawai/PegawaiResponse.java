@@ -18,7 +18,6 @@ import jakarta.persistence.Enumerated;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
 @Data
 public class PegawaiResponse {
@@ -83,12 +82,9 @@ public class PegawaiResponse {
         response.setStatusPegawai(pegawai.getStatusPegawai());
         response.setJabatan(JabatanMiniResponse.from(pegawai.getJabatan()));
         response.setOrganisasi(OrganisasiResponse.from(pegawai.getOrganisasi()));
-        if (Objects.nonNull(pegawai.getProfesi()))
-            response.setProfesi(ProfesiResponse.from(pegawai.getProfesi()));
-        if (Objects.nonNull(pegawai.getGolongan()))
-            response.setGolongan(GolonganResponse.from(pegawai.getGolongan()));
-        if (Objects.nonNull(pegawai.getGrade()))
-            response.setGrade(GradeResponse.from(pegawai.getGrade()));
+        response.setProfesi(ProfesiResponse.from(pegawai.getProfesi()));
+        response.setGolongan(GolonganResponse.from(pegawai.getGolongan()));
+        response.setGrade(GradeResponse.from(pegawai.getGrade()));
         response.setStatusKerja(pegawai.getStatusKerja());
         response.setRefSkCapegId(pegawai.getRefSkCapegId());
         response.setTmtKerja(pegawai.getTmtKerja());
@@ -104,8 +100,7 @@ public class PegawaiResponse {
         response.setGajiPokok(pegawai.getGajiPokok());
         response.setPhdp(pegawai.getPhdp());
         response.setJmlTanggungan(pegawai.getJmlTanggungan());
-        if (Objects.nonNull(pegawai.getKodePajak()))
-            response.setKodePajak(GajiPendapatanNonPajakResponse.from(pegawai.getKodePajak()));
+        response.setKodePajak(GajiPendapatanNonPajakResponse.from(pegawai.getKodePajak()));
         response.setIsAskes(pegawai.getIsAskes());
         response.setMkgTahun(pegawai.getMkgTahun());
         response.setMkgBulan(pegawai.getMkgBulan());
