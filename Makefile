@@ -10,6 +10,9 @@ start-dev:
 stop-dev:
 	docker compose -f ./docker/development/docker-compose.yml down
 
+.PHONY: rebuild-dev
+	git pull && stop-dev && build-dev && start-dev
+
 .PHONY: build-prod
 build-prod:
 	docker compose -f ./docker/production/docker-compose.yml build
