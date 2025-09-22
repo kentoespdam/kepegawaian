@@ -25,6 +25,7 @@ import org.hibernate.annotations.SQLRestriction;
 public class JenjangPendidikan extends IdsAbstract {
     private String nama;
     private Integer seq;
+    private Boolean isStatistik=Boolean.FALSE;
 
     public JenjangPendidikan(Long pendidikanId) {
         super(pendidikanId);

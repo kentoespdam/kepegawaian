@@ -16,16 +16,18 @@ public class JenjangPendidikanPostRequest {
     private String nama;
     @Min(value = 1, message = "Seq is required")
     private Integer seq;
+    private Boolean isStatistik = Boolean.FALSE;
 
     @JsonIgnore
     public Specification<JenjangPendidikan> getSpecification() {
         Specification<JenjangPendidikan> namaSpec = Objects.isNull(nama) ? null :
-                (root, query, cb) -> cb.equal(root.get("nama"), nama);
+                (root, query, cb) ->
+                        cb.equal(root.get("nama"), nama);
         return Specification.where(namaSpec);
     }
 
     public static JenjangPendidikan toEntity(JenjangPendidikanPostRequest request) {
-        return new JenjangPendidikan(request.getNama(), request.getSeq());
+        return new JenjangPendidikan(request.getNama(), request.getSeq(), request.getIsStatistik());
     }
 
     public static List<JenjangPendidikan> toEntities(List<JenjangPendidikanPostRequest> requests) {

@@ -10,12 +10,14 @@ public class JenjangPendidikanResponse {
     private Long id;
     private String nama;
     private Integer seq;
+    private Boolean isStatistik;
 
     public static JenjangPendidikanResponse from(JenjangPendidikan entity) {
         JenjangPendidikanResponse response = new JenjangPendidikanResponse();
         response.setId(entity.getId());
         response.setSeq(entity.getSeq());
         response.setNama(entity.getNama());
+        response.setIsStatistik(entity.getIsStatistik());
         return response;
     }
 
