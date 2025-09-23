@@ -16,6 +16,7 @@ public class OrganisasiPostRequest {
     @NotEmpty(message = "Nama tidak boleh kosong")
     private String nama;
     private String shortName;
+    private String category;
 
     @JsonIgnore
     public Specification<Organisasi> getSpecification() {
@@ -38,6 +39,7 @@ public class OrganisasiPostRequest {
         organisasi.setLevelOrg(request.getLevelOrganisasi());
         organisasi.setNama(request.getNama());
         organisasi.setShortName(request.getShortName());
+        organisasi.setCategory(request.getCategory());
         return organisasi;
     }
 }

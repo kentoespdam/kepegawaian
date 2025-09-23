@@ -13,6 +13,7 @@ public class OrganisasiResponse {
     private Integer levelOrganisasi;
     private String nama;
     private String shortName;
+    private String category;
 
     public static OrganisasiResponse from(Organisasi organisasi) {
         if (Objects.isNull(organisasi)) return null;
@@ -24,6 +25,7 @@ public class OrganisasiResponse {
         response.setLevelOrganisasi(organisasi.getLevelOrg());
         response.setNama(organisasi.getNama());
         response.setShortName(organisasi.getShortName());
+        response.setCategory(organisasi.getCategory());
         return response;
     }
 }
