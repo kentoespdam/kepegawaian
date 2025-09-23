@@ -14,6 +14,7 @@ import java.util.Objects;
 public class JenjangPendidikanPostRequest {
     @NotEmpty(message = "Nama is required")
     private String nama;
+    private String shortName;
     @Min(value = 1, message = "Seq is required")
     private Integer seq;
     private Boolean isStatistik = Boolean.FALSE;
@@ -27,7 +28,7 @@ public class JenjangPendidikanPostRequest {
     }
 
     public static JenjangPendidikan toEntity(JenjangPendidikanPostRequest request) {
-        return new JenjangPendidikan(request.getNama(), request.getSeq(), request.getIsStatistik());
+        return new JenjangPendidikan(request.getNama(), request.getShortName(), request.getSeq(), request.getIsStatistik());
     }
 
     public static List<JenjangPendidikan> toEntities(List<JenjangPendidikanPostRequest> requests) {

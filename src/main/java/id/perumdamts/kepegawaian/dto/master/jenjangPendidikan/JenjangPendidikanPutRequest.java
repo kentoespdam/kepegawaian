@@ -5,6 +5,7 @@ import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
 public class JenjangPendidikanPutRequest extends JenjangPendidikanPostRequest {
     public static JenjangPendidikan toEntity(JenjangPendidikanPutRequest request, JenjangPendidikan entity) {
         entity.setNama(request.getNama());
+        entity.setShortName(request.getShortName());
         entity.setSeq(request.getSeq());
         entity.setIsStatistik(request.getIsStatistik());
         return entity;

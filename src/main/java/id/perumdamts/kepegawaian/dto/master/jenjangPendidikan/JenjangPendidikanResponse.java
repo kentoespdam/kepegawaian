@@ -9,6 +9,7 @@ import java.util.List;
 public class JenjangPendidikanResponse {
     private Long id;
     private String nama;
+    private String shortName;
     private Integer seq;
     private Boolean isStatistik;
 
@@ -17,6 +18,7 @@ public class JenjangPendidikanResponse {
         response.setId(entity.getId());
         response.setSeq(entity.getSeq());
         response.setNama(entity.getNama());
+        response.setShortName(entity.getShortName());
         response.setIsStatistik(entity.getIsStatistik());
         return response;
     }

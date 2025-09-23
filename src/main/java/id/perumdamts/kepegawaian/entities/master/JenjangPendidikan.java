@@ -24,10 +24,19 @@ import org.hibernate.annotations.SQLRestriction;
 @EqualsAndHashCode(callSuper = true)
 public class JenjangPendidikan extends IdsAbstract {
     private String nama;
+    private String shortName;
     private Integer seq;
-    private Boolean isStatistik=Boolean.FALSE;
+    private Boolean isStatistik = Boolean.FALSE;
 
     public JenjangPendidikan(Long pendidikanId) {
         super(pendidikanId);
+    }
+
+    public JenjangPendidikan(Long id, String nama, String shortName, Integer seq, Boolean isStatistik) {
+        super(id);
+        this.nama = nama;
+        this.shortName = shortName;
+        this.seq = seq;
+        this.isStatistik = isStatistik;
     }
 }

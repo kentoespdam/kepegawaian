@@ -1,26 +1,32 @@
 package id.perumdamts.kepegawaian.services.setupMaster;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
 import id.perumdamts.kepegawaian.repositories.master.JenjangPendidikanRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class SetupJenjangPendidikan implements SetupMaster {
-    @Autowired
-    private JenjangPendidikanRepository jenjangPendidikanRepository;
+    private final JenjangPendidikanRepository jenjangPendidikanRepository;
 
     @Override
     public void insertBatch() throws JsonProcessingException {
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        String jsonData = "[{\"nama\":\"SD - Sederajat\",\"seq\":1},{\"nama\":\"SMP - Sederajat\",\"seq\":2},{\"nama\":\"SMA - Sederajat\",\"seq\":3},{\"nama\":\"Diploma 1\",\"seq\":4},{\"nama\":\"Diploma 2\",\"seq\":5},{\"nama\":\"Diploma 3\",\"seq\":6},{\"nama\":\"S1\",\"seq\":7},{\"nama\":\"S2\",\"seq\":8},{\"nama\":\"S3\",\"seq\":9}]";
-        List<JenjangPendidikan> jenjangPendidikanList = mapper.readValue(jsonData, new TypeReference<>() {
-        });
-        jenjangPendidikanRepository.saveAll(jenjangPendidikanList);
+        List<JenjangPendidikan> list = new ArrayList<>();
+        list.add(new JenjangPendidikan(1L, "SD - Sederajat", "SD", 1, Boolean.TRUE));
+        list.add(new JenjangPendidikan(2L, "SMP - Sederajat", "SMP", 2, Boolean.TRUE));
+        list.add(new JenjangPendidikan(3L, "SMA - Sederajat", "SMA", 3, Boolean.TRUE));
+        list.add(new JenjangPendidikan(4L, "Diploma 1 ", "D1", 4, Boolean.TRUE));
+        list.add(new JenjangPendidikan(5L, "Diploma 2 ", "D2", 5, Boolean.TRUE));
+        list.add(new JenjangPendidikan(6L, "Diploma 3 ", "D3", 6, Boolean.TRUE));
+        list.add(new JenjangPendidikan(7L, "S1", "S1", 7, Boolean.TRUE));
+        list.add(new JenjangPendidikan(8L, "S2", "S2", 8, Boolean.TRUE));
+        list.add(new JenjangPendidikan(9L, "S3", "S3", 9, Boolean.FALSE));
+
+        jenjangPendidikanRepository.saveAll(list);
     }
 }
