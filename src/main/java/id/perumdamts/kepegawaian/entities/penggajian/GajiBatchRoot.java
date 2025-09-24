@@ -6,8 +6,9 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
@@ -34,7 +35,8 @@ import java.util.Set;
         @Index(columnList = "status"),
         @Index(columnList = "periode")
 })
-@Data
+@Getter
+@Setter
 @EntityListeners(AuditingEntityListener.class)
 @SQLDelete(sql = "UPDATE gaji_batch_root SET is_deleted=true WHERE id=?")
 @SQLRestriction("is_deleted = false")

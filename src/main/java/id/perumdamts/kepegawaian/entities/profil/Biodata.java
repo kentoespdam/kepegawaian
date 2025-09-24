@@ -12,8 +12,9 @@ import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
@@ -38,7 +39,8 @@ import java.util.List;
         @Index(columnList = "alamat"),
         @Index(columnList = "isPegawai")
 })
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE biodata SET is_deleted = TRUE WHERE nik=?")
@@ -73,7 +75,7 @@ public class Biodata implements Serializable {
     private String notes;
 
     @OneToMany(mappedBy = "biodata", fetch = FetchType.LAZY)
-    private List<KartuIdentitas> kartuIdentitas=new ArrayList<>();
+    private List<KartuIdentitas> kartuIdentitas = new ArrayList<>();
 
     private Boolean isPegawai = false;
     @CreatedBy
@@ -96,7 +98,7 @@ public class Biodata implements Serializable {
     private Long version = 1L;
 
     @OneToMany(mappedBy = "biodata", fetch = FetchType.LAZY)
-    List<Pendidikan> pendidikanList=new ArrayList<>();
+    List<Pendidikan> pendidikanList = new ArrayList<>();
 
     public Biodata(String nik) {
         this.nik = nik;

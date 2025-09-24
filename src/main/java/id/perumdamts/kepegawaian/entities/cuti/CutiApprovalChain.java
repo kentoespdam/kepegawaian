@@ -3,15 +3,15 @@ package id.perumdamts.kepegawaian.entities.cuti;
 import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
 import id.perumdamts.kepegawaian.entities.commons.EReadWriteStatus;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(indexes = {
         @Index(columnList = "readWriteStatus"),
         @Index(columnList = "approvalStatus"),
 })
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class CutiApprovalChain {
     @Id

@@ -4,8 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import id.perumdamts.kepegawaian.entities.commons.EJenisPotonganGaji;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 
@@ -13,7 +14,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Entity
 @Table(name = "gaji_batch_root_lampiran")
-@Data
+@Getter
+@Setter
 public class GajiBatchRootLampiran implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -3,10 +3,7 @@ package id.perumdamts.kepegawaian.entities.master;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLibur;
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
@@ -18,9 +15,10 @@ import java.time.LocalDate;
         @Index(name = "is_deleted_idx", columnList = "is_deleted")
 }, uniqueConstraints = {
         @UniqueConstraint(name = "unique_tanggal_idx", columnNames = {"tanggal"})})
-@Data
+@Getter
+@Setter
+@ToString
 @Audited
-@EqualsAndHashCode(callSuper = true)
 @SQLDelete(sql = "UPDATE hari_libur SET is_deleted = true where id = ?")
 @SQLRestriction("is_deleted = false")
 @NoArgsConstructor

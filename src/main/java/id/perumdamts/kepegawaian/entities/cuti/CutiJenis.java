@@ -3,10 +3,7 @@ package id.perumdamts.kepegawaian.entities.cuti;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.SQLDelete;
@@ -17,9 +14,9 @@ import org.hibernate.envers.Audited;
 @Table(indexes = {
         @Index(name = "is_deleted_idx", columnList = "is_deleted")
 })
-@Data
+@Getter
+@Setter
 @Audited
-@EqualsAndHashCode(callSuper = true)
 @SQLDelete(sql = "UPDATE cuti_jenis SET is_deleted = true where id = ?")
 @SQLRestriction("is_deleted = false")
 @NoArgsConstructor

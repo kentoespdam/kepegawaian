@@ -1,9 +1,7 @@
 package id.perumdamts.kepegawaian.entities.kepegawaian;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(indexes = {
@@ -13,7 +11,9 @@ import lombok.NoArgsConstructor;
 }, uniqueConstraints = {
         @UniqueConstraint(columnNames = {"bulan", "tahun", "pendidikan"})
 })
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class StatistikPegawai {
@@ -25,9 +25,13 @@ public class StatistikPegawai {
     private Integer seq;
     private String pendidikan;
     private Integer nonGolongan;
+    @Column(name = "golongan_a")
     private Integer golonganA;
+    @Column(name = "golongan_b")
     private Integer golonganB;
+    @Column(name = "golongan_c")
     private Integer golonganC;
+    @Column(name = "golongan_d")
     private Integer golonganD;
     private Integer kontrak;
     private Integer capeg;

@@ -3,19 +3,17 @@ package id.perumdamts.kepegawaian.entities.master;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(indexes = {
         @Index(columnList = "is_deleted"),
         @Index(columnList = "nama")
 })
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @AllArgsConstructor
 public class AlatKerja extends IdsAbstract {
     @JsonBackReference

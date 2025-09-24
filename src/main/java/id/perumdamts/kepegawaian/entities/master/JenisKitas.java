@@ -4,10 +4,7 @@ import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
@@ -17,12 +14,13 @@ import org.hibernate.envers.Audited;
         @Index(columnList = "nama"),
         @Index(columnList = "is_deleted")
 })
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE jenis_kitas SET is_deleted = TRUE WHERE id = ?")
 @SQLRestriction("is_deleted = FALSE")
-@EqualsAndHashCode(callSuper = true)
+
 @Audited
 public class JenisKitas extends IdsAbstract {
     private String nama;

@@ -6,10 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.entities.commons.*;
 import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
@@ -24,12 +21,14 @@ import java.time.LocalDate;
         @Index(columnList = "is_deleted"),
         @Index(columnList = "tanggungan")
 })
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE profil_keluarga SET is_deleted = TRUE WHERE id = ?")
 @SQLRestriction("is_deleted = FALSE")
-@EqualsAndHashCode(callSuper = true)
+
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class ProfilKeluarga extends IdsAbstract {
     @ManyToOne

@@ -15,10 +15,7 @@ import id.perumdamts.kepegawaian.entities.penggajian.GajiProfil;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
@@ -34,12 +31,13 @@ import java.util.List;
                 @Index(columnList = "tmt_pensiun"),
                 @Index(columnList = "is_deleted")
         })
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE pegawai SET is_deleted = true WHERE id = ?")
 @SQLRestriction("is_deleted = FALSE")
-@EqualsAndHashCode(callSuper = true)
+
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class Pegawai extends IdsAbstract {
     @NotEmpty

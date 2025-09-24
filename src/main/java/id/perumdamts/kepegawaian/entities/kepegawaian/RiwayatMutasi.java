@@ -12,10 +12,7 @@ import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.entities.master.Profesi;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.SQLDelete;
@@ -32,12 +29,13 @@ import java.time.LocalDate;
         }, uniqueConstraints = {
         @UniqueConstraint(columnNames = {"pegawai_id", "riwayat_sk_id"})}
 )
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE riwayat_mutasi SET is_deleted=true WHERE id=?")
 @SQLRestriction("is_deleted = false")
-@EqualsAndHashCode(callSuper = true)
+
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class RiwayatMutasi extends IdsAbstract {
 

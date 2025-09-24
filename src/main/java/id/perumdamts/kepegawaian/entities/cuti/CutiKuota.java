@@ -7,10 +7,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
@@ -21,9 +18,10 @@ import java.time.LocalDate;
 @Table(indexes = {
     @Index(name = "is_deleted_idx", columnList = "is_deleted")
 })
-@Data
+@Getter
+@Setter
+@ToString
 @Audited
-@EqualsAndHashCode(callSuper = true)
 @SQLDelete(sql = "UPDATE cuti_kuota SET is_deleted = true where id = ?")
 @SQLRestriction("is_deleted = false")
 @NoArgsConstructor

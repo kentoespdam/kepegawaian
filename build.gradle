@@ -63,8 +63,8 @@ dependencies {
     implementation 'commons-io:commons-io:2.16.1'
     // apache kafka
     implementation('org.springframework.kafka:spring-kafka')
-    // sqids
-    implementation('org.sqids:sqids:0.1.0')
+//    // sqids
+//    implementation('org.sqids:sqids:0.1.0')
     // workbook
     implementation 'org.apache.poi:poi-ooxml:5.3.0'
 

@@ -4,10 +4,7 @@ import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -16,12 +13,13 @@ import org.hibernate.annotations.SQLRestriction;
         @Index(columnList = "nama"),
         @Index(columnList = "is_deleted")
 })
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE level SET is_deleted=true WHERE id=?")
 @SQLRestriction("is_deleted <> 1")
-@EqualsAndHashCode(callSuper = true)
 public class Level extends IdsAbstract {
     private String nama;
 

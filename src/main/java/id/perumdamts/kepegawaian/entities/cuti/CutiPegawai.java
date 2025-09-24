@@ -9,9 +9,9 @@ import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.SQLDelete;
@@ -24,9 +24,9 @@ import java.time.LocalDate;
 @Table(indexes = {
         @Index(name = "is_deleted_idx", columnList = "is_deleted")
 })
-@Data
+@Getter
+@Setter
 @Audited
-@EqualsAndHashCode(callSuper = true)
 @SQLDelete(sql = "UPDATE cuti_pegawai SET is_deleted = true where id = ?")
 @SQLRestriction("is_deleted = false")
 @NoArgsConstructor

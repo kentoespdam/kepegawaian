@@ -11,8 +11,7 @@ import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
@@ -20,8 +19,10 @@ import org.hibernate.envers.RelationTargetAuditMode;
 
 import java.time.LocalDate;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
+
+@Getter
+@Setter
+@ToString
 @Entity
 @Table(indexes = {
         @Index(columnList = "nipam"),

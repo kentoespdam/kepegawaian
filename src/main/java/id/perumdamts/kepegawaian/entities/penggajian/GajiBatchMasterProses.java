@@ -2,9 +2,7 @@ package id.perumdamts.kepegawaian.entities.penggajian;
 
 import id.perumdamts.kepegawaian.entities.commons.EJenisGaji;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(indexes = {
@@ -13,7 +11,9 @@ import lombok.NoArgsConstructor;
         @Index(columnList = "nama"),
         @Index(columnList = "batchMasterId")
 })
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class GajiBatchMasterProses {

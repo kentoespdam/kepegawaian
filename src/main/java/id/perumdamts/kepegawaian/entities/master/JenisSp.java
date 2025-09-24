@@ -2,9 +2,9 @@ package id.perumdamts.kepegawaian.entities.master;
 
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
@@ -15,14 +15,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-@EqualsAndHashCode(callSuper = true)
+
 @Entity
 @Table(name = "jenis_sp", indexes = {
         @Index(columnList = "kode", unique = true),
         @Index(columnList = "is_deleted")
 })
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @SQLDelete(sql = "UPDATE jenis_sp SET is_deleted = TRUE WHERE id = ?")
 @SQLRestriction("is_deleted = FALSE")
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
