@@ -16,12 +16,12 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "ProfilKeluarga", indexes = {
-        @Index(columnList = "nik"),
-        @Index(columnList = "nama"),
-        @Index(columnList = "is_deleted"),
-        @Index(columnList = "tanggungan")
+        @Index(columnList = "nik", name = "idx_profilkeluarga_nik"),
+        @Index(columnList = "nama", name = "idx_profilkeluarga_nama"),
+        @Index(columnList = "is_deleted", name = "idx_profilkeluarga_is_deleted"),
+        @Index(columnList = "tanggungan", name = "idx_profilkeluarga_tanggungan")
 }, uniqueConstraints = {
-        @UniqueConstraint(name = "uc_profilkeluarga_nik", columnNames = {"nik", "biodata_id", "version"})
+        @UniqueConstraint(name = "uc_profilkeluarga_nik", columnNames = {"biodata_id", "version", "nama", "tanggal_lahir", "is_deleted"})
 })
 @Getter
 @Setter
