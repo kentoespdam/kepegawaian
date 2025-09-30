@@ -15,11 +15,13 @@ import org.hibernate.envers.RelationTargetAuditMode;
 import java.time.LocalDate;
 
 @Entity
-@Table(indexes = {
+@Table(name = "ProfilKeluarga", indexes = {
         @Index(columnList = "nik"),
         @Index(columnList = "nama"),
         @Index(columnList = "is_deleted"),
         @Index(columnList = "tanggungan")
+}, uniqueConstraints = {
+        @UniqueConstraint(name = "uc_profilkeluarga_nik", columnNames = {"nik", "biodata_id", "version"})
 })
 @Getter
 @Setter
