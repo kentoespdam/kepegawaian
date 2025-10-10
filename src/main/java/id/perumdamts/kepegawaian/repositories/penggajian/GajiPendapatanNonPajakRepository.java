@@ -7,5 +7,5 @@ import org.springframework.data.repository.history.RevisionRepository;
 
 public interface GajiPendapatanNonPajakRepository extends JpaRepository<GajiPendapatanNonPajak, Long>,
         JpaSpecificationExecutor<GajiPendapatanNonPajak>,
-        RevisionRepository<GajiPendapatanNonPajak, Long, Long> {
+        RevisionRepository<GajiPendapatanNonPajak, Long, Integer> {
 }

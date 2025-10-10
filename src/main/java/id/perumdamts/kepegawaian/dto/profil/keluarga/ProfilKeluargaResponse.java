@@ -32,8 +32,7 @@ public class ProfilKeluargaResponse {
     private JenjangPendidikanMiniResponse pendidikan;
     @Enumerated
     private EStatusPendidikan statusPendidikan;
-    @Enumerated
-    private EStatusKawin statusKawin;
+    private Boolean statusKawin;
     private String notes;
 
     public static ProfilKeluargaResponse from(ProfilKeluarga entity) {

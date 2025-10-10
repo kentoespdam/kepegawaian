@@ -7,5 +7,5 @@ import org.springframework.data.repository.history.RevisionRepository;
 
 public interface GolonganRepository extends JpaRepository<Golongan, Long>,
         JpaSpecificationExecutor<Golongan>,
-        RevisionRepository<Golongan, Long, Long> {
+        RevisionRepository<Golongan, Long, Integer> {
 }

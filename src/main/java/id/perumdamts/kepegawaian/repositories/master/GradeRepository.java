@@ -7,5 +7,5 @@ import org.springframework.data.repository.history.RevisionRepository;
 
 public interface GradeRepository extends JpaRepository<Grade, Long>,
         JpaSpecificationExecutor<Grade>,
-        RevisionRepository<Grade, Long, Long> {
+        RevisionRepository<Grade, Long, Integer> {
 }

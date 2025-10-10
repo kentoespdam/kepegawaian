@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface GajiKomponenRepository extends JpaRepository<GajiKomponen, Long>,
         JpaSpecificationExecutor<GajiKomponen>,
-        RevisionRepository<GajiKomponen, Long, Long> {
+        RevisionRepository<GajiKomponen, Long, Integer> {
 
     @Query("SELECT DISTINCT gk.kode AS kode, gk.nama AS nama " +
             "FROM GajiKomponen gk " +

@@ -7,5 +7,5 @@ import org.springframework.data.repository.history.RevisionRepository;
 
 public interface GajiParameterSettingRepository extends JpaRepository<GajiParameterSetting, Long>,
         JpaSpecificationExecutor<GajiParameterSetting>,
-        RevisionRepository<GajiParameterSetting, Long, Long> {
+        RevisionRepository<GajiParameterSetting, Long, Integer> {
 }

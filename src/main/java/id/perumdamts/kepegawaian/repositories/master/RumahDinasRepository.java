@@ -7,5 +7,5 @@ import org.springframework.data.repository.history.RevisionRepository;
 
 public interface RumahDinasRepository extends JpaRepository<RumahDinas, Long>,
         JpaSpecificationExecutor<RumahDinas>,
-        RevisionRepository<RumahDinas, Long, Long> {
+        RevisionRepository<RumahDinas, Long, Integer> {
 }

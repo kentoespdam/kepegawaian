@@ -7,5 +7,5 @@ import org.springframework.data.repository.history.RevisionRepository;
 
 public interface JenisSpRepository extends JpaRepository<JenisSp, Long>,
         JpaSpecificationExecutor<JenisSp>,
-        RevisionRepository<JenisSp, Long, Long> {
+        RevisionRepository<JenisSp, Long, Integer> {
 }

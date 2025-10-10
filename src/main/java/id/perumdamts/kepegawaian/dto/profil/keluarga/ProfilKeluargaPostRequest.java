@@ -18,7 +18,7 @@ import java.time.LocalDate;
 public class ProfilKeluargaPostRequest {
     @NotEmpty(message = "Biodata ID is required")
     private String biodataId;
-//    @NotEmpty(message = "Nik is required")
+    //    @NotEmpty(message = "Nik is required")
     private String nik;
     @NotEmpty(message = "Nama is required")
     private String nama;
@@ -41,9 +41,9 @@ public class ProfilKeluargaPostRequest {
     @Enumerated(EnumType.ORDINAL)
     private EStatusPendidikan statusPendidikan = EStatusPendidikan.SEKOLAH;
     @NotNull(message = "Status Kawin is required")
-    @Enumerated(EnumType.ORDINAL)
-    private EStatusKawin statusKawin;
+    private Boolean statusKawin;
     private String notes;
+    private Boolean changedStatus = Boolean.TRUE;
 
     @JsonIgnore
     public Specification<ProfilKeluarga> getSpecification() {

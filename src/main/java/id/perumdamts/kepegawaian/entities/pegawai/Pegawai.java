@@ -25,19 +25,17 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "pegawai",
-        indexes = {
-                @Index(columnList = "nipam", unique = true),
-                @Index(columnList = "tmt_pensiun"),
-                @Index(columnList = "is_deleted")
-        })
+@Table(name = "pegawai", indexes = {
+        @Index(columnList = "nipam", unique = true),
+        @Index(columnList = "tmt_pensiun"),
+        @Index(columnList = "is_deleted")
+})
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE pegawai SET is_deleted = true WHERE id = ?")
 @SQLRestriction("is_deleted = FALSE")
-
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class Pegawai extends IdsAbstract {
     @NotEmpty

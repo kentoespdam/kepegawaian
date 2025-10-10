@@ -7,5 +7,5 @@ import org.springframework.data.repository.history.RevisionRepository;
 
 public interface CutiApprovalRepository extends JpaRepository<CutiApproval, Long>,
         JpaSpecificationExecutor<CutiApproval>,
-        RevisionRepository<CutiApproval, Long, Long> {
+        RevisionRepository<CutiApproval, Long, Integer> {
 }

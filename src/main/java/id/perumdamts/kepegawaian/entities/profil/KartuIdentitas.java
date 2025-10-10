@@ -28,7 +28,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE kartu_identitas SET is_deleted = TRUE WHERE id = ?")
 @SQLRestriction("is_deleted = FALSE")
-
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class KartuIdentitas extends IdsAbstract {
     @JsonBackReference

@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface HariLiburRepository extends JpaRepository<HariLibur, Long>,
         JpaSpecificationExecutor<HariLibur>,
-        RevisionRepository<HariLibur, Long, Long> {
+        RevisionRepository<HariLibur, Long, Integer> {
     Integer countByTanggalBetween(LocalDate startDate, LocalDate endDate);
 
     List<TanggalHariLibur> findByTanggalBetween(LocalDate first, LocalDate last);

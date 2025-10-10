@@ -3,7 +3,6 @@ package id.perumdamts.kepegawaian.dto.profil.keluarga;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.dto.commons.CommonPageRequest;
 import id.perumdamts.kepegawaian.entities.commons.EHubunganKeluarga;
-import id.perumdamts.kepegawaian.entities.commons.EStatusKawin;
 import id.perumdamts.kepegawaian.entities.profil.ProfilKeluarga;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -22,8 +21,7 @@ public class ProfilKeluargaRequest extends CommonPageRequest {
     @Enumerated(EnumType.ORDINAL)
     private EHubunganKeluarga hubunganKeluarga;
     private Boolean tanggungan;
-    @Enumerated(EnumType.ORDINAL)
-    private EStatusKawin statusKawin;
+    private Boolean statusKawin;
 
     @JsonIgnore
     public Specification<ProfilKeluarga> getSpecification() {

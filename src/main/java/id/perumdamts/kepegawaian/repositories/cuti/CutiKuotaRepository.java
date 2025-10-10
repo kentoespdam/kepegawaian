@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface CutiKuotaRepository extends JpaRepository<CutiKuota, Long>,
         JpaSpecificationExecutor<CutiKuota>,
-        RevisionRepository<CutiKuota, Long, Long> {
+        RevisionRepository<CutiKuota, Long, Integer> {
     boolean existsByTahun(Integer tahun);
 
     List<CutiKuota> findByPegawai_IdInAndTahun(List<Long> pegawaiIdList, Integer tahun);
@@ -20,6 +20,5 @@ public interface CutiKuotaRepository extends JpaRepository<CutiKuota, Long>,
 
     <T> Optional<T> findRecordByPegawai_IdAndTahun(Long pegawaiIdList, Integer tahun, Class<T> type);
 
-    Optional<CutiKuota> findOneByPegawai_IdAndTahunAndExpiredGreaterThan(Long pegawaiId, Integer tahun, LocalDate expired);
     <T> Optional<T> findRecordByPegawai_IdAndTahunAndExpiredGreaterThan(Long pegawaiId, Integer tahun, LocalDate expired, Class<T> type);
 }

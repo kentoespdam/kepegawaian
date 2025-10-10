@@ -7,5 +7,5 @@ import org.springframework.data.repository.history.RevisionRepository;
 
 public interface RiwayatTerminasiRepository extends JpaRepository<RiwayatTerminasi, Long>,
         JpaSpecificationExecutor<RiwayatTerminasi>,
-        RevisionRepository<RiwayatTerminasi, Long, Long> {
+        RevisionRepository<RiwayatTerminasi, Long, Integer> {
 }

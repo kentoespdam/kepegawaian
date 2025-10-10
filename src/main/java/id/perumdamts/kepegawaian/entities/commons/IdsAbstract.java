@@ -50,7 +50,7 @@ public abstract class IdsAbstract implements Serializable {
     private Boolean isDeleted = false;
     @Version
     @Column(name = "version")
-    private Long version = 1L;
+    private Integer version = 1;
 
     public IdsAbstract(Long id) {
         this.id = id;

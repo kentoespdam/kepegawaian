@@ -1,0 +1,9 @@
+package id.perumdamts.kepegawaian.repositories.profil;
+
+import id.perumdamts.kepegawaian.entities.profil.ProfileUpdate;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
+public interface ProfileUpdateRepository extends JpaRepository<ProfileUpdate, Long>,
+        JpaSpecificationExecutor<ProfileUpdate> {
+}

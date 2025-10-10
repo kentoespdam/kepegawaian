@@ -7,5 +7,5 @@ import org.springframework.data.repository.history.RevisionRepository;
 
 public interface CutiJenisRepository extends JpaRepository<CutiJenis, Long>,
         JpaSpecificationExecutor<CutiJenis>,
-        RevisionRepository<CutiJenis, Long, Long> {
+        RevisionRepository<CutiJenis, Long, Integer> {
 }

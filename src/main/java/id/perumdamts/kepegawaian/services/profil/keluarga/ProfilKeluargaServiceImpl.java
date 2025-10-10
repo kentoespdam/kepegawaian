@@ -1,11 +1,15 @@
 package id.perumdamts.kepegawaian.services.profil.keluarga;
 
+import id.perumdamts.kepegawaian.dto.appwrite.AppwriteUser;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.profil.keluarga.*;
 import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilResponse;
+import id.perumdamts.kepegawaian.entities.commons.EHubunganKeluarga;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
+import id.perumdamts.kepegawaian.entities.commons.EProfileUpdateTable;
 import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
+import id.perumdamts.kepegawaian.entities.pegawai.PegawaiProfilUpdate;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.ProfilKeluarga;
 import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
@@ -13,16 +17,21 @@ import id.perumdamts.kepegawaian.repositories.master.JenjangPendidikanRepository
 import id.perumdamts.kepegawaian.repositories.profil.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.ProfilKeluargaRepository;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilService;
+import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.history.RevisionMetadata;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProfilKeluargaServiceImpl implements ProfilKeluargaService {
@@ -31,6 +40,7 @@ public class ProfilKeluargaServiceImpl implements ProfilKeluargaService {
     private final JenjangPendidikanRepository jenjangPendidikanRepository;
     private final LampiranProfilService lampiranProfilService;
     private final PegawaiRepository pegawaiRepository;
+    private final ProfileUpdateService profileUpdateService;
 
     @Override
     public List<ProfilKeluargaResponse> findAll() {
@@ -69,29 +79,35 @@ public class ProfilKeluargaServiceImpl implements ProfilKeluargaService {
             JenjangPendidikan jenjangPendidikan = jenjangPendidikanRepository.findById(request.getPendidikanId()).orElse(null);
             ProfilKeluarga entity = ProfilKeluargaPostRequest.toEntity(request, biodata, jenjangPendidikan);
             ProfilKeluarga save = repository.save(entity);
-//            if ((!request.getHubunganKeluarga().equals(EHubunganKeluarga.ISTRI) &&
-//                    !request.getHubunganKeluarga().equals(EHubunganKeluarga.SUAMI)) &&
-//                    entity.getTanggungan().equals(true))
-//                this.updateTanggunganPegawai(request.getBiodataId());
+            if ((!request.getHubunganKeluarga().equals(EHubunganKeluarga.ISTRI) &&
+                    !request.getHubunganKeluarga().equals(EHubunganKeluarga.SUAMI)) &&
+                    entity.getTanggungan().equals(true))
+                this.updateTanggunganPegawai(request.getBiodataId());
+            if (save.getChangedStatus() == Boolean.TRUE) {
+                this.updateProfile(save, RevisionMetadata.RevisionType.INSERT);
+            }
             return SavedStatus.build(ESaveStatus.SUCCESS, ProfilKeluargaResponse.from(save));
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
     }
 
-    @Transactional
     @Override
     public SavedStatus<?> update(Long id, ProfilKeluargaPutRequest request) {
         try {
             ProfilKeluarga profilKeluarga = repository.findById(id).orElseThrow(() -> new Exception("Unknown Profil Keluarga"));
             JenjangPendidikan jenjangPendidikan = jenjangPendidikanRepository.findById(request.getPendidikanId()).orElse(null);
             ProfilKeluarga entity = ProfilKeluargaPutRequest.toEntity(request, profilKeluarga, jenjangPendidikan);
+            log.info("Entity: {}", entity);
             ProfilKeluarga save = repository.save(entity);
-//            if ((!request.getHubunganKeluarga().equals(EHubunganKeluarga.ISTRI) &&
-//                    !request.getHubunganKeluarga().equals(EHubunganKeluarga.SUAMI)) &&
-//                    entity.getTanggungan().equals(true))
-//                this.updateTanggunganPegawai(request.getBiodataId());
-            return SavedStatus.build(ESaveStatus.SUCCESS, ProfilKeluargaResponse.from(save));
+            if ((!request.getHubunganKeluarga().equals(EHubunganKeluarga.ISTRI) &&
+                    !request.getHubunganKeluarga().equals(EHubunganKeluarga.SUAMI)) &&
+                    entity.getTanggungan().equals(true))
+                this.updateTanggunganPegawai(request.getBiodataId());
+            if (save.getChangedStatus() == Boolean.TRUE) {
+                this.updateProfile(save, RevisionMetadata.RevisionType.UPDATE);
+            }
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Update Profil Keluarga berhasil");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
@@ -146,10 +162,27 @@ public class ProfilKeluargaServiceImpl implements ProfilKeluargaService {
                 cb.equal(root.get("biodata").get("nik"), nik),
                 cb.equal(root.get("tanggungan"), true)
         );
-        pegawaiRepository.findByBiodata_Nik(nik).ifPresent(pegawai -> {
-            long count = repository.count(specification);
-            pegawai.setJmlTanggungan((int) count);
-            pegawaiRepository.save(pegawai);
-        });
+        try {
+            pegawaiRepository.findByBiodata_Nik(nik).ifPresent(pegawai -> {
+                long count = repository.count(specification);
+                pegawai.setJmlTanggungan((int) count);
+                pegawaiRepository.save(pegawai);
+            });
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw e;
+        }
+    }
+
+    private void updateProfile(ProfilKeluarga entity, RevisionMetadata.RevisionType actionType) {
+        try {
+            AppwriteUser principal = (AppwriteUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            Optional<PegawaiProfilUpdate> pegawai = pegawaiRepository.findByNipam(principal.get$id());
+            if (pegawai.isEmpty()) return;
+            profileUpdateService.create(entity.getId(), actionType, EProfileUpdateTable.KELUARGA, pegawai.get().nipam(), pegawai.get().biodataNama(), pegawai.get().jabatanNama());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw e;
+        }
     }
 }

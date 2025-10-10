@@ -7,5 +7,5 @@ import org.springframework.data.repository.history.RevisionRepository;
 
 public interface SanksiRepository extends JpaRepository<Sanksi, Long>,
         JpaSpecificationExecutor<Sanksi>,
-        RevisionRepository<Sanksi, Long, Long> {
+        RevisionRepository<Sanksi, Long, Integer> {
 }

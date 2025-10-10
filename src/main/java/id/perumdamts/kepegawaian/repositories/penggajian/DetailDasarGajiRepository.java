@@ -7,5 +7,5 @@ import org.springframework.data.repository.history.RevisionRepository;
 
 public interface DetailDasarGajiRepository extends JpaRepository<DetailDasarGaji, Long>,
         JpaSpecificationExecutor<DetailDasarGaji>,
-        RevisionRepository<DetailDasarGaji, Long, Long> {
+        RevisionRepository<DetailDasarGaji, Long, Integer> {
 }

@@ -19,7 +19,8 @@ import java.time.LocalDate;
         @Index(columnList = "nik", name = "idx_profilkeluarga_nik"),
         @Index(columnList = "nama", name = "idx_profilkeluarga_nama"),
         @Index(columnList = "is_deleted", name = "idx_profilkeluarga_is_deleted"),
-        @Index(columnList = "tanggungan", name = "idx_profilkeluarga_tanggungan")
+        @Index(columnList = "tanggungan", name = "idx_profilkeluarga_tanggungan"),
+        @Index(columnList = "lta_tag", name = "idx_profilkeluarga_lta_tag")
 }, uniqueConstraints = {
         @UniqueConstraint(name = "uc_profilkeluarga_nik", columnNames = {"biodata_id", "version", "nama", "tanggal_lahir", "is_deleted"})
 })
@@ -30,7 +31,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE profil_keluarga SET is_deleted = TRUE WHERE id = ?")
 @SQLRestriction("is_deleted = FALSE")
-
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class ProfilKeluarga extends IdsAbstract {
     @ManyToOne
@@ -55,7 +55,8 @@ public class ProfilKeluarga extends IdsAbstract {
     private JenjangPendidikan pendidikan;
     @Enumerated(EnumType.ORDINAL)
     private EStatusPendidikan statusPendidikan;
-    @Enumerated(EnumType.ORDINAL)
-    private EStatusKawin statusKawin;
+    private Boolean statusKawin;
     private String notes;
+    @Column(name = "changed_status", columnDefinition = "boolean default false")
+    private Boolean changedStatus;
 }

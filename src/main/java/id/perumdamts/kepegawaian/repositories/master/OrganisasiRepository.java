@@ -7,5 +7,5 @@ import org.springframework.data.repository.history.RevisionRepository;
 
 public interface OrganisasiRepository extends JpaRepository<Organisasi, Long>,
         JpaSpecificationExecutor<Organisasi>,
-        RevisionRepository<Organisasi, Long, Long> {
+        RevisionRepository<Organisasi, Long, Integer> {
 }

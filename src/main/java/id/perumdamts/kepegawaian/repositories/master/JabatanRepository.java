@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface JabatanRepository extends JpaRepository<Jabatan, Long>,
         JpaSpecificationExecutor<Jabatan>,
-        RevisionRepository<Jabatan, Long, Long> {
+        RevisionRepository<Jabatan, Long, Integer> {
     List<Jabatan> findByOrganisasi_Id(Long id);
 }

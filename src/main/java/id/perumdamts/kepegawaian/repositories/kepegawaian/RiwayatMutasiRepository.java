@@ -7,5 +7,5 @@ import org.springframework.data.repository.history.RevisionRepository;
 
 public interface RiwayatMutasiRepository extends JpaRepository<RiwayatMutasi, Long>,
         JpaSpecificationExecutor<RiwayatMutasi>,
-        RevisionRepository<RiwayatMutasi, Long, Long> {
+        RevisionRepository<RiwayatMutasi, Long, Integer> {
 }

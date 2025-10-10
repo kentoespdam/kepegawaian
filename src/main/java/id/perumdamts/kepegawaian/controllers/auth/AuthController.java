@@ -23,9 +23,10 @@ public class AuthController {
     private String appwriteApiKey;
     private final WebClient webClient;
     private final RedisHelper redisHelper;
+    private final String jwtHeader = "X-Appwrite-JWT";
 
     @GetMapping("/session")
-    public ResponseEntity<?> index(@RequestHeader(value = "X-Appwrite-JWT") String token) {
+    public ResponseEntity<?> index(@RequestHeader(value = jwtHeader) String token) {
         String result = webClient.get()
                 .uri(appwriteUrl + "/account/jwt")
                 .header("X-Appwrite-JWT", token)

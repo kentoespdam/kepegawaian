@@ -7,5 +7,5 @@ import org.springframework.data.repository.history.RevisionRepository;
 
 public interface RiwayatSpRepository extends JpaRepository<RiwayatSp, Long>,
         JpaSpecificationExecutor<RiwayatSp>,
-        RevisionRepository<RiwayatSp, Long, Long> {
+        RevisionRepository<RiwayatSp, Long, Integer> {
 }

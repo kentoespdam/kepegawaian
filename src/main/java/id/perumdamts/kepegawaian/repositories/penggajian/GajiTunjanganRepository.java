@@ -10,6 +10,6 @@ import java.util.Optional;
 
 public interface GajiTunjanganRepository extends JpaRepository<GajiTunjangan, Long>,
         JpaSpecificationExecutor<GajiTunjangan>,
-        RevisionRepository<GajiTunjangan, Long, Long> {
+        RevisionRepository<GajiTunjangan, Long, Integer> {
     Optional<GajiTunjangan> findByIdAndJenisTunjangan(Long id, EJenisTunjangan eJenisTunjangan);
 }
