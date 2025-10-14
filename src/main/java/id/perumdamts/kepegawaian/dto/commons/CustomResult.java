@@ -1,11 +1,16 @@
 package id.perumdamts.kepegawaian.dto.commons;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Optional;
 
+@Slf4j
 public class CustomResult {
     public static <T> ResponseEntity<?> any(T data) {
+        if (data instanceof Optional<?> && ((Optional<?>) data).isEmpty())
+            data = null;
         SingleResult<T> result = new SingleResult<>(data);
         return ResponseEntity.status(result.statusText).body(result);
     }

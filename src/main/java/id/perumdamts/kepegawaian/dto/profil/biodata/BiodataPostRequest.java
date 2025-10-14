@@ -7,6 +7,7 @@ import id.perumdamts.kepegawaian.entities.commons.EJenisKelamin;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKawin;
 import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Min;
@@ -49,17 +50,12 @@ public class BiodataPostRequest {
 
     @JsonIgnore
     public Specification<Biodata> getSpecification() {
-        Specification<Biodata> nikSpec = (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("nik"), nik);
-        Specification<Biodata> namaSpec = (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("nama"), nama);
-        Specification<Biodata> tempatLahirSpec = (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("tempatLahir"), tempatLahir);
-        Specification<Biodata> tanggalLahirSpec = (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("tanggalLahir"), tanggalLahir);
-
-        return Specification.where(nikSpec).and(namaSpec).and(tempatLahirSpec)
-                .and(tanggalLahirSpec);
+        return SpecificationBuilder.<Biodata>of()
+                .addEqual(nik, "nik")
+                .addEqual(nama, "nama")
+                .addEqual(tempatLahir, "tempatLahir")
+                .addEqual(tanggalLahir, "tanggalLahir")
+                .build();
     }
 
     public static Biodata toEntity(BiodataPostRequest request, JenjangPendidikan pendidikanTerakhir) {

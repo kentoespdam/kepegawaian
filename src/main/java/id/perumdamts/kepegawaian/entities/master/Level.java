@@ -4,22 +4,25 @@ import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
-@Table(indexes = {
-        @Index(columnList = "nama"),
-        @Index(columnList = "is_deleted")
-})
+@Table(name = "level",
+        indexes = {
+                @Index(columnList = "nama", unique = true),
+                @Index(columnList = "is_deleted"),
+        })
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@SQLDelete(sql = "UPDATE level SET is_deleted=true WHERE id=?")
-@SQLRestriction("is_deleted <> 1")
+@SQLDelete(sql = "UPDATE `level` SET is_deleted=true WHERE id=?")
+@SQLRestriction("is_deleted != TRUE")
 public class Level extends IdsAbstract {
     private String nama;
 

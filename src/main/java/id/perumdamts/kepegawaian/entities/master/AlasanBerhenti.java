@@ -25,4 +25,10 @@ import org.hibernate.envers.Audited;
 public class AlasanBerhenti extends IdsAbstract {
     private String nama;
     private String notes;
+
+    public AlasanBerhenti(Long id, String nama, String notes) {
+        super(id);
+        this.nama = nama;
+        this.notes = notes;
+    }
 }

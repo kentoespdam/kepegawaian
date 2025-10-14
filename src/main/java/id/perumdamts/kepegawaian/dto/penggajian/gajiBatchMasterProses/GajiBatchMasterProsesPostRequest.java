@@ -3,12 +3,11 @@ package id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMasterProses;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.commons.EJenisGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchMasterProses;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
-
-import java.util.Objects;
 
 @Data
 public class GajiBatchMasterProsesPostRequest {
@@ -21,13 +20,11 @@ public class GajiBatchMasterProsesPostRequest {
 
     @JsonIgnore
     public Specification<GajiBatchMasterProses> getSpecification() {
-        Specification<GajiBatchMasterProses> masterBatchIdSpec = Objects.isNull(batchMasterId) ? null :
-                (root, query, cb) -> cb.equal(root.get("batchMasterId"), batchMasterId);
-        Specification<GajiBatchMasterProses> namaSpec = Objects.isNull(nama) ? null :
-                (root, query, cb) -> cb.equal(root.get("nama"), nama);
-        Specification<GajiBatchMasterProses> jenisGajiSpec = Objects.isNull(jenisGaji) ? null :
-                (root, query, cb) -> cb.equal(root.get("jenisGaji"), jenisGaji);
-        return Specification.where(masterBatchIdSpec).and(namaSpec).and(jenisGajiSpec);
+        return SpecificationBuilder.<GajiBatchMasterProses>of()
+                .addEqual(batchMasterId, "batchMasterId")
+                .addEqual(nama, "nama")
+                .addEqual(jenisGaji, "jenisGaji")
+                .build();
     }
 
     public static GajiBatchMasterProses toEntity(GajiBatchMasterProsesPostRequest request) {

@@ -9,6 +9,7 @@ import id.perumdamts.kepegawaian.dto.pegawai.PegawaiPostRequest;
 import id.perumdamts.kepegawaian.entities.commons.EJenisKontrak;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatKontrak;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -51,12 +52,12 @@ public class RiwayatKontrakPostRequest {
 
     @JsonIgnore
     public Specification<RiwayatKontrak> getSpecification() {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.and(
-                criteriaBuilder.equal(root.get("pegawai").get("id"), this.pegawaiId),
-                criteriaBuilder.equal(root.get("nipam"), this.nipam),
-                criteriaBuilder.equal(root.get("nomorKontrak"), this.nomorKontrak),
-                criteriaBuilder.equal(root.get("jenisKontrak"), this.jenisKontrak)
-        );
+        return SpecificationBuilder.<RiwayatKontrak>of()
+                .addEqual(pegawaiId, "pegawai", "id")
+                .addEqual(nipam, "nipam")
+                .addEqual(nomorKontrak, "nomorKontrak")
+                .addEqual(jenisKontrak, "jenisKontrak")
+                .build();
     }
 
     public static RiwayatKontrak toEntity(RiwayatKontrakPostRequest request, Pegawai pegawai) {

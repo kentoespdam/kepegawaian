@@ -1,26 +1,26 @@
 package id.perumdamts.kepegawaian.services.setupMaster;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import id.perumdamts.kepegawaian.entities.master.AlasanBerhenti;
 import id.perumdamts.kepegawaian.repositories.master.AlasanBerhentiRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class SetupAlasanBerhenti implements SetupMaster {
-    @Autowired
-    private AlasanBerhentiRepository repository;
+    private final AlasanBerhentiRepository repository;
 
     @Override
-    public void insertBatch() throws JsonProcessingException {
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        String jsonString = "[{\"nama\":\"Mengundurkan Diri\"},{\"nama\":\"Diberhentikan\"},{\"nama\":\"Kontrak Berakhir\"},{\"nama\":\"Pensiun Normal\"},{\"nama\":\"Meninggal Dunia\"}]";
-        List<AlasanBerhenti> list = mapper.readValue(jsonString, new TypeReference<>() {
-        });
+    public void insertBatch() {
+        List<AlasanBerhenti> list = new ArrayList<>();
+        list.add(new AlasanBerhenti("Mengundurkan Diri", ""));
+        list.add(new AlasanBerhenti("Diberhentikan", ""));
+        list.add(new AlasanBerhenti("Kontrak Berakhir", ""));
+        list.add(new AlasanBerhenti("Pensiun Normal", ""));
+        list.add(new AlasanBerhenti("Meninggal Dunia", ""));
         repository.saveAll(list);
     }
 }

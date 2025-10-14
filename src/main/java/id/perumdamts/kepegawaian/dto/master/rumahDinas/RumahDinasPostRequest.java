@@ -12,10 +12,8 @@ public class RumahDinasPostRequest {
 
     @JsonIgnore
     public Specification<RumahDinas> getSpecification() {
-        return Specification.where(
-                (root, query, cb) ->
-                        cb.equal(root.get("nama"), nama)
-        );
+        return (root, query, cb) ->
+                cb.equal(root.get("nama"), nama);
     }
 
     public static RumahDinas toEntity(RumahDinasPostRequest request) {

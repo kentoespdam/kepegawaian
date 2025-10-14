@@ -20,7 +20,6 @@ import java.time.LocalDate;
         @Index(columnList = "nama", name = "idx_profilkeluarga_nama"),
         @Index(columnList = "is_deleted", name = "idx_profilkeluarga_is_deleted"),
         @Index(columnList = "tanggungan", name = "idx_profilkeluarga_tanggungan"),
-        @Index(columnList = "lta_tag", name = "idx_profilkeluarga_lta_tag")
 }, uniqueConstraints = {
         @UniqueConstraint(name = "uc_profilkeluarga_nik", columnNames = {"biodata_id", "version", "nama", "tanggal_lahir", "is_deleted"})
 })
@@ -33,7 +32,7 @@ import java.time.LocalDate;
 @SQLRestriction("is_deleted = FALSE")
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class ProfilKeluarga extends IdsAbstract {
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "biodata_id", referencedColumnName = "nik")
     private Biodata biodata;
     private String nik;

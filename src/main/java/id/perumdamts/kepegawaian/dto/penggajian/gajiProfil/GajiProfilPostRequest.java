@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.dto.penggajian.gajiProfil;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiProfil;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -15,8 +16,9 @@ public class GajiProfilPostRequest {
 
     @JsonIgnore
     public Specification<GajiProfil> getSpecification() {
-        return (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("nama"), this.getNama());
+        return SpecificationBuilder.<GajiProfil>of()
+                .addEqual(nama, "nama")
+                .build();
     }
 
     public static GajiProfil toEntity(GajiProfilPostRequest request) {

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.dto.commons.CommonPageRequest;
 import id.perumdamts.kepegawaian.entities.commons.EProsesGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchMaster;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotEmpty;
@@ -28,17 +29,13 @@ public class GajiBatchMasterRequest extends CommonPageRequest {
 
     @JsonIgnore
     public Specification<GajiBatchMaster> getSpecification() {
-        Specification<GajiBatchMaster> batchIdSpec = Objects.isNull(periode) ? null :
-                (root, query, cb) -> cb.equal(root.get("gajiBatchRoot").get("periode"), periode);
-        Specification<GajiBatchMaster> statusSpec = Objects.isNull(status) ? null :
-                (root, query, cb) -> cb.greaterThanOrEqualTo(root.get("gajiBatchRoot").get("status"), status.value());
-        Specification<GajiBatchMaster> nipamSpec = Objects.isNull(nipam) ? null :
-                (root, query, cb) -> cb.equal(root.get("nipam"), nipam);
-        Specification<GajiBatchMaster> namaSpec = Objects.isNull(nama) ? null :
-                (root, query, cb) -> cb.like(root.get("nama"), "%" + nama + "%");
-        Specification<GajiBatchMaster> pegawaiIdSpec = Objects.isNull(pegawaiId) ? null :
-                (root, query, cb) -> cb.equal(root.get("pegawai").get("id"), pegawaiId);
-
-        return Specification.where(batchIdSpec).and(statusSpec).and(nipamSpec).and(namaSpec).and(pegawaiIdSpec);
+        SpecificationBuilder<GajiBatchMaster> builder = SpecificationBuilder.<GajiBatchMaster>of()
+                .addEqual(periode, "gajiBatchRoot", "periode")
+                .addEqual(nipam, "nipam")
+                .addLike(nama, "nama")
+                .addEqual(pegawaiId, "pegawai", "id");
+        if (Objects.nonNull(status))
+            builder.addGreaterThanOrEqual(status, "gajiBatchRoot", "status");
+        return builder.build();
     }
 }

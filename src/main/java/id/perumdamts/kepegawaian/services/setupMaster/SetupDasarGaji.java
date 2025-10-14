@@ -1,22 +1,19 @@
 package id.perumdamts.kepegawaian.services.setupMaster;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import id.perumdamts.kepegawaian.entities.penggajian.DasarGaji;
 import id.perumdamts.kepegawaian.repositories.penggajian.DasarGajiRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
 @Service
+@RequiredArgsConstructor
 public class SetupDasarGaji implements SetupMaster {
-    @Autowired
-    private DasarGajiRepository repository;
+    private final DasarGajiRepository repository;
 
     @Override
-    public void insertBatch() throws JsonProcessingException {
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    public void insertBatch() {
         DasarGaji dasarGaji = new DasarGaji();
         dasarGaji.setDeskripsi("Skala Gaji - PP No.30 Thn 2015");
         dasarGaji.setTanggalAwal(LocalDate.of(2015, 1, 1));

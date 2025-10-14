@@ -5,7 +5,11 @@ import id.perumdamts.kepegawaian.dto.commons.CommonPageRequest;
 import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
 import id.perumdamts.kepegawaian.entities.commons.EReadWriteStatus;
 import id.perumdamts.kepegawaian.entities.cuti.CutiApprovalChain;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -13,6 +17,7 @@ import lombok.EqualsAndHashCode;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -25,28 +30,32 @@ public class CutiApprovalChainRequest extends CommonPageRequest {
     private Long picSaatIniId;
     @NotNull(message = "Approval Cuti Status is required")
     private EApprovalCutiStatus approvalCutiStatus;
+    private Long jabatanId;
+    private EReadWriteStatus readWriteStatus;
 
     @JsonIgnore
     public Specification<CutiApprovalChain> getApprovalChainSpecification() {
-        Specification<CutiApprovalChain> picSaatIniSpec =
-                (root, query, cb) ->
-                        cb.equal(root.get("jabatanId"), picSaatIniId);
-        Specification<CutiApprovalChain> tahunSpec =
-                (root, query, cb) -> {
-                    Expression<LocalDate> createdAtPengajuanExpression = root.get("refCuti").get("createdAt");
-                    Expression<LocalDate> tanggalMulaiExpression = root.get("refCuti").get("tanggalMulai");
-                    return cb.or(
-                            cb.equal(cb.function("YEAR", Integer.class, createdAtPengajuanExpression), tahun),
-                            cb.equal(cb.function("YEAR", Integer.class, tanggalMulaiExpression), tahun)
-                    );
-                };
-        Specification<CutiApprovalChain> readWriteSpec = (root, query, cb) ->
-                cb.notEqual(root.get("readWriteStatus"), EReadWriteStatus.NONE);
-        Specification<CutiApprovalChain> approvalCutiSpec = (root, query, cb) ->
-                cb.equal(root.get("refCuti").get("approvalCutiStatus"), approvalCutiStatus);
+        SpecificationBuilder<CutiApprovalChain> builder = SpecificationBuilder.<CutiApprovalChain>of()
+                .addEqual(jabatanId, "jabatanId")
 
-        return Specification.where(picSaatIniSpec).and(tahunSpec)
-                .and(approvalCutiSpec)
-                .and(readWriteSpec);
+                .addEqual(picSaatIniId, "jabatanId")
+                .addEqual(approvalCutiStatus, "approvalCutiStatus")
+                .addEqual(readWriteStatus, "readWriteStatus");
+        if (Objects.nonNull(tahun))
+            builder.addCustom((root, cb) -> createYearPredicate(root, cb, tahun));
+        return builder.build();
     }
+
+    private Predicate createYearPredicate(Root<CutiApprovalChain> root, CriteriaBuilder cb, Integer tahun) {
+        if (tahun == null) return null;
+
+        Expression<LocalDate> createdAtPengajuanExpression = root.get("refCuti").get("createdAt");
+        Expression<LocalDate> tanggalMulaiExpression = root.get("refCuti").get("tanggalMulai");
+
+        return cb.or(
+                cb.equal(cb.function("YEAR", Integer.class, createdAtPengajuanExpression), tahun),
+                cb.equal(cb.function("YEAR", Integer.class, tanggalMulaiExpression), tahun)
+        );
+    }
+
 }

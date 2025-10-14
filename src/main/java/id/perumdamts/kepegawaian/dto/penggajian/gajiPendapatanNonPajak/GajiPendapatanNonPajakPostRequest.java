@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.dto.penggajian.gajiPendapatanNonPajak;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiPendapatanNonPajak;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -17,8 +18,9 @@ public class GajiPendapatanNonPajakPostRequest {
 
     @JsonIgnore
     public Specification<GajiPendapatanNonPajak> getSpecification() {
-        Specification<GajiPendapatanNonPajak> kodeSpec = (root, query, cb) -> cb.equal(root.get("kode"), kode);
-        return Specification.where(kodeSpec);
+        return SpecificationBuilder.<GajiPendapatanNonPajak>of()
+                .addEqual(kode, "kode")
+                .build();
     }
 
     public static GajiPendapatanNonPajak toEntity(GajiPendapatanNonPajakPostRequest request) {

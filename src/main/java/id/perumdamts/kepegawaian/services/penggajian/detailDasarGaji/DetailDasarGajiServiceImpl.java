@@ -12,6 +12,7 @@ import id.perumdamts.kepegawaian.entities.penggajian.DetailDasarGaji;
 import id.perumdamts.kepegawaian.repositories.master.GolonganRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.DasarGajiRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.DetailDasarGajiRepository;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -52,12 +53,11 @@ public class DetailDasarGajiServiceImpl implements DetailDasarGajiService {
         if (golongan.isEmpty())
             throw new RuntimeException("Golongan not found: " + golonganId);
         Integer golonganKode = Integer.parseInt(golongan.get().getGolongan().split("\\.")[1]);
-        Specification<DetailDasarGaji> specification = (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("golonganKode"), golonganKode);
-        Specification<DetailDasarGaji> masaKerjaSpec = (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("mkg"), masaKerja);
-        Specification<DetailDasarGaji> andSpec = Specification.where(specification).and(masaKerjaSpec);
-        return repository.findOne(andSpec)
+        Specification<DetailDasarGaji> specification =  SpecificationBuilder.<DetailDasarGaji>of()
+                .addEqual(golonganKode, "golonganKode")
+                .addEqual(masaKerja, "mkg")
+                .build();
+        return repository.findOne(specification)
                 .orElseThrow(() -> new RuntimeException("Detail Dasar Gaji not found"));
     }
 

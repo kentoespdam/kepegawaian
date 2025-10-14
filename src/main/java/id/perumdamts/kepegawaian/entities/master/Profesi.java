@@ -3,7 +3,10 @@ package id.perumdamts.kepegawaian.entities.master;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
@@ -22,7 +25,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE profesi SET is_deleted=true WHERE id=?")
-@SQLRestriction("is_deleted <> 1")
+@SQLRestriction("is_deleted != FALSE")
 
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class Profesi extends IdsAbstract {
@@ -54,8 +57,7 @@ public class Profesi extends IdsAbstract {
         super(id);
     }
 
-    public Profesi(Long id, String nama, String detail, String resiko, Organisasi organisasi, Jabatan jabatan, Level level, Grade grade) {
-        super(id);
+    public Profesi(String nama, String detail, String resiko, Organisasi organisasi, Jabatan jabatan, Level level, Grade grade) {
         this.nama = nama;
         this.detail = detail;
         this.resiko = resiko;

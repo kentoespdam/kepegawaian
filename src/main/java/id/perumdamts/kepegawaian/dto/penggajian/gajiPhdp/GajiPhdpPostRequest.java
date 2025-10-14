@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.dto.penggajian.gajiPhdp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiPhdp;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
@@ -16,9 +17,10 @@ public class GajiPhdpPostRequest {
 
     @JsonIgnore
     public Specification<GajiPhdp> getSpecification() {
-        Specification<GajiPhdp> kondisiSpec = (root, query, cb) -> cb.equal(root.get("kondisi"), kondisi);
-        Specification<GajiPhdp> formulaSpec = (root, query, cb) -> cb.equal(root.get("formula"), formula);
-        return Specification.where(kondisiSpec).and(formulaSpec);
+        return SpecificationBuilder.<GajiPhdp>of()
+                .addEqual(kondisi, "kondisi")
+                .addEqual(formula, "formula")
+                .build();
     }
 
     public static GajiPhdp toEntity(GajiPhdpPostRequest request) {

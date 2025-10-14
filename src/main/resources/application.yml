@@ -17,33 +17,39 @@ spring:
       max-file-size: 100MB
       max-request-size: 100MB
   datasource:
-    url: jdbc:mysql://${DB_HOST:192.168.230.84}:${DB_PORT:3306}/${DB_SCHEMA:kepegawaian}?useSSL=false&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mariadb://${DB_HOST:192.168.230.84}:${DB_PORT:3306}/${DB_SCHEMA:kepegawaian}?useSSL=false&zeroDateTimeBehavior=convertToNull
     #    url: jdbc:mysql://${DB_HOST:192.168.230.254}:${DB_PORT:4006}/${DB_SCHEMA:kepegawaian}?useSSL=false
     username: ${DB_USER:dev}
     password: ${DB_PASSWORD:password}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.mariadb.jdbc.Driver
     hikari:
       connection-timeout: 20000
       maximum-pool-size: ${DB_POOL_SIZE:10}
   jpa:
-#    show-sql: true
+    show-sql: true
     hibernate:
-      ddl-auto: ${DDL_AUTO:create}
-    #      ddl-auto: ${DDL_AUTO:none}
+      ddl-auto: ${DDL_AUTO:none}
     properties:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.MySQLDialect
         column_ordering_strategy: legacy
-#      javax:
-#        persistence:
-#          schema-generation:
-#            scripts:
-#              action: create
-#              create-target: create.sql
-#              create-source: metadata
-#              drop-target: drop.sql
-#              drop-source: metadata
+#      org:
+#        hibernate:
+#          envers:
+#            audit_table_suffix: _aud
+#            revision_field_name: rev
+#            revision_type_field_name: revtype
+#            store_data_at_delete: true
+  #      javax:
+  #        persistence:
+  #          schema-generation:
+  #            scripts:
+  #              action: create
+  #              create-target: create.sql
+  #              create-source: metadata
+  #              drop-target: drop.sql
+  #              drop-source: metadata
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:192.168.1.214:9092}
     producer:

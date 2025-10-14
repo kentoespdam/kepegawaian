@@ -2,12 +2,12 @@ package id.perumdamts.kepegawaian.dto.master.jenisPelatihan;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.master.JenisPelatihan;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
-import java.util.Objects;
 
 @Data
 public class JenisPelatihanPostRequest {
@@ -16,8 +16,9 @@ public class JenisPelatihanPostRequest {
 
     @JsonIgnore
     public Specification<JenisPelatihan> getSpecification() {
-        Specification<JenisPelatihan> namaSpec = Objects.isNull(nama) ? null : (root, query, cb) -> cb.equal(root.get("nama"), nama);
-        return Specification.where(namaSpec);
+        return SpecificationBuilder.<JenisPelatihan>of()
+                .addEqual(nama,"nama")
+                .build();
     }
 
     public static JenisPelatihan toEntity(JenisPelatihanPostRequest request) {

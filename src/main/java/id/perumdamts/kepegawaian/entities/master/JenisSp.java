@@ -45,8 +45,7 @@ public class JenisSp extends IdsAbstract {
         this.sanksiSp = sanksiList.stream().toList();
     }
 
-    public JenisSp(Long id, String kode, String nama) {
-        super(id);
+    public JenisSp(String kode, String nama) {
         this.kode = kode;
         this.nama = nama;
     }

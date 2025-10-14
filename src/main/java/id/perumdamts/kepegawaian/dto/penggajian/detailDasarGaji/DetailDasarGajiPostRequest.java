@@ -4,10 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.penggajian.DasarGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.DetailDasarGaji;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
-
-import java.util.Objects;
 
 @Data
 public class DetailDasarGajiPostRequest {
@@ -18,15 +17,12 @@ public class DetailDasarGajiPostRequest {
 
     @JsonIgnore
     public Specification<DetailDasarGaji> getSpecification() {
-        Specification<DetailDasarGaji> dasarGajiSpec = Objects.isNull(dasarGajiId) ? null :
-                (root, query, cb) -> cb.equal(root.get("dasarGaji").get("id"), dasarGajiId);
-        Specification<DetailDasarGaji> mkgSpec = Objects.isNull(mkg) ? null :
-                (root, query, cb) -> cb.equal(root.get("mkg"), mkg);
-        Specification<DetailDasarGaji> golonganSpec = Objects.isNull(golonganId) ? null :
-                (root, query, cb) -> cb.equal(root.get("golongan").get("id"), golonganId);
-        Specification<DetailDasarGaji> nominalSpec = Objects.isNull(nominal) ? null :
-                (root, query, cb) -> cb.equal(root.get("nominal"), nominal);
-        return Specification.where(dasarGajiSpec).and(mkgSpec).and(golonganSpec).and(nominalSpec);
+        return SpecificationBuilder.<DetailDasarGaji>of()
+                .addEqual(dasarGajiId, "dasarGaji", "id")
+                .addEqual(mkg, "mkg")
+                .addEqual(golonganId, "golongan", "id")
+                .addEqual(nominal, "nominal")
+                .build();
     }
 
     public static DetailDasarGaji toEntity(DetailDasarGajiPostRequest request, DasarGaji dasarGaji, Golongan golongan) {

@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.dto.master.sanksi;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.master.JenisSp;
 import id.perumdamts.kepegawaian.entities.master.Sanksi;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -32,13 +33,11 @@ public class SanksiPostRequest {
 
     @JsonIgnore
     public Specification<Sanksi> getSpecification() {
-        Specification<Sanksi> kodeSpec = (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("kode"), kode);
-        Specification<Sanksi> namaSpec = (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("keterangan"), keterangan);
-        Specification<Sanksi> jenisSpSpec = (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("jenisSp").get("id"), jenisSpId);
-        return Specification.where(kodeSpec).and(namaSpec).and(jenisSpSpec);
+        return SpecificationBuilder.<Sanksi>of()
+                .addEqual(kode, "kode")
+                .addEqual(keterangan, "keterangan")
+                .addEqual(jenisSpId, "jenisSp", "id")
+                .build();
     }
 
     public static Sanksi toEntity(SanksiPostRequest request, JenisSp jenisSp) {

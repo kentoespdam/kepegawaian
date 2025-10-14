@@ -1,23 +1,27 @@
 package id.perumdamts.kepegawaian.controllers.master;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import id.perumdamts.kepegawaian.services.setupMaster.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Slf4j
 @RestController
 @RequestMapping("/setup-master")
 @RequiredArgsConstructor
 public class SetupMasterController {
-    private final SetupOrganisasi setupOrganisasi;
     private final SetupLevel setupLevel;
+    private final SetupOrganisasi setupOrganisasi;
     private final SetupGolongan setupGolongan;
     private final SetupGrade setupGrade;
-    private final SetupProfesi setupProfesi;
     private final SetupJabatan setupJabatan;
+    private final SetupProfesi setupProfesi;
     private final SetupJenisKeahlian setupJenisKeahlian;
     private final SetupJenisKitas setupJenisKitas;
     private final SetupJenisPelatihan setupJenisPelatihan;
@@ -37,37 +41,38 @@ public class SetupMasterController {
     private final SetupPrefRole setupPrefRole;
     private final SetupCutiJenis setupCutiJenis;
 
+    private SetupMaster[] getServicesInOrder() {
+        return new SetupMaster[]{
+                setupLevel, setupOrganisasi, setupGolongan, setupGrade, setupJabatan,
+                setupProfesi, setupJenisKeahlian, setupJenisKitas, setupJenisPelatihan,
+                setupJenjangPendidikan, setupJenisSp, setupSanksi, setupAlasanBerhenti,
+                setupDasarGaji, setupDetailDasarGaji, setupPendapatanNonPajak,
+                setupGajiProfil, setupGajiKomponen, setupRumahDinas, setupGajiTunjangan,
+                setupGajiPotonganTkk, setupGajiParameterSetting, setupPrefRole, setupCutiJenis
+        };
+    }
+
     @GetMapping
     public ResponseEntity<?> initialData() {
-        try {
-            setupLevel.insertBatch();
-            setupOrganisasi.insertBatch();
-            setupJabatan.insertBatch();
-            setupGolongan.insertBatch();
-            setupDasarGaji.insertBatch();
-            setupGrade.insertBatch();
-            setupProfesi.insertBatch();
-            setupJenisKeahlian.insertBatch();
-            setupJenisKitas.insertBatch();
-            setupJenisPelatihan.insertBatch();
-            setupJenjangPendidikan.insertBatch();
-            setupJenisSp.insertBatch();
-            setupSanksi.insertBatch();
-            setupAlasanBerhenti.insertBatch();
-            setupDetailDasarGaji.insertBatch();
-            setupPendapatanNonPajak.insertBatch();
-            setupGajiProfil.insertBatch();
-            setupGajiKomponen.insertBatch();
-            setupRumahDinas.insertBatch();
-            setupGajiTunjangan.insertBatch();
-            setupGajiPotonganTkk.insertBatch();
-            setupGajiParameterSetting.insertBatch();
-            setupPrefRole.insertBatch();
-            setupCutiJenis.insertBatch();
-            return ResponseEntity.ok().build();
-        } catch (JsonProcessingException e) {
-            return ResponseEntity.status(500).body(e.getMessage());
+        List<String> errors = new ArrayList<>();
+        SetupMaster[] servicesInOrder = getServicesInOrder();
+        for (SetupMaster service : servicesInOrder) {
+            try {
+                service.insertBatch();
+                log.info("✅ Success: {}", service.getClass().getSimpleName());
+            } catch (Exception e) {
+                String error = String.format("%s: %s",
+                        service.getClass().getSimpleName(), e.getMessage());
+                errors.add(error);
+                log.error("❌ {}", error);
+
+            }
         }
+
+        return errors.isEmpty()
+                ? ResponseEntity.ok("All master data initialized successfully")
+                : ResponseEntity.status(500)
+                .body("Partial success. Errors: " + String.join("; ", errors));
     }
 
 }

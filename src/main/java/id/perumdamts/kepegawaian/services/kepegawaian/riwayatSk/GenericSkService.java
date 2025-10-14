@@ -11,21 +11,18 @@ import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiPutRe
 import id.perumdamts.kepegawaian.dto.pegawai.PegawaiPostRequest;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
-import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatKontrak;
-import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatMutasi;
-import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
-import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatTerminasi;
+import id.perumdamts.kepegawaian.entities.kepegawaian.*;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.entities.master.Profesi;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
-import id.perumdamts.kepegawaian.entities.kepegawaian.LampiranSk;
 import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.LampiranSkRepository;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.RiwayatSkRepository;
 import id.perumdamts.kepegawaian.services.kepegawaian.lampiran.LampiranSkService;
 import id.perumdamts.kepegawaian.services.pegawai.GenericPegawaiService;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
@@ -206,12 +203,10 @@ public class GenericSkService {
     }
 
     public void delete(RiwayatKontrak riwayatKontrak) {
-        Specification<RiwayatSk> specification = Specification.where(
-                (root, query, criteriaBuilder) -> criteriaBuilder.and(
-                        criteriaBuilder.equal(root.get("pegawai").get("id"), riwayatKontrak.getPegawai().getId()),
-                        criteriaBuilder.equal(root.get("nomorSk"), riwayatKontrak.getNomorKontrak())
-                )
-        );
+        Specification<RiwayatSk> specification = SpecificationBuilder.<RiwayatSk>of()
+                .addEqual(riwayatKontrak.getPegawai().getId(), "pegawai", "id")
+                .addEqual(riwayatKontrak.getNomorKontrak(), "nomorSk")
+                .build();
         repository.findAll(specification).stream().map(r -> {
             r.setIsDeleted(true);
             return repository.save(r).getId();

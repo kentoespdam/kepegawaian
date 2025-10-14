@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.dto.profil.lampiranProfil;
 
 import id.perumdamts.kepegawaian.entities.profil.LampiranProfil;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.Min;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
@@ -13,8 +14,9 @@ public class LampiranProfilRequest {
     private Long refId;
 
     public Specification<LampiranProfil> getSpecification() {
-        Specification<LampiranProfil> refSpec = (root, query, cb) -> cb.equal(root.get("ref").get("id"), ref);
-        Specification<LampiranProfil> refIdSpec = (root, query, cb) -> cb.equal(root.get("refId"), refId);
-        return Specification.where(refSpec).and(refIdSpec);
+        return SpecificationBuilder.<LampiranProfil>of()
+                .addEqual(ref, "ref")
+                .addEqual(refId, "refId")
+                .build();
     }
 }

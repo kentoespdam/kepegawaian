@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRoot;
 import id.perumdamts.kepegawaian.dto.commons.CommonPageRequest;
 import id.perumdamts.kepegawaian.entities.commons.EProsesGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchRoot;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.jpa.domain.Specification;
@@ -18,14 +19,14 @@ public class GajiBatchRootRequest extends CommonPageRequest {
     private EProsesGaji gtStatus;
 
     public Specification<GajiBatchRoot> getSpecification() {
-        Specification<GajiBatchRoot> periodeSpec = Objects.isNull(periode) ? null :
-                (root, query, cb) -> cb.like(root.get("periode"), periode + "%");
-        Specification<GajiBatchRoot> statusSpec = Objects.isNull(status) ? null :
-                (root, query, cb) -> cb.equal(root.get("status"), status.value());
-        Specification<GajiBatchRoot> ltStatusSpec = Objects.isNull(ltStatus) ? null :
-                (root, query, cb) -> cb.lessThanOrEqualTo(root.get("status"), ltStatus.value());
-        Specification<GajiBatchRoot> gtStatusSpec = Objects.isNull(gtStatus) ? null :
-                (root, query, cb) -> cb.greaterThanOrEqualTo(root.get("status"), gtStatus.value());
-        return Specification.where(periodeSpec).and(statusSpec).and(ltStatusSpec).and(gtStatusSpec);
+        SpecificationBuilder<GajiBatchRoot> builder = SpecificationBuilder.<GajiBatchRoot>of()
+                .addLike(periode, "periode")
+                .addEqual(status, "status");
+
+        if (Objects.nonNull(ltStatus))
+            builder.addLessThanOrEqual(ltStatus, "ltStatus");
+        if (Objects.nonNull(gtStatus))
+            builder.addGreaterThanOrEqual(gtStatus, "gtStatus");
+        return builder.build();
     }
 }

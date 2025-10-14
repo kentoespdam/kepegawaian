@@ -3,12 +3,12 @@ package id.perumdamts.kepegawaian.dto.profil.pengalamanKerja;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.PengalamanKerja;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Data
 public class PengalamanKerjaPostRequest {
@@ -28,16 +28,12 @@ public class PengalamanKerjaPostRequest {
 
     @JsonIgnore
     public Specification<PengalamanKerja> getSpecification() {
-        Specification<PengalamanKerja> biodataSpec = Objects.isNull(biodataId) ? null :
-                (root, query, cb) -> cb.equal(root.get("biodata").get("nik"), biodataId);
-        Specification<PengalamanKerja> namaPerusahaanSpec = Objects.isNull(namaPerusahaan) ? null :
-                (root, query, cb) -> cb.equal(root.get("namaPerusahaan"), namaPerusahaan);
-        Specification<PengalamanKerja> typePerusahaanSpec = Objects.isNull(typePerusahaan) ? null :
-                (root, query, cb) -> cb.equal(root.get("typePerusahaan"), typePerusahaan);
-        Specification<PengalamanKerja> jabatanSpec = Objects.isNull(jabatan) ? null :
-                (root, query, cb) -> cb.equal(root.get("jabatan"), jabatan);
-        return Specification.where(biodataSpec).and(namaPerusahaanSpec)
-                .and(typePerusahaanSpec).and(jabatanSpec);
+        return SpecificationBuilder.<PengalamanKerja>of()
+                .addEqual(biodataId, "biodata", "nik")
+                .addEqual(namaPerusahaan, "namaPerusahaan")
+                .addEqual(typePerusahaan, "typePerusahaan")
+                .addEqual(jabatan, "jabatan")
+                .build();
     }
 
     public static PengalamanKerja toEntity(PengalamanKerjaPostRequest request, Biodata biodata) {

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.master.JenisPelatihan;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.Pelatihan;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -40,15 +41,13 @@ public class PelatihanPostRequest {
 
     @JsonIgnore
     public Specification<Pelatihan> getSpecification() {
-        Specification<Pelatihan> biodataSpec = (root, query, cb) ->
-                cb.equal(root.get("biodata").get("nik"), biodataId);
-        Specification<Pelatihan> pelatihanSpec = (root, query, cb) ->
-                cb.equal(root.get("jenisPelatihan").get("id"), jenisPelatihanId);
-        Specification<Pelatihan> namaSpec = (root, query, cb) ->
-                cb.equal(root.get("nama"), nama);
-        Specification<Pelatihan> tanggalSpec = (root, query, cb) ->
-                cb.equal(root.get("tanggalMulai"), tanggalMulai);
-        return Specification.where(biodataSpec).and(pelatihanSpec).and(namaSpec).and(tanggalSpec);
+        return SpecificationBuilder.<Pelatihan>of()
+                .addEqual(biodataId, "biodata", "nik")
+                .addEqual(jenisPelatihanId, "jenisPelatihan", "id")
+                .addEqual(nama, "nama")
+                .addEqual(lembaga, "lembaga")
+                .addEqual(tanggalMulai, "tanggalMulai")
+                .build();
     }
 
     public static Pelatihan toEntity(PelatihanPostRequest request, Biodata biodata, JenisPelatihan jenisPelatihan) {

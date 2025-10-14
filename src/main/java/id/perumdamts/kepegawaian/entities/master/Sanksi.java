@@ -46,8 +46,7 @@ public class Sanksi extends IdsAbstract {
         this.keterangan = keterangan;
     }
 
-    public Sanksi(Long id, String kode, String keterangan, JenisSp jenisSp, Boolean potTkk, Integer jmlPotTkk, Boolean isPendingPangkat, Boolean isPendingGaji, Boolean isTurunPangkat, Boolean isTurunJabatan, Boolean isSuspension, Boolean isTerminateDh, Boolean isTerminateTh) {
-        super(id);
+    public Sanksi(String kode, String keterangan, JenisSp jenisSp, Boolean potTkk, Integer jmlPotTkk, Boolean isPendingPangkat, Boolean isPendingGaji, Boolean isTurunPangkat, Boolean isTurunJabatan, Boolean isSuspension, Boolean isTerminateDh, Boolean isTerminateTh) {
         this.kode = kode;
         this.keterangan = keterangan;
         this.jenisSp = jenisSp;

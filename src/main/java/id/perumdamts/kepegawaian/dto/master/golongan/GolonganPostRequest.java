@@ -2,11 +2,11 @@ package id.perumdamts.kepegawaian.dto.master.golongan;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
-import java.util.Objects;
 
 @Data
 public class GolonganPostRequest {
@@ -15,12 +15,10 @@ public class GolonganPostRequest {
 
     @JsonIgnore
     public Specification<Golongan> getSpecification() {
-        Specification<Golongan> golonganSpec = Objects.isNull(golongan) ? null :
-                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("golongan"), golongan);
-        Specification<Golongan> pangkatSpec = Objects.isNull(pangkat) ? null :
-                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("pangkat"), pangkat);
-
-        return Specification.where(golonganSpec).and(pangkatSpec);
+        return SpecificationBuilder.<Golongan>of()
+                .addEqual(golongan,"golongan")
+                .addEqual(pangkat,"pangkat")
+                .build();
     }
 
     public static Golongan toEntity(GolonganPostRequest request) {

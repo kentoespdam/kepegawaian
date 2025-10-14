@@ -5,6 +5,7 @@ import id.perumdamts.kepegawaian.entities.commons.EKualifikasi;
 import id.perumdamts.kepegawaian.entities.master.JenisKeahlian;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.Keahlian;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Min;
@@ -33,13 +34,11 @@ public class KeahlianPostRequest {
 
     @JsonIgnore
     public Specification<Keahlian> getSpecification() {
-        Specification<Keahlian> biodataSpec = (root, query, cb) ->
-                cb.equal(root.get("biodata").get("nik"), biodataId);
-        Specification<Keahlian> keahlianSpec = (root, query, cb) ->
-                cb.equal(root.get("jenisKeahlian").get("id"), keahlianId);
-        Specification<Keahlian> tahunSpec = (root, query, cb) ->
-                cb.equal(root.get("tahun"), tahun);
-        return Specification.where(biodataSpec).and(keahlianSpec).and(tahunSpec);
+        return SpecificationBuilder.<Keahlian>of()
+                .addEqual(biodataId, "biodata", "nik")
+                .addEqual(keahlianId, "jenisKeahlian", "id")
+                .addEqual(tahun, "tahun")
+                .build();
     }
 
     public static Keahlian toEntity(KeahlianPostRequest request, Biodata biodata, JenisKeahlian jenisKeahlian) {

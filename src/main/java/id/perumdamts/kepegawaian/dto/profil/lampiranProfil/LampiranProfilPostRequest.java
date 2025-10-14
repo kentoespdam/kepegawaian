@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.dto.profil.lampiranProfil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.entities.profil.LampiranProfil;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -27,13 +28,11 @@ public class LampiranProfilPostRequest implements Serializable {
 
     @JsonIgnore
     public Specification<LampiranProfil> getSpecification() {
-        Specification<LampiranProfil> refSpec = (root, query, cb) ->
-                cb.equal(root.get("ref"), ref);
-        Specification<LampiranProfil> refIdSpec = (root, query, cb) ->
-                cb.equal(root.get("refId"), refId);
-        Specification<LampiranProfil> fileNameSpec = (root, query, cb) ->
-                cb.equal(root.get("fileName"), fileName.getName());
-        return Specification.where(refSpec).and(refIdSpec).and(fileNameSpec);
+        return SpecificationBuilder.<LampiranProfil>of()
+                .addEqual(ref, "ref")
+                .addEqual(refId, "refId")
+                .addEqual(fileName, "fileName")
+                .build();
     }
 
     public static LampiranProfil toEntity(LampiranProfilPostRequest request, String fileName, String hashedFileName, String mimeType) {

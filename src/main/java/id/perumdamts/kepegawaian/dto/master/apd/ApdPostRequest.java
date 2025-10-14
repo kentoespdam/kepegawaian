@@ -3,13 +3,12 @@ package id.perumdamts.kepegawaian.dto.master.apd;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.master.Apd;
 import id.perumdamts.kepegawaian.entities.master.Profesi;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
-
-import java.util.Objects;
 
 @Data
 public class ApdPostRequest {
@@ -21,9 +20,10 @@ public class ApdPostRequest {
 
     @JsonIgnore
     public Specification<Apd> getSpecification() {
-        Specification<Apd> namaSpec = Objects.isNull(nama) ? null : (root, query, cb) -> cb.equal(root.get("nama"), nama);
-        Specification<Apd> profesiSpec = Objects.isNull(profesiId) ? null : (root, query, cb) -> cb.equal(root.get("profesi").get("id"), profesiId);
-        return Specification.where(namaSpec).and(profesiSpec);
+        return SpecificationBuilder.<Apd>of()
+                .addEqual(nama, "nama")
+                .addEqual(profesiId, "profesi", "id")
+                .build();
     }
 
     public static Apd toEntity(ApdPostRequest request, Profesi profesi) {

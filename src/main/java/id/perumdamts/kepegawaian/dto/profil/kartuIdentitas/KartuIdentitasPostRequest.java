@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.master.JenisKitas;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.KartuIdentitas;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
@@ -28,13 +29,11 @@ public class KartuIdentitasPostRequest {
 
     @JsonIgnore
     public Specification<KartuIdentitas> getSpecification() {
-        Specification<KartuIdentitas> nikSpec = (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("biodata").get("nik"), nik);
-        Specification<KartuIdentitas> jenisKartuSpec = (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("jenisKartu").get("id"), jenisKartuId);
-        Specification<KartuIdentitas> nomorKartuSpec = (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("nomorKartu"), nomorKartu);
-        return Specification.where(nikSpec).and(jenisKartuSpec).and(nomorKartuSpec);
+        return SpecificationBuilder.<KartuIdentitas>of()
+                .addEqual(nik, "biodata", "nik")
+                .addEqual(jenisKartuId, "jenisKartu", "id")
+                .addEqual(nomorKartu, "nomorKartu")
+                .build();
     }
 
     public static KartuIdentitas toEntity(

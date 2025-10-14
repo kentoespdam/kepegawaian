@@ -3,11 +3,10 @@ package id.perumdamts.kepegawaian.dto.master.alatKerja;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.dto.commons.CommonPageRequest;
 import id.perumdamts.kepegawaian.entities.master.AlatKerja;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.jpa.domain.Specification;
-
-import java.util.Objects;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -17,11 +16,9 @@ public class AlatKerjaRequest extends CommonPageRequest {
 
     @JsonIgnore
     public Specification<AlatKerja> getSpecification() {
-        Specification<AlatKerja> namaSpec = Objects.isNull(nama) ? null :
-                (root, query, cb) -> cb.like(root.get("nama"), "%" + nama + "%");
-        Specification<AlatKerja> profesiSpec = Objects.isNull(profesiId) ? null :
-                (root, query, cb) -> cb.equal(root.get("profesi").get("id"), profesiId);
-
-        return Specification.where(namaSpec).and(profesiSpec);
+        return SpecificationBuilder.<AlatKerja>of()
+                .addLike(nama, "nama")
+                .addEqual(profesiId, "profesi", "id")
+                .build();
     }
 }

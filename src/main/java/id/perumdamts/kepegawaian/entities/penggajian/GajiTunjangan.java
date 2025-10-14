@@ -19,7 +19,6 @@ import org.hibernate.envers.RelationTargetAuditMode;
 @Setter
 @ToString
 @NoArgsConstructor
-@AllArgsConstructor
 @SQLDelete(sql = "UPDATE gaji_tunjangan SET is_deleted=true WHERE id=?")
 @SQLRestriction("is_deleted = false")
 
@@ -35,8 +34,7 @@ public class GajiTunjangan extends IdsAbstract {
     private Golongan golongan;
     private Double nominal;
 
-    public GajiTunjangan(Long id, EJenisTunjangan jenisTunjangan, Level level, Golongan golongan, Double nominal) {
-        super(id);
+    public GajiTunjangan(EJenisTunjangan jenisTunjangan, Level level, Golongan golongan, Double nominal) {
         this.jenisTunjangan = jenisTunjangan;
         this.level = level;
         if (golongan != null)
@@ -44,8 +42,7 @@ public class GajiTunjangan extends IdsAbstract {
         this.nominal = nominal;
     }
 
-    public GajiTunjangan(Long id, EJenisTunjangan jenisTunjangan, Level level, Double nominal) {
-        super(id);
+    public GajiTunjangan(EJenisTunjangan jenisTunjangan, Level level, Double nominal) {
         this.jenisTunjangan = jenisTunjangan;
         this.level = level;
         this.nominal = nominal;

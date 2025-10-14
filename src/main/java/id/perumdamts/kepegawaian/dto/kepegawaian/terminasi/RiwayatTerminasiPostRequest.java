@@ -8,6 +8,7 @@ import id.perumdamts.kepegawaian.entities.master.AlasanBerhenti;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -41,11 +42,10 @@ public class RiwayatTerminasiPostRequest extends RiwayatSkPostRequest {
 
     @JsonIgnore
     public Specification<RiwayatTerminasi> getTerminasiSpecification() {
-        Specification<RiwayatTerminasi> pegawaiSpec = Objects.isNull(getPegawaiId()) ? null :
-                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("pegawai").get("id"), getPegawaiId());
-        Specification<RiwayatTerminasi> skSpec = Objects.isNull(getNomorSk()) ? null :
-                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("skTerminasi").get("nomorSk"), getNomorSk());
-        return Specification.where(skSpec).and(pegawaiSpec);
+        return SpecificationBuilder.<RiwayatTerminasi>of()
+                .addEqual(getPegawaiId(), "pegawai", "id")
+                .addEqual(getNomorSk(), "skTerminasi", "nomorSk")
+                .build();
     }
 
     public static RiwayatTerminasi toEntity(RiwayatTerminasiPostRequest request, AlasanBerhenti alasanTerminasi, RiwayatSk riwayatSk, Golongan golongan, Jabatan jabatan, Organisasi organisasi) {

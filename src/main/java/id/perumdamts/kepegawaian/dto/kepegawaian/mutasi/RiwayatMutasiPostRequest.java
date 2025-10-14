@@ -14,6 +14,7 @@ import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.entities.master.Profesi;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -53,11 +54,10 @@ public class RiwayatMutasiPostRequest extends RiwayatSkPostRequest {
 
     @JsonIgnore
     public Specification<RiwayatMutasi> getSpecificationMutasi() {
-        Specification<RiwayatMutasi> skSpec = Objects.isNull(getNomorSk()) ? null :
-                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("riwayatSk").get("nomorSk"), getNomorSk());
-        Specification<RiwayatMutasi> pegawaiSpec = Objects.isNull(getPegawaiId()) ? null :
-                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("pegawai").get("id"), getPegawaiId());
-        return Specification.where(skSpec).and(pegawaiSpec);
+        return SpecificationBuilder.<RiwayatMutasi>of()
+                .addEqual(getNomorSk(), "riwayatSk", "nomorSk")
+                .addEqual(getPegawaiId(), "pegawai", "id")
+                .build();
     }
 
     public static RiwayatMutasi toEntity(RiwayatMutasiPostRequest request, RiwayatSk riwayatSk) {

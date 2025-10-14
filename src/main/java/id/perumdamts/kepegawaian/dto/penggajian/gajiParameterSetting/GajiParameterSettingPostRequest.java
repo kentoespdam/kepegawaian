@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.dto.penggajian.gajiParameterSetting;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiParameterSetting;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -16,8 +17,9 @@ public class GajiParameterSettingPostRequest {
 
     @JsonIgnore
     public Specification<GajiParameterSetting> getSpecification() {
-        Specification<GajiParameterSetting> kodeSpec = (root, query, cb) -> cb.equal(root.get("kode"), kode);
-        return Specification.where(kodeSpec);
+        return SpecificationBuilder.<GajiParameterSetting>of()
+                .addEqual(kode, "kode")
+                .build();
     }
 
     public static GajiParameterSetting toEntity(GajiParameterSettingPostRequest request) {

@@ -2,11 +2,10 @@ package id.perumdamts.kepegawaian.dto.master.organisasi;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
-
-import java.util.Objects;
 
 @Data
 public class OrganisasiPostRequest {
@@ -20,15 +19,12 @@ public class OrganisasiPostRequest {
 
     @JsonIgnore
     public Specification<Organisasi> getSpecification() {
-        Specification<Organisasi> kodeSpec = Objects.isNull(kode) ? null :
-                (root, query, cb) -> cb.equal(root.get("kode"), kode);
-        Specification<Organisasi> parentIdSpec = Objects.isNull(parentId) ? null :
-                (root, query, cb) -> cb.equal(root.get("parent").get("id"), parentId);
-        Specification<Organisasi> levelSpec = Objects.isNull(levelOrganisasi) ? null :
-                (root, query, cb) -> cb.equal(root.get("levelOrg"), levelOrganisasi);
-        Specification<Organisasi> namaSpec = Objects.isNull(nama) ? null :
-                (root, query, cb) -> cb.equal(root.get("nama"), nama);
-        return Specification.where(kodeSpec).and(parentIdSpec).and(levelSpec).and(namaSpec);
+        return SpecificationBuilder.<Organisasi>of()
+                .addEqual(kode, "kode")
+                .addEqual(parentId, "parent", "id")
+                .addEqual(levelOrganisasi, "levelOrg")
+                .addEqual(nama, "nama")
+                .build();
     }
 
     public static Organisasi toEntity(OrganisasiPostRequest request, Organisasi parent) {

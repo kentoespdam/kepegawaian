@@ -3,11 +3,10 @@ package id.perumdamts.kepegawaian.dto.master.organisasi;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.dto.commons.CommonPageRequest;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.jpa.domain.Specification;
-
-import java.util.Objects;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -20,21 +19,12 @@ public class OrganisasiRequest extends CommonPageRequest {
 
     @JsonIgnore
     public Specification<Organisasi> getSpecification() {
-        Specification<Organisasi> kodeSpec = Objects.isNull(kode) ? null :
-                (root, query, criteriaBuilder) ->
-                        criteriaBuilder.like(root.get("kode"), kode + "%");
-        Specification<Organisasi> namaSpec = Objects.isNull(nama) ? null :
-                (root, query, criteriaBuilder) ->
-                        criteriaBuilder.like(root.get("nama"), "%" + nama + "%");
-        Specification<Organisasi> parentIdSpec = Objects.isNull(parentId) ? null :
-                (root, query, criteriaBuilder) ->
-                        criteriaBuilder.equal(root.get("parent").get("id"), parentId);
-        Specification<Organisasi> levelOrgSpec = Objects.isNull(levelOrg) ? null :
-                (root, query, criteriaBuilder) ->
-                        criteriaBuilder.equal(root.get("levelOrg"), levelOrg);
-        Specification<Organisasi> categorySpec = Objects.isNull(category) ? null :
-                (root, query, criteriaBuilder) ->
-                        criteriaBuilder.like(root.get("category"), category);
-        return Specification.where(kodeSpec).and(namaSpec).and(parentIdSpec).and(levelOrgSpec).and(categorySpec);
+        return SpecificationBuilder.<Organisasi>of()
+                .addLike(kode, "kode")
+                .addEqual(parentId, "parent", "id")
+                .addEqual(levelOrg, "levelOrg")
+                .addLike(nama, "nama")
+                .addEqual(category, "category")
+                .build();
     }
 }

@@ -28,7 +28,7 @@ import java.util.Objects;
 public abstract class IdsAbstract implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false, nullable = false)
+//    @Column(name = "id", updatable = false, nullable = false)
     private Long id;
     @CreatedBy
     @Column(name = "created_by", updatable = false)
@@ -48,6 +48,7 @@ public abstract class IdsAbstract implements Serializable {
     @Audited
     @Column(name = "is_deleted", columnDefinition = "boolean default false")
     private Boolean isDeleted = false;
+
     @Version
     @Column(name = "version")
     private Integer version = 1;
@@ -65,7 +66,6 @@ public abstract class IdsAbstract implements Serializable {
                 ", updatedBy='" + updatedBy + '\'' +
                 ", updatedAt=" + updatedAt +
                 ", isDeleted=" + isDeleted +
-                ", version=" + version +
                 '}';
     }
 

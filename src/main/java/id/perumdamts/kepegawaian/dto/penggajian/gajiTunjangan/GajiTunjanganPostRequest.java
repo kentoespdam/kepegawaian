@@ -5,12 +5,11 @@ import id.perumdamts.kepegawaian.entities.commons.EJenisTunjangan;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.master.Level;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiTunjangan;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
-
-import java.util.Objects;
 
 @Data
 public class GajiTunjanganPostRequest {
@@ -22,13 +21,11 @@ public class GajiTunjanganPostRequest {
 
     @JsonIgnore
     public Specification<GajiTunjangan> getSpecification() {
-        Specification<GajiTunjangan> jenisSpec = Objects.isNull(jenisTunjangan) ? null :
-                (root, query, cb) -> cb.equal(root.get("jenisTunjangan"), jenisTunjangan);
-        Specification<GajiTunjangan> levelSpec = Objects.isNull(levelId) || levelId <= 0 ? null :
-                (root, query, cb) -> cb.equal(root.get("level").get("id"), levelId);
-        Specification<GajiTunjangan> golonganSpec = Objects.isNull(golonganId) || golonganId <= 0 ? null :
-                (root, query, cb) -> cb.equal(root.get("golongan").get("id"), golonganId);
-        return Specification.where(jenisSpec).and(levelSpec).and(golonganSpec);
+        return SpecificationBuilder.<GajiTunjangan>of()
+                .addEqual(jenisTunjangan, "jenisTunjangan")
+                .addEqual(levelId, "level", "id")
+                .addEqual(golonganId, "golongan", "id")
+                .build();
     }
 
     public static GajiTunjangan toEntity(GajiTunjanganPostRequest request, Level level, Golongan golongan) {

@@ -2,13 +2,13 @@ package id.perumdamts.kepegawaian.dto.master.jenjangPendidikan;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
-import java.util.Objects;
 
 @Data
 public class JenjangPendidikanPostRequest {
@@ -21,10 +21,9 @@ public class JenjangPendidikanPostRequest {
 
     @JsonIgnore
     public Specification<JenjangPendidikan> getSpecification() {
-        Specification<JenjangPendidikan> namaSpec = Objects.isNull(nama) ? null :
-                (root, query, cb) ->
-                        cb.equal(root.get("nama"), nama);
-        return Specification.where(namaSpec);
+        return SpecificationBuilder.<JenjangPendidikan>of()
+                .addEqual(nama,"nama")
+                .build();
     }
 
     public static JenjangPendidikan toEntity(JenjangPendidikanPostRequest request) {

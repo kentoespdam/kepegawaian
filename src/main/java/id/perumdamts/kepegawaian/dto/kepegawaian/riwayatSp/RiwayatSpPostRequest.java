@@ -10,6 +10,7 @@ import id.perumdamts.kepegawaian.entities.master.JenisSp;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.entities.master.Sanksi;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -97,10 +98,9 @@ public class RiwayatSpPostRequest {
 
     @JsonIgnore
     public Specification<RiwayatSp> getSpecification() {
-        Specification<RiwayatSp> nomorSpSpec = (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("nomorSp"), nomorSp);
-        Specification<RiwayatSp> pegawaiIdSpec = (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("pegawai").get("id"), pegawaiId);
-        return Specification.where(nomorSpSpec).and(pegawaiIdSpec);
+        return SpecificationBuilder.<RiwayatSp>of()
+                .addEqual(nomorSp, "nomorSp")
+                .addEqual(pegawaiId, "pegawai", "id")
+                .build();
     }
 }

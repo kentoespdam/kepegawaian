@@ -5,7 +5,10 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.dto.master.jenjangPendidikan.JenjangPendidikanMiniResponse;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataMiniResponse;
-import id.perumdamts.kepegawaian.entities.commons.*;
+import id.perumdamts.kepegawaian.entities.commons.EAgama;
+import id.perumdamts.kepegawaian.entities.commons.EHubunganKeluarga;
+import id.perumdamts.kepegawaian.entities.commons.EJenisKelamin;
+import id.perumdamts.kepegawaian.entities.commons.EStatusPendidikan;
 import id.perumdamts.kepegawaian.entities.profil.ProfilKeluarga;
 import jakarta.persistence.Enumerated;
 import lombok.Data;
@@ -34,6 +37,8 @@ public class ProfilKeluargaResponse {
     private EStatusPendidikan statusPendidikan;
     private Boolean statusKawin;
     private String notes;
+    private Boolean changedStatus;
+
 
     public static ProfilKeluargaResponse from(ProfilKeluarga entity) {
         ProfilKeluargaResponse response = new ProfilKeluargaResponse();
@@ -52,6 +57,7 @@ public class ProfilKeluargaResponse {
         response.setStatusPendidikan(entity.getStatusPendidikan());
         response.setStatusKawin(entity.getStatusKawin());
         response.setNotes(entity.getNotes());
+        response.setChangedStatus(entity.getChangedStatus());
         return response;
     }
 }

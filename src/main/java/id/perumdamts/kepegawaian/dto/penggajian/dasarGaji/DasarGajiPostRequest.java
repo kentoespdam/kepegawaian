@@ -5,13 +5,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.entities.penggajian.DasarGaji;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
 @Data
 public class DasarGajiPostRequest {
@@ -29,13 +29,10 @@ public class DasarGajiPostRequest {
 
     @JsonIgnore
     public Specification<DasarGaji> getSpecification() {
-        Specification<DasarGaji> deskripsiSpec = Objects.isNull(deskripsi) ? null :
-                (root, query, cb) -> cb.equal(root.get("deskripsi"), deskripsi);
-
-        Specification<DasarGaji> tanggalAwalSpec = Objects.isNull(tanggalAwal) ? null :
-                (root, query, cb) -> cb.equal(root.get("tanggalAwal"), tanggalAwal);
-
-        return Specification.where(deskripsiSpec).and(tanggalAwalSpec);
+        return SpecificationBuilder.<DasarGaji>of()
+                .addEqual(deskripsi, "deskripsi")
+                .addEqual(tanggalAwal, "tanggalAwal")
+                .build();
     }
 
     public static DasarGaji toEntity(DasarGajiPostRequest request) {

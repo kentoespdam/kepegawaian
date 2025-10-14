@@ -14,14 +14,13 @@ public class CutiJenisPostRequest {
     @NotNull(message = "Nama is required")
     @NotEmpty(message = "Nama is required")
     private String nama;
-    private Integer maxHari=0;
+    private Integer maxHari = 0;
     private Boolean potongKuotaTahunan = false;
 
     @JsonIgnore
     public Specification<CutiJenis> getSpecification() {
-        return Specification.where(
-                (root, query, criteriaBuilder) ->
-                        criteriaBuilder.equal(root.get("nama"), this.nama));
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.and(criteriaBuilder.equal(criteriaBuilder.lower(root.get("nama")), nama.toLowerCase()));
     }
 
     public static CutiJenis toEntity(CutiJenisPostRequest request, @Nullable CutiJenis parent) {

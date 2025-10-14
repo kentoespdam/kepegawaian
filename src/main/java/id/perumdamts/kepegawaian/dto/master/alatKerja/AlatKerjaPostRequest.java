@@ -3,13 +3,12 @@ package id.perumdamts.kepegawaian.dto.master.alatKerja;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.master.AlatKerja;
 import id.perumdamts.kepegawaian.entities.master.Profesi;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
-
-import java.util.Objects;
 
 @Data
 public class AlatKerjaPostRequest {
@@ -21,11 +20,10 @@ public class AlatKerjaPostRequest {
 
     @JsonIgnore
     public Specification<AlatKerja> getSpecification() {
-        Specification<AlatKerja> namaSpec = Objects.isNull(nama) ? null :
-                (root, query, cb) -> cb.equal(root.get("nama"), nama);
-        Specification<AlatKerja> profesiSpec = Objects.isNull(profesiId) ? null :
-                (root, query, cb) -> cb.equal(root.get("profesi").get("id"), profesiId);
-        return Specification.where(namaSpec).and(profesiSpec);
+        return SpecificationBuilder.<AlatKerja>of()
+                .addEqual(nama, "nama")
+                .addEqual(profesiId, "profesi", "id")
+                .build();
     }
 
     public static AlatKerja toEntity(AlatKerjaPostRequest request, Profesi profesi) {

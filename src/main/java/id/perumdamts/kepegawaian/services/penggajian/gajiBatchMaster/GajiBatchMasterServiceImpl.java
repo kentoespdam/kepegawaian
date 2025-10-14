@@ -16,6 +16,7 @@ import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchRootLampiranRe
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchRootRepository;
 import id.perumdamts.kepegawaian.utils.DownloadPenggajian;
 import id.perumdamts.kepegawaian.utils.FileUploadUtil;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import id.perumdamts.kepegawaian.utils.UploadResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,13 +65,14 @@ public class GajiBatchMasterServiceImpl implements GajiBatchMasterService {
 
     @Override
     public Page<GajiBatchMasterResponse> findByPegawaiId(Long pegawaiId, CommonPageRequest pageRequest) {
-        Specification<GajiBatchMaster> pegawaiSpecification = (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("pegawaiId"), pegawaiId);
-        Specification<GajiBatchMaster> statusSpecification = (root, query, criteriaBuilder) ->
-                criteriaBuilder.greaterThanOrEqualTo(root.get("gajiBatchRoot").get("status"), EProsesGaji.FINISHED.value());
-        Specification<GajiBatchMaster> combinedSpecification = Specification.where(pegawaiSpecification).and(statusSpecification);
+        Specification<GajiBatchMaster> specification = SpecificationBuilder.<GajiBatchMaster>of()
+                .addEqual(pegawaiId, "pegawaiId")
+                .addCustom((root, cb) ->
+                        cb.greaterThanOrEqualTo(root.get("gajiBatchRoot").get("status"), EProsesGaji.FINISHED.value())
+                )
+                .build();
 
-        return repository.findAll(combinedSpecification, pageRequest.getPageable())
+        return repository.findAll(specification, pageRequest.getPageable())
                 .map(GajiBatchMasterResponse::from);
     }
 

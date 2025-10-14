@@ -9,6 +9,7 @@ import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Min;
@@ -20,7 +21,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -65,13 +65,12 @@ public class RiwayatSkPostRequest {
 
     @JsonIgnore
     public Specification<RiwayatSk> getSpecification() {
-        Specification<RiwayatSk> pegawaiSpec = Objects.isNull(pegawaiId) ? null :
-                (root, query, cb) -> cb.equal(root.get("pegawai").get("id"), pegawaiId);
-        Specification<RiwayatSk> nomorSkSpec = Objects.isNull(nomorSk) ? null :
-                (root, query, cb) -> cb.equal(root.get("nomorSk"), nomorSk);
-        Specification<RiwayatSk> jenisSkSpec = Objects.isNull(jenisSk) ? null :
-                (root, query, cb) -> cb.equal(root.get("jenisSk"), jenisSk);
-        return Specification.where(pegawaiSpec).and(nomorSkSpec).and(jenisSkSpec);
+        return SpecificationBuilder.<RiwayatSk>of()
+                .addEqual(pegawaiId, "pegawai", "id")
+                .addEqual(nomorSk, "nomorSk")
+                .addEqual(jenisSk, "jenisSk")
+                .addEqual(golonganId, "golongan", "id")
+                .build();
     }
 
     public static RiwayatSk toEntity(RiwayatSkPostRequest request, Pegawai pegawai) {

@@ -7,7 +7,6 @@ import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
-import java.util.Objects;
 
 @Data
 public class JenisKeahlianPostRequest {
@@ -16,8 +15,8 @@ public class JenisKeahlianPostRequest {
 
     @JsonIgnore
     public Specification<JenisKeahlian> getSpecification() {
-        Specification<JenisKeahlian> namaSpec = Objects.isNull(nama) ? null : (root, query, cb) -> cb.equal(root.get("nama"), nama);
-        return Specification.where(namaSpec);
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.and(criteriaBuilder.equal(root.get("jenisKeahlian"), nama));
     }
 
     public static JenisKeahlian toEntity(JenisKeahlianPostRequest request) {

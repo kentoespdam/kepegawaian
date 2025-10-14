@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.commons.EJenisGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiKomponen;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiProfil;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Min;
@@ -11,8 +12,6 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
-
-import java.util.Objects;
 
 @Data
 public class GajiKomponenPostRequest {
@@ -34,11 +33,10 @@ public class GajiKomponenPostRequest {
 
     @JsonIgnore
     public Specification<GajiKomponen> getSpecification() {
-        Specification<GajiKomponen> profilGajiIdSpec = Objects.isNull(profilGajiId) ? null :
-                (root, query, cb) -> cb.equal(root.get("profilGaji").get("id"), profilGajiId);
-        Specification<GajiKomponen> kodeSpec = Objects.isNull(kode) ? null :
-                (root, query, cb) -> cb.equal(root.get("kode"), kode);
-        return Specification.where(profilGajiIdSpec).and(kodeSpec);
+        return SpecificationBuilder.<GajiKomponen>of()
+                .addEqual(profilGajiId,"profilGaji","id")
+                .addEqual(kode,"kode")
+                .build();
     }
 
     public static GajiKomponen toEntity(GajiKomponenPostRequest request, GajiProfil profilGaji) {

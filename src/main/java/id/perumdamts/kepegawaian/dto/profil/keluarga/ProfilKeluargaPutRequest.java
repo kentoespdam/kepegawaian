@@ -21,6 +21,7 @@ public class ProfilKeluargaPutRequest extends ProfilKeluargaPostRequest {
         entity.setStatusPendidikan(request.getStatusPendidikan());
         entity.setStatusKawin(request.getStatusKawin());
         entity.setNotes(request.getNotes());
+        entity.setChangedStatus(request.getChangedStatus());
         return entity;
     }
 }

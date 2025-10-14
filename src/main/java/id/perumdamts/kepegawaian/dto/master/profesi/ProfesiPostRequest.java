@@ -5,12 +5,11 @@ import id.perumdamts.kepegawaian.entities.master.Grade;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.entities.master.Profesi;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
-
-import java.util.Objects;
 
 @Data
 public class ProfesiPostRequest {
@@ -29,13 +28,11 @@ public class ProfesiPostRequest {
 
     @JsonIgnore
     public Specification<Profesi> getSpecification() {
-        Specification<Profesi> namaSpec = Objects.isNull(nama) ? null :
-                (root, query, cb) -> cb.equal(root.get("nama"), nama);
-        Specification<Profesi> jabatanSpec = Objects.isNull(jabatanId) ? null :
-                (root, query, cb) -> cb.equal(root.get("jabatan").get("id"), jabatanId);
-        Specification<Profesi> gradeSpec = Objects.isNull(gradeId) ? null :
-                (root, query, cb) -> cb.equal(root.get("grade").get("id"), gradeId);
-        return Specification.where(namaSpec).and(jabatanSpec).and(gradeSpec);
+        return SpecificationBuilder.<Profesi>of()
+                .addEqual(nama, "nama")
+                .addEqual(jabatanId, "jabatan", "id")
+                .addEqual(gradeId, "grade", "id")
+                .build();
     }
 
     public static Profesi toEntity(ProfesiPostRequest request, Organisasi organisasi, Jabatan jabatan, Grade grade) {

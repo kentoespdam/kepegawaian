@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.Pendidikan;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
@@ -27,15 +28,14 @@ public class PendidikanPostRequest {
     private Boolean isLulus;
     private Integer tahunLulus;
     private Double gpa;
-    private Boolean isLatest=false;
+    private Boolean isLatest = false;
 
     @JsonIgnore
     public Specification<Pendidikan> getSpecification() {
-        Specification<Pendidikan> biodataSpec= (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("biodata").get("nik"), biodataId);
-        Specification<Pendidikan> jenjangSpec = (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("jenjangPendidikan").get("id"), jenjangPendidikanId);
-        return Specification.where(biodataSpec).and(jenjangSpec);
+        return SpecificationBuilder.<Pendidikan>of()
+                .addEqual(biodataId, "biodata", "nik")
+                .addEqual(jenjangPendidikanId, "jenjangPendidikan", "id")
+                .build();
     }
 
     public static Pendidikan from(PendidikanPostRequest request, Biodata biodata, JenjangPendidikan jenjangPendidikan) {

@@ -2,10 +2,9 @@ package id.perumdamts.kepegawaian.dto.master.jenisSp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.master.JenisSp;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
-
-import java.util.Objects;
 
 @Data
 public class JenisSpPostRequest {
@@ -14,9 +13,9 @@ public class JenisSpPostRequest {
 
     @JsonIgnore
     public Specification<JenisSp> getSpecification() {
-        Specification<JenisSp> kodeSpec = Objects.isNull(kode) ? null :
-                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("kode"), kode);
-        return Specification.where(kodeSpec);
+        return SpecificationBuilder.<JenisSp>of()
+                .addEqual(kode, "kode")
+                .build();
     }
 
     public static JenisSp toEntity(JenisSpPostRequest request) {

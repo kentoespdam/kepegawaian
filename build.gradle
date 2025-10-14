@@ -1,19 +1,16 @@
-import org.springframework.boot.gradle.plugin.SpringBootPlugin
-
 plugins {
     id 'java'
-    id 'jvm-test-suite'
-    id 'org.springframework.boot' version '3.2.2'
-    id 'io.spring.dependency-management' version '1.1.4'
-//    id 'org.hibernate.orm' version '6.4.1.Final'
-//    id 'org.graalvm.buildtools.native' version '0.9.28'
+    id 'org.springframework.boot' version '3.5.6'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.hibernate.orm' version '6.6.29.Final'
+    id 'org.graalvm.buildtools.native' version '0.10.6'
 }
 
 group = 'id.perumdamts'
-version = '1.0.0'
+version = '0.0.1-SNAPSHOT'
+description = 'kepegawaian_new_gradle'
 
 java {
-    sourceCompatibility = '21.0.4'
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
@@ -30,100 +27,48 @@ repositories {
 }
 
 dependencies {
-    // Spring boot starter
-    implementation 'org.springframework.boot:spring-boot-devtools'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-jooq'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
-    // redis
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-    // kafka
-    implementation 'org.springframework.kafka:spring-kafka'
-
     //Spring Data
-    implementation 'org.springframework.data:spring-data-envers'
-
-    // Documentation
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
-
-    // Jakarta
-    implementation 'jakarta.validation:jakarta.validation-api:3.1.0'
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
-
-    // Lombok
+    implementation 'org.springframework.data:spring-data-envers:3.5.4'
+//	implementation 'org.flywaydb:flyway-core'
+//	implementation 'org.flywaydb:flyway-mysql'
+    implementation 'org.springframework.kafka:spring-kafka'
     compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-
+    annotationProcessor 'org.projectlombok:lombok'
+    // Documentation
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.13'
+    // workbook
+    implementation 'org.apache.poi:poi-ooxml:5.4.1'
     // Utilities
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.2'
     //FileUtils
     implementation 'commons-io:commons-io:2.16.1'
-    // apache kafka
-    implementation('org.springframework.kafka:spring-kafka')
-//    // sqids
-//    implementation('org.sqids:sqids:0.1.0')
-    // workbook
-    implementation 'org.apache.poi:poi-ooxml:5.3.0'
 
-    // Database
-    runtimeOnly 'com.mysql:mysql-connector-j'
-
-    // Test Dependencies
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'
+//    testImplementation 'org.springframework.kafka:spring-kafka-test'
     testImplementation 'org.springframework.security:spring-security-test'
-    runtimeOnly 'org.springframework.boot:spring-boot-docker-compose'
-    testAnnotationProcessor("org.projectlombok:lombok")
-    testCompileOnly("org.projectlombok:lombok")
-
-//    testImplementation('org.junit.jupiter:junit-jupiter:5.10.3')
-//    testRuntimeOnly('org.junit.platform:junit-platform-launcher:1.10.3')
-//    testImplementation('org.mockito:mockito-core:5.11.0')
-//    testImplementation('org.mockito:mockito-junit-jupiter:5.12.0')
-//    testImplementation('org.mockito:mockito-inline:5.2.0')
+//    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+    testCompileOnly 'org.projectlombok:lombok'
 }
 
-dependencyManagement {
-    imports {
-        mavenBom SpringBootPlugin.BOM_COORDINATES
+hibernate {
+    enhancement {
+        enableAssociationManagement = true
     }
 }
 
-tasks.named('test', Test) {
+tasks.named('test') {
     useJUnitPlatform()
-    maxHeapSize = '384m'
-    minHeapSize = '128m'
-    jvmArgs("-XX:+EnableDynamicAgentLoading", "-Djdk.instrument.traceUsage")
-
-    testLogging {
-        events "passed", "skipped", "failed"
-        exceptionFormat "full"
-    }
-}
-
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
-    options.compilerArgs += ['-parameters']
-}
-
-tasks.withType(Test).configureEach {
-    systemProperty "file.encoding", "UTF-8"
-}
-
-tasks.named('bootRun') {
-    systemProperty 'spring.docker.compose.enabled', 'false'
-    systemProperty 'spring.docker.compose.skip', 'true'
-}
-
-// Optimize build performance
-tasks.named('compileJava') {
-    options.incremental = true
-}
-
-// Clean build directory before building
-tasks.named('clean') {
-    delete layout.buildDirectory.dir("libs")
 }

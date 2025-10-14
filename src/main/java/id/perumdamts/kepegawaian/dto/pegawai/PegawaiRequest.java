@@ -7,6 +7,7 @@ import id.perumdamts.kepegawaian.entities.commons.EJenisKelamin;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Data;
@@ -15,8 +16,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-
-import java.util.Objects;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -37,32 +36,19 @@ public class PegawaiRequest extends CommonPageRequest {
 
     @JsonIgnore
     public Specification<Pegawai> getSpecification() {
-        Specification<Pegawai> pegawaiSpec = Objects.isNull(nipam) ? null :
-                (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("nipam"), nipam + "%");
-        Specification<Pegawai> nikSpec = Objects.isNull(nik) ? null :
-                (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("biodata").get("nik"), nik);
-        Specification<Pegawai> namaSpec = Objects.isNull(nama) ? null :
-                (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("biodata").get("nama"), "%" + nama + "%");
-        Specification<Pegawai> statusPegawaiSpec = Objects.isNull(statusPegawai) ? null :
-                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("statusPegawai"), statusPegawai);
-        Specification<Pegawai> jabatanSpec = Objects.isNull(jabatanId) ? null :
-                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("jabatan").get("id"), jabatanId);
-        Specification<Pegawai> organisasiSpec = Objects.isNull(organisasiId) ? null :
-                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("organisasi").get("id"), organisasiId);
-        Specification<Pegawai> profesiSpec = Objects.isNull(profesiId) ? null :
-                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("profesi").get("id"), profesiId);
-        Specification<Pegawai> golonganSpec = Objects.isNull(golonganId) ? null :
-                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("golongan").get("id"), golonganId);
-        Specification<Pegawai> gradeSpec = Objects.isNull(gradeId) ? null :
-                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("grade").get("id"), gradeId);
-        Specification<Pegawai> statusPegawaiIdsSpec = (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("statusKerja"), statusKerja);
-        Specification<Pegawai> jenisKelaminSpec = Objects.isNull(jenisKelamin) ? null :
-                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("biodata").get("jenisKelamin"), jenisKelamin);
-
-        return Specification.where(pegawaiSpec).or(namaSpec).and(nikSpec).and(statusPegawaiSpec)
-                .and(jabatanSpec).and(organisasiSpec).and(profesiSpec).and(golonganSpec)
-                .and(gradeSpec).and(statusPegawaiIdsSpec).and(jenisKelaminSpec);
+        return SpecificationBuilder.<Pegawai>of()
+                .addLike(nipam, "nipam")
+                .addLike(nik, "biodata", "nik")
+                .addLike(nama, "biodata", "nama")
+                .addEqual(statusPegawai, "statusPegawai")
+                .addEqual(jabatanId, "jabatan", "id")
+                .addEqual(organisasiId, "organisasi", "id")
+                .addEqual(profesiId, "profesi", "id")
+                .addEqual(golonganId, "golongan", "id")
+                .addEqual(gradeId, "grade", "id")
+                .addEqual(statusKerja, "statusKerja")
+                .addEqual(jenisKelamin, "biodata", "jenisKelamin")
+                .build();
     }
 
     @JsonIgnore

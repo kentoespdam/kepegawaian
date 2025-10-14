@@ -1,7 +1,10 @@
 package id.perumdamts.kepegawaian.dto.profil.keluarga;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import id.perumdamts.kepegawaian.entities.commons.*;
+import id.perumdamts.kepegawaian.entities.commons.EAgama;
+import id.perumdamts.kepegawaian.entities.commons.EHubunganKeluarga;
+import id.perumdamts.kepegawaian.entities.commons.EJenisKelamin;
+import id.perumdamts.kepegawaian.entities.commons.EStatusPendidikan;
 import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.ProfilKeluarga;
@@ -37,13 +40,17 @@ public class ProfilKeluargaPostRequest {
     private LocalDate tanggalLahir;
     @NotNull(message = "Tanggungan is required")
     private Boolean tanggungan;
-    private Long pendidikanId;
+    private Long pendidikanId = 0L;
     @Enumerated(EnumType.ORDINAL)
     private EStatusPendidikan statusPendidikan = EStatusPendidikan.SEKOLAH;
     @NotNull(message = "Status Kawin is required")
     private Boolean statusKawin;
     private String notes;
     private Boolean changedStatus = Boolean.TRUE;
+
+    public Long getPendidikanId() {
+        return pendidikanId != null ? pendidikanId : 0L;
+    }
 
     @JsonIgnore
     public Specification<ProfilKeluarga> getSpecification() {
@@ -76,6 +83,7 @@ public class ProfilKeluargaPostRequest {
         entity.setStatusPendidikan(request.getStatusPendidikan());
         entity.setStatusKawin(request.getStatusKawin());
         entity.setNotes(request.getNotes());
+        entity.setChangedStatus(request.getChangedStatus());
         return entity;
     }
 }

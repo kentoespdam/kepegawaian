@@ -20,7 +20,6 @@ import org.hibernate.envers.RelationTargetAuditMode;
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE gaji_komponen SET is_deleted=true WHERE id=?")
 @SQLRestriction("is_deleted = false")
-
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class GajiKomponen extends IdsAbstract {
     private Integer urut;
@@ -36,8 +35,7 @@ public class GajiKomponen extends IdsAbstract {
     private Boolean isReference = false;
     private String formula;
 
-    public GajiKomponen(Long id, int urut, GajiProfil gajiProfil, String kode, String nama, EJenisGaji jenisGaji, double nilai, Boolean isReference, String formula) {
-        super(id);
+    public GajiKomponen(int urut, GajiProfil gajiProfil, String kode, String nama, EJenisGaji jenisGaji, double nilai, Boolean isReference, String formula) {
         this.urut = urut;
         this.profilGaji = gajiProfil;
         this.kode = kode;
