@@ -35,22 +35,31 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
     //Spring Data
     implementation 'org.springframework.data:spring-data-envers:3.5.4'
+    implementation 'org.springframework.kafka:spring-kafka'
+
 //	implementation 'org.flywaydb:flyway-core'
 //	implementation 'org.flywaydb:flyway-mysql'
-    implementation 'org.springframework.kafka:spring-kafka'
     compileOnly 'org.projectlombok:lombok'
+
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
+
     // Documentation
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.13'
+
     // workbook
     implementation 'org.apache.poi:poi-ooxml:5.4.1'
+
     // Utilities
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.2'
+
     //FileUtils
     implementation 'commons-io:commons-io:2.16.1'
 
@@ -71,4 +80,14 @@ hibernate {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+// Optimasi untuk build performance
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.compilerArgs.add('-parameters')
+}
+
+springBoot {
+    buildInfo()
 }
