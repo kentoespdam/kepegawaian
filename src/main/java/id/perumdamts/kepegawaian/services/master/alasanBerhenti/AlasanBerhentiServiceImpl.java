@@ -55,7 +55,7 @@ public class AlasanBerhentiServiceImpl implements AlasanBerhentiService {
     @Override
     public SavedStatus<?> saveBatch(List<AlasanBerhentiPostRequest> requests) {
         requests.stream().map(AlasanBerhentiPostRequest::toEntity).forEach(repository::save);
-        return SavedStatus.build(ESaveStatus.SUCCESS, null);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Save Batch Alasan Berhenti Success");
     }
 
     @Override
@@ -65,7 +65,7 @@ public class AlasanBerhentiServiceImpl implements AlasanBerhentiService {
             return SavedStatus.build(ESaveStatus.FAILED, "Alasan Berhenti not found");
         AlasanBerhenti entity = AlasanBerhentiPutRequest.toEntity(byId.get(), request);
         repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, null);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Update Batch Alasan Berhenti Success");
     }
 
     @Override

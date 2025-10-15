@@ -68,60 +68,62 @@ public class KartuIdentitasServiceImpl implements KartuIdentitasService {
     @Transactional
     @Override
     public SavedStatus<?> save(KartuIdentitasPostRequest request) {
-        Optional<Biodata> biodata = biodataRepository.findById(request.getNik());
-        if (biodata.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Biodata");
-        Optional<JenisKitas> jenisKitas = jenisKitasRepository.findById(request.getJenisKartuId());
-        if (jenisKitas.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jenis Kartu Identitas");
+        try {
+            Biodata biodata = biodataRepository.findById(request.getNik())
+                    .orElseThrow(() -> new RuntimeException("Biodata not found"));
+            JenisKitas jenisKitas = jenisKitasRepository.findById(request.getJenisKartuId())
+                    .orElseThrow(() -> new RuntimeException("Jenis Kartu not found"));
+            KartuIdentitas entity = KartuIdentitasPostRequest.toEntity(request, biodata, jenisKitas);
+            boolean exists = repository.exists(request.getSpecification());
+            if (exists)
+                return SavedStatus.build(ESaveStatus.DUPLICATE, "Kartu Identitas sudah ada");
 
-        KartuIdentitas entity = KartuIdentitasPostRequest.toEntity(request, biodata.get(), jenisKitas.get());
-        boolean exists = repository.exists(request.getSpecification());
-        if (exists)
-            return SavedStatus.build(ESaveStatus.DUPLICATE, "Kartu Identitas sudah ada");
-
-        KartuIdentitas save = this.execSave(entity);
-        if (save.getJenisKartu().getNama().equals("BPJS"))
-            pegawaiRepository.findByBiodata_Nik(request.getNik()).ifPresent(pegawai -> {
-                pegawai.setIsAskes(true);
-                pegawaiRepository.save(pegawai);
-            });
-        return SavedStatus.build(ESaveStatus.SUCCESS, KartuIdentitasResponse.from(save));
+            KartuIdentitas save = this.execSave(entity);
+            if (save.getJenisKartu().getNama().equals("BPJS"))
+                pegawaiRepository.findByBiodata_Nik(request.getNik())
+                        .ifPresent(pegawai -> {
+                            pegawai.setIsAskes(true);
+                            pegawaiRepository.save(pegawai);
+                        });
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Kartu Identitas Saved");
+        } catch (Exception e) {
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+        }
     }
 
     @Transactional
     @Override
     public SavedStatus<?> update(Long id, KartuIdentitasPutRequest request) {
-        Optional<Biodata> biodata = biodataRepository.findById(request.getNik());
-        if (biodata.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Biodata");
+        try {
+            Biodata biodata = biodataRepository.findById(request.getNik())
+                    .orElseThrow(() -> new RuntimeException("Biodata not found"));
+            JenisKitas jenisKitas = jenisKitasRepository.findById(request.getJenisKartuId())
+                    .orElseThrow(() -> new RuntimeException("Jenis Kartu not found"));
 
-        Optional<JenisKitas> jenisKitas = jenisKitasRepository.findById(request.getJenisKartuId());
-        if (jenisKitas.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jenis Kartu Identitas");
+            KartuIdentitas kartuIdentitas = repository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Kartu Identitas not found"));
 
-        Optional<KartuIdentitas> kartuIdentitas = repository.findById(id);
-        if (kartuIdentitas.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Kartu Identitas");
+            if (kartuIdentitas.getJenisKartu().getNama().equals("BPJS") && !jenisKitas.getNama().equals("BPJS")) {
+                pegawaiRepository.findByBiodata_Nik(request.getNik())
+                        .ifPresent(pegawai -> {
+                            pegawai.setIsAskes(false);
+                            pegawaiRepository.save(pegawai);
+                        });
+            }
 
-        if (kartuIdentitas.get().getJenisKartu().getNama().equals("BPJS") &&
-                !jenisKitas.get().getNama().equals("BPJS")) {
-            pegawaiRepository.findByBiodata_Nik(request.getNik()).ifPresent(pegawai -> {
-                pegawai.setIsAskes(false);
-                pegawaiRepository.save(pegawai);
-            });
+            KartuIdentitas entity = KartuIdentitasPutRequest.toEntity(request, kartuIdentitas, biodata, jenisKitas);
+            KartuIdentitas save = this.execSave(entity);
+
+            if (save.getJenisKartu().getNama().equals("BPJS"))
+                pegawaiRepository.findByBiodata_Nik(request.getNik()).ifPresent(pegawai -> {
+                    pegawai.setIsAskes(true);
+                    pegawaiRepository.save(pegawai);
+                });
+
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Kartu Identitas Updated");
+        } catch (Exception e) {
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
-
-        KartuIdentitas entity = KartuIdentitasPutRequest.toEntity(request, kartuIdentitas.get(), biodata.get(), jenisKitas.get());
-        KartuIdentitas save = this.execSave(entity);
-
-        if (save.getJenisKartu().getNama().equals("BPJS"))
-            pegawaiRepository.findByBiodata_Nik(request.getNik()).ifPresent(pegawai -> {
-                pegawai.setIsAskes(true);
-                pegawaiRepository.save(pegawai);
-            });
-
-        return SavedStatus.build(ESaveStatus.SUCCESS, KartuIdentitasResponse.from(save));
     }
 
     @Transactional

@@ -56,41 +56,41 @@ public class KeahlianServiceImpl implements KeahlianService {
     @Transactional
     @Override
     public SavedStatus<?> save(KeahlianPostRequest request) {
-        Optional<Biodata> biodata = biodataRepository.findById(request.getBiodataId());
-        if (biodata.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Biodata");
+        try {
+            boolean exists = repository.exists(request.getSpecification());
+            if (exists)
+                return SavedStatus.build(ESaveStatus.DUPLICATE, "Keahlian sudah ada");
 
-        Optional<JenisKeahlian> jenisKeahlian = jenisKeahlianRepository.findById(request.getKeahlianId());
-        if (jenisKeahlian.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jenis Keahlian");
+            Biodata biodata = biodataRepository.findById(request.getBiodataId())
+                    .orElseThrow(() -> new RuntimeException("Biodata not found"));
+            JenisKeahlian jenisKeahlian = jenisKeahlianRepository.findById(request.getKeahlianId())
+                    .orElseThrow(() -> new RuntimeException("Keahlian not found"));
 
-        boolean exists = repository.exists(request.getSpecification());
-        if (exists)
-            return SavedStatus.build(ESaveStatus.DUPLICATE, "Keahlian sudah ada");
-
-        Keahlian entity = KeahlianPostRequest.toEntity(request, biodata.get(), jenisKeahlian.get());
-        Keahlian save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, KeahlianResponse.from(save));
+            Keahlian entity = KeahlianPostRequest.toEntity(request, biodata, jenisKeahlian);
+            repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Keahlian Saved");
+        } catch (Exception e) {
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+        }
     }
 
     @Transactional
     @Override
     public SavedStatus<?> update(Long id, KeahlianPutRequest request) {
-        Optional<Biodata> biodata = biodataRepository.findById(request.getBiodataId());
-        if (biodata.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Biodata");
+        try {
+            Biodata biodata = biodataRepository.findById(request.getBiodataId())
+                    .orElseThrow(() -> new RuntimeException("Biodata not found"));
+            JenisKeahlian jenisKeahlian = jenisKeahlianRepository.findById(request.getKeahlianId())
+                    .orElseThrow(() -> new RuntimeException("Keahlian not found"));
+            Keahlian entity = repository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Keahlian not found"));
 
-        Optional<JenisKeahlian> jenisKeahlian = jenisKeahlianRepository.findById(request.getKeahlianId());
-        if (jenisKeahlian.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jenis Keahlian");
-
-        Optional<Keahlian> entity = repository.findById(id);
-        if (entity.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Keahlian");
-
-        Keahlian keahlian = KeahlianPutRequest.toEntity(request, entity.get(), biodata.get(), jenisKeahlian.get());
-        Keahlian save = repository.save(keahlian);
-        return SavedStatus.build(ESaveStatus.SUCCESS, KeahlianResponse.from(save));
+            Keahlian keahlian = KeahlianPutRequest.toEntity(request, entity, biodata, jenisKeahlian);
+            repository.save(keahlian);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Keahlian Updated");
+        } catch (Exception e) {
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+        }
     }
 
     @Transactional
@@ -103,8 +103,8 @@ public class KeahlianServiceImpl implements KeahlianService {
         entity.setDisetujui(true);
         entity.setDisetujuiOleh(username);
         entity.setTanggalDisetujui(LocalDateTime.now());
-        Keahlian save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, KeahlianResponse.from(save));
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Keahlian Accepted");
     }
 
     @Transactional

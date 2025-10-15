@@ -97,7 +97,7 @@ public class PegawaiServiceImpl implements PegawaiService {
             Biodata biodata = biodataRepository.findById(request.getNik())
                     .orElseGet(() -> biodataService.saveFromPegawai(request));
             if (request.getStatusPegawai().equals(EStatusPegawai.NON_PEGAWAI))
-                return SavedStatus.build(ESaveStatus.SUCCESS, biodata);
+                return SavedStatus.build(ESaveStatus.SUCCESS, "Save Non Pegawai Success");
 
             Jabatan jabatan = jabatanRepository.findById(request.getJabatanId())
                     .orElseThrow(() -> new RuntimeException("Unknown Jabatan"));

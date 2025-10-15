@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -55,60 +54,64 @@ public class PengalamanKerjaServiceImpl implements PengalamanKerjaService {
     @Transactional
     @Override
     public SavedStatus<?> save(PengalamanKerjaPostRequest request) {
-        Optional<Biodata> biodata = biodataRepository.findById(request.getBiodataId());
-        if (biodata.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Biodata");
+        try {
+            boolean exists = repository.exists(request.getSpecification());
+            if (exists)
+                return SavedStatus.build(ESaveStatus.DUPLICATE, "Pengalaman Kerja sudah ada");
 
-        boolean exists = repository.exists(request.getSpecification());
-        if (exists)
-            return SavedStatus.build(ESaveStatus.DUPLICATE, "Pengalaman Kerja sudah ada");
+            Biodata biodata = biodataRepository.findById(request.getBiodataId())
+                    .orElseThrow(() -> new RuntimeException("Biodata not found"));
 
-        PengalamanKerja entity = PengalamanKerjaPostRequest.toEntity(request, biodata.get());
-        PengalamanKerja save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, PengalamanKerjaResponse.from(save));
+            PengalamanKerja entity = PengalamanKerjaPostRequest.toEntity(request, biodata);
+            repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Pengalaman Kerja saved");
+        } catch (Exception e) {
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+        }
     }
 
     @Transactional
     @Override
     public SavedStatus<?> update(Long id, PengalamanKerjaPutRequest request) {
-        Optional<PengalamanKerja> pengalamanKerja = repository.findById(id);
-        if (pengalamanKerja.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Pengalaman Kerja");
+        try {
+            PengalamanKerja pengalamanKerja = repository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Pengalaman Kerja id not found"));
+            Biodata biodata = biodataRepository.findById(request.getBiodataId())
+                    .orElseThrow(() -> new RuntimeException("Biodata not found"));
 
-        Optional<Biodata> biodata = biodataRepository.findById(request.getBiodataId());
-        if (biodata.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Biodata");
-
-        PengalamanKerja entity = PengalamanKerjaPutRequest.toEntity(request, pengalamanKerja.get(), biodata.get());
-        PengalamanKerja save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, PengalamanKerjaResponse.from(save));
+            PengalamanKerja entity = PengalamanKerjaPutRequest.toEntity(request, pengalamanKerja, biodata);
+            repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Pengalaman Kerja updated");
+        } catch (Exception e) {
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+        }
     }
 
     @Transactional
     @Override
     public SavedStatus<?> acceptPengalamanKerja(Long id, PengalamanKerjaAcceptRequest request, String username) {
-        Optional<PengalamanKerja> pengalamanKerja = repository.findById(id);
-        if (pengalamanKerja.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Pengalaman Kerja");
-
-        PengalamanKerja entity = pengalamanKerja.get();
-        entity.setDisetujui(true);
-        entity.setDisetujuiOleh(username);
-        entity.setTanggalDisetujui(LocalDateTime.now());
-        PengalamanKerja save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, PengalamanKerjaResponse.from(save));
+        return repository.findById(id)
+                .map(entity -> {
+                    entity.setDisetujui(true);
+                    entity.setDisetujuiOleh(username);
+                    entity.setTanggalDisetujui(LocalDateTime.now());
+                    repository.save(entity);
+                    return SavedStatus.build(ESaveStatus.SUCCESS, "Pengalaman Kerja accepted");
+                })
+                .orElse(SavedStatus.build(ESaveStatus.FAILED, "Unknown Pengalaman Kerja"));
     }
 
     @Transactional
     @Override
     public Boolean deleteById(Long id) {
-        Optional<PengalamanKerja> byId = repository.findById(id);
-        if (byId.isEmpty())
-            return false;
-        byId.get().setIsDeleted(true);
-        repository.save(byId.get());
-        lampiranProfilService.deleteByRefId(EJenisLampiranProfil.PROFIL_PENGALAMAN_KERJA, id);
-        return true;
+        return repository.findById(id)
+                .map(byId -> {
+                    byId.setIsDeleted(true);
+                    repository.save(byId);
+                    lampiranProfilService.deleteByRefId(EJenisLampiranProfil.PROFIL_PENGALAMAN_KERJA, id);
+                    return true;
+                })
+                .orElse(false);
     }
 
     //lampiran

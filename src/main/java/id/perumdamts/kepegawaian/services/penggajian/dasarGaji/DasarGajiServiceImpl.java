@@ -53,7 +53,7 @@ public class DasarGajiServiceImpl implements DasarGajiService {
     public SavedStatus<?> saveBatch(List<DasarGajiPostRequest> requests) {
         try {
             requests.stream().map(DasarGajiPostRequest::toEntity).forEach(repository::save);
-            return SavedStatus.build(ESaveStatus.SUCCESS, null);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Save Batch Dasar Gaji Success");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
@@ -66,7 +66,7 @@ public class DasarGajiServiceImpl implements DasarGajiService {
             return SavedStatus.build(ESaveStatus.FAILED, "Dasar Gaji not found");
         DasarGaji entity = DasarGajiPutRequest.toEntity(byId.get(), request);
         repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, null);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Dasar Gaji Updated");
     }
 
     @Override

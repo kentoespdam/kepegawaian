@@ -82,7 +82,7 @@ public class BiodataServiceImpl implements BiodataService {
         kartuIdentitasService.execSave(new KartuIdentitas(save));
         pendidikanService.saveFromBio(save, pendidikanTerakhir.get());
 
-        return SavedStatus.build(ESaveStatus.SUCCESS, BiodataResponse.from(save));
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Biodata Saved");
     }
 
     @Override
@@ -108,8 +108,8 @@ public class BiodataServiceImpl implements BiodataService {
         if (biodata.isEmpty())
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Biodata");
 
-        Biodata save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, BiodataResponse.from(save));
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Biodata Updated");
     }
 
     @Override
@@ -119,8 +119,8 @@ public class BiodataServiceImpl implements BiodataService {
             return SavedStatus.build(ESaveStatus.FAILED, "Unknown Biodata");
 
         Biodata entity = BiodataPatchRequest.toEntity(biodata.get(), request);
-        Biodata save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, BiodataResponse.from(save));
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Biodata Updated");
     }
 
     @Override
@@ -139,8 +139,8 @@ public class BiodataServiceImpl implements BiodataService {
 
         Biodata update = biodata.get();
         update.setFotoProfil(uploadResultUtil.getFileName());
-        Biodata save = repository.save(update);
-        return SavedStatus.build(ESaveStatus.SUCCESS, BiodataResponse.from(save));
+        repository.save(update);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Foto Profil Updated");
     }
 
     @Override

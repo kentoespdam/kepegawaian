@@ -10,6 +10,7 @@ import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.entities.profil.LampiranProfil;
 import id.perumdamts.kepegawaian.repositories.profil.LampiranProfilRepository;
 import id.perumdamts.kepegawaian.utils.FileUploadUtil;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import id.perumdamts.kepegawaian.utils.UploadResultUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
@@ -66,22 +67,26 @@ public class LampiranProfilServiceImpl implements LampiranProfilService {
     @Transactional
     @Override
     public SavedStatus<?> addLampiran(LampiranProfilPostRequest request) {
-        boolean exists = repository.exists(request.getSpecification());
-        if (exists)
-            return SavedStatus.build(ESaveStatus.DUPLICATE, "Lampiran Profil sudah ada");
+        try {
+            boolean exists = repository.exists(request.getSpecification());
+            if (exists)
+                return SavedStatus.build(ESaveStatus.DUPLICATE, "Lampiran Profil sudah ada");
 
-        UploadResultUtil uploadedFile = fileUploadUtil.uploadFileSp(request.getFileName(), request.getRef(), String.valueOf(request.getRefId()));
-        if (!uploadedFile.isSuccess())
-            return SavedStatus.build(ESaveStatus.FAILED, uploadedFile.getMessage());
+            UploadResultUtil uploadedFile = fileUploadUtil.uploadFileSp(request.getFileName(), request.getRef(), String.valueOf(request.getRefId()));
+            if (!uploadedFile.isSuccess())
+                return SavedStatus.build(ESaveStatus.FAILED, uploadedFile.getMessage());
 
-        LampiranProfil entity = LampiranProfilPostRequest.toEntity(
-                request,
-                uploadedFile.getFileName(),
-                uploadedFile.getHashedFileName(),
-                uploadedFile.getMimeType()
-        );
-        LampiranProfil save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, LampiranProfilResponse.from(save));
+            LampiranProfil entity = LampiranProfilPostRequest.toEntity(
+                    request,
+                    uploadedFile.getFileName(),
+                    uploadedFile.getHashedFileName(),
+                    uploadedFile.getMimeType()
+            );
+            repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Lampiran Profil Saved");
+        } catch (Exception e) {
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+        }
     }
 
     @Transactional
@@ -98,21 +103,26 @@ public class LampiranProfilServiceImpl implements LampiranProfilService {
     @Transactional
     @Override
     public SavedStatus<?> acceptLampiran(LampiranProfilAcceptRequest request, String oleh) {
-        Optional<LampiranProfil> one = repository.findOne(request.getSpecification());
-        if (one.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Lampiran Profil Not Found");
-        LampiranProfil entity = LampiranProfilAcceptRequest.toEntity(one.get(), oleh);
-        LampiranProfil save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, LampiranProfilResponse.from(save));
+        try {
+            LampiranProfil lampiranProfil = repository.findOne(request.getSpecification())
+                    .orElseThrow(() -> new RuntimeException("Lampiran Profil accept not found!"));
+            LampiranProfil entity = LampiranProfilAcceptRequest.toEntity(lampiranProfil, oleh);
+            repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Success Accept Lampiran");
+        } catch (Exception e) {
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+        }
     }
 
     @Transactional
     @Override
     public void deleteByRefId(EJenisLampiranProfil eJenisLampiranProfil, Long id) {
-        Specification<LampiranProfil> specification = (root, query, cb) -> cb.and(
-                cb.equal(root.get("ref"), eJenisLampiranProfil),
-                cb.equal(root.get("refId"), id));
-        List<LampiranProfil> all = repository.findAll(specification).stream().peek(lampiranProfil -> lampiranProfil.setIsDeleted(true)).toList();
+        Specification<LampiranProfil> specification = SpecificationBuilder.<LampiranProfil>of()
+                .addEqual(eJenisLampiranProfil, "ref")
+                .addEqual(id, "refId")
+                .build();
+        List<LampiranProfil> all = repository.findAll(specification).stream()
+                .peek(lampiranProfil -> lampiranProfil.setIsDeleted(true)).toList();
         repository.saveAll(all);
     }
 }

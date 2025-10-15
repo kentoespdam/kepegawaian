@@ -63,43 +63,44 @@ public class PendidikanServiceImpl implements PendidikanService {
     @Transactional
     @Override
     public SavedStatus<?> save(PendidikanPostRequest request) {
-        Optional<Biodata> biodata = biodataRepository.findById(request.getBiodataId());
-        if (biodata.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, UNKNOWN_BIODATA);
+        try {
+            boolean exists = repository.exists(request.getSpecification());
+            if (exists)
+                return SavedStatus.build(ESaveStatus.DUPLICATE, "Pendidikan sudah ada");
 
-        Optional<JenjangPendidikan> jenjangPendidikan = jenjangPendidikanRepository
-                .findById(request.getJenjangPendidikanId());
-        if (jenjangPendidikan.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, UNKNOWN_JENJANG_PENDIDIKAN);
+            Biodata biodata = biodataRepository.findById(request.getBiodataId())
+                    .orElseThrow(() -> new RuntimeException(UNKNOWN_BIODATA));
+            JenjangPendidikan jenjangPendidikan = jenjangPendidikanRepository.findById(request.getJenjangPendidikanId())
+                    .orElseThrow(() -> new RuntimeException(UNKNOWN_JENJANG_PENDIDIKAN));
 
-        boolean exists = repository.exists(request.getSpecification());
-        if (exists)
-            return SavedStatus.build(ESaveStatus.DUPLICATE, "Pendidikan sudah ada");
-
-        Pendidikan pendidikan = PendidikanPostRequest.from(request, biodata.get(), jenjangPendidikan.get());
-        Pendidikan save = repository.save(pendidikan);
-        handleUpdateIsLatest(request.getIsLatest(), save.getId(), biodata.get(), jenjangPendidikan.get());
-        handleRevisionUpdate(save, RevisionMetadata.RevisionType.INSERT);
-        return SavedStatus.build(ESaveStatus.SUCCESS, PendidikanResponse.from(save));
+            Pendidikan pendidikan = PendidikanPostRequest.from(request, biodata, jenjangPendidikan);
+            Pendidikan save = repository.save(pendidikan);
+            handleUpdateIsLatest(request.getIsLatest(), save.getId(), biodata, jenjangPendidikan);
+            handleRevisionUpdate(save, RevisionMetadata.RevisionType.INSERT);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Pendidikan saved");
+        } catch (Exception e) {
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+        }
     }
 
     @Transactional
     @Override
     public SavedStatus<?> update(Long id, PendidikanPutRequest request) {
-        Optional<Pendidikan> pendidikan = repository.findById(id);
-        if (pendidikan.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, UNKNOWN_PENDIDIKAN);
-        Optional<Biodata> biodata = biodataRepository.findById(request.getBiodataId());
-        if (biodata.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, UNKNOWN_BIODATA);
-        Optional<JenjangPendidikan> jenjangPendidikan = jenjangPendidikanRepository.findById(request.getJenjangPendidikanId());
-        if (jenjangPendidikan.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, UNKNOWN_JENJANG_PENDIDIKAN);
-        Pendidikan entity = PendidikanPutRequest.from(request, pendidikan.get(), biodata.get(), jenjangPendidikan.get());
-        Pendidikan save = repository.save(entity);
-        handleUpdateIsLatest(request.getIsLatest(), save.getId(), biodata.get(), jenjangPendidikan.get());
-        handleRevisionUpdate(save, RevisionMetadata.RevisionType.UPDATE);
-        return SavedStatus.build(ESaveStatus.SUCCESS, PendidikanResponse.from(save));
+        try {
+            Pendidikan pendidikan = repository.findById(id)
+                    .orElseThrow(() -> new RuntimeException(UNKNOWN_PENDIDIKAN));
+            Biodata biodata = biodataRepository.findById(request.getBiodataId())
+                    .orElseThrow(() -> new RuntimeException(UNKNOWN_BIODATA));
+            JenjangPendidikan jenjangPendidikan = jenjangPendidikanRepository.findById(request.getJenjangPendidikanId())
+                    .orElseThrow(() -> new RuntimeException(UNKNOWN_JENJANG_PENDIDIKAN));
+            Pendidikan entity = PendidikanPutRequest.from(request, pendidikan, biodata, jenjangPendidikan);
+            Pendidikan save = repository.save(entity);
+            handleUpdateIsLatest(request.getIsLatest(), save.getId(), biodata, jenjangPendidikan);
+            handleRevisionUpdate(save, RevisionMetadata.RevisionType.UPDATE);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Pendidikan updated");
+        } catch (Exception e) {
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+        }
     }
 
 
@@ -115,8 +116,8 @@ public class PendidikanServiceImpl implements PendidikanService {
         entity.setTanggalDisetujui(LocalDateTime.now());
         if (request.getIsLatest())
             repository.updateByBiodata_Nik(request.getBiodataId());
-        Pendidikan save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, PendidikanResponse.from(save));
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "Pendidikan accepted");
     }
 
     @Transactional

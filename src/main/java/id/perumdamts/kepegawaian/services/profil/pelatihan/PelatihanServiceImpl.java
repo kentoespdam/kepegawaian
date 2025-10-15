@@ -56,55 +56,55 @@ public class PelatihanServiceImpl implements PelatihanService {
     @Transactional
     @Override
     public SavedStatus<?> save(PelatihanPostRequest request) {
-        Optional<Biodata> biodata = biodataRepository.findById(request.getBiodataId());
-        if (biodata.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Biodata");
+        try {
+            boolean exists = repository.exists(request.getSpecification());
+            if (exists)
+                return SavedStatus.build(ESaveStatus.FAILED, "Pelatihan already exists");
 
-        Optional<JenisPelatihan> jenisPelatihan = jenisPelatihanRepository.findById(request.getJenisPelatihanId());
-        if (jenisPelatihan.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jenis Pelatihan");
+            Biodata biodata = biodataRepository.findById(request.getBiodataId())
+                    .orElseThrow(() -> new RuntimeException("Biodata not found"));
+            JenisPelatihan jenisPelatihan = jenisPelatihanRepository.findById(request.getJenisPelatihanId())
+                    .orElseThrow(() -> new RuntimeException("JenisPelatihan not found"));
 
-        boolean exists = repository.exists(request.getSpecification());
-        if (exists)
-            return SavedStatus.build(ESaveStatus.FAILED, "Pelatihan already exists");
-
-        Pelatihan entity = PelatihanPostRequest.toEntity(request, biodata.get(), jenisPelatihan.get());
-        Pelatihan save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, PelatihanResponse.from(save));
+            Pelatihan entity = PelatihanPostRequest.toEntity(request, biodata, jenisPelatihan);
+            repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Pelatihan saved");
+        } catch (Exception e) {
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+        }
     }
 
     @Transactional
     @Override
     public SavedStatus<?> update(Long id, PelatihanPutRequest request) {
-        Optional<Biodata> biodata = biodataRepository.findById(request.getBiodataId());
-        if (biodata.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Biodata");
+        try {
+            Biodata biodata = biodataRepository.findById(request.getBiodataId())
+                    .orElseThrow(() -> new RuntimeException("Biodata not found"));
+            JenisPelatihan jenisPelatihan = jenisPelatihanRepository.findById(request.getJenisPelatihanId())
+                    .orElseThrow(() -> new RuntimeException("JenisPelatihan not found"));
+            Pelatihan entity = repository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Pelatihan not found"));
 
-        Optional<JenisPelatihan> jenisPelatihan = jenisPelatihanRepository.findById(request.getJenisPelatihanId());
-        if (jenisPelatihan.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jenis Pelatihan");
-
-        Optional<Pelatihan> entity = repository.findById(id);
-        if (entity.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Pelatihan");
-
-        Pelatihan pelatihan = PelatihanPutRequest.toEntity(request, entity.get(), biodata.get(), jenisPelatihan.get());
-        Pelatihan save = repository.save(pelatihan);
-        return SavedStatus.build(ESaveStatus.SUCCESS, PelatihanResponse.from(save));
+            Pelatihan pelatihan = PelatihanPutRequest.toEntity(request, entity, biodata, jenisPelatihan);
+            repository.save(pelatihan);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Pelatihan updated");
+        } catch (Exception e) {
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+        }
     }
 
     @Transactional
     @Override
     public SavedStatus<?> acceptPelatihan(Long id, String nik, String username) {
-        Optional<Pelatihan> pelatihan = repository.findById(id);
-        if (pelatihan.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Pelatihan");
-        Pelatihan entity = pelatihan.get();
-        entity.setDisetujui(true);
-        entity.setDisetujuiOleh(username);
-        entity.setTanggalDisetujui(LocalDateTime.now());
-        Pelatihan save = repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, PelatihanResponse.from(save));
+        return repository.findById(id)
+                .map(entity -> {
+                    entity.setDisetujui(true);
+                    entity.setDisetujuiOleh(username);
+                    entity.setTanggalDisetujui(LocalDateTime.now());
+                    repository.save(entity);
+                    return SavedStatus.build(ESaveStatus.SUCCESS, "Pelatihan accepted");
+                })
+                .orElse(SavedStatus.build(ESaveStatus.FAILED, "Unknown Pelatihan"));
     }
 
     @Transactional
