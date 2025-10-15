@@ -22,7 +22,7 @@ import org.hibernate.annotations.SQLRestriction;
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE `level` SET is_deleted=true WHERE id=?")
-@SQLRestriction("is_deleted != TRUE")
+@SQLRestriction("is_deleted = FALSE")
 public class Level extends IdsAbstract {
     private String nama;
 

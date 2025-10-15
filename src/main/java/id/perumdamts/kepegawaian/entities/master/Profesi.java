@@ -25,8 +25,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE profesi SET is_deleted=true WHERE id=?")
-@SQLRestriction("is_deleted != FALSE")
-
+@SQLRestriction("is_deleted = FALSE")
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class Profesi extends IdsAbstract {
     private String nama;

@@ -26,7 +26,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE dasar_gaji SET is_deleted=true WHERE id=?")
-@SQLRestriction("is_deleted = false")
+@SQLRestriction("is_deleted = FALSE")
 
 @Audited
 public class DasarGaji extends IdsAbstract {

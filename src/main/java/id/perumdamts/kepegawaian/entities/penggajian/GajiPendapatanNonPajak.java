@@ -24,7 +24,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE gaji_pendapatan_non_pajak SET is_deleted=true WHERE id=?")
-@SQLRestriction("is_deleted = false")
+@SQLRestriction("is_deleted = FALSE")
 @EntityListeners(AuditingEntityListener.class)
 @Audited
 public class GajiPendapatanNonPajak extends IdsAbstract {

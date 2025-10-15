@@ -27,7 +27,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE riwayat_keluar SET is_deleted=true WHERE id=?")
-@SQLRestriction("is_deleted = false")
+@SQLRestriction("is_deleted = FALSE")
 
 public class RiwayatKeluar extends IdsAbstract {
     @JsonBackReference

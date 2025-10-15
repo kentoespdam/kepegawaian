@@ -21,7 +21,7 @@ import org.hibernate.envers.RelationTargetAuditMode;
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE gaji_potongan_tkk SET is_deleted=true WHERE id=?")
-@SQLRestriction("is_deleted = false")
+@SQLRestriction("is_deleted = FALSE")
 
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class GajiPotonganTkk extends IdsAbstract {

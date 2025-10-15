@@ -18,7 +18,7 @@ import org.hibernate.envers.Audited;
 @Setter
 @Audited
 @SQLDelete(sql = "UPDATE cuti_jenis SET is_deleted = true where id = ?")
-@SQLRestriction("is_deleted = false")
+@SQLRestriction("is_deleted = FALSE")
 @NoArgsConstructor
 @AllArgsConstructor
 public class CutiJenis extends IdsAbstract {

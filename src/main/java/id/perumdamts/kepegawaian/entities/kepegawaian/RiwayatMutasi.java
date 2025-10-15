@@ -34,7 +34,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE riwayat_mutasi SET is_deleted=true WHERE id=?")
-@SQLRestriction("is_deleted = false")
+@SQLRestriction("is_deleted = FALSE")
 
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class RiwayatMutasi extends IdsAbstract {

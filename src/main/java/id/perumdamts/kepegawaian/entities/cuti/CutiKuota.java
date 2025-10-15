@@ -23,7 +23,7 @@ import java.time.LocalDate;
 @ToString
 @Audited
 @SQLDelete(sql = "UPDATE cuti_kuota SET is_deleted = true where id = ?")
-@SQLRestriction("is_deleted = false")
+@SQLRestriction("is_deleted = FALSE")
 @NoArgsConstructor
 @AllArgsConstructor
 public class CutiKuota extends IdsAbstract {

@@ -24,7 +24,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE jabatan SET is_deleted=true WHERE id=?")
-@SQLRestriction("is_deleted <> 1")
+@SQLRestriction("is_deleted = FALSE")
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class Jabatan extends IdsAbstract {
     private String kode;

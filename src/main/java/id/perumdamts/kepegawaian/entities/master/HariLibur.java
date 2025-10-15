@@ -20,7 +20,7 @@ import java.time.LocalDate;
 @ToString
 @Audited
 @SQLDelete(sql = "UPDATE hari_libur SET is_deleted = true where id = ?")
-@SQLRestriction("is_deleted = false")
+@SQLRestriction("is_deleted = FALSE")
 @NoArgsConstructor
 @AllArgsConstructor
 public class HariLibur extends IdsAbstract {

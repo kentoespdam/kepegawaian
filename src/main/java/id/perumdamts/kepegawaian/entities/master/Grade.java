@@ -22,7 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE grade SET is_deleted=true WHERE id=?")
-@SQLRestriction("is_deleted <> 1")
+@SQLRestriction("is_deleted = FALSE")
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class Grade extends IdsAbstract {
 

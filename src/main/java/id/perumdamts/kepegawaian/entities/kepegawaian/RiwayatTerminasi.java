@@ -31,7 +31,7 @@ import java.time.LocalDate;
         @Index(columnList = "tanggal_terminasi")
 })
 @SQLDelete(sql = "UPDATE riwayat_terminasi SET is_deleted = true WHERE id = ?")
-@SQLRestriction("is_deleted = false")
+@SQLRestriction("is_deleted = FALSE")
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class RiwayatTerminasi extends IdsAbstract {
     @JsonBackReference

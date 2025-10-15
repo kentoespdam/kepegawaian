@@ -7,7 +7,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -17,9 +16,6 @@ import java.util.Objects;
  */
 @Data
 public class CommonPageRequest implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     protected Integer page = 0;
 
     protected Integer size = 10;
@@ -37,15 +33,15 @@ public class CommonPageRequest implements Serializable {
      */
     @JsonIgnore
     public Pageable getPageable() {
+        int currentPage = Objects.isNull(page) ? 0 : page;
+        int currentSize = Objects.isNull(size) ? 10 : size;
+
         if (sortBy == null || sortBy.trim().isEmpty()) {
-            return PageRequest.of(page, size);
+            return PageRequest.of(currentPage, currentSize);
         }
 
         String direction = Objects.requireNonNullElse(sortDirection, "asc").toLowerCase();
         Sort.Direction sortDir = "desc".equals(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
-
-        int currentPage = Objects.isNull(page) ? 0 : page;
-        int currentSize = Objects.isNull(size) ? 10 : size;
 
         return PageRequest.of(
                 currentPage,

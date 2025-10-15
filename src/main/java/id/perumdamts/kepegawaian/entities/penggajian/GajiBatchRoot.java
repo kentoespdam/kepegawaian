@@ -39,7 +39,7 @@ import java.util.Set;
 @Setter
 @EntityListeners(AuditingEntityListener.class)
 @SQLDelete(sql = "UPDATE gaji_batch_root SET is_deleted=true WHERE id=?")
-@SQLRestriction("is_deleted = false")
+@SQLRestriction("is_deleted = FALSE")
 public class GajiBatchRoot implements Serializable {
     @Id
     private String id;
