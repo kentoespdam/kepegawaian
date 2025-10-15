@@ -29,6 +29,8 @@ public class PendidikanPostRequest {
     private Integer tahunLulus;
     private Double gpa;
     private Boolean isLatest = false;
+    private Boolean changed_status = true;
+
 
     @JsonIgnore
     public Specification<Pendidikan> getSpecification() {
@@ -54,6 +56,7 @@ public class PendidikanPostRequest {
         entity.setIsLatest(request.getIsLatest());
         entity.setDisetujui(true);
         entity.setTanggalPengajuan(LocalDateTime.now());
+        entity.setChangedStatus(request.getChanged_status());
         return entity;
     }
 }

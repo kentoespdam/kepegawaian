@@ -16,10 +16,10 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "ProfilKeluarga", indexes = {
-        @Index(columnList = "nik", name = "idx_profilkeluarga_nik"),
-        @Index(columnList = "nama", name = "idx_profilkeluarga_nama"),
-        @Index(columnList = "is_deleted", name = "idx_profilkeluarga_is_deleted"),
-        @Index(columnList = "tanggungan", name = "idx_profilkeluarga_tanggungan"),
+        @Index(name = "idx_profilkeluarga_nik", columnList = "nik"),
+        @Index(name = "idx_profilkeluarga_nama", columnList = "nama"),
+        @Index(name = "idx_profilkeluarga_is_deleted", columnList = "is_deleted"),
+        @Index(name = "idx_profilkeluarga_tanggungan", columnList = "tanggungan")
 }, uniqueConstraints = {
         @UniqueConstraint(name = "uc_profilkeluarga_nik", columnNames = {"biodata_id", "version", "nama", "tanggal_lahir", "is_deleted"})
 })
@@ -32,9 +32,6 @@ import java.time.LocalDate;
 @SQLRestriction("is_deleted = FALSE")
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class ProfilKeluarga extends IdsAbstract {
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "biodata_id", referencedColumnName = "nik")
-    private Biodata biodata;
     private String nik;
     private String nama;
     @Enumerated(EnumType.ORDINAL)
@@ -56,6 +53,7 @@ public class ProfilKeluarga extends IdsAbstract {
     private EStatusPendidikan statusPendidikan;
     private Boolean statusKawin;
     private String notes;
-    @Column(name = "changed_status", columnDefinition = "boolean default false")
-    private Boolean changedStatus;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "biodata_id", referencedColumnName = "nik")
+    private Biodata biodata;
 }

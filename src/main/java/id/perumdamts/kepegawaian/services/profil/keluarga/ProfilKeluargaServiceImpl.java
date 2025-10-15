@@ -128,13 +128,13 @@ public class ProfilKeluargaServiceImpl implements ProfilKeluargaService {
     @Override
     public Boolean delete(Long id) {
         return repository.findById(id)
-                .map(profilKeluarga -> {
-                    profilKeluarga.setIsDeleted(true);
-                    profilKeluarga.setChangedStatus(true);
-                    repository.save(profilKeluarga);
+                .map(entity -> {
+                    entity.setIsDeleted(true);
+                    entity.setChangedStatus(true);
+                    repository.save(entity);
 
                     // Execute cleanup operations
-                    executeDeleteOperations(profilKeluarga);
+                    executeDeleteOperations(entity);
                     return true;
                 })
                 .orElse(false);

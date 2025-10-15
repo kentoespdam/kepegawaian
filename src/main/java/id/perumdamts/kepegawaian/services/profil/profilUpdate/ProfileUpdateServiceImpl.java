@@ -1,7 +1,9 @@
 package id.perumdamts.kepegawaian.services.profil.profilUpdate;
 
 import id.perumdamts.kepegawaian.dto.appwrite.AppwriteUser;
+import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
+import id.perumdamts.kepegawaian.dto.profil.profileUpdate.ProfilUpdateAcceptRequest;
 import id.perumdamts.kepegawaian.dto.profil.profileUpdate.ProfilUpdateDetail;
 import id.perumdamts.kepegawaian.dto.profil.profileUpdate.ProfileUpdateRequest;
 import id.perumdamts.kepegawaian.entities.commons.EProfileUpdateApproval;
@@ -9,16 +11,15 @@ import id.perumdamts.kepegawaian.entities.commons.EProfileUpdateTable;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
-import id.perumdamts.kepegawaian.entities.profil.ProfilKeluarga;
 import id.perumdamts.kepegawaian.entities.profil.ProfileUpdate;
 import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
-import id.perumdamts.kepegawaian.repositories.profil.*;
+import id.perumdamts.kepegawaian.repositories.profil.ProfileUpdateRepository;
 import id.perumdamts.kepegawaian.services.revInfo.RevInfoService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.history.RevisionMetadata;
-import org.springframework.data.history.Revisions;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -32,13 +33,7 @@ public class ProfileUpdateServiceImpl implements ProfileUpdateService {
     private final ProfileUpdateRepository repository;
     private final RevInfoService revInfoService;
     private final PegawaiRepository pegawaiRepository;
-    private final BiodataRepository biodataRepository;
-    private final KeahlianRepository keahlianRepository;
-    private final LampiranProfilRepository lampiranProfilRepository;
-    private final PelatihanRepository pelatihanRepository;
-    private final PendidikanRepository pendidikanRepository;
-    private final PengalamanKerjaRepository pengalamanKerjaRepository;
-    private final ProfilKeluargaRepository profilKeluargaRepository;
+    private final ProfileUpdateApprovalService profileUpdateApprovalService;
 
     @Override
     public Page<ProfileUpdate> findPage(ProfileUpdateRequest request) {
@@ -46,9 +41,12 @@ public class ProfileUpdateServiceImpl implements ProfileUpdateService {
     }
 
     @Override
-    public Optional<ProfilUpdateDetail> findById(Long id) {
+    public ProfilUpdateDetail<?> findById(Long id) {
         Optional<ProfileUpdate> byId = repository.findById(id);
-        return byId.flatMap(this::getProfilUpdateDetail);
+        if (byId.isEmpty()) return null;
+        if (byId.get().getTableName().equals(EProfileUpdateTable.KELUARGA))
+            return byId.map(revInfoService::findKeluargaRevision).orElse(null);
+        return byId.map(revInfoService::findPendidikan).orElse(null);
     }
 
     @Override
@@ -83,23 +81,21 @@ public class ProfileUpdateServiceImpl implements ProfileUpdateService {
         repository.save(entity);
     }
 
+    @Transactional
     @Override
-    public SavedStatus<?> approval(Long id, EProfileUpdateApproval approval) {
-        return null;
-    }
-
-    private Optional<ProfilUpdateDetail> getProfilUpdateDetail(ProfileUpdate profileUpdate) {
+    public SavedStatus<?> approval(Long id, ProfilUpdateAcceptRequest request) {
         try {
-            if (EProfileUpdateTable.KELUARGA.equals(profileUpdate.getTableName())) {
-//                Pageable pageable = PageRequest.of(0, 2, Sort.by(Sort.Direction.DESC, "id"));
-                Revisions<Integer, ProfilKeluarga> revisions = profilKeluargaRepository.findRevisions(profileUpdate.getId());
-                return Optional.of(ProfilUpdateDetail.from(profileUpdate, revisions));
+            ProfileUpdate profileUpdate = repository.findByIdAndApprovalStatus(id, EProfileUpdateApproval.PENDING)
+                    .orElseThrow(() -> new RuntimeException("Unknown Profile Update"));
+            EProfileUpdateTable tableName = profileUpdate.getTableName();
+            if (tableName.equals(EProfileUpdateTable.KELUARGA)) {
+                profileUpdateApprovalService.changeKeluargaHandler(profileUpdate, request.getApproval());
             }
-            return Optional.empty();
+            handleApproval(profileUpdate, request);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Success saving approval profil update");
         } catch (Exception e) {
-            log.error("Error getting profile update detail for id {}: {}",
-                    profileUpdate.getId(), e.getMessage(), e);
-            return Optional.empty();
+            log.error(e.getMessage());
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
     }
 
@@ -123,4 +119,15 @@ public class ProfileUpdateServiceImpl implements ProfileUpdateService {
             case KEAHLIAN -> "data keahlian";
         };
     }
+
+    private void handleApproval(ProfileUpdate entity, ProfilUpdateAcceptRequest request) {
+        Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId())
+                .orElseThrow(() -> new RuntimeException("Unknown Pic"));
+
+        entity.setApprovalStatus(request.getApproval());
+        entity.setApprovalDate(LocalDateTime.now());
+        entity.setApprovalPic(pegawai.getBiodata().getNama());
+        repository.save(entity);
+    }
+
 }

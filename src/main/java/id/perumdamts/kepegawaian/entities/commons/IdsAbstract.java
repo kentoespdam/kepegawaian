@@ -48,7 +48,8 @@ public abstract class IdsAbstract implements Serializable {
     @Audited
     @Column(name = "is_deleted", columnDefinition = "boolean default false")
     private Boolean isDeleted = false;
-
+    @Column(name = "changed_status", columnDefinition = "boolean default false")
+    private Boolean changedStatus;
     @Version
     @Column(name = "version")
     private Integer version = 1;

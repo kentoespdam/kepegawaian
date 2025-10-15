@@ -5,6 +5,7 @@ import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilResponse;
 import id.perumdamts.kepegawaian.dto.profil.pendidikan.*;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
+import id.perumdamts.kepegawaian.entities.commons.EProfileUpdateTable;
 import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.Pendidikan;
@@ -12,8 +13,10 @@ import id.perumdamts.kepegawaian.repositories.master.JenjangPendidikanRepository
 import id.perumdamts.kepegawaian.repositories.profil.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.PendidikanRepository;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilService;
+import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.history.RevisionMetadata;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,10 +28,15 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class PendidikanServiceImpl implements PendidikanService {
+    private static final String UNKNOWN_BIODATA = "Unknown Biodata";
+    private static final String UNKNOWN_PENDIDIKAN = "Unknown Pendidikan";
+    private static final String UNKNOWN_JENJANG_PENDIDIKAN = "Unknown Jenjang Pendidikan";
+
     private final PendidikanRepository repository;
     private final BiodataRepository biodataRepository;
     private final JenjangPendidikanRepository jenjangPendidikanRepository;
     private final LampiranProfilService lampiranProfilService;
+    private final ProfileUpdateService profileUpdateService;
 
     @Override
     public List<PendidikanResponse> findAll() {
@@ -57,12 +65,12 @@ public class PendidikanServiceImpl implements PendidikanService {
     public SavedStatus<?> save(PendidikanPostRequest request) {
         Optional<Biodata> biodata = biodataRepository.findById(request.getBiodataId());
         if (biodata.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Biodata");
+            return SavedStatus.build(ESaveStatus.FAILED, UNKNOWN_BIODATA);
 
         Optional<JenjangPendidikan> jenjangPendidikan = jenjangPendidikanRepository
                 .findById(request.getJenjangPendidikanId());
         if (jenjangPendidikan.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jenjang Pendidikan");
+            return SavedStatus.build(ESaveStatus.FAILED, UNKNOWN_JENJANG_PENDIDIKAN);
 
         boolean exists = repository.exists(request.getSpecification());
         if (exists)
@@ -70,11 +78,8 @@ public class PendidikanServiceImpl implements PendidikanService {
 
         Pendidikan pendidikan = PendidikanPostRequest.from(request, biodata.get(), jenjangPendidikan.get());
         Pendidikan save = repository.save(pendidikan);
-        if (request.getIsLatest()) {
-            repository.updateIsLatest(save.getId(), request.getBiodataId());
-            biodata.get().setPendidikanTerakhir(jenjangPendidikan.get());
-            biodataRepository.save(biodata.get());
-        }
+        handleUpdateIsLatest(request.getIsLatest(), save.getId(), biodata.get(), jenjangPendidikan.get());
+        handleRevisionUpdate(save, RevisionMetadata.RevisionType.INSERT);
         return SavedStatus.build(ESaveStatus.SUCCESS, PendidikanResponse.from(save));
     }
 
@@ -83,22 +88,20 @@ public class PendidikanServiceImpl implements PendidikanService {
     public SavedStatus<?> update(Long id, PendidikanPutRequest request) {
         Optional<Pendidikan> pendidikan = repository.findById(id);
         if (pendidikan.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Pendidikan");
+            return SavedStatus.build(ESaveStatus.FAILED, UNKNOWN_PENDIDIKAN);
         Optional<Biodata> biodata = biodataRepository.findById(request.getBiodataId());
         if (biodata.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Biodata");
+            return SavedStatus.build(ESaveStatus.FAILED, UNKNOWN_BIODATA);
         Optional<JenjangPendidikan> jenjangPendidikan = jenjangPendidikanRepository.findById(request.getJenjangPendidikanId());
         if (jenjangPendidikan.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jenjang Pendidikan");
+            return SavedStatus.build(ESaveStatus.FAILED, UNKNOWN_JENJANG_PENDIDIKAN);
         Pendidikan entity = PendidikanPutRequest.from(request, pendidikan.get(), biodata.get(), jenjangPendidikan.get());
         Pendidikan save = repository.save(entity);
-        if (request.getIsLatest()) {
-            repository.updateIsLatest(save.getId(), request.getBiodataId());
-            biodata.get().setPendidikanTerakhir(jenjangPendidikan.get());
-            biodataRepository.save(biodata.get());
-        }
+        handleUpdateIsLatest(request.getIsLatest(), save.getId(), biodata.get(), jenjangPendidikan.get());
+        handleRevisionUpdate(save, RevisionMetadata.RevisionType.UPDATE);
         return SavedStatus.build(ESaveStatus.SUCCESS, PendidikanResponse.from(save));
     }
+
 
     @Transactional
     @Override
@@ -119,13 +122,17 @@ public class PendidikanServiceImpl implements PendidikanService {
     @Transactional
     @Override
     public Boolean delete(Long id) {
-        Optional<Pendidikan> byId = repository.findById(id);
-        if (byId.isEmpty())
-            return false;
-        byId.get().setIsDeleted(true);
-        repository.save(byId.get());
-        lampiranProfilService.deleteByRefId(EJenisLampiranProfil.PROFIL_PENDIDIKAN, id);
-        return true;
+        return repository.findById(id)
+                .map(entity -> {
+                    entity.setIsDeleted(true);
+                    entity.setChangedStatus(true);
+                    repository.save(entity);
+
+                    handleRevisionUpdate(entity, RevisionMetadata.RevisionType.DELETE);
+                    lampiranProfilService.deleteByRefId(EJenisLampiranProfil.PROFIL_PENDIDIKAN, id);
+                    return true;
+                })
+                .orElse(false);
     }
 
     //lampiran
@@ -168,4 +175,21 @@ public class PendidikanServiceImpl implements PendidikanService {
         repository.save(pendidikan);
     }
 
+    private void handleUpdateIsLatest(Boolean isLatest, Long id, Biodata biodata, JenjangPendidikan jenjangPendidikan) {
+        if (Boolean.FALSE.equals(isLatest)) return;
+
+        repository.updateIsLatest(id, biodata.getNik());
+        biodata.setPendidikanTerakhir(jenjangPendidikan);
+        biodataRepository.save(biodata);
+    }
+
+    private void handleRevisionUpdate(Pendidikan save, RevisionMetadata.RevisionType type) {
+        if (Boolean.FALSE.equals(save.getChangedStatus())) return;
+
+        profileUpdateService.create(
+                save.getId(),
+                type,
+                EProfileUpdateTable.PENDIDIKAN
+        );
+    }
 }

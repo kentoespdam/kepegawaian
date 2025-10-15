@@ -11,17 +11,27 @@ import java.util.Optional;
 
 public interface ProfilKeluargaService {
     List<ProfilKeluargaResponse> findAll();
+
     Page<ProfilKeluargaResponse> findPage(ProfilKeluargaRequest request);
+
     Optional<ProfilKeluargaResponse> findById(Long id);
+
     Page<ProfilKeluargaResponse> findByBiodataId(String biodataId, ProfilKeluargaRequest request);
+
     SavedStatus<?> save(ProfilKeluargaPostRequest request);
+
     SavedStatus<?> update(Long id, ProfilKeluargaPutRequest request);
+
     Boolean delete(Long id);
 
     // Lampiran
     List<LampiranProfilResponse> getLampiran(Long id);
+
     Optional<LampiranProfilResponse> getLampiranById(Long id);
+
     ResponseEntity<?> getFileLampiranById(Long id);
+
     SavedStatus<?> addLampiran(ProfilKeluargaLampiranPostRequest request);
+
     Boolean deleteLampiran(Long id);
 }

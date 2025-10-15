@@ -27,6 +27,7 @@ public class PendidikanPutRequest extends PendidikanPostRequest {
         entity.setIsLatest(request.getIsLatest());
         entity.setDisetujui(false);
         entity.setTanggalPengajuan(LocalDateTime.now());
+        entity.setChangedStatus(request.getChanged_status());
         return entity;
     }
 }

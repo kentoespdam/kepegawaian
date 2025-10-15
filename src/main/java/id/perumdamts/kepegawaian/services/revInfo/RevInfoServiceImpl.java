@@ -1,80 +1,68 @@
 package id.perumdamts.kepegawaian.services.revInfo;
 
+import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaResponse;
+import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanResponse;
 import id.perumdamts.kepegawaian.dto.profil.profileUpdate.ProfilUpdateDetail;
+import id.perumdamts.kepegawaian.entities.profil.Pendidikan;
 import id.perumdamts.kepegawaian.entities.profil.ProfilKeluarga;
 import id.perumdamts.kepegawaian.entities.profil.ProfileUpdate;
-import id.perumdamts.kepegawaian.repositories.profil.*;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.history.Revision;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
+import org.hibernate.envers.query.AuditEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class RevInfoServiceImpl implements RevInfoService {
-    private final BiodataRepository biodataRepository;
-    private final KeahlianRepository keahlianRepository;
-    private final LampiranProfilRepository lampiranProfilRepository;
-    private final PelatihanRepository pelatihanRepository;
-    private final PendidikanRepository pendidikanRepository;
-    private final PengalamanKerjaRepository pengalamanKerjaRepository;
-    private final ProfilKeluargaRepository profilKeluargaRepository;
+    private final EntityManager entityManager;
 
 
     @Override
-    public Optional<ProfilUpdateDetail> findKeluargaRevision(ProfileUpdate profileUpdate) {
-        return profilKeluargaRepository
-                .findByIdAndChangedStatus(profileUpdate.getRevId(), Boolean.TRUE)
-                .flatMap(currentEntity -> {
-                    log.info("currentEntity Id: {}", currentEntity.getId());
-                    return getRevisionData(profileUpdate, currentEntity);
-                });
+    public ProfilUpdateDetail<ProfilKeluargaResponse> findKeluargaRevision(ProfileUpdate profileUpdate) {
+        List<ProfilKeluargaResponse> froms = findLatestRevision(ProfilKeluarga.class, profileUpdate.getRevId()).stream()
+                .map(ProfilKeluargaResponse::from).toList();
+        return ProfilUpdateDetail.build(profileUpdate, froms);
     }
 
-    private Optional<ProfilUpdateDetail> getRevisionData(ProfileUpdate profileUpdate,
-                                                         ProfilKeluarga currentEntity) {
-        try {
-            Long entityId = currentEntity.getId();
-            Pageable pageable = PageRequest.of(0, 2, Sort.by(Sort.Direction.DESC, "id"));
-            Page<Revision<Integer, ProfilKeluarga>> revisions = profilKeluargaRepository.findRevisions(currentEntity.getId(), pageable);
+    @Override
+    public ProfilUpdateDetail<PendidikanResponse> findPendidikan(ProfileUpdate profileUpdate) {
+        List<PendidikanResponse> result = findLatestRevision(Pendidikan.class, profileUpdate.getRevId()).stream()
+                .map(PendidikanResponse::from).toList();
+        return ProfilUpdateDetail.build(profileUpdate, result);
+    }
 
-//            return Optional.of(buildProfilUpdateDetail(profileUpdate, revisions));
+    private <T> List<T> findLatestRevision(Class<T> entityClass, Long entityId) {
+        AuditReader auditReader = AuditReaderFactory.get(entityManager);
 
-//            return profilKeluargaRepository.findRevision(entityId, previousVersion)
-//                    .map(previousRevision -> {
-//                        log.info("profilUpdate Id: {}, currentEntity Id: {}, previousRevisionId: {}",
-//                                profileUpdate.getId(), currentEntity.getId(), previousRevision.getEntity().getId());
-//                        return buildProfilUpdateDetail(
-//                                profileUpdate, currentEntity, previousRevision);
-//                    });
-            return Optional.empty();
+        @SuppressWarnings("unchecked")
+        List<Object[]> result = auditReader.createQuery()
+                .forRevisionsOfEntity(entityClass, false, true)
+                .add(AuditEntity.id().eq(entityId))
+                .addOrder(AuditEntity.revisionNumber().desc())
+                .setMaxResults(2)
+                .getResultList();
 
-        } catch (Exception e) {
-            log.error("Error getting revision data for keluarga id {}: {}",
-                    currentEntity.getId(), e.getMessage(), e);
-            return Optional.empty();
+        return extractEntities(result);
+    }
+
+    /**
+     * Type-safe entity extraction
+     */
+    @SuppressWarnings("unchecked")
+    private <T> List<T> extractEntities(List<Object[]> results) {
+        if (results == null || results.isEmpty()) {
+            return List.of();
         }
+
+        return results.stream()
+                .map(result -> (T) result[0])
+                .toList();
     }
-
-//    private ProfilUpdateDetail buildProfilUpdateDetail(ProfileUpdate profileUpdate,
-//                                                       Page<Revision<Integer, ProfilKeluarga>> revisions) {
-//        List<Revision<Integer, ProfilKeluarga>> content = revisions.getContent();
-//
-//        ProfilUpdateDetail detail = ProfilUpdateDetail.from(profileUpdate);
-//        detail.setNewData(content.getFirst().getEntity());
-//        detail.setActionType(content.getFirst().getMetadata().getRevisionType());
-//        detail.setOldData(content.getLast().getEntity());
-//
-//        log.debug("Successfully built profile update detail for id: {}", profileUpdate.getId());
-//        return detail;
-//    }
-
 
 }
