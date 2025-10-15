@@ -17,7 +17,6 @@ import lombok.EqualsAndHashCode;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -35,15 +34,13 @@ public class CutiApprovalChainRequest extends CommonPageRequest {
 
     @JsonIgnore
     public Specification<CutiApprovalChain> getApprovalChainSpecification() {
-        SpecificationBuilder<CutiApprovalChain> builder = SpecificationBuilder.<CutiApprovalChain>of()
+        return SpecificationBuilder.<CutiApprovalChain>of()
                 .addEqual(jabatanId, "jabatanId")
-
                 .addEqual(picSaatIniId, "jabatanId")
-                .addEqual(approvalCutiStatus, "approvalCutiStatus")
-                .addEqual(readWriteStatus, "readWriteStatus");
-        if (Objects.nonNull(tahun))
-            builder.addCustom((root, cb) -> createYearPredicate(root, cb, tahun));
-        return builder.build();
+                .addEqual(approvalCutiStatus, "approvalStatus")
+                .addEqual(readWriteStatus, "readWriteStatus")
+                .addCustom((root, cb) -> createYearPredicate(root, cb, tahun))
+                .build();
     }
 
     private Predicate createYearPredicate(Root<CutiApprovalChain> root, CriteriaBuilder cb, Integer tahun) {
