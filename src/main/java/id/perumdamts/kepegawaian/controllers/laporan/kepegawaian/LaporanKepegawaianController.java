@@ -69,9 +69,15 @@ public class LaporanKepegawaianController {
         return CustomResult.any(service.getObject("/statistik/pendidikan1"));
     }
 
-    @GetMapping("/statistik/pendidikan2")
-    public ResponseEntity<?> lapStatistikPendidikan2() {
-        return CustomResult.any(service.getObject("/statistik/pendidikan2"));
+    @GetMapping("/statistik/pendidikan2/{tahun}/{bulan}")
+    public ResponseEntity<?> lapStatistikPendidikan2(@PathVariable int tahun, @PathVariable int bulan) {
+        return CustomResult.any(service.getObject("/statistik/pendidikan2?tahun=" + tahun + "&bulan=" + bulan));
+    }
+
+    @GetMapping("/statistik/pendidikan2/excel/{tahun}/{bulan}")
+    public ResponseEntity<?> lapStatistikPendidikan2Excel(@PathVariable int tahun, @PathVariable int bulan) {
+        String url = "/statistik/pendidikan2/excel?tahun=" + tahun + "&bulan=" + bulan;
+        return service.getExport(url);
     }
 
     @GetMapping("/statistik/umur")
@@ -126,9 +132,17 @@ public class LaporanKepegawaianController {
         if (Objects.nonNull(filter)) url += "?filter=" + filter.name();
         return service.getExport(url);
     }
+
     @GetMapping("/lepas_tanggungan_anak")
     public ResponseEntity<?> lapLta(@RequestParam(required = false, defaultValue = "BULAN_INI") EFilterLta filter) {
         String url = "/lepas_tanggungan_anak/";
+        if (Objects.nonNull(filter)) url += "?filter=" + filter.name();
+        return CustomResult.any(service.getObject(url));
+    }
+
+    @GetMapping("/lepas_tanggungan_anak/count")
+    public ResponseEntity<?> lapLtaCount(@RequestParam(required = false, defaultValue = "BULAN_INI") EFilterLta filter) {
+        String url = "/lepas_tanggungan_anak/count";
         if (Objects.nonNull(filter)) url += "?filter=" + filter.name();
         return CustomResult.any(service.getObject(url));
     }
@@ -143,6 +157,13 @@ public class LaporanKepegawaianController {
     @GetMapping("/kenaikan_berkala")
     public ResponseEntity<?> lapKenaikanBerkala(@RequestParam(required = false, defaultValue = "BULAN_INI") EFilterKenaikanBerkala filter) {
         String url = "/kenaikan_berkala/";
+        if (Objects.nonNull(filter)) url += "?filter=" + filter.name();
+        return CustomResult.any(service.getObject(url));
+    }
+
+    @GetMapping("/kenaikan_berkala/count")
+    public ResponseEntity<?> lapKenaikanBerkalaCount(@RequestParam(required = false, defaultValue = "BULAN_INI") EFilterKenaikanBerkala filter) {
+        String url = "/kenaikan_berkala/count";
         if (Objects.nonNull(filter)) url += "?filter=" + filter.name();
         return CustomResult.any(service.getObject(url));
     }

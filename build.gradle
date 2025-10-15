@@ -13,6 +13,7 @@ description = 'kepegawaian_new_gradle'
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
+        nativeImageCapable = true
     }
 }
 
