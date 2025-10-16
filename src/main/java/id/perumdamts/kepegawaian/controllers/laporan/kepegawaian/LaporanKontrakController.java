@@ -19,15 +19,13 @@ public class LaporanKontrakController {
     private final LaporanKepegawaianService service;
 
     @GetMapping
-    public ResponseEntity<?> lapKontrak(
-            @RequestParam(required = false, defaultValue = "AKTIF") EFilterKontrak filter) {
-        System.out.println(UrlBuilder.buildFilter(BASE_PATH, "/", filter));
-        return CustomResult.any(service.getObject(UrlBuilder.buildFilter(BASE_PATH, "/", filter)));
+    public ResponseEntity<?> lapKontrak(@RequestParam(required = false, defaultValue = "AKTIF") EFilterKontrak filter) {
+        return CustomResult.any(
+                service.getObject(UrlBuilder.buildFilter(BASE_PATH, "/", filter)));
     }
 
     @GetMapping("/excel")
-    public ResponseEntity<?> lapKontrakExcel(
-            @RequestParam(required = false, defaultValue = "AKTIF") EFilterKontrak filter) {
+    public ResponseEntity<?> lapKontrakExcel(@RequestParam(required = false, defaultValue = "AKTIF") EFilterKontrak filter) {
         return service.getExport(UrlBuilder.buildFilter(BASE_PATH, "/excel", filter));
     }
 }

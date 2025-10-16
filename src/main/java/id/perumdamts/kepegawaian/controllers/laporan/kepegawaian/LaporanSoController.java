@@ -16,6 +16,7 @@ public class LaporanSoController {
 
     @GetMapping()
     public ResponseEntity<?> lapSo() {
-        return CustomResult.any(service.getObject("/dnp/"));
+        return CustomResult.any(
+                service.getObject("/so/"));
     }
 }
