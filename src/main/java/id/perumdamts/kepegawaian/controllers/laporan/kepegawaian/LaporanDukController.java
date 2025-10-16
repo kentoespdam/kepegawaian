@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/laporan/kepegawaian/dnp")
+@RequestMapping("/laporan/kepegawaian/duk")
 @RequiredArgsConstructor
 public class LaporanDukController {
     private static final String BASE_PATH = "/duk";
