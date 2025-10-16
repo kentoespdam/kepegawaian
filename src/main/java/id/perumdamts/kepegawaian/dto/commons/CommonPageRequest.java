@@ -12,7 +12,7 @@ import java.util.Objects;
 
 /**
  * A base class for pagination requests with sorting support.
- * Provides common pagination parameters and conversion to Spring's Pageable.
+ * Provides build pagination parameters and conversion to Spring's Pageable.
  */
 @Data
 public class CommonPageRequest implements Serializable {
