@@ -1,0 +1,17 @@
+services:
+  kepegawaian-be:
+    container_name: kepegawaian_be_builder
+    image: amazoncorretto:21.0.2
+    build:
+      context: .
+      dockerfile: Dockerfile
+#    privileged: true
+#    user: 1000:1000
+    volumes:
+      - .:/app:rw
+    command:
+      - ./gradlew
+      - clean
+      - build
+      - -x
+      - test

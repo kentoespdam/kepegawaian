@@ -2,7 +2,7 @@ volumes:
   attachments:
 
 services:
-  kpi-api:
+  kepegawaian-be:
     container_name: kepegawaian-be-dev
     build:
       context: .

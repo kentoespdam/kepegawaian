@@ -37,7 +37,7 @@ public class CutiApprovalChainRequest extends CommonPageRequest {
         return SpecificationBuilder.<CutiApprovalChain>of()
                 .addEqual(jabatanId, "jabatanId")
                 .addEqual(picSaatIniId, "jabatanId")
-                .addEqual(approvalCutiStatus, "approvalStatus")
+                .addEqual(approvalCutiStatus, "refCuti", "approvalCutiStatus")
                 .addEqual(readWriteStatus, "readWriteStatus")
                 .addCustom((root, cb) -> createYearPredicate(root, cb, tahun))
                 .build();

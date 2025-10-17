@@ -12,7 +12,7 @@ stop-dev:
 
 .PHONY: rebuild-dev
 rebuild-dev:
-	git pull && make stop-dev && make build-dev && make start-dev
+	git pull && docker compose up && make build-dev && make start-dev
 
 .PHONY: build-prod
 build-prod:
@@ -25,3 +25,6 @@ start-prod:
 .PHONY: stop-prod
 stop-prod:
 	docker compose -f ./docker/production/docker-compose.yml down
+
+.PHONY: builder-create
+	docker compose -f ./docker/builder/docker-compose.yml up -d

@@ -20,9 +20,9 @@ public class CutiApprovalRequest extends CommonPageRequest {
     public Specification<CutiApproval> getSpecification() {
         return SpecificationBuilder.<CutiApproval>of()
                 .addEqual(id, "id")
-                .addEqual(cutiId, "cutiPegawai.id")
-                .addEqual(approverId, "approver.id")
-                .addEqual(jabatanId, "jabatan.id")
+                .addEqual(cutiId, "cutiPegawai", "id")
+                .addEqual(approverId, "approver", "id")
+                .addEqual(jabatanId, "jabatan", "id")
                 .build();
     }
 }
