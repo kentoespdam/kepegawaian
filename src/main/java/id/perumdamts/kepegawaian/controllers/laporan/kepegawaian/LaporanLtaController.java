@@ -5,6 +5,7 @@ import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.EFilterLta;
 import id.perumdamts.kepegawaian.helpers.UrlBuilder;
 import id.perumdamts.kepegawaian.services.laporan.kepegawaian.LaporanKepegawaianService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/laporan/kepegawaian/lepas_tanggungan_anak")
 @RequiredArgsConstructor
+@Slf4j
 public class LaporanLtaController {
     private static final String BASE_PATH = "/lepas_tanggungan_anak";
     private final LaporanKepegawaianService service;

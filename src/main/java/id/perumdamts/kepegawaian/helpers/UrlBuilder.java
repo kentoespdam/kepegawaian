@@ -19,7 +19,7 @@ public class UrlBuilder {
         StringBuilder filterBuilder = new StringBuilder();
 
         if (request != null)
-            filterBuilder.append("?filter").append(request);
+            filterBuilder.append("?filter=").append(request);
 
         if (endpoint.isEmpty())
             return urlBuilder.append(filterBuilder).toString();
