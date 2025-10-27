@@ -12,7 +12,7 @@ stop-dev:
 
 .PHONY: rebuild-dev
 rebuild-dev:
-	git pull && docker compose up && make build-dev && make start-dev
+	make stop-dev && make build-dev && make start-dev
 
 .PHONY: build-prod
 build-prod:
@@ -26,5 +26,6 @@ start-prod:
 stop-prod:
 	docker compose -f ./docker/production/docker-compose.yml down
 
-.PHONY: builder-create
-	docker compose -f ./docker/builder/docker-compose.yml up -d
+.PHONY: rebuild-jar
+rebuild-jar:
+	git pull && ./gradlew clean && ./gradlew bootJar

@@ -21,12 +21,12 @@ public class GajiBatchRootRequest extends CommonPageRequest {
     public Specification<GajiBatchRoot> getSpecification() {
         SpecificationBuilder<GajiBatchRoot> builder = SpecificationBuilder.<GajiBatchRoot>of()
                 .addLike(periode, "periode")
-                .addEqual(status, "status");
+                .addEqual(status.ordinal(), "status");
 
         if (Objects.nonNull(ltStatus))
-            builder.addLessThanOrEqual(ltStatus, "ltStatus");
+            builder.addLessThanOrEqual(ltStatus.ordinal(), "ltStatus");
         if (Objects.nonNull(gtStatus))
-            builder.addGreaterThanOrEqual(gtStatus, "gtStatus");
+            builder.addGreaterThanOrEqual(gtStatus.ordinal(), "gtStatus");
         return builder.build();
     }
 }
