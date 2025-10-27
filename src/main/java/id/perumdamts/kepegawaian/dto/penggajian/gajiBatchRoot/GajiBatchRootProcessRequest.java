@@ -11,13 +11,8 @@ public class GajiBatchRootProcessRequest {
     private String id;
     private String nama;
     private String jabatan;
+    private EProsesGaji phase;
 
-    public static GajiBatchRoot reProcess(GajiBatchRoot entity, GajiBatchRootProcessRequest request) {
-        entity.setStatus(EProsesGaji.PENDING.value());
-        entity.setDiProsesOleh(request.getNama());
-        entity.setJabatanPemroses(request.getJabatan());
-        return entity;
-    }
 
     public static GajiBatchRoot verifyPhase1(GajiBatchRoot entity, GajiBatchRootProcessRequest request) {
         entity.setStatus(EProsesGaji.WAIT_VERIFICATION_PHASE_2.value());

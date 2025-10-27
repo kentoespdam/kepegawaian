@@ -22,6 +22,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -87,15 +88,10 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
     @Override
     public SavedStatus<?> reprocess(String id, GajiBatchRootProcessRequest request) {
         try {
-            Optional<GajiBatchRoot> optionalBatchRoot = repository.findById(request.getId());
-            if (optionalBatchRoot.isEmpty())
-                return SavedStatus.build(ESaveStatus.FAILED, "Unknown Batch Process");
+            GajiBatchRoot entity = repository.findById(request.getId())
+                    .orElseThrow(() -> new RuntimeException("Unknown Batch Process"));
 
-            GajiBatchRoot batchRoot = GajiBatchRootProcessRequest.reProcess(optionalBatchRoot.get(), request);
-            repository.save(batchRoot);
-
-            GajiBatchRoot savedBatchRoot = repository.save(batchRoot);
-            kafkaTemplate.send(PENGGAJIAN_TOPIC, savedBatchRoot.getId());
+            reprocessHandler(entity, request);
             return SavedStatus.build(ESaveStatus.SUCCESS, "Reprocess Penggajian Executed");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
@@ -154,5 +150,20 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
         byId.get().setIsDeleted(true);
         repository.save(byId.get());
         return true;
+    }
+
+    private void reprocessHandler(GajiBatchRoot entity, GajiBatchRootProcessRequest request) {
+        switch (request.getPhase()) {
+            case WAIT_APPROVAL -> entity.setStatus(EProsesGaji.WAIT_VERIFICATION_PHASE_2.ordinal());
+            case WAIT_VERIFICATION_PHASE_2 -> entity.setStatus(EProsesGaji.WAIT_VERIFICATION_PHASE_1.ordinal());
+            case WAIT_VERIFICATION_PHASE_1 -> entity.setStatus(EProsesGaji.PENDING.ordinal());
+        }
+        entity.setTanggalVerifikasiTahap1(LocalDateTime.now());
+        entity.setDiVerifikasiOlehTahap1(request.getNama());
+        entity.setJabatanVerifikasiTahap1(request.getJabatan());
+        repository.save(entity);
+        if (request.getPhase().equals(EProsesGaji.PROSES)) {
+            kafkaTemplate.send(PENGGAJIAN_TOPIC, entity.getId());
+        }
     }
 }
