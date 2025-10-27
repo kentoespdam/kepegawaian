@@ -161,8 +161,8 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
         entity.setTanggalVerifikasiTahap1(LocalDateTime.now());
         entity.setDiVerifikasiOlehTahap1(request.getNama());
         entity.setJabatanVerifikasiTahap1(request.getJabatan());
-        repository.save(entity);
-        if (request.getPhase().equals(EProsesGaji.PROSES)) {
+        GajiBatchRoot save = repository.save(entity);
+        if (save.getStatus().equals(EProsesGaji.PENDING.ordinal())) {
             kafkaTemplate.send(PENGGAJIAN_TOPIC, entity.getId());
         }
     }
