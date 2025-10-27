@@ -34,6 +34,7 @@ public class GajiBatchRootController {
         GajiBatchRootRequest request = new GajiBatchRootRequest();
         request.setPeriode(periode);
         request.setGtStatus(status);
+
         return CustomResult.any(service.findAll(request));
     }
 

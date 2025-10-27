@@ -20,13 +20,14 @@ public class GajiBatchRootRequest extends CommonPageRequest {
 
     public Specification<GajiBatchRoot> getSpecification() {
         SpecificationBuilder<GajiBatchRoot> builder = SpecificationBuilder.<GajiBatchRoot>of()
-                .addLike(periode, "periode")
-                .addEqual(status.ordinal(), "status");
+                .addLike(periode, "periode");
 
+        if (Objects.nonNull(status))
+            builder.addEqual(status.ordinal(), "status");
         if (Objects.nonNull(ltStatus))
-            builder.addLessThanOrEqual(ltStatus.ordinal(), "ltStatus");
+            builder.addLessThanOrEqual(ltStatus.ordinal(), "status");
         if (Objects.nonNull(gtStatus))
-            builder.addGreaterThanOrEqual(gtStatus.ordinal(), "gtStatus");
+            builder.addGreaterThanOrEqual(gtStatus.ordinal(), "status");
         return builder.build();
     }
 }
