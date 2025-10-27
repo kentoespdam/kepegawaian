@@ -35,7 +35,7 @@ public class GajiBatchMasterRequest extends CommonPageRequest {
                 .addLike(nama, "nama")
                 .addEqual(pegawaiId, "pegawai", "id");
         if (Objects.nonNull(status))
-            builder.addGreaterThanOrEqual(status, "gajiBatchRoot", "status");
+            builder.addGreaterThanOrEqual(status.ordinal(), "gajiBatchRoot", "status");
         return builder.build();
     }
 }
