@@ -16,7 +16,7 @@ public class JenisKeahlianPostRequest {
     @JsonIgnore
     public Specification<JenisKeahlian> getSpecification() {
         return (root, query, criteriaBuilder) ->
-                criteriaBuilder.and(criteriaBuilder.equal(root.get("jenisKeahlian"), nama));
+                criteriaBuilder.and(criteriaBuilder.equal(root.get("nama"), nama));
     }
 
     public static JenisKeahlian toEntity(JenisKeahlianPostRequest request) {

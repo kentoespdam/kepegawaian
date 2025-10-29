@@ -40,12 +40,15 @@ public class JenisKeahlianServiceImpl implements JenisKeahlianService {
     @Transactional
     @Override
     public SavedStatus<?> save(JenisKeahlianPostRequest request) {
-        Optional<JenisKeahlian> one = repository.findOne(request.getSpecification());
-        if (one.isPresent())
-            return SavedStatus.build(ESaveStatus.DUPLICATE, "Jenis Keahlian sudah ada");
-        JenisKeahlian entity = JenisKeahlianPostRequest.toEntity(request);
-        repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, "Jenis Keahlian Saved");
+        try {
+            if (repository.exists(request.getSpecification()))
+                return SavedStatus.build(ESaveStatus.DUPLICATE, "Jenis Keahlian sudah ada");
+            JenisKeahlian entity = JenisKeahlianPostRequest.toEntity(request);
+            repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Jenis Keahlian Saved");
+        } catch (Exception e) {
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+        }
     }
 
     @Transactional
@@ -58,12 +61,15 @@ public class JenisKeahlianServiceImpl implements JenisKeahlianService {
 
     @Override
     public SavedStatus<?> update(Long id, JenisKeahlianPutRequest request) {
-        Optional<JenisKeahlian> one = repository.findById(id);
-        if (one.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Jenis Keahlian");
-        JenisKeahlian entity = JenisKeahlianPutRequest.toEntity(request, one.get());
-        repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, "Jenis Keahlian Updated");
+        try {
+            JenisKeahlian jenisKeahlian = repository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Unknown Jenis Keahlian"));
+            JenisKeahlian entity = JenisKeahlianPutRequest.toEntity(request, jenisKeahlian);
+            repository.save(entity);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Jenis Keahlian Updated");
+        } catch (Exception e) {
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+        }
     }
 
     @Override
