@@ -15,7 +15,6 @@ import id.perumdamts.kepegawaian.entities.profil.ProfileUpdate;
 import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.profil.ProfileUpdateRepository;
 import id.perumdamts.kepegawaian.services.revInfo.RevInfoService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -33,7 +32,8 @@ public class ProfileUpdateServiceImpl implements ProfileUpdateService {
     private final ProfileUpdateRepository repository;
     private final RevInfoService revInfoService;
     private final PegawaiRepository pegawaiRepository;
-    private final ProfileUpdateApprovalService profileUpdateApprovalService;
+    private final ProfileUpdateKeluargaApprovalService approvalKeluargaService;
+    private final ProfileUpdatePendidikanApprovalService approvalPendidikanService;
 
     @Override
     public Page<ProfileUpdate> findPage(ProfileUpdateRequest request) {
@@ -43,7 +43,7 @@ public class ProfileUpdateServiceImpl implements ProfileUpdateService {
     @Override
     public ProfilUpdateDetail<?> findById(Long id) {
         Optional<ProfileUpdate> byId = repository.findById(id);
-        if (byId.isEmpty()) return null;
+        if (byId.isEmpty() || !byId.get().getApprovalStatus().equals(EProfileUpdateApproval.PENDING)) return null;
         if (byId.get().getTableName().equals(EProfileUpdateTable.KELUARGA))
             return byId.map(revInfoService::findKeluargaRevision).orElse(null);
         return byId.map(revInfoService::findPendidikan).orElse(null);
@@ -81,16 +81,23 @@ public class ProfileUpdateServiceImpl implements ProfileUpdateService {
         repository.save(entity);
     }
 
-    @Transactional
     @Override
     public SavedStatus<?> approval(Long id, ProfilUpdateAcceptRequest request) {
         try {
             ProfileUpdate profileUpdate = repository.findByIdAndApprovalStatus(id, EProfileUpdateApproval.PENDING)
                     .orElseThrow(() -> new RuntimeException("Unknown Profile Update"));
             EProfileUpdateTable tableName = profileUpdate.getTableName();
-            if (tableName.equals(EProfileUpdateTable.KELUARGA)) {
-                profileUpdateApprovalService.changeKeluargaHandler(profileUpdate, request.getApproval());
+            switch (tableName) {
+                case KELUARGA:
+                    approvalKeluargaService.changeHandler(profileUpdate, request.getApproval());
+                    break;
+                case PENDIDIKAN:
+                    approvalPendidikanService.changeHandler(profileUpdate, request.getApproval());
+                    break;
             }
+//            if (tableName.equals(EProfileUpdateTable.KELUARGA)) {
+//                approvalKeluargaService.changeHandler(profileUpdate, request.getApproval());
+//            }
             handleApproval(profileUpdate, request);
             return SavedStatus.build(ESaveStatus.SUCCESS, "Success saving approval profil update");
         } catch (Exception e) {

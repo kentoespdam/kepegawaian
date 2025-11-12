@@ -21,7 +21,6 @@ public class PendidikanRequest extends CommonPageRequest {
     private Integer tahunLulus;
     private Double gpa;
     private Boolean isLatest;
-    private Boolean disetujui;
 
     public Specification<Pendidikan> getSpecification() {
         return SpecificationBuilder.<Pendidikan>of()
@@ -36,7 +35,6 @@ public class PendidikanRequest extends CommonPageRequest {
                 .addEqual(tahunLulus, "tahunLulus")
                 .addEqual(gpa, "gpa")
                 .addEqual(isLatest, "isLatest")
-                .addEqual(disetujui, "disetujui")
                 .build();
 
     }

@@ -37,7 +37,7 @@ public class RevInfoServiceImpl implements RevInfoService {
         return ProfilUpdateDetail.build(profileUpdate, result);
     }
 
-    private <T> List<T> findLatestRevision(Class<T> entityClass, Long entityId) {
+    public <T> List<T> findLatestRevision(Class<T> entityClass, Long entityId) {
         AuditReader auditReader = AuditReaderFactory.get(entityManager);
 
         @SuppressWarnings("unchecked")

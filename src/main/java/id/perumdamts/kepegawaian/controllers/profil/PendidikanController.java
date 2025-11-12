@@ -1,16 +1,16 @@
 package id.perumdamts.kepegawaian.controllers.profil;
 
-import id.perumdamts.kepegawaian.dto.appwrite.AppwriteUser;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
-import id.perumdamts.kepegawaian.dto.profil.pendidikan.*;
+import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanLampiranPostRequest;
+import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanPostRequest;
+import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanPutRequest;
+import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanRequest;
 import id.perumdamts.kepegawaian.services.profil.pendidikan.PendidikanService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,15 +50,6 @@ public class PendidikanController {
     public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody PendidikanPutRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         return CustomResult.save(service.update(id, request));
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/{id}/accept")
-    public ResponseEntity<?> acceptPendidikan(@PathVariable Long id, @Valid @RequestBody PendidikanAcceptRequest request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
-        AppwriteUser appwriteUser = (AppwriteUser) SecurityContextHolder.getContext()
-                .getAuthentication().getPrincipal();
-        return CustomResult.save(service.acceptPendidikan(id, request, appwriteUser.get$id()));
     }
 
     @DeleteMapping("/{id}")

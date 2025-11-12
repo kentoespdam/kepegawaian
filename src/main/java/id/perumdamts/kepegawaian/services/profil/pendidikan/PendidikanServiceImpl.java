@@ -21,9 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -101,23 +99,6 @@ public class PendidikanServiceImpl implements PendidikanService {
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
-    }
-
-
-    @Transactional
-    @Override
-    public SavedStatus<?> acceptPendidikan(Long id, PendidikanAcceptRequest request, String username) {
-        Optional<Pendidikan> pendidikan = repository.findById(id);
-        if (pendidikan.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Pendidikan");
-        Pendidikan entity = pendidikan.get();
-        entity.setDisetujui(true);
-        entity.setDisetujuiOleh(username);
-        entity.setTanggalDisetujui(LocalDateTime.now());
-        if (request.getIsLatest())
-            repository.updateByBiodata_Nik(request.getBiodataId());
-        repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, "Pendidikan accepted");
     }
 
     @Transactional

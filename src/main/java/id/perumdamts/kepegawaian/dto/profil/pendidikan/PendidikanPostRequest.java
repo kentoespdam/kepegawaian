@@ -10,8 +10,6 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.time.LocalDateTime;
-
 @Data
 public class PendidikanPostRequest {
     @NotEmpty(message = "Biodata ID is required")
@@ -54,8 +52,6 @@ public class PendidikanPostRequest {
         entity.setTahunLulus(request.getTahunLulus());
         entity.setGpa(request.getGpa());
         entity.setIsLatest(request.getIsLatest());
-        entity.setDisetujui(true);
-        entity.setTanggalPengajuan(LocalDateTime.now());
         entity.setChangedStatus(request.getChanged_status());
         return entity;
     }

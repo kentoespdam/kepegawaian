@@ -1,8 +1,6 @@
 package id.perumdamts.kepegawaian.entities.profil;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
 import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
 import jakarta.persistence.*;
@@ -12,8 +10,6 @@ import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
 
-import java.time.LocalDateTime;
-
 
 @Entity
 @Table(indexes = {
@@ -21,8 +17,8 @@ import java.time.LocalDateTime;
         @Index(columnList = "is_deleted"),
         @Index(columnList = "is_latest"),
         @Index(columnList = "disetujuiOleh")
-},uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"biodata_id", "jenjang_id","tahun_masuk"})
+}, uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"biodata_id", "jenjang_id", "tahun_masuk"})
 })
 @Getter
 @Setter
@@ -35,6 +31,7 @@ import java.time.LocalDateTime;
 public class Pendidikan extends IdsAbstract {
     @ManyToOne
     @JoinColumn(name = "biodata_id", referencedColumnName = "nik")
+    @JsonIgnore
     private Biodata biodata;
     @ManyToOne
     @JoinColumn(name = "jenjang_id", referencedColumnName = "id")
@@ -50,13 +47,5 @@ public class Pendidikan extends IdsAbstract {
     private Double gpa;
     @Column(columnDefinition = "boolean default false")
     private Boolean isLatest;
-    @Column(columnDefinition = "boolean default false")
-    private Boolean disetujui;
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime tanggalPengajuan;
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime tanggalDisetujui;
-    private String disetujuiOleh;
+    private Boolean changedStatus;
 }

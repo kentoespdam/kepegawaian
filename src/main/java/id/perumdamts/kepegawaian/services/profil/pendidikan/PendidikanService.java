@@ -23,8 +23,6 @@ public interface PendidikanService {
 
     SavedStatus<?> update(Long id, PendidikanPutRequest request);
 
-    SavedStatus<?> acceptPendidikan(Long id, PendidikanAcceptRequest request, String username);
-
     Boolean delete(Long id);
 
     // Lampiran

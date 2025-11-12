@@ -34,4 +34,7 @@ public interface ProfilKeluargaService {
     SavedStatus<?> addLampiran(ProfilKeluargaLampiranPostRequest request);
 
     Boolean deleteLampiran(Long id);
+
+    Object getRevisionPage(Long id);
+
 }

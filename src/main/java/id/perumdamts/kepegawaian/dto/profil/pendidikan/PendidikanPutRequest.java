@@ -4,8 +4,6 @@ import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.Pendidikan;
 
-import java.time.LocalDateTime;
-
 public class PendidikanPutRequest extends PendidikanPostRequest {
     public static Pendidikan from(
             PendidikanPutRequest request,
@@ -25,8 +23,6 @@ public class PendidikanPutRequest extends PendidikanPostRequest {
         entity.setTahunLulus(request.getTahunLulus());
         entity.setGpa(request.getGpa());
         entity.setIsLatest(request.getIsLatest());
-        entity.setDisetujui(false);
-        entity.setTanggalPengajuan(LocalDateTime.now());
         entity.setChangedStatus(request.getChanged_status());
         return entity;
     }

@@ -19,6 +19,9 @@ import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateServi
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.history.Revision;
 import org.springframework.data.history.RevisionMetadata;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
@@ -168,6 +171,13 @@ public class ProfilKeluargaServiceImpl implements ProfilKeluargaService {
     @Override
     public Boolean deleteLampiran(Long id) {
         return lampiranProfilService.deleteById(id);
+    }
+
+    @Override
+    public Object getRevisionPage(Long id) {
+        Pageable pageable = PageRequest.of(0, 1);
+        Page<Revision<Integer, ProfilKeluarga>> revisions = repository.findRevisions(id, pageable);
+        return revisions.getContent().getLast().getEntity();
     }
 
     // Private helper methods

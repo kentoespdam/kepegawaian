@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.entities.profil;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.entities.commons.*;
@@ -55,5 +56,8 @@ public class ProfilKeluarga extends IdsAbstract {
     private String notes;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "biodata_id", referencedColumnName = "nik")
+    @JsonIgnore
     private Biodata biodata;
+    @Column(columnDefinition = "boolean default false")
+    private Boolean changedStatus;
 }

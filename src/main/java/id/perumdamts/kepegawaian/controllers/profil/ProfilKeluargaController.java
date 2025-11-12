@@ -83,4 +83,9 @@ public class ProfilKeluargaController {
     public ResponseEntity<?> deleteLampiran(@PathVariable Long id) {
         return CustomResult.delete(service.deleteLampiran(id));
     }
+
+    @GetMapping("/revision/{id}")
+    public ResponseEntity<?> getRevision(@PathVariable Long id) {
+        return CustomResult.any(service.getRevisionPage(id));
+    }
 }
