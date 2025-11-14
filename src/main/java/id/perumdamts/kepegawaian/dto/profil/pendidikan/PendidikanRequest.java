@@ -5,6 +5,7 @@ import id.perumdamts.kepegawaian.entities.profil.Pendidikan;
 import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
 @EqualsAndHashCode(callSuper = true)
@@ -37,5 +38,12 @@ public class PendidikanRequest extends CommonPageRequest {
                 .addEqual(isLatest, "isLatest")
                 .build();
 
+    }
+
+    @Override
+    public Pageable getPageable() {
+        if(super.sortBy==null)
+            super.sortBy="JenjangPendidikan.Id";
+        return super.getPageable();
     }
 }
