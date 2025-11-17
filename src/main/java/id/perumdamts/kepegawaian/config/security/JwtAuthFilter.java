@@ -22,7 +22,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Slf4j
 public class JwtAuthFilter extends OncePerRequestFilter {
-//    private final RedisHelper redisHelper;
+    //    private final RedisHelper redisHelper;
     private final JwtTokenService service;
     private static final String BEARER = "Bearer ";
     private static final String AUTHORIZATION = "Authorization";
@@ -32,8 +32,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     /**
      * Main entry point for JWT authentication.
      *
-     * @param request  incoming HTTP request
-     * @param response outgoing HTTP response
+     * @param request     incoming HTTP request
+     * @param response    outgoing HTTP response
      * @param filterChain the filter chain to continue with
      * @throws ServletException if the filter operation fails
      * @throws IOException      if the filter operation fails
@@ -41,9 +41,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @SuppressWarnings("NullableProblems")
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        UsernamePasswordAuthenticationToken authentication = profile.equals("development") ?
-                getDevelopmentAuthentication() :
-                getAuthentication(request);
+        UsernamePasswordAuthenticationToken authentication = getAuthentication(request);
         if (Objects.isNull(authentication)) {
             // if authentication failed, just continue with the request
             filterChain.doFilter(request, response);
@@ -89,6 +87,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         // Check if the token is missing or does not start with "Bearer "
         if (Objects.isNull(tokenString) || !tokenString.startsWith(BEARER)) {
+            if (profile.equals("development"))
+                return getDevelopmentAuthentication();
             return null;
         }
 
