@@ -15,6 +15,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -65,7 +66,8 @@ public class PegawaiController {
     }
 
     @PostMapping("/batch-by-ids")
-    public ResponseEntity<?> batchByIds(@RequestBody List<Long> ids) {
+    public ResponseEntity<?> batchByIds(@RequestBody Map<String, List<Long>> body) {
+        List<Long> ids = body.getOrDefault("ids", List.of());
         return CustomResult.list(service.findByIds(ids));
     }
 
