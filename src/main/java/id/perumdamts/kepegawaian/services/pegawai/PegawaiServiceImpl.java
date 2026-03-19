@@ -216,6 +216,12 @@ public class PegawaiServiceImpl implements PegawaiService {
     }
 
     @Override
+    public List<PegawaiListResponse> findByIds(List<Long> ids) {
+        return repository.findAllById(ids).stream()
+                .map(PegawaiListResponse::from).toList();
+    }
+
+    @Override
     public boolean deleteById(Long id) {
         boolean exists = repository.existsById(id);
         if (!exists) return false;

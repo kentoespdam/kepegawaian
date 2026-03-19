@@ -64,6 +64,11 @@ public class PegawaiController {
         return CustomResult.save(service.save(request));
     }
 
+    @PostMapping("/batch-by-ids")
+    public ResponseEntity<?> batchByIds(@RequestBody List<Long> ids) {
+        return CustomResult.list(service.findByIds(ids));
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/batch")
     public ResponseEntity<?> saveBatch(@Valid @RequestBody List<PegawaiPostRequest> requests, Errors errors) {

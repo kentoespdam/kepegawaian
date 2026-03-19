@@ -27,6 +27,8 @@ public interface PegawaiService {
 
     SavedStatus<?> patchProfil(Long id, PegawaiPatchProfil request);
 
+    List<PegawaiListResponse> findByIds(List<Long> ids);
+
     boolean deleteById(Long id);
 
 }
