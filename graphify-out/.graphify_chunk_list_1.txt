@@ -1,0 +1,17 @@
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/master/OrganisasiRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/master/JenisPelatihanRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/master/JenisKeahlianRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/master/HariLiburRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/master/ApdRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/master/AlatKerjaRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/master/RumahDinasRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/master/JenisKitasRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/master/GradeRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/master/ProfesiRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/master/JenjangPendidikanRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/master/LevelRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/master/JabatanRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/master/JenisSpRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/master/AlasanBerhentiRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/master/GolonganRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/master/SanksiRepository.java

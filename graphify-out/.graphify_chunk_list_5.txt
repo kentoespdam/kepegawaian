@@ -1,0 +1,11 @@
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/commons/SavedResult.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/commons/CommonPageRequest.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/commons/SingleResult.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/commons/SavedStatus.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/commons/PageResult.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/commons/ErrorResult.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/commons/ListResult.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/commons/ResultAbstract.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/commons/CustomResult.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/commons/DeletedResult.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/commons/ESaveStatus.java

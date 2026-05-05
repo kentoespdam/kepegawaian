@@ -1,0 +1,4 @@
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/master/rumahDinas/RumahDinasRequest.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/master/rumahDinas/RumahDinasPostRequest.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/master/rumahDinas/RumahDinasResponse.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/master/rumahDinas/RumahDinasPutRequest.java

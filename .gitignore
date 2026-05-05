@@ -38,3 +38,7 @@ out/
 /docker/development/.env
 /.env.dev
 /.env
+
+graphify-out/manifest.json
+graphify-out/cost.json
+graphify-out/cache/

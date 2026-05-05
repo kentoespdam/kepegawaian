@@ -1,0 +1,14 @@
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/penggajian/GajiKomponenRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/penggajian/GajiBatchMasterProsesRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/penggajian/GajiTunjanganRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/penggajian/GajiBatchRootLampiranRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/penggajian/GajiParameterSettingRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/penggajian/GajiBatchPotonganTkkRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/penggajian/GajiBatchRootRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/penggajian/GajiPhdpRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/penggajian/GajiBatchMasterRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/penggajian/DetailDasarGajiRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/penggajian/GajiProfilRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/penggajian/GajiPendapatanNonPajakRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/penggajian/GajiPotonganTkkRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/penggajian/DasarGajiRepository.java

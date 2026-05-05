@@ -1,0 +1,9 @@
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/entities/profil/Pelatihan.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/entities/profil/ProfileUpdate.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/entities/profil/ProfilKeluarga.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/entities/profil/Keahlian.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/entities/profil/Pendidikan.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/entities/profil/Biodata.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/entities/profil/PengalamanKerja.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/entities/profil/LampiranProfil.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/entities/profil/KartuIdentitas.java

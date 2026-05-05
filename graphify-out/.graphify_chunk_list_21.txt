@@ -1,0 +1,4 @@
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/penggajian/gajiBatchRoot/GajiBatchRootResponse.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/penggajian/gajiBatchRoot/GajiBatchRootPostRequest.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/penggajian/gajiBatchRoot/GajiBatchRootRequest.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/penggajian/gajiBatchRoot/GajiBatchRootProcessRequest.java

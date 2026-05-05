@@ -1,0 +1,6 @@
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/master/sanksi/SanksiMiniResponse.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/master/sanksi/SanksiResponse.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/master/sanksi/SanksiRequest.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/master/sanksi/SanksiPostRequest.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/master/sanksi/SanksiPutRequest.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/master/sanksi/PatchSanksiJenisSpRequest.java

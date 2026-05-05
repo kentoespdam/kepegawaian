@@ -1,0 +1,12 @@
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/controllers/penggajian/GajiPendapatanNonPajakController.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/controllers/penggajian/GajiTunjanganController.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/controllers/penggajian/GajiParameterSettingController.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/controllers/penggajian/DetailDasarGajiController.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/controllers/penggajian/GajiKomponenController.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/controllers/penggajian/GajiBatchMasterProsesController.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/controllers/penggajian/GajiBatchMasterController.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/controllers/penggajian/DasarGajiController.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/controllers/penggajian/GajiBatchRootController.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/controllers/penggajian/GajiPotonganTkkController.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/controllers/penggajian/GajiProfilController.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/controllers/penggajian/GajiPhdpController.java

@@ -1,0 +1,6 @@
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/profil/pelatihan/PelatihanPostRequest.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/profil/pelatihan/PelatihanAcceptRequest.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/profil/pelatihan/PelatihanRequest.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/profil/pelatihan/PelatihanResponse.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/profil/pelatihan/PelatihanLampiranPostRequest.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/profil/pelatihan/PelatihanPutRequest.java

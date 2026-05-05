@@ -1,0 +1,3 @@
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/services/kepegawaian/riwayatKontrak/GenericKontrakService.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/services/kepegawaian/riwayatKontrak/RiwayatKontrakService.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/services/kepegawaian/riwayatKontrak/RiwayatKontrakServiceImpl.java

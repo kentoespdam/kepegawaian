@@ -1,0 +1,4 @@
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/penggajian/gajiPotonganTkk/GajiPotonganTkkRequest.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/penggajian/gajiPotonganTkk/GajiPotonganTkkPutRequest.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/penggajian/gajiPotonganTkk/GajiPotonganTkkPostRequest.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/penggajian/gajiPotonganTkk/GajiPotonganTkkResponse.java

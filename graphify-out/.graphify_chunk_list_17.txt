@@ -1,0 +1,6 @@
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/kepegawaian/mutasi/RiwayatMutasiRequest.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/kepegawaian/mutasi/MutasiJabatan.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/kepegawaian/mutasi/RiwayatMutasiPutRequest.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/kepegawaian/mutasi/RiwayatMutasiPostRequest.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/kepegawaian/mutasi/MutasiGolongan.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/dto/kepegawaian/mutasi/RiwayatMutasiResponse.java

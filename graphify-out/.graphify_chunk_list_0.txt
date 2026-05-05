@@ -1,0 +1,11 @@
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/KepegawaianApplication.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/PrefRoleRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/PegawaiRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/cuti/CutiApprovalChainCustomRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/cuti/CutiJenisRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/cuti/CutiApprovalChainRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/cuti/CutiPegawaiRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/cuti/CutiApprovalRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/cuti/CutiApprovalChainCustomRepositoryImpl.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/cuti/CutiKuotaRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/cuti/CutiKlaimDetailRepository.java

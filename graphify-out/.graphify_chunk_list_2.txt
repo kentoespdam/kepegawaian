@@ -1,0 +1,15 @@
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/profil/LampiranProfilRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/profil/KeahlianRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/profil/PengalamanKerjaRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/profil/KartuIdentitasRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/profil/BiodataRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/profil/ProfileUpdateRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/profil/ProfilKeluargaRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/profil/PelatihanRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/profil/PendidikanRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/kepegawaian/RiwayatTerminasiRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/kepegawaian/LampiranSkRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/kepegawaian/RiwayatKontrakRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/kepegawaian/RiwayatMutasiRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/kepegawaian/RiwayatSkRepository.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/repositories/kepegawaian/riwayatSp/RiwayatSpRepository.java

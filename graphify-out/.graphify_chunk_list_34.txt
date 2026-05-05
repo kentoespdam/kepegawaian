@@ -1,0 +1,4 @@
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/services/penggajian/gajiParameterSetting/GajiParameterSettingServiceImpl.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/services/penggajian/gajiParameterSetting/GajiParameterSettingService.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/services/auth/AuthService.java
+/mnt/DATA/idea/kepegawaian/src/main/java/id/perumdamts/kepegawaian/services/auth/AuthServiceImpl.java
