@@ -1,109 +1,73 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Canonical guidance for agents in this repo. **AGENTS.md and other agent configs defer here.**
 
-## Build & Run Commands
+## Build & Run
+
+Java 21, Spring Boot 3.5.6, Gradle.
 
 ```bash
-# Build
-./gradlew build
-
-# Run (development profile)
-./gradlew bootRun
-
-# Run tests
-./gradlew test
-
-# Run a single test class
-./gradlew test --tests "id.perumdamts.kepegawaian.SomeTest"
-
-# Clean build
-./gradlew clean build
+./gradlew build                                              # Build
+./gradlew bootRun                                            # Run (development profile)
+./gradlew test                                               # All tests
+./gradlew test --tests "id.perumdamts.kepegawaian.SomeTest"  # Single test class
+./gradlew clean build                                        # Clean build
 ```
-
-Requires Java 21. Uses Spring Boot 3.5.6 with Gradle.
 
 ## Architecture
 
-This is an employee management (kepegawaian) system for PERUMDAMTS, a Spring Boot REST API.
+Employee management (kepegawaian) system for PERUMDAMTS (water utility), a Spring Boot REST API.
 
-**Stack:** MariaDB (JPA/Hibernate), Redis (cache), Kafka (payroll events), Appwrite (JWT auth), Spring Data Envers (audit history).
+**Stack:** MariaDB (JPA/Hibernate + Spring Data Envers audit), Redis (cache), Kafka (payroll events), Appwrite (JWT auth).
 
 **Source root:** `src/main/java/id/perumdamts/kepegawaian/`
 
-### Layered Structure
-
-Controllers → Services → Repositories → Entities. All under the source root, organized by domain:
-- `profil/` - Employee personal data (biodata, education, skills, family, training)
-- `pegawai/` - Core employee records (keyed by NIPAM)
-- `master/` - Reference data (organisasi, jabatan, golongan, grade, level, profesi)
-- `cuti/` - Leave management with multi-level approval workflow
-- `kepegawaian/` - Employee affairs (SK, SP, mutasi, kontrak, terminasi)
-- `penggajian/` - Payroll with batch processing
+**Layers:** Controllers → Services → Repositories → Entities, organized by domain:
+- `profil/` — employee personal data (biodata, education, skills, family, training)
+- `pegawai/` — core employee records (keyed by NIPAM)
+- `master/` — reference data (organisasi, jabatan, golongan, grade, level, profesi)
+- `cuti/` — leave management, multi-level approval workflow
+- `kepegawaian/` — employee affairs (SK, SP, mutasi, kontrak, terminasi)
+- `penggajian/` — payroll with batch processing
 
 ### Key Patterns
 
-**Response wrappers:** All controllers return via `CustomResult.any/list/save/delete()` which wraps responses in `{status, statusText, data, timestamp}`. DTO types: `PageResult`, `ListResult`, `SingleResult`, `SavedResult`, `ErrorResult`.
-
-**Controller convention:** Standard CRUD endpoints with `@Valid` + `Errors` parameter for validation. Mutating endpoints use `@PreAuthorize("hasRole('ADMIN')")`. Paginated list via `@ParameterObject` request DTOs.
-
-**Soft delete:** Entities use `is_deleted` flag — never hard-delete records.
-
-**Audit:** All entities track `created_at/by`, `updated_at/by` via JPA `AuditAware`. Envers provides full revision history.
-
-**Approval workflows:** Used in cuti (leave) and profil updates — multi-level chain with PENDING/APPROVED/REJECTED status.
-
-**Entity ID pattern:** Most entities use `Long` auto-generated IDs. Exception: `Biodata` uses `NIK` (String) as primary key.
+- **Response wrappers:** controllers return `CustomResult.any/list/save/delete()` → `{status, statusText, data, timestamp}`. DTOs: `PageResult`, `ListResult`, `SingleResult`, `SavedResult`, `ErrorResult`.
+- **Controllers:** standard CRUD with `@Valid` + `Errors` validation; mutating endpoints use `@PreAuthorize("hasRole('ADMIN')")`; paginated lists via `@ParameterObject` request DTOs.
+- **Soft delete:** `is_deleted` flag — never hard-delete records.
+- **Audit:** `created_at/by`, `updated_at/by` via JPA `AuditAware`; Envers provides full revision history.
+- **Approval workflows:** cuti (leave) and profil updates — multi-level PENDING/APPROVED/REJECTED chain.
+- **Entity IDs:** mostly `Long` auto-generated; exception: `Biodata` keyed by `NIK` (String).
 
 ### Auth
 
-JWT tokens from Appwrite validated by `JwtAuthFilter`. In `development` profile with no token, a hardcoded admin user is injected — no Appwrite needed for local dev.
+Appwrite JWT validated by `JwtAuthFilter`. In `development` profile with no token, a hardcoded admin user is injected — no Appwrite needed locally.
 
 ### Configuration
 
-`application.yml` reads all settings from environment variables (DB_HOST, APPWRITE_*, REDIS_*, KAFKA_*, etc.). Docker configs in `docker/` directory with `development` and `production` profiles.
+`application.yml` reads all settings from env vars (DB_HOST, APPWRITE_*, REDIS_*, KAFKA_*, etc.). Docker configs in `docker/` with `development`/`production` profiles.
+
+## Agent Skills
+
+- **Issue tracker:** beads (`bd`, primary) + GitHub Issues on `kentoespdam/kepegawaian`. See `docs/agents/issue-tracker.md`.
+- **Triage labels:** needs-triage, needs-info, ready-for-agent, ready-for-human, wontfix. See `docs/agents/triage-labels.md`.
+- **Domain docs:** `CONTEXT.md` + `docs/adr/` at repo root. See `docs/agents/domain.md`.
 
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
 
-This project is indexed by GitNexus as **kepegawaian** (7554 symbols, 20893 relationships, 300 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
+Indexed as **kepegawaian** (7573 symbols, 20911 relationships, 300 flows). Use GitNexus MCP tools to understand code, assess impact, navigate. If a tool warns the index is stale, run `npx gitnexus analyze` first.
 
-> If any GitNexus tool warns the index is stale, run `npx gitnexus analyze` in terminal first.
+**Always:**
+- Run `gitnexus_impact({target, direction:"upstream"})` BEFORE editing any symbol; report blast radius (callers, affected processes, risk) and WARN on HIGH/CRITICAL before proceeding.
+- Run `gitnexus_detect_changes()` BEFORE committing to confirm only expected symbols/flows changed.
+- Explore via `gitnexus_query({query})` (process-grouped flows) instead of grep; use `gitnexus_context({name})` for a symbol's callers/callees/flows.
 
-## Always Do
+**Never:** edit a symbol without `gitnexus_impact`; ignore HIGH/CRITICAL risk; rename via find-and-replace (use `gitnexus_rename`); commit without `gitnexus_detect_changes()`.
 
-- **MUST run impact analysis before editing any symbol.** Before modifying a function, class, or method, run `gitnexus_impact({target: "symbolName", direction: "upstream"})` and report the blast radius (direct callers, affected processes, risk level) to the user.
-- **MUST run `gitnexus_detect_changes()` before committing** to verify your changes only affect expected symbols and execution flows.
-- **MUST warn the user** if impact analysis returns HIGH or CRITICAL risk before proceeding with edits.
-- When exploring unfamiliar code, use `gitnexus_query({query: "concept"})` to find execution flows instead of grepping. It returns process-grouped results ranked by relevance.
-- When you need full context on a specific symbol — callers, callees, which execution flows it participates in — use `gitnexus_context({name: "symbolName"})`.
+**Resources:** `gitnexus://repo/kepegawaian/{context|clusters|processes|process/{name}}` — overview/freshness, functional areas, all flows, single-flow trace.
 
-## Never Do
-
-- NEVER edit a function, class, or method without first running `gitnexus_impact` on it.
-- NEVER ignore HIGH or CRITICAL risk warnings from impact analysis.
-- NEVER rename symbols with find-and-replace — use `gitnexus_rename` which understands the call graph.
-- NEVER commit changes without running `gitnexus_detect_changes()` to check affected scope.
-
-## Resources
-
-| Resource | Use for |
-|----------|---------|
-| `gitnexus://repo/kepegawaian/context` | Codebase overview, check index freshness |
-| `gitnexus://repo/kepegawaian/clusters` | All functional areas |
-| `gitnexus://repo/kepegawaian/processes` | All execution flows |
-| `gitnexus://repo/kepegawaian/process/{name}` | Step-by-step execution trace |
-
-## CLI
-
-| Task | Read this skill file |
-|------|---------------------|
-| Understand architecture / "How does X work?" | `.claude/skills/gitnexus/gitnexus-exploring/SKILL.md` |
-| Blast radius / "What breaks if I change X?" | `.claude/skills/gitnexus/gitnexus-impact-analysis/SKILL.md` |
-| Trace bugs / "Why is X failing?" | `.claude/skills/gitnexus/gitnexus-debugging/SKILL.md` |
-| Rename / extract / split / refactor | `.claude/skills/gitnexus/gitnexus-refactoring/SKILL.md` |
-| Tools, resources, schema reference | `.claude/skills/gitnexus/gitnexus-guide/SKILL.md` |
-| Index, status, clean, wiki CLI commands | `.claude/skills/gitnexus/gitnexus-cli/SKILL.md` |
+**CLI skills** (`.claude/skills/gitnexus/`): exploring (architecture), impact-analysis (blast radius), debugging (trace bugs), refactoring (rename/extract/split), guide (tools/schema), cli (index/status/clean/wiki).
 
 <!-- gitnexus:end -->
 
