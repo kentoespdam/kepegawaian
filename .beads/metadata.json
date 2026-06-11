@@ -1,0 +1,7 @@
+{
+  "database": "dolt",
+  "backend": "dolt",
+  "dolt_mode": "embedded",
+  "dolt_database": "kepegawaian",
+  "project_id": "d63a52da-8d8b-4d76-a4dc-32d731687443"
+}
