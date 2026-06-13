@@ -2,6 +2,8 @@
 
 Domain bahasa untuk sistem manajemen kepegawaian PERUMDAMTS. File ini menampung istilah yang bermakna bagi ahli domain, bukan detail implementasi. Diisi bertahap saat rewrite menyentuh tiap modul.
 
+> **Rewrite in progress (worktree).** Folder utama (`rewrite/master-cqrs`) untuk kode baru; kode lama ada read-only di `../kepegawaian-legacy` (tag `legacy-snapshot`) sebagai referensi spec. Detail: [WORKTREE.md](WORKTREE.md).
+
 ## Language
 
 ### Master (data referensi)
@@ -30,9 +32,26 @@ Perlengkapan keselamatan yang melekat pada sebuah Profesi (mis. helm, sarung tan
 Peralatan kerja yang melekat pada sebuah Profesi. Daftar pendek per Profesi.
 _Catatan domain_: APD dan Alat Kerja untuk satu Profesi selalu sedikit (segelintir item) — bukan daftar besar.
 
+### Security (autentikasi & lingkungan)
+
+**Lingkungan** (environment):
+Mode jalan aplikasi yang menentukan apakah autentikasi diberlakukan. Dua nilai: **production** (perlu autentikasi) dan **development** (tanpa autentikasi). Dipilih lewat Spring profile, bukan flag runtime.
+
+**Dev User** (principal statis):
+Identitas tetap yang disuntikkan otomatis di **development** (`DEV`, role `ADMIN`+`SYSTEM`) supaya API bisa diuji tanpa token. Role-nya bisa ditimpa lewat `DEV_ROLES` untuk menguji jalur penolakan (403).
+_Avoid_: "user palsu", "mock user" (ini principal nyata, hanya tidak diautentikasi)
+
+**Appwrite JWT**:
+Token yang diterbitkan Appwrite, divalidasi di **production** dengan memanggil Appwrite (`/account/jwt`) untuk mendapatkan **Appwrite User** beserta role-nya.
+
+**Role**:
+Hak akses pada principal (mis. `ADMIN`, `SYSTEM`). Menentukan endpoint mana yang boleh diakses (`@PreAuthorize`). Di Spring di-prefix `ROLE_`.
+
 ## Relationships
 
 - Sebuah **Profesi** menunjuk tepat satu **Organisasi**, satu **Jabatan**, satu **Grade**.
+- **Lingkungan** menentukan rantai keamanan: **production** memvalidasi **Appwrite JWT**; **development** memakai **Dev User** tanpa validasi.
+- Sebuah **Appwrite User** / **Dev User** membawa satu atau lebih **Role**; **Role** menentukan akses endpoint.
 - **Level** sebuah **Profesi** **diturunkan dari Jabatan-nya** (`profesi.level = jabatan.level`) — tidak diinput terpisah. Itu sebabnya form pembuatan Profesi tidak meminta `levelId`.
 - Keunikan **Profesi** ditentukan oleh kombinasi `nama` + **Jabatan** + **Grade** (dasar cek duplikat).
 - Membuat **Profesi** dengan kombinasi yang dulu pernah dihapus akan **menghidupkan kembali** record lama itu (bukan membuat data baru) — record yang terhapus tidak menghalangi pembuatan ulang.

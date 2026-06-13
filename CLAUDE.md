@@ -2,6 +2,14 @@
 
 Canonical guidance for agents in this repo. **AGENTS.md and other agent configs defer here.**
 
+## Rewrite — Worktree Setup
+
+Proyek sedang **rewrite** (Spring Boot 4 + CQRS) memakai git worktree:
+- **Folder utama** (`rewrite/master-cqrs`) — kode baru, tempat kerja.
+- **`../kepegawaian-legacy`** (tag `legacy-snapshot`, read-only) — kode lama utuh, referensi spec saat grilling tiap modul.
+
+Kode lama **sengaja dipisah** agar tidak ikut compile (beda versi Spring Boot). Jangan commit di worktree legacy. Detail lengkap: **[WORKTREE.md](WORKTREE.md)**.
+
 ## Build & Run
 
 Java 21, Spring Boot 3.5.6, Gradle.
@@ -56,18 +64,44 @@ Appwrite JWT validated by `JwtAuthFilter`. In `development` profile with no toke
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
 
-Indexed as **kepegawaian** (7573 symbols, 20911 relationships, 300 flows). Use GitNexus MCP tools to understand code, assess impact, navigate. If a tool warns the index is stale, run `npx gitnexus analyze` first.
+This project is indexed by GitNexus as **kepegawaian** (7657 symbols, 20996 relationships, 300 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
 
-**Always:**
-- Run `gitnexus_impact({target, direction:"upstream"})` BEFORE editing any symbol; report blast radius (callers, affected processes, risk) and WARN on HIGH/CRITICAL before proceeding.
-- Run `gitnexus_detect_changes()` BEFORE committing to confirm only expected symbols/flows changed.
-- Explore via `gitnexus_query({query})` (process-grouped flows) instead of grep; use `gitnexus_context({name})` for a symbol's callers/callees/flows.
+> If any GitNexus tool warns the index is stale, run `npx gitnexus analyze` in terminal first.
 
-**Never:** edit a symbol without `gitnexus_impact`; ignore HIGH/CRITICAL risk; rename via find-and-replace (use `gitnexus_rename`); commit without `gitnexus_detect_changes()`.
+## Always Do
 
-**Resources:** `gitnexus://repo/kepegawaian/{context|clusters|processes|process/{name}}` — overview/freshness, functional areas, all flows, single-flow trace.
+- **MUST run impact analysis before editing any symbol.** Before modifying a function, class, or method, run `gitnexus_impact({target: "symbolName", direction: "upstream"})` and report the blast radius (direct callers, affected processes, risk level) to the user.
+- **MUST run `gitnexus_detect_changes()` before committing** to verify your changes only affect expected symbols and execution flows.
+- **MUST warn the user** if impact analysis returns HIGH or CRITICAL risk before proceeding with edits.
+- When exploring unfamiliar code, use `gitnexus_query({query: "concept"})` to find execution flows instead of grepping. It returns process-grouped results ranked by relevance.
+- When you need full context on a specific symbol — callers, callees, which execution flows it participates in — use `gitnexus_context({name: "symbolName"})`.
 
-**CLI skills** (`.claude/skills/gitnexus/`): exploring (architecture), impact-analysis (blast radius), debugging (trace bugs), refactoring (rename/extract/split), guide (tools/schema), cli (index/status/clean/wiki).
+## Never Do
+
+- NEVER edit a function, class, or method without first running `gitnexus_impact` on it.
+- NEVER ignore HIGH or CRITICAL risk warnings from impact analysis.
+- NEVER rename symbols with find-and-replace — use `gitnexus_rename` which understands the call graph.
+- NEVER commit changes without running `gitnexus_detect_changes()` to check affected scope.
+
+## Resources
+
+| Resource | Use for |
+|----------|---------|
+| `gitnexus://repo/kepegawaian/context` | Codebase overview, check index freshness |
+| `gitnexus://repo/kepegawaian/clusters` | All functional areas |
+| `gitnexus://repo/kepegawaian/processes` | All execution flows |
+| `gitnexus://repo/kepegawaian/process/{name}` | Step-by-step execution trace |
+
+## CLI
+
+| Task | Read this skill file |
+|------|---------------------|
+| Understand architecture / "How does X work?" | `.claude/skills/gitnexus/gitnexus-exploring/SKILL.md` |
+| Blast radius / "What breaks if I change X?" | `.claude/skills/gitnexus/gitnexus-impact-analysis/SKILL.md` |
+| Trace bugs / "Why is X failing?" | `.claude/skills/gitnexus/gitnexus-debugging/SKILL.md` |
+| Rename / extract / split / refactor | `.claude/skills/gitnexus/gitnexus-refactoring/SKILL.md` |
+| Tools, resources, schema reference | `.claude/skills/gitnexus/gitnexus-guide/SKILL.md` |
+| Index, status, clean, wiki CLI commands | `.claude/skills/gitnexus/gitnexus-cli/SKILL.md` |
 
 <!-- gitnexus:end -->
 
