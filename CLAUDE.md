@@ -27,14 +27,14 @@ Employee management (kepegawaian) for PERUMDAMTS — Spring Boot REST API.
 **Stack:** MariaDB (JPA/Hibernate + Envers), Redis, Kafka, Appwrite (JWT).
 **Source:** `src/main/java/id/perumdamts/kepegawaian/`
 
-| Domain | Purpose |
-|--------|---------|
-| `profil/` | biodata, pendidikan, keahlian, keluarga, pelatihan |
-| `pegawai/` | core employee records (NIPAM key) |
-| `master/` | referensi (organisasi, jabatan, golongan, grade, level, profesi) |
-| `cuti/` | leave, multi-level approval |
-| `kepegawaian/` | SK, SP, mutasi, kontrak, terminasi |
-| `penggajian/` | payroll, batch processing |
+| Domain         | Purpose                                                          |
+|----------------|------------------------------------------------------------------|
+| `profil/`      | biodata, pendidikan, keahlian, keluarga, pelatihan               |
+| `pegawai/`     | core employee records (NIPAM key)                                |
+| `master/`      | referensi (organisasi, jabatan, golongan, grade, level, profesi) |
+| `cuti/`        | leave, multi-level approval                                      |
+| `kepegawaian/` | SK, SP, mutasi, kontrak, terminasi                               |
+| `penggajian/`  | payroll, batch processing                                        |
 
 **Patterns:**
 - Controllers: `CustomResult.any/list/save/delete()` → `{status, statusText, data, timestamp}`.
@@ -51,7 +51,7 @@ Employee management (kepegawaian) for PERUMDAMTS — Spring Boot REST API.
 ## Agent Skills
 
 - **Issue tracker:** beads (`bd`, primary) + GitHub Issues (`kentoespdam/kepegawaian`). See `docs/agents/issue-tracker.md`.
-- **Triage labels:** needs-triage, needs-info, ready-for-agent, ready-for-human, wontfix. See `docs/agents/triage-labels.md`.
+- **Triage labels:** needs-triage, needs-info, ready-for-agent, ready-for-human, wont-fix. See `docs/agents/triage-labels.md`.
 - **Domain docs:** `CONTEXT.md` + `docs/adr/`. See `docs/agents/domain.md`.
 
 ## Issue Tracking (beads)
