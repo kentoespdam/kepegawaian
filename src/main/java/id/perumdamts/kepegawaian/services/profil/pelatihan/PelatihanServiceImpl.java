@@ -8,7 +8,7 @@ import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.entities.master.JenisPelatihan;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.Pelatihan;
-import id.perumdamts.kepegawaian.repositories.master.JenisPelatihanRepository;
+import id.perumdamts.kepegawaian.repositories.master.jpa.JenisPelatihanRepository;
 import id.perumdamts.kepegawaian.repositories.profil.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.PelatihanRepository;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilService;

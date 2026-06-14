@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.services.master.jenisPelatihan;
+package id.perumdamts.kepegawaian.mapper.master.jenisPelatihan;
 
 import id.perumdamts.kepegawaian.dto.master.jenisPelatihan.JenisPelatihanPostRequest;
 import id.perumdamts.kepegawaian.entities.master.JenisPelatihan;

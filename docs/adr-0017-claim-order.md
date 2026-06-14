@@ -26,7 +26,7 @@ Pola identik exemplar: `*Queries`→`jooq/*QueryRepository` (`@Repository`), `*R
 - [ ] **0fs** · jabatan · `P2` · deps: s55 · importers: 8
 - [x] **s0q** · jenisKeahlian · `P2` · deps: s55 · importers: 3
 - [x] **thh** · jenisKitas · `P2` · deps: s55 · importers: 3
-- [ ] **08u** · jenisPelatihan · `P2` · deps: s55 · importers: 3
+- [x] **08u** · jenisPelatihan · `P2` · deps: s55 · importers: 3
 - [ ] **550** · jenisSp · `P2` · deps: s55 · importers: 4
 - [ ] **9ma** · organisasi · `P2` · deps: s55 · importers: 7
 - [ ] **409** · rumahDinas · `P2` · deps: s55 · importers: 3

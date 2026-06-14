@@ -4,7 +4,8 @@ import id.perumdamts.kepegawaian.dto.master.jenisPelatihan.JenisPelatihanPostReq
 import id.perumdamts.kepegawaian.entities.master.JenisPelatihan;
 import id.perumdamts.kepegawaian.exceptions.ConflictException;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
-import id.perumdamts.kepegawaian.repositories.master.JenisPelatihanRepository;
+import id.perumdamts.kepegawaian.mapper.master.jenisPelatihan.JenisPelatihanMapper;
+import id.perumdamts.kepegawaian.repositories.master.jpa.JenisPelatihanRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
