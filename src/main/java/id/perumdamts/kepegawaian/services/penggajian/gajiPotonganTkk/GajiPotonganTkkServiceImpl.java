@@ -9,7 +9,7 @@ import id.perumdamts.kepegawaian.dto.penggajian.gajiPotonganTkk.GajiPotonganTkkR
 import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.master.Level;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiPotonganTkk;
-import id.perumdamts.kepegawaian.repositories.master.GolonganRepository;
+import id.perumdamts.kepegawaian.repositories.master.jpa.GolonganRepository;
 import id.perumdamts.kepegawaian.repositories.master.LevelRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiPotonganTkkRepository;
 import lombok.RequiredArgsConstructor;

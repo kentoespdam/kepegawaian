@@ -7,7 +7,7 @@ import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatKontrak;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.RiwayatKontrakRepository;
-import id.perumdamts.kepegawaian.repositories.master.GolonganRepository;
+import id.perumdamts.kepegawaian.repositories.master.jpa.GolonganRepository;
 import id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk.GenericSkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;

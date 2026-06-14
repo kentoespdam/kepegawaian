@@ -8,7 +8,7 @@ import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
-import id.perumdamts.kepegawaian.repositories.master.GolonganRepository;
+import id.perumdamts.kepegawaian.repositories.master.jpa.GolonganRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

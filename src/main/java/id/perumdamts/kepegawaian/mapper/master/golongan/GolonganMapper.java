@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.services.master.golongan;
+package id.perumdamts.kepegawaian.mapper.master.golongan;
 
 import id.perumdamts.kepegawaian.dto.master.golongan.GolonganPostRequest;
 import id.perumdamts.kepegawaian.entities.master.Golongan;

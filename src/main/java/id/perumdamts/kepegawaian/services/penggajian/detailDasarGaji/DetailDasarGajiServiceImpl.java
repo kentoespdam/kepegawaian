@@ -9,7 +9,7 @@ import id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji.DetailDasarGajiR
 import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.penggajian.DasarGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.DetailDasarGaji;
-import id.perumdamts.kepegawaian.repositories.master.GolonganRepository;
+import id.perumdamts.kepegawaian.repositories.master.jpa.GolonganRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.DasarGajiRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.DetailDasarGajiRepository;
 import id.perumdamts.kepegawaian.utils.SpecificationBuilder;

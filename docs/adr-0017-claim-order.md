@@ -12,7 +12,7 @@ Urutan klaim **mengikuti dependency**, bukan nomor issue. Kerjakan per **WAVE**:
 
 ## WAVE 0 — Exemplar (1 issue, GERBANG)
 
-- [ ] **hgg / s55** · golongan (EXEMPLAR): `GolonganQueries` → `repositories/master/jooq/GolonganQueryRepository.java` (`@Service`→`@Repository`); `GolonganRepository` → `repositories/master/jpa/`; `GolonganMapper` → `mapper/master/golongan/`; `QueryService` tetap di `services/` (orkestrasi tipis, inject `GolonganQueryRepository`, lempar `NotFoundException`) · `P1` · deps: — · importers: 9
+- [x] **hgg / s55** · golongan (EXEMPLAR): `GolonganQueries` → `repositories/master/jooq/GolonganQueryRepository.java` (`@Service`→`@Repository`); `GolonganRepository` → `repositories/master/jpa/`; `GolonganMapper` → `mapper/master/golongan/`; `QueryService` tetap di `services/` (orkestrasi tipis, inject `GolonganQueryRepository`, lempar `NotFoundException`) · `P1` · deps: — · importers: 9
 
 > **Gerbang replikasi.** Semua domain WAVE 1 meniru pola ini. Review ekstra ketat — pola yang salah di sini menyebar ke 13 issue berikutnya. Satu-satunya issue yang muncul di `bd ready` sekarang.
 
