@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLibur;
 import id.perumdamts.kepegawaian.entities.master.HariLibur;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
@@ -27,10 +28,10 @@ public class HariLiburPostRequest {
 
     @JsonIgnore
     public Specification<HariLibur> getSpecification() {
-        return (root, query, cb) -> cb.and(
-                cb.equal(root.get("tanggal"), this.tanggal),
-                cb.equal(root.get("jenisLibur"), this.jenisLibur)
-        );
+        return SpecificationBuilder.<HariLibur>of()
+                .addEqual(tanggal, "tanggal")
+                .addEqual(jenisLibur, "jenisLibur")
+                .build();
     }
 
     public static HariLibur toEntity(HariLiburPostRequest request) {

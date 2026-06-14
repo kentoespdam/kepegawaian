@@ -15,11 +15,15 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 public class ErrorResult extends ResultAbstract<Object> {
-    public static ResponseEntity<?> build(String message) {
+    public static ResponseEntity<?> build(int statusCode, String message) {
         ErrorResult result = new ErrorResult();
         result.addError(message);
-        result.setStatusText(HttpStatus.BAD_REQUEST);
-        return ResponseEntity.status(result.getStatusText()).body(result);
+        result.setStatusText(HttpStatus.valueOf(statusCode));
+        return ResponseEntity.status(statusCode).body(result);
+    }
+
+    public static ResponseEntity<?> build(String message) {
+        return build(400, message);
     }
 
     public static ResponseEntity<?> build(Errors errors) {
@@ -36,15 +40,15 @@ public class ErrorResult extends ResultAbstract<Object> {
                 .toList();
     }
 
-    public static <T> ResponseEntity<?> build(Set<ConstraintViolation<T>> validate) {
+    public static ResponseEntity<?> build(Set<? extends ConstraintViolation<?>> violations) {
         ErrorResult result = new ErrorResult();
-        result.setErrors(getErrors(validate));
+        result.setErrors(getErrors(violations));
         result.setStatusText(HttpStatus.BAD_REQUEST);
         return ResponseEntity.status(result.getStatusText()).body(result);
     }
 
-    private static <T> List<String> getErrors(Set<ConstraintViolation<T>> validate) {
-        return validate.stream()
+    private static List<String> getErrors(Set<? extends ConstraintViolation<?>> violations) {
+        return violations.stream()
                 .map(error -> "field [" + error.getPropertyPath() + "] : " + error.getMessage())
                 .toList();
     }

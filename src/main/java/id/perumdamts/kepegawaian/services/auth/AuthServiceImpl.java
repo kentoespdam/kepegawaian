@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.RestClient;
 
 import java.util.List;
 import java.util.Map;
@@ -30,18 +30,18 @@ public class AuthServiceImpl implements AuthService {
     @Value("${appwrite.api_key}")
     private String appwriteApiKey;
 
-    private final WebClient webClient;
+    private final RestClient restClient;
 
     @Override
     public AppwriteUser getUser(String id) {
-        return webClient.get()
+        return restClient.get()
                 .uri(appwriteUrl + "/users/" + id)
                 .header("Content-Type", "application/json")
                 .header("X-Appwrite-Response-Format", "1.0.0")
                 .header("X-Appwrite-Project", appwriteProjectId)
                 .header("X-Appwrite-Key", appwriteApiKey)
-                .exchangeToMono(response -> response.bodyToMono(AppwriteUser.class))
-                .block();
+                .retrieve()
+                .body(AppwriteUser.class);
     }
 
     @Override
@@ -53,17 +53,14 @@ public class AuthServiceImpl implements AuthService {
                 .name(request.getNama())
                 .build();
 
-        WebClient.ResponseSpec responseSpec = webClient.post()
+        String response = restClient.post()
                 .uri(appwriteUrl + "/users")
                 .header("X-Appwrite-Project", appwriteProjectId)
                 .header("X-Appwrite-Key", appwriteApiKey)
-                .bodyValue(user)
-                .retrieve();
-
-        String block = responseSpec
-                .bodyToMono(String.class)
-                .block();
-        System.out.println(block);
+                .body(user)
+                .retrieve()
+                .body(String.class);
+        System.out.println(response);
 
         if (!request.getRoles().isEmpty())
             updatePref(request.getId(), request.getRoles());
@@ -80,30 +77,26 @@ public class AuthServiceImpl implements AuthService {
                 .name(pegawai.getBiodata().getNama())
                 .build();
 
-        WebClient.ResponseSpec responseSpec = webClient.post()
+        restClient.post()
                 .uri(appwriteUrl + "/users")
                 .header("X-Appwrite-Project", appwriteProjectId)
                 .header("X-Appwrite-Key", appwriteApiKey)
-                .bodyValue(user)
-                .retrieve();
-
-        responseSpec
-                .bodyToMono(String.class)
-                .block();
+                .body(user)
+                .retrieve()
+                .body(String.class);
         List<PrefRole> prefRoles = List.of(new PrefRole("ADMIN"), new PrefRole("USER"));
         updatePref(pegawai.getId().toString(), prefRoles);
     }
 
     @Override
     public AppwriteUser updateStatus(String id, UserPatchStatusRequest status) {
-        return webClient.patch()
+        return restClient.patch()
                 .uri(appwriteUrl + "/users/" + id + "/status")
                 .header("X-Appwrite-Project", appwriteProjectId)
                 .header("X-Appwrite-Key", appwriteApiKey)
-                .bodyValue(status)
+                .body(status)
                 .retrieve()
-                .bodyToMono(AppwriteUser.class)
-                .block();
+                .body(AppwriteUser.class);
     }
 
     @Override
@@ -113,16 +106,13 @@ public class AuthServiceImpl implements AuthService {
         Map<String, Object> wrapper = Map.of("prefs", prefs);
 
         try {
-            WebClient.ResponseSpec responseSpec = webClient.patch()
+            restClient.patch()
                     .uri(appwriteUrl + "/users/" + id + "/prefs")
                     .header("X-Appwrite-Project", appwriteProjectId)
                     .header("X-Appwrite-Key", appwriteApiKey)
-                    .bodyValue(wrapper)
-                    .retrieve();
-
-            responseSpec
-                    .bodyToMono(String.class)
-                    .block();
+                    .body(wrapper)
+                    .retrieve()
+                    .body(String.class);
 
         } catch (Exception e) {
             log.info(e.getMessage());

@@ -16,7 +16,6 @@ import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.RiwayatSkRepository;
 import id.perumdamts.kepegawaian.repositories.master.GolonganRepository;
 import id.perumdamts.kepegawaian.services.kepegawaian.lampiran.LampiranSkService;
-import id.perumdamts.kepegawaian.services.master.golongan.GolonganService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.data.domain.Page;
@@ -33,7 +32,6 @@ import java.util.Optional;
 public class RiwayatSkServiceImpl implements RiwayatSkService {
     private final RiwayatSkRepository repository;
     private final PegawaiRepository pegawaiRepository;
-    private final GolonganService golonganService;
     private final GolonganRepository golonganRepository;
     private final LampiranSkService lampiranSkService;
 
@@ -96,7 +94,7 @@ public class RiwayatSkServiceImpl implements RiwayatSkService {
 
     @Override
     public RiwayatSk saveCapeg(PegawaiPostRequest request, Pegawai pegawai) {
-        Golongan golongan = golonganService.findGolonganById(request.getGolonganId());
+        Golongan golongan = golonganRepository.getReferenceById(request.getGolonganId());
         LocalDate kenaikanBerikutnya = LocalDate.now().plusYears(2);
 
         RiwayatSk entity = new RiwayatSk();
@@ -122,7 +120,7 @@ public class RiwayatSkServiceImpl implements RiwayatSkService {
     public RiwayatSk savePegawai(PegawaiPostRequest request, Pegawai pegawai) {
         Long[] excludeGolonganJabatan = {1L, 2L, 3L, 25L};
         Golongan golongan = ArrayUtils.contains(excludeGolonganJabatan, request.getJabatanId()) ||
-                pegawai.getStatusPegawai() != EStatusPegawai.PEGAWAI ? null : golonganService.findGolonganById(request.getGolonganId());
+                pegawai.getStatusPegawai() != EStatusPegawai.PEGAWAI ? null : golonganRepository.getReferenceById(request.getGolonganId());
         LocalDate kenaikanBerikutnya = LocalDate.now().plusYears(2);
 
         RiwayatSk entity = new RiwayatSk();

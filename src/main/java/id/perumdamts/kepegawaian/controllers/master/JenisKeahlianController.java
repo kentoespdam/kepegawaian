@@ -2,10 +2,12 @@ package id.perumdamts.kepegawaian.controllers.master;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
+import id.perumdamts.kepegawaian.dto.master.jenisKeahlian.JenisKeahlianIndexQuery;
 import id.perumdamts.kepegawaian.dto.master.jenisKeahlian.JenisKeahlianPostRequest;
-import id.perumdamts.kepegawaian.dto.master.jenisKeahlian.JenisKeahlianPutRequest;
-import id.perumdamts.kepegawaian.dto.master.jenisKeahlian.JenisKeahlianRequest;
-import id.perumdamts.kepegawaian.services.master.jenisKeahlian.JenisKeahlianService;
+import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
+import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
+import id.perumdamts.kepegawaian.services.master.jenisKeahlian.JenisKeahlianCommandService;
+import id.perumdamts.kepegawaian.services.master.jenisKeahlian.JenisKeahlianQueryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -14,53 +16,48 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/master/jenis-keahlian")
 public class JenisKeahlianController {
-    private final JenisKeahlianService service;
+    private final JenisKeahlianQueryService query;
+    private final JenisKeahlianCommandService command;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject JenisKeahlianRequest request) {
-        return CustomResult.any(service.findPage(request));
+    public ResponseEntity<?> index(@ParameterObject JenisKeahlianIndexQuery request) {
+        return CustomResult.page(query.pageQuery(request));
     }
 
     @GetMapping("/list")
     public ResponseEntity<?> list() {
-        return CustomResult.list(service.findAll());
+        return CustomResult.list(query.listQuery());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
-        return CustomResult.any(service.findById(id));
+        return CustomResult.any(query.getById(id));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> save(@Valid @RequestBody JenisKeahlianPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(service.save(request));
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/batch")
-    public ResponseEntity<?> saveBatch(@Valid @RequestBody List<JenisKeahlianPostRequest> requests, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(service.saveBatch(requests));
+        var entity = command.create(request);
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody JenisKeahlianPutRequest request, Errors errors) {
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody JenisKeahlianPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(service.update(id, request));
+        var entity = command.update(id, request);
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
-        return CustomResult.delete(service.deleteById(id));
+        command.delete(id);
+        return CustomResult.delete(true);
     }
 }

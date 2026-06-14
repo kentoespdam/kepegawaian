@@ -2,11 +2,12 @@ package id.perumdamts.kepegawaian.controllers.master;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
+import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
+import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
+import id.perumdamts.kepegawaian.dto.master.alasanBerhenti.AlasanBerhentiIndexQuery;
 import id.perumdamts.kepegawaian.dto.master.alasanBerhenti.AlasanBerhentiPostRequest;
-import id.perumdamts.kepegawaian.dto.master.alasanBerhenti.AlasanBerhentiPutRequest;
-import id.perumdamts.kepegawaian.dto.master.alasanBerhenti.AlasanBerhentiRequest;
-import id.perumdamts.kepegawaian.services.master.alasanBerhenti.AlasanBerhentiService;
-import io.swagger.v3.oas.annotations.Operation;
+import id.perumdamts.kepegawaian.services.master.alasanBerhenti.AlasanBerhentiCommandService;
+import id.perumdamts.kepegawaian.services.master.alasanBerhenti.AlasanBerhentiQueryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -15,55 +16,48 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/master/alasan-berhenti")
 public class AlasanBerhentiController {
-    private final AlasanBerhentiService alasanBerhenti;
+    private final AlasanBerhentiQueryService query;
+    private final AlasanBerhentiCommandService command;
 
-    @Operation(summary = "Get Page Alasan Berhenti")
     @GetMapping
-    public ResponseEntity<?> get(@ParameterObject AlasanBerhentiRequest request) {
-        return CustomResult.any(alasanBerhenti.findPage(request));
+    public ResponseEntity<?> get(@ParameterObject AlasanBerhentiIndexQuery request) {
+        return CustomResult.page(query.pageQuery(request));
     }
 
-    @Operation(summary = "Get List Alasan Berhenti")
     @GetMapping("/list")
     public ResponseEntity<?> list() {
-        return CustomResult.list(alasanBerhenti.findAll());
+        return CustomResult.list(query.listQuery());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
-        return CustomResult.any(alasanBerhenti.findById(id));
+        return CustomResult.any(query.getById(id));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> save(@Valid @RequestBody AlasanBerhentiPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(alasanBerhenti.save(request));
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/batch")
-    public ResponseEntity<?> batch(@Valid @RequestBody List<AlasanBerhentiPostRequest> requests, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(alasanBerhenti.saveBatch(requests));
+        var entity = command.create(request);
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody AlasanBerhentiPutRequest request, Errors errors) {
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody AlasanBerhentiPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(alasanBerhenti.update(id, request));
+        var entity = command.update(id, request);
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
-        return CustomResult.delete(alasanBerhenti.deleteById(id));
+        command.delete(id);
+        return CustomResult.delete(true);
     }
 }

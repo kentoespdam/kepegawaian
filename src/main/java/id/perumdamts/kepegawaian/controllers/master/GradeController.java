@@ -1,10 +1,13 @@
 package id.perumdamts.kepegawaian.controllers.master;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
+import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
+import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
+import id.perumdamts.kepegawaian.dto.master.grade.GradeIndexQuery;
 import id.perumdamts.kepegawaian.dto.master.grade.GradePostRequest;
-import id.perumdamts.kepegawaian.dto.master.grade.GradeRequest;
-import id.perumdamts.kepegawaian.services.master.grade.GradeService;
+import id.perumdamts.kepegawaian.services.master.grade.GradeCommandService;
+import id.perumdamts.kepegawaian.services.master.grade.GradeQueryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -13,53 +16,53 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/master/grade")
 public class GradeController {
-    private final GradeService service;
+    private final GradeQueryService query;
+    private final GradeCommandService command;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject GradeRequest request) {
-        return CustomResult.any(service.findPage(request));
+    public ResponseEntity<?> index(@ParameterObject GradeIndexQuery request) {
+        return CustomResult.page(query.pageQuery(request));
     }
 
     @GetMapping("/list")
     public ResponseEntity<?> list() {
-        return CustomResult.list(service.findAll());
+        return CustomResult.list(query.listQuery());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
-        return CustomResult.any(service.findById(id));
+        return CustomResult.any(query.getById(id));
+    }
+
+    @GetMapping("/level/{id}")
+    public ResponseEntity<?> findByLevelId(@PathVariable Long id) {
+        return CustomResult.list(query.findByLevelId(id));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> save(@Valid @RequestBody GradePostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(service.save(request));
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/batch")
-    public ResponseEntity<?> saveBatch(@Valid @RequestBody List<GradePostRequest> requests, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(service.saveBatch(requests));
+        var entity = command.create(request);
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody GradePostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(service.update(id, request));
+        var entity = command.update(id, request);
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
-        return CustomResult.delete(service.deleteById(id));
+        command.delete(id);
+        return CustomResult.delete(true);
     }
 }

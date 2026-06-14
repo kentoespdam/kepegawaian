@@ -13,8 +13,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.http.HttpHeaders;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.RestClient;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -30,7 +31,7 @@ class UserServiceImplTest {
     private PegawaiRepository repository;
     private UserRequest request;
     @Autowired
-    private WebClient webClient;
+    private RestClient restClient;
     @Value("${appwrite.endpoint}")
     private String appwriteUrl;
     @Value("${appwrite.project_id}")
@@ -93,39 +94,45 @@ class UserServiceImplTest {
 
     @Async
     private AppwriteUser fetchUser(Long id) {
-        return webClient.get()
+        return restClient.get()
                 .uri(appwriteUrl + "/users/" + id)
-                .header("Content-Type", "application/json")
-                .header("X-Appwrite-Response-Format", "1.0.0")
-                .header("X-Appwrite-Project", appwriteProjectId)
-                .header("X-Appwrite-Key", appwriteApiKey)
-                .exchangeToMono(response -> response.bodyToMono(AppwriteUser.class))
-                .block();
+                .headers(headers -> {
+                    headers.set("Content-Type", "application/json");
+                    headers.set("X-Appwrite-Response-Format", "1.0.0");
+                    headers.set("X-Appwrite-Project", appwriteProjectId);
+                    headers.set("X-Appwrite-Key", appwriteApiKey);
+                })
+                .retrieve()
+                .body(AppwriteUser.class);
     }
 
 //    @Test
     void getPref() {
-        Prefs result = webClient.get()
+        Prefs result = restClient.get()
                 .uri(appwriteUrl + "/users/483/prefs")
-                .header("Content-Type", "application/json")
-                .header("X-Appwrite-Response-Format", "1.0.0")
-                .header("X-Appwrite-Project", appwriteProjectId)
-                .header("X-Appwrite-Key", appwriteApiKey)
-                .exchangeToMono(response -> response.bodyToMono(Prefs.class))
-                .block();
+                .headers(headers -> {
+                    headers.set("Content-Type", "application/json");
+                    headers.set("X-Appwrite-Response-Format", "1.0.0");
+                    headers.set("X-Appwrite-Project", appwriteProjectId);
+                    headers.set("X-Appwrite-Key", appwriteApiKey);
+                })
+                .retrieve()
+                .body(Prefs.class);
         log.info("result: {}", result);
     }
 
 //    @Test
     void queryTest(){
-        String block = webClient.get()
+        String block = restClient.get()
                 .uri(appwriteUrl + "/users?queries[]={\"method\":\"equal\",\"attribute\":\"status\",\"values\":[true]}")
-                .header("Content-Type", "application/json")
-                .header("X-Appwrite-Response-Format", "1.0.0")
-                .header("X-Appwrite-Project", appwriteProjectId)
-                .header("X-Appwrite-Key", appwriteApiKey)
-                .exchangeToMono(clientResponse -> clientResponse.bodyToMono(String.class))
-                .block();
+                .headers(headers -> {
+                    headers.set("Content-Type", "application/json");
+                    headers.set("X-Appwrite-Response-Format", "1.0.0");
+                    headers.set("X-Appwrite-Project", appwriteProjectId);
+                    headers.set("X-Appwrite-Key", appwriteApiKey);
+                })
+                .retrieve()
+                .body(String.class);
         log.info("block: {}", block);
 
     }

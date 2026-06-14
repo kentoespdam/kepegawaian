@@ -1,0 +1,32 @@
+package id.perumdamts.kepegawaian.services.master.hariLibur;
+
+import id.perumdamts.kepegawaian.dto.master.hariLibur.HariLiburIndexQuery;
+import id.perumdamts.kepegawaian.dto.master.hariLibur.HariLiburQuery;
+import id.perumdamts.kepegawaian.exceptions.NotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+public class HariLiburQueryService {
+    private final HariLiburQueries queries;
+
+    public Page<HariLiburQuery> pageQuery(HariLiburIndexQuery query) {
+        return queries.pageQuery(query);
+    }
+
+    public HariLiburQuery getById(Long id) {
+        return queries.getById(id)
+                .orElseThrow(() -> new NotFoundException("HariLibur not found"));
+    }
+
+    public List<HariLiburQuery> listQuery() {
+        return queries.listQuery();
+    }
+}

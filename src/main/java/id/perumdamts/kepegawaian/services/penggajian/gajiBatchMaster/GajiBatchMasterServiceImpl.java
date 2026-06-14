@@ -27,9 +27,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Flux;
+import org.springframework.web.client.RestClient;
 
 import java.util.List;
 
@@ -49,7 +47,7 @@ public class GajiBatchMasterServiceImpl implements GajiBatchMasterService {
     @Autowired
     private GajiBatchRootLampiranRepository gajiBatchRootLampiranRepository;
     @Autowired
-    private WebClient webClient;
+    private RestClient restClient;
 
     @Override
     public List<GajiBatchMasterResponse> findAll(GajiBatchMasterRequest request) {
@@ -79,9 +77,10 @@ public class GajiBatchMasterServiceImpl implements GajiBatchMasterService {
     @Override
     public ResponseEntity<?> downloadTableGaji(String rootBatchId) {
         try {
-            Flux<ByteArrayResource> byteArrayResourceFlux = downloadPenggajian.downloadTableGaji(rootBatchId);
-            ByteArrayResource byteArrayResource = byteArrayResourceFlux.blockFirst();
-            assert byteArrayResource != null;
+            ByteArrayResource byteArrayResource = downloadPenggajian.downloadTableGaji(rootBatchId);
+            if (byteArrayResource == null) {
+                return ResponseEntity.notFound().build();
+            }
             return ResponseEntity.ok()
                     .contentLength(byteArrayResource.contentLength())
                     .header("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
@@ -95,9 +94,10 @@ public class GajiBatchMasterServiceImpl implements GajiBatchMasterService {
     @Override
     public ResponseEntity<?> downloadPotonganGaji(String rootBatchId) {
         try {
-            Flux<ByteArrayResource> byteArrayResourceFlux = downloadPenggajian.downloadPotonganGaji(rootBatchId);
-            ByteArrayResource byteArrayResource = byteArrayResourceFlux.blockFirst();
-            assert byteArrayResource != null;
+            ByteArrayResource byteArrayResource = downloadPenggajian.downloadPotonganGaji(rootBatchId);
+            if (byteArrayResource == null) {
+                return ResponseEntity.notFound().build();
+            }
             return ResponseEntity.ok()
                     .contentLength(byteArrayResource.contentLength())
                     .header("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
@@ -130,13 +130,11 @@ public class GajiBatchMasterServiceImpl implements GajiBatchMasterService {
 
             MultipartBodyBuilder multipartBodyBuilder = new MultipartBodyBuilder();
             multipartBodyBuilder.part("file", request.getFile().getResource());
-            String block = webClient.patch()
+            String block = restClient.patch()
                     .uri(ENDPOINT + "/upload/" + rootBatchId + "/additional_gaji")
-                    .body(BodyInserters.fromMultipartData(multipartBodyBuilder.build()))
-                    .exchangeToMono(clientResponse -> {
-                        log.info("debugging: {}", clientResponse.statusCode());
-                        return clientResponse.bodyToMono(String.class);
-                    }).block();
+                    .body(multipartBodyBuilder.build())
+                    .retrieve()
+                    .body(String.class);
             log.info("debugging: {}", block);
             return SavedStatus.build(ESaveStatus.SUCCESS, "OK");
 

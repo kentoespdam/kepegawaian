@@ -1,15 +1,18 @@
 package id.perumdamts.kepegawaian.controllers.master;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
+import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
+import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
+import id.perumdamts.kepegawaian.dto.master.rumahDinas.RumahDinasIndexQuery;
 import id.perumdamts.kepegawaian.dto.master.rumahDinas.RumahDinasPostRequest;
-import id.perumdamts.kepegawaian.dto.master.rumahDinas.RumahDinasPutRequest;
-import id.perumdamts.kepegawaian.dto.master.rumahDinas.RumahDinasRequest;
-import id.perumdamts.kepegawaian.services.master.rumahDinas.RumahDinasService;
+import id.perumdamts.kepegawaian.services.master.rumahDinas.RumahDinasCommandService;
+import id.perumdamts.kepegawaian.services.master.rumahDinas.RumahDinasQueryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,37 +20,44 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/master/rumah-dinas")
 public class RumahDinasController {
-    private final RumahDinasService service;
+    private final RumahDinasQueryService query;
+    private final RumahDinasCommandService command;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject RumahDinasRequest request) {
-        return CustomResult.page(service.findPage(request));
+    public ResponseEntity<?> index(@ParameterObject RumahDinasIndexQuery request) {
+        return CustomResult.page(query.pageQuery(request));
     }
 
     @GetMapping("/list")
-    public ResponseEntity<?> list(@ParameterObject RumahDinasRequest request) {
-        return CustomResult.list(service.findAll(request));
+    public ResponseEntity<?> list() {
+        return CustomResult.list(query.listQuery());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> show(@PathVariable Long id) {
-        return CustomResult.any(service.findById(id));
+    public ResponseEntity<?> findById(@PathVariable Long id) {
+        return CustomResult.any(query.getById(id));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody RumahDinasPostRequest request, Errors errors) {
+    public ResponseEntity<?> save(@Valid @RequestBody RumahDinasPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(service.save(request));
+        var entity = command.create(request);
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody RumahDinasPutRequest request, Errors errors) {
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody RumahDinasPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(service.update(id, request));
+        var entity = command.update(id, request);
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
-        return CustomResult.delete(service.delete(id));
+    public ResponseEntity<?> deleteById(@PathVariable Long id) {
+        command.delete(id);
+        return CustomResult.delete(true);
     }
 }

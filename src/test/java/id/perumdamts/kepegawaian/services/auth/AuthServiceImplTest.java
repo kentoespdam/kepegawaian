@@ -8,10 +8,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
+import org.springframework.web.client.RestClient;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,31 +29,31 @@ class AuthServiceImplTest {
     @Value("${appwrite.api_key}")
     private String appwriteApiKey;
     @Autowired
-    private WebClient webClient;
+    private RestClient restClient;
 
 //    @Test
     void createUser() {
         log.info("{} || {} || {}", appwriteUrl, appwriteProjectId, appwriteApiKey);
-        Mono<AppwriteUserPostRequest> user = Mono.just(AppwriteUserPostRequest.builder()
+        AppwriteUserPostRequest user = AppwriteUserPostRequest.builder()
                 .userId("jajal")
                 .email("jajal@perumdamts.com")
                 .phone("+62123456789012")
                 .password("tirtasatria")
                 .name("Jajal")
-                .build());
+                .build();
 
-        WebClient.ResponseSpec responseSpec = webClient.post()
+        String block = restClient.post()
                 .uri(appwriteUrl + "/users")
 //                .uri("http://localhost:1234/jajal.php")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("X-Appwrite-Project", appwriteProjectId)
-                .header("X-Appwrite-Key", appwriteApiKey)
-                .body(user, AppwriteUserPostRequest.class)
-                .retrieve();
+                .headers(headers -> {
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                    headers.set("X-Appwrite-Project", appwriteProjectId);
+                    headers.set("X-Appwrite-Key", appwriteApiKey);
+                })
+                .body(user)
+                .retrieve()
+                .body(String.class);
 
-        String block = responseSpec
-                .bodyToMono(String.class)
-                .block();
         log.info("block: {}", block);
     }
 

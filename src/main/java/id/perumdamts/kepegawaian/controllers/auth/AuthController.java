@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.RestClient;
 
 @RestController
 @RequestMapping("/auth")
@@ -21,19 +21,19 @@ public class AuthController {
     private String appwriteProjectId;
     @Value("${appwrite.api_key}")
     private String appwriteApiKey;
-    private final WebClient webClient;
+    private final RestClient restClient;
     private final RedisHelper redisHelper;
     private final String jwtHeader = "X-Appwrite-JWT";
 
     @GetMapping("/session")
     public ResponseEntity<?> index(@RequestHeader(value = jwtHeader) String token) {
-        String result = webClient.get()
+        String result = restClient.get()
                 .uri(appwriteUrl + "/account/jwt")
                 .header("X-Appwrite-JWT", token)
                 .header("X-Appwrite-Project", appwriteProjectId)
                 .header("X-Appwrite-Key", appwriteApiKey)
-                .exchangeToMono(response -> response.bodyToMono(String.class))
-                .block();
+                .retrieve()
+                .body(String.class);
         return ResponseEntity.ok(result);
     }
 

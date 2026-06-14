@@ -2,13 +2,12 @@ package id.perumdamts.kepegawaian.controllers.master;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
+import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
+import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.master.apd.ApdPostRequest;
-import id.perumdamts.kepegawaian.dto.master.apd.ApdPutRequest;
-import id.perumdamts.kepegawaian.dto.master.apd.ApdRequest;
-import id.perumdamts.kepegawaian.services.master.apd.ApdService;
+import id.perumdamts.kepegawaian.services.master.apd.ApdCommandService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.Errors;
@@ -16,47 +15,33 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/master/apd")
+@RequestMapping("/master/profesi/{profesiId}/apd")
 public class ApdController {
-    private final ApdService apdService;
-
-    @GetMapping
-    public ResponseEntity<?> get(@ParameterObject ApdRequest request) {
-        return CustomResult.any(apdService.findPage(request));
-    }
-
-    @GetMapping("/list")
-    public ResponseEntity<?> list() {
-        return CustomResult.list(apdService.findAll());
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
-        return CustomResult.any(apdService.findById(id));
-    }
-
-    @GetMapping("/{id}/profesi")
-    public ResponseEntity<?> findByProfesi(@PathVariable Long id) {
-        return CustomResult.any(apdService.findByProfesiId(id));
-    }
+    private final ApdCommandService command;
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<?> save(@Valid @RequestBody ApdPostRequest request, Errors errors) {
+    public ResponseEntity<?> save(@PathVariable Long profesiId,
+                                  @Valid @RequestBody ApdPostRequest request,
+                                  Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(apdService.save(request));
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.create(profesiId, request)));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody ApdPutRequest request, Errors errors) {
+    public ResponseEntity<?> update(@PathVariable Long profesiId,
+                                    @PathVariable Long id,
+                                    @Valid @RequestBody ApdPostRequest request,
+                                    Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(apdService.update(id, request));
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.update(profesiId, id, request)));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteById(@PathVariable Long id) {
-        return CustomResult.delete(apdService.deleteById(id));
+    public ResponseEntity<?> deleteById(@PathVariable Long profesiId, @PathVariable Long id) {
+        command.delete(profesiId, id);
+        return CustomResult.delete(true);
     }
 }

@@ -1,5 +1,7 @@
 # Tata letak paket: layer-first (bukan vertical slice)
 
+> **Status:** accepted — pilihan inti (layer-first) tetap berlaku, tetapi sebagian spesifik (lokasi `*Queries`, folder repo datar, "semua modul sekaligus", tanpa paket mapper) diubah oleh **ADR-0017**.
+
 Rewrite mempertahankan struktur paket **layer-first** dari proyek lama: pohon top-level `controllers/`, `services/`, `repositories/`, `dto/`, masing-masing punya subpohon per-domain (`master/...`, `profesi/`, dst). Tujuan rewrite menyebut "vertical slice", tetapi keputusan ini sengaja **menolak** feature-first demi keberlanjutan dengan kode lama.
 
 Contoh untuk Profesi:

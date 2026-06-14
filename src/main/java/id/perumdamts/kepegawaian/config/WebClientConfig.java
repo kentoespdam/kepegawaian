@@ -2,13 +2,12 @@ package id.perumdamts.kepegawaian.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.RestClient;
 
 @Component
 public class WebClientConfig {
     @Bean
-    public WebClient webClient() {
-        return WebClient.builder()
-                .build();
+    public RestClient restClient() {
+        return RestClient.create();
     }
 }

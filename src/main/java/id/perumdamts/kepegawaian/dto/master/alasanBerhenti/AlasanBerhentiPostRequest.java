@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.dto.master.alasanBerhenti;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.master.AlasanBerhenti;
+import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
@@ -14,14 +15,15 @@ public class AlasanBerhentiPostRequest {
 
     @JsonIgnore
     public Specification<AlasanBerhenti> getSpecification() {
-        return (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("nama"), this.getNama());
+        return SpecificationBuilder.<AlasanBerhenti>of()
+                .addEqual(nama, "nama")
+                .build();
     }
 
     public static AlasanBerhenti toEntity(AlasanBerhentiPostRequest request) {
-        AlasanBerhenti alasanBerhenti = new AlasanBerhenti();
-        alasanBerhenti.setNama(request.getNama());
-        alasanBerhenti.setNotes(request.getNotes());
-        return alasanBerhenti;
+        AlasanBerhenti entity = new AlasanBerhenti();
+        entity.setNama(request.getNama());
+        entity.setNotes(request.getNotes());
+        return entity;
     }
 }

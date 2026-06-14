@@ -7,6 +7,7 @@ import jakarta.persistence.Table;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.envers.Audited;
 
 @Entity
 @Table(indexes = {
@@ -19,6 +20,7 @@ import org.hibernate.annotations.SQLRestriction;
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE jenis_keahlian SET is_deleted = TRUE WHERE id = ?")
 @SQLRestriction("is_deleted = FALSE")
+@Audited
 public class JenisKeahlian extends IdsAbstract {
     private String nama;
 

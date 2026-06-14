@@ -1,54 +1,77 @@
 package id.perumdamts.kepegawaian.controllers.master;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
+import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
+import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
+import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.master.sanksi.PatchSanksiJenisSpRequest;
+import id.perumdamts.kepegawaian.dto.master.sanksi.SanksiIndexQuery;
 import id.perumdamts.kepegawaian.dto.master.sanksi.SanksiPostRequest;
 import id.perumdamts.kepegawaian.dto.master.sanksi.SanksiPutRequest;
-import id.perumdamts.kepegawaian.dto.master.sanksi.SanksiRequest;
-import id.perumdamts.kepegawaian.services.master.sanksi.SanksiService;
+import id.perumdamts.kepegawaian.services.master.sanksi.SanksiCommandService;
+import id.perumdamts.kepegawaian.services.master.sanksi.SanksiQueryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/master/sanksi")
 public class SanksiController {
-    private final SanksiService service;
+    private final SanksiQueryService query;
+    private final SanksiCommandService command;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject SanksiRequest request) {
-        return CustomResult.page(service.findPage(request));
+    public ResponseEntity<?> index(@ParameterObject SanksiIndexQuery request) {
+        return CustomResult.page(query.pageQuery(request));
     }
 
     @GetMapping("/list")
     public ResponseEntity<?> list() {
-        return CustomResult.list(service.list());
+        return CustomResult.list(query.listQuery());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> show(@PathVariable Long id) {
-        return CustomResult.any(service.findById(id));
+    public ResponseEntity<?> findById(@PathVariable Long id) {
+        return CustomResult.any(query.getById(id));
     }
 
+    @GetMapping("/jenis-sp/{id}")
+    public ResponseEntity<?> findByJenisSpId(@PathVariable Long id) {
+        return CustomResult.list(query.findByJenisSpId(id));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<?> store(@RequestBody SanksiPostRequest request) {
-        return CustomResult.save(service.save(request));
+    public ResponseEntity<?> save(@Valid @RequestBody SanksiPostRequest request, Errors errors) {
+        if (errors.hasErrors()) return ErrorResult.build(errors);
+        var entity = command.create(request);
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody SanksiPutRequest request) {
-        return CustomResult.save(service.update(id, request));
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody SanksiPutRequest request, Errors errors) {
+        if (errors.hasErrors()) return ErrorResult.build(errors);
+        var entity = command.update(id, request);
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}/jenis-sp")
     public ResponseEntity<?> updateJenisSp(@PathVariable Long id, @RequestBody PatchSanksiJenisSpRequest request) {
-        return CustomResult.save(service.updateJenisSp(id, request));
+        var entity = command.updateJenisSp(id, request.getJenisSpId());
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
-        return CustomResult.delete(service.delete(id));
+    public ResponseEntity<?> deleteById(@PathVariable Long id) {
+        command.delete(id);
+        return CustomResult.delete(true);
     }
 }
