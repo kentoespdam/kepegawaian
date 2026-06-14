@@ -1,7 +1,7 @@
 package id.perumdamts.kepegawaian.services.setupMaster;
 
 import id.perumdamts.kepegawaian.entities.master.JenisKeahlian;
-import id.perumdamts.kepegawaian.repositories.master.JenisKeahlianRepository;
+import id.perumdamts.kepegawaian.repositories.master.jpa.JenisKeahlianRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

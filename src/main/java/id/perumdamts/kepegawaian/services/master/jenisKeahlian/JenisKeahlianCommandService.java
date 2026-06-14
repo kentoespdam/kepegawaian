@@ -4,7 +4,8 @@ import id.perumdamts.kepegawaian.dto.master.jenisKeahlian.JenisKeahlianPostReque
 import id.perumdamts.kepegawaian.entities.master.JenisKeahlian;
 import id.perumdamts.kepegawaian.exceptions.ConflictException;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
-import id.perumdamts.kepegawaian.repositories.master.JenisKeahlianRepository;
+import id.perumdamts.kepegawaian.mapper.master.jenisKeahlian.JenisKeahlianMapper;
+import id.perumdamts.kepegawaian.repositories.master.jpa.JenisKeahlianRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
