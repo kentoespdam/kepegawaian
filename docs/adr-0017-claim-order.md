@@ -30,7 +30,7 @@ Pola identik exemplar: `*Queries`→`jooq/*QueryRepository` (`@Repository`), `*R
 - [ ] **550** · jenisSp · `P2` · deps: s55 · importers: 4
 - [ ] **9ma** · organisasi · `P2` · deps: s55 · importers: 7
 - [ ] **409** · rumahDinas · `P2` · deps: s55 · importers: 3
-- [ ] **c0v** · sanksi · `P2` · deps: s55 · importers: 2
+- [x] **c0v** · sanksi · `P2` · deps: s55 · importers: 2
 
 ### Issue khusus (pola beda — baca design issue penuh)
 

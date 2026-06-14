@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.services.master.sanksi;
+package id.perumdamts.kepegawaian.repositories.master.jooq;
 
 import id.perumdamts.kepegawaian.dto.master.jenisSp.JenisSpMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.sanksi.SanksiIndexQuery;
@@ -9,7 +9,7 @@ import org.jooq.impl.DSL;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
@@ -18,9 +18,9 @@ import java.util.Optional;
 import static id.perumdamts.kepegawaian.jooq.tables.JenisSp.JENIS_SP;
 import static id.perumdamts.kepegawaian.jooq.tables.SanksiSp.SANKSI_SP;
 
-@Service
+@Repository
 @RequiredArgsConstructor
-public class SanksiQueries {
+public class SanksiQueryRepository {
     private final DSLContext dsl;
 
     public Page<SanksiQuery> pageQuery(SanksiIndexQuery query) {

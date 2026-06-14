@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.services.master.sanksi;
+package id.perumdamts.kepegawaian.mapper.master.sanksi;
 
 import id.perumdamts.kepegawaian.dto.master.sanksi.SanksiPostRequest;
 import id.perumdamts.kepegawaian.entities.master.JenisSp;
