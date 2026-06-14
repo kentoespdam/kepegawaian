@@ -4,7 +4,8 @@ import id.perumdamts.kepegawaian.dto.master.alasanBerhenti.AlasanBerhentiPostReq
 import id.perumdamts.kepegawaian.entities.master.AlasanBerhenti;
 import id.perumdamts.kepegawaian.exceptions.ConflictException;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
-import id.perumdamts.kepegawaian.repositories.master.AlasanBerhentiRepository;
+import id.perumdamts.kepegawaian.mapper.master.alasanBerhenti.AlasanBerhentiMapper;
+import id.perumdamts.kepegawaian.repositories.master.jpa.AlasanBerhentiRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.services.master.alasanBerhenti;
+package id.perumdamts.kepegawaian.mapper.master.alasanBerhenti;
 
 import id.perumdamts.kepegawaian.dto.master.alasanBerhenti.AlasanBerhentiPostRequest;
 import id.perumdamts.kepegawaian.entities.master.AlasanBerhenti;

@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.services.master.alasanBerhenti;
+package id.perumdamts.kepegawaian.repositories.master.jooq;
 
 import id.perumdamts.kepegawaian.dto.master.alasanBerhenti.AlasanBerhentiIndexQuery;
 import id.perumdamts.kepegawaian.dto.master.alasanBerhenti.AlasanBerhentiQuery;
@@ -9,14 +9,14 @@ import org.jooq.impl.DSL;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Repository
 @RequiredArgsConstructor
-public class AlasanBerhentiQueries {
+public class AlasanBerhentiQueryRepository {
     private final DSLContext dsl;
 
     public Page<AlasanBerhentiQuery> pageQuery(AlasanBerhentiIndexQuery query) {

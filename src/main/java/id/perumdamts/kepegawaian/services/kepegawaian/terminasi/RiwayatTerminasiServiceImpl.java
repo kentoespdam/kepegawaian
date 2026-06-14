@@ -23,7 +23,7 @@ import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.RiwayatMutasiRepository;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.RiwayatTerminasiRepository;
-import id.perumdamts.kepegawaian.repositories.master.AlasanBerhentiRepository;
+import id.perumdamts.kepegawaian.repositories.master.jpa.AlasanBerhentiRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.GolonganRepository;
 import id.perumdamts.kepegawaian.repositories.master.JabatanRepository;
 import id.perumdamts.kepegawaian.repositories.master.OrganisasiRepository;
