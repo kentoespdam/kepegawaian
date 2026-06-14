@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.services.master.hariLibur;
 import id.perumdamts.kepegawaian.dto.master.hariLibur.HariLiburIndexQuery;
 import id.perumdamts.kepegawaian.dto.master.hariLibur.HariLiburQuery;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
+import id.perumdamts.kepegawaian.repositories.master.jooq.HariLiburQueryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -15,7 +16,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class HariLiburQueryService {
-    private final HariLiburQueries queries;
+    private final HariLiburQueryRepository queries;
 
     public Page<HariLiburQuery> pageQuery(HariLiburIndexQuery query) {
         return queries.pageQuery(query);
