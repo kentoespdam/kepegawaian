@@ -12,7 +12,7 @@ import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.entities.master.Profesi;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.RiwayatMutasiRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.GolonganRepository;
-import id.perumdamts.kepegawaian.repositories.master.JabatanRepository;
+import id.perumdamts.kepegawaian.repositories.master.jpa.JabatanRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.OrganisasiRepository;
 import id.perumdamts.kepegawaian.repositories.master.ProfesiRepository;
 import id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk.GenericSkService;

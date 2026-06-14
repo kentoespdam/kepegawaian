@@ -8,7 +8,7 @@ import id.perumdamts.kepegawaian.entities.master.Profesi;
 import id.perumdamts.kepegawaian.exceptions.ConflictException;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.master.jpa.GradeRepository;
-import id.perumdamts.kepegawaian.repositories.master.JabatanRepository;
+import id.perumdamts.kepegawaian.repositories.master.jpa.JabatanRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.OrganisasiRepository;
 import id.perumdamts.kepegawaian.repositories.master.ProfesiRepository;
 import lombok.RequiredArgsConstructor;

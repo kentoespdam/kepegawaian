@@ -25,7 +25,7 @@ import id.perumdamts.kepegawaian.repositories.kepegawaian.RiwayatMutasiRepositor
 import id.perumdamts.kepegawaian.repositories.kepegawaian.RiwayatTerminasiRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.AlasanBerhentiRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.GolonganRepository;
-import id.perumdamts.kepegawaian.repositories.master.JabatanRepository;
+import id.perumdamts.kepegawaian.repositories.master.jpa.JabatanRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.OrganisasiRepository;
 import id.perumdamts.kepegawaian.services.kepegawaian.lampiran.LampiranSkService;
 import id.perumdamts.kepegawaian.services.kepegawaian.riwayatKontrak.GenericKontrakService;

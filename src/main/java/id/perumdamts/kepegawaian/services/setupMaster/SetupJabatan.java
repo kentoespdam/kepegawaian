@@ -3,7 +3,7 @@ package id.perumdamts.kepegawaian.services.setupMaster;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.master.Level;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
-import id.perumdamts.kepegawaian.repositories.master.JabatanRepository;
+import id.perumdamts.kepegawaian.repositories.master.jpa.JabatanRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
