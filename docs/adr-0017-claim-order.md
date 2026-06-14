@@ -21,7 +21,7 @@ Urutan klaim **mengikuti dependency**, bukan nomor issue. Kerjakan per **WAVE**:
 Pola identik exemplar: `*Queries`→`jooq/*QueryRepository` (`@Repository`), `*Repository`→`jpa/`, `*Mapper`→`mapper/master/<domain>/`, `QueryService` tetap orkestrasi tipis.
 
 - [x] **uon** · alasanBerhenti · `P2` · deps: s55 · importers: 3
-- [ ] **mh9** · grade · `P2` · deps: s55 · importers: 3
+- [x] **mh9** · grade · `P2` · deps: s55 · importers: 3
 - [ ] **tn1** · hariLibur · `P2` · deps: s55 · importers: 5
 - [ ] **0fs** · jabatan · `P2` · deps: s55 · importers: 8
 - [x] **s0q** · jenisKeahlian · `P2` · deps: s55 · importers: 3

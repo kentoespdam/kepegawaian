@@ -2,7 +2,7 @@ package id.perumdamts.kepegawaian.services.setupMaster;
 
 import id.perumdamts.kepegawaian.entities.master.Grade;
 import id.perumdamts.kepegawaian.entities.master.Level;
-import id.perumdamts.kepegawaian.repositories.master.GradeRepository;
+import id.perumdamts.kepegawaian.repositories.master.jpa.GradeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

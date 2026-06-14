@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.services.master.grade;
+package id.perumdamts.kepegawaian.mapper.master.grade;
 
 import id.perumdamts.kepegawaian.dto.master.grade.GradePostRequest;
 import id.perumdamts.kepegawaian.entities.master.Grade;
