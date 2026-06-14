@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.services.master.organisasi;
+package id.perumdamts.kepegawaian.mapper.master.organisasi;
 
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiPostRequest;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;

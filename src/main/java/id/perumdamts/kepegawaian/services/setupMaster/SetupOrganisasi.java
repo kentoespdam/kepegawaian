@@ -1,7 +1,7 @@
 package id.perumdamts.kepegawaian.services.setupMaster;
 
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
-import id.perumdamts.kepegawaian.repositories.master.OrganisasiRepository;
+import id.perumdamts.kepegawaian.repositories.master.jpa.OrganisasiRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;

@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.repositories.master;
+package id.perumdamts.kepegawaian.repositories.master.jpa;
 
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import org.springframework.data.jpa.repository.JpaRepository;
