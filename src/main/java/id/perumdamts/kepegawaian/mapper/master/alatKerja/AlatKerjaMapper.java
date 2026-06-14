@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.services.master.alatKerja;
+package id.perumdamts.kepegawaian.mapper.master.alatKerja;
 
 import id.perumdamts.kepegawaian.dto.master.alatKerja.AlatKerjaPostRequest;
 import id.perumdamts.kepegawaian.entities.master.AlatKerja;

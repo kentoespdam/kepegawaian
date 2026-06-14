@@ -37,7 +37,7 @@ Pola identik exemplar: `*Queries`→`jooq/*QueryRepository` (`@Repository`), `*R
 - [ ] **yz9** · **profesi** (aggregate JOOQ) · `P2` · deps: s55 · importers: 5
   - `ProfesiQueries` → `ProfesiQueryRepository`, PLUS `ProfesiDetailQuery` (`@Service` kedua), `ProfesiRowMapper`, `ProfesiSelects` SEMUA → `repositories/master/jooq/` (jaga satu paket agar helper package-private tetap akses).
   - `ProfesiRepository` → `jpa/`. Hanya `ProfesiMapper` (JPA) → `mapper/master/profesi/`.
-- [ ] **dqn** · **apd + alatKerja** (JPA-only, tanpa JOOQ) · `P2` · deps: s55 · importers: 1 + 1
+- [x] **dqn** · **apd + alatKerja** (JPA-only, tanpa JOOQ) · `P2` · deps: s55 · importers: 1 + 1
   - Hanya `*Repository` → `jpa/` dan `*Mapper` → `mapper/`. Tidak ada kelas Queries (read-side terlipat ke agregat Profesi, ADR-0011).
 
 ---

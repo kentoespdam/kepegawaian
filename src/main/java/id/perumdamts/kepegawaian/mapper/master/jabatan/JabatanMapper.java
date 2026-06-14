@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.services.master.jabatan;
+package id.perumdamts.kepegawaian.mapper.master.jabatan;
 
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanPostRequest;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;

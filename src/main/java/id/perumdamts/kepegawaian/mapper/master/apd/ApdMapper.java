@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.services.master.apd;
+package id.perumdamts.kepegawaian.mapper.master.apd;
 
 import id.perumdamts.kepegawaian.dto.master.apd.ApdPostRequest;
 import id.perumdamts.kepegawaian.entities.master.Apd;

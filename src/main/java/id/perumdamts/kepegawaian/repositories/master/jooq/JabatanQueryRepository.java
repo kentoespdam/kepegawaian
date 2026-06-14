@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.services.master.jabatan;
+package id.perumdamts.kepegawaian.repositories.master.jooq;
 
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanIndexQuery;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;
@@ -11,7 +11,7 @@ import org.jooq.impl.DSL;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
@@ -21,9 +21,9 @@ import static id.perumdamts.kepegawaian.jooq.tables.Jabatan.JABATAN;
 import static id.perumdamts.kepegawaian.jooq.tables.Level.LEVEL;
 import static id.perumdamts.kepegawaian.jooq.tables.Organisasi.ORGANISASI;
 
-@Service
+@Repository
 @RequiredArgsConstructor
-public class JabatanQueries {
+public class JabatanQueryRepository {
     private final DSLContext dsl;
 
     public Page<JabatanQuery> pageQuery(JabatanIndexQuery query) {
