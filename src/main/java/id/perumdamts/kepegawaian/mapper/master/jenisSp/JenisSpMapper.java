@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.services.master.jenisSp;
+package id.perumdamts.kepegawaian.mapper.master.jenisSp;
 
 import id.perumdamts.kepegawaian.dto.master.jenisSp.JenisSpPostRequest;
 import id.perumdamts.kepegawaian.entities.master.JenisSp;

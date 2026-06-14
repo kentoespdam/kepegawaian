@@ -15,7 +15,7 @@ import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.riwayatSp.RiwayatSpRepository;
 import id.perumdamts.kepegawaian.repositories.master.JabatanRepository;
-import id.perumdamts.kepegawaian.repositories.master.JenisSpRepository;
+import id.perumdamts.kepegawaian.repositories.master.jpa.JenisSpRepository;
 import id.perumdamts.kepegawaian.repositories.master.OrganisasiRepository;
 import id.perumdamts.kepegawaian.utils.FileUploadUtil;
 import id.perumdamts.kepegawaian.utils.UploadResultUtil;

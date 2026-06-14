@@ -7,7 +7,7 @@ import id.perumdamts.kepegawaian.entities.master.Sanksi;
 import id.perumdamts.kepegawaian.exceptions.ConflictException;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.mapper.master.sanksi.SanksiMapper;
-import id.perumdamts.kepegawaian.repositories.master.JenisSpRepository;
+import id.perumdamts.kepegawaian.repositories.master.jpa.JenisSpRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.SanksiRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
