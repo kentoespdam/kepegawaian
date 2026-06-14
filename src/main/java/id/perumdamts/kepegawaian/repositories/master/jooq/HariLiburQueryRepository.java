@@ -1,14 +1,14 @@
-package id.perumdamts.kepegawaian.services.master.hariLibur;
+package id.perumdamts.kepegawaian.repositories.master.jooq;
 
 import id.perumdamts.kepegawaian.dto.master.hariLibur.HariLiburIndexQuery;
 import id.perumdamts.kepegawaian.dto.master.hariLibur.HariLiburQuery;
 import id.perumdamts.kepegawaian.entities.master.HariLibur;
-import id.perumdamts.kepegawaian.repositories.master.HariLiburRepository;
+import id.perumdamts.kepegawaian.repositories.master.jpa.HariLiburRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 
@@ -16,9 +16,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Repository
 @RequiredArgsConstructor
-public class HariLiburQueries {
+public class HariLiburQueryRepository {
     private final HariLiburRepository repository;
 
     public Page<HariLiburQuery> pageQuery(HariLiburIndexQuery query) {

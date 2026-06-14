@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.repositories.master;
+package id.perumdamts.kepegawaian.repositories.master.jpa;
 
 import id.perumdamts.kepegawaian.dto.master.hariLibur.TanggalHariLibur;
 import id.perumdamts.kepegawaian.entities.master.HariLibur;

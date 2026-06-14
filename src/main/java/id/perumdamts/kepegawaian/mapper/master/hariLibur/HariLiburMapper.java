@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.services.master.hariLibur;
+package id.perumdamts.kepegawaian.mapper.master.hariLibur;
 
 import id.perumdamts.kepegawaian.dto.master.hariLibur.HariLiburPostRequest;
 import id.perumdamts.kepegawaian.entities.master.HariLibur;
