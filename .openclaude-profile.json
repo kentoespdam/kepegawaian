@@ -1,0 +1,10 @@
+{
+  "profile": "openai",
+  "env": {
+    "OPENAI_BASE_URL": "http://127.0.0.1:20130/v1",
+    "OPENAI_MODEL": "free-stack",
+    "OPENAI_API_FORMAT": "responses",
+    "OPENAI_API_KEY": "sk-d82d61fe1cb41c98-722eef-cf082ef8"
+  },
+  "createdAt": "2026-06-14T02:39:21.096Z"
+}
