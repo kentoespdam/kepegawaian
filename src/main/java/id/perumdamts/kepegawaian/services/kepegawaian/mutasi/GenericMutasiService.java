@@ -14,7 +14,7 @@ import id.perumdamts.kepegawaian.repositories.kepegawaian.RiwayatMutasiRepositor
 import id.perumdamts.kepegawaian.repositories.master.jpa.GolonganRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JabatanRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.OrganisasiRepository;
-import id.perumdamts.kepegawaian.repositories.master.ProfesiRepository;
+import id.perumdamts.kepegawaian.repositories.master.jpa.ProfesiRepository;
 import id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk.GenericSkService;
 import id.perumdamts.kepegawaian.utils.DetailFromList;
 import lombok.RequiredArgsConstructor;

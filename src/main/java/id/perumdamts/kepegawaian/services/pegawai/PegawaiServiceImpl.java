@@ -16,6 +16,7 @@ import id.perumdamts.kepegawaian.repositories.master.*;
 import id.perumdamts.kepegawaian.repositories.master.jpa.GolonganRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JabatanRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.OrganisasiRepository;
+import id.perumdamts.kepegawaian.repositories.master.jpa.ProfesiRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.RumahDinasRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiPendapatanNonPajakRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiProfilRepository;

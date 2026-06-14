@@ -7,7 +7,7 @@ import id.perumdamts.kepegawaian.exceptions.ConflictException;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.mapper.master.alatKerja.AlatKerjaMapper;
 import id.perumdamts.kepegawaian.repositories.master.jpa.AlatKerjaRepository;
-import id.perumdamts.kepegawaian.repositories.master.ProfesiRepository;
+import id.perumdamts.kepegawaian.repositories.master.jpa.ProfesiRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
