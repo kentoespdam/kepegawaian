@@ -1,21 +1,21 @@
-package id.perumdamts.kepegawaian.services.master.rumahDinas;
+package id.perumdamts.kepegawaian.repositories.master.jooq;
 
 import id.perumdamts.kepegawaian.dto.master.rumahDinas.RumahDinasIndexQuery;
 import id.perumdamts.kepegawaian.dto.master.rumahDinas.RumahDinasQuery;
 import id.perumdamts.kepegawaian.entities.master.RumahDinas;
-import id.perumdamts.kepegawaian.repositories.master.RumahDinasRepository;
+import id.perumdamts.kepegawaian.repositories.master.jpa.RumahDinasRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Repository
 @RequiredArgsConstructor
-public class RumahDinasQueries {
+public class RumahDinasQueryRepository {
     private final RumahDinasRepository repository;
 
     public Page<RumahDinasQuery> pageQuery(RumahDinasIndexQuery query) {

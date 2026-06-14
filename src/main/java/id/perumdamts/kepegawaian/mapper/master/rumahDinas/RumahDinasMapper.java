@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.services.master.rumahDinas;
+package id.perumdamts.kepegawaian.mapper.master.rumahDinas;
 
 import id.perumdamts.kepegawaian.dto.master.rumahDinas.RumahDinasPostRequest;
 import id.perumdamts.kepegawaian.entities.master.RumahDinas;
