@@ -9,7 +9,7 @@ import id.perumdamts.kepegawaian.entities.master.JenisKitas;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.KartuIdentitas;
 import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
-import id.perumdamts.kepegawaian.repositories.master.JenisKitasRepository;
+import id.perumdamts.kepegawaian.repositories.master.jpa.JenisKitasRepository;
 import id.perumdamts.kepegawaian.repositories.profil.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.KartuIdentitasRepository;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilService;

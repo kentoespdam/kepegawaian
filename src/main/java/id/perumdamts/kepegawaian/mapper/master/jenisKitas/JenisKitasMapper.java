@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.services.master.jenisKitas;
+package id.perumdamts.kepegawaian.mapper.master.jenisKitas;
 
 import id.perumdamts.kepegawaian.dto.master.jenisKitas.JenisKitasPostRequest;
 import id.perumdamts.kepegawaian.entities.master.JenisKitas;
