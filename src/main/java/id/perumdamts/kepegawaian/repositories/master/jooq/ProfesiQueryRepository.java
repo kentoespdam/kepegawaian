@@ -1,0 +1,72 @@
+package id.perumdamts.kepegawaian.repositories.master.jooq;
+
+import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiIndexQuery;
+import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiQuery;
+import lombok.RequiredArgsConstructor;
+import org.jooq.Condition;
+import org.jooq.DSLContext;
+import org.jooq.impl.DSL;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+import static id.perumdamts.kepegawaian.jooq.tables.Grade.GRADE;
+import static id.perumdamts.kepegawaian.jooq.tables.Jabatan.JABATAN;
+import static id.perumdamts.kepegawaian.jooq.tables.Level.LEVEL;
+import static id.perumdamts.kepegawaian.jooq.tables.Organisasi.ORGANISASI;
+import static id.perumdamts.kepegawaian.jooq.tables.Profesi.PROFESI;
+
+@Repository
+@RequiredArgsConstructor
+public class ProfesiQueryRepository {
+    private final DSLContext dsl;
+
+    public Page<ProfesiQuery> pageQuery(ProfesiIndexQuery query) {
+        var sortField = switch (query.getSortBy()) {
+            case "nama" -> PROFESI.NAMA;
+            case "jabatanId" -> PROFESI.JABATAN_ID;
+            case "levelId" -> PROFESI.LEVEL_ID;
+            case "gradeId" -> PROFESI.GRADE_ID;
+            default -> PROFESI.ID;
+        };
+        var sortOrder = "asc".equalsIgnoreCase(query.getSortDirection()) ? sortField.asc() : sortField.desc();
+        Condition where = baseWhere(query);
+        var count = dsl.selectCount().from(PROFESI).where(where).fetchOne(0, Long.class);
+        var data = dsl.select(ProfesiSelects.PROFESI_COLUMNS)
+                .from(PROFESI)
+                .leftJoin(ORGANISASI).on(PROFESI.ORGANISASI_ID.eq(ORGANISASI.ID))
+                .leftJoin(JABATAN).on(PROFESI.JABATAN_ID.eq(JABATAN.ID))
+                .leftJoin(LEVEL).on(PROFESI.LEVEL_ID.eq(LEVEL.ID))
+                .leftJoin(GRADE).on(PROFESI.GRADE_ID.eq(GRADE.ID))
+                .where(where)
+                .orderBy(sortOrder)
+                .limit(query.getSize())
+                .offset(query.getPage() * query.getSize())
+                .fetch(record -> ProfesiRowMapper.toQuery(record.intoMap()));
+        return new PageImpl<>(data, PageRequest.of(query.getPage(), query.getSize()), count);
+    }
+
+    public List<ProfesiQuery> listQuery() {
+        return dsl.select(ProfesiSelects.PROFESI_COLUMNS)
+                .from(PROFESI)
+                .leftJoin(ORGANISASI).on(PROFESI.ORGANISASI_ID.eq(ORGANISASI.ID))
+                .leftJoin(JABATAN).on(PROFESI.JABATAN_ID.eq(JABATAN.ID))
+                .leftJoin(LEVEL).on(PROFESI.LEVEL_ID.eq(LEVEL.ID))
+                .leftJoin(GRADE).on(PROFESI.GRADE_ID.eq(GRADE.ID))
+                .where(PROFESI.IS_DELETED.eq(false))
+                .orderBy(PROFESI.NAMA.asc())
+                .fetch(record -> ProfesiRowMapper.toQuery(record.intoMap()));
+    }
+
+    private Condition baseWhere(ProfesiIndexQuery q) {
+        return PROFESI.IS_DELETED.eq(false)
+                .and(q.getOrganisasiId() != null ? PROFESI.ORGANISASI_ID.eq(q.getOrganisasiId()) : DSL.noCondition())
+                .and(q.getJabatanId() != null ? PROFESI.JABATAN_ID.eq(q.getJabatanId()) : DSL.noCondition())
+                .and(q.getLevelId() != null ? PROFESI.LEVEL_ID.eq(q.getLevelId()) : DSL.noCondition())
+                .and(q.getGradeId() != null ? PROFESI.GRADE_ID.eq(q.getGradeId()) : DSL.noCondition())
+                .and(q.getNama() != null ? PROFESI.NAMA.likeIgnoreCase("%" + q.getNama() + "%") : DSL.noCondition());
+    }
+}
