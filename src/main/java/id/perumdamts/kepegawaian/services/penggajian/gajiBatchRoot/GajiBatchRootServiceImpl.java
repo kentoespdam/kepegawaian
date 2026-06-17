@@ -103,6 +103,7 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
     }
 
     @Override
+    @Transactional
     public SavedStatus<?> reprocess(String id, GajiBatchRootProcessRequest request) {
         try {
             GajiBatchRoot entity = repository.findById(request.getId())
@@ -116,6 +117,7 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
     }
 
     @Override
+    @Transactional
     public SavedStatus<?> verify1(String id, GajiBatchRootProcessRequest request) {
         try {
             Optional<GajiBatchRoot> byId = repository.findById(request.getId());
@@ -130,6 +132,7 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
     }
 
     @Override
+    @Transactional
     public SavedStatus<?> verify2(String id, GajiBatchRootProcessRequest request) {
         try {
             Optional<GajiBatchRoot> byId = repository.findById(request.getId());
@@ -144,6 +147,7 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
     }
 
     @Override
+    @Transactional
     public SavedStatus<?> accept(String id, GajiBatchRootProcessRequest request) {
         try {
             Optional<GajiBatchRoot> byId = repository.findById(request.getId());
@@ -180,7 +184,20 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
         entity.setJabatanVerifikasiTahap1(request.getJabatan());
         GajiBatchRoot save = repository.save(entity);
         if (save.getStatus().equals(EProsesGaji.PENDING.ordinal())) {
-            kafkaTemplate.send(PENGGAJIAN_TOPIC, entity.getId());
+            final String batchId = save.getId();
+            TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+                @Override
+                public void afterCommit() {
+                    kafkaTemplate.send(PENGGAJIAN_TOPIC, batchId).whenComplete((result, ex) -> {
+                        if (ex != null) {
+                            log.error("Failed to publish batch {} to topic {}", batchId, PENGGAJIAN_TOPIC, ex);
+                        } else if (result != null && result.getRecordMetadata() != null) {
+                            log.info("Published batch {} to topic {}: offset={}",
+                                    batchId, PENGGAJIAN_TOPIC, result.getRecordMetadata().offset());
+                        }
+                    });
+                }
+            });
         }
     }
 
