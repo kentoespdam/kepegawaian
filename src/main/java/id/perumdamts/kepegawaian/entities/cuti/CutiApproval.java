@@ -12,6 +12,7 @@ import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 @Entity
 @Table(indexes = {
@@ -19,7 +20,7 @@ import org.hibernate.envers.Audited;
 })
 @Getter
 @Setter
-@Audited
+@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 @SQLDelete(sql = "UPDATE cuti_pegawai SET is_deleted = true where id = ?")
 @SQLRestriction("is_deleted = FALSE")
 @NoArgsConstructor

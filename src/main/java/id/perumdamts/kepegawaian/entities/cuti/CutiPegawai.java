@@ -17,6 +17,7 @@ import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 import java.time.LocalDate;
 
@@ -26,7 +27,7 @@ import java.time.LocalDate;
 })
 @Getter
 @Setter
-@Audited
+@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 @SQLDelete(sql = "UPDATE cuti_pegawai SET is_deleted = true where id = ?")
 @SQLRestriction("is_deleted = FALSE")
 @NoArgsConstructor
