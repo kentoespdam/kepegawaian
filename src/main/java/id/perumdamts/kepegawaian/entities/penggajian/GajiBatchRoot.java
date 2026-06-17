@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.entities.penggajian;
 
+import id.perumdamts.kepegawaian.entities.commons.EProsesGaji;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -44,7 +45,9 @@ public class GajiBatchRoot implements Serializable {
     @Id
     private String id;
     private String periode;
-    private Integer status = 0;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 32)
+    private EProsesGaji status;
     private Integer totalPegawai;
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

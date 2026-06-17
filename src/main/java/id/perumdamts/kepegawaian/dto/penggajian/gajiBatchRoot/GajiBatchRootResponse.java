@@ -46,7 +46,7 @@ public class GajiBatchRootResponse {
         GajiBatchRootResponse response = new GajiBatchRootResponse();
         response.setId(entity.getId());
         response.setPeriode(entity.getPeriode());
-        response.setStatus(EProsesGaji.values()[entity.getStatus()]);
+        response.setStatus(entity.getStatus());
         response.setTotalPegawai(entity.getTotalPegawai());
         response.setTanggalProses(entity.getTanggalProses());
         response.setDiProsesOleh(entity.getDiProsesOleh());

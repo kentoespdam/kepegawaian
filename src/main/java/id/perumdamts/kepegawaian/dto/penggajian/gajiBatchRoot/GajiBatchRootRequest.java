@@ -15,19 +15,19 @@ import java.util.Objects;
 public class GajiBatchRootRequest extends CommonPageRequest {
     private String periode;
     private EProsesGaji status;
-    private EProsesGaji ltStatus;
-    private EProsesGaji gtStatus;
+    private String ltStatus;
+    private String gtStatus;
 
     public Specification<GajiBatchRoot> getSpecification() {
         SpecificationBuilder<GajiBatchRoot> builder = SpecificationBuilder.<GajiBatchRoot>of()
                 .addLike(periode, "periode");
 
         if (Objects.nonNull(status))
-            builder.addEqual(status.ordinal(), "status");
+            builder.addEqual(status, "status");
         if (Objects.nonNull(ltStatus))
-            builder.addLessThanOrEqual(ltStatus.ordinal(), "status");
+            builder.addLessThanOrEqual(ltStatus, "status");
         if (Objects.nonNull(gtStatus))
-            builder.addGreaterThanOrEqual(gtStatus.ordinal(), "status");
+            builder.addGreaterThanOrEqual(gtStatus, "status");
         return builder.build();
     }
 }

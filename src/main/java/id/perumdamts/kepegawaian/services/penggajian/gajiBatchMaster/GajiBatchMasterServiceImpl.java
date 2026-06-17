@@ -66,7 +66,7 @@ public class GajiBatchMasterServiceImpl implements GajiBatchMasterService {
         Specification<GajiBatchMaster> specification = SpecificationBuilder.<GajiBatchMaster>of()
                 .addEqual(pegawaiId, "pegawaiId")
                 .addCustom((root, cb) ->
-                        cb.greaterThanOrEqualTo(root.get("gajiBatchRoot").get("status"), EProsesGaji.FINISHED.value())
+                        cb.greaterThanOrEqualTo(root.get("gajiBatchRoot").get("status"), EProsesGaji.FINISHED.name())
                 )
                 .build();
 

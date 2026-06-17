@@ -165,8 +165,8 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
     public boolean delete(String id) {
         Optional<GajiBatchRoot> byId = repository.findById(id);
         if (byId.isEmpty()
-                || byId.get().getStatus().equals(EProsesGaji.PROSES.value())
-                || byId.get().getStatus().equals(EProsesGaji.FINISHED.value()))
+                || byId.get().getStatus() == EProsesGaji.PROSES
+                || byId.get().getStatus() == EProsesGaji.FINISHED)
             return false;
         byId.get().setIsDeleted(true);
         repository.save(byId.get());
@@ -175,15 +175,15 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
 
     private void reprocessHandler(GajiBatchRoot entity, GajiBatchRootProcessRequest request) {
         switch (request.getPhase()) {
-            case WAIT_APPROVAL -> entity.setStatus(EProsesGaji.WAIT_VERIFICATION_PHASE_2.ordinal());
-            case WAIT_VERIFICATION_PHASE_2 -> entity.setStatus(EProsesGaji.WAIT_VERIFICATION_PHASE_1.ordinal());
-            case WAIT_VERIFICATION_PHASE_1 -> entity.setStatus(EProsesGaji.PENDING.ordinal());
+            case WAIT_APPROVAL -> entity.setStatus(EProsesGaji.WAIT_VERIFICATION_PHASE_2);
+            case WAIT_VERIFICATION_PHASE_2 -> entity.setStatus(EProsesGaji.WAIT_VERIFICATION_PHASE_1);
+            case WAIT_VERIFICATION_PHASE_1 -> entity.setStatus(EProsesGaji.PENDING);
         }
         entity.setTanggalVerifikasiTahap1(LocalDateTime.now());
         entity.setDiVerifikasiOlehTahap1(request.getNama());
         entity.setJabatanVerifikasiTahap1(request.getJabatan());
         GajiBatchRoot save = repository.save(entity);
-        if (save.getStatus().equals(EProsesGaji.PENDING.ordinal())) {
+        if (save.getStatus() == EProsesGaji.PENDING) {
             final String batchId = save.getId();
             TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
                 @Override

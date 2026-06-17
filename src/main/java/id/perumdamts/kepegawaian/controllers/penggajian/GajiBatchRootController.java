@@ -33,7 +33,7 @@ public class GajiBatchRootController {
     public ResponseEntity<?> byPeriode(@PathVariable String periode, @PathVariable EProsesGaji status) {
         GajiBatchRootRequest request = new GajiBatchRootRequest();
         request.setPeriode(periode);
-        request.setGtStatus(status);
+        request.setGtStatus(status.name());
 
         return CustomResult.any(service.findAll(request));
     }
