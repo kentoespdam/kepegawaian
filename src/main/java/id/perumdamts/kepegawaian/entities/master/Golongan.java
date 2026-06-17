@@ -1,6 +1,6 @@
 package id.perumdamts.kepegawaian.entities.master;
 
-import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
+import id.perumdamts.kepegawaian.entities.commons.MasterBaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
@@ -9,8 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
-import org.hibernate.envers.Audited;
 
 @Entity
 @Table(indexes = {
@@ -23,9 +21,7 @@ import org.hibernate.envers.Audited;
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE golongan SET is_deleted = TRUE WHERE id=?")
-@SQLRestriction("is_deleted = FALSE")
-@Audited
-public class Golongan extends IdsAbstract {
+public class Golongan extends MasterBaseEntity {
     private String golongan;
     private String pangkat;
 

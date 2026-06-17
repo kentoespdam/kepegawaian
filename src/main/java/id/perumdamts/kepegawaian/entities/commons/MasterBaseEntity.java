@@ -48,6 +48,10 @@ public abstract class MasterBaseEntity implements Serializable {
     @Column(name = "is_deleted")
     private Boolean isDeleted = false;
 
+    protected MasterBaseEntity(Long id) {
+        this.id = id;
+    }
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;

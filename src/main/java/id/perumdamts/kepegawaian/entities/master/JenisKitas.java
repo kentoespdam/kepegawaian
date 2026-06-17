@@ -1,13 +1,11 @@
 package id.perumdamts.kepegawaian.entities.master;
 
-import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
+import id.perumdamts.kepegawaian.entities.commons.MasterBaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
-import org.hibernate.envers.Audited;
 
 @Entity
 @Table(indexes = {
@@ -19,10 +17,7 @@ import org.hibernate.envers.Audited;
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE jenis_kitas SET is_deleted = TRUE WHERE id = ?")
-@SQLRestriction("is_deleted = FALSE")
-
-@Audited
-public class JenisKitas extends IdsAbstract {
+public class JenisKitas extends MasterBaseEntity {
     private String nama;
 
     public JenisKitas(Long jenisKitasId) {

@@ -1,12 +1,11 @@
 package id.perumdamts.kepegawaian.entities.master;
 
-import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
+import id.perumdamts.kepegawaian.entities.commons.MasterBaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Table(indexes = {
@@ -19,8 +18,7 @@ import org.hibernate.annotations.SQLRestriction;
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE jenjang_pendidikan SET is_deleted = TRUE WHERE id = ?")
-@SQLRestriction("is_deleted = FALSE")
-public class JenjangPendidikan extends IdsAbstract {
+public class JenjangPendidikan extends MasterBaseEntity {
     private String nama;
     private String shortName;
     private Integer seq;

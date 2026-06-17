@@ -1,15 +1,11 @@
 package id.perumdamts.kepegawaian.entities.master;
 
-import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
+import id.perumdamts.kepegawaian.entities.commons.MasterBaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
-import org.hibernate.envers.Audited;
-import org.hibernate.envers.NotAudited;
-import org.hibernate.envers.RelationTargetAuditMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,13 +21,10 @@ import java.util.Set;
 @Getter
 @Setter
 @SQLDelete(sql = "UPDATE jenis_sp SET is_deleted = TRUE WHERE id = ?")
-@SQLRestriction("is_deleted = FALSE")
-@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
-public class JenisSp extends IdsAbstract {
+public class JenisSp extends MasterBaseEntity {
     @Column(name = "kode", nullable = false, columnDefinition = "VARCHAR(10)")
     private String kode;
     private String nama;
-    @NotAudited
     @OneToMany(mappedBy = "jenisSp")
     private List<Sanksi> sanksiSp = new ArrayList<>();
 

@@ -1,17 +1,13 @@
 package id.perumdamts.kepegawaian.entities.master;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
+import id.perumdamts.kepegawaian.entities.commons.MasterBaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
-import org.hibernate.envers.Audited;
-import org.hibernate.envers.NotAudited;
-import org.hibernate.envers.RelationTargetAuditMode;
 
 import java.util.List;
 
@@ -25,9 +21,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE profesi SET is_deleted=true WHERE id=?")
-@SQLRestriction("is_deleted = FALSE")
-@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
-public class Profesi extends IdsAbstract {
+public class Profesi extends MasterBaseEntity {
     private String nama;
     private String detail;
     private String resiko;
@@ -45,10 +39,8 @@ public class Profesi extends IdsAbstract {
     @ManyToOne
     private Grade grade;
 
-    @NotAudited
     @OneToMany(mappedBy = "profesi")
     private List<AlatKerja> alatKerjaList;
-    @NotAudited
     @OneToMany(mappedBy = "profesi")
     private List<Apd> apdList;
 

@@ -1,15 +1,12 @@
 package id.perumdamts.kepegawaian.entities.master;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
+import id.perumdamts.kepegawaian.entities.commons.MasterBaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
-import org.hibernate.envers.Audited;
-import org.hibernate.envers.RelationTargetAuditMode;
 
 import java.util.List;
 
@@ -24,9 +21,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE jabatan SET is_deleted=true WHERE id=?")
-@SQLRestriction("is_deleted = FALSE")
-@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
-public class Jabatan extends IdsAbstract {
+public class Jabatan extends MasterBaseEntity {
     private String kode;
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)

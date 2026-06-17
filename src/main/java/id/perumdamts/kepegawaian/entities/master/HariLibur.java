@@ -1,12 +1,10 @@
 package id.perumdamts.kepegawaian.entities.master;
 
 import id.perumdamts.kepegawaian.entities.commons.EJenisLibur;
-import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
+import id.perumdamts.kepegawaian.entities.commons.MasterBaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
-import org.hibernate.envers.Audited;
 
 import java.time.LocalDate;
 
@@ -18,12 +16,10 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @ToString
-@Audited
 @SQLDelete(sql = "UPDATE hari_libur SET is_deleted = true where id = ?")
-@SQLRestriction("is_deleted = FALSE")
 @NoArgsConstructor
 @AllArgsConstructor
-public class HariLibur extends IdsAbstract {
+public class HariLibur extends MasterBaseEntity {
     private LocalDate tanggal;
     @Enumerated(EnumType.ORDINAL)
     private EJenisLibur jenisLibur;

@@ -1,7 +1,7 @@
 package id.perumdamts.kepegawaian.entities.master;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
+import id.perumdamts.kepegawaian.entities.commons.MasterBaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,9 +10,6 @@ import lombok.Setter;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
-import org.hibernate.envers.Audited;
-import org.hibernate.envers.RelationTargetAuditMode;
 
 @Entity
 @Table(indexes = {
@@ -26,10 +23,7 @@ import org.hibernate.envers.RelationTargetAuditMode;
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE organisasi SET is_deleted=true WHERE id=?")
-@SQLRestriction("is_deleted = FALSE")
-
-@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
-public class Organisasi extends IdsAbstract {
+public class Organisasi extends MasterBaseEntity {
     private String kode;
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)

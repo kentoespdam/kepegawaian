@@ -1,12 +1,9 @@
 package id.perumdamts.kepegawaian.entities.master;
 
-import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
+import id.perumdamts.kepegawaian.entities.commons.MasterBaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
-import org.hibernate.envers.Audited;
-import org.hibernate.envers.RelationTargetAuditMode;
 
 
 @Entity
@@ -20,9 +17,7 @@ import org.hibernate.envers.RelationTargetAuditMode;
 @Setter
 @ToString
 @SQLDelete(sql = "UPDATE sanksi_sp SET is_deleted = TRUE WHERE id = ?")
-@SQLRestriction("is_deleted = FALSE")
-@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
-public class Sanksi extends IdsAbstract {
+public class Sanksi extends MasterBaseEntity {
     @Column(name = "kode", nullable = false, columnDefinition = "VARCHAR(10)")
     private String kode;
     @Column(columnDefinition = "TEXT")
