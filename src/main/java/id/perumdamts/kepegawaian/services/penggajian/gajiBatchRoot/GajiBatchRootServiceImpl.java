@@ -98,7 +98,7 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
             });
             return SavedStatus.build(ESaveStatus.SUCCESS, "Batch Gaji Saved");
         } catch (Exception e) {
-            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+            return logAndBuildFailure("save", e);
         }
     }
 
@@ -111,7 +111,7 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
             reprocessHandler(entity, request);
             return SavedStatus.build(ESaveStatus.SUCCESS, "Reprocess Penggajian Executed");
         } catch (Exception e) {
-            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+            return logAndBuildFailure("reprocess", e);
         }
     }
 
@@ -125,7 +125,7 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
             repository.save(gajiBatchRoot);
             return SavedStatus.build(ESaveStatus.SUCCESS, "Verifikasi Tahap 1 Saved");
         } catch (Exception e) {
-            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+            return logAndBuildFailure("verify1", e);
         }
     }
 
@@ -139,7 +139,7 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
             repository.save(gajiBatchRoot);
             return SavedStatus.build(ESaveStatus.SUCCESS, "Verifikasi Tahap 2 Saved");
         } catch (Exception e) {
-            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+            return logAndBuildFailure("verify2", e);
         }
     }
 
@@ -153,7 +153,7 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
             repository.save(gajiBatchRoot);
             return SavedStatus.build(ESaveStatus.SUCCESS, "Batch Accepted");
         } catch (Exception e) {
-            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+            return logAndBuildFailure("accept", e);
         }
     }
 
@@ -182,5 +182,10 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
         if (save.getStatus().equals(EProsesGaji.PENDING.ordinal())) {
             kafkaTemplate.send(PENGGAJIAN_TOPIC, entity.getId());
         }
+    }
+
+    private SavedStatus<?> logAndBuildFailure(String operation, Exception e) {
+        log.error("GajiBatchRoot {} failed", operation, e);
+        return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
     }
 }
