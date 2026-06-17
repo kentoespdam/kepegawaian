@@ -14,8 +14,10 @@ public class AuditAwareImpl implements AuditorAware<String> {
     @SuppressWarnings("NullableProblems")
     @Override
     public Optional<String> getCurrentAuditor() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        AppwriteUser principal = (AppwriteUser) authentication.getPrincipal();
-        return Optional.of(principal.get$id());
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !(auth.getPrincipal() instanceof AppwriteUser user)) {
+            return Optional.of("system");
+        }
+        return Optional.of(user.get$id());
     }
 }
