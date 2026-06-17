@@ -37,7 +37,6 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
     private final KafkaTemplate<String, String> kafkaTemplate;
 
     @Override
-    @Transactional
     public Page<GajiBatchRootResponse> findAll(GajiBatchRootRequest request) {
         if (request.getSortBy() == null) {
             request.setSortBy("id");
@@ -49,6 +48,7 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
 
 
     @Override
+    @Transactional
     public SavedStatus<?> save(GajiBatchRootPostRequest request) {
         try {
             Optional<GajiBatchRoot> byId = repository.findById(request.getPeriode());
