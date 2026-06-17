@@ -17,16 +17,20 @@ import id.perumdamts.kepegawaian.utils.ProcessPotonganTkk;
 import id.perumdamts.kepegawaian.utils.UploadResultUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class GajiBatchRootServiceImpl implements GajiBatchRootService {
     @Value("${spring.kafka.topic}")
     private String PENGGAJIAN_TOPIC;
@@ -78,7 +82,20 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
                 gajiBatchRootLampiranRepository.save(gajiBatchRootLampiran);
                 processPotonganTkk.process(entity.getId());
             }
-            kafkaTemplate.send(PENGGAJIAN_TOPIC, save.getId());
+            final String batchId = save.getId();
+            TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+                @Override
+                public void afterCommit() {
+                    kafkaTemplate.send(PENGGAJIAN_TOPIC, batchId).whenComplete((result, ex) -> {
+                        if (ex != null) {
+                            log.error("Failed to publish batch {} to topic {}", batchId, PENGGAJIAN_TOPIC, ex);
+                        } else if (result != null && result.getRecordMetadata() != null) {
+                            log.info("Published batch {} to topic {}: offset={}",
+                                    batchId, PENGGAJIAN_TOPIC, result.getRecordMetadata().offset());
+                        }
+                    });
+                }
+            });
             return SavedStatus.build(ESaveStatus.SUCCESS, "Batch Gaji Saved");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
