@@ -34,7 +34,7 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
     private final FileUploadUtil fileUploadUtil;
     private final ProcessPotonganTkk processPotonganTkk;
     private final GajiBatchRootLampiranRepository gajiBatchRootLampiranRepository;
-    private final KafkaTemplate<String, Object> kafkaTemplate;
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
     @Override
     @Transactional
