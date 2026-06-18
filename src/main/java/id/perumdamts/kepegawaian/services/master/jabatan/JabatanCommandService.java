@@ -8,7 +8,7 @@ import id.perumdamts.kepegawaian.exceptions.ConflictException;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.mapper.master.jabatan.JabatanMapper;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JabatanRepository;
-import id.perumdamts.kepegawaian.repositories.master.LevelRepository;
+import id.perumdamts.kepegawaian.repositories.master.jpa.LevelRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.OrganisasiRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

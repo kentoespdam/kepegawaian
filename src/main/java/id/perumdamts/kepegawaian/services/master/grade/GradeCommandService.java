@@ -7,7 +7,7 @@ import id.perumdamts.kepegawaian.exceptions.ConflictException;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.mapper.master.grade.GradeMapper;
 import id.perumdamts.kepegawaian.repositories.master.jpa.GradeRepository;
-import id.perumdamts.kepegawaian.repositories.master.LevelRepository;
+import id.perumdamts.kepegawaian.repositories.master.jpa.LevelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

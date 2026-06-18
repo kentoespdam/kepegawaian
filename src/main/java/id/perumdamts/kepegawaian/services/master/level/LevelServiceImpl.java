@@ -6,7 +6,7 @@ import id.perumdamts.kepegawaian.dto.master.level.LevelPostRequest;
 import id.perumdamts.kepegawaian.dto.master.level.LevelRequest;
 import id.perumdamts.kepegawaian.dto.master.level.LevelResponse;
 import id.perumdamts.kepegawaian.entities.master.Level;
-import id.perumdamts.kepegawaian.repositories.master.LevelRepository;
+import id.perumdamts.kepegawaian.repositories.master.jpa.LevelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;

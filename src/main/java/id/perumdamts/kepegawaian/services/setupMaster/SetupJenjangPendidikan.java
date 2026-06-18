@@ -1,7 +1,7 @@
 package id.perumdamts.kepegawaian.services.setupMaster;
 
 import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
-import id.perumdamts.kepegawaian.repositories.master.JenjangPendidikanRepository;
+import id.perumdamts.kepegawaian.repositories.master.jpa.JenjangPendidikanRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

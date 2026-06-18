@@ -7,7 +7,7 @@ import id.perumdamts.kepegawaian.dto.master.jenjangPendidikan.JenjangPendidikanP
 import id.perumdamts.kepegawaian.dto.master.jenjangPendidikan.JenjangPendidikanRequest;
 import id.perumdamts.kepegawaian.dto.master.jenjangPendidikan.JenjangPendidikanResponse;
 import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
-import id.perumdamts.kepegawaian.repositories.master.JenjangPendidikanRepository;
+import id.perumdamts.kepegawaian.repositories.master.jpa.JenjangPendidikanRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
