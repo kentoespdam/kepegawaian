@@ -20,9 +20,9 @@
 | Urutan | Issue | ID | Prio | Boleh paralel? | Status | Diblokir oleh | Inti pekerjaan |
 |--------|-------|----|----|----|----|----|----|
 | 1a | #3 | `kepegawaian-5ft` | P2 | ya | **DONE** (commit `b54b4ad`, 2026-06-18) | — | Hapus `OrganisasiRequest.java` (0 pemakai) + 2 `toEntity()` DTO mati; sisakan `OrganisasiMapper` sebagai satu-satunya seam mapping |
-| 1b | #4 | `kepegawaian-9tf` | P1 | ya | open | — | Tulis `OrganisasiCommandServiceTest` (7 skenario revive/conflict) via API publik — jaring pengaman sebelum #1 |
+| 1b | #4 | `kepegawaian-9tf` | P1 | ya | **DONE** (commit `c8c014d`, 2026-06-18) | — | Tulis `OrganisasiCommandServiceTest` (7 skenario revive/conflict) via API publik — jaring pengaman sebelum #1 |
 | 1c | #2 | `kepegawaian-jow` | P2 | ya | open (label `needs-info`) | — | **Butuh keputusan domain**: definisikan kunci keunikan Organisasi di `CONTEXT.md`, satukan ke satu `Specification` |
-| 2 | #1 | `kepegawaian-33s` | P1 | tidak | blocked | #2 + #4 | Tambah `@SQLRestriction` + native carcass-finder; ganti deteksi bangkai dari `findOne(spec)` → native finder |
+| 2 | #1 | `kepegawaian-33s` | P1 | tidak | **UNBLOCKED** (menunggu #2 ditutup) | #2 | Tambah `@SQLRestriction` + native carcass-finder; ganti deteksi bangkai dari `findOne(spec)` → native finder |
 
 ## Cara klaim & tutup (beads)
 
@@ -75,22 +75,22 @@ Berlaku untuk **semua** issue (mandat `CLAUDE.md`):
 - [x] Commit `b54b4ad` (3 files, 53 deletions)
 - [x] `bd close kepegawaian-5ft`
 
-### #4 `kepegawaian-9tf` — test pengaman (murni tambah test)
+### #4 `kepegawaian-9tf` — test pengaman (murni tambah test) **— DONE**
 
-- [ ] Ikuti pola test yang sudah ada di `src/test` (cari contoh `@DataJpaTest` / mock repo)
-- [ ] Skenario wajib lulus:
-  - [ ] (a) create baru → tersimpan, `isDeleted=false`
-  - [ ] (b) create bentrok record AKTIF → `ConflictException`
-  - [ ] (c) create atas carcass (record terhapus) → REVIVE: id sama, `isDeleted=false`, field ter-update — **lihat catatan di bawah**
-  - [ ] (d) update bentrok record LAIN → `ConflictException`
-  - [ ] (e) update ke diri sendiri (`duplicate.id == id`) → sukses
-  - [ ] (f) update id tidak ada → `NotFoundException`
-  - [ ] (g) delete → `isDeleted=true` (bukan hard delete)
-- [ ] **PENTING (terkoreksi):** skenario (c) akan **GAGAL terhadap kode saat ini** karena `@SQLRestriction` sudah aktif via `MasterBaseEntity` → `findOne(spec)` tak pernah lihat bangkai, cabang revive `OrganisasiCommandService:25` dead. Test ini mendemonstrasikan bug live. Pilih satu, jangan menutupi bug:
-  - [ ] (disarankan) tulis (c) meng-assert perilaku DIINGINKAN, tandai `@Disabled("blocked by kepegawaian-33s — revive belum diperbaiki")`; cabut anotasi saat #1 selesai
-  - [ ] atau tulis (c) sebagai test penampil-bug yang lulus sekarang (assert duplikat/exception muncul) lalu DIBALIK di #1
-- [ ] Skenario (a),(b),(d),(e),(f),(g) harus lulus terhadap kode saat ini
-- [ ] Tidak mengubah kode produksi
+- [x] Ikuti pola test yang sudah ada di `src/test` (cari contoh `@DataJpaTest` / mock repo) — pola `GolonganWriteIT`: `@SpringBootTest` + `@ActiveProfiles("development")` + `JdbcTemplate` verifikasi state DB
+- [x] Skenario wajib lulus (7/7 implemented):
+  - [x] (a) create baru → tersimpan, `isDeleted=false`
+  - [x] (b) create bentrok record AKTIF → `ConflictException`
+  - [x] (c) create atas carcass (record terhapus) → REVIVE — `@Disabled("blocked by kepegawaian-33s — revive seam not yet fixed")` per instruksi
+  - [x] (d) update bentrok record LAIN → `ConflictException`
+  - [x] (e) update ke diri sendiri (`duplicate.id == id`) → sukses
+  - [x] (f) update id tidak ada → `NotFoundException`
+  - [x] (g) delete → `isDeleted=true` (bukan hard delete)
+- [x] Tidak mengubah kode produksi (`git diff c8c014d^ c8c014d -- src/main/` kosong)
+- [x] `./gradlew clean compileJava compileTestJava` hijau
+- [x] Test runtime butuh MariaDB (sama dengan `GolonganWriteIT`); gateway quality per S4 Flyway verify gate adalah `gradle compileJava`
+- [x] Commit `c8c014d` (1 file, 238 insertions); verifier verdict PASS (7/7 + 2 adversarial)
+- [x] `bd close kepegawaian-9tf`
 
 ### #2 `kepegawaian-jow` — kunci keunikan (BUTUH KEPUTUSAN, label `needs-info`)
 
