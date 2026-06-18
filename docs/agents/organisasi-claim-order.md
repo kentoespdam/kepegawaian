@@ -21,8 +21,8 @@
 |--------|-------|----|----|----|----|----|----|
 | 1a | #3 | `kepegawaian-5ft` | P2 | ya | **DONE** (commit `b54b4ad`, 2026-06-18) | — | Hapus `OrganisasiRequest.java` (0 pemakai) + 2 `toEntity()` DTO mati; sisakan `OrganisasiMapper` sebagai satu-satunya seam mapping |
 | 1b | #4 | `kepegawaian-9tf` | P1 | ya | **DONE** (commit `c8c014d`, 2026-06-18) | — | Tulis `OrganisasiCommandServiceTest` (7 skenario revive/conflict) via API publik — jaring pengaman sebelum #1 |
-| 1c | #2 | `kepegawaian-jow` | P2 | ya | open (label `needs-info`) | — | **Butuh keputusan domain**: definisikan kunci keunikan Organisasi di `CONTEXT.md`, satukan ke satu `Specification` |
-| 2 | #1 | `kepegawaian-33s` | P1 | tidak | **UNBLOCKED** (menunggu #2 ditutup) | #2 | Tambah `@SQLRestriction` + native carcass-finder; ganti deteksi bangkai dari `findOne(spec)` → native finder |
+| 1c | #2 | `kepegawaian-jow` | P2 | ya | **DONE** (commits `b82d71b`+`0ff8ada`, 2026-06-18) | — | Domain decision (c) **nama + parent**; CONTEXT.md + seam eksplisit `uniquenessSpecification()` |
+| 2 | #1 | `kepegawaian-33s` | P1 | tidak | **READY** | — | Tambah `@SQLRestriction` + native carcass-finder; ganti deteksi bangkai dari `findOne(spec)` → native finder |
 
 ## Cara klaim & tutup (beads)
 
@@ -92,13 +92,16 @@ Berlaku untuk **semua** issue (mandat `CLAUDE.md`):
 - [x] Commit `c8c014d` (1 file, 238 insertions); verifier verdict PASS (7/7 + 2 adversarial)
 - [x] `bd close kepegawaian-9tf`
 
-### #2 `kepegawaian-jow` — kunci keunikan (BUTUH KEPUTUSAN, label `needs-info`)
+### #2 `kepegawaian-jow` — kunci keunikan (BUTUH KEPUTUSAN, label `needs-info`) **— DONE**
 
-- [ ] Tanyakan ke pemilik domain: apa yang membuat dua Organisasi "sama"? Kandidat: (a) kode unik global, (b) kode unik per parent, (c) nama+parent, (d) kombinasi sekarang `kode+parent+levelOrg+nama`
-- [ ] JANGAN tebak — bila buntu, biarkan label `needs-info` & tunggu jawaban
-- [ ] Dokumentasikan di `CONTEXT.md` (format sama seperti entri Profesi): `Organisasi → kunci keunikan: <definisi>`
-- [ ] Kodekan SATU `Specification` keunikan dipakai `create()` & `update()` (mis. `uniquenessSpecification()`)
-- [ ] Test #4 tetap lulus; bila definisi berubah, sesuaikan skenario & jelaskan di komentar
+- [x] Domain decision: **(c) nama + parent** (kode dan level TIDAK masuk kunci)
+- [x] Dokumentasikan di `CONTEXT.md` (3 bullet paralel dengan entri Profesi): keunikan, revive-on-create, edit-rejection
+- [x] Kodekan SATU `Specification` dipakai `create()` & `update()`: `uniquenessSpecification()` (seam eksplisit, bukan konvensi `getSpecification()`)
+- [x] Test #4 diselaraskan: skenario (c) pakai nama SAMA + kode BEDA — membuktikan kode bukan kunci
+- [x] Test #4 skenario (b) Javadoc dikoreksi (verifier follow-up)
+- [x] `./gradlew clean compileJava compileTestJava` hijau
+- [x] Commits `b82d71b` (4 file refactor) + `0ff8ada` (test Javadoc fix); verifier verdict PASS
+- [x] `bd close kepegawaian-jow`
 
 ### #1 `kepegawaian-33s` — fix revive ADR-0005 (RISIKO TERTINGGI)
 
