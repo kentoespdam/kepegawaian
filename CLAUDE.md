@@ -81,7 +81,7 @@ Indexed as **kepegawaian**. See `.claude/skills/gitnexus/` for skill files.
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
 
-This project is indexed by GitNexus as **kepegawaian** (10163 symbols, 26434 relationships, 300 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
+This project is indexed by GitNexus as **kepegawaian** (10030 symbols, 26096 relationships, 300 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
 
 > If any GitNexus tool warns the index is stale, run `npx gitnexus analyze` in terminal first.
 
