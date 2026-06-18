@@ -22,7 +22,7 @@
 | 1a | #3 | `kepegawaian-5ft` | P2 | ya | **DONE** (commit `b54b4ad`, 2026-06-18) | — | Hapus `OrganisasiRequest.java` (0 pemakai) + 2 `toEntity()` DTO mati; sisakan `OrganisasiMapper` sebagai satu-satunya seam mapping |
 | 1b | #4 | `kepegawaian-9tf` | P1 | ya | **DONE** (commit `c8c014d`, 2026-06-18) | — | Tulis `OrganisasiCommandServiceTest` (7 skenario revive/conflict) via API publik — jaring pengaman sebelum #1 |
 | 1c | #2 | `kepegawaian-jow` | P2 | ya | **DONE** (commits `b82d71b`+`0ff8ada`, 2026-06-18) | — | Domain decision (c) **nama + parent**; CONTEXT.md + seam eksplisit `uniquenessSpecification()` |
-| 2 | #1 | `kepegawaian-33s` | P1 | tidak | **READY** | — | Tambah `@SQLRestriction` + native carcass-finder; ganti deteksi bangkai dari `findOne(spec)` → native finder |
+| 2 | #1 | `kepegawaian-33s` | P1 | tidak | **DONE** (commit `3ac8959`, 2026-06-18) | — | Native carcass-finder `findAnyByUniqueKey(nama, parentId)` di repo; `create()` swap dari `findOne(spec)` → native finder; `update()` tetap (edit-rejection benar); scenario (c) test un-`@Disabled` |
 
 ## Cara klaim & tutup (beads)
 
@@ -103,17 +103,31 @@ Berlaku untuk **semua** issue (mandat `CLAUDE.md`):
 - [x] Commits `b82d71b` (4 file refactor) + `0ff8ada` (test Javadoc fix); verifier verdict PASS
 - [x] `bd close kepegawaian-jow`
 
-### #1 `kepegawaian-33s` — fix revive ADR-0005 (RISIKO TERTINGGI)
+### #1 `kepegawaian-33s` — fix revive ADR-0005 (RISIKO TERTINGGI) **— DONE**
 
-- [ ] Pastikan #2 & #4 sudah CLOSED (`bd ready` menampilkan #1)
-- [ ] `gitnexus_impact` atas `Organisasi` DAN `OrganisasiCommandService`; bila HIGH/CRITICAL → eskalasi ke manager sebelum lanjut
-- [ ] Tambah `@SQLRestriction("is_deleted = FALSE")` di `Organisasi` entity
-- [ ] Tambah native carcass-finder di `OrganisasiRepository` mengikuti pola `AlasanBerhentiRepository` (cari record termasuk `is_deleted=true` berdasarkan kunci keunikan dari #2; nama jelas, mis. `findAnyByUniqueKey(...)`)
-- [ ] `create()`: ganti `findOne(spec)` → native carcass-finder; pertahankan aktif→Conflict, bangkai→revive, kosong→insert
-- [ ] `update()`: deteksi duplikat hanya melihat record AKTIF; tidak Conflict palsu terhadap bangkai
-- [ ] Konfirmasi JOOQ (`pageQuery/listQuery`) tetap benar — JOOQ filter `IS_DELETED` manual, tidak terpengaruh `@SQLRestriction`
-- [ ] Semua test #4 hijau (definisi "benar")
-- [ ] Tautkan ke irt/3 `kepegawaian-c2q` di komentar (lihat konflik lintas-epic di atas)
+- [x] Pastikan #2 & #4 sudah CLOSED (`bd ready` menampilkan #1)
+- [x] `gitnexus_impact` atas `Organisasi` DAN `OrganisasiCommandService`; LOW (touch surface = 1 importer)
+- [x] Catat: `@SQLRestriction("is_deleted = FALSE")` sudah ada via `MasterBaseEntity` (lihat bug section di atas) — tidak ditambahkan ulang
+- [x] Tambah native carcass-finder `findAnyByUniqueKey(nama, parentId)` di `OrganisasiRepository` — native SQL handle NULL parent via `(parent_id = ?2 OR (?2 IS NULL AND parent_id IS NULL))`
+- [x] `create()`: ganti `findOne(spec)` → `findAnyByUniqueKey(getNama(), getParentId())`; revive branch sekarang reachable
+- [x] `update()`: tetap pakai `findOne(spec)` — `findOne` hide carcass, jadi edit ke spec carcass meledak sebagai `NotFoundException` (bukan revive palsu) — sesuai CONTEXT.md
+- [x] JOOQ (`pageQuery/listQuery/findByParentId/getById`) tetap filter `IS_DELETED.eq(false)` manual — tidak terpengaruh, diverifikasi ulang oleh verifier
+- [x] Un-`@Disabled` scenario (c) di test; Javadoc scenario (c) diperbarui (bukan "blocked" lagi, tapi "fixed by 33s")
+- [x] `gitnexus_detect_changes` scope = 3 file in-scope; 1 affected process (`proc_193_save` NotFoundException path) sudah ditriage
+- [x] `./gradlew clean compileJava compileTestJava` hijau
+- [x] Verifier subagent verdict **PASS** (compile hijau + native SQL valid + 3 call site benar + JOOQ unchanged + caller isolation confirmed)
+- [x] Commit `3ac8959` (3 files, 64 insertions)
+- [x] `bd close kepegawaian-33s`
+
+## Epilog — Organisasi ditutup sebagai pilot
+
+Semua 4 sub-issue dari dekomposisi manager sudah **CLOSED**. Revive-on-create Organisasi sekarang bekerja sesuai ADR-0005. Template untuk 22 controller master lain sudah terkunci:
+
+- **pola finder**: `findAnyByUniqueKey(...)` native query di repo, bypass `@SQLRestriction`
+- **pola update**: tetap pakai `findOne(spec)` — edit-rejection eksplisit, bukan revive
+- **pola test**: 7-scenario `@SpringBootTest` + `@ActiveProfiles("development")` + `JdbcTemplate` cleanup; scenario revive un-`@Disabled` setelah fix landed
+
+Gelombang migrasi IRT berikutnya untuk modul master lain bisa pakai checklist ini sebagai blueprint.
 
 ## Generalisasi
 
