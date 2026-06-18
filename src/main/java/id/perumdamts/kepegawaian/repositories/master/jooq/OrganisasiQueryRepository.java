@@ -44,7 +44,7 @@ public class OrganisasiQueryRepository {
         var data = dsl.select(
                         ORGANISASI.ID,
                         ORGANISASI.KODE,
-                        ORGANISASI.PARENT_ID,
+                        ORGANISASI.PARENT_ID.as("self_parent_id"),
                         ORGANISASI.LEVEL_ORG.as("levelOrganisasi"),
                         ORGANISASI.NAMA,
                         ORGANISASI.SHORT_NAME,
@@ -73,7 +73,7 @@ public class OrganisasiQueryRepository {
         return dsl.select(
                         ORGANISASI.ID,
                         ORGANISASI.KODE,
-                        ORGANISASI.PARENT_ID,
+                        ORGANISASI.PARENT_ID.as("self_parent_id"),
                         ORGANISASI.LEVEL_ORG.as("levelOrganisasi"),
                         ORGANISASI.NAMA,
                         ORGANISASI.SHORT_NAME,
@@ -94,7 +94,7 @@ public class OrganisasiQueryRepository {
         return dsl.select(
                         ORGANISASI.ID,
                         ORGANISASI.KODE,
-                        ORGANISASI.PARENT_ID,
+                        ORGANISASI.PARENT_ID.as("self_parent_id"),
                         ORGANISASI.LEVEL_ORG.as("levelOrganisasi"),
                         ORGANISASI.NAMA,
                         ORGANISASI.SHORT_NAME,
@@ -115,7 +115,7 @@ public class OrganisasiQueryRepository {
         return dsl.select(
                         ORGANISASI.ID,
                         ORGANISASI.KODE,
-                        ORGANISASI.PARENT_ID,
+                        ORGANISASI.PARENT_ID.as("self_parent_id"),
                         ORGANISASI.LEVEL_ORG.as("levelOrganisasi"),
                         ORGANISASI.NAMA,
                         ORGANISASI.SHORT_NAME,
@@ -136,7 +136,7 @@ public class OrganisasiQueryRepository {
         var query = new OrganisasiQuery();
         query.setId((Long) map.get("id"));
         query.setKode((String) map.get("kode"));
-        query.setParentId((Long) map.get("parent_id"));
+        query.setParentId((Long) map.get("self_parent_id"));
         query.setLevelOrganisasi((Integer) map.get("levelOrganisasi"));
         query.setNama((String) map.get("nama"));
         query.setShortName((String) map.get("short_name"));
