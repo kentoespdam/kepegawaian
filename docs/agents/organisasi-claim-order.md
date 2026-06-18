@@ -17,12 +17,12 @@
 
 ## Urutan klaim
 
-| Urutan | Issue | ID | Prio | Boleh paralel? | Diblokir oleh | Inti pekerjaan |
-|--------|-------|----|----|----|----|----|
-| 1a | #3 | `kepegawaian-5ft` | P2 | ya | — | Hapus `OrganisasiRequest.java` (0 pemakai) + 2 `toEntity()` DTO mati; sisakan `OrganisasiMapper` sebagai satu-satunya seam mapping |
-| 1b | #4 | `kepegawaian-9tf` | P1 | ya | — | Tulis `OrganisasiCommandServiceTest` (7 skenario revive/conflict) via API publik — jaring pengaman sebelum #1 |
-| 1c | #2 | `kepegawaian-jow` | P2 | ya | — | **Butuh keputusan domain** (label `needs-info`): definisikan kunci keunikan Organisasi di `CONTEXT.md`, satukan ke satu `Specification` |
-| 2 | #1 | `kepegawaian-33s` | P1 | tidak | #2 + #4 | Tambah `@SQLRestriction` + native carcass-finder; ganti deteksi bangkai dari `findOne(spec)` → native finder |
+| Urutan | Issue | ID | Prio | Boleh paralel? | Status | Diblokir oleh | Inti pekerjaan |
+|--------|-------|----|----|----|----|----|----|
+| 1a | #3 | `kepegawaian-5ft` | P2 | ya | **DONE** (commit `b54b4ad`, 2026-06-18) | — | Hapus `OrganisasiRequest.java` (0 pemakai) + 2 `toEntity()` DTO mati; sisakan `OrganisasiMapper` sebagai satu-satunya seam mapping |
+| 1b | #4 | `kepegawaian-9tf` | P1 | ya | open | — | Tulis `OrganisasiCommandServiceTest` (7 skenario revive/conflict) via API publik — jaring pengaman sebelum #1 |
+| 1c | #2 | `kepegawaian-jow` | P2 | ya | open (label `needs-info`) | — | **Butuh keputusan domain**: definisikan kunci keunikan Organisasi di `CONTEXT.md`, satukan ke satu `Specification` |
+| 2 | #1 | `kepegawaian-33s` | P1 | tidak | blocked | #2 + #4 | Tambah `@SQLRestriction` + native carcass-finder; ganti deteksi bangkai dari `findOne(spec)` → native finder |
 
 ## Cara klaim & tutup (beads)
 
@@ -63,15 +63,17 @@ Berlaku untuk **semua** issue (mandat `CLAUDE.md`):
 - [ ] Lampirkan output impact + detect_changes di komentar issue
 - [ ] `bd close <id>`
 
-### #3 `kepegawaian-5ft` — hapus dead code (aman, mekanis)
+### #3 `kepegawaian-5ft` — hapus dead code (aman, mekanis) **— DONE**
 
-- [ ] `gitnexus_impact` atas `OrganisasiRequest` + kedua `toEntity` DTO → konfirmasi blast radius **0**; bila > 0, STOP & lapor
-- [ ] Hapus file `dto/master/organisasi/OrganisasiRequest.java`
-- [ ] Hapus `static toEntity()` di `OrganisasiPostRequest.java` (sisakan field, `@NotEmpty nama`, `getSpecification()`)
-- [ ] Hapus `static toEntity()` di `OrganisasiPutRequest.java`
-- [ ] Jika `OrganisasiPutRequest` jadi kosong (hanya `extends`), JANGAN hapus kelasnya di issue ini — catat di notes untuk evaluasi terpisah (controller masih merujuk tipenya)
-- [ ] `grep` pastikan tidak ada `import` `OrganisasiRequest` tersisa
-- [ ] `./gradlew compileJava` hijau
+- [x] `gitnexus_impact` atas `OrganisasiRequest` + kedua `toEntity` DTO → konfirmasi blast radius **0**; bila > 0, STOP & lapor
+- [x] Hapus file `dto/master/organisasi/OrganisasiRequest.java`
+- [x] Hapus `static toEntity()` di `OrganisasiPostRequest.java` (sisakan field, `@NotEmpty nama`, `getSpecification()`)
+- [x] Hapus `static toEntity()` di `OrganisasiPutRequest.java`
+- [x] `OrganisasiPutRequest` jadi kosong (hanya `extends`); kelas DISISAKAN per aturan (controller masih merujuk tipenya) — dicatat untuk evaluasi terpisah
+- [x] `grep` pastikan tidak ada `import` `OrganisasiRequest` tersisa
+- [x] `./gradlew clean compileJava` hijau (post-commit sanity)
+- [x] Commit `b54b4ad` (3 files, 53 deletions)
+- [x] `bd close kepegawaian-5ft`
 
 ### #4 `kepegawaian-9tf` — test pengaman (murni tambah test)
 
