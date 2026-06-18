@@ -20,7 +20,7 @@ public class OrganisasiCommandService {
     @Transactional
     public Organisasi create(OrganisasiPostRequest request) {
         Organisasi parent = findParent(request.getParentId());
-        Optional<Organisasi> existing = repository.findOne(request.getSpecification());
+        Optional<Organisasi> existing = repository.findOne(request.uniquenessSpecification());
         if (existing.isPresent()) {
             if (existing.get().getIsDeleted()) {
                 Organisasi revived = existing.get();
@@ -39,7 +39,7 @@ public class OrganisasiCommandService {
         Organisasi existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Organisasi not found"));
         Organisasi parent = findParent(request.getParentId());
-        Optional<Organisasi> duplicate = repository.findOne(request.getSpecification());
+        Optional<Organisasi> duplicate = repository.findOne(request.uniquenessSpecification());
         if (duplicate.isPresent() && !duplicate.get().getId().equals(id)) {
             throw new ConflictException("Organisasi already exists");
         }

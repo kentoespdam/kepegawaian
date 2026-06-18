@@ -56,6 +56,9 @@ Hak akses pada principal (mis. `ADMIN`, `SYSTEM`). Menentukan endpoint mana yang
 - Keunikan **Profesi** ditentukan oleh kombinasi `nama` + **Jabatan** + **Grade** (dasar cek duplikat).
 - Membuat **Profesi** dengan kombinasi yang dulu pernah dihapus akan **menghidupkan kembali** record lama itu (bukan membuat data baru) — record yang terhapus tidak menghalangi pembuatan ulang.
 - **Mengubah** sebuah **Profesi** agar kombinasinya sama dengan Profesi lain — baik yang aktif maupun yang sudah diarsip (dihapus) — **ditolak**. Menghidupkan kembali kombinasi arsip hanya lewat pembuatan ulang (create), bukan lewat edit.
+- Keunikan **Organisasi** ditentukan oleh kombinasi `nama` + **parent** (dasar cek duplikat). Kode dan level TIDAK masuk kunci — `kode` adalah label tampilan (mis. '1.1.1') dan `level` adalah metadata struktur, bukan identitas.
+- Membuat **Organisasi** dengan kombinasi nama+parent yang dulu pernah dihapus akan **menghidupkan kembali** record lama itu (bukan membuat data baru) — record yang terhapus tidak menghalangi pembuatan ulang.
+- **Mengubah** sebuah **Organisasi** agar nama+parent-nya sama dengan Organisasi lain — baik yang aktif maupun yang sudah diarsip (dihapus) — **ditolak**. Menghidupkan kembali kombinasi arsip hanya lewat pembuatan ulang (create), bukan lewat edit.
 
 ## Example dialogue
 

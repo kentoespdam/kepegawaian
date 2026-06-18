@@ -130,12 +130,13 @@ class OrganisasiCommandServiceTest {
     @Test
     @org.junit.jupiter.api.Disabled("blocked by kepegawaian-33s — revive seam not yet fixed")
     void create_overCarcass_revivesSameId() {
-        String kode = uniqueKode();
-        String namaAwal = "IT-9TF-c-initial";
-        String namaRevive = "IT-9TF-c-revived";
+        // Same nama (the key), different kode (not the key — boleh berbeda).
+        String nama = "IT-9TF-c-" + UUID.randomUUID().toString().substring(0, 8);
+        String kodeAwal = uniqueKode();
+        String kodeRevive = uniqueKode();
 
         // Step 1: create a row.
-        Organisasi created = service.create(req(kode, namaAwal));
+        Organisasi created = service.create(req(kodeAwal, nama));
         createdIds.add(created.getId());
         Long originalId = created.getId();
 
@@ -147,11 +148,13 @@ class OrganisasiCommandServiceTest {
                 "SELECT is_deleted FROM organisasi WHERE id = ?", Integer.class, originalId);
         assertEquals(1, isDeleted, "row must be soft-deleted in DB");
 
-        // Step 3: create with the same spec. DESIRED: revive the carcass.
-        Organisasi revived = service.create(req(kode, namaRevive));
+        // Step 3: create with the same nama (key). DESIRED: revive the carcass.
+        // kode berbeda — membuktikan kode bukan kunci keunikan.
+        Organisasi revived = service.create(req(kodeRevive, nama));
 
         assertEquals(originalId, revived.getId(), "revive must reuse carcass id");
-        assertEquals(namaRevive, revived.getNama(), "field must be updated");
+        assertEquals(nama, revived.getNama(), "nama unchanged (key preserved)");
+        assertEquals(kodeRevive, revived.getKode(), "kode updated (kode is not part of key)");
         assertFalse(Boolean.TRUE.equals(revived.getIsDeleted()),
                 "revived row must have isDeleted=false");
     }
