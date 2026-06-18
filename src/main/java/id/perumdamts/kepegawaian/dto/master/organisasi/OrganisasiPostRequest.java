@@ -26,16 +26,4 @@ public class OrganisasiPostRequest {
                 .addEqual(nama, "nama")
                 .build();
     }
-
-    public static Organisasi toEntity(OrganisasiPostRequest request, Organisasi parent) {
-        Organisasi organisasi = new Organisasi();
-        organisasi.setKode(request.getKode());
-        if (parent != null)
-            organisasi.setParent(parent);
-        organisasi.setLevelOrg(request.getLevelOrganisasi());
-        organisasi.setNama(request.getNama());
-        organisasi.setShortName(request.getShortName());
-        organisasi.setCategory(request.getCategory());
-        return organisasi;
-    }
 }
