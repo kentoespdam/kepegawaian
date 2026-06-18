@@ -114,7 +114,7 @@ tasks.register<JooqCodegenTask>("jooqCodegen") {
 }
 
 tasks.named<BootJar>("bootJar") {
-    archiveFileName.set("mail-service.jar")
+    archiveFileName.set("kepegawaian.jar")
 }
 
 tasks.named<BootRun>("bootRun") {
