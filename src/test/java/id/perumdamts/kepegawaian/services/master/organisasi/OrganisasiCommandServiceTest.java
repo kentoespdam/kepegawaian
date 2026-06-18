@@ -114,22 +114,12 @@ class OrganisasiCommandServiceTest {
     /**
      * (c) create saat ada record TERHAPUS (carcass) cocok-spec → REVIVE.
      *
-     * KNOWN BUG (terverifikasi 2026-06-18): @SQLRestriction("is_deleted = FALSE")
-     * on MasterBaseEntity means repository.findOne(spec) NEVER sees the carcass.
-     * The revive branch in OrganisasiCommandService.create() (line 25) is dead
-     * code; the second create will fall through to insert and either:
-     *  - succeed and produce a duplicate, or
-     *  - fail with a DB unique-constraint violation (DataIntegrityViolation).
-     *
-     * This test asserts the DESIRED behaviour (idempotent revive). It is
-     * annotated {@code @Disabled} because the desired behaviour requires
-     * kepegawaian-33s to add a native carcass-finder. Enable when #33s lands.
-     *
-     * (c) in the claim-order checklist instructs: "tulis (c) meng-assert
-     * perilaku DIINGINKAN, tandai @Disabled".
+     * Fixed by kepegawaian-33s (2026-06-18): native carcass-finder on
+     * {@code OrganisasiRepository.findAnyByUniqueKey(nama, parentId)} bypasses
+     * {@code @SQLRestriction} so the revive branch in
+     * {@code OrganisasiCommandService.create()} now actually fires.
      */
     @Test
-    @org.junit.jupiter.api.Disabled("blocked by kepegawaian-33s — revive seam not yet fixed")
     void create_overCarcass_revivesSameId() {
         // Same nama (the key), different kode (not the key — boleh berbeda).
         String nama = "IT-9TF-c-" + UUID.randomUUID().toString().substring(0, 8);

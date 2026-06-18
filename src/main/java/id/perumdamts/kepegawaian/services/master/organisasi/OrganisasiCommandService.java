@@ -20,7 +20,10 @@ public class OrganisasiCommandService {
     @Transactional
     public Organisasi create(OrganisasiPostRequest request) {
         Organisasi parent = findParent(request.getParentId());
-        Optional<Organisasi> existing = repository.findOne(request.uniquenessSpecification());
+        // Native carcass-finder — JpaSpecificationExecutor.findOne() respects
+        // @SQLRestriction and would hide soft-deleted rows, so the revive branch
+        // below would be dead code (see kepegawaian-33s, ADR-0005).
+        Optional<Organisasi> existing = repository.findAnyByUniqueKey(request.getNama(), request.getParentId());
         if (existing.isPresent()) {
             if (existing.get().getIsDeleted()) {
                 Organisasi revived = existing.get();
