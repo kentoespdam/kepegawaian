@@ -93,8 +93,9 @@ class OrganisasiCommandServiceTest {
 
     /**
      * (b) create saat ada record AKTIF cocok-spec → ConflictException.
-     * Spec = (kode, parent.id, levelOrg, nama). A second create with the same
-     * tuple must conflict against the active row.
+     * Spec = (parent.id, nama) per kepegawaian-jow decision 2026-06-18.
+     * A second create with the same (nama, parent) must conflict against
+     * the active row regardless of kode.
      */
     @Test
     void create_overActiveRecord_throwsConflict() {
