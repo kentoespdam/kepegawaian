@@ -39,7 +39,7 @@ public class GradeQueryRepository {
                 .fetchOne(0, Long.class);
         var data = dsl.select(
                         GRADE.ID,
-                        GRADE.LEVEL_ID,
+                        GRADE.LEVEL_ID.as("self_level_id"),
                         GRADE.GRADE_,
                         GRADE.TUKIN,
                         LEVEL.ID.as("level_id"),
@@ -59,7 +59,7 @@ public class GradeQueryRepository {
     public Optional<GradeQuery> getById(Long id) {
         return dsl.select(
                         GRADE.ID,
-                        GRADE.LEVEL_ID,
+                        GRADE.LEVEL_ID.as("self_level_id"),
                         GRADE.GRADE_,
                         GRADE.TUKIN,
                         LEVEL.ID.as("level_id"),
@@ -74,7 +74,7 @@ public class GradeQueryRepository {
     public List<GradeQuery> listQuery() {
         return dsl.select(
                         GRADE.ID,
-                        GRADE.LEVEL_ID,
+                        GRADE.LEVEL_ID.as("self_level_id"),
                         GRADE.GRADE_,
                         GRADE.TUKIN,
                         LEVEL.ID.as("level_id"),
@@ -89,7 +89,7 @@ public class GradeQueryRepository {
     public List<GradeQuery> findByLevelId(Long levelId) {
         return dsl.select(
                         GRADE.ID,
-                        GRADE.LEVEL_ID,
+                        GRADE.LEVEL_ID.as("self_level_id"),
                         GRADE.GRADE_,
                         GRADE.TUKIN,
                         LEVEL.ID.as("level_id"),
@@ -105,7 +105,7 @@ public class GradeQueryRepository {
     private GradeQuery toQuery(Map<String, Object> map) {
         var query = new GradeQuery();
         query.setId((Long) map.get("id"));
-        query.setLevelId((Long) map.get("level_id"));
+        query.setLevelId((Long) map.get("self_level_id"));
         query.setGrade((Integer) map.get("grade"));
         query.setTukin((Double) map.get("tukin"));
         if (map.get("level_id") != null) {
