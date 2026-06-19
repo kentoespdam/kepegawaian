@@ -17,9 +17,9 @@ final class ProfesiRowMapper {
         var query = new ProfesiQuery();
         query.setId((Long) map.get("id"));
         query.setOrganisasiId((Long) map.get("organisasi_id"));
-        query.setJabatanId((Long) map.get("jabatan_id"));
-        query.setLevelId((Long) map.get("level_id"));
-        query.setGradeId((Long) map.get("grade_id"));
+        query.setJabatanId((Long) map.get("self_jabatan_id"));
+        query.setLevelId((Long) map.get("self_level_id"));
+        query.setGradeId((Long) map.get("self_grade_id"));
         query.setNama((String) map.get("nama"));
         query.setDetail((String) map.get("detail"));
         query.setResiko((String) map.get("resiko"));

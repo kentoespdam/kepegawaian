@@ -14,9 +14,9 @@ final class ProfesiSelects {
     static final Field<?>[] PROFESI_COLUMNS = new Field[] {
             PROFESI.ID,
             PROFESI.ORGANISASI_ID,
-            PROFESI.JABATAN_ID,
-            PROFESI.LEVEL_ID,
-            PROFESI.GRADE_ID,
+            PROFESI.JABATAN_ID.as("self_jabatan_id"),
+            PROFESI.LEVEL_ID.as("self_level_id"),
+            PROFESI.GRADE_ID.as("self_grade_id"),
             PROFESI.NAMA,
             PROFESI.DETAIL,
             PROFESI.RESIKO,

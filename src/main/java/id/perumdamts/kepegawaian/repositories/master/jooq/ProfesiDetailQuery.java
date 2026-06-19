@@ -62,9 +62,9 @@ public class ProfesiDetailQuery {
         var detail = new ProfesiDetail();
         detail.setId((Long) map.get("id"));
         detail.setOrganisasiId((Long) map.get("organisasi_id"));
-        detail.setJabatanId((Long) map.get("jabatan_id"));
-        detail.setLevelId((Long) map.get("level_id"));
-        detail.setGradeId((Long) map.get("grade_id"));
+        detail.setJabatanId((Long) map.get("self_jabatan_id"));
+        detail.setLevelId((Long) map.get("self_level_id"));
+        detail.setGradeId((Long) map.get("self_grade_id"));
         detail.setNama((String) map.get("nama"));
         detail.setDetail((String) map.get("detail"));
         detail.setResiko((String) map.get("resiko"));
