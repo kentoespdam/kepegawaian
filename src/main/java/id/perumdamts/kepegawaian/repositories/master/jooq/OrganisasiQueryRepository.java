@@ -3,8 +3,10 @@ package id.perumdamts.kepegawaian.repositories.master.jooq;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiIndexQuery;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiQuery;
+import id.perumdamts.kepegawaian.dto.master.organisasi.commons.SortParam;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
+import org.jooq.Field;
 import org.jooq.impl.DSL;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -12,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static id.perumdamts.kepegawaian.jooq.tables.Organisasi.ORGANISASI;
@@ -23,15 +26,8 @@ public class OrganisasiQueryRepository {
 
     public Page<OrganisasiQuery> pageQuery(OrganisasiIndexQuery query) {
         var parent = ORGANISASI.as("parent");
-        var sortField = switch (query.getSortBy() == null ? "" : query.getSortBy()) {
-            case "kode" -> ORGANISASI.KODE;
-            case "nama" -> ORGANISASI.NAMA;
-            case "levelOrg" -> ORGANISASI.LEVEL_ORG;
-            case "shortName" -> ORGANISASI.SHORT_NAME;
-            case "category" -> ORGANISASI.CATEGORY;
-            default -> ORGANISASI.ID;
-        };
-        var sortOrder = "asc".equalsIgnoreCase(query.getSortDirection()) ? sortField.asc() : sortField.desc();
+        var sortOrder = SortParam.resolve(query.getSortBy(), query.getSortDirection(),
+                allowedSorts(), ORGANISASI.ID);
         var count = dsl.selectCount()
                 .from(ORGANISASI)
                 .where(ORGANISASI.IS_DELETED.eq(false))
@@ -62,10 +58,10 @@ public class OrganisasiQueryRepository {
                 .and(query.getLevelOrg() != null ? ORGANISASI.LEVEL_ORG.eq(query.getLevelOrg()) : DSL.noCondition())
                 .and(query.getCategory() != null ? ORGANISASI.CATEGORY.eq(query.getCategory()) : DSL.noCondition())
                 .orderBy(sortOrder)
-                .limit(query.getSize())
-                .offset(query.getPage() * query.getSize())
+                .limit(query.getSizeOrDefault())
+                .offset(query.getPageNumber() * query.getSizeOrDefault())
                 .fetch(record -> toQuery(record.intoMap()));
-        return new PageImpl<>(data, PageRequest.of(query.getPage(), query.getSize()), count);
+        return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
     }
 
     public Optional<OrganisasiQuery> getById(Long id) {
@@ -130,6 +126,16 @@ public class OrganisasiQueryRepository {
                 .and(ORGANISASI.IS_DELETED.eq(false))
                 .orderBy(ORGANISASI.NAMA.asc())
                 .fetch(record -> toQuery(record.intoMap()));
+    }
+
+    private static Map<String, Field<?>> allowedSorts() {
+        return Map.of(
+                "kode", ORGANISASI.KODE,
+                "nama", ORGANISASI.NAMA,
+                "levelOrg", ORGANISASI.LEVEL_ORG,
+                "shortName", ORGANISASI.SHORT_NAME,
+                "category", ORGANISASI.CATEGORY
+        );
     }
 
     private OrganisasiQuery toQuery(java.util.Map<String, Object> map) {
