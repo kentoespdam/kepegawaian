@@ -23,7 +23,7 @@ public class OrganisasiQueryRepository {
 
     public Page<OrganisasiQuery> pageQuery(OrganisasiIndexQuery query) {
         var parent = ORGANISASI.as("parent");
-        var sortField = switch (query.getSortBy()) {
+        var sortField = switch (query.getSortBy() == null ? "" : query.getSortBy()) {
             case "kode" -> ORGANISASI.KODE;
             case "nama" -> ORGANISASI.NAMA;
             case "levelOrg" -> ORGANISASI.LEVEL_ORG;
