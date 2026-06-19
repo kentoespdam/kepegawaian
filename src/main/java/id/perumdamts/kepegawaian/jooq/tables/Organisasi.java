@@ -7,9 +7,15 @@ package id.perumdamts.kepegawaian.jooq.tables;
 import id.perumdamts.kepegawaian.jooq.Indexes;
 import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
+import id.perumdamts.kepegawaian.jooq.tables.CutiPegawai.CutiPegawaiPath;
+import id.perumdamts.kepegawaian.jooq.tables.GajiBatchMaster.GajiBatchMasterPath;
 import id.perumdamts.kepegawaian.jooq.tables.Jabatan.JabatanPath;
-import id.perumdamts.kepegawaian.jooq.tables.Organisasi.OrganisasiPath;
+import id.perumdamts.kepegawaian.jooq.tables.Pegawai.PegawaiPath;
 import id.perumdamts.kepegawaian.jooq.tables.Profesi.ProfesiPath;
+import id.perumdamts.kepegawaian.jooq.tables.RiwayatKeluar.RiwayatKeluarPath;
+import id.perumdamts.kepegawaian.jooq.tables.RiwayatKontrak.RiwayatKontrakPath;
+import id.perumdamts.kepegawaian.jooq.tables.RiwayatSp.RiwayatSpPath;
+import id.perumdamts.kepegawaian.jooq.tables.RiwayatTerminasi.RiwayatTerminasiPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.OrganisasiRecord;
 
 import java.time.LocalDateTime;
@@ -68,14 +74,49 @@ public class Organisasi extends TableImpl<OrganisasiRecord> {
     public final TableField<OrganisasiRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.organisasi.kode</code>.
+     * The column <code>kepegawaian.organisasi.changed_status</code>.
      */
-    public final TableField<OrganisasiRecord, String> KODE = createField(DSL.name("kode"), SQLDataType.VARCHAR(50).nullable(false), this, "");
+    public final TableField<OrganisasiRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.organisasi.parent_id</code>.
+     * The column <code>kepegawaian.organisasi.created_at</code>.
      */
-    public final TableField<OrganisasiRecord, Long> PARENT_ID = createField(DSL.name("parent_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
+    public final TableField<OrganisasiRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>kepegawaian.organisasi.created_by</code>.
+     */
+    public final TableField<OrganisasiRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.organisasi.is_deleted</code>.
+     */
+    public final TableField<OrganisasiRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
+     * The column <code>kepegawaian.organisasi.updated_at</code>.
+     */
+    public final TableField<OrganisasiRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>kepegawaian.organisasi.updated_by</code>.
+     */
+    public final TableField<OrganisasiRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.organisasi.version</code>.
+     */
+    public final TableField<OrganisasiRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>kepegawaian.organisasi.category</code>.
+     */
+    public final TableField<OrganisasiRecord, String> CATEGORY = createField(DSL.name("category"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.organisasi.kode</code>.
+     */
+    public final TableField<OrganisasiRecord, String> KODE = createField(DSL.name("kode"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>kepegawaian.organisasi.level_org</code>.
@@ -85,42 +126,17 @@ public class Organisasi extends TableImpl<OrganisasiRecord> {
     /**
      * The column <code>kepegawaian.organisasi.nama</code>.
      */
-    public final TableField<OrganisasiRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<OrganisasiRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>kepegawaian.organisasi.short_name</code>.
      */
-    public final TableField<OrganisasiRecord, String> SHORT_NAME = createField(DSL.name("short_name"), SQLDataType.VARCHAR(100).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+    public final TableField<OrganisasiRecord, String> SHORT_NAME = createField(DSL.name("short_name"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.organisasi.category</code>.
+     * The column <code>kepegawaian.organisasi.parent_id</code>.
      */
-    public final TableField<OrganisasiRecord, String> CATEGORY = createField(DSL.name("category"), SQLDataType.VARCHAR(100).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>kepegawaian.organisasi.is_deleted</code>.
-     */
-    public final TableField<OrganisasiRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BIT.nullable(false).defaultValue(DSL.field(DSL.raw("b'0'"), SQLDataType.BIT)), this, "");
-
-    /**
-     * The column <code>kepegawaian.organisasi.created_at</code>.
-     */
-    public final TableField<OrganisasiRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("current_timestamp(6)"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>kepegawaian.organisasi.created_by</code>.
-     */
-    public final TableField<OrganisasiRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>kepegawaian.organisasi.updated_at</code>.
-     */
-    public final TableField<OrganisasiRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>kepegawaian.organisasi.updated_by</code>.
-     */
-    public final TableField<OrganisasiRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+    public final TableField<OrganisasiRecord, Long> PARENT_ID = createField(DSL.name("parent_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     private Organisasi(Name alias, Table<OrganisasiRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
@@ -191,7 +207,7 @@ public class Organisasi extends TableImpl<OrganisasiRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.ORGANISASI_IDX_ORGANISASI_IS_DELETED, Indexes.ORGANISASI_IDX_ORGANISASI_KODE, Indexes.ORGANISASI_IDX_ORGANISASI_LEVEL_ORG, Indexes.ORGANISASI_IDX_ORGANISASI_NAMA, Indexes.ORGANISASI_IDX_ORGANISASI_PARENT);
+        return Arrays.asList(Indexes.ORGANISASI_IDXAXNXMX8KYBP4HXVYK54LCY3TA, Indexes.ORGANISASI_IDXFHDSIEMVDO8SN9J70WX80UGX, Indexes.ORGANISASI_IDXOXCJALAOW2DWXD19IOPXYB50P, Indexes.ORGANISASI_IDXSA1FUCN04X52OQL8WCSVK0M9F);
     }
 
     @Override
@@ -204,35 +220,96 @@ public class Organisasi extends TableImpl<OrganisasiRecord> {
         return Keys.KEY_ORGANISASI_PRIMARY;
     }
 
-    @Override
-    public List<ForeignKey<OrganisasiRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK_ORGANISASI_PARENT);
-    }
-
-    private transient OrganisasiPath _organisasi;
-
-    /**
-     * Get the implicit join path to the <code>kepegawaian.organisasi</code>
-     * table.
-     */
-    public OrganisasiPath organisasi() {
-        if (_organisasi == null)
-            _organisasi = new OrganisasiPath(this, Keys.FK_ORGANISASI_PARENT, null);
-
-        return _organisasi;
-    }
-
-    private transient JabatanPath _jabatan;
+    private transient CutiPegawaiPath _cutiPegawai;
 
     /**
      * Get the implicit to-many join path to the
-     * <code>kepegawaian.jabatan</code> table
+     * <code>kepegawaian.cuti_pegawai</code> table
      */
-    public JabatanPath jabatan() {
-        if (_jabatan == null)
-            _jabatan = new JabatanPath(this, null, Keys.FK_JABATAN_ORGANISASI.getInverseKey());
+    public CutiPegawaiPath cutiPegawai() {
+        if (_cutiPegawai == null)
+            _cutiPegawai = new CutiPegawaiPath(this, null, Keys.FK94QGGCE9T69GTATC46XN729E1.getInverseKey());
 
-        return _jabatan;
+        return _cutiPegawai;
+    }
+
+    private transient RiwayatTerminasiPath _riwayatTerminasi;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.riwayat_terminasi</code> table
+     */
+    public RiwayatTerminasiPath riwayatTerminasi() {
+        if (_riwayatTerminasi == null)
+            _riwayatTerminasi = new RiwayatTerminasiPath(this, null, Keys.FKBLJN2U6FW0PMEA0TKHH8EN0FK.getInverseKey());
+
+        return _riwayatTerminasi;
+    }
+
+    private transient RiwayatSpPath _riwayatSp;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.riwayat_sp</code> table
+     */
+    public RiwayatSpPath riwayatSp() {
+        if (_riwayatSp == null)
+            _riwayatSp = new RiwayatSpPath(this, null, Keys.FKCH0QHFC0IH9I6QLAG1EEA1C7F.getInverseKey());
+
+        return _riwayatSp;
+    }
+
+    private transient RiwayatKeluarPath _fkd5s3rs6pk2mk58wgmuux14yjx;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.riwayat_keluar</code> table, via the
+     * <code>FKd5s3rs6pk2mk58wgmuux14yjx</code> key
+     */
+    public RiwayatKeluarPath fkd5s3rs6pk2mk58wgmuux14yjx() {
+        if (_fkd5s3rs6pk2mk58wgmuux14yjx == null)
+            _fkd5s3rs6pk2mk58wgmuux14yjx = new RiwayatKeluarPath(this, null, Keys.FKD5S3RS6PK2MK58WGMUUX14YJX.getInverseKey());
+
+        return _fkd5s3rs6pk2mk58wgmuux14yjx;
+    }
+
+    private transient PegawaiPath _pegawai;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.pegawai</code> table
+     */
+    public PegawaiPath pegawai() {
+        if (_pegawai == null)
+            _pegawai = new PegawaiPath(this, null, Keys.FKDL9IMF4AJCJI1360YFODCGDNM.getInverseKey());
+
+        return _pegawai;
+    }
+
+    private transient GajiBatchMasterPath _gajiBatchMaster;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.gaji_batch_master</code> table
+     */
+    public GajiBatchMasterPath gajiBatchMaster() {
+        if (_gajiBatchMaster == null)
+            _gajiBatchMaster = new GajiBatchMasterPath(this, null, Keys.FKGR17QMJXK5S1CNST11EN4H9WO.getInverseKey());
+
+        return _gajiBatchMaster;
+    }
+
+    private transient RiwayatKontrakPath _riwayatKontrak;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.riwayat_kontrak</code> table
+     */
+    public RiwayatKontrakPath riwayatKontrak() {
+        if (_riwayatKontrak == null)
+            _riwayatKontrak = new RiwayatKontrakPath(this, null, Keys.FKH265IAD1I84D7JXIXKQED7H6T.getInverseKey());
+
+        return _riwayatKontrak;
     }
 
     private transient ProfesiPath _profesi;
@@ -243,9 +320,36 @@ public class Organisasi extends TableImpl<OrganisasiRecord> {
      */
     public ProfesiPath profesi() {
         if (_profesi == null)
-            _profesi = new ProfesiPath(this, null, Keys.FK_PROFESI_ORGANISASI.getInverseKey());
+            _profesi = new ProfesiPath(this, null, Keys.FKPDO18V9PYFNINMFHQD1RJOP6O.getInverseKey());
 
         return _profesi;
+    }
+
+    private transient JabatanPath _jabatan;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.jabatan</code> table
+     */
+    public JabatanPath jabatan() {
+        if (_jabatan == null)
+            _jabatan = new JabatanPath(this, null, Keys.FKQNSM2LQKF182H1MI515255UEE.getInverseKey());
+
+        return _jabatan;
+    }
+
+    private transient RiwayatKeluarPath _fkr987kq4dboeaf3fycg5d8yc2b;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.riwayat_keluar</code> table, via the
+     * <code>FKr987kq4dboeaf3fycg5d8yc2b</code> key
+     */
+    public RiwayatKeluarPath fkr987kq4dboeaf3fycg5d8yc2b() {
+        if (_fkr987kq4dboeaf3fycg5d8yc2b == null)
+            _fkr987kq4dboeaf3fycg5d8yc2b = new RiwayatKeluarPath(this, null, Keys.FKR987KQ4DBOEAF3FYCG5D8YC2B.getInverseKey());
+
+        return _fkr987kq4dboeaf3fycg5d8yc2b;
     }
 
     @Override

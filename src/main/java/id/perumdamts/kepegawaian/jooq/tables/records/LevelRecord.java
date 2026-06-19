@@ -35,59 +35,59 @@ public class LevelRecord extends UpdatableRecordImpl<LevelRecord> {
     }
 
     /**
-     * Setter for <code>kepegawaian.level.nama</code>.
+     * Setter for <code>kepegawaian.level.changed_status</code>.
      */
-    public void setNama(String value) {
+    public void setChangedStatus(Byte value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.level.nama</code>.
+     * Getter for <code>kepegawaian.level.changed_status</code>.
      */
-    public String getNama() {
-        return (String) get(1);
-    }
-
-    /**
-     * Setter for <code>kepegawaian.level.is_deleted</code>.
-     */
-    public void setIsDeleted(Boolean value) {
-        set(2, value);
-    }
-
-    /**
-     * Getter for <code>kepegawaian.level.is_deleted</code>.
-     */
-    public Boolean getIsDeleted() {
-        return (Boolean) get(2);
+    public Byte getChangedStatus() {
+        return (Byte) get(1);
     }
 
     /**
      * Setter for <code>kepegawaian.level.created_at</code>.
      */
     public void setCreatedAt(LocalDateTime value) {
-        set(3, value);
+        set(2, value);
     }
 
     /**
      * Getter for <code>kepegawaian.level.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(3);
+        return (LocalDateTime) get(2);
     }
 
     /**
      * Setter for <code>kepegawaian.level.created_by</code>.
      */
     public void setCreatedBy(String value) {
-        set(4, value);
+        set(3, value);
     }
 
     /**
      * Getter for <code>kepegawaian.level.created_by</code>.
      */
     public String getCreatedBy() {
-        return (String) get(4);
+        return (String) get(3);
+    }
+
+    /**
+     * Setter for <code>kepegawaian.level.is_deleted</code>.
+     */
+    public void setIsDeleted(Boolean value) {
+        set(4, value);
+    }
+
+    /**
+     * Getter for <code>kepegawaian.level.is_deleted</code>.
+     */
+    public Boolean getIsDeleted() {
+        return (Boolean) get(4);
     }
 
     /**
@@ -118,6 +118,34 @@ public class LevelRecord extends UpdatableRecordImpl<LevelRecord> {
         return (String) get(6);
     }
 
+    /**
+     * Setter for <code>kepegawaian.level.version</code>.
+     */
+    public void setVersion(Integer value) {
+        set(7, value);
+    }
+
+    /**
+     * Getter for <code>kepegawaian.level.version</code>.
+     */
+    public Integer getVersion() {
+        return (Integer) get(7);
+    }
+
+    /**
+     * Setter for <code>kepegawaian.level.nama</code>.
+     */
+    public void setNama(String value) {
+        set(8, value);
+    }
+
+    /**
+     * Getter for <code>kepegawaian.level.nama</code>.
+     */
+    public String getNama() {
+        return (String) get(8);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -141,16 +169,18 @@ public class LevelRecord extends UpdatableRecordImpl<LevelRecord> {
     /**
      * Create a detached, initialised LevelRecord
      */
-    public LevelRecord(Long id_, String nama, Boolean isDeleted, LocalDateTime createdAt, String createdBy, LocalDateTime updatedAt, String updatedBy) {
+    public LevelRecord(Long id_, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version, String nama) {
         super(Level.LEVEL);
 
         setId(id_);
-        setNama(nama);
-        setIsDeleted(isDeleted);
+        setChangedStatus(changedStatus);
         setCreatedAt(createdAt);
         setCreatedBy(createdBy);
+        setIsDeleted(isDeleted);
         setUpdatedAt(updatedAt);
         setUpdatedBy(updatedBy);
+        setVersion(version);
+        setNama(nama);
         resetChangedOnNotNull();
     }
 }

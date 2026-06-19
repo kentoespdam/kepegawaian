@@ -35,129 +35,157 @@ public class CutiJenisRecord extends UpdatableRecordImpl<CutiJenisRecord> {
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_jenis.parent_id</code>.
+     * Setter for <code>kepegawaian.cuti_jenis.changed_status</code>.
      */
-    public void setParentId(Long value) {
+    public void setChangedStatus(Byte value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_jenis.parent_id</code>.
+     * Getter for <code>kepegawaian.cuti_jenis.changed_status</code>.
      */
-    public Long getParentId() {
-        return (Long) get(1);
-    }
-
-    /**
-     * Setter for <code>kepegawaian.cuti_jenis.nama</code>.
-     */
-    public void setNama(String value) {
-        set(2, value);
-    }
-
-    /**
-     * Getter for <code>kepegawaian.cuti_jenis.nama</code>.
-     */
-    public String getNama() {
-        return (String) get(2);
-    }
-
-    /**
-     * Setter for <code>kepegawaian.cuti_jenis.max_hari</code>.
-     */
-    public void setMaxHari(Integer value) {
-        set(3, value);
-    }
-
-    /**
-     * Getter for <code>kepegawaian.cuti_jenis.max_hari</code>.
-     */
-    public Integer getMaxHari() {
-        return (Integer) get(3);
-    }
-
-    /**
-     * Setter for <code>kepegawaian.cuti_jenis.potong_kuota_tahunan</code>.
-     */
-    public void setPotongKuotaTahunan(Boolean value) {
-        set(4, value);
-    }
-
-    /**
-     * Getter for <code>kepegawaian.cuti_jenis.potong_kuota_tahunan</code>.
-     */
-    public Boolean getPotongKuotaTahunan() {
-        return (Boolean) get(4);
-    }
-
-    /**
-     * Setter for <code>kepegawaian.cuti_jenis.is_deleted</code>.
-     */
-    public void setIsDeleted(Boolean value) {
-        set(5, value);
-    }
-
-    /**
-     * Getter for <code>kepegawaian.cuti_jenis.is_deleted</code>.
-     */
-    public Boolean getIsDeleted() {
-        return (Boolean) get(5);
+    public Byte getChangedStatus() {
+        return (Byte) get(1);
     }
 
     /**
      * Setter for <code>kepegawaian.cuti_jenis.created_at</code>.
      */
     public void setCreatedAt(LocalDateTime value) {
-        set(6, value);
+        set(2, value);
     }
 
     /**
      * Getter for <code>kepegawaian.cuti_jenis.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(6);
+        return (LocalDateTime) get(2);
     }
 
     /**
      * Setter for <code>kepegawaian.cuti_jenis.created_by</code>.
      */
     public void setCreatedBy(String value) {
-        set(7, value);
+        set(3, value);
     }
 
     /**
      * Getter for <code>kepegawaian.cuti_jenis.created_by</code>.
      */
     public String getCreatedBy() {
-        return (String) get(7);
+        return (String) get(3);
+    }
+
+    /**
+     * Setter for <code>kepegawaian.cuti_jenis.is_deleted</code>.
+     */
+    public void setIsDeleted(Boolean value) {
+        set(4, value);
+    }
+
+    /**
+     * Getter for <code>kepegawaian.cuti_jenis.is_deleted</code>.
+     */
+    public Boolean getIsDeleted() {
+        return (Boolean) get(4);
     }
 
     /**
      * Setter for <code>kepegawaian.cuti_jenis.updated_at</code>.
      */
     public void setUpdatedAt(LocalDateTime value) {
-        set(8, value);
+        set(5, value);
     }
 
     /**
      * Getter for <code>kepegawaian.cuti_jenis.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(8);
+        return (LocalDateTime) get(5);
     }
 
     /**
      * Setter for <code>kepegawaian.cuti_jenis.updated_by</code>.
      */
     public void setUpdatedBy(String value) {
-        set(9, value);
+        set(6, value);
     }
 
     /**
      * Getter for <code>kepegawaian.cuti_jenis.updated_by</code>.
      */
     public String getUpdatedBy() {
+        return (String) get(6);
+    }
+
+    /**
+     * Setter for <code>kepegawaian.cuti_jenis.version</code>.
+     */
+    public void setVersion(Integer value) {
+        set(7, value);
+    }
+
+    /**
+     * Getter for <code>kepegawaian.cuti_jenis.version</code>.
+     */
+    public Integer getVersion() {
+        return (Integer) get(7);
+    }
+
+    /**
+     * Setter for <code>kepegawaian.cuti_jenis.max_hari</code>.
+     */
+    public void setMaxHari(Integer value) {
+        set(8, value);
+    }
+
+    /**
+     * Getter for <code>kepegawaian.cuti_jenis.max_hari</code>.
+     */
+    public Integer getMaxHari() {
+        return (Integer) get(8);
+    }
+
+    /**
+     * Setter for <code>kepegawaian.cuti_jenis.nama</code>.
+     */
+    public void setNama(String value) {
+        set(9, value);
+    }
+
+    /**
+     * Getter for <code>kepegawaian.cuti_jenis.nama</code>.
+     */
+    public String getNama() {
         return (String) get(9);
+    }
+
+    /**
+     * Setter for <code>kepegawaian.cuti_jenis.potong_kuota_tahunan</code>.
+     */
+    public void setPotongKuotaTahunan(Boolean value) {
+        set(10, value);
+    }
+
+    /**
+     * Getter for <code>kepegawaian.cuti_jenis.potong_kuota_tahunan</code>.
+     */
+    public Boolean getPotongKuotaTahunan() {
+        return (Boolean) get(10);
+    }
+
+    /**
+     * Setter for <code>kepegawaian.cuti_jenis.parent_id</code>.
+     */
+    public void setParentId(Long value) {
+        set(11, value);
+    }
+
+    /**
+     * Getter for <code>kepegawaian.cuti_jenis.parent_id</code>.
+     */
+    public Long getParentId() {
+        return (Long) get(11);
     }
 
     // -------------------------------------------------------------------------
@@ -183,19 +211,21 @@ public class CutiJenisRecord extends UpdatableRecordImpl<CutiJenisRecord> {
     /**
      * Create a detached, initialised CutiJenisRecord
      */
-    public CutiJenisRecord(Long id_, Long parentId, String nama, Integer maxHari, Boolean potongKuotaTahunan, Boolean isDeleted, LocalDateTime createdAt, String createdBy, LocalDateTime updatedAt, String updatedBy) {
+    public CutiJenisRecord(Long id_, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version, Integer maxHari, String nama, Boolean potongKuotaTahunan, Long parentId) {
         super(CutiJenis.CUTI_JENIS);
 
         setId(id_);
-        setParentId(parentId);
-        setNama(nama);
-        setMaxHari(maxHari);
-        setPotongKuotaTahunan(potongKuotaTahunan);
-        setIsDeleted(isDeleted);
+        setChangedStatus(changedStatus);
         setCreatedAt(createdAt);
         setCreatedBy(createdBy);
+        setIsDeleted(isDeleted);
         setUpdatedAt(updatedAt);
         setUpdatedBy(updatedBy);
+        setVersion(version);
+        setMaxHari(maxHari);
+        setNama(nama);
+        setPotongKuotaTahunan(potongKuotaTahunan);
+        setParentId(parentId);
         resetChangedOnNotNull();
     }
 }

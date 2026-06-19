@@ -1,6 +1,6 @@
 # AGENTS.md
 
-**Canonical guidance: [CLAUDE.md](./CLAUDE.md)**.
+**Canonical guidance: [CLAUDE.md](./CLAUDE.md)** — build/run, architecture, issue tracking, GitNexus repo `kepegawaian`, agent skills.
 
 ## Beads Issue Tracker
 
@@ -8,12 +8,12 @@ This project uses **beads (`bd`)**. See CLAUDE.md for tracker rules and session 
 
 ## GitNexus
 
-See CLAUDE.md for code intelligence rules and skill file references.
+Repo name: **`kepegawaian`** (defined in CLAUDE.md). All code intelligence rules and skill references are in CLAUDE.md.
 
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
 
-This project is indexed by GitNexus as **kepegawaian** (10030 symbols, 26096 relationships, 300 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
+This project is indexed by GitNexus as **kepegawaian** (10079 symbols, 26184 relationships, 300 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
 
 > If any GitNexus tool warns the index is stale, run `npx gitnexus analyze` in terminal first.
 

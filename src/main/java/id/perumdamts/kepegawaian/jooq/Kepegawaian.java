@@ -5,31 +5,107 @@ package id.perumdamts.kepegawaian.jooq;
 
 
 import id.perumdamts.kepegawaian.jooq.tables.AlasanBerhenti;
+import id.perumdamts.kepegawaian.jooq.tables.AlasanBerhentiAud;
 import id.perumdamts.kepegawaian.jooq.tables.AlatKerja;
 import id.perumdamts.kepegawaian.jooq.tables.Apd;
+import id.perumdamts.kepegawaian.jooq.tables.Biodata;
+import id.perumdamts.kepegawaian.jooq.tables.BiodataAud;
+import id.perumdamts.kepegawaian.jooq.tables.CutiApproval;
+import id.perumdamts.kepegawaian.jooq.tables.CutiApprovalAud;
+import id.perumdamts.kepegawaian.jooq.tables.CutiApprovalChain;
 import id.perumdamts.kepegawaian.jooq.tables.CutiJenis;
+import id.perumdamts.kepegawaian.jooq.tables.CutiJenisAud;
+import id.perumdamts.kepegawaian.jooq.tables.CutiKlaimDetail;
+import id.perumdamts.kepegawaian.jooq.tables.CutiKuota;
+import id.perumdamts.kepegawaian.jooq.tables.CutiKuotaAud;
+import id.perumdamts.kepegawaian.jooq.tables.CutiPegawai;
+import id.perumdamts.kepegawaian.jooq.tables.CutiPegawaiAud;
 import id.perumdamts.kepegawaian.jooq.tables.DasarGaji;
+import id.perumdamts.kepegawaian.jooq.tables.DasarGajiAud;
 import id.perumdamts.kepegawaian.jooq.tables.DetailDasarGaji;
+import id.perumdamts.kepegawaian.jooq.tables.DetailDasarGajiAud;
+import id.perumdamts.kepegawaian.jooq.tables.GajiBatchMaster;
+import id.perumdamts.kepegawaian.jooq.tables.GajiBatchMasterProses;
+import id.perumdamts.kepegawaian.jooq.tables.GajiBatchPotonganTkk;
+import id.perumdamts.kepegawaian.jooq.tables.GajiBatchRoot;
+import id.perumdamts.kepegawaian.jooq.tables.GajiBatchRootAud;
+import id.perumdamts.kepegawaian.jooq.tables.GajiBatchRootErrorLogs;
+import id.perumdamts.kepegawaian.jooq.tables.GajiBatchRootLampiran;
 import id.perumdamts.kepegawaian.jooq.tables.GajiKomponen;
+import id.perumdamts.kepegawaian.jooq.tables.GajiKomponenAud;
 import id.perumdamts.kepegawaian.jooq.tables.GajiParameterSetting;
+import id.perumdamts.kepegawaian.jooq.tables.GajiParameterSettingAud;
 import id.perumdamts.kepegawaian.jooq.tables.GajiPendapatanNonPajak;
+import id.perumdamts.kepegawaian.jooq.tables.GajiPendapatanNonPajakAud;
+import id.perumdamts.kepegawaian.jooq.tables.GajiPhdp;
+import id.perumdamts.kepegawaian.jooq.tables.GajiPhdpAud;
 import id.perumdamts.kepegawaian.jooq.tables.GajiPotonganTkk;
+import id.perumdamts.kepegawaian.jooq.tables.GajiPotonganTkkAud;
 import id.perumdamts.kepegawaian.jooq.tables.GajiProfil;
+import id.perumdamts.kepegawaian.jooq.tables.GajiProfilAud;
 import id.perumdamts.kepegawaian.jooq.tables.GajiTunjangan;
+import id.perumdamts.kepegawaian.jooq.tables.GajiTunjanganAud;
 import id.perumdamts.kepegawaian.jooq.tables.Golongan;
+import id.perumdamts.kepegawaian.jooq.tables.GolonganAud;
 import id.perumdamts.kepegawaian.jooq.tables.Grade;
+import id.perumdamts.kepegawaian.jooq.tables.GradeAud;
+import id.perumdamts.kepegawaian.jooq.tables.HariLibur;
+import id.perumdamts.kepegawaian.jooq.tables.HariLiburAud;
 import id.perumdamts.kepegawaian.jooq.tables.Jabatan;
+import id.perumdamts.kepegawaian.jooq.tables.JabatanAud;
 import id.perumdamts.kepegawaian.jooq.tables.JenisKeahlian;
 import id.perumdamts.kepegawaian.jooq.tables.JenisKitas;
+import id.perumdamts.kepegawaian.jooq.tables.JenisKitasAud;
 import id.perumdamts.kepegawaian.jooq.tables.JenisPelatihan;
 import id.perumdamts.kepegawaian.jooq.tables.JenisSp;
+import id.perumdamts.kepegawaian.jooq.tables.JenisSpAud;
 import id.perumdamts.kepegawaian.jooq.tables.JenjangPendidikan;
+import id.perumdamts.kepegawaian.jooq.tables.KartuIdentitas;
+import id.perumdamts.kepegawaian.jooq.tables.KartuIdentitasAud;
+import id.perumdamts.kepegawaian.jooq.tables.Keahlian;
+import id.perumdamts.kepegawaian.jooq.tables.KeahlianAud;
+import id.perumdamts.kepegawaian.jooq.tables.LampiranProfil;
+import id.perumdamts.kepegawaian.jooq.tables.LampiranProfilAud;
+import id.perumdamts.kepegawaian.jooq.tables.LampiranSk;
+import id.perumdamts.kepegawaian.jooq.tables.LampiranSkAud;
 import id.perumdamts.kepegawaian.jooq.tables.Level;
+import id.perumdamts.kepegawaian.jooq.tables.LevelAud;
 import id.perumdamts.kepegawaian.jooq.tables.Organisasi;
+import id.perumdamts.kepegawaian.jooq.tables.OrganisasiAud;
+import id.perumdamts.kepegawaian.jooq.tables.Pegawai;
+import id.perumdamts.kepegawaian.jooq.tables.PegawaiAud;
+import id.perumdamts.kepegawaian.jooq.tables.Pelatihan;
+import id.perumdamts.kepegawaian.jooq.tables.PelatihanAud;
+import id.perumdamts.kepegawaian.jooq.tables.Pendidikan;
+import id.perumdamts.kepegawaian.jooq.tables.PendidikanAud;
+import id.perumdamts.kepegawaian.jooq.tables.PengalamanKerja;
+import id.perumdamts.kepegawaian.jooq.tables.PengalamanKerjaAud;
 import id.perumdamts.kepegawaian.jooq.tables.PrefRole;
 import id.perumdamts.kepegawaian.jooq.tables.Profesi;
+import id.perumdamts.kepegawaian.jooq.tables.ProfesiAud;
+import id.perumdamts.kepegawaian.jooq.tables.ProfilKeluarga;
+import id.perumdamts.kepegawaian.jooq.tables.ProfilKeluargaAud;
+import id.perumdamts.kepegawaian.jooq.tables.ProfilUpdate;
+import id.perumdamts.kepegawaian.jooq.tables.Revinfo;
+import id.perumdamts.kepegawaian.jooq.tables.RiwayatCuti;
+import id.perumdamts.kepegawaian.jooq.tables.RiwayatCutiAud;
+import id.perumdamts.kepegawaian.jooq.tables.RiwayatKeluar;
+import id.perumdamts.kepegawaian.jooq.tables.RiwayatKontrak;
+import id.perumdamts.kepegawaian.jooq.tables.RiwayatKontrakAud;
+import id.perumdamts.kepegawaian.jooq.tables.RiwayatMutasi;
+import id.perumdamts.kepegawaian.jooq.tables.RiwayatMutasiAud;
+import id.perumdamts.kepegawaian.jooq.tables.RiwayatSk;
+import id.perumdamts.kepegawaian.jooq.tables.RiwayatSkAud;
+import id.perumdamts.kepegawaian.jooq.tables.RiwayatSp;
+import id.perumdamts.kepegawaian.jooq.tables.RiwayatSpAud;
+import id.perumdamts.kepegawaian.jooq.tables.RiwayatTerminasi;
+import id.perumdamts.kepegawaian.jooq.tables.RiwayatTerminasiAud;
 import id.perumdamts.kepegawaian.jooq.tables.RumahDinas;
+import id.perumdamts.kepegawaian.jooq.tables.RumahDinasAud;
 import id.perumdamts.kepegawaian.jooq.tables.SanksiSp;
+import id.perumdamts.kepegawaian.jooq.tables.SanksiSpAud;
+import id.perumdamts.kepegawaian.jooq.tables.StatistikPegawai;
+import id.perumdamts.kepegawaian.jooq.tables.VPegawai;
 
 import java.util.Arrays;
 import java.util.List;
@@ -58,6 +134,11 @@ public class Kepegawaian extends SchemaImpl {
     public final AlasanBerhenti ALASAN_BERHENTI = AlasanBerhenti.ALASAN_BERHENTI;
 
     /**
+     * The table <code>kepegawaian.alasan_berhenti_aud</code>.
+     */
+    public final AlasanBerhentiAud ALASAN_BERHENTI_AUD = AlasanBerhentiAud.ALASAN_BERHENTI_AUD;
+
+    /**
      * The table <code>kepegawaian.alat_kerja</code>.
      */
     public final AlatKerja ALAT_KERJA = AlatKerja.ALAT_KERJA;
@@ -68,9 +149,64 @@ public class Kepegawaian extends SchemaImpl {
     public final Apd APD = Apd.APD;
 
     /**
+     * The table <code>kepegawaian.biodata</code>.
+     */
+    public final Biodata BIODATA = Biodata.BIODATA;
+
+    /**
+     * The table <code>kepegawaian.biodata_aud</code>.
+     */
+    public final BiodataAud BIODATA_AUD = BiodataAud.BIODATA_AUD;
+
+    /**
+     * The table <code>kepegawaian.cuti_approval</code>.
+     */
+    public final CutiApproval CUTI_APPROVAL = CutiApproval.CUTI_APPROVAL;
+
+    /**
+     * The table <code>kepegawaian.cuti_approval_aud</code>.
+     */
+    public final CutiApprovalAud CUTI_APPROVAL_AUD = CutiApprovalAud.CUTI_APPROVAL_AUD;
+
+    /**
+     * The table <code>kepegawaian.cuti_approval_chain</code>.
+     */
+    public final CutiApprovalChain CUTI_APPROVAL_CHAIN = CutiApprovalChain.CUTI_APPROVAL_CHAIN;
+
+    /**
      * The table <code>kepegawaian.cuti_jenis</code>.
      */
     public final CutiJenis CUTI_JENIS = CutiJenis.CUTI_JENIS;
+
+    /**
+     * The table <code>kepegawaian.cuti_jenis_aud</code>.
+     */
+    public final CutiJenisAud CUTI_JENIS_AUD = CutiJenisAud.CUTI_JENIS_AUD;
+
+    /**
+     * The table <code>kepegawaian.cuti_klaim_detail</code>.
+     */
+    public final CutiKlaimDetail CUTI_KLAIM_DETAIL = CutiKlaimDetail.CUTI_KLAIM_DETAIL;
+
+    /**
+     * The table <code>kepegawaian.cuti_kuota</code>.
+     */
+    public final CutiKuota CUTI_KUOTA = CutiKuota.CUTI_KUOTA;
+
+    /**
+     * The table <code>kepegawaian.cuti_kuota_aud</code>.
+     */
+    public final CutiKuotaAud CUTI_KUOTA_AUD = CutiKuotaAud.CUTI_KUOTA_AUD;
+
+    /**
+     * The table <code>kepegawaian.cuti_pegawai</code>.
+     */
+    public final CutiPegawai CUTI_PEGAWAI = CutiPegawai.CUTI_PEGAWAI;
+
+    /**
+     * The table <code>kepegawaian.cuti_pegawai_aud</code>.
+     */
+    public final CutiPegawaiAud CUTI_PEGAWAI_AUD = CutiPegawaiAud.CUTI_PEGAWAI_AUD;
 
     /**
      * The table <code>kepegawaian.dasar_gaji</code>.
@@ -78,9 +214,54 @@ public class Kepegawaian extends SchemaImpl {
     public final DasarGaji DASAR_GAJI = DasarGaji.DASAR_GAJI;
 
     /**
+     * The table <code>kepegawaian.dasar_gaji_aud</code>.
+     */
+    public final DasarGajiAud DASAR_GAJI_AUD = DasarGajiAud.DASAR_GAJI_AUD;
+
+    /**
      * The table <code>kepegawaian.detail_dasar_gaji</code>.
      */
     public final DetailDasarGaji DETAIL_DASAR_GAJI = DetailDasarGaji.DETAIL_DASAR_GAJI;
+
+    /**
+     * The table <code>kepegawaian.detail_dasar_gaji_aud</code>.
+     */
+    public final DetailDasarGajiAud DETAIL_DASAR_GAJI_AUD = DetailDasarGajiAud.DETAIL_DASAR_GAJI_AUD;
+
+    /**
+     * The table <code>kepegawaian.gaji_batch_master</code>.
+     */
+    public final GajiBatchMaster GAJI_BATCH_MASTER = GajiBatchMaster.GAJI_BATCH_MASTER;
+
+    /**
+     * The table <code>kepegawaian.gaji_batch_master_proses</code>.
+     */
+    public final GajiBatchMasterProses GAJI_BATCH_MASTER_PROSES = GajiBatchMasterProses.GAJI_BATCH_MASTER_PROSES;
+
+    /**
+     * The table <code>kepegawaian.gaji_batch_potongan_tkk</code>.
+     */
+    public final GajiBatchPotonganTkk GAJI_BATCH_POTONGAN_TKK = GajiBatchPotonganTkk.GAJI_BATCH_POTONGAN_TKK;
+
+    /**
+     * The table <code>kepegawaian.gaji_batch_root</code>.
+     */
+    public final GajiBatchRoot GAJI_BATCH_ROOT = GajiBatchRoot.GAJI_BATCH_ROOT;
+
+    /**
+     * The table <code>kepegawaian.gaji_batch_root_aud</code>.
+     */
+    public final GajiBatchRootAud GAJI_BATCH_ROOT_AUD = GajiBatchRootAud.GAJI_BATCH_ROOT_AUD;
+
+    /**
+     * The table <code>kepegawaian.gaji_batch_root_error_logs</code>.
+     */
+    public final GajiBatchRootErrorLogs GAJI_BATCH_ROOT_ERROR_LOGS = GajiBatchRootErrorLogs.GAJI_BATCH_ROOT_ERROR_LOGS;
+
+    /**
+     * The table <code>kepegawaian.gaji_batch_root_lampiran</code>.
+     */
+    public final GajiBatchRootLampiran GAJI_BATCH_ROOT_LAMPIRAN = GajiBatchRootLampiran.GAJI_BATCH_ROOT_LAMPIRAN;
 
     /**
      * The table <code>kepegawaian.gaji_komponen</code>.
@@ -88,9 +269,19 @@ public class Kepegawaian extends SchemaImpl {
     public final GajiKomponen GAJI_KOMPONEN = GajiKomponen.GAJI_KOMPONEN;
 
     /**
+     * The table <code>kepegawaian.gaji_komponen_aud</code>.
+     */
+    public final GajiKomponenAud GAJI_KOMPONEN_AUD = GajiKomponenAud.GAJI_KOMPONEN_AUD;
+
+    /**
      * The table <code>kepegawaian.gaji_parameter_setting</code>.
      */
     public final GajiParameterSetting GAJI_PARAMETER_SETTING = GajiParameterSetting.GAJI_PARAMETER_SETTING;
+
+    /**
+     * The table <code>kepegawaian.gaji_parameter_setting_aud</code>.
+     */
+    public final GajiParameterSettingAud GAJI_PARAMETER_SETTING_AUD = GajiParameterSettingAud.GAJI_PARAMETER_SETTING_AUD;
 
     /**
      * The table <code>kepegawaian.gaji_pendapatan_non_pajak</code>.
@@ -98,9 +289,29 @@ public class Kepegawaian extends SchemaImpl {
     public final GajiPendapatanNonPajak GAJI_PENDAPATAN_NON_PAJAK = GajiPendapatanNonPajak.GAJI_PENDAPATAN_NON_PAJAK;
 
     /**
+     * The table <code>kepegawaian.gaji_pendapatan_non_pajak_aud</code>.
+     */
+    public final GajiPendapatanNonPajakAud GAJI_PENDAPATAN_NON_PAJAK_AUD = GajiPendapatanNonPajakAud.GAJI_PENDAPATAN_NON_PAJAK_AUD;
+
+    /**
+     * The table <code>kepegawaian.gaji_phdp</code>.
+     */
+    public final GajiPhdp GAJI_PHDP = GajiPhdp.GAJI_PHDP;
+
+    /**
+     * The table <code>kepegawaian.gaji_phdp_aud</code>.
+     */
+    public final GajiPhdpAud GAJI_PHDP_AUD = GajiPhdpAud.GAJI_PHDP_AUD;
+
+    /**
      * The table <code>kepegawaian.gaji_potongan_tkk</code>.
      */
     public final GajiPotonganTkk GAJI_POTONGAN_TKK = GajiPotonganTkk.GAJI_POTONGAN_TKK;
+
+    /**
+     * The table <code>kepegawaian.gaji_potongan_tkk_aud</code>.
+     */
+    public final GajiPotonganTkkAud GAJI_POTONGAN_TKK_AUD = GajiPotonganTkkAud.GAJI_POTONGAN_TKK_AUD;
 
     /**
      * The table <code>kepegawaian.gaji_profil</code>.
@@ -108,9 +319,19 @@ public class Kepegawaian extends SchemaImpl {
     public final GajiProfil GAJI_PROFIL = GajiProfil.GAJI_PROFIL;
 
     /**
+     * The table <code>kepegawaian.gaji_profil_aud</code>.
+     */
+    public final GajiProfilAud GAJI_PROFIL_AUD = GajiProfilAud.GAJI_PROFIL_AUD;
+
+    /**
      * The table <code>kepegawaian.gaji_tunjangan</code>.
      */
     public final GajiTunjangan GAJI_TUNJANGAN = GajiTunjangan.GAJI_TUNJANGAN;
+
+    /**
+     * The table <code>kepegawaian.gaji_tunjangan_aud</code>.
+     */
+    public final GajiTunjanganAud GAJI_TUNJANGAN_AUD = GajiTunjanganAud.GAJI_TUNJANGAN_AUD;
 
     /**
      * The table <code>kepegawaian.golongan</code>.
@@ -118,14 +339,39 @@ public class Kepegawaian extends SchemaImpl {
     public final Golongan GOLONGAN = Golongan.GOLONGAN;
 
     /**
+     * The table <code>kepegawaian.golongan_aud</code>.
+     */
+    public final GolonganAud GOLONGAN_AUD = GolonganAud.GOLONGAN_AUD;
+
+    /**
      * The table <code>kepegawaian.grade</code>.
      */
     public final Grade GRADE = Grade.GRADE;
 
     /**
+     * The table <code>kepegawaian.grade_aud</code>.
+     */
+    public final GradeAud GRADE_AUD = GradeAud.GRADE_AUD;
+
+    /**
+     * The table <code>kepegawaian.hari_libur</code>.
+     */
+    public final HariLibur HARI_LIBUR = HariLibur.HARI_LIBUR;
+
+    /**
+     * The table <code>kepegawaian.hari_libur_aud</code>.
+     */
+    public final HariLiburAud HARI_LIBUR_AUD = HariLiburAud.HARI_LIBUR_AUD;
+
+    /**
      * The table <code>kepegawaian.jabatan</code>.
      */
     public final Jabatan JABATAN = Jabatan.JABATAN;
+
+    /**
+     * The table <code>kepegawaian.jabatan_aud</code>.
+     */
+    public final JabatanAud JABATAN_AUD = JabatanAud.JABATAN_AUD;
 
     /**
      * The table <code>kepegawaian.jenis_keahlian</code>.
@@ -138,6 +384,11 @@ public class Kepegawaian extends SchemaImpl {
     public final JenisKitas JENIS_KITAS = JenisKitas.JENIS_KITAS;
 
     /**
+     * The table <code>kepegawaian.jenis_kitas_aud</code>.
+     */
+    public final JenisKitasAud JENIS_KITAS_AUD = JenisKitasAud.JENIS_KITAS_AUD;
+
+    /**
      * The table <code>kepegawaian.jenis_pelatihan</code>.
      */
     public final JenisPelatihan JENIS_PELATIHAN = JenisPelatihan.JENIS_PELATIHAN;
@@ -148,9 +399,54 @@ public class Kepegawaian extends SchemaImpl {
     public final JenisSp JENIS_SP = JenisSp.JENIS_SP;
 
     /**
+     * The table <code>kepegawaian.jenis_sp_aud</code>.
+     */
+    public final JenisSpAud JENIS_SP_AUD = JenisSpAud.JENIS_SP_AUD;
+
+    /**
      * The table <code>kepegawaian.jenjang_pendidikan</code>.
      */
     public final JenjangPendidikan JENJANG_PENDIDIKAN = JenjangPendidikan.JENJANG_PENDIDIKAN;
+
+    /**
+     * The table <code>kepegawaian.kartu_identitas</code>.
+     */
+    public final KartuIdentitas KARTU_IDENTITAS = KartuIdentitas.KARTU_IDENTITAS;
+
+    /**
+     * The table <code>kepegawaian.kartu_identitas_aud</code>.
+     */
+    public final KartuIdentitasAud KARTU_IDENTITAS_AUD = KartuIdentitasAud.KARTU_IDENTITAS_AUD;
+
+    /**
+     * The table <code>kepegawaian.keahlian</code>.
+     */
+    public final Keahlian KEAHLIAN = Keahlian.KEAHLIAN;
+
+    /**
+     * The table <code>kepegawaian.keahlian_aud</code>.
+     */
+    public final KeahlianAud KEAHLIAN_AUD = KeahlianAud.KEAHLIAN_AUD;
+
+    /**
+     * The table <code>kepegawaian.lampiran_profil</code>.
+     */
+    public final LampiranProfil LAMPIRAN_PROFIL = LampiranProfil.LAMPIRAN_PROFIL;
+
+    /**
+     * The table <code>kepegawaian.lampiran_profil_aud</code>.
+     */
+    public final LampiranProfilAud LAMPIRAN_PROFIL_AUD = LampiranProfilAud.LAMPIRAN_PROFIL_AUD;
+
+    /**
+     * The table <code>kepegawaian.lampiran_sk</code>.
+     */
+    public final LampiranSk LAMPIRAN_SK = LampiranSk.LAMPIRAN_SK;
+
+    /**
+     * The table <code>kepegawaian.lampiran_sk_aud</code>.
+     */
+    public final LampiranSkAud LAMPIRAN_SK_AUD = LampiranSkAud.LAMPIRAN_SK_AUD;
 
     /**
      * The table <code>kepegawaian.level</code>.
@@ -158,9 +454,59 @@ public class Kepegawaian extends SchemaImpl {
     public final Level LEVEL = Level.LEVEL;
 
     /**
+     * The table <code>kepegawaian.level_aud</code>.
+     */
+    public final LevelAud LEVEL_AUD = LevelAud.LEVEL_AUD;
+
+    /**
      * The table <code>kepegawaian.organisasi</code>.
      */
     public final Organisasi ORGANISASI = Organisasi.ORGANISASI;
+
+    /**
+     * The table <code>kepegawaian.organisasi_aud</code>.
+     */
+    public final OrganisasiAud ORGANISASI_AUD = OrganisasiAud.ORGANISASI_AUD;
+
+    /**
+     * The table <code>kepegawaian.pegawai</code>.
+     */
+    public final Pegawai PEGAWAI = Pegawai.PEGAWAI;
+
+    /**
+     * The table <code>kepegawaian.pegawai_aud</code>.
+     */
+    public final PegawaiAud PEGAWAI_AUD = PegawaiAud.PEGAWAI_AUD;
+
+    /**
+     * The table <code>kepegawaian.pelatihan</code>.
+     */
+    public final Pelatihan PELATIHAN = Pelatihan.PELATIHAN;
+
+    /**
+     * The table <code>kepegawaian.pelatihan_aud</code>.
+     */
+    public final PelatihanAud PELATIHAN_AUD = PelatihanAud.PELATIHAN_AUD;
+
+    /**
+     * The table <code>kepegawaian.pendidikan</code>.
+     */
+    public final Pendidikan PENDIDIKAN = Pendidikan.PENDIDIKAN;
+
+    /**
+     * The table <code>kepegawaian.pendidikan_aud</code>.
+     */
+    public final PendidikanAud PENDIDIKAN_AUD = PendidikanAud.PENDIDIKAN_AUD;
+
+    /**
+     * The table <code>kepegawaian.pengalaman_kerja</code>.
+     */
+    public final PengalamanKerja PENGALAMAN_KERJA = PengalamanKerja.PENGALAMAN_KERJA;
+
+    /**
+     * The table <code>kepegawaian.pengalaman_kerja_aud</code>.
+     */
+    public final PengalamanKerjaAud PENGALAMAN_KERJA_AUD = PengalamanKerjaAud.PENGALAMAN_KERJA_AUD;
 
     /**
      * The table <code>kepegawaian.pref_role</code>.
@@ -173,14 +519,124 @@ public class Kepegawaian extends SchemaImpl {
     public final Profesi PROFESI = Profesi.PROFESI;
 
     /**
+     * The table <code>kepegawaian.profesi_aud</code>.
+     */
+    public final ProfesiAud PROFESI_AUD = ProfesiAud.PROFESI_AUD;
+
+    /**
+     * The table <code>kepegawaian.profil_keluarga</code>.
+     */
+    public final ProfilKeluarga PROFIL_KELUARGA = ProfilKeluarga.PROFIL_KELUARGA;
+
+    /**
+     * The table <code>kepegawaian.profil_keluarga_aud</code>.
+     */
+    public final ProfilKeluargaAud PROFIL_KELUARGA_AUD = ProfilKeluargaAud.PROFIL_KELUARGA_AUD;
+
+    /**
+     * The table <code>kepegawaian.profil_update</code>.
+     */
+    public final ProfilUpdate PROFIL_UPDATE = ProfilUpdate.PROFIL_UPDATE;
+
+    /**
+     * The table <code>kepegawaian.revinfo</code>.
+     */
+    public final Revinfo REVINFO = Revinfo.REVINFO;
+
+    /**
+     * The table <code>kepegawaian.riwayat_cuti</code>.
+     */
+    public final RiwayatCuti RIWAYAT_CUTI = RiwayatCuti.RIWAYAT_CUTI;
+
+    /**
+     * The table <code>kepegawaian.riwayat_cuti_aud</code>.
+     */
+    public final RiwayatCutiAud RIWAYAT_CUTI_AUD = RiwayatCutiAud.RIWAYAT_CUTI_AUD;
+
+    /**
+     * The table <code>kepegawaian.riwayat_keluar</code>.
+     */
+    public final RiwayatKeluar RIWAYAT_KELUAR = RiwayatKeluar.RIWAYAT_KELUAR;
+
+    /**
+     * The table <code>kepegawaian.riwayat_kontrak</code>.
+     */
+    public final RiwayatKontrak RIWAYAT_KONTRAK = RiwayatKontrak.RIWAYAT_KONTRAK;
+
+    /**
+     * The table <code>kepegawaian.riwayat_kontrak_aud</code>.
+     */
+    public final RiwayatKontrakAud RIWAYAT_KONTRAK_AUD = RiwayatKontrakAud.RIWAYAT_KONTRAK_AUD;
+
+    /**
+     * The table <code>kepegawaian.riwayat_mutasi</code>.
+     */
+    public final RiwayatMutasi RIWAYAT_MUTASI = RiwayatMutasi.RIWAYAT_MUTASI;
+
+    /**
+     * The table <code>kepegawaian.riwayat_mutasi_aud</code>.
+     */
+    public final RiwayatMutasiAud RIWAYAT_MUTASI_AUD = RiwayatMutasiAud.RIWAYAT_MUTASI_AUD;
+
+    /**
+     * The table <code>kepegawaian.riwayat_sk</code>.
+     */
+    public final RiwayatSk RIWAYAT_SK = RiwayatSk.RIWAYAT_SK;
+
+    /**
+     * The table <code>kepegawaian.riwayat_sk_aud</code>.
+     */
+    public final RiwayatSkAud RIWAYAT_SK_AUD = RiwayatSkAud.RIWAYAT_SK_AUD;
+
+    /**
+     * The table <code>kepegawaian.riwayat_sp</code>.
+     */
+    public final RiwayatSp RIWAYAT_SP = RiwayatSp.RIWAYAT_SP;
+
+    /**
+     * The table <code>kepegawaian.riwayat_sp_aud</code>.
+     */
+    public final RiwayatSpAud RIWAYAT_SP_AUD = RiwayatSpAud.RIWAYAT_SP_AUD;
+
+    /**
+     * The table <code>kepegawaian.riwayat_terminasi</code>.
+     */
+    public final RiwayatTerminasi RIWAYAT_TERMINASI = RiwayatTerminasi.RIWAYAT_TERMINASI;
+
+    /**
+     * The table <code>kepegawaian.riwayat_terminasi_aud</code>.
+     */
+    public final RiwayatTerminasiAud RIWAYAT_TERMINASI_AUD = RiwayatTerminasiAud.RIWAYAT_TERMINASI_AUD;
+
+    /**
      * The table <code>kepegawaian.rumah_dinas</code>.
      */
     public final RumahDinas RUMAH_DINAS = RumahDinas.RUMAH_DINAS;
 
     /**
+     * The table <code>kepegawaian.rumah_dinas_aud</code>.
+     */
+    public final RumahDinasAud RUMAH_DINAS_AUD = RumahDinasAud.RUMAH_DINAS_AUD;
+
+    /**
      * The table <code>kepegawaian.sanksi_sp</code>.
      */
     public final SanksiSp SANKSI_SP = SanksiSp.SANKSI_SP;
+
+    /**
+     * The table <code>kepegawaian.sanksi_sp_aud</code>.
+     */
+    public final SanksiSpAud SANKSI_SP_AUD = SanksiSpAud.SANKSI_SP_AUD;
+
+    /**
+     * The table <code>kepegawaian.statistik_pegawai</code>.
+     */
+    public final StatistikPegawai STATISTIK_PEGAWAI = StatistikPegawai.STATISTIK_PEGAWAI;
+
+    /**
+     * The table <code>kepegawaian.v_pegawai</code>.
+     */
+    public final VPegawai V_PEGAWAI = VPegawai.V_PEGAWAI;
 
     /**
      * No further instances allowed
@@ -199,31 +655,107 @@ public class Kepegawaian extends SchemaImpl {
     public final List<Table<?>> getTables() {
         return Arrays.asList(
             AlasanBerhenti.ALASAN_BERHENTI,
+            AlasanBerhentiAud.ALASAN_BERHENTI_AUD,
             AlatKerja.ALAT_KERJA,
             Apd.APD,
+            Biodata.BIODATA,
+            BiodataAud.BIODATA_AUD,
+            CutiApproval.CUTI_APPROVAL,
+            CutiApprovalAud.CUTI_APPROVAL_AUD,
+            CutiApprovalChain.CUTI_APPROVAL_CHAIN,
             CutiJenis.CUTI_JENIS,
+            CutiJenisAud.CUTI_JENIS_AUD,
+            CutiKlaimDetail.CUTI_KLAIM_DETAIL,
+            CutiKuota.CUTI_KUOTA,
+            CutiKuotaAud.CUTI_KUOTA_AUD,
+            CutiPegawai.CUTI_PEGAWAI,
+            CutiPegawaiAud.CUTI_PEGAWAI_AUD,
             DasarGaji.DASAR_GAJI,
+            DasarGajiAud.DASAR_GAJI_AUD,
             DetailDasarGaji.DETAIL_DASAR_GAJI,
+            DetailDasarGajiAud.DETAIL_DASAR_GAJI_AUD,
+            GajiBatchMaster.GAJI_BATCH_MASTER,
+            GajiBatchMasterProses.GAJI_BATCH_MASTER_PROSES,
+            GajiBatchPotonganTkk.GAJI_BATCH_POTONGAN_TKK,
+            GajiBatchRoot.GAJI_BATCH_ROOT,
+            GajiBatchRootAud.GAJI_BATCH_ROOT_AUD,
+            GajiBatchRootErrorLogs.GAJI_BATCH_ROOT_ERROR_LOGS,
+            GajiBatchRootLampiran.GAJI_BATCH_ROOT_LAMPIRAN,
             GajiKomponen.GAJI_KOMPONEN,
+            GajiKomponenAud.GAJI_KOMPONEN_AUD,
             GajiParameterSetting.GAJI_PARAMETER_SETTING,
+            GajiParameterSettingAud.GAJI_PARAMETER_SETTING_AUD,
             GajiPendapatanNonPajak.GAJI_PENDAPATAN_NON_PAJAK,
+            GajiPendapatanNonPajakAud.GAJI_PENDAPATAN_NON_PAJAK_AUD,
+            GajiPhdp.GAJI_PHDP,
+            GajiPhdpAud.GAJI_PHDP_AUD,
             GajiPotonganTkk.GAJI_POTONGAN_TKK,
+            GajiPotonganTkkAud.GAJI_POTONGAN_TKK_AUD,
             GajiProfil.GAJI_PROFIL,
+            GajiProfilAud.GAJI_PROFIL_AUD,
             GajiTunjangan.GAJI_TUNJANGAN,
+            GajiTunjanganAud.GAJI_TUNJANGAN_AUD,
             Golongan.GOLONGAN,
+            GolonganAud.GOLONGAN_AUD,
             Grade.GRADE,
+            GradeAud.GRADE_AUD,
+            HariLibur.HARI_LIBUR,
+            HariLiburAud.HARI_LIBUR_AUD,
             Jabatan.JABATAN,
+            JabatanAud.JABATAN_AUD,
             JenisKeahlian.JENIS_KEAHLIAN,
             JenisKitas.JENIS_KITAS,
+            JenisKitasAud.JENIS_KITAS_AUD,
             JenisPelatihan.JENIS_PELATIHAN,
             JenisSp.JENIS_SP,
+            JenisSpAud.JENIS_SP_AUD,
             JenjangPendidikan.JENJANG_PENDIDIKAN,
+            KartuIdentitas.KARTU_IDENTITAS,
+            KartuIdentitasAud.KARTU_IDENTITAS_AUD,
+            Keahlian.KEAHLIAN,
+            KeahlianAud.KEAHLIAN_AUD,
+            LampiranProfil.LAMPIRAN_PROFIL,
+            LampiranProfilAud.LAMPIRAN_PROFIL_AUD,
+            LampiranSk.LAMPIRAN_SK,
+            LampiranSkAud.LAMPIRAN_SK_AUD,
             Level.LEVEL,
+            LevelAud.LEVEL_AUD,
             Organisasi.ORGANISASI,
+            OrganisasiAud.ORGANISASI_AUD,
+            Pegawai.PEGAWAI,
+            PegawaiAud.PEGAWAI_AUD,
+            Pelatihan.PELATIHAN,
+            PelatihanAud.PELATIHAN_AUD,
+            Pendidikan.PENDIDIKAN,
+            PendidikanAud.PENDIDIKAN_AUD,
+            PengalamanKerja.PENGALAMAN_KERJA,
+            PengalamanKerjaAud.PENGALAMAN_KERJA_AUD,
             PrefRole.PREF_ROLE,
             Profesi.PROFESI,
+            ProfesiAud.PROFESI_AUD,
+            ProfilKeluarga.PROFIL_KELUARGA,
+            ProfilKeluargaAud.PROFIL_KELUARGA_AUD,
+            ProfilUpdate.PROFIL_UPDATE,
+            Revinfo.REVINFO,
+            RiwayatCuti.RIWAYAT_CUTI,
+            RiwayatCutiAud.RIWAYAT_CUTI_AUD,
+            RiwayatKeluar.RIWAYAT_KELUAR,
+            RiwayatKontrak.RIWAYAT_KONTRAK,
+            RiwayatKontrakAud.RIWAYAT_KONTRAK_AUD,
+            RiwayatMutasi.RIWAYAT_MUTASI,
+            RiwayatMutasiAud.RIWAYAT_MUTASI_AUD,
+            RiwayatSk.RIWAYAT_SK,
+            RiwayatSkAud.RIWAYAT_SK_AUD,
+            RiwayatSp.RIWAYAT_SP,
+            RiwayatSpAud.RIWAYAT_SP_AUD,
+            RiwayatTerminasi.RIWAYAT_TERMINASI,
+            RiwayatTerminasiAud.RIWAYAT_TERMINASI_AUD,
             RumahDinas.RUMAH_DINAS,
-            SanksiSp.SANKSI_SP
+            RumahDinasAud.RUMAH_DINAS_AUD,
+            SanksiSp.SANKSI_SP,
+            SanksiSpAud.SANKSI_SP_AUD,
+            StatistikPegawai.STATISTIK_PEGAWAI,
+            VPegawai.V_PEGAWAI
         );
     }
 }

@@ -4,6 +4,7 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.Indexes;
 import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.DetailDasarGaji.DetailDasarGajiPath;
@@ -11,12 +12,15 @@ import id.perumdamts.kepegawaian.jooq.tables.records.DasarGajiRecord;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
+import org.jooq.Index;
 import org.jooq.InverseForeignKey;
 import org.jooq.Name;
 import org.jooq.Path;
@@ -63,34 +67,14 @@ public class DasarGaji extends TableImpl<DasarGajiRecord> {
     public final TableField<DasarGajiRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.dasar_gaji.deskripsi</code>.
+     * The column <code>kepegawaian.dasar_gaji.changed_status</code>.
      */
-    public final TableField<DasarGajiRecord, String> DESKRIPSI = createField(DSL.name("deskripsi"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>kepegawaian.dasar_gaji.tanggal_awal</code>.
-     */
-    public final TableField<DasarGajiRecord, LocalDate> TANGGAL_AWAL = createField(DSL.name("tanggal_awal"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
-
-    /**
-     * The column <code>kepegawaian.dasar_gaji.tanggal_akhir</code>.
-     */
-    public final TableField<DasarGajiRecord, LocalDate> TANGGAL_AKHIR = createField(DSL.name("tanggal_akhir"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
-
-    /**
-     * The column <code>kepegawaian.dasar_gaji.aktif</code>.
-     */
-    public final TableField<DasarGajiRecord, Boolean> AKTIF = createField(DSL.name("aktif"), SQLDataType.BIT.nullable(false).defaultValue(DSL.field(DSL.raw("b'0'"), SQLDataType.BIT)), this, "");
-
-    /**
-     * The column <code>kepegawaian.dasar_gaji.is_deleted</code>.
-     */
-    public final TableField<DasarGajiRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BIT.nullable(false).defaultValue(DSL.field(DSL.raw("b'0'"), SQLDataType.BIT)), this, "");
+    public final TableField<DasarGajiRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
      * The column <code>kepegawaian.dasar_gaji.created_at</code>.
      */
-    public final TableField<DasarGajiRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("current_timestamp(6)"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<DasarGajiRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>kepegawaian.dasar_gaji.created_by</code>.
@@ -98,14 +82,44 @@ public class DasarGaji extends TableImpl<DasarGajiRecord> {
     public final TableField<DasarGajiRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
+     * The column <code>kepegawaian.dasar_gaji.is_deleted</code>.
+     */
+    public final TableField<DasarGajiRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
      * The column <code>kepegawaian.dasar_gaji.updated_at</code>.
      */
-    public final TableField<DasarGajiRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("current_timestamp(6)"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<DasarGajiRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>kepegawaian.dasar_gaji.updated_by</code>.
      */
     public final TableField<DasarGajiRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.dasar_gaji.version</code>.
+     */
+    public final TableField<DasarGajiRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>kepegawaian.dasar_gaji.aktif</code>.
+     */
+    public final TableField<DasarGajiRecord, Boolean> AKTIF = createField(DSL.name("aktif"), SQLDataType.BIT.nullable(false), this, "");
+
+    /**
+     * The column <code>kepegawaian.dasar_gaji.deskripsi</code>.
+     */
+    public final TableField<DasarGajiRecord, String> DESKRIPSI = createField(DSL.name("deskripsi"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.dasar_gaji.tanggal_akhir</code>.
+     */
+    public final TableField<DasarGajiRecord, LocalDate> TANGGAL_AKHIR = createField(DSL.name("tanggal_akhir"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
+
+    /**
+     * The column <code>kepegawaian.dasar_gaji.tanggal_awal</code>.
+     */
+    public final TableField<DasarGajiRecord, LocalDate> TANGGAL_AWAL = createField(DSL.name("tanggal_awal"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     private DasarGaji(Name alias, Table<DasarGajiRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
@@ -175,6 +189,11 @@ public class DasarGaji extends TableImpl<DasarGajiRecord> {
     }
 
     @Override
+    public List<Index> getIndexes() {
+        return Arrays.asList(Indexes.DASAR_GAJI_IDX5WAQQUKREQ6VLFJC6GUNOJV0L, Indexes.DASAR_GAJI_IDXKT4M34X9X881KLHUWJF2WOTR5, Indexes.DASAR_GAJI_IDXQ19OVUYIRXVU21W04GG9P51EC);
+    }
+
+    @Override
     public Identity<DasarGajiRecord, Long> getIdentity() {
         return (Identity<DasarGajiRecord, Long>) super.getIdentity();
     }
@@ -192,7 +211,7 @@ public class DasarGaji extends TableImpl<DasarGajiRecord> {
      */
     public DetailDasarGajiPath detailDasarGaji() {
         if (_detailDasarGaji == null)
-            _detailDasarGaji = new DetailDasarGajiPath(this, null, Keys.FK_DETAIL_DASAR_GAJI_DASAR_GAJI.getInverseKey());
+            _detailDasarGaji = new DetailDasarGajiPath(this, null, Keys.FKBX0UYJS3UY0ELIOAH79DA7YXD.getInverseKey());
 
         return _detailDasarGaji;
     }

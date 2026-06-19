@@ -35,45 +35,45 @@ public class GradeRecord extends UpdatableRecordImpl<GradeRecord> {
     }
 
     /**
-     * Setter for <code>kepegawaian.grade.level_id</code>.
+     * Setter for <code>kepegawaian.grade.changed_status</code>.
      */
-    public void setLevelId(Long value) {
+    public void setChangedStatus(Byte value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.grade.level_id</code>.
+     * Getter for <code>kepegawaian.grade.changed_status</code>.
      */
-    public Long getLevelId() {
-        return (Long) get(1);
+    public Byte getChangedStatus() {
+        return (Byte) get(1);
     }
 
     /**
-     * Setter for <code>kepegawaian.grade.grade</code>.
+     * Setter for <code>kepegawaian.grade.created_at</code>.
      */
-    public void setGrade(Integer value) {
+    public void setCreatedAt(LocalDateTime value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.grade.grade</code>.
+     * Getter for <code>kepegawaian.grade.created_at</code>.
      */
-    public Integer getGrade() {
-        return (Integer) get(2);
+    public LocalDateTime getCreatedAt() {
+        return (LocalDateTime) get(2);
     }
 
     /**
-     * Setter for <code>kepegawaian.grade.tukin</code>.
+     * Setter for <code>kepegawaian.grade.created_by</code>.
      */
-    public void setTukin(Double value) {
+    public void setCreatedBy(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.grade.tukin</code>.
+     * Getter for <code>kepegawaian.grade.created_by</code>.
      */
-    public Double getTukin() {
-        return (Double) get(3);
+    public String getCreatedBy() {
+        return (String) get(3);
     }
 
     /**
@@ -91,59 +91,87 @@ public class GradeRecord extends UpdatableRecordImpl<GradeRecord> {
     }
 
     /**
-     * Setter for <code>kepegawaian.grade.created_at</code>.
-     */
-    public void setCreatedAt(LocalDateTime value) {
-        set(5, value);
-    }
-
-    /**
-     * Getter for <code>kepegawaian.grade.created_at</code>.
-     */
-    public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(5);
-    }
-
-    /**
-     * Setter for <code>kepegawaian.grade.created_by</code>.
-     */
-    public void setCreatedBy(String value) {
-        set(6, value);
-    }
-
-    /**
-     * Getter for <code>kepegawaian.grade.created_by</code>.
-     */
-    public String getCreatedBy() {
-        return (String) get(6);
-    }
-
-    /**
      * Setter for <code>kepegawaian.grade.updated_at</code>.
      */
     public void setUpdatedAt(LocalDateTime value) {
-        set(7, value);
+        set(5, value);
     }
 
     /**
      * Getter for <code>kepegawaian.grade.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(7);
+        return (LocalDateTime) get(5);
     }
 
     /**
      * Setter for <code>kepegawaian.grade.updated_by</code>.
      */
     public void setUpdatedBy(String value) {
-        set(8, value);
+        set(6, value);
     }
 
     /**
      * Getter for <code>kepegawaian.grade.updated_by</code>.
      */
     public String getUpdatedBy() {
-        return (String) get(8);
+        return (String) get(6);
+    }
+
+    /**
+     * Setter for <code>kepegawaian.grade.version</code>.
+     */
+    public void setVersion(Integer value) {
+        set(7, value);
+    }
+
+    /**
+     * Getter for <code>kepegawaian.grade.version</code>.
+     */
+    public Integer getVersion() {
+        return (Integer) get(7);
+    }
+
+    /**
+     * Setter for <code>kepegawaian.grade.grade</code>.
+     */
+    public void setGrade(Integer value) {
+        set(8, value);
+    }
+
+    /**
+     * Getter for <code>kepegawaian.grade.grade</code>.
+     */
+    public Integer getGrade() {
+        return (Integer) get(8);
+    }
+
+    /**
+     * Setter for <code>kepegawaian.grade.tukin</code>.
+     */
+    public void setTukin(Double value) {
+        set(9, value);
+    }
+
+    /**
+     * Getter for <code>kepegawaian.grade.tukin</code>.
+     */
+    public Double getTukin() {
+        return (Double) get(9);
+    }
+
+    /**
+     * Setter for <code>kepegawaian.grade.level_id</code>.
+     */
+    public void setLevelId(Long value) {
+        set(10, value);
+    }
+
+    /**
+     * Getter for <code>kepegawaian.grade.level_id</code>.
+     */
+    public Long getLevelId() {
+        return (Long) get(10);
     }
 
     // -------------------------------------------------------------------------
@@ -169,18 +197,20 @@ public class GradeRecord extends UpdatableRecordImpl<GradeRecord> {
     /**
      * Create a detached, initialised GradeRecord
      */
-    public GradeRecord(Long id_, Long levelId, Integer grade, Double tukin, Boolean isDeleted, LocalDateTime createdAt, String createdBy, LocalDateTime updatedAt, String updatedBy) {
+    public GradeRecord(Long id_, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version, Integer grade, Double tukin, Long levelId) {
         super(Grade.GRADE);
 
         setId(id_);
-        setLevelId(levelId);
-        setGrade(grade);
-        setTukin(tukin);
-        setIsDeleted(isDeleted);
+        setChangedStatus(changedStatus);
         setCreatedAt(createdAt);
         setCreatedBy(createdBy);
+        setIsDeleted(isDeleted);
         setUpdatedAt(updatedAt);
         setUpdatedBy(updatedBy);
+        setVersion(version);
+        setGrade(grade);
+        setTukin(tukin);
+        setLevelId(levelId);
         resetChangedOnNotNull();
     }
 }

@@ -52,7 +52,7 @@ public class PrefRole extends TableImpl<PrefRoleRecord> {
     /**
      * The column <code>kepegawaian.pref_role.id</code>.
      */
-    public final TableField<PrefRoleRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(100).nullable(false), this, "");
+    public final TableField<PrefRoleRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     private PrefRole(Name alias, Table<PrefRoleRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

@@ -7,6 +7,7 @@ package id.perumdamts.kepegawaian.jooq.tables;
 import id.perumdamts.kepegawaian.jooq.Indexes;
 import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
+import id.perumdamts.kepegawaian.jooq.tables.RiwayatSp.RiwayatSpPath;
 import id.perumdamts.kepegawaian.jooq.tables.SanksiSp.SanksiSpPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.JenisSpRecord;
 
@@ -66,24 +67,14 @@ public class JenisSp extends TableImpl<JenisSpRecord> {
     public final TableField<JenisSpRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.jenis_sp.kode</code>.
+     * The column <code>kepegawaian.jenis_sp.changed_status</code>.
      */
-    public final TableField<JenisSpRecord, String> KODE = createField(DSL.name("kode"), SQLDataType.VARCHAR(10).nullable(false), this, "");
-
-    /**
-     * The column <code>kepegawaian.jenis_sp.nama</code>.
-     */
-    public final TableField<JenisSpRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).nullable(false), this, "");
-
-    /**
-     * The column <code>kepegawaian.jenis_sp.is_deleted</code>.
-     */
-    public final TableField<JenisSpRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BIT.nullable(false).defaultValue(DSL.field(DSL.raw("b'0'"), SQLDataType.BIT)), this, "");
+    public final TableField<JenisSpRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
      * The column <code>kepegawaian.jenis_sp.created_at</code>.
      */
-    public final TableField<JenisSpRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("current_timestamp(6)"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<JenisSpRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>kepegawaian.jenis_sp.created_by</code>.
@@ -91,14 +82,34 @@ public class JenisSp extends TableImpl<JenisSpRecord> {
     public final TableField<JenisSpRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
+     * The column <code>kepegawaian.jenis_sp.is_deleted</code>.
+     */
+    public final TableField<JenisSpRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
      * The column <code>kepegawaian.jenis_sp.updated_at</code>.
      */
-    public final TableField<JenisSpRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<JenisSpRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>kepegawaian.jenis_sp.updated_by</code>.
      */
     public final TableField<JenisSpRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.jenis_sp.version</code>.
+     */
+    public final TableField<JenisSpRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>kepegawaian.jenis_sp.kode</code>.
+     */
+    public final TableField<JenisSpRecord, String> KODE = createField(DSL.name("kode"), SQLDataType.VARCHAR(10).nullable(false), this, "");
+
+    /**
+     * The column <code>kepegawaian.jenis_sp.nama</code>.
+     */
+    public final TableField<JenisSpRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     private JenisSp(Name alias, Table<JenisSpRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
@@ -169,7 +180,7 @@ public class JenisSp extends TableImpl<JenisSpRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.JENIS_SP_IDX_JENIS_SP_IS_DELETED);
+        return Arrays.asList(Indexes.JENIS_SP_IDX4YMIWEI39JOL3PPAMBI7NCBHF);
     }
 
     @Override
@@ -184,7 +195,20 @@ public class JenisSp extends TableImpl<JenisSpRecord> {
 
     @Override
     public List<UniqueKey<JenisSpRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.KEY_JENIS_SP_IDX_JENIS_SP_KODE);
+        return Arrays.asList(Keys.KEY_JENIS_SP_UK3RHFEMKL2DGF47IJ6HXM7H3UY);
+    }
+
+    private transient RiwayatSpPath _riwayatSp;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.riwayat_sp</code> table
+     */
+    public RiwayatSpPath riwayatSp() {
+        if (_riwayatSp == null)
+            _riwayatSp = new RiwayatSpPath(this, null, Keys.FKBIG7GAK8CSIF6HU1096NXTU04.getInverseKey());
+
+        return _riwayatSp;
     }
 
     private transient SanksiSpPath _sanksiSp;
@@ -195,7 +219,7 @@ public class JenisSp extends TableImpl<JenisSpRecord> {
      */
     public SanksiSpPath sanksiSp() {
         if (_sanksiSp == null)
-            _sanksiSp = new SanksiSpPath(this, null, Keys.FK_SANKSI_SP_JENIS_SP.getInverseKey());
+            _sanksiSp = new SanksiSpPath(this, null, Keys.FKG0OH1PKAYJN4GJCFE0HR9CELT.getInverseKey());
 
         return _sanksiSp;
     }

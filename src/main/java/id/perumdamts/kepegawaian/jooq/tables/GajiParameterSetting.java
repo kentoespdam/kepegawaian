@@ -4,16 +4,20 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.Indexes;
 import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.records.GajiParameterSettingRecord;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.Identity;
+import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.PlainSQL;
 import org.jooq.QueryPart;
@@ -57,6 +61,42 @@ public class GajiParameterSetting extends TableImpl<GajiParameterSettingRecord> 
     public final TableField<GajiParameterSettingRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
+     * The column
+     * <code>kepegawaian.gaji_parameter_setting.changed_status</code>.
+     */
+    public final TableField<GajiParameterSettingRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
+
+    /**
+     * The column <code>kepegawaian.gaji_parameter_setting.created_at</code>.
+     */
+    public final TableField<GajiParameterSettingRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>kepegawaian.gaji_parameter_setting.created_by</code>.
+     */
+    public final TableField<GajiParameterSettingRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.gaji_parameter_setting.is_deleted</code>.
+     */
+    public final TableField<GajiParameterSettingRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
+     * The column <code>kepegawaian.gaji_parameter_setting.updated_at</code>.
+     */
+    public final TableField<GajiParameterSettingRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>kepegawaian.gaji_parameter_setting.updated_by</code>.
+     */
+    public final TableField<GajiParameterSettingRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.gaji_parameter_setting.version</code>.
+     */
+    public final TableField<GajiParameterSettingRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
+
+    /**
      * The column <code>kepegawaian.gaji_parameter_setting.kode</code>.
      */
     public final TableField<GajiParameterSettingRecord, String> KODE = createField(DSL.name("kode"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
@@ -65,31 +105,6 @@ public class GajiParameterSetting extends TableImpl<GajiParameterSettingRecord> 
      * The column <code>kepegawaian.gaji_parameter_setting.nominal</code>.
      */
     public final TableField<GajiParameterSettingRecord, Double> NOMINAL = createField(DSL.name("nominal"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
-
-    /**
-     * The column <code>kepegawaian.gaji_parameter_setting.is_deleted</code>.
-     */
-    public final TableField<GajiParameterSettingRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BIT.nullable(false).defaultValue(DSL.field(DSL.raw("b'0'"), SQLDataType.BIT)), this, "");
-
-    /**
-     * The column <code>kepegawaian.gaji_parameter_setting.created_at</code>.
-     */
-    public final TableField<GajiParameterSettingRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("current_timestamp(6)"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>kepegawaian.gaji_parameter_setting.created_by</code>.
-     */
-    public final TableField<GajiParameterSettingRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>kepegawaian.gaji_parameter_setting.updated_at</code>.
-     */
-    public final TableField<GajiParameterSettingRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("current_timestamp(6)"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>kepegawaian.gaji_parameter_setting.updated_by</code>.
-     */
-    public final TableField<GajiParameterSettingRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     private GajiParameterSetting(Name alias, Table<GajiParameterSettingRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
@@ -125,6 +140,11 @@ public class GajiParameterSetting extends TableImpl<GajiParameterSettingRecord> 
     @Override
     public Schema getSchema() {
         return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+    }
+
+    @Override
+    public List<Index> getIndexes() {
+        return Arrays.asList(Indexes.GAJI_PARAMETER_SETTING_IDX234U6ESRU90NL6L4SXKQYDRLY);
     }
 
     @Override

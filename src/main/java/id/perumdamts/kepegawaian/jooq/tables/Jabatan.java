@@ -7,10 +7,16 @@ package id.perumdamts.kepegawaian.jooq.tables;
 import id.perumdamts.kepegawaian.jooq.Indexes;
 import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
-import id.perumdamts.kepegawaian.jooq.tables.Jabatan.JabatanPath;
+import id.perumdamts.kepegawaian.jooq.tables.CutiApproval.CutiApprovalPath;
+import id.perumdamts.kepegawaian.jooq.tables.CutiPegawai.CutiPegawaiPath;
 import id.perumdamts.kepegawaian.jooq.tables.Level.LevelPath;
 import id.perumdamts.kepegawaian.jooq.tables.Organisasi.OrganisasiPath;
+import id.perumdamts.kepegawaian.jooq.tables.Pegawai.PegawaiPath;
 import id.perumdamts.kepegawaian.jooq.tables.Profesi.ProfesiPath;
+import id.perumdamts.kepegawaian.jooq.tables.RiwayatKeluar.RiwayatKeluarPath;
+import id.perumdamts.kepegawaian.jooq.tables.RiwayatKontrak.RiwayatKontrakPath;
+import id.perumdamts.kepegawaian.jooq.tables.RiwayatSp.RiwayatSpPath;
+import id.perumdamts.kepegawaian.jooq.tables.RiwayatTerminasi.RiwayatTerminasiPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.JabatanRecord;
 
 import java.time.LocalDateTime;
@@ -69,39 +75,14 @@ public class Jabatan extends TableImpl<JabatanRecord> {
     public final TableField<JabatanRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.jabatan.kode</code>.
+     * The column <code>kepegawaian.jabatan.changed_status</code>.
      */
-    public final TableField<JabatanRecord, String> KODE = createField(DSL.name("kode"), SQLDataType.VARCHAR(50).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>kepegawaian.jabatan.parent_id</code>.
-     */
-    public final TableField<JabatanRecord, Long> PARENT_ID = createField(DSL.name("parent_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
-
-    /**
-     * The column <code>kepegawaian.jabatan.organisasi_id</code>.
-     */
-    public final TableField<JabatanRecord, Long> ORGANISASI_ID = createField(DSL.name("organisasi_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
-
-    /**
-     * The column <code>kepegawaian.jabatan.level_id</code>.
-     */
-    public final TableField<JabatanRecord, Long> LEVEL_ID = createField(DSL.name("level_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
-
-    /**
-     * The column <code>kepegawaian.jabatan.nama</code>.
-     */
-    public final TableField<JabatanRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).nullable(false), this, "");
-
-    /**
-     * The column <code>kepegawaian.jabatan.is_deleted</code>.
-     */
-    public final TableField<JabatanRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BIT.nullable(false).defaultValue(DSL.field(DSL.raw("b'0'"), SQLDataType.BIT)), this, "");
+    public final TableField<JabatanRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
      * The column <code>kepegawaian.jabatan.created_at</code>.
      */
-    public final TableField<JabatanRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("current_timestamp(6)"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<JabatanRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>kepegawaian.jabatan.created_by</code>.
@@ -109,14 +90,49 @@ public class Jabatan extends TableImpl<JabatanRecord> {
     public final TableField<JabatanRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
+     * The column <code>kepegawaian.jabatan.is_deleted</code>.
+     */
+    public final TableField<JabatanRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
      * The column <code>kepegawaian.jabatan.updated_at</code>.
      */
-    public final TableField<JabatanRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<JabatanRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>kepegawaian.jabatan.updated_by</code>.
      */
     public final TableField<JabatanRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.jabatan.version</code>.
+     */
+    public final TableField<JabatanRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>kepegawaian.jabatan.kode</code>.
+     */
+    public final TableField<JabatanRecord, String> KODE = createField(DSL.name("kode"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.jabatan.nama</code>.
+     */
+    public final TableField<JabatanRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.jabatan.level_id</code>.
+     */
+    public final TableField<JabatanRecord, Long> LEVEL_ID = createField(DSL.name("level_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
+
+    /**
+     * The column <code>kepegawaian.jabatan.organisasi_id</code>.
+     */
+    public final TableField<JabatanRecord, Long> ORGANISASI_ID = createField(DSL.name("organisasi_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
+
+    /**
+     * The column <code>kepegawaian.jabatan.parent_id</code>.
+     */
+    public final TableField<JabatanRecord, Long> PARENT_ID = createField(DSL.name("parent_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     private Jabatan(Name alias, Table<JabatanRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
@@ -187,7 +203,7 @@ public class Jabatan extends TableImpl<JabatanRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.JABATAN_IDX_JABATAN_IS_DELETED, Indexes.JABATAN_IDX_JABATAN_KODE, Indexes.JABATAN_IDX_JABATAN_LEVEL, Indexes.JABATAN_IDX_JABATAN_NAMA, Indexes.JABATAN_IDX_JABATAN_ORGANISASI, Indexes.JABATAN_IDX_JABATAN_PARENT);
+        return Arrays.asList(Indexes.JABATAN_IDX659BCB76WP8722JX2SDA5Y39G, Indexes.JABATAN_IDX7NAM7CG9WBT5X5SVVXHG6LVLU, Indexes.JABATAN_IDXB1TVUVX2AGGMO4SSK4R80BSDH);
     }
 
     @Override
@@ -202,7 +218,7 @@ public class Jabatan extends TableImpl<JabatanRecord> {
 
     @Override
     public List<ForeignKey<JabatanRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK_JABATAN_LEVEL, Keys.FK_JABATAN_ORGANISASI, Keys.FK_JABATAN_PARENT);
+        return Arrays.asList(Keys.FK7UHNTAWSL2946OK908J4IN6Y1, Keys.FKQNSM2LQKF182H1MI515255UEE);
     }
 
     private transient LevelPath _level;
@@ -212,7 +228,7 @@ public class Jabatan extends TableImpl<JabatanRecord> {
      */
     public LevelPath level() {
         if (_level == null)
-            _level = new LevelPath(this, Keys.FK_JABATAN_LEVEL, null);
+            _level = new LevelPath(this, Keys.FK7UHNTAWSL2946OK908J4IN6Y1, null);
 
         return _level;
     }
@@ -225,21 +241,36 @@ public class Jabatan extends TableImpl<JabatanRecord> {
      */
     public OrganisasiPath organisasi() {
         if (_organisasi == null)
-            _organisasi = new OrganisasiPath(this, Keys.FK_JABATAN_ORGANISASI, null);
+            _organisasi = new OrganisasiPath(this, Keys.FKQNSM2LQKF182H1MI515255UEE, null);
 
         return _organisasi;
     }
 
-    private transient JabatanPath _jabatan;
+    private transient RiwayatSpPath _riwayatSp;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.jabatan</code> table.
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.riwayat_sp</code> table
      */
-    public JabatanPath jabatan() {
-        if (_jabatan == null)
-            _jabatan = new JabatanPath(this, Keys.FK_JABATAN_PARENT, null);
+    public RiwayatSpPath riwayatSp() {
+        if (_riwayatSp == null)
+            _riwayatSp = new RiwayatSpPath(this, null, Keys.FK2Q8E6HBP5N4DBGBTP1YVUVG9E.getInverseKey());
 
-        return _jabatan;
+        return _riwayatSp;
+    }
+
+    private transient RiwayatKeluarPath _fk3lvct7ovnocjdjblqtsdvagcn;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.riwayat_keluar</code> table, via the
+     * <code>FK3lvct7ovnocjdjblqtsdvagcn</code> key
+     */
+    public RiwayatKeluarPath fk3lvct7ovnocjdjblqtsdvagcn() {
+        if (_fk3lvct7ovnocjdjblqtsdvagcn == null)
+            _fk3lvct7ovnocjdjblqtsdvagcn = new RiwayatKeluarPath(this, null, Keys.FK3LVCT7OVNOCJDJBLQTSDVAGCN.getInverseKey());
+
+        return _fk3lvct7ovnocjdjblqtsdvagcn;
     }
 
     private transient ProfesiPath _profesi;
@@ -250,9 +281,103 @@ public class Jabatan extends TableImpl<JabatanRecord> {
      */
     public ProfesiPath profesi() {
         if (_profesi == null)
-            _profesi = new ProfesiPath(this, null, Keys.FK_PROFESI_JABATAN.getInverseKey());
+            _profesi = new ProfesiPath(this, null, Keys.FK7Y0J8PF2RXYWRWHQYBJ06VA69.getInverseKey());
 
         return _profesi;
+    }
+
+    private transient CutiPegawaiPath _fkdvyno26i1j90vhd43yy1jaxh5;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.cuti_pegawai</code> table, via the
+     * <code>FKdvyno26i1j90vhd43yy1jaxh5</code> key
+     */
+    public CutiPegawaiPath fkdvyno26i1j90vhd43yy1jaxh5() {
+        if (_fkdvyno26i1j90vhd43yy1jaxh5 == null)
+            _fkdvyno26i1j90vhd43yy1jaxh5 = new CutiPegawaiPath(this, null, Keys.FKDVYNO26I1J90VHD43YY1JAXH5.getInverseKey());
+
+        return _fkdvyno26i1j90vhd43yy1jaxh5;
+    }
+
+    private transient CutiPegawaiPath _fkedhj9emrnv8msw77768d02vbg;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.cuti_pegawai</code> table, via the
+     * <code>FKedhj9emrnv8msw77768d02vbg</code> key
+     */
+    public CutiPegawaiPath fkedhj9emrnv8msw77768d02vbg() {
+        if (_fkedhj9emrnv8msw77768d02vbg == null)
+            _fkedhj9emrnv8msw77768d02vbg = new CutiPegawaiPath(this, null, Keys.FKEDHJ9EMRNV8MSW77768D02VBG.getInverseKey());
+
+        return _fkedhj9emrnv8msw77768d02vbg;
+    }
+
+    private transient PegawaiPath _pegawai;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.pegawai</code> table
+     */
+    public PegawaiPath pegawai() {
+        if (_pegawai == null)
+            _pegawai = new PegawaiPath(this, null, Keys.FKFQHTKO3UV12DSRU8C7AOPLN1V.getInverseKey());
+
+        return _pegawai;
+    }
+
+    private transient RiwayatTerminasiPath _riwayatTerminasi;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.riwayat_terminasi</code> table
+     */
+    public RiwayatTerminasiPath riwayatTerminasi() {
+        if (_riwayatTerminasi == null)
+            _riwayatTerminasi = new RiwayatTerminasiPath(this, null, Keys.FKGVQU47WBAFPFND25WPDIUKO1E.getInverseKey());
+
+        return _riwayatTerminasi;
+    }
+
+    private transient RiwayatKeluarPath _fkiei6jfqnroni5v6ry1ys8hxph;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.riwayat_keluar</code> table, via the
+     * <code>FKiei6jfqnroni5v6ry1ys8hxph</code> key
+     */
+    public RiwayatKeluarPath fkiei6jfqnroni5v6ry1ys8hxph() {
+        if (_fkiei6jfqnroni5v6ry1ys8hxph == null)
+            _fkiei6jfqnroni5v6ry1ys8hxph = new RiwayatKeluarPath(this, null, Keys.FKIEI6JFQNRONI5V6RY1YS8HXPH.getInverseKey());
+
+        return _fkiei6jfqnroni5v6ry1ys8hxph;
+    }
+
+    private transient RiwayatKontrakPath _riwayatKontrak;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.riwayat_kontrak</code> table
+     */
+    public RiwayatKontrakPath riwayatKontrak() {
+        if (_riwayatKontrak == null)
+            _riwayatKontrak = new RiwayatKontrakPath(this, null, Keys.FKNJ30WHK7609AUO3SXH5D2EKJO.getInverseKey());
+
+        return _riwayatKontrak;
+    }
+
+    private transient CutiApprovalPath _cutiApproval;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.cuti_approval</code> table
+     */
+    public CutiApprovalPath cutiApproval() {
+        if (_cutiApproval == null)
+            _cutiApproval = new CutiApprovalPath(this, null, Keys.FKS0C49CHLM4R8CY8W1XAYSNKOS.getInverseKey());
+
+        return _cutiApproval;
     }
 
     @Override

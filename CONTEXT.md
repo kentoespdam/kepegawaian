@@ -4,6 +4,8 @@ Domain bahasa untuk sistem manajemen kepegawaian PERUMDAMTS. File ini menampung 
 
 > **Rewrite in progress (worktree).** Folder utama (`rewrite/master-cqrs`) untuk kode baru; kode lama ada read-only di `../kepegawaian-legacy` (tag `legacy-snapshot`) sebagai referensi spec. Detail: [WORKTREE.md](WORKTREE.md).
 
+> **Agent guidance:** Canonical ops guidance is in [CLAUDE.md](./CLAUDE.md) — includes GitNexus repo `kepegawaian`, build/run, architecture, issue tracking, and skills.
+
 ## Language
 
 ### Master (data referensi)

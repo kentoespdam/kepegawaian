@@ -70,19 +70,14 @@ public class Level extends TableImpl<LevelRecord> {
     public final TableField<LevelRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.level.nama</code>.
+     * The column <code>kepegawaian.level.changed_status</code>.
      */
-    public final TableField<LevelRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).nullable(false), this, "");
-
-    /**
-     * The column <code>kepegawaian.level.is_deleted</code>.
-     */
-    public final TableField<LevelRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BIT.nullable(false).defaultValue(DSL.field(DSL.raw("b'0'"), SQLDataType.BIT)), this, "");
+    public final TableField<LevelRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
      * The column <code>kepegawaian.level.created_at</code>.
      */
-    public final TableField<LevelRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("current_timestamp(6)"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<LevelRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>kepegawaian.level.created_by</code>.
@@ -90,14 +85,29 @@ public class Level extends TableImpl<LevelRecord> {
     public final TableField<LevelRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
+     * The column <code>kepegawaian.level.is_deleted</code>.
+     */
+    public final TableField<LevelRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
      * The column <code>kepegawaian.level.updated_at</code>.
      */
-    public final TableField<LevelRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<LevelRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>kepegawaian.level.updated_by</code>.
      */
     public final TableField<LevelRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.level.version</code>.
+     */
+    public final TableField<LevelRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>kepegawaian.level.nama</code>.
+     */
+    public final TableField<LevelRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     private Level(Name alias, Table<LevelRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
@@ -168,7 +178,7 @@ public class Level extends TableImpl<LevelRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.LEVEL_IDX_LEVEL_IS_DELETED, Indexes.LEVEL_IDX_LEVEL_NAMA);
+        return Arrays.asList(Indexes.LEVEL_IDX9WGOUI1TQ9BBGE31209XLR839);
     }
 
     @Override
@@ -181,30 +191,9 @@ public class Level extends TableImpl<LevelRecord> {
         return Keys.KEY_LEVEL_PRIMARY;
     }
 
-    private transient GajiPotonganTkkPath _gajiPotonganTkk;
-
-    /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.gaji_potongan_tkk</code> table
-     */
-    public GajiPotonganTkkPath gajiPotonganTkk() {
-        if (_gajiPotonganTkk == null)
-            _gajiPotonganTkk = new GajiPotonganTkkPath(this, null, Keys.FK_GAJI_POTONGAN_TKK_LEVEL.getInverseKey());
-
-        return _gajiPotonganTkk;
-    }
-
-    private transient GajiTunjanganPath _gajiTunjangan;
-
-    /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.gaji_tunjangan</code> table
-     */
-    public GajiTunjanganPath gajiTunjangan() {
-        if (_gajiTunjangan == null)
-            _gajiTunjangan = new GajiTunjanganPath(this, null, Keys.FK_GAJI_TUNJANGAN_LEVEL.getInverseKey());
-
-        return _gajiTunjangan;
+    @Override
+    public List<UniqueKey<LevelRecord>> getUniqueKeys() {
+        return Arrays.asList(Keys.KEY_LEVEL_UK6Y80V1QH60VNBOJ20CTXO4466);
     }
 
     private transient GradePath _grade;
@@ -215,9 +204,22 @@ public class Level extends TableImpl<LevelRecord> {
      */
     public GradePath grade() {
         if (_grade == null)
-            _grade = new GradePath(this, null, Keys.FK_GRADE_LEVEL.getInverseKey());
+            _grade = new GradePath(this, null, Keys.FK1HBURLJ6SLFKHOR144UR1VL7C.getInverseKey());
 
         return _grade;
+    }
+
+    private transient GajiTunjanganPath _gajiTunjangan;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.gaji_tunjangan</code> table
+     */
+    public GajiTunjanganPath gajiTunjangan() {
+        if (_gajiTunjangan == null)
+            _gajiTunjangan = new GajiTunjanganPath(this, null, Keys.FK3SWGJIHDVA7SHAI6BY6MQ8980.getInverseKey());
+
+        return _gajiTunjangan;
     }
 
     private transient JabatanPath _jabatan;
@@ -228,7 +230,7 @@ public class Level extends TableImpl<LevelRecord> {
      */
     public JabatanPath jabatan() {
         if (_jabatan == null)
-            _jabatan = new JabatanPath(this, null, Keys.FK_JABATAN_LEVEL.getInverseKey());
+            _jabatan = new JabatanPath(this, null, Keys.FK7UHNTAWSL2946OK908J4IN6Y1.getInverseKey());
 
         return _jabatan;
     }
@@ -241,9 +243,22 @@ public class Level extends TableImpl<LevelRecord> {
      */
     public ProfesiPath profesi() {
         if (_profesi == null)
-            _profesi = new ProfesiPath(this, null, Keys.FK_PROFESI_LEVEL.getInverseKey());
+            _profesi = new ProfesiPath(this, null, Keys.FKGRQRCA3ADJK3BJ0U9RGQWPLFY.getInverseKey());
 
         return _profesi;
+    }
+
+    private transient GajiPotonganTkkPath _gajiPotonganTkk;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.gaji_potongan_tkk</code> table
+     */
+    public GajiPotonganTkkPath gajiPotonganTkk() {
+        if (_gajiPotonganTkk == null)
+            _gajiPotonganTkk = new GajiPotonganTkkPath(this, null, Keys.FKJMRP5RICYXA9B82KCPJ51M7NC.getInverseKey());
+
+        return _gajiPotonganTkk;
     }
 
     @Override

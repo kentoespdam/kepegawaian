@@ -9,6 +9,7 @@ import org.jooq.meta.jaxb.Database
 import org.jooq.meta.jaxb.Generator
 import org.jooq.meta.jaxb.Jdbc
 import org.jooq.meta.jaxb.Target
+import org.jooq.meta.jaxb.ForcedType
 
 abstract class JooqCodegenTask : DefaultTask() {
 
@@ -54,6 +55,15 @@ abstract class JooqCodegenTask : DefaultTask() {
                             .withIncludes(".*")
                             .withExcludes("flyway_schema_history")
                             .withInputSchema("kepegawaian")
+                            .withForcedTypes(
+                                ForcedType()
+                                    .withName("BOOLEAN")
+                                    // Map MariaDB BIT(1) (default-generated as TINYINT/Byte
+                                    // because MariaDB dialect aliases BIT(1) → TINYINT in
+                                    // its JDBC type info) to Java Boolean for the soft-delete
+                                    // column only. Source-of-truth remains DB schema.
+                                    .withIncludeExpression("\\bis_deleted\\b")
+                            )
                     )
                     .withTarget(
                         Target()

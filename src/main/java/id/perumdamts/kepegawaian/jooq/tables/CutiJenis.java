@@ -4,9 +4,10 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.Indexes;
 import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
-import id.perumdamts.kepegawaian.jooq.tables.CutiJenis.CutiJenisPath;
+import id.perumdamts.kepegawaian.jooq.tables.CutiPegawai.CutiPegawaiPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.CutiJenisRecord;
 
 import java.time.LocalDateTime;
@@ -18,6 +19,7 @@ import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
+import org.jooq.Index;
 import org.jooq.InverseForeignKey;
 import org.jooq.Name;
 import org.jooq.Path;
@@ -64,34 +66,14 @@ public class CutiJenis extends TableImpl<CutiJenisRecord> {
     public final TableField<CutiJenisRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_jenis.parent_id</code>.
+     * The column <code>kepegawaian.cuti_jenis.changed_status</code>.
      */
-    public final TableField<CutiJenisRecord, Long> PARENT_ID = createField(DSL.name("parent_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
-
-    /**
-     * The column <code>kepegawaian.cuti_jenis.nama</code>.
-     */
-    public final TableField<CutiJenisRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).nullable(false), this, "");
-
-    /**
-     * The column <code>kepegawaian.cuti_jenis.max_hari</code>.
-     */
-    public final TableField<CutiJenisRecord, Integer> MAX_HARI = createField(DSL.name("max_hari"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>kepegawaian.cuti_jenis.potong_kuota_tahunan</code>.
-     */
-    public final TableField<CutiJenisRecord, Boolean> POTONG_KUOTA_TAHUNAN = createField(DSL.name("potong_kuota_tahunan"), SQLDataType.BIT.nullable(false).defaultValue(DSL.field(DSL.raw("b'0'"), SQLDataType.BIT)), this, "");
-
-    /**
-     * The column <code>kepegawaian.cuti_jenis.is_deleted</code>.
-     */
-    public final TableField<CutiJenisRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BIT.nullable(false).defaultValue(DSL.field(DSL.raw("b'0'"), SQLDataType.BIT)), this, "");
+    public final TableField<CutiJenisRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
      * The column <code>kepegawaian.cuti_jenis.created_at</code>.
      */
-    public final TableField<CutiJenisRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("current_timestamp(6)"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<CutiJenisRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>kepegawaian.cuti_jenis.created_by</code>.
@@ -99,14 +81,44 @@ public class CutiJenis extends TableImpl<CutiJenisRecord> {
     public final TableField<CutiJenisRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
+     * The column <code>kepegawaian.cuti_jenis.is_deleted</code>.
+     */
+    public final TableField<CutiJenisRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
      * The column <code>kepegawaian.cuti_jenis.updated_at</code>.
      */
-    public final TableField<CutiJenisRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("current_timestamp(6)"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<CutiJenisRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>kepegawaian.cuti_jenis.updated_by</code>.
      */
     public final TableField<CutiJenisRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.cuti_jenis.version</code>.
+     */
+    public final TableField<CutiJenisRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>kepegawaian.cuti_jenis.max_hari</code>.
+     */
+    public final TableField<CutiJenisRecord, Integer> MAX_HARI = createField(DSL.name("max_hari"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>kepegawaian.cuti_jenis.nama</code>.
+     */
+    public final TableField<CutiJenisRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.cuti_jenis.potong_kuota_tahunan</code>.
+     */
+    public final TableField<CutiJenisRecord, Boolean> POTONG_KUOTA_TAHUNAN = createField(DSL.name("potong_kuota_tahunan"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
+
+    /**
+     * The column <code>kepegawaian.cuti_jenis.parent_id</code>.
+     */
+    public final TableField<CutiJenisRecord, Long> PARENT_ID = createField(DSL.name("parent_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     private CutiJenis(Name alias, Table<CutiJenisRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
@@ -176,6 +188,11 @@ public class CutiJenis extends TableImpl<CutiJenisRecord> {
     }
 
     @Override
+    public List<Index> getIndexes() {
+        return Arrays.asList(Indexes.CUTI_JENIS_IS_DELETED_IDX);
+    }
+
+    @Override
     public Identity<CutiJenisRecord, Long> getIdentity() {
         return (Identity<CutiJenisRecord, Long>) super.getIdentity();
     }
@@ -185,22 +202,32 @@ public class CutiJenis extends TableImpl<CutiJenisRecord> {
         return Keys.KEY_CUTI_JENIS_PRIMARY;
     }
 
-    @Override
-    public List<ForeignKey<CutiJenisRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK_CUTI_JENIS_PARENT);
-    }
-
-    private transient CutiJenisPath _cutiJenis;
+    private transient CutiPegawaiPath _fkhooagj7gj49e1cfqy2j60924m;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.cuti_jenis</code>
-     * table.
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.cuti_pegawai</code> table, via the
+     * <code>FKhooagj7gj49e1cfqy2j60924m</code> key
      */
-    public CutiJenisPath cutiJenis() {
-        if (_cutiJenis == null)
-            _cutiJenis = new CutiJenisPath(this, Keys.FK_CUTI_JENIS_PARENT, null);
+    public CutiPegawaiPath fkhooagj7gj49e1cfqy2j60924m() {
+        if (_fkhooagj7gj49e1cfqy2j60924m == null)
+            _fkhooagj7gj49e1cfqy2j60924m = new CutiPegawaiPath(this, null, Keys.FKHOOAGJ7GJ49E1CFQY2J60924M.getInverseKey());
 
-        return _cutiJenis;
+        return _fkhooagj7gj49e1cfqy2j60924m;
+    }
+
+    private transient CutiPegawaiPath _fkskgmhy1rclhvusx4x7ow3tk66;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.cuti_pegawai</code> table, via the
+     * <code>FKskgmhy1rclhvusx4x7ow3tk66</code> key
+     */
+    public CutiPegawaiPath fkskgmhy1rclhvusx4x7ow3tk66() {
+        if (_fkskgmhy1rclhvusx4x7ow3tk66 == null)
+            _fkskgmhy1rclhvusx4x7ow3tk66 = new CutiPegawaiPath(this, null, Keys.FKSKGMHY1RCLHVUSX4X7OW3TK66.getInverseKey());
+
+        return _fkskgmhy1rclhvusx4x7ow3tk66;
     }
 
     @Override

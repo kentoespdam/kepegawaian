@@ -8,6 +8,7 @@ import id.perumdamts.kepegawaian.jooq.Indexes;
 import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.JenisSp.JenisSpPath;
+import id.perumdamts.kepegawaian.jooq.tables.RiwayatSp.RiwayatSpPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.SanksiSpRecord;
 
 import java.time.LocalDateTime;
@@ -66,74 +67,14 @@ public class SanksiSp extends TableImpl<SanksiSpRecord> {
     public final TableField<SanksiSpRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.sanksi_sp.kode</code>.
+     * The column <code>kepegawaian.sanksi_sp.changed_status</code>.
      */
-    public final TableField<SanksiSpRecord, String> KODE = createField(DSL.name("kode"), SQLDataType.VARCHAR(10).nullable(false), this, "");
-
-    /**
-     * The column <code>kepegawaian.sanksi_sp.keterangan</code>.
-     */
-    public final TableField<SanksiSpRecord, String> KETERANGAN = createField(DSL.name("keterangan"), SQLDataType.CLOB(65535).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)), this, "");
-
-    /**
-     * The column <code>kepegawaian.sanksi_sp.pot_tkk</code>.
-     */
-    public final TableField<SanksiSpRecord, Boolean> POT_TKK = createField(DSL.name("pot_tkk"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("b'0'"), SQLDataType.BIT)), this, "");
-
-    /**
-     * The column <code>kepegawaian.sanksi_sp.jml_pot_tkk</code>.
-     */
-    public final TableField<SanksiSpRecord, Integer> JML_POT_TKK = createField(DSL.name("jml_pot_tkk"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>kepegawaian.sanksi_sp.is_pending_pangkat</code>.
-     */
-    public final TableField<SanksiSpRecord, Boolean> IS_PENDING_PANGKAT = createField(DSL.name("is_pending_pangkat"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("b'0'"), SQLDataType.BIT)), this, "");
-
-    /**
-     * The column <code>kepegawaian.sanksi_sp.is_pending_gaji</code>.
-     */
-    public final TableField<SanksiSpRecord, Boolean> IS_PENDING_GAJI = createField(DSL.name("is_pending_gaji"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("b'0'"), SQLDataType.BIT)), this, "");
-
-    /**
-     * The column <code>kepegawaian.sanksi_sp.is_turun_pangkat</code>.
-     */
-    public final TableField<SanksiSpRecord, Boolean> IS_TURUN_PANGKAT = createField(DSL.name("is_turun_pangkat"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("b'0'"), SQLDataType.BIT)), this, "");
-
-    /**
-     * The column <code>kepegawaian.sanksi_sp.is_turun_jabatan</code>.
-     */
-    public final TableField<SanksiSpRecord, Boolean> IS_TURUN_JABATAN = createField(DSL.name("is_turun_jabatan"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("b'0'"), SQLDataType.BIT)), this, "");
-
-    /**
-     * The column <code>kepegawaian.sanksi_sp.is_suspension</code>.
-     */
-    public final TableField<SanksiSpRecord, Boolean> IS_SUSPENSION = createField(DSL.name("is_suspension"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("b'0'"), SQLDataType.BIT)), this, "");
-
-    /**
-     * The column <code>kepegawaian.sanksi_sp.is_terminate_dh</code>.
-     */
-    public final TableField<SanksiSpRecord, Boolean> IS_TERMINATE_DH = createField(DSL.name("is_terminate_dh"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("b'0'"), SQLDataType.BIT)), this, "");
-
-    /**
-     * The column <code>kepegawaian.sanksi_sp.is_terminate_th</code>.
-     */
-    public final TableField<SanksiSpRecord, Boolean> IS_TERMINATE_TH = createField(DSL.name("is_terminate_th"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("b'0'"), SQLDataType.BIT)), this, "");
-
-    /**
-     * The column <code>kepegawaian.sanksi_sp.jenis_sp_id</code>.
-     */
-    public final TableField<SanksiSpRecord, Long> JENIS_SP_ID = createField(DSL.name("jenis_sp_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
-
-    /**
-     * The column <code>kepegawaian.sanksi_sp.is_deleted</code>.
-     */
-    public final TableField<SanksiSpRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BIT.nullable(false).defaultValue(DSL.field(DSL.raw("b'0'"), SQLDataType.BIT)), this, "");
+    public final TableField<SanksiSpRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
      * The column <code>kepegawaian.sanksi_sp.created_at</code>.
      */
-    public final TableField<SanksiSpRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("current_timestamp(6)"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<SanksiSpRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>kepegawaian.sanksi_sp.created_by</code>.
@@ -141,14 +82,84 @@ public class SanksiSp extends TableImpl<SanksiSpRecord> {
     public final TableField<SanksiSpRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
+     * The column <code>kepegawaian.sanksi_sp.is_deleted</code>.
+     */
+    public final TableField<SanksiSpRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
      * The column <code>kepegawaian.sanksi_sp.updated_at</code>.
      */
-    public final TableField<SanksiSpRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<SanksiSpRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>kepegawaian.sanksi_sp.updated_by</code>.
      */
     public final TableField<SanksiSpRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.sanksi_sp.version</code>.
+     */
+    public final TableField<SanksiSpRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>kepegawaian.sanksi_sp.is_pending_gaji</code>.
+     */
+    public final TableField<SanksiSpRecord, Boolean> IS_PENDING_GAJI = createField(DSL.name("is_pending_gaji"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
+
+    /**
+     * The column <code>kepegawaian.sanksi_sp.is_pending_pangkat</code>.
+     */
+    public final TableField<SanksiSpRecord, Boolean> IS_PENDING_PANGKAT = createField(DSL.name("is_pending_pangkat"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
+
+    /**
+     * The column <code>kepegawaian.sanksi_sp.is_suspension</code>.
+     */
+    public final TableField<SanksiSpRecord, Boolean> IS_SUSPENSION = createField(DSL.name("is_suspension"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
+
+    /**
+     * The column <code>kepegawaian.sanksi_sp.is_terminate_dh</code>.
+     */
+    public final TableField<SanksiSpRecord, Boolean> IS_TERMINATE_DH = createField(DSL.name("is_terminate_dh"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
+
+    /**
+     * The column <code>kepegawaian.sanksi_sp.is_terminate_th</code>.
+     */
+    public final TableField<SanksiSpRecord, Boolean> IS_TERMINATE_TH = createField(DSL.name("is_terminate_th"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
+
+    /**
+     * The column <code>kepegawaian.sanksi_sp.is_turun_jabatan</code>.
+     */
+    public final TableField<SanksiSpRecord, Boolean> IS_TURUN_JABATAN = createField(DSL.name("is_turun_jabatan"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
+
+    /**
+     * The column <code>kepegawaian.sanksi_sp.is_turun_pangkat</code>.
+     */
+    public final TableField<SanksiSpRecord, Boolean> IS_TURUN_PANGKAT = createField(DSL.name("is_turun_pangkat"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
+
+    /**
+     * The column <code>kepegawaian.sanksi_sp.jml_pot_tkk</code>.
+     */
+    public final TableField<SanksiSpRecord, Integer> JML_POT_TKK = createField(DSL.name("jml_pot_tkk"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>kepegawaian.sanksi_sp.keterangan</code>.
+     */
+    public final TableField<SanksiSpRecord, String> KETERANGAN = createField(DSL.name("keterangan"), SQLDataType.CLOB(65535).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)), this, "");
+
+    /**
+     * The column <code>kepegawaian.sanksi_sp.kode</code>.
+     */
+    public final TableField<SanksiSpRecord, String> KODE = createField(DSL.name("kode"), SQLDataType.VARCHAR(10).nullable(false), this, "");
+
+    /**
+     * The column <code>kepegawaian.sanksi_sp.pot_tkk</code>.
+     */
+    public final TableField<SanksiSpRecord, Boolean> POT_TKK = createField(DSL.name("pot_tkk"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
+
+    /**
+     * The column <code>kepegawaian.sanksi_sp.jenis_sp_id</code>.
+     */
+    public final TableField<SanksiSpRecord, Long> JENIS_SP_ID = createField(DSL.name("jenis_sp_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     private SanksiSp(Name alias, Table<SanksiSpRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
@@ -219,7 +230,7 @@ public class SanksiSp extends TableImpl<SanksiSpRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.SANKSI_SP_IDX_SANKSI_SP_IS_DELETED, Indexes.SANKSI_SP_IDX_SANKSI_SP_JENIS_SP, Indexes.SANKSI_SP_IDX_SANKSI_SP_KODE);
+        return Arrays.asList(Indexes.SANKSI_SP_IDXTN6XHIRIW0I0HFNTP2AFHILV2);
     }
 
     @Override
@@ -233,8 +244,13 @@ public class SanksiSp extends TableImpl<SanksiSpRecord> {
     }
 
     @Override
+    public List<UniqueKey<SanksiSpRecord>> getUniqueKeys() {
+        return Arrays.asList(Keys.KEY_SANKSI_SP_UKP71COJ7JR8CH1TL5CVUHLPOGA);
+    }
+
+    @Override
     public List<ForeignKey<SanksiSpRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK_SANKSI_SP_JENIS_SP);
+        return Arrays.asList(Keys.FKG0OH1PKAYJN4GJCFE0HR9CELT);
     }
 
     private transient JenisSpPath _jenisSp;
@@ -245,9 +261,22 @@ public class SanksiSp extends TableImpl<SanksiSpRecord> {
      */
     public JenisSpPath jenisSp() {
         if (_jenisSp == null)
-            _jenisSp = new JenisSpPath(this, Keys.FK_SANKSI_SP_JENIS_SP, null);
+            _jenisSp = new JenisSpPath(this, Keys.FKG0OH1PKAYJN4GJCFE0HR9CELT, null);
 
         return _jenisSp;
+    }
+
+    private transient RiwayatSpPath _riwayatSp;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.riwayat_sp</code> table
+     */
+    public RiwayatSpPath riwayatSp() {
+        if (_riwayatSp == null)
+            _riwayatSp = new RiwayatSpPath(this, null, Keys.FKI7MYY0NWFD6I2TQE2K2FO0PWB.getInverseKey());
+
+        return _riwayatSp;
     }
 
     @Override

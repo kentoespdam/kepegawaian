@@ -8,6 +8,7 @@ import id.perumdamts.kepegawaian.jooq.Indexes;
 import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.Level.LevelPath;
+import id.perumdamts.kepegawaian.jooq.tables.Pegawai.PegawaiPath;
 import id.perumdamts.kepegawaian.jooq.tables.Profesi.ProfesiPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.GradeRecord;
 
@@ -67,29 +68,14 @@ public class Grade extends TableImpl<GradeRecord> {
     public final TableField<GradeRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.grade.level_id</code>.
+     * The column <code>kepegawaian.grade.changed_status</code>.
      */
-    public final TableField<GradeRecord, Long> LEVEL_ID = createField(DSL.name("level_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
-
-    /**
-     * The column <code>kepegawaian.grade.grade</code>.
-     */
-    public final TableField<GradeRecord, Integer> GRADE_ = createField(DSL.name("grade"), SQLDataType.INTEGER.nullable(false), this, "");
-
-    /**
-     * The column <code>kepegawaian.grade.tukin</code>.
-     */
-    public final TableField<GradeRecord, Double> TUKIN = createField(DSL.name("tukin"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
-
-    /**
-     * The column <code>kepegawaian.grade.is_deleted</code>.
-     */
-    public final TableField<GradeRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BIT.nullable(false).defaultValue(DSL.field(DSL.raw("b'0'"), SQLDataType.BIT)), this, "");
+    public final TableField<GradeRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
      * The column <code>kepegawaian.grade.created_at</code>.
      */
-    public final TableField<GradeRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("current_timestamp(6)"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<GradeRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>kepegawaian.grade.created_by</code>.
@@ -97,14 +83,39 @@ public class Grade extends TableImpl<GradeRecord> {
     public final TableField<GradeRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
+     * The column <code>kepegawaian.grade.is_deleted</code>.
+     */
+    public final TableField<GradeRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
      * The column <code>kepegawaian.grade.updated_at</code>.
      */
-    public final TableField<GradeRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<GradeRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>kepegawaian.grade.updated_by</code>.
      */
     public final TableField<GradeRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.grade.version</code>.
+     */
+    public final TableField<GradeRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>kepegawaian.grade.grade</code>.
+     */
+    public final TableField<GradeRecord, Integer> GRADE_ = createField(DSL.name("grade"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>kepegawaian.grade.tukin</code>.
+     */
+    public final TableField<GradeRecord, Double> TUKIN = createField(DSL.name("tukin"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
+
+    /**
+     * The column <code>kepegawaian.grade.level_id</code>.
+     */
+    public final TableField<GradeRecord, Long> LEVEL_ID = createField(DSL.name("level_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     private Grade(Name alias, Table<GradeRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
@@ -175,7 +186,7 @@ public class Grade extends TableImpl<GradeRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.GRADE_IDX_GRADE_GRADE, Indexes.GRADE_IDX_GRADE_IS_DELETED, Indexes.GRADE_IDX_GRADE_LEVEL);
+        return Arrays.asList(Indexes.GRADE_IDXFX6DDQOSVQGOAWLHL4BEAIKKD, Indexes.GRADE_IDXLPBHLVKQ9I4UUR83AF9CM9W3);
     }
 
     @Override
@@ -190,7 +201,7 @@ public class Grade extends TableImpl<GradeRecord> {
 
     @Override
     public List<ForeignKey<GradeRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK_GRADE_LEVEL);
+        return Arrays.asList(Keys.FK1HBURLJ6SLFKHOR144UR1VL7C);
     }
 
     private transient LevelPath _level;
@@ -200,7 +211,7 @@ public class Grade extends TableImpl<GradeRecord> {
      */
     public LevelPath level() {
         if (_level == null)
-            _level = new LevelPath(this, Keys.FK_GRADE_LEVEL, null);
+            _level = new LevelPath(this, Keys.FK1HBURLJ6SLFKHOR144UR1VL7C, null);
 
         return _level;
     }
@@ -213,9 +224,22 @@ public class Grade extends TableImpl<GradeRecord> {
      */
     public ProfesiPath profesi() {
         if (_profesi == null)
-            _profesi = new ProfesiPath(this, null, Keys.FK_PROFESI_GRADE.getInverseKey());
+            _profesi = new ProfesiPath(this, null, Keys.FK9MTQTFVREOK33QVC1H05D09VP.getInverseKey());
 
         return _profesi;
+    }
+
+    private transient PegawaiPath _pegawai;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.pegawai</code> table
+     */
+    public PegawaiPath pegawai() {
+        if (_pegawai == null)
+            _pegawai = new PegawaiPath(this, null, Keys.FKOB6BOSELEYIL4F8D9OGCE89G1.getInverseKey());
+
+        return _pegawai;
     }
 
     @Override

@@ -4,6 +4,7 @@
 package id.perumdamts.kepegawaian.jooq.tables.records;
 
 
+import id.perumdamts.kepegawaian.jooq.enums.GajiKomponenJenisGaji;
 import id.perumdamts.kepegawaian.jooq.tables.GajiKomponen;
 
 import java.time.LocalDateTime;
@@ -35,101 +36,101 @@ public class GajiKomponenRecord extends UpdatableRecordImpl<GajiKomponenRecord> 
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_komponen.urut</code>.
+     * Setter for <code>kepegawaian.gaji_komponen.changed_status</code>.
      */
-    public void setUrut(Integer value) {
+    public void setChangedStatus(Byte value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_komponen.urut</code>.
+     * Getter for <code>kepegawaian.gaji_komponen.changed_status</code>.
      */
-    public Integer getUrut() {
-        return (Integer) get(1);
+    public Byte getChangedStatus() {
+        return (Byte) get(1);
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_komponen.profil_gaji_id</code>.
+     * Setter for <code>kepegawaian.gaji_komponen.created_at</code>.
      */
-    public void setProfilGajiId(Long value) {
+    public void setCreatedAt(LocalDateTime value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_komponen.profil_gaji_id</code>.
+     * Getter for <code>kepegawaian.gaji_komponen.created_at</code>.
      */
-    public Long getProfilGajiId() {
-        return (Long) get(2);
+    public LocalDateTime getCreatedAt() {
+        return (LocalDateTime) get(2);
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_komponen.kode</code>.
+     * Setter for <code>kepegawaian.gaji_komponen.created_by</code>.
      */
-    public void setKode(String value) {
+    public void setCreatedBy(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_komponen.kode</code>.
+     * Getter for <code>kepegawaian.gaji_komponen.created_by</code>.
      */
-    public String getKode() {
+    public String getCreatedBy() {
         return (String) get(3);
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_komponen.nama</code>.
+     * Setter for <code>kepegawaian.gaji_komponen.is_deleted</code>.
      */
-    public void setNama(String value) {
+    public void setIsDeleted(Boolean value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_komponen.nama</code>.
+     * Getter for <code>kepegawaian.gaji_komponen.is_deleted</code>.
      */
-    public String getNama() {
-        return (String) get(4);
+    public Boolean getIsDeleted() {
+        return (Boolean) get(4);
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_komponen.jenis_gaji</code>.
+     * Setter for <code>kepegawaian.gaji_komponen.updated_at</code>.
      */
-    public void setJenisGaji(String value) {
+    public void setUpdatedAt(LocalDateTime value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_komponen.jenis_gaji</code>.
+     * Getter for <code>kepegawaian.gaji_komponen.updated_at</code>.
      */
-    public String getJenisGaji() {
-        return (String) get(5);
+    public LocalDateTime getUpdatedAt() {
+        return (LocalDateTime) get(5);
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_komponen.nilai</code>.
+     * Setter for <code>kepegawaian.gaji_komponen.updated_by</code>.
      */
-    public void setNilai(Double value) {
+    public void setUpdatedBy(String value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_komponen.nilai</code>.
+     * Getter for <code>kepegawaian.gaji_komponen.updated_by</code>.
      */
-    public Double getNilai() {
-        return (Double) get(6);
+    public String getUpdatedBy() {
+        return (String) get(6);
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_komponen.is_reference</code>.
+     * Setter for <code>kepegawaian.gaji_komponen.version</code>.
      */
-    public void setIsReference(Boolean value) {
+    public void setVersion(Integer value) {
         set(7, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_komponen.is_reference</code>.
+     * Getter for <code>kepegawaian.gaji_komponen.version</code>.
      */
-    public Boolean getIsReference() {
-        return (Boolean) get(7);
+    public Integer getVersion() {
+        return (Integer) get(7);
     }
 
     /**
@@ -147,73 +148,101 @@ public class GajiKomponenRecord extends UpdatableRecordImpl<GajiKomponenRecord> 
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_komponen.is_deleted</code>.
+     * Setter for <code>kepegawaian.gaji_komponen.is_reference</code>.
      */
-    public void setIsDeleted(Boolean value) {
+    public void setIsReference(Boolean value) {
         set(9, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_komponen.is_deleted</code>.
+     * Getter for <code>kepegawaian.gaji_komponen.is_reference</code>.
      */
-    public Boolean getIsDeleted() {
+    public Boolean getIsReference() {
         return (Boolean) get(9);
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_komponen.created_at</code>.
+     * Setter for <code>kepegawaian.gaji_komponen.jenis_gaji</code>.
      */
-    public void setCreatedAt(LocalDateTime value) {
+    public void setJenisGaji(GajiKomponenJenisGaji value) {
         set(10, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_komponen.created_at</code>.
+     * Getter for <code>kepegawaian.gaji_komponen.jenis_gaji</code>.
      */
-    public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(10);
+    public GajiKomponenJenisGaji getJenisGaji() {
+        return (GajiKomponenJenisGaji) get(10);
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_komponen.created_by</code>.
+     * Setter for <code>kepegawaian.gaji_komponen.kode</code>.
      */
-    public void setCreatedBy(String value) {
+    public void setKode(String value) {
         set(11, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_komponen.created_by</code>.
+     * Getter for <code>kepegawaian.gaji_komponen.kode</code>.
      */
-    public String getCreatedBy() {
+    public String getKode() {
         return (String) get(11);
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_komponen.updated_at</code>.
+     * Setter for <code>kepegawaian.gaji_komponen.nama</code>.
      */
-    public void setUpdatedAt(LocalDateTime value) {
+    public void setNama(String value) {
         set(12, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_komponen.updated_at</code>.
+     * Getter for <code>kepegawaian.gaji_komponen.nama</code>.
      */
-    public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(12);
+    public String getNama() {
+        return (String) get(12);
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_komponen.updated_by</code>.
+     * Setter for <code>kepegawaian.gaji_komponen.nilai</code>.
      */
-    public void setUpdatedBy(String value) {
+    public void setNilai(Double value) {
         set(13, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_komponen.updated_by</code>.
+     * Getter for <code>kepegawaian.gaji_komponen.nilai</code>.
      */
-    public String getUpdatedBy() {
-        return (String) get(13);
+    public Double getNilai() {
+        return (Double) get(13);
+    }
+
+    /**
+     * Setter for <code>kepegawaian.gaji_komponen.urut</code>.
+     */
+    public void setUrut(Integer value) {
+        set(14, value);
+    }
+
+    /**
+     * Getter for <code>kepegawaian.gaji_komponen.urut</code>.
+     */
+    public Integer getUrut() {
+        return (Integer) get(14);
+    }
+
+    /**
+     * Setter for <code>kepegawaian.gaji_komponen.profil_gaji_id</code>.
+     */
+    public void setProfilGajiId(Long value) {
+        set(15, value);
+    }
+
+    /**
+     * Getter for <code>kepegawaian.gaji_komponen.profil_gaji_id</code>.
+     */
+    public Long getProfilGajiId() {
+        return (Long) get(15);
     }
 
     // -------------------------------------------------------------------------
@@ -239,23 +268,25 @@ public class GajiKomponenRecord extends UpdatableRecordImpl<GajiKomponenRecord> 
     /**
      * Create a detached, initialised GajiKomponenRecord
      */
-    public GajiKomponenRecord(Long id_, Integer urut, Long profilGajiId, String kode, String nama, String jenisGaji, Double nilai, Boolean isReference, String formula, Boolean isDeleted, LocalDateTime createdAt, String createdBy, LocalDateTime updatedAt, String updatedBy) {
+    public GajiKomponenRecord(Long id_, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version, String formula, Boolean isReference, GajiKomponenJenisGaji jenisGaji, String kode, String nama, Double nilai, Integer urut, Long profilGajiId) {
         super(GajiKomponen.GAJI_KOMPONEN);
 
         setId(id_);
-        setUrut(urut);
-        setProfilGajiId(profilGajiId);
-        setKode(kode);
-        setNama(nama);
-        setJenisGaji(jenisGaji);
-        setNilai(nilai);
-        setIsReference(isReference);
-        setFormula(formula);
-        setIsDeleted(isDeleted);
+        setChangedStatus(changedStatus);
         setCreatedAt(createdAt);
         setCreatedBy(createdBy);
+        setIsDeleted(isDeleted);
         setUpdatedAt(updatedAt);
         setUpdatedBy(updatedBy);
+        setVersion(version);
+        setFormula(formula);
+        setIsReference(isReference);
+        setJenisGaji(jenisGaji);
+        setKode(kode);
+        setNama(nama);
+        setNilai(nilai);
+        setUrut(urut);
+        setProfilGajiId(profilGajiId);
         resetChangedOnNotNull();
     }
 }

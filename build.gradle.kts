@@ -108,9 +108,12 @@ tasks.withType<JavaCompile>().configureEach {
 }
 
 tasks.register<JooqCodegenTask>("jooqCodegen") {
-    jdbcUrl.set("jdbc:mariadb://localhost:3307/kepegawaian")
-    dbUser.set("test")
-    dbPassword.set("test")
+    jdbcUrl.set(
+        "jdbc:mariadb://${flyEnv("DB_HOST", "localhost")}:" +
+        "${flyEnv("DB_PORT", "3307")}/${flyEnv("DB_SCHEMA", "kepegawaian")}"
+    )
+    dbUser.set(flyEnv("DB_USER", "test"))
+    dbPassword.set(flyEnv("DB_PASSWORD", "test"))
 }
 
 tasks.named<BootJar>("bootJar") {

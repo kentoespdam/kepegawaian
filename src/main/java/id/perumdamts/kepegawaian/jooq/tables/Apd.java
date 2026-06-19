@@ -66,24 +66,14 @@ public class Apd extends TableImpl<ApdRecord> {
     public final TableField<ApdRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.apd.profesi_id</code>.
+     * The column <code>kepegawaian.apd.changed_status</code>.
      */
-    public final TableField<ApdRecord, Long> PROFESI_ID = createField(DSL.name("profesi_id"), SQLDataType.BIGINT.nullable(false), this, "");
-
-    /**
-     * The column <code>kepegawaian.apd.nama</code>.
-     */
-    public final TableField<ApdRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).nullable(false), this, "");
-
-    /**
-     * The column <code>kepegawaian.apd.is_deleted</code>.
-     */
-    public final TableField<ApdRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BIT.nullable(false).defaultValue(DSL.field(DSL.raw("b'0'"), SQLDataType.BIT)), this, "");
+    public final TableField<ApdRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
      * The column <code>kepegawaian.apd.created_at</code>.
      */
-    public final TableField<ApdRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("current_timestamp(6)"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<ApdRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>kepegawaian.apd.created_by</code>.
@@ -91,14 +81,34 @@ public class Apd extends TableImpl<ApdRecord> {
     public final TableField<ApdRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
+     * The column <code>kepegawaian.apd.is_deleted</code>.
+     */
+    public final TableField<ApdRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
      * The column <code>kepegawaian.apd.updated_at</code>.
      */
-    public final TableField<ApdRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<ApdRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>kepegawaian.apd.updated_by</code>.
      */
     public final TableField<ApdRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.apd.version</code>.
+     */
+    public final TableField<ApdRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>kepegawaian.apd.nama</code>.
+     */
+    public final TableField<ApdRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.apd.profesi_id</code>.
+     */
+    public final TableField<ApdRecord, Long> PROFESI_ID = createField(DSL.name("profesi_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     private Apd(Name alias, Table<ApdRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
@@ -169,7 +179,7 @@ public class Apd extends TableImpl<ApdRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.APD_IDX_APD_IS_DELETED, Indexes.APD_IDX_APD_NAMA, Indexes.APD_IDX_APD_PROFESI);
+        return Arrays.asList(Indexes.APD_IDX88PQWC7HVWF6KIMWTOMQG640, Indexes.APD_IDXGB6MUK74WM5XPCS2PBDU80CJ2);
     }
 
     @Override
@@ -184,7 +194,7 @@ public class Apd extends TableImpl<ApdRecord> {
 
     @Override
     public List<ForeignKey<ApdRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK_APD_PROFESI);
+        return Arrays.asList(Keys.FKR19SSVLFXU0OP3E7IC5Y3HM7R);
     }
 
     private transient ProfesiPath _profesi;
@@ -194,7 +204,7 @@ public class Apd extends TableImpl<ApdRecord> {
      */
     public ProfesiPath profesi() {
         if (_profesi == null)
-            _profesi = new ProfesiPath(this, Keys.FK_APD_PROFESI, null);
+            _profesi = new ProfesiPath(this, Keys.FKR19SSVLFXU0OP3E7IC5Y3HM7R, null);
 
         return _profesi;
     }

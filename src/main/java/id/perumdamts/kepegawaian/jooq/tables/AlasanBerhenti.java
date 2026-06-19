@@ -4,19 +4,28 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.Indexes;
 import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
+import id.perumdamts.kepegawaian.jooq.tables.RiwayatTerminasi.RiwayatTerminasiPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.AlasanBerhentiRecord;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import org.jooq.Condition;
 import org.jooq.Field;
+import org.jooq.ForeignKey;
 import org.jooq.Identity;
+import org.jooq.Index;
+import org.jooq.InverseForeignKey;
 import org.jooq.Name;
+import org.jooq.Path;
 import org.jooq.PlainSQL;
 import org.jooq.QueryPart;
+import org.jooq.Record;
 import org.jooq.SQL;
 import org.jooq.Schema;
 import org.jooq.Select;
@@ -57,24 +66,14 @@ public class AlasanBerhenti extends TableImpl<AlasanBerhentiRecord> {
     public final TableField<AlasanBerhentiRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.alasan_berhenti.nama</code>.
+     * The column <code>kepegawaian.alasan_berhenti.changed_status</code>.
      */
-    public final TableField<AlasanBerhentiRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).nullable(false), this, "");
-
-    /**
-     * The column <code>kepegawaian.alasan_berhenti.notes</code>.
-     */
-    public final TableField<AlasanBerhentiRecord, String> NOTES = createField(DSL.name("notes"), SQLDataType.CLOB(65535).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)), this, "");
-
-    /**
-     * The column <code>kepegawaian.alasan_berhenti.is_deleted</code>.
-     */
-    public final TableField<AlasanBerhentiRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BIT.nullable(false).defaultValue(DSL.field(DSL.raw("b'0'"), SQLDataType.BIT)), this, "");
+    public final TableField<AlasanBerhentiRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
      * The column <code>kepegawaian.alasan_berhenti.created_at</code>.
      */
-    public final TableField<AlasanBerhentiRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("current_timestamp(6)"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<AlasanBerhentiRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>kepegawaian.alasan_berhenti.created_by</code>.
@@ -82,14 +81,34 @@ public class AlasanBerhenti extends TableImpl<AlasanBerhentiRecord> {
     public final TableField<AlasanBerhentiRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
+     * The column <code>kepegawaian.alasan_berhenti.is_deleted</code>.
+     */
+    public final TableField<AlasanBerhentiRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
      * The column <code>kepegawaian.alasan_berhenti.updated_at</code>.
      */
-    public final TableField<AlasanBerhentiRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("current_timestamp(6)"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<AlasanBerhentiRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>kepegawaian.alasan_berhenti.updated_by</code>.
      */
     public final TableField<AlasanBerhentiRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.alasan_berhenti.version</code>.
+     */
+    public final TableField<AlasanBerhentiRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>kepegawaian.alasan_berhenti.nama</code>.
+     */
+    public final TableField<AlasanBerhentiRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.alasan_berhenti.notes</code>.
+     */
+    public final TableField<AlasanBerhentiRecord, String> NOTES = createField(DSL.name("notes"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     private AlasanBerhenti(Name alias, Table<AlasanBerhentiRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
@@ -122,9 +141,47 @@ public class AlasanBerhenti extends TableImpl<AlasanBerhentiRecord> {
         this(DSL.name("alasan_berhenti"), null);
     }
 
+    public <O extends Record> AlasanBerhenti(Table<O> path, ForeignKey<O, AlasanBerhentiRecord> childPath, InverseForeignKey<O, AlasanBerhentiRecord> parentPath) {
+        super(path, childPath, parentPath, ALASAN_BERHENTI);
+    }
+
+    /**
+     * A subtype implementing {@link Path} for simplified path-based joins.
+     */
+    public static class AlasanBerhentiPath extends AlasanBerhenti implements Path<AlasanBerhentiRecord> {
+
+        private static final long serialVersionUID = 1L;
+        public <O extends Record> AlasanBerhentiPath(Table<O> path, ForeignKey<O, AlasanBerhentiRecord> childPath, InverseForeignKey<O, AlasanBerhentiRecord> parentPath) {
+            super(path, childPath, parentPath);
+        }
+        private AlasanBerhentiPath(Name alias, Table<AlasanBerhentiRecord> aliased) {
+            super(alias, aliased);
+        }
+
+        @Override
+        public AlasanBerhentiPath as(String alias) {
+            return new AlasanBerhentiPath(DSL.name(alias), this);
+        }
+
+        @Override
+        public AlasanBerhentiPath as(Name alias) {
+            return new AlasanBerhentiPath(alias, this);
+        }
+
+        @Override
+        public AlasanBerhentiPath as(Table<?> alias) {
+            return new AlasanBerhentiPath(alias.getQualifiedName(), this);
+        }
+    }
+
     @Override
     public Schema getSchema() {
         return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+    }
+
+    @Override
+    public List<Index> getIndexes() {
+        return Arrays.asList(Indexes.ALASAN_BERHENTI_IDX5HKVINQ0K05KRW4TGAFTM95QA, Indexes.ALASAN_BERHENTI_IDXD3W33NN12U6CXHM7HSXWMQT8C);
     }
 
     @Override
@@ -135,6 +192,19 @@ public class AlasanBerhenti extends TableImpl<AlasanBerhentiRecord> {
     @Override
     public UniqueKey<AlasanBerhentiRecord> getPrimaryKey() {
         return Keys.KEY_ALASAN_BERHENTI_PRIMARY;
+    }
+
+    private transient RiwayatTerminasiPath _riwayatTerminasi;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.riwayat_terminasi</code> table
+     */
+    public RiwayatTerminasiPath riwayatTerminasi() {
+        if (_riwayatTerminasi == null)
+            _riwayatTerminasi = new RiwayatTerminasiPath(this, null, Keys.FKFBDMEG2VYR1RHDQ7U2RUVTCC4.getInverseKey());
+
+        return _riwayatTerminasi;
     }
 
     @Override

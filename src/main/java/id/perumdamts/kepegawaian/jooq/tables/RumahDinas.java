@@ -4,19 +4,28 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.Indexes;
 import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
+import id.perumdamts.kepegawaian.jooq.tables.Pegawai.PegawaiPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.RumahDinasRecord;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import org.jooq.Condition;
 import org.jooq.Field;
+import org.jooq.ForeignKey;
 import org.jooq.Identity;
+import org.jooq.Index;
+import org.jooq.InverseForeignKey;
 import org.jooq.Name;
+import org.jooq.Path;
 import org.jooq.PlainSQL;
 import org.jooq.QueryPart;
+import org.jooq.Record;
 import org.jooq.SQL;
 import org.jooq.Schema;
 import org.jooq.Select;
@@ -57,24 +66,14 @@ public class RumahDinas extends TableImpl<RumahDinasRecord> {
     public final TableField<RumahDinasRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.rumah_dinas.nama</code>.
+     * The column <code>kepegawaian.rumah_dinas.changed_status</code>.
      */
-    public final TableField<RumahDinasRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).nullable(false), this, "");
-
-    /**
-     * The column <code>kepegawaian.rumah_dinas.nilai</code>.
-     */
-    public final TableField<RumahDinasRecord, Double> NILAI = createField(DSL.name("nilai"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
-
-    /**
-     * The column <code>kepegawaian.rumah_dinas.is_deleted</code>.
-     */
-    public final TableField<RumahDinasRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BIT.nullable(false).defaultValue(DSL.field(DSL.raw("b'0'"), SQLDataType.BIT)), this, "");
+    public final TableField<RumahDinasRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
      * The column <code>kepegawaian.rumah_dinas.created_at</code>.
      */
-    public final TableField<RumahDinasRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("current_timestamp(6)"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<RumahDinasRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>kepegawaian.rumah_dinas.created_by</code>.
@@ -82,14 +81,34 @@ public class RumahDinas extends TableImpl<RumahDinasRecord> {
     public final TableField<RumahDinasRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
+     * The column <code>kepegawaian.rumah_dinas.is_deleted</code>.
+     */
+    public final TableField<RumahDinasRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
      * The column <code>kepegawaian.rumah_dinas.updated_at</code>.
      */
-    public final TableField<RumahDinasRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("current_timestamp(6)"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<RumahDinasRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>kepegawaian.rumah_dinas.updated_by</code>.
      */
     public final TableField<RumahDinasRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.rumah_dinas.version</code>.
+     */
+    public final TableField<RumahDinasRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>kepegawaian.rumah_dinas.nama</code>.
+     */
+    public final TableField<RumahDinasRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.rumah_dinas.nilai</code>.
+     */
+    public final TableField<RumahDinasRecord, Double> NILAI = createField(DSL.name("nilai"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
 
     private RumahDinas(Name alias, Table<RumahDinasRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
@@ -120,9 +139,47 @@ public class RumahDinas extends TableImpl<RumahDinasRecord> {
         this(DSL.name("rumah_dinas"), null);
     }
 
+    public <O extends Record> RumahDinas(Table<O> path, ForeignKey<O, RumahDinasRecord> childPath, InverseForeignKey<O, RumahDinasRecord> parentPath) {
+        super(path, childPath, parentPath, RUMAH_DINAS);
+    }
+
+    /**
+     * A subtype implementing {@link Path} for simplified path-based joins.
+     */
+    public static class RumahDinasPath extends RumahDinas implements Path<RumahDinasRecord> {
+
+        private static final long serialVersionUID = 1L;
+        public <O extends Record> RumahDinasPath(Table<O> path, ForeignKey<O, RumahDinasRecord> childPath, InverseForeignKey<O, RumahDinasRecord> parentPath) {
+            super(path, childPath, parentPath);
+        }
+        private RumahDinasPath(Name alias, Table<RumahDinasRecord> aliased) {
+            super(alias, aliased);
+        }
+
+        @Override
+        public RumahDinasPath as(String alias) {
+            return new RumahDinasPath(DSL.name(alias), this);
+        }
+
+        @Override
+        public RumahDinasPath as(Name alias) {
+            return new RumahDinasPath(alias, this);
+        }
+
+        @Override
+        public RumahDinasPath as(Table<?> alias) {
+            return new RumahDinasPath(alias.getQualifiedName(), this);
+        }
+    }
+
     @Override
     public Schema getSchema() {
         return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+    }
+
+    @Override
+    public List<Index> getIndexes() {
+        return Arrays.asList(Indexes.RUMAH_DINAS_IDXD0VNQKHYIIXSQX0AHW8Y7C5PR, Indexes.RUMAH_DINAS_IDXFOMDCVGXL78TJLPJI2DRLQS5U);
     }
 
     @Override
@@ -133,6 +190,19 @@ public class RumahDinas extends TableImpl<RumahDinasRecord> {
     @Override
     public UniqueKey<RumahDinasRecord> getPrimaryKey() {
         return Keys.KEY_RUMAH_DINAS_PRIMARY;
+    }
+
+    private transient PegawaiPath _pegawai;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.pegawai</code> table
+     */
+    public PegawaiPath pegawai() {
+        if (_pegawai == null)
+            _pegawai = new PegawaiPath(this, null, Keys.FKLVRHWEMGVWTQH84WB0EILKWBF.getInverseKey());
+
+        return _pegawai;
     }
 
     @Override

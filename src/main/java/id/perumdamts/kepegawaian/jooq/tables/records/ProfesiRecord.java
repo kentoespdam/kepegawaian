@@ -35,171 +35,199 @@ public class ProfesiRecord extends UpdatableRecordImpl<ProfesiRecord> {
     }
 
     /**
-     * Setter for <code>kepegawaian.profesi.nama</code>.
+     * Setter for <code>kepegawaian.profesi.changed_status</code>.
      */
-    public void setNama(String value) {
+    public void setChangedStatus(Byte value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.profesi.nama</code>.
+     * Getter for <code>kepegawaian.profesi.changed_status</code>.
      */
-    public String getNama() {
-        return (String) get(1);
-    }
-
-    /**
-     * Setter for <code>kepegawaian.profesi.detail</code>.
-     */
-    public void setDetail(String value) {
-        set(2, value);
-    }
-
-    /**
-     * Getter for <code>kepegawaian.profesi.detail</code>.
-     */
-    public String getDetail() {
-        return (String) get(2);
-    }
-
-    /**
-     * Setter for <code>kepegawaian.profesi.resiko</code>.
-     */
-    public void setResiko(String value) {
-        set(3, value);
-    }
-
-    /**
-     * Getter for <code>kepegawaian.profesi.resiko</code>.
-     */
-    public String getResiko() {
-        return (String) get(3);
-    }
-
-    /**
-     * Setter for <code>kepegawaian.profesi.organisasi_id</code>.
-     */
-    public void setOrganisasiId(Long value) {
-        set(4, value);
-    }
-
-    /**
-     * Getter for <code>kepegawaian.profesi.organisasi_id</code>.
-     */
-    public Long getOrganisasiId() {
-        return (Long) get(4);
-    }
-
-    /**
-     * Setter for <code>kepegawaian.profesi.jabatan_id</code>.
-     */
-    public void setJabatanId(Long value) {
-        set(5, value);
-    }
-
-    /**
-     * Getter for <code>kepegawaian.profesi.jabatan_id</code>.
-     */
-    public Long getJabatanId() {
-        return (Long) get(5);
-    }
-
-    /**
-     * Setter for <code>kepegawaian.profesi.level_id</code>.
-     */
-    public void setLevelId(Long value) {
-        set(6, value);
-    }
-
-    /**
-     * Getter for <code>kepegawaian.profesi.level_id</code>.
-     */
-    public Long getLevelId() {
-        return (Long) get(6);
-    }
-
-    /**
-     * Setter for <code>kepegawaian.profesi.grade_id</code>.
-     */
-    public void setGradeId(Long value) {
-        set(7, value);
-    }
-
-    /**
-     * Getter for <code>kepegawaian.profesi.grade_id</code>.
-     */
-    public Long getGradeId() {
-        return (Long) get(7);
-    }
-
-    /**
-     * Setter for <code>kepegawaian.profesi.is_deleted</code>.
-     */
-    public void setIsDeleted(Boolean value) {
-        set(8, value);
-    }
-
-    /**
-     * Getter for <code>kepegawaian.profesi.is_deleted</code>.
-     */
-    public Boolean getIsDeleted() {
-        return (Boolean) get(8);
+    public Byte getChangedStatus() {
+        return (Byte) get(1);
     }
 
     /**
      * Setter for <code>kepegawaian.profesi.created_at</code>.
      */
     public void setCreatedAt(LocalDateTime value) {
-        set(9, value);
+        set(2, value);
     }
 
     /**
      * Getter for <code>kepegawaian.profesi.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(9);
+        return (LocalDateTime) get(2);
     }
 
     /**
      * Setter for <code>kepegawaian.profesi.created_by</code>.
      */
     public void setCreatedBy(String value) {
-        set(10, value);
+        set(3, value);
     }
 
     /**
      * Getter for <code>kepegawaian.profesi.created_by</code>.
      */
     public String getCreatedBy() {
-        return (String) get(10);
+        return (String) get(3);
+    }
+
+    /**
+     * Setter for <code>kepegawaian.profesi.is_deleted</code>.
+     */
+    public void setIsDeleted(Boolean value) {
+        set(4, value);
+    }
+
+    /**
+     * Getter for <code>kepegawaian.profesi.is_deleted</code>.
+     */
+    public Boolean getIsDeleted() {
+        return (Boolean) get(4);
     }
 
     /**
      * Setter for <code>kepegawaian.profesi.updated_at</code>.
      */
     public void setUpdatedAt(LocalDateTime value) {
-        set(11, value);
+        set(5, value);
     }
 
     /**
      * Getter for <code>kepegawaian.profesi.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(11);
+        return (LocalDateTime) get(5);
     }
 
     /**
      * Setter for <code>kepegawaian.profesi.updated_by</code>.
      */
     public void setUpdatedBy(String value) {
-        set(12, value);
+        set(6, value);
     }
 
     /**
      * Getter for <code>kepegawaian.profesi.updated_by</code>.
      */
     public String getUpdatedBy() {
-        return (String) get(12);
+        return (String) get(6);
+    }
+
+    /**
+     * Setter for <code>kepegawaian.profesi.version</code>.
+     */
+    public void setVersion(Integer value) {
+        set(7, value);
+    }
+
+    /**
+     * Getter for <code>kepegawaian.profesi.version</code>.
+     */
+    public Integer getVersion() {
+        return (Integer) get(7);
+    }
+
+    /**
+     * Setter for <code>kepegawaian.profesi.detail</code>.
+     */
+    public void setDetail(String value) {
+        set(8, value);
+    }
+
+    /**
+     * Getter for <code>kepegawaian.profesi.detail</code>.
+     */
+    public String getDetail() {
+        return (String) get(8);
+    }
+
+    /**
+     * Setter for <code>kepegawaian.profesi.nama</code>.
+     */
+    public void setNama(String value) {
+        set(9, value);
+    }
+
+    /**
+     * Getter for <code>kepegawaian.profesi.nama</code>.
+     */
+    public String getNama() {
+        return (String) get(9);
+    }
+
+    /**
+     * Setter for <code>kepegawaian.profesi.resiko</code>.
+     */
+    public void setResiko(String value) {
+        set(10, value);
+    }
+
+    /**
+     * Getter for <code>kepegawaian.profesi.resiko</code>.
+     */
+    public String getResiko() {
+        return (String) get(10);
+    }
+
+    /**
+     * Setter for <code>kepegawaian.profesi.grade_id</code>.
+     */
+    public void setGradeId(Long value) {
+        set(11, value);
+    }
+
+    /**
+     * Getter for <code>kepegawaian.profesi.grade_id</code>.
+     */
+    public Long getGradeId() {
+        return (Long) get(11);
+    }
+
+    /**
+     * Setter for <code>kepegawaian.profesi.jabatan_id</code>.
+     */
+    public void setJabatanId(Long value) {
+        set(12, value);
+    }
+
+    /**
+     * Getter for <code>kepegawaian.profesi.jabatan_id</code>.
+     */
+    public Long getJabatanId() {
+        return (Long) get(12);
+    }
+
+    /**
+     * Setter for <code>kepegawaian.profesi.level_id</code>.
+     */
+    public void setLevelId(Long value) {
+        set(13, value);
+    }
+
+    /**
+     * Getter for <code>kepegawaian.profesi.level_id</code>.
+     */
+    public Long getLevelId() {
+        return (Long) get(13);
+    }
+
+    /**
+     * Setter for <code>kepegawaian.profesi.organisasi_id</code>.
+     */
+    public void setOrganisasiId(Long value) {
+        set(14, value);
+    }
+
+    /**
+     * Getter for <code>kepegawaian.profesi.organisasi_id</code>.
+     */
+    public Long getOrganisasiId() {
+        return (Long) get(14);
     }
 
     // -------------------------------------------------------------------------
@@ -225,22 +253,24 @@ public class ProfesiRecord extends UpdatableRecordImpl<ProfesiRecord> {
     /**
      * Create a detached, initialised ProfesiRecord
      */
-    public ProfesiRecord(Long id_, String nama, String detail, String resiko, Long organisasiId, Long jabatanId, Long levelId, Long gradeId, Boolean isDeleted, LocalDateTime createdAt, String createdBy, LocalDateTime updatedAt, String updatedBy) {
+    public ProfesiRecord(Long id_, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version, String detail, String nama, String resiko, Long gradeId, Long jabatanId, Long levelId, Long organisasiId) {
         super(Profesi.PROFESI);
 
         setId(id_);
-        setNama(nama);
-        setDetail(detail);
-        setResiko(resiko);
-        setOrganisasiId(organisasiId);
-        setJabatanId(jabatanId);
-        setLevelId(levelId);
-        setGradeId(gradeId);
-        setIsDeleted(isDeleted);
+        setChangedStatus(changedStatus);
         setCreatedAt(createdAt);
         setCreatedBy(createdBy);
+        setIsDeleted(isDeleted);
         setUpdatedAt(updatedAt);
         setUpdatedBy(updatedBy);
+        setVersion(version);
+        setDetail(detail);
+        setNama(nama);
+        setResiko(resiko);
+        setGradeId(gradeId);
+        setJabatanId(jabatanId);
+        setLevelId(levelId);
+        setOrganisasiId(organisasiId);
         resetChangedOnNotNull();
     }
 }

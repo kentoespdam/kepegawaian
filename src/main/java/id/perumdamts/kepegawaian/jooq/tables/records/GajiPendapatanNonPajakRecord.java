@@ -35,44 +35,46 @@ public class GajiPendapatanNonPajakRecord extends UpdatableRecordImpl<GajiPendap
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_pendapatan_non_pajak.kode</code>.
+     * Setter for
+     * <code>kepegawaian.gaji_pendapatan_non_pajak.changed_status</code>.
      */
-    public void setKode(String value) {
+    public void setChangedStatus(Byte value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_pendapatan_non_pajak.kode</code>.
+     * Getter for
+     * <code>kepegawaian.gaji_pendapatan_non_pajak.changed_status</code>.
      */
-    public String getKode() {
-        return (String) get(1);
+    public Byte getChangedStatus() {
+        return (Byte) get(1);
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_pendapatan_non_pajak.nominal</code>.
+     * Setter for <code>kepegawaian.gaji_pendapatan_non_pajak.created_at</code>.
      */
-    public void setNominal(Double value) {
+    public void setCreatedAt(LocalDateTime value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_pendapatan_non_pajak.nominal</code>.
+     * Getter for <code>kepegawaian.gaji_pendapatan_non_pajak.created_at</code>.
      */
-    public Double getNominal() {
-        return (Double) get(2);
+    public LocalDateTime getCreatedAt() {
+        return (LocalDateTime) get(2);
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_pendapatan_non_pajak.notes</code>.
+     * Setter for <code>kepegawaian.gaji_pendapatan_non_pajak.created_by</code>.
      */
-    public void setNotes(String value) {
+    public void setCreatedBy(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_pendapatan_non_pajak.notes</code>.
+     * Getter for <code>kepegawaian.gaji_pendapatan_non_pajak.created_by</code>.
      */
-    public String getNotes() {
+    public String getCreatedBy() {
         return (String) get(3);
     }
 
@@ -91,59 +93,87 @@ public class GajiPendapatanNonPajakRecord extends UpdatableRecordImpl<GajiPendap
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_pendapatan_non_pajak.created_at</code>.
-     */
-    public void setCreatedAt(LocalDateTime value) {
-        set(5, value);
-    }
-
-    /**
-     * Getter for <code>kepegawaian.gaji_pendapatan_non_pajak.created_at</code>.
-     */
-    public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(5);
-    }
-
-    /**
-     * Setter for <code>kepegawaian.gaji_pendapatan_non_pajak.created_by</code>.
-     */
-    public void setCreatedBy(String value) {
-        set(6, value);
-    }
-
-    /**
-     * Getter for <code>kepegawaian.gaji_pendapatan_non_pajak.created_by</code>.
-     */
-    public String getCreatedBy() {
-        return (String) get(6);
-    }
-
-    /**
      * Setter for <code>kepegawaian.gaji_pendapatan_non_pajak.updated_at</code>.
      */
     public void setUpdatedAt(LocalDateTime value) {
-        set(7, value);
+        set(5, value);
     }
 
     /**
      * Getter for <code>kepegawaian.gaji_pendapatan_non_pajak.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(7);
+        return (LocalDateTime) get(5);
     }
 
     /**
      * Setter for <code>kepegawaian.gaji_pendapatan_non_pajak.updated_by</code>.
      */
     public void setUpdatedBy(String value) {
-        set(8, value);
+        set(6, value);
     }
 
     /**
      * Getter for <code>kepegawaian.gaji_pendapatan_non_pajak.updated_by</code>.
      */
     public String getUpdatedBy() {
+        return (String) get(6);
+    }
+
+    /**
+     * Setter for <code>kepegawaian.gaji_pendapatan_non_pajak.version</code>.
+     */
+    public void setVersion(Integer value) {
+        set(7, value);
+    }
+
+    /**
+     * Getter for <code>kepegawaian.gaji_pendapatan_non_pajak.version</code>.
+     */
+    public Integer getVersion() {
+        return (Integer) get(7);
+    }
+
+    /**
+     * Setter for <code>kepegawaian.gaji_pendapatan_non_pajak.kode</code>.
+     */
+    public void setKode(String value) {
+        set(8, value);
+    }
+
+    /**
+     * Getter for <code>kepegawaian.gaji_pendapatan_non_pajak.kode</code>.
+     */
+    public String getKode() {
         return (String) get(8);
+    }
+
+    /**
+     * Setter for <code>kepegawaian.gaji_pendapatan_non_pajak.nominal</code>.
+     */
+    public void setNominal(Double value) {
+        set(9, value);
+    }
+
+    /**
+     * Getter for <code>kepegawaian.gaji_pendapatan_non_pajak.nominal</code>.
+     */
+    public Double getNominal() {
+        return (Double) get(9);
+    }
+
+    /**
+     * Setter for <code>kepegawaian.gaji_pendapatan_non_pajak.notes</code>.
+     */
+    public void setNotes(String value) {
+        set(10, value);
+    }
+
+    /**
+     * Getter for <code>kepegawaian.gaji_pendapatan_non_pajak.notes</code>.
+     */
+    public String getNotes() {
+        return (String) get(10);
     }
 
     // -------------------------------------------------------------------------
@@ -169,18 +199,20 @@ public class GajiPendapatanNonPajakRecord extends UpdatableRecordImpl<GajiPendap
     /**
      * Create a detached, initialised GajiPendapatanNonPajakRecord
      */
-    public GajiPendapatanNonPajakRecord(Long id_, String kode, Double nominal, String notes, Boolean isDeleted, LocalDateTime createdAt, String createdBy, LocalDateTime updatedAt, String updatedBy) {
+    public GajiPendapatanNonPajakRecord(Long id_, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version, String kode, Double nominal, String notes) {
         super(GajiPendapatanNonPajak.GAJI_PENDAPATAN_NON_PAJAK);
 
         setId(id_);
+        setChangedStatus(changedStatus);
+        setCreatedAt(createdAt);
+        setCreatedBy(createdBy);
+        setIsDeleted(isDeleted);
+        setUpdatedAt(updatedAt);
+        setUpdatedBy(updatedBy);
+        setVersion(version);
         setKode(kode);
         setNominal(nominal);
         setNotes(notes);
-        setIsDeleted(isDeleted);
-        setCreatedAt(createdAt);
-        setCreatedBy(createdBy);
-        setUpdatedAt(updatedAt);
-        setUpdatedBy(updatedBy);
         resetChangedOnNotNull();
     }
 }

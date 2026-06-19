@@ -35,101 +35,129 @@ public class RumahDinasRecord extends UpdatableRecordImpl<RumahDinasRecord> {
     }
 
     /**
-     * Setter for <code>kepegawaian.rumah_dinas.nama</code>.
+     * Setter for <code>kepegawaian.rumah_dinas.changed_status</code>.
      */
-    public void setNama(String value) {
+    public void setChangedStatus(Byte value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.rumah_dinas.nama</code>.
+     * Getter for <code>kepegawaian.rumah_dinas.changed_status</code>.
      */
-    public String getNama() {
-        return (String) get(1);
-    }
-
-    /**
-     * Setter for <code>kepegawaian.rumah_dinas.nilai</code>.
-     */
-    public void setNilai(Double value) {
-        set(2, value);
-    }
-
-    /**
-     * Getter for <code>kepegawaian.rumah_dinas.nilai</code>.
-     */
-    public Double getNilai() {
-        return (Double) get(2);
-    }
-
-    /**
-     * Setter for <code>kepegawaian.rumah_dinas.is_deleted</code>.
-     */
-    public void setIsDeleted(Boolean value) {
-        set(3, value);
-    }
-
-    /**
-     * Getter for <code>kepegawaian.rumah_dinas.is_deleted</code>.
-     */
-    public Boolean getIsDeleted() {
-        return (Boolean) get(3);
+    public Byte getChangedStatus() {
+        return (Byte) get(1);
     }
 
     /**
      * Setter for <code>kepegawaian.rumah_dinas.created_at</code>.
      */
     public void setCreatedAt(LocalDateTime value) {
-        set(4, value);
+        set(2, value);
     }
 
     /**
      * Getter for <code>kepegawaian.rumah_dinas.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(4);
+        return (LocalDateTime) get(2);
     }
 
     /**
      * Setter for <code>kepegawaian.rumah_dinas.created_by</code>.
      */
     public void setCreatedBy(String value) {
-        set(5, value);
+        set(3, value);
     }
 
     /**
      * Getter for <code>kepegawaian.rumah_dinas.created_by</code>.
      */
     public String getCreatedBy() {
-        return (String) get(5);
+        return (String) get(3);
+    }
+
+    /**
+     * Setter for <code>kepegawaian.rumah_dinas.is_deleted</code>.
+     */
+    public void setIsDeleted(Boolean value) {
+        set(4, value);
+    }
+
+    /**
+     * Getter for <code>kepegawaian.rumah_dinas.is_deleted</code>.
+     */
+    public Boolean getIsDeleted() {
+        return (Boolean) get(4);
     }
 
     /**
      * Setter for <code>kepegawaian.rumah_dinas.updated_at</code>.
      */
     public void setUpdatedAt(LocalDateTime value) {
-        set(6, value);
+        set(5, value);
     }
 
     /**
      * Getter for <code>kepegawaian.rumah_dinas.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(6);
+        return (LocalDateTime) get(5);
     }
 
     /**
      * Setter for <code>kepegawaian.rumah_dinas.updated_by</code>.
      */
     public void setUpdatedBy(String value) {
-        set(7, value);
+        set(6, value);
     }
 
     /**
      * Getter for <code>kepegawaian.rumah_dinas.updated_by</code>.
      */
     public String getUpdatedBy() {
-        return (String) get(7);
+        return (String) get(6);
+    }
+
+    /**
+     * Setter for <code>kepegawaian.rumah_dinas.version</code>.
+     */
+    public void setVersion(Integer value) {
+        set(7, value);
+    }
+
+    /**
+     * Getter for <code>kepegawaian.rumah_dinas.version</code>.
+     */
+    public Integer getVersion() {
+        return (Integer) get(7);
+    }
+
+    /**
+     * Setter for <code>kepegawaian.rumah_dinas.nama</code>.
+     */
+    public void setNama(String value) {
+        set(8, value);
+    }
+
+    /**
+     * Getter for <code>kepegawaian.rumah_dinas.nama</code>.
+     */
+    public String getNama() {
+        return (String) get(8);
+    }
+
+    /**
+     * Setter for <code>kepegawaian.rumah_dinas.nilai</code>.
+     */
+    public void setNilai(Double value) {
+        set(9, value);
+    }
+
+    /**
+     * Getter for <code>kepegawaian.rumah_dinas.nilai</code>.
+     */
+    public Double getNilai() {
+        return (Double) get(9);
     }
 
     // -------------------------------------------------------------------------
@@ -155,17 +183,19 @@ public class RumahDinasRecord extends UpdatableRecordImpl<RumahDinasRecord> {
     /**
      * Create a detached, initialised RumahDinasRecord
      */
-    public RumahDinasRecord(Long id_, String nama, Double nilai, Boolean isDeleted, LocalDateTime createdAt, String createdBy, LocalDateTime updatedAt, String updatedBy) {
+    public RumahDinasRecord(Long id_, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version, String nama, Double nilai) {
         super(RumahDinas.RUMAH_DINAS);
 
         setId(id_);
-        setNama(nama);
-        setNilai(nilai);
-        setIsDeleted(isDeleted);
+        setChangedStatus(changedStatus);
         setCreatedAt(createdAt);
         setCreatedBy(createdBy);
+        setIsDeleted(isDeleted);
         setUpdatedAt(updatedAt);
         setUpdatedBy(updatedBy);
+        setVersion(version);
+        setNama(nama);
+        setNilai(nilai);
         resetChangedOnNotNull();
     }
 }

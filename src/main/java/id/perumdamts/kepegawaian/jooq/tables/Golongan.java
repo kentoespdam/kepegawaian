@@ -9,6 +9,9 @@ import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.GajiPotonganTkk.GajiPotonganTkkPath;
 import id.perumdamts.kepegawaian.jooq.tables.GajiTunjangan.GajiTunjanganPath;
+import id.perumdamts.kepegawaian.jooq.tables.Pegawai.PegawaiPath;
+import id.perumdamts.kepegawaian.jooq.tables.RiwayatSk.RiwayatSkPath;
+import id.perumdamts.kepegawaian.jooq.tables.RiwayatTerminasi.RiwayatTerminasiPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.GolonganRecord;
 
 import java.time.LocalDateTime;
@@ -67,24 +70,14 @@ public class Golongan extends TableImpl<GolonganRecord> {
     public final TableField<GolonganRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.golongan.golongan</code>.
+     * The column <code>kepegawaian.golongan.changed_status</code>.
      */
-    public final TableField<GolonganRecord, String> GOLONGAN_ = createField(DSL.name("golongan"), SQLDataType.VARCHAR(255).nullable(false), this, "");
-
-    /**
-     * The column <code>kepegawaian.golongan.pangkat</code>.
-     */
-    public final TableField<GolonganRecord, String> PANGKAT = createField(DSL.name("pangkat"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>kepegawaian.golongan.is_deleted</code>.
-     */
-    public final TableField<GolonganRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BIT.nullable(false).defaultValue(DSL.field(DSL.raw("b'0'"), SQLDataType.BIT)), this, "");
+    public final TableField<GolonganRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
      * The column <code>kepegawaian.golongan.created_at</code>.
      */
-    public final TableField<GolonganRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("current_timestamp(6)"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<GolonganRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>kepegawaian.golongan.created_by</code>.
@@ -92,14 +85,34 @@ public class Golongan extends TableImpl<GolonganRecord> {
     public final TableField<GolonganRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
+     * The column <code>kepegawaian.golongan.is_deleted</code>.
+     */
+    public final TableField<GolonganRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
      * The column <code>kepegawaian.golongan.updated_at</code>.
      */
-    public final TableField<GolonganRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<GolonganRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>kepegawaian.golongan.updated_by</code>.
      */
     public final TableField<GolonganRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.golongan.version</code>.
+     */
+    public final TableField<GolonganRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>kepegawaian.golongan.golongan</code>.
+     */
+    public final TableField<GolonganRecord, String> GOLONGAN_ = createField(DSL.name("golongan"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.golongan.pangkat</code>.
+     */
+    public final TableField<GolonganRecord, String> PANGKAT = createField(DSL.name("pangkat"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     private Golongan(Name alias, Table<GolonganRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
@@ -170,7 +183,7 @@ public class Golongan extends TableImpl<GolonganRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.GOLONGAN_IDX_GOLONGAN_GOLONGAN, Indexes.GOLONGAN_IDX_GOLONGAN_IS_DELETED);
+        return Arrays.asList(Indexes.GOLONGAN_IDX70633PFABJFCFL9Q5RY2WKX91, Indexes.GOLONGAN_IDXC0XQGF5WKO9HU0X8P4TW7GFJN, Indexes.GOLONGAN_IDXTB6MAY6A8K5HA9Q3CWN45CDJ3);
     }
 
     @Override
@@ -183,6 +196,19 @@ public class Golongan extends TableImpl<GolonganRecord> {
         return Keys.KEY_GOLONGAN_PRIMARY;
     }
 
+    private transient PegawaiPath _pegawai;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.pegawai</code> table
+     */
+    public PegawaiPath pegawai() {
+        if (_pegawai == null)
+            _pegawai = new PegawaiPath(this, null, Keys.FK8CKLQJPRPRG22X5HFVCQM5XEH.getInverseKey());
+
+        return _pegawai;
+    }
+
     private transient GajiPotonganTkkPath _gajiPotonganTkk;
 
     /**
@@ -191,7 +217,7 @@ public class Golongan extends TableImpl<GolonganRecord> {
      */
     public GajiPotonganTkkPath gajiPotonganTkk() {
         if (_gajiPotonganTkk == null)
-            _gajiPotonganTkk = new GajiPotonganTkkPath(this, null, Keys.FK_GAJI_POTONGAN_TKK_GOLONGAN.getInverseKey());
+            _gajiPotonganTkk = new GajiPotonganTkkPath(this, null, Keys.FKBOE0VGMHAI1IF02SCV0UQI3HV.getInverseKey());
 
         return _gajiPotonganTkk;
     }
@@ -204,9 +230,35 @@ public class Golongan extends TableImpl<GolonganRecord> {
      */
     public GajiTunjanganPath gajiTunjangan() {
         if (_gajiTunjangan == null)
-            _gajiTunjangan = new GajiTunjanganPath(this, null, Keys.FK_GAJI_TUNJANGAN_GOLONGAN.getInverseKey());
+            _gajiTunjangan = new GajiTunjanganPath(this, null, Keys.FKCYV33JEF4IKCAIUOPDR20X8YO.getInverseKey());
 
         return _gajiTunjangan;
+    }
+
+    private transient RiwayatTerminasiPath _riwayatTerminasi;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.riwayat_terminasi</code> table
+     */
+    public RiwayatTerminasiPath riwayatTerminasi() {
+        if (_riwayatTerminasi == null)
+            _riwayatTerminasi = new RiwayatTerminasiPath(this, null, Keys.FKMQ5496LFDG1PM8RF5H9DLOP4L.getInverseKey());
+
+        return _riwayatTerminasi;
+    }
+
+    private transient RiwayatSkPath _riwayatSk;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.riwayat_sk</code> table
+     */
+    public RiwayatSkPath riwayatSk() {
+        if (_riwayatSk == null)
+            _riwayatSk = new RiwayatSkPath(this, null, Keys.FKSSDKK6IN2B2RP1FMTS4N4MU7R.getInverseKey());
+
+        return _riwayatSk;
     }
 
     @Override

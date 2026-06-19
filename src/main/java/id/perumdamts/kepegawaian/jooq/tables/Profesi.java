@@ -13,6 +13,7 @@ import id.perumdamts.kepegawaian.jooq.tables.Grade.GradePath;
 import id.perumdamts.kepegawaian.jooq.tables.Jabatan.JabatanPath;
 import id.perumdamts.kepegawaian.jooq.tables.Level.LevelPath;
 import id.perumdamts.kepegawaian.jooq.tables.Organisasi.OrganisasiPath;
+import id.perumdamts.kepegawaian.jooq.tables.Pegawai.PegawaiPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.ProfesiRecord;
 
 import java.time.LocalDateTime;
@@ -71,14 +72,49 @@ public class Profesi extends TableImpl<ProfesiRecord> {
     public final TableField<ProfesiRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.profesi.nama</code>.
+     * The column <code>kepegawaian.profesi.changed_status</code>.
      */
-    public final TableField<ProfesiRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<ProfesiRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
+
+    /**
+     * The column <code>kepegawaian.profesi.created_at</code>.
+     */
+    public final TableField<ProfesiRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>kepegawaian.profesi.created_by</code>.
+     */
+    public final TableField<ProfesiRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.profesi.is_deleted</code>.
+     */
+    public final TableField<ProfesiRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
+     * The column <code>kepegawaian.profesi.updated_at</code>.
+     */
+    public final TableField<ProfesiRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>kepegawaian.profesi.updated_by</code>.
+     */
+    public final TableField<ProfesiRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.profesi.version</code>.
+     */
+    public final TableField<ProfesiRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>kepegawaian.profesi.detail</code>.
      */
-    public final TableField<ProfesiRecord, String> DETAIL = createField(DSL.name("detail"), SQLDataType.CLOB(65535).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)), this, "");
+    public final TableField<ProfesiRecord, String> DETAIL = createField(DSL.name("detail"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.profesi.nama</code>.
+     */
+    public final TableField<ProfesiRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>kepegawaian.profesi.resiko</code>.
@@ -86,9 +122,9 @@ public class Profesi extends TableImpl<ProfesiRecord> {
     public final TableField<ProfesiRecord, String> RESIKO = createField(DSL.name("resiko"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.profesi.organisasi_id</code>.
+     * The column <code>kepegawaian.profesi.grade_id</code>.
      */
-    public final TableField<ProfesiRecord, Long> ORGANISASI_ID = createField(DSL.name("organisasi_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
+    public final TableField<ProfesiRecord, Long> GRADE_ID = createField(DSL.name("grade_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
      * The column <code>kepegawaian.profesi.jabatan_id</code>.
@@ -101,34 +137,9 @@ public class Profesi extends TableImpl<ProfesiRecord> {
     public final TableField<ProfesiRecord, Long> LEVEL_ID = createField(DSL.name("level_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.profesi.grade_id</code>.
+     * The column <code>kepegawaian.profesi.organisasi_id</code>.
      */
-    public final TableField<ProfesiRecord, Long> GRADE_ID = createField(DSL.name("grade_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
-
-    /**
-     * The column <code>kepegawaian.profesi.is_deleted</code>.
-     */
-    public final TableField<ProfesiRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BIT.nullable(false).defaultValue(DSL.field(DSL.raw("b'0'"), SQLDataType.BIT)), this, "");
-
-    /**
-     * The column <code>kepegawaian.profesi.created_at</code>.
-     */
-    public final TableField<ProfesiRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("current_timestamp(6)"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>kepegawaian.profesi.created_by</code>.
-     */
-    public final TableField<ProfesiRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>kepegawaian.profesi.updated_at</code>.
-     */
-    public final TableField<ProfesiRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>kepegawaian.profesi.updated_by</code>.
-     */
-    public final TableField<ProfesiRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+    public final TableField<ProfesiRecord, Long> ORGANISASI_ID = createField(DSL.name("organisasi_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     private Profesi(Name alias, Table<ProfesiRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
@@ -199,7 +210,7 @@ public class Profesi extends TableImpl<ProfesiRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.PROFESI_IDX_PROFESI_GRADE, Indexes.PROFESI_IDX_PROFESI_IS_DELETED, Indexes.PROFESI_IDX_PROFESI_JABATAN, Indexes.PROFESI_IDX_PROFESI_LEVEL, Indexes.PROFESI_IDX_PROFESI_NAMA, Indexes.PROFESI_IDX_PROFESI_ORGANISASI);
+        return Arrays.asList(Indexes.PROFESI_IDXA6TTUB6NENO90PT9PDOMPAHY9, Indexes.PROFESI_IDXDF2V2D8M8KJ2FNO6JIA21AQWU);
     }
 
     @Override
@@ -214,19 +225,7 @@ public class Profesi extends TableImpl<ProfesiRecord> {
 
     @Override
     public List<ForeignKey<ProfesiRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK_PROFESI_GRADE, Keys.FK_PROFESI_JABATAN, Keys.FK_PROFESI_LEVEL, Keys.FK_PROFESI_ORGANISASI);
-    }
-
-    private transient GradePath _grade;
-
-    /**
-     * Get the implicit join path to the <code>kepegawaian.grade</code> table.
-     */
-    public GradePath grade() {
-        if (_grade == null)
-            _grade = new GradePath(this, Keys.FK_PROFESI_GRADE, null);
-
-        return _grade;
+        return Arrays.asList(Keys.FK7Y0J8PF2RXYWRWHQYBJ06VA69, Keys.FK9MTQTFVREOK33QVC1H05D09VP, Keys.FKGRQRCA3ADJK3BJ0U9RGQWPLFY, Keys.FKPDO18V9PYFNINMFHQD1RJOP6O);
     }
 
     private transient JabatanPath _jabatan;
@@ -236,9 +235,21 @@ public class Profesi extends TableImpl<ProfesiRecord> {
      */
     public JabatanPath jabatan() {
         if (_jabatan == null)
-            _jabatan = new JabatanPath(this, Keys.FK_PROFESI_JABATAN, null);
+            _jabatan = new JabatanPath(this, Keys.FK7Y0J8PF2RXYWRWHQYBJ06VA69, null);
 
         return _jabatan;
+    }
+
+    private transient GradePath _grade;
+
+    /**
+     * Get the implicit join path to the <code>kepegawaian.grade</code> table.
+     */
+    public GradePath grade() {
+        if (_grade == null)
+            _grade = new GradePath(this, Keys.FK9MTQTFVREOK33QVC1H05D09VP, null);
+
+        return _grade;
     }
 
     private transient LevelPath _level;
@@ -248,7 +259,7 @@ public class Profesi extends TableImpl<ProfesiRecord> {
      */
     public LevelPath level() {
         if (_level == null)
-            _level = new LevelPath(this, Keys.FK_PROFESI_LEVEL, null);
+            _level = new LevelPath(this, Keys.FKGRQRCA3ADJK3BJ0U9RGQWPLFY, null);
 
         return _level;
     }
@@ -261,9 +272,22 @@ public class Profesi extends TableImpl<ProfesiRecord> {
      */
     public OrganisasiPath organisasi() {
         if (_organisasi == null)
-            _organisasi = new OrganisasiPath(this, Keys.FK_PROFESI_ORGANISASI, null);
+            _organisasi = new OrganisasiPath(this, Keys.FKPDO18V9PYFNINMFHQD1RJOP6O, null);
 
         return _organisasi;
+    }
+
+    private transient PegawaiPath _pegawai;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.pegawai</code> table
+     */
+    public PegawaiPath pegawai() {
+        if (_pegawai == null)
+            _pegawai = new PegawaiPath(this, null, Keys.FK6MFHIOGA8LVAFTUBPP0JGGENV.getInverseKey());
+
+        return _pegawai;
     }
 
     private transient AlatKerjaPath _alatKerja;
@@ -274,7 +298,7 @@ public class Profesi extends TableImpl<ProfesiRecord> {
      */
     public AlatKerjaPath alatKerja() {
         if (_alatKerja == null)
-            _alatKerja = new AlatKerjaPath(this, null, Keys.FK_ALAT_KERJA_PROFESI.getInverseKey());
+            _alatKerja = new AlatKerjaPath(this, null, Keys.FKLR2NYHT8VNI7OAH23U4TMSEMU.getInverseKey());
 
         return _alatKerja;
     }
@@ -287,7 +311,7 @@ public class Profesi extends TableImpl<ProfesiRecord> {
      */
     public ApdPath apd() {
         if (_apd == null)
-            _apd = new ApdPath(this, null, Keys.FK_APD_PROFESI.getInverseKey());
+            _apd = new ApdPath(this, null, Keys.FKR19SSVLFXU0OP3E7IC5Y3HM7R.getInverseKey());
 
         return _apd;
     }

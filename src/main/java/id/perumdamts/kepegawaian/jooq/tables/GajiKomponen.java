@@ -4,8 +4,10 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.Indexes;
 import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
+import id.perumdamts.kepegawaian.jooq.enums.GajiKomponenJenisGaji;
 import id.perumdamts.kepegawaian.jooq.tables.GajiProfil.GajiProfilPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.GajiKomponenRecord;
 
@@ -18,6 +20,7 @@ import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
+import org.jooq.Index;
 import org.jooq.InverseForeignKey;
 import org.jooq.Name;
 import org.jooq.Path;
@@ -64,14 +67,54 @@ public class GajiKomponen extends TableImpl<GajiKomponenRecord> {
     public final TableField<GajiKomponenRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_komponen.urut</code>.
+     * The column <code>kepegawaian.gaji_komponen.changed_status</code>.
      */
-    public final TableField<GajiKomponenRecord, Integer> URUT = createField(DSL.name("urut"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
+    public final TableField<GajiKomponenRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_komponen.profil_gaji_id</code>.
+     * The column <code>kepegawaian.gaji_komponen.created_at</code>.
      */
-    public final TableField<GajiKomponenRecord, Long> PROFIL_GAJI_ID = createField(DSL.name("profil_gaji_id"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<GajiKomponenRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>kepegawaian.gaji_komponen.created_by</code>.
+     */
+    public final TableField<GajiKomponenRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.gaji_komponen.is_deleted</code>.
+     */
+    public final TableField<GajiKomponenRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
+     * The column <code>kepegawaian.gaji_komponen.updated_at</code>.
+     */
+    public final TableField<GajiKomponenRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>kepegawaian.gaji_komponen.updated_by</code>.
+     */
+    public final TableField<GajiKomponenRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.gaji_komponen.version</code>.
+     */
+    public final TableField<GajiKomponenRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>kepegawaian.gaji_komponen.formula</code>.
+     */
+    public final TableField<GajiKomponenRecord, String> FORMULA = createField(DSL.name("formula"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.gaji_komponen.is_reference</code>.
+     */
+    public final TableField<GajiKomponenRecord, Boolean> IS_REFERENCE = createField(DSL.name("is_reference"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
+
+    /**
+     * The column <code>kepegawaian.gaji_komponen.jenis_gaji</code>.
+     */
+    public final TableField<GajiKomponenRecord, GajiKomponenJenisGaji> JENIS_GAJI = createField(DSL.name("jenis_gaji"), SQLDataType.VARCHAR(9).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)).asEnumDataType(GajiKomponenJenisGaji.class), this, "");
 
     /**
      * The column <code>kepegawaian.gaji_komponen.kode</code>.
@@ -84,49 +127,19 @@ public class GajiKomponen extends TableImpl<GajiKomponenRecord> {
     public final TableField<GajiKomponenRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_komponen.jenis_gaji</code>.
-     */
-    public final TableField<GajiKomponenRecord, String> JENIS_GAJI = createField(DSL.name("jenis_gaji"), SQLDataType.VARCHAR(31).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
      * The column <code>kepegawaian.gaji_komponen.nilai</code>.
      */
     public final TableField<GajiKomponenRecord, Double> NILAI = createField(DSL.name("nilai"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_komponen.is_reference</code>.
+     * The column <code>kepegawaian.gaji_komponen.urut</code>.
      */
-    public final TableField<GajiKomponenRecord, Boolean> IS_REFERENCE = createField(DSL.name("is_reference"), SQLDataType.BIT.nullable(false).defaultValue(DSL.field(DSL.raw("b'0'"), SQLDataType.BIT)), this, "");
+    public final TableField<GajiKomponenRecord, Integer> URUT = createField(DSL.name("urut"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_komponen.formula</code>.
+     * The column <code>kepegawaian.gaji_komponen.profil_gaji_id</code>.
      */
-    public final TableField<GajiKomponenRecord, String> FORMULA = createField(DSL.name("formula"), SQLDataType.CLOB(65535).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)), this, "");
-
-    /**
-     * The column <code>kepegawaian.gaji_komponen.is_deleted</code>.
-     */
-    public final TableField<GajiKomponenRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BIT.nullable(false).defaultValue(DSL.field(DSL.raw("b'0'"), SQLDataType.BIT)), this, "");
-
-    /**
-     * The column <code>kepegawaian.gaji_komponen.created_at</code>.
-     */
-    public final TableField<GajiKomponenRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("current_timestamp(6)"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>kepegawaian.gaji_komponen.created_by</code>.
-     */
-    public final TableField<GajiKomponenRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>kepegawaian.gaji_komponen.updated_at</code>.
-     */
-    public final TableField<GajiKomponenRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("current_timestamp(6)"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>kepegawaian.gaji_komponen.updated_by</code>.
-     */
-    public final TableField<GajiKomponenRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+    public final TableField<GajiKomponenRecord, Long> PROFIL_GAJI_ID = createField(DSL.name("profil_gaji_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     private GajiKomponen(Name alias, Table<GajiKomponenRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
@@ -196,6 +209,11 @@ public class GajiKomponen extends TableImpl<GajiKomponenRecord> {
     }
 
     @Override
+    public List<Index> getIndexes() {
+        return Arrays.asList(Indexes.GAJI_KOMPONEN_IDXL2PIC9X86XB26OPXH6GCGFK3);
+    }
+
+    @Override
     public Identity<GajiKomponenRecord, Long> getIdentity() {
         return (Identity<GajiKomponenRecord, Long>) super.getIdentity();
     }
@@ -207,7 +225,7 @@ public class GajiKomponen extends TableImpl<GajiKomponenRecord> {
 
     @Override
     public List<ForeignKey<GajiKomponenRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK_GAJI_KOMPONEN_PROFIL);
+        return Arrays.asList(Keys.FK5PHAMFQ1ATJUDIIYQY0X2IL98);
     }
 
     private transient GajiProfilPath _gajiProfil;
@@ -218,7 +236,7 @@ public class GajiKomponen extends TableImpl<GajiKomponenRecord> {
      */
     public GajiProfilPath gajiProfil() {
         if (_gajiProfil == null)
-            _gajiProfil = new GajiProfilPath(this, Keys.FK_GAJI_KOMPONEN_PROFIL, null);
+            _gajiProfil = new GajiProfilPath(this, Keys.FK5PHAMFQ1ATJUDIIYQY0X2IL98, null);
 
         return _gajiProfil;
     }

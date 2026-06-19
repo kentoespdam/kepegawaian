@@ -4,18 +4,23 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.Indexes;
 import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.GajiKomponen.GajiKomponenPath;
+import id.perumdamts.kepegawaian.jooq.tables.Pegawai.PegawaiPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.GajiProfilRecord;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
+import org.jooq.Index;
 import org.jooq.InverseForeignKey;
 import org.jooq.Name;
 import org.jooq.Path;
@@ -62,19 +67,14 @@ public class GajiProfil extends TableImpl<GajiProfilRecord> {
     public final TableField<GajiProfilRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_profil.nama</code>.
+     * The column <code>kepegawaian.gaji_profil.changed_status</code>.
      */
-    public final TableField<GajiProfilRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).nullable(false), this, "");
-
-    /**
-     * The column <code>kepegawaian.gaji_profil.is_deleted</code>.
-     */
-    public final TableField<GajiProfilRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BIT.nullable(false).defaultValue(DSL.field(DSL.raw("b'0'"), SQLDataType.BIT)), this, "");
+    public final TableField<GajiProfilRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
      * The column <code>kepegawaian.gaji_profil.created_at</code>.
      */
-    public final TableField<GajiProfilRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("current_timestamp(6)"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<GajiProfilRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>kepegawaian.gaji_profil.created_by</code>.
@@ -82,14 +82,29 @@ public class GajiProfil extends TableImpl<GajiProfilRecord> {
     public final TableField<GajiProfilRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
+     * The column <code>kepegawaian.gaji_profil.is_deleted</code>.
+     */
+    public final TableField<GajiProfilRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
      * The column <code>kepegawaian.gaji_profil.updated_at</code>.
      */
-    public final TableField<GajiProfilRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("current_timestamp(6)"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<GajiProfilRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>kepegawaian.gaji_profil.updated_by</code>.
      */
     public final TableField<GajiProfilRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.gaji_profil.version</code>.
+     */
+    public final TableField<GajiProfilRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>kepegawaian.gaji_profil.nama</code>.
+     */
+    public final TableField<GajiProfilRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     private GajiProfil(Name alias, Table<GajiProfilRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
@@ -159,6 +174,11 @@ public class GajiProfil extends TableImpl<GajiProfilRecord> {
     }
 
     @Override
+    public List<Index> getIndexes() {
+        return Arrays.asList(Indexes.GAJI_PROFIL_IDXNEM9IAJKKJCVU3YF3BAB077IC);
+    }
+
+    @Override
     public Identity<GajiProfilRecord, Long> getIdentity() {
         return (Identity<GajiProfilRecord, Long>) super.getIdentity();
     }
@@ -176,9 +196,22 @@ public class GajiProfil extends TableImpl<GajiProfilRecord> {
      */
     public GajiKomponenPath gajiKomponen() {
         if (_gajiKomponen == null)
-            _gajiKomponen = new GajiKomponenPath(this, null, Keys.FK_GAJI_KOMPONEN_PROFIL.getInverseKey());
+            _gajiKomponen = new GajiKomponenPath(this, null, Keys.FK5PHAMFQ1ATJUDIIYQY0X2IL98.getInverseKey());
 
         return _gajiKomponen;
+    }
+
+    private transient PegawaiPath _pegawai;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.pegawai</code> table
+     */
+    public PegawaiPath pegawai() {
+        if (_pegawai == null)
+            _pegawai = new PegawaiPath(this, null, Keys.FKDYWGPYSIY8MWGQNN25E9JTVKY.getInverseKey());
+
+        return _pegawai;
     }
 
     @Override

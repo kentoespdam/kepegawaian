@@ -4,19 +4,30 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.Indexes;
 import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
+import id.perumdamts.kepegawaian.jooq.tables.Biodata.BiodataPath;
+import id.perumdamts.kepegawaian.jooq.tables.Pendidikan.PendidikanPath;
+import id.perumdamts.kepegawaian.jooq.tables.ProfilKeluarga.ProfilKeluargaPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.JenjangPendidikanRecord;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import org.jooq.Condition;
 import org.jooq.Field;
+import org.jooq.ForeignKey;
 import org.jooq.Identity;
+import org.jooq.Index;
+import org.jooq.InverseForeignKey;
 import org.jooq.Name;
+import org.jooq.Path;
 import org.jooq.PlainSQL;
 import org.jooq.QueryPart;
+import org.jooq.Record;
 import org.jooq.SQL;
 import org.jooq.Schema;
 import org.jooq.Select;
@@ -57,34 +68,14 @@ public class JenjangPendidikan extends TableImpl<JenjangPendidikanRecord> {
     public final TableField<JenjangPendidikanRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.jenjang_pendidikan.nama</code>.
+     * The column <code>kepegawaian.jenjang_pendidikan.changed_status</code>.
      */
-    public final TableField<JenjangPendidikanRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).nullable(false), this, "");
-
-    /**
-     * The column <code>kepegawaian.jenjang_pendidikan.short_name</code>.
-     */
-    public final TableField<JenjangPendidikanRecord, String> SHORT_NAME = createField(DSL.name("short_name"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>kepegawaian.jenjang_pendidikan.seq</code>.
-     */
-    public final TableField<JenjangPendidikanRecord, Integer> SEQ = createField(DSL.name("seq"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>kepegawaian.jenjang_pendidikan.is_statistik</code>.
-     */
-    public final TableField<JenjangPendidikanRecord, Boolean> IS_STATISTIK = createField(DSL.name("is_statistik"), SQLDataType.BIT.nullable(false).defaultValue(DSL.field(DSL.raw("b'0'"), SQLDataType.BIT)), this, "");
-
-    /**
-     * The column <code>kepegawaian.jenjang_pendidikan.is_deleted</code>.
-     */
-    public final TableField<JenjangPendidikanRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BIT.nullable(false).defaultValue(DSL.field(DSL.raw("b'0'"), SQLDataType.BIT)), this, "");
+    public final TableField<JenjangPendidikanRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
      * The column <code>kepegawaian.jenjang_pendidikan.created_at</code>.
      */
-    public final TableField<JenjangPendidikanRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("current_timestamp(6)"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<JenjangPendidikanRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>kepegawaian.jenjang_pendidikan.created_by</code>.
@@ -92,14 +83,44 @@ public class JenjangPendidikan extends TableImpl<JenjangPendidikanRecord> {
     public final TableField<JenjangPendidikanRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
+     * The column <code>kepegawaian.jenjang_pendidikan.is_deleted</code>.
+     */
+    public final TableField<JenjangPendidikanRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
      * The column <code>kepegawaian.jenjang_pendidikan.updated_at</code>.
      */
-    public final TableField<JenjangPendidikanRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("current_timestamp(6)"), SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<JenjangPendidikanRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>kepegawaian.jenjang_pendidikan.updated_by</code>.
      */
     public final TableField<JenjangPendidikanRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.jenjang_pendidikan.version</code>.
+     */
+    public final TableField<JenjangPendidikanRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>kepegawaian.jenjang_pendidikan.is_statistik</code>.
+     */
+    public final TableField<JenjangPendidikanRecord, Boolean> IS_STATISTIK = createField(DSL.name("is_statistik"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
+
+    /**
+     * The column <code>kepegawaian.jenjang_pendidikan.nama</code>.
+     */
+    public final TableField<JenjangPendidikanRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>kepegawaian.jenjang_pendidikan.seq</code>.
+     */
+    public final TableField<JenjangPendidikanRecord, Integer> SEQ = createField(DSL.name("seq"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>kepegawaian.jenjang_pendidikan.short_name</code>.
+     */
+    public final TableField<JenjangPendidikanRecord, String> SHORT_NAME = createField(DSL.name("short_name"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     private JenjangPendidikan(Name alias, Table<JenjangPendidikanRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
@@ -132,9 +153,47 @@ public class JenjangPendidikan extends TableImpl<JenjangPendidikanRecord> {
         this(DSL.name("jenjang_pendidikan"), null);
     }
 
+    public <O extends Record> JenjangPendidikan(Table<O> path, ForeignKey<O, JenjangPendidikanRecord> childPath, InverseForeignKey<O, JenjangPendidikanRecord> parentPath) {
+        super(path, childPath, parentPath, JENJANG_PENDIDIKAN);
+    }
+
+    /**
+     * A subtype implementing {@link Path} for simplified path-based joins.
+     */
+    public static class JenjangPendidikanPath extends JenjangPendidikan implements Path<JenjangPendidikanRecord> {
+
+        private static final long serialVersionUID = 1L;
+        public <O extends Record> JenjangPendidikanPath(Table<O> path, ForeignKey<O, JenjangPendidikanRecord> childPath, InverseForeignKey<O, JenjangPendidikanRecord> parentPath) {
+            super(path, childPath, parentPath);
+        }
+        private JenjangPendidikanPath(Name alias, Table<JenjangPendidikanRecord> aliased) {
+            super(alias, aliased);
+        }
+
+        @Override
+        public JenjangPendidikanPath as(String alias) {
+            return new JenjangPendidikanPath(DSL.name(alias), this);
+        }
+
+        @Override
+        public JenjangPendidikanPath as(Name alias) {
+            return new JenjangPendidikanPath(alias, this);
+        }
+
+        @Override
+        public JenjangPendidikanPath as(Table<?> alias) {
+            return new JenjangPendidikanPath(alias.getQualifiedName(), this);
+        }
+    }
+
     @Override
     public Schema getSchema() {
         return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+    }
+
+    @Override
+    public List<Index> getIndexes() {
+        return Arrays.asList(Indexes.JENJANG_PENDIDIKAN_IDX46Y37O1995BN49FTPSMCBPRR6, Indexes.JENJANG_PENDIDIKAN_IDX79VC6DM5XUTWMG0KAD7AEGJWY);
     }
 
     @Override
@@ -145,6 +204,45 @@ public class JenjangPendidikan extends TableImpl<JenjangPendidikanRecord> {
     @Override
     public UniqueKey<JenjangPendidikanRecord> getPrimaryKey() {
         return Keys.KEY_JENJANG_PENDIDIKAN_PRIMARY;
+    }
+
+    private transient ProfilKeluargaPath _profilKeluarga;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.profil_keluarga</code> table
+     */
+    public ProfilKeluargaPath profilKeluarga() {
+        if (_profilKeluarga == null)
+            _profilKeluarga = new ProfilKeluargaPath(this, null, Keys.FK1Q84V1JNHU5RJWT62MECUQ5P8.getInverseKey());
+
+        return _profilKeluarga;
+    }
+
+    private transient BiodataPath _biodata;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.biodata</code> table
+     */
+    public BiodataPath biodata() {
+        if (_biodata == null)
+            _biodata = new BiodataPath(this, null, Keys.FKNEMSW9HC2KGF5GTC9HPWCVL1A.getInverseKey());
+
+        return _biodata;
+    }
+
+    private transient PendidikanPath _pendidikan;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kepegawaian.pendidikan</code> table
+     */
+    public PendidikanPath pendidikan() {
+        if (_pendidikan == null)
+            _pendidikan = new PendidikanPath(this, null, Keys.FKTQ9HXLQ4CGHVMC2FFN2HGNJOY.getInverseKey());
+
+        return _pendidikan;
     }
 
     @Override
