@@ -48,9 +48,9 @@ public class JabatanQueryRepository {
         var data = dsl.select(
                         JABATAN.ID,
                         JABATAN.KODE,
-                        JABATAN.PARENT_ID,
+                        JABATAN.PARENT_ID.as("self_parent_id"),
                         JABATAN.ORGANISASI_ID,
-                        JABATAN.LEVEL_ID,
+                        JABATAN.LEVEL_ID.as("self_level_id"),
                         JABATAN.NAMA,
                         parent.ID.as("parent_id"),
                         parent.KODE.as("parent_kode"),
@@ -83,9 +83,9 @@ public class JabatanQueryRepository {
         return dsl.select(
                         JABATAN.ID,
                         JABATAN.KODE,
-                        JABATAN.PARENT_ID,
+                        JABATAN.PARENT_ID.as("self_parent_id"),
                         JABATAN.ORGANISASI_ID,
-                        JABATAN.LEVEL_ID,
+                        JABATAN.LEVEL_ID.as("self_level_id"),
                         JABATAN.NAMA,
                         parent.ID.as("parent_id"),
                         parent.KODE.as("parent_kode"),
@@ -110,9 +110,9 @@ public class JabatanQueryRepository {
         return dsl.select(
                         JABATAN.ID,
                         JABATAN.KODE,
-                        JABATAN.PARENT_ID,
+                        JABATAN.PARENT_ID.as("self_parent_id"),
                         JABATAN.ORGANISASI_ID,
-                        JABATAN.LEVEL_ID,
+                        JABATAN.LEVEL_ID.as("self_level_id"),
                         JABATAN.NAMA,
                         parent.ID.as("parent_id"),
                         parent.KODE.as("parent_kode"),
@@ -137,9 +137,9 @@ public class JabatanQueryRepository {
         return dsl.select(
                         JABATAN.ID,
                         JABATAN.KODE,
-                        JABATAN.PARENT_ID,
+                        JABATAN.PARENT_ID.as("self_parent_id"),
                         JABATAN.ORGANISASI_ID,
-                        JABATAN.LEVEL_ID,
+                        JABATAN.LEVEL_ID.as("self_level_id"),
                         JABATAN.NAMA,
                         parent.ID.as("parent_id"),
                         parent.KODE.as("parent_kode"),
@@ -165,9 +165,9 @@ public class JabatanQueryRepository {
         return dsl.select(
                         JABATAN.ID,
                         JABATAN.KODE,
-                        JABATAN.PARENT_ID,
+                        JABATAN.PARENT_ID.as("self_parent_id"),
                         JABATAN.ORGANISASI_ID,
-                        JABATAN.LEVEL_ID,
+                        JABATAN.LEVEL_ID.as("self_level_id"),
                         JABATAN.NAMA,
                         parent.ID.as("parent_id"),
                         parent.KODE.as("parent_kode"),
@@ -192,9 +192,9 @@ public class JabatanQueryRepository {
         var query = new JabatanQuery();
         query.setId((Long) map.get("id"));
         query.setKode((String) map.get("kode"));
-        query.setParentId((Long) map.get("parent_id"));
+        query.setParentId((Long) map.get("self_parent_id"));
         query.setOrganisasiId((Long) map.get("organisasi_id"));
-        query.setLevelId((Long) map.get("level_id"));
+        query.setLevelId((Long) map.get("self_level_id"));
         query.setNama((String) map.get("nama"));
         if (map.get("parent_kode") != null || map.get("parent_nama") != null) {
             var p = new JabatanMiniResponse();
