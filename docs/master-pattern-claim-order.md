@@ -150,9 +150,11 @@ Urutan klaim eksekusi issue beads `pattern-adoption` agar pattern paging/sort + 
 
 ### E.4 Wave 3 (HariLibur, RumahDinas) — KLARIFIKASI A/B
 
-- [ ] **Sebelum mulai**: Read `<X>QueryRepository` dan `<X>IndexQuery` untuk konfirmasi sort switch vs Spring `PageRequest.of`
-- [ ] Update issue notes dengan hasil klarifikasi (kasus A = switch inline; kasus B = Spring PageRequest.of)
-- [ ] 2 × (D.1 → D.2 → D.3 → D.5) selesai sesuai klarifikasi
+- [x] **Sebelum mulai**: Read `<X>QueryRepository` dan `<X>IndexQuery` untuk konfirmasi sort switch vs Spring `PageRequest.of`
+- [x] Update issue notes dengan hasil klarifikasi (kasus A = switch inline; kasus B = Spring PageRequest.of)
+- [x] 2 × (D.1 → D.2 → D.3 → D.5) selesai sesuai klarifikasi
+  - [x] kepegawaian-ehy: HariLibur SHIPPED (d691944)
+  - [x] kepegawaian-kgb: RumahDinas SHIPPED (ae860fa)
 - [ ] Verifier PASS untuk 2 epic
 - [ ] **STOP & Tanya user** via AskUserQuestion: "Wave 3 SHIPPED, lanjut wave 4 (sub-resource)?"
 
