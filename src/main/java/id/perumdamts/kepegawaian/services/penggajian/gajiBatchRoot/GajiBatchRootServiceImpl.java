@@ -150,6 +150,7 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
     }
 
     @Override
+    @Transactional
     public boolean delete(String id) {
         Optional<GajiBatchRoot> byId = repository.findById(id);
         if (byId.isEmpty()
