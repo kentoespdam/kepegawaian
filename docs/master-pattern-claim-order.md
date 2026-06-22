@@ -160,7 +160,9 @@ Urutan klaim eksekusi issue beads `pattern-adoption` agar pattern paging/sort + 
 
 ### E.5 Wave 4 (Apd, AlatKerja)
 
-- [ ] 2 × (D.1 → D.4 → D.3 → D.5) selesai (D.4 = sub-resource skip paging)
+- [x] 2 × (D.1 → D.4 → D.3 → D.5) selesai (D.4 = sub-resource skip paging)
+  - [x] kepegawaian-ezf: Apd SHIPPED (70d3df9)
+  - [x] kepegawaian-83t: AlatKerja SHIPPED (261b9d6)
 - [ ] Verifier PASS untuk 2 epic
 - [ ] **Tutup dengan AskUserQuestion**: "Semua wave pattern-adoption SHIPPED. Tutup semua epic pattern-adoption atau ada modul tambahan?"
 
