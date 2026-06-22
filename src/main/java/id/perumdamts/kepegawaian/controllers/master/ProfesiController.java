@@ -43,7 +43,8 @@ public class ProfesiController {
     @PostMapping
     public ResponseEntity<?> save(@Valid @RequestBody ProfesiPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.create(request)));
+        var entity = command.create(request);
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity.getId()));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -52,7 +53,8 @@ public class ProfesiController {
                                     @Valid @RequestBody ProfesiPutRequest request,
                                     Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.update(id, request)));
+        var entity = command.update(id, request);
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity.getId()));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
