@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.config;
 
 import id.perumdamts.kepegawaian.config.security.DeniedHandler;
+import id.perumdamts.kepegawaian.config.security.DevAuthFilter;
 import id.perumdamts.kepegawaian.config.security.JwtAuthEntryPoint;
 import id.perumdamts.kepegawaian.config.security.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ public class WebSecurity {
     private final JwtAuthEntryPoint jwtAuthEntryPoint;
     private final DeniedHandler deniedHandler;
     private final JwtAuthFilter jwtAuthFilter;
+    private final DevAuthFilter devAuthFilter;
 
     @Value("${custom.cors.allowed-origins:http://localhost:5173}")
     private String allowedOrigins;
@@ -73,6 +75,7 @@ public class WebSecurity {
                     .authorizeHttpRequests(authorization -> authorization
                             .anyRequest().permitAll()
                     )
+                    .addFilterBefore(devAuthFilter, UsernamePasswordAuthenticationFilter.class)
                     .build();
         } catch (Exception e) {
             throw new RuntimeException(e);

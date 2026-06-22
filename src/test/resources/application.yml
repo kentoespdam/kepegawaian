@@ -91,7 +91,7 @@ logging:
 appwrite:
   endpoint: ${APPWRITE_ENDPOINT:http://192.168.230.254:82/v1}
   project_id: ${APPWRITE_PROJECT_ID:65cd62cc3385d8434a53}
-  api_key: ${APPWRITE_API_KEY}
+  api_key: ${APPWRITE_API_KEY:test-dummy-key}
 
 penggajian:
   endpoint: ${PENGGAJIAN_URL:http://192.168.1.214:81}

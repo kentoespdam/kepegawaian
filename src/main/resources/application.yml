@@ -122,3 +122,7 @@ custom:
     manager: ${LEVEL_MANAGER:5}
     supervisor: ${LEVEL_SUPERVISOR:6}
     staff: ${LEVEL_STAFF:7}
+  security:
+    dev:
+      roles: ${DEV_ROLES:ADMIN,SYSTEM}
+
