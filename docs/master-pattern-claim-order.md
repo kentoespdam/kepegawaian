@@ -13,10 +13,10 @@ Urutan klaim eksekusi issue beads `pattern-adoption` agar pattern paging/sort + 
 | # | Epic | Child paging/sort | Child write-flow | Tipe | Prioritas | Catatan |
 |---|------|-------------------|------------------|------|-----------|---------|
 | 1 | `kepegawaian-92j` | `.1` ✓ | `.2` ✓ | **PILOT** | P2 | Jabatan — SHIPPED 2026-06-22 (commits 3d6f6da + 9cea3fb); drift: spec said `Map<String,String>` but shipped Organisasi uses `Map<String,Field<?>>`; verifier pending before wave 1 |
-| 2 | `kepegawaian-jgt` | `.1` | `.2` | wave 1 | P2 | Grade — Response keep (Penggajian) |
-| 3 | `kepegawaian-5oz` | `.1` | `.2` | wave 1 | P2 | Profesi — Response keep (Pegawai) |
-| 4 | `kepegawaian-e21` | `.1` | `.2` | wave 1 | P2 | Level — Response keep (6 consumer) |
-| 5 | `kepegawaian-1lw` | `.1` | `.2` (+ opsional hapus Response) | wave 1 | P2 | Golongan — Response 0 consumer |
+| 2 | `kepegawaian-jgt` | `.1` ✓ | `.2` ✓ | wave 1 | P2 | Grade — SHIPPED 2026-06-22 (commits 6ca8622 + d6fbaae) |
+| 3 | `kepegawaian-5oz` | `.1` ✓ | `.2` ✓ | wave 1 | P2 | Profesi — SHIPPED 2026-06-22 (commits f05fae8 + 9bb91bc) |
+| 4 | `kepegawaian-e21` | `.1` ✓ | `.2` ✓ | wave 1 | P2 | Level — SHIPPED 2026-06-22 (commits 8d81665 + 9f60698) |
+| 5 | `kepegawaian-1lw` | `.1` ✓ | `.2` ✓ | wave 1 | P2 | Golongan — SHIPPED 2026-06-22 (commits 9e7d4da + ed95060); Response NOT deleted (8 external consumers — epic claim was stale) |
 | 6 | `kepegawaian-92q` | `.1` | `.2` | wave 2 | P2 | AlasanBerhenti — Response keep |
 | 7 | `kepegawaian-oit` | `.1` | `.2` | wave 2 | P2 | JenisKeahlian — Response keep |
 | 8 | `kepegawaian-04q` | `.1` | `.2` | wave 2 | P2 | JenisKitas — Response keep |
@@ -136,8 +136,8 @@ Urutan klaim eksekusi issue beads `pattern-adoption` agar pattern paging/sort + 
 
 ### E.2 Wave 1 (Grade, Profesi, Level, Golongan)
 
-- [ ] 4 × (D.1 → D.2 → D.3 → D.5) selesai
-- [ ] Verifier PASS untuk SEMUA 4 epic
+- [x] 4 × (D.1 → D.2 → D.3 → D.5) selesai
+- [x] Verifier PASS untuk SEMUA 4 epic
 - [ ] **STOP & Tanya user** via AskUserQuestion: "Wave 1 SHIPPED, lanjut wave 2?"
 
 ### E.3 Wave 2 (AlasanBerhenti, JenisKeahlian, JenisKitas, JenisPelatihan, JenisSp, Sanksi)
