@@ -1,10 +1,11 @@
 package id.perumdamts.kepegawaian.repositories.master.jooq;
 
+import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.master.jenisPelatihan.JenisPelatihanIndexQuery;
 import id.perumdamts.kepegawaian.dto.master.jenisPelatihan.JenisPelatihanQuery;
-import id.perumdamts.kepegawaian.jooq.tables.JenisPelatihan;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
+import org.jooq.Field;
 import org.jooq.impl.DSL;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -12,7 +13,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+
+import static id.perumdamts.kepegawaian.jooq.tables.JenisPelatihan.JENIS_PELATIHAN;
 
 @Repository
 @RequiredArgsConstructor
@@ -20,44 +24,46 @@ public class JenisPelatihanQueryRepository {
     private final DSLContext dsl;
 
     public Page<JenisPelatihanQuery> pageQuery(JenisPelatihanIndexQuery query) {
-        var sortField = switch (query.getSortBy()) {
-            case "nama" -> JenisPelatihan.JENIS_PELATIHAN.NAMA;
-            default -> JenisPelatihan.JENIS_PELATIHAN.ID;
-        };
-
-        var sortOrder = "asc".equalsIgnoreCase(query.getSortDirection()) ? sortField.asc() : sortField.desc();
+        var sortOrder = SortParam.resolve(query.getSortBy(), query.getSortDirection(),
+                allowedSorts(), JENIS_PELATIHAN.ID);
 
         var count = dsl.selectCount()
-                .from(JenisPelatihan.JENIS_PELATIHAN)
-                .where(JenisPelatihan.JENIS_PELATIHAN.IS_DELETED.eq(false))
-                .and(query.getNama() != null ? JenisPelatihan.JENIS_PELATIHAN.NAMA.likeIgnoreCase("%" + query.getNama() + "%") : DSL.noCondition())
+                .from(JENIS_PELATIHAN)
+                .where(JENIS_PELATIHAN.IS_DELETED.eq(false))
+                .and(query.getNama() != null ? JENIS_PELATIHAN.NAMA.likeIgnoreCase("%" + query.getNama() + "%") : DSL.noCondition())
                 .fetchOne(0, Long.class);
 
-        var data = dsl.select(JenisPelatihan.JENIS_PELATIHAN.ID, JenisPelatihan.JENIS_PELATIHAN.NAMA)
-                .from(JenisPelatihan.JENIS_PELATIHAN)
-                .where(JenisPelatihan.JENIS_PELATIHAN.IS_DELETED.eq(false))
-                .and(query.getNama() != null ? JenisPelatihan.JENIS_PELATIHAN.NAMA.likeIgnoreCase("%" + query.getNama() + "%") : DSL.noCondition())
+        var data = dsl.select(JENIS_PELATIHAN.ID, JENIS_PELATIHAN.NAMA)
+                .from(JENIS_PELATIHAN)
+                .where(JENIS_PELATIHAN.IS_DELETED.eq(false))
+                .and(query.getNama() != null ? JENIS_PELATIHAN.NAMA.likeIgnoreCase("%" + query.getNama() + "%") : DSL.noCondition())
                 .orderBy(sortOrder)
-                .limit(query.getSize())
-                .offset(query.getPage() * query.getSize())
+                .limit(query.getSizeOrDefault())
+                .offset(query.offset())
                 .fetchInto(JenisPelatihanQuery.class);
 
-        return new PageImpl<>(data, PageRequest.of(query.getPage(), query.getSize()), count);
+        return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
     }
 
     public Optional<JenisPelatihanQuery> getById(Long id) {
-        return dsl.select(JenisPelatihan.JENIS_PELATIHAN.ID, JenisPelatihan.JENIS_PELATIHAN.NAMA)
-                .from(JenisPelatihan.JENIS_PELATIHAN)
-                .where(JenisPelatihan.JENIS_PELATIHAN.ID.eq(id))
-                .and(JenisPelatihan.JENIS_PELATIHAN.IS_DELETED.eq(false))
+        return dsl.select(JENIS_PELATIHAN.ID, JENIS_PELATIHAN.NAMA)
+                .from(JENIS_PELATIHAN)
+                .where(JENIS_PELATIHAN.ID.eq(id))
+                .and(JENIS_PELATIHAN.IS_DELETED.eq(false))
                 .fetchOptionalInto(JenisPelatihanQuery.class);
     }
 
     public List<JenisPelatihanQuery> listQuery() {
-        return dsl.select(JenisPelatihan.JENIS_PELATIHAN.ID, JenisPelatihan.JENIS_PELATIHAN.NAMA)
-                .from(JenisPelatihan.JENIS_PELATIHAN)
-                .where(JenisPelatihan.JENIS_PELATIHAN.IS_DELETED.eq(false))
-                .orderBy(JenisPelatihan.JENIS_PELATIHAN.NAMA.asc())
+        return dsl.select(JENIS_PELATIHAN.ID, JENIS_PELATIHAN.NAMA)
+                .from(JENIS_PELATIHAN)
+                .where(JENIS_PELATIHAN.IS_DELETED.eq(false))
+                .orderBy(JENIS_PELATIHAN.NAMA.asc())
                 .fetchInto(JenisPelatihanQuery.class);
+    }
+
+    private static Map<String, Field<?>> allowedSorts() {
+        return Map.of(
+                "nama", JENIS_PELATIHAN.NAMA
+        );
     }
 }
