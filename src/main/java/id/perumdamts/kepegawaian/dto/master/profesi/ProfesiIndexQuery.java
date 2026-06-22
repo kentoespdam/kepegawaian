@@ -1,6 +1,6 @@
 package id.perumdamts.kepegawaian.dto.master.profesi;
 
-import id.perumdamts.kepegawaian.dto.master.profesi.commons.PagedRequest;
+import id.perumdamts.kepegawaian.dto.commons.PagedRequest;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

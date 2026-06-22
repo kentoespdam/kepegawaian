@@ -2,7 +2,7 @@ package id.perumdamts.kepegawaian.repositories.master.jooq;
 
 import id.perumdamts.kepegawaian.dto.master.golongan.GolonganIndexQuery;
 import id.perumdamts.kepegawaian.dto.master.golongan.GolonganQuery;
-import id.perumdamts.kepegawaian.dto.master.golongan.commons.SortParam;
+import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.jooq.tables.Golongan;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;

@@ -3,7 +3,7 @@ package id.perumdamts.kepegawaian.repositories.master.jooq;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiIndexQuery;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiQuery;
-import id.perumdamts.kepegawaian.dto.master.organisasi.commons.SortParam;
+import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Field;

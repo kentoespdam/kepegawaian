@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.dto.master.organisasi.commons;
+package id.perumdamts.kepegawaian.dto.commons;
 
 import org.jooq.Field;
 import org.jooq.SortField;

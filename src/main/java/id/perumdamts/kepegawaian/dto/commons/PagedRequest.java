@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.dto.master.level.commons;
+package id.perumdamts.kepegawaian.dto.commons;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.Max;
@@ -12,6 +12,17 @@ import org.springframework.data.domain.Sort;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * Master-module base for paged, sort-aware list requests.
+ *
+ * <p>Lives under {@code dto.master.organisasi.commons} (not the global
+ * {@code dto.commons}) because the global {@code CommonPageRequest} has no
+ * whitelist on {@code sortBy} — we want a type-safe whitelist per module.</p>
+ *
+ * <p>Constraints: {@code size} is clamped to {@code [1, MAX_SIZE]};
+ * {@code page} is non-negative; {@code sortDirection} defaults to
+ * {@code "asc"}.</p>
+ */
 @Getter
 @Setter
 public abstract class PagedRequest implements Serializable {
@@ -29,10 +40,16 @@ public abstract class PagedRequest implements Serializable {
 
     protected String sortDirection = "asc";
 
+    /**
+     * Effective page index (never null, never negative).
+     */
     public int getPageNumber() {
         return Objects.isNull(page) || page < 0 ? 0 : page;
     }
 
+    /**
+     * Effective size — clamps invalid values to {@link #DEFAULT_SIZE}.
+     */
     public int getSizeOrDefault() {
         if (Objects.isNull(size) || size <= 0 || size > MAX_SIZE) {
             return DEFAULT_SIZE;

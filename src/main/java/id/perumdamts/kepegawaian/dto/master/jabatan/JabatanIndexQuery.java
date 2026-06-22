@@ -1,7 +1,7 @@
 package id.perumdamts.kepegawaian.dto.master.jabatan;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import id.perumdamts.kepegawaian.dto.master.jabatan.commons.PagedRequest;
+import id.perumdamts.kepegawaian.dto.commons.PagedRequest;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import lombok.Data;
