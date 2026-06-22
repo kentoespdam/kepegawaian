@@ -48,7 +48,7 @@ public class GradeController {
     public ResponseEntity<?> save(@Valid @RequestBody GradePostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         var entity = command.create(request);
-        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity));
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity.getId()));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -56,7 +56,7 @@ public class GradeController {
     public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody GradePostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         var entity = command.update(id, request);
-        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity));
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity.getId()));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
