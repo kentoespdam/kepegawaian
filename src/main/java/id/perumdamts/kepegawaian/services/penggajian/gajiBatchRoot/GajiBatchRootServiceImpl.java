@@ -83,19 +83,7 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
                 processPotonganTkk.process(entity.getId());
             }
             final String batchId = save.getId();
-            TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
-                @Override
-                public void afterCommit() {
-                    kafkaTemplate.send(PENGGAJIAN_TOPIC, batchId).whenComplete((result, ex) -> {
-                        if (ex != null) {
-                            log.error("Failed to publish batch {} to topic {}", batchId, PENGGAJIAN_TOPIC, ex);
-                        } else if (result != null && result.getRecordMetadata() != null) {
-                            log.info("Published batch {} to topic {}: offset={}",
-                                    batchId, PENGGAJIAN_TOPIC, result.getRecordMetadata().offset());
-                        }
-                    });
-                }
-            });
+            publishAfterCommit(batchId);
             return SavedStatus.build(ESaveStatus.SUCCESS, "Batch Gaji Saved");
         } catch (Exception e) {
             return logAndBuildFailure("save", e);
@@ -184,25 +172,39 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
         entity.setJabatanVerifikasiTahap1(request.getJabatan());
         GajiBatchRoot save = repository.save(entity);
         if (save.getStatus() == EProsesGaji.PENDING) {
-            final String batchId = save.getId();
-            TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
-                @Override
-                public void afterCommit() {
-                    kafkaTemplate.send(PENGGAJIAN_TOPIC, batchId).whenComplete((result, ex) -> {
-                        if (ex != null) {
-                            log.error("Failed to publish batch {} to topic {}", batchId, PENGGAJIAN_TOPIC, ex);
-                        } else if (result != null && result.getRecordMetadata() != null) {
-                            log.info("Published batch {} to topic {}: offset={}",
-                                    batchId, PENGGAJIAN_TOPIC, result.getRecordMetadata().offset());
-                        }
-                    });
-                }
-            });
+            publishAfterCommit(save.getId());
         }
     }
 
     private SavedStatus<?> logAndBuildFailure(String operation, Exception e) {
         log.error("GajiBatchRoot {} failed", operation, e);
         return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+    }
+
+    /**
+     * Publish a Kafka event after the current DB transaction commits.
+     * Logs both success (offset) and failure (exception) — fire-and-forget.
+     * Pattern: see memory {@code aftercommit-kafka-pattern.md}.
+     */
+    private void publishAfterCommit(String batchId) {
+        if (kafkaTemplate == null) {
+            log.warn("kafkaTemplate is null; skipping publish for batch {}", batchId);
+            return;
+        }
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+            @Override
+            public void afterCommit() {
+                kafkaTemplate.send(PENGGAJIAN_TOPIC, batchId).whenComplete((result, ex) -> {
+                    if (ex != null) {
+                        log.error("Failed to publish batch {} to topic {}", batchId, PENGGAJIAN_TOPIC, ex);
+                    } else if (result != null && result.getRecordMetadata() != null) {
+                        log.info("Published batch {} to topic {} partition={} offset={}",
+                                batchId, PENGGAJIAN_TOPIC,
+                                result.getRecordMetadata().partition(),
+                                result.getRecordMetadata().offset());
+                    }
+                });
+            }
+        });
     }
 }
