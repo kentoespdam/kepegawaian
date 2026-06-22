@@ -21,7 +21,8 @@ public class ApdCommandService {
     private final ProfesiRepository profesiRepository;
 
     @Transactional
-    public Apd create(Long profesiId, ApdPostRequest request) {
+    public Apd create(ApdPostRequest request) {
+        Long profesiId = request.getProfesiId();
         if (!profesiRepository.existsById(profesiId)) {
             throw new NotFoundException("Profesi not found");
         }
@@ -43,7 +44,8 @@ public class ApdCommandService {
     }
 
     @Transactional
-    public Apd update(Long profesiId, Long id, ApdPostRequest request) {
+    public Apd update(Long id, ApdPostRequest request) {
+        Long profesiId = request.getProfesiId();
         Apd existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Apd not found"));
 
@@ -62,12 +64,9 @@ public class ApdCommandService {
     }
 
     @Transactional
-    public void delete(Long profesiId, Long id) {
+    public void delete(Long id) {
         Apd existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Apd not found"));
-        if (!existing.getProfesi().getId().equals(profesiId)) {
-            throw new NotFoundException("Apd not found under given Profesi");
-        }
         existing.setIsDeleted(true);
         repository.save(existing);
     }

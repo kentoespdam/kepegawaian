@@ -21,7 +21,8 @@ public class AlatKerjaCommandService {
     private final ProfesiRepository profesiRepository;
 
     @Transactional
-    public AlatKerja create(Long profesiId, AlatKerjaPostRequest request) {
+    public AlatKerja create(AlatKerjaPostRequest request) {
+        Long profesiId = request.getProfesiId();
         if (!profesiRepository.existsById(profesiId)) {
             throw new NotFoundException("Profesi not found");
         }
@@ -43,7 +44,8 @@ public class AlatKerjaCommandService {
     }
 
     @Transactional
-    public AlatKerja update(Long profesiId, Long id, AlatKerjaPostRequest request) {
+    public AlatKerja update(Long id, AlatKerjaPostRequest request) {
+        Long profesiId = request.getProfesiId();
         AlatKerja existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("AlatKerja not found"));
 
@@ -62,12 +64,9 @@ public class AlatKerjaCommandService {
     }
 
     @Transactional
-    public void delete(Long profesiId, Long id) {
+    public void delete(Long id) {
         AlatKerja existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("AlatKerja not found"));
-        if (!existing.getProfesi().getId().equals(profesiId)) {
-            throw new NotFoundException("AlatKerja not found under given Profesi");
-        }
         existing.setIsDeleted(true);
         repository.save(existing);
     }
