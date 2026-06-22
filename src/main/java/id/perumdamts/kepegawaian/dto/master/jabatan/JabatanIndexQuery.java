@@ -1,7 +1,7 @@
 package id.perumdamts.kepegawaian.dto.master.jabatan;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import id.perumdamts.kepegawaian.dto.commons.CommonPageRequest;
+import id.perumdamts.kepegawaian.dto.master.jabatan.commons.PagedRequest;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import lombok.Data;
@@ -10,7 +10,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class JabatanIndexQuery extends CommonPageRequest {
+public class JabatanIndexQuery extends PagedRequest {
     private String kode;
     private String nama;
     private Long parentId;

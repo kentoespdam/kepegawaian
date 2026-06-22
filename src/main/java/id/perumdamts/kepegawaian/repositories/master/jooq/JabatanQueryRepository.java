@@ -3,10 +3,12 @@ package id.perumdamts.kepegawaian.repositories.master.jooq;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanIndexQuery;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanQuery;
+import id.perumdamts.kepegawaian.dto.master.jabatan.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.master.level.LevelResponse;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiMiniResponse;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
+import org.jooq.Field;
 import org.jooq.impl.DSL;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -28,14 +30,8 @@ public class JabatanQueryRepository {
 
     public Page<JabatanQuery> pageQuery(JabatanIndexQuery query) {
         var parent = JABATAN.as("parent");
-        var sortField = switch (query.getSortBy()) {
-            case "kode" -> JABATAN.KODE;
-            case "nama" -> JABATAN.NAMA;
-            case "levelId" -> JABATAN.LEVEL_ID;
-            case "organisasiId" -> JABATAN.ORGANISASI_ID;
-            default -> JABATAN.ID;
-        };
-        var sortOrder = "asc".equalsIgnoreCase(query.getSortDirection()) ? sortField.asc() : sortField.desc();
+        var sortOrder = SortParam.resolve(query.getSortBy(), query.getSortDirection(),
+                allowedSorts(), JABATAN.ID);
         var count = dsl.selectCount()
                 .from(JABATAN)
                 .where(JABATAN.IS_DELETED.eq(false))
@@ -72,10 +68,10 @@ public class JabatanQueryRepository {
                 .and(query.getOrganisasiId() != null ? JABATAN.ORGANISASI_ID.eq(query.getOrganisasiId()) : DSL.noCondition())
                 .and(query.getLevelId() != null ? JABATAN.LEVEL_ID.eq(query.getLevelId()) : DSL.noCondition())
                 .orderBy(sortOrder)
-                .limit(query.getSize())
-                .offset(query.getPage() * query.getSize())
+                .limit(query.getSizeOrDefault())
+                .offset(query.getPageNumber() * query.getSizeOrDefault())
                 .fetch(record -> toQuery(record.intoMap()));
-        return new PageImpl<>(data, PageRequest.of(query.getPage(), query.getSize()), count);
+        return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
     }
 
     public Optional<JabatanQuery> getById(Long id) {
@@ -186,6 +182,15 @@ public class JabatanQueryRepository {
                 .and(JABATAN.IS_DELETED.eq(false))
                 .orderBy(JABATAN.NAMA.asc())
                 .fetch(record -> toQuery(record.intoMap()));
+    }
+
+    private static Map<String, Field<?>> allowedSorts() {
+        return Map.of(
+                "kode", JABATAN.KODE,
+                "nama", JABATAN.NAMA,
+                "levelId", JABATAN.LEVEL_ID,
+                "organisasiId", JABATAN.ORGANISASI_ID
+        );
     }
 
     private JabatanQuery toQuery(Map<String, Object> map) {
