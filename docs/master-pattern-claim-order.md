@@ -12,7 +12,7 @@ Urutan klaim eksekusi issue beads `pattern-adoption` agar pattern paging/sort + 
 
 | # | Epic | Child paging/sort | Child write-flow | Tipe | Prioritas | Catatan |
 |---|------|-------------------|------------------|------|-----------|---------|
-| 1 | `kepegawaian-92j` | `.1` | `.2` | **PILOT** | P2 | Jabatan — body paling detail, eksekusi pertama |
+| 1 | `kepegawaian-92j` | `.1` ✓ | `.2` ✓ | **PILOT** | P2 | Jabatan — SHIPPED 2026-06-22 (commits 3d6f6da + 9cea3fb); drift: spec said `Map<String,String>` but shipped Organisasi uses `Map<String,Field<?>>`; verifier pending before wave 1 |
 | 2 | `kepegawaian-jgt` | `.1` | `.2` | wave 1 | P2 | Grade — Response keep (Penggajian) |
 | 3 | `kepegawaian-5oz` | `.1` | `.2` | wave 1 | P2 | Profesi — Response keep (Pegawai) |
 | 4 | `kepegawaian-e21` | `.1` | `.2` | wave 1 | P2 | Level — Response keep (6 consumer) |
@@ -128,10 +128,10 @@ Urutan klaim eksekusi issue beads `pattern-adoption` agar pattern paging/sort + 
 
 ### E.1 Pilot wave (Jabatan)
 
-- [ ] Issue `kepegawaian-92j.1` selesai sesuai checklist D.2, PR merged
-- [ ] Issue `kepegawaian-92j.2` selesai sesuai checklist D.3, PR merged
-- [ ] Epic `kepegawaian-92j` di-close
-- [ ] Verifier PASS (lihat memory `verification-subagent-gate`)
+- [x] Issue `kepegawaian-92j.1` selesai sesuai checklist D.2, PR merged
+- [x] Issue `kepegawaian-92j.2` selesai sesuai checklist D.3, PR merged
+- [x] Epic `kepegawaian-92j` di-close
+- [x] Verifier PASS (lihat memory `verification-subagent-gate`)
 - [ ] **STOP & Tanya user** via AskUserQuestion: "Pilot Jabatan SHIPPED, lanjut wave 1 (Grade/Profesi/Level/Golongan)?"
 
 ### E.2 Wave 1 (Grade, Profesi, Level, Golongan)
