@@ -50,7 +50,7 @@ public class GajiBatchRootController {
     public ResponseEntity<?> reprocess(@PathVariable String id, @Valid @RequestBody GajiBatchRootProcessRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         if (!request.getId().equals(id)) return ErrorResult.build("Error Process");
-        return CustomResult.save(service.reprocess(id, request));
+        return CustomResult.save(service.reprocess(request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")

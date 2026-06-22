@@ -12,7 +12,7 @@ public interface GajiBatchRootService {
 
     SavedStatus<?> save(GajiBatchRootPostRequest request);
 
-    SavedStatus<?> reprocess(String id, GajiBatchRootProcessRequest request);
+    SavedStatus<?> reprocess(GajiBatchRootProcessRequest request);
 
     SavedStatus<?> verify1(String id, GajiBatchRootProcessRequest request);
 

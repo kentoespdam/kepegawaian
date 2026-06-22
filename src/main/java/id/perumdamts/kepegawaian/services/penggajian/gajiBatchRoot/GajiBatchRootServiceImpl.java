@@ -92,7 +92,7 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
 
     @Override
     @Transactional
-    public SavedStatus<?> reprocess(String id, GajiBatchRootProcessRequest request) {
+    public SavedStatus<?> reprocess(GajiBatchRootProcessRequest request) {
         try {
             GajiBatchRoot entity = repository.findById(request.getId())
                     .orElseThrow(() -> new RuntimeException("Unknown Batch Process"));
