@@ -1,12 +1,12 @@
 package id.perumdamts.kepegawaian.dto.master.profesi;
 
-import id.perumdamts.kepegawaian.dto.commons.CommonPageRequest;
+import id.perumdamts.kepegawaian.dto.master.profesi.commons.PagedRequest;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class ProfesiIndexQuery extends CommonPageRequest {
+public class ProfesiIndexQuery extends PagedRequest {
     private Long organisasiId;
     private Long jabatanId;
     private Long levelId;

@@ -2,9 +2,11 @@ package id.perumdamts.kepegawaian.repositories.master.jooq;
 
 import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiIndexQuery;
 import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiQuery;
+import id.perumdamts.kepegawaian.dto.master.profesi.commons.SortParam;
 import lombok.RequiredArgsConstructor;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
+import org.jooq.Field;
 import org.jooq.impl.DSL;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -12,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 import static id.perumdamts.kepegawaian.jooq.tables.Grade.GRADE;
 import static id.perumdamts.kepegawaian.jooq.tables.Jabatan.JABATAN;
@@ -25,14 +28,8 @@ public class ProfesiQueryRepository {
     private final DSLContext dsl;
 
     public Page<ProfesiQuery> pageQuery(ProfesiIndexQuery query) {
-        var sortField = switch (query.getSortBy()) {
-            case "nama" -> PROFESI.NAMA;
-            case "jabatanId" -> PROFESI.JABATAN_ID;
-            case "levelId" -> PROFESI.LEVEL_ID;
-            case "gradeId" -> PROFESI.GRADE_ID;
-            default -> PROFESI.ID;
-        };
-        var sortOrder = "asc".equalsIgnoreCase(query.getSortDirection()) ? sortField.asc() : sortField.desc();
+        var sortOrder = SortParam.resolve(query.getSortBy(), query.getSortDirection(),
+                allowedSorts(), PROFESI.ID);
         Condition where = baseWhere(query);
         var count = dsl.selectCount().from(PROFESI).where(where).fetchOne(0, Long.class);
         var data = dsl.select(ProfesiSelects.PROFESI_COLUMNS)
@@ -43,10 +40,19 @@ public class ProfesiQueryRepository {
                 .leftJoin(GRADE).on(PROFESI.GRADE_ID.eq(GRADE.ID))
                 .where(where)
                 .orderBy(sortOrder)
-                .limit(query.getSize())
-                .offset(query.getPage() * query.getSize())
+                .limit(query.getSizeOrDefault())
+                .offset(query.getPageNumber() * query.getSizeOrDefault())
                 .fetch(record -> ProfesiRowMapper.toQuery(record.intoMap()));
-        return new PageImpl<>(data, PageRequest.of(query.getPage(), query.getSize()), count);
+        return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
+    }
+
+    private static Map<String, Field<?>> allowedSorts() {
+        return Map.of(
+                "nama", PROFESI.NAMA,
+                "jabatanId", PROFESI.JABATAN_ID,
+                "levelId", PROFESI.LEVEL_ID,
+                "gradeId", PROFESI.GRADE_ID
+        );
     }
 
     public List<ProfesiQuery> listQuery() {
