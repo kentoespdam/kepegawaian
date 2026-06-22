@@ -43,7 +43,7 @@ public class GolonganController {
     public ResponseEntity<?> save(@Valid @RequestBody GolonganPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         var entity = command.create(request);
-        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity));
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity.getId()));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -51,7 +51,7 @@ public class GolonganController {
     public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody GolonganPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         var entity = command.update(id, request);
-        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity));
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity.getId()));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
