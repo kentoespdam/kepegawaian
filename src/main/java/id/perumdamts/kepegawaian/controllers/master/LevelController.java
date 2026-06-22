@@ -46,7 +46,7 @@ public class LevelController {
     public ResponseEntity<?> save(@Valid @RequestBody LevelPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         Level entity = command.create(request);
-        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity));
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity.getId()));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -62,7 +62,7 @@ public class LevelController {
     public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody LevelPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         Level entity = command.update(id, request);
-        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity));
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity.getId()));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
