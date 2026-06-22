@@ -138,6 +138,7 @@ Urutan klaim eksekusi issue beads `pattern-adoption` agar pattern paging/sort + 
 
 - [x] 4 × (D.1 → D.2 → D.3 → D.5) selesai
 - [x] Verifier PASS untuk SEMUA 4 epic
+- [x] Consolidation refactor: all per-module PagedRequest/SortParam → dto/commons/ selesai (9 pending)
 - [ ] **STOP & Tanya user** via AskUserQuestion: "Wave 1 SHIPPED, lanjut wave 2?"
 
 ### E.3 Wave 2 (AlasanBerhenti, JenisKeahlian, JenisKitas, JenisPelatihan, JenisSp, Sanksi)
