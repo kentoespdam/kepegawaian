@@ -143,7 +143,8 @@ Urutan klaim eksekusi issue beads `pattern-adoption` agar pattern paging/sort + 
 
 ### E.3 Wave 2 (AlasanBerhenti, JenisKeahlian, JenisKitas, JenisPelatihan, JenisSp, Sanksi)
 
-- [ ] 6 × (D.1 → D.2 → D.3 → D.5) selesai
+- [x] 6 × (D.1 → D.2 → D.3 → D.5) selesai
+  - [x] kepegawaian-kh2: Sanksi SHIPPED (ed3b585)
 - [ ] Verifier PASS untuk SEMUA 6 epic
 - [ ] **STOP & Tanya user** via AskUserQuestion: "Wave 2 SHIPPED, lanjut wave 3?"
 
