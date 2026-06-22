@@ -2,9 +2,11 @@ package id.perumdamts.kepegawaian.repositories.master.jooq;
 
 import id.perumdamts.kepegawaian.dto.master.golongan.GolonganIndexQuery;
 import id.perumdamts.kepegawaian.dto.master.golongan.GolonganQuery;
+import id.perumdamts.kepegawaian.dto.master.golongan.commons.SortParam;
 import id.perumdamts.kepegawaian.jooq.tables.Golongan;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
+import org.jooq.Field;
 import org.jooq.impl.DSL;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -12,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -21,13 +24,8 @@ public class GolonganQueryRepository {
 
     public Page<GolonganQuery> pageQuery(GolonganIndexQuery query) {
         // Sort whitelist
-        var sortField = switch (query.getSortBy()) {
-            case "golongan" -> Golongan.GOLONGAN.GOLONGAN_;
-            case "pangkat" -> Golongan.GOLONGAN.PANGKAT;
-            default -> Golongan.GOLONGAN.ID;
-        };
-
-        var sortOrder = "asc".equalsIgnoreCase(query.getSortDirection()) ? sortField.asc() : sortField.desc();
+        var sortOrder = SortParam.resolve(query.getSortBy(), query.getSortDirection(),
+                allowedSorts(), Golongan.GOLONGAN.ID);
 
         // Count query
         var count = dsl.selectCount()
@@ -44,11 +42,18 @@ public class GolonganQueryRepository {
                 .and(query.getGolongan() != null ? Golongan.GOLONGAN.GOLONGAN_.likeIgnoreCase("%" + query.getGolongan() + "%") : DSL.noCondition())
                 .and(query.getPangkat() != null ? Golongan.GOLONGAN.PANGKAT.likeIgnoreCase("%" + query.getPangkat() + "%") : DSL.noCondition())
                 .orderBy(sortOrder)
-                .limit(query.getSize())
-                .offset(query.getPage() * query.getSize())
+                .limit(query.getSizeOrDefault())
+                .offset(query.getPageNumber() * query.getSizeOrDefault())
                 .fetchInto(GolonganQuery.class);
 
-        return new PageImpl<>(data, PageRequest.of(query.getPage(), query.getSize()), count);
+        return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
+    }
+
+    private static Map<String, Field<?>> allowedSorts() {
+        return Map.of(
+                "golongan", Golongan.GOLONGAN.GOLONGAN_,
+                "pangkat", Golongan.GOLONGAN.PANGKAT
+        );
     }
 
     public Optional<GolonganQuery> getById(Long id) {
