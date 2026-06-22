@@ -99,7 +99,10 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
 
             reprocessHandler(entity, request);
             return SavedStatus.build(ESaveStatus.SUCCESS, "Reprocess Penggajian Executed");
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
+            if ("Unknown Batch Process".equals(e.getMessage())) {
+                return SavedStatus.build(ESaveStatus.FAILED, "Unknown Batch Process");
+            }
             return logAndBuildFailure("reprocess", e);
         }
     }
@@ -179,7 +182,7 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
 
     private SavedStatus<?> logAndBuildFailure(String operation, Exception e) {
         log.error("GajiBatchRoot {} failed", operation, e);
-        return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+        return SavedStatus.build(ESaveStatus.FAILED, "Gaji Batch operation failed");
     }
 
     /**
