@@ -229,4 +229,43 @@ class OrganisasiCommandServiceTest {
                 "SELECT COUNT(*) FROM organisasi WHERE id = ?", Integer.class, id);
         assertEquals(1, rowCount, "row must still exist (soft delete, not hard delete)");
     }
+
+    /**
+     * (h) update into a spec that matches a SOFT-DELETED carcass owned by a
+     * DIFFERENT row → ConflictException. Locks kepegawaian-8ft: edit must
+     * not silently revive or clobber a carcass owned by another id; reviving
+     * is create-only (CONTEXT.md seam).
+     */
+    @Test
+    void update_intoArchivedCarcassOwnedByAnother_throwsConflict() {
+        String kodeA = uniqueKode();
+        String kodeB = uniqueKode();
+        String namaShared = "IT-9TF-h-" + UUID.randomUUID().toString().substring(0, 8);
+
+        // Row A: live, owns spec (namaShared, null).
+        Long idA = createAndRemember(req(kodeA, namaShared));
+
+        // Row B: independent, will be soft-deleted to become a carcass at
+        // the same spec. Create first, then delete.
+        Long idB = createAndRemember(req(kodeB, namaShared + "-B"));
+        service.delete(idB);
+
+        // Verify B is now a carcass in the DB.
+        Integer bIsDeleted = jdbc.queryForObject(
+                "SELECT is_deleted FROM organisasi WHERE id = ?", Integer.class, idB);
+        assertEquals(1, bIsDeleted, "B must be soft-deleted before A's update");
+
+        // Try to update A's nama to collide with B's carcass spec.
+        OrganisasiPostRequest collideWithCarcass = req(kodeA, namaShared + "-B");
+        ConflictException ex = assertThrows(ConflictException.class,
+                () -> service.update(idA, collideWithCarcass));
+        assertNotNull(ex.getMessage());
+        assertTrue(ex.getMessage().toLowerCase().contains("archived"),
+                "message should signal archived-collision, got: " + ex.getMessage());
+
+        // A must remain untouched (still active, original nama).
+        Organisasi aAfter = service.update(idA, req(kodeA, namaShared));
+        assertEquals(idA, aAfter.getId());
+        assertEquals(namaShared, aAfter.getNama());
+    }
 }

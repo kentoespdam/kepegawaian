@@ -42,10 +42,20 @@ public class OrganisasiCommandService {
         Organisasi existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Organisasi not found"));
         Organisasi parent = findParent(request.getParentId());
+
+        // Live collision (different id).
         Optional<Organisasi> duplicate = repository.findOne(request.uniquenessSpecification());
         if (duplicate.isPresent() && !duplicate.get().getId().equals(id)) {
             throw new ConflictException("Organisasi already exists");
         }
+
+        // Archived collision (CONTEXT.md: edit must not revive; revive is create-only).
+        Optional<Organisasi> archived = repository.findAnyByUniqueKey(request.getNama(), request.getParentId());
+        if (archived.isPresent() && archived.get().getIsDeleted() && !archived.get().getId().equals(id)) {
+            throw new ConflictException(
+                    "Organisasi with same combination is archived; create a new one to revive");
+        }
+
         OrganisasiMapper.updateEntity(existing, request, parent);
         return repository.save(existing);
     }
