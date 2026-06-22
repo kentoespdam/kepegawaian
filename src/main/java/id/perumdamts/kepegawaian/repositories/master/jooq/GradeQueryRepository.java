@@ -2,9 +2,11 @@ package id.perumdamts.kepegawaian.repositories.master.jooq;
 
 import id.perumdamts.kepegawaian.dto.master.grade.GradeIndexQuery;
 import id.perumdamts.kepegawaian.dto.master.grade.GradeQuery;
+import id.perumdamts.kepegawaian.dto.master.grade.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.master.level.LevelResponse;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
+import org.jooq.Field;
 import org.jooq.impl.DSL;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -24,13 +26,8 @@ public class GradeQueryRepository {
     private final DSLContext dsl;
 
     public Page<GradeQuery> pageQuery(GradeIndexQuery query) {
-        var sortField = switch (query.getSortBy()) {
-            case "grade" -> GRADE.GRADE_;
-            case "tukin" -> GRADE.TUKIN;
-            case "levelId" -> GRADE.LEVEL_ID;
-            default -> GRADE.ID;
-        };
-        var sortOrder = "asc".equalsIgnoreCase(query.getSortDirection()) ? sortField.asc() : sortField.desc();
+        var sortOrder = SortParam.resolve(query.getSortBy(), query.getSortDirection(),
+                allowedSorts(), GRADE.ID);
         var count = dsl.selectCount()
                 .from(GRADE)
                 .where(GRADE.IS_DELETED.eq(false))
@@ -50,10 +47,18 @@ public class GradeQueryRepository {
                 .and(query.getLevelId() != null ? GRADE.LEVEL_ID.eq(query.getLevelId()) : DSL.noCondition())
                 .and(query.getGrade() != null ? GRADE.GRADE_.eq(query.getGrade()) : DSL.noCondition())
                 .orderBy(sortOrder)
-                .limit(query.getSize())
-                .offset(query.getPage() * query.getSize())
+                .limit(query.getSizeOrDefault())
+                .offset(query.getPageNumber() * query.getSizeOrDefault())
                 .fetch(record -> toQuery(record.intoMap()));
-        return new PageImpl<>(data, PageRequest.of(query.getPage(), query.getSize()), count);
+        return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
+    }
+
+    private static Map<String, Field<?>> allowedSorts() {
+        return Map.of(
+                "grade", GRADE.GRADE_,
+                "tukin", GRADE.TUKIN,
+                "levelId", GRADE.LEVEL_ID
+        );
     }
 
     public Optional<GradeQuery> getById(Long id) {

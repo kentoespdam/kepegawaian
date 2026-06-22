@@ -1,7 +1,7 @@
 package id.perumdamts.kepegawaian.dto.master.grade;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import id.perumdamts.kepegawaian.dto.commons.CommonPageRequest;
+import id.perumdamts.kepegawaian.dto.master.grade.commons.PagedRequest;
 import id.perumdamts.kepegawaian.entities.master.Grade;
 import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import lombok.Data;
@@ -10,7 +10,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class GradeIndexQuery extends CommonPageRequest {
+public class GradeIndexQuery extends PagedRequest {
     private Long levelId;
     private Integer grade;
 
