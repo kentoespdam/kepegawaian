@@ -1,10 +1,12 @@
 package id.perumdamts.kepegawaian.repositories.master.jooq;
 
+import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.master.jenisSp.JenisSpMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.sanksi.SanksiIndexQuery;
 import id.perumdamts.kepegawaian.dto.master.sanksi.SanksiQuery;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
+import org.jooq.Field;
 import org.jooq.impl.DSL;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -24,13 +26,8 @@ public class SanksiQueryRepository {
     private final DSLContext dsl;
 
     public Page<SanksiQuery> pageQuery(SanksiIndexQuery query) {
-        var sortField = switch (query.getSortBy()) {
-            case "kode" -> SANKSI_SP.KODE;
-            case "keterangan" -> SANKSI_SP.KETERANGAN;
-            case "jenisSpId" -> SANKSI_SP.JENIS_SP_ID;
-            default -> SANKSI_SP.ID;
-        };
-        var sortOrder = "asc".equalsIgnoreCase(query.getSortDirection()) ? sortField.asc() : sortField.desc();
+        var sortOrder = SortParam.resolve(query.getSortBy(), query.getSortDirection(),
+                allowedSorts(), SANKSI_SP.ID);
         var count = dsl.selectCount()
                 .from(SANKSI_SP)
                 .where(SANKSI_SP.IS_DELETED.eq(false))
@@ -62,10 +59,18 @@ public class SanksiQueryRepository {
                 .and(query.getKeterangan() != null ? SANKSI_SP.KETERANGAN.likeIgnoreCase("%" + query.getKeterangan() + "%") : DSL.noCondition())
                 .and(query.getJenisSpId() != null ? SANKSI_SP.JENIS_SP_ID.eq(query.getJenisSpId()) : DSL.noCondition())
                 .orderBy(sortOrder)
-                .limit(query.getSize())
-                .offset(query.getPage() * query.getSize())
+                .limit(query.getSizeOrDefault())
+                .offset(query.offset())
                 .fetch(record -> toQuery(record.intoMap()));
-        return new PageImpl<>(data, PageRequest.of(query.getPage(), query.getSize()), count);
+        return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
+    }
+
+    private static Map<String, Field<?>> allowedSorts() {
+        return Map.of(
+                "kode", SANKSI_SP.KODE,
+                "keterangan", SANKSI_SP.KETERANGAN,
+                "jenisSpId", SANKSI_SP.JENIS_SP_ID
+        );
     }
 
     public Optional<SanksiQuery> getById(Long id) {
