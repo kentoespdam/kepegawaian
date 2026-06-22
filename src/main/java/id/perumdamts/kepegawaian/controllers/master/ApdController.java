@@ -25,7 +25,7 @@ public class ApdController {
                                   @Valid @RequestBody ApdPostRequest request,
                                   Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.create(profesiId, request)));
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.create(profesiId, request).getId()));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -35,7 +35,7 @@ public class ApdController {
                                     @Valid @RequestBody ApdPostRequest request,
                                     Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.update(profesiId, id, request)));
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.update(profesiId, id, request).getId()));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
