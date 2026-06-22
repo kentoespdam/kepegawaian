@@ -13,6 +13,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,21 +33,26 @@ public class ProcessPotonganTkkImpl implements ProcessPotonganTkk {
     private final GajiBatchRootLampiranRepository gajiBatchRootLampiranRepository;
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void process(String rootBatchId) {
+        long start = System.currentTimeMillis();
         log.info("Starting Process Potongan TKK, {}", rootBatchId);
-        List<GajiBatchRootLampiran> list = gajiBatchRootLampiranRepository.findByGajiBatchRoot_IdAndJenisLampiranGaji(rootBatchId, EJenisPotonganGaji.POTONGAN_TKK);
-        list.sort((l1, l2) -> l2.getId().compareTo(l1.getId()));
-        GajiBatchRootLampiran last = list.getLast();
-        if (last == null) return;
-        Workbook workbook = getWorkbook(last.getGajiBatchRoot().getPeriode(), last);
-        if (workbook == null) return;
-        Sheet sheet = workbook.getSheetAt(0);
-        if (sheet == null) return;
-        List<GajiBatchPotonganTkk> data = readSheetData(rootBatchId, sheet);
-        log.info("debugging: {}", data.size());
-        if (data.isEmpty()) return;
-        repository.saveAll(data);
-
+        try {
+            List<GajiBatchRootLampiran> list = gajiBatchRootLampiranRepository.findByGajiBatchRoot_IdAndJenisLampiranGaji(rootBatchId, EJenisPotonganGaji.POTONGAN_TKK);
+            list.sort((l1, l2) -> l2.getId().compareTo(l1.getId()));
+            GajiBatchRootLampiran last = list.getLast();
+            if (last == null) return;
+            Workbook workbook = getWorkbook(last.getGajiBatchRoot().getPeriode(), last);
+            if (workbook == null) return;
+            Sheet sheet = workbook.getSheetAt(0);
+            if (sheet == null) return;
+            List<GajiBatchPotonganTkk> data = readSheetData(rootBatchId, sheet);
+            log.info("debugging: {}", data.size());
+            if (data.isEmpty()) return;
+            repository.saveAll(data);
+        } finally {
+            log.info("processPotonganTkk took {}ms", System.currentTimeMillis() - start);
+        }
     }
 
     private Workbook getWorkbook(String period, GajiBatchRootLampiran attachment) {
