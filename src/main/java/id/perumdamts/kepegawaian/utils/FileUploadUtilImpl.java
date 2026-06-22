@@ -115,6 +115,18 @@ public class FileUploadUtilImpl implements FileUploadUtil {
         }
     }
 
+    @Override
+    public void deleteOldFilePenggajian(String subFolder, String hashedFileName) {
+        try {
+            if (hashedFileName == null || hashedFileName.isEmpty())
+                return;
+            Path filePath = Paths.get(BASE_PATH, "Penggajian", subFolder, hashedFileName);
+            Files.deleteIfExists(filePath);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private Path generatePath(Enum<?> ref, String subFolder) {
         String directoryPath = BASE_PATH + ref.name() + "/" + subFolder;
         return Paths.get(directoryPath);

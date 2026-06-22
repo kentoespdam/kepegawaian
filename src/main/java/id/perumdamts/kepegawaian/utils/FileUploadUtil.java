@@ -18,4 +18,6 @@ public interface FileUploadUtil {
     Path generatePathSp(String subFolder, String fileName);
 
     void deleteOldFile(String fileName, EJenisLampiranProfil ref, String subFolder);
+
+    void deleteOldFilePenggajian(String subFolder, String hashedFileName);
 }

@@ -69,18 +69,34 @@ public class GajiBatchRootServiceImpl implements GajiBatchRootService {
             GajiBatchRoot save = repository.save(entity);
 
             if (request.getFileName() != null) {
+                String subFolder = "PotonganTKK/" + entity.getPeriode();
                 UploadResultUtil uploadResultUtil = fileUploadUtil.uploadPenggajian(
                         request.getFileName(),
-                        "PotonganTKK/" + entity.getPeriode()
+                        subFolder
                 );
-                GajiBatchRootLampiran gajiBatchRootLampiran = new GajiBatchRootLampiran(
-                        entity,
-                        EJenisPotonganGaji.POTONGAN_TKK,
-                        uploadResultUtil.getMimeType(),
-                        uploadResultUtil.getFileName(),
-                        uploadResultUtil.getHashedFileName());
-                gajiBatchRootLampiranRepository.save(gajiBatchRootLampiran);
-                processPotonganTkk.process(entity.getId());
+                try {
+                    GajiBatchRootLampiran gajiBatchRootLampiran = new GajiBatchRootLampiran(
+                            entity,
+                            EJenisPotonganGaji.POTONGAN_TKK,
+                            uploadResultUtil.getMimeType(),
+                            uploadResultUtil.getFileName(),
+                            uploadResultUtil.getHashedFileName());
+                    gajiBatchRootLampiranRepository.save(gajiBatchRootLampiran);
+                    processPotonganTkk.process(entity.getId());
+                } catch (RuntimeException postUploadEx) {
+                    // Compensating action: drop the just-uploaded file so the
+                    // rollback of the Lampiran row + potongan_tkk rows leaves
+                    // no orphan on disk.
+                    try {
+                        fileUploadUtil.deleteOldFilePenggajian(
+                                subFolder, uploadResultUtil.getHashedFileName());
+                    } catch (RuntimeException cleanupEx) {
+                        log.warn("Failed to delete orphaned upload {}/{}: {}",
+                                subFolder, uploadResultUtil.getHashedFileName(),
+                                cleanupEx.getMessage());
+                    }
+                    throw postUploadEx;
+                }
             }
             final String batchId = save.getId();
             publishAfterCommit(batchId);
