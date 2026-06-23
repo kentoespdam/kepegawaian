@@ -23,7 +23,6 @@ public class PendidikanPutRequest extends PendidikanPostRequest {
         entity.setTahunLulus(request.getTahunLulus());
         entity.setGpa(request.getGpa());
         entity.setIsLatest(request.getIsLatest());
-        entity.setChangedStatus(request.getChanged_status());
         return entity;
     }
 }

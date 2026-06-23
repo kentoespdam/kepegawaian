@@ -14,6 +14,7 @@ import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JenjangPendidikanRepository;
 import id.perumdamts.kepegawaian.repositories.profil.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.ProfilKeluargaRepository;
+import id.perumdamts.kepegawaian.services.profil.ChangedStatusResolver;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilService;
 import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +47,7 @@ public class ProfilKeluargaServiceImpl implements ProfilKeluargaService {
     private final LampiranProfilService lampiranProfilService;
     private final PegawaiRepository pegawaiRepository;
     private final ProfileUpdateService profileUpdateService;
+    private final ChangedStatusResolver resolver;
 
     // Predicate untuk mengecek hubungan keluarga yang bukan pasangan
     private final Predicate<EHubunganKeluarga> isNonPasanganPredicate =
@@ -92,6 +94,7 @@ public class ProfilKeluargaServiceImpl implements ProfilKeluargaService {
                     .orElse(null);
 
             ProfilKeluarga entity = ProfilKeluargaPostRequest.toEntity(request, biodata, jenjangPendidikan);
+            entity.setChangedStatus(resolver.requiresApproval());
 
             ProfilKeluarga saved = repository.save(entity);
             handlePostSaveOperations(request, saved);
@@ -118,6 +121,7 @@ public class ProfilKeluargaServiceImpl implements ProfilKeluargaService {
 
             ProfilKeluarga entity = ProfilKeluargaPutRequest
                     .toEntity(request, profilKeluarga, jenjangPendidikan);
+            entity.setChangedStatus(resolver.requiresApproval());
 
             ProfilKeluarga saved = repository.save(entity);
             handlePostUpdateOperations(request, saved);
@@ -133,7 +137,7 @@ public class ProfilKeluargaServiceImpl implements ProfilKeluargaService {
         return repository.findById(id)
                 .map(entity -> {
                     entity.setIsDeleted(true);
-                    entity.setChangedStatus(true);
+                    entity.setChangedStatus(resolver.requiresApproval());
                     repository.save(entity);
 
                     // Execute cleanup operations

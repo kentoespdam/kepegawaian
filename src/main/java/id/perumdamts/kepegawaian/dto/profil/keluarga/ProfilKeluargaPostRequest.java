@@ -46,7 +46,6 @@ public class ProfilKeluargaPostRequest {
     @NotNull(message = "Status Kawin is required")
     private Boolean statusKawin;
     private String notes;
-    private Boolean changedStatus = Boolean.TRUE;
 
     public Long getPendidikanId() {
         return pendidikanId != null ? pendidikanId : 0L;
@@ -83,7 +82,6 @@ public class ProfilKeluargaPostRequest {
         entity.setStatusPendidikan(request.getStatusPendidikan());
         entity.setStatusKawin(request.getStatusKawin());
         entity.setNotes(request.getNotes());
-        entity.setChangedStatus(request.getChangedStatus());
         return entity;
     }
 }

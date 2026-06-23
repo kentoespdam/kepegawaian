@@ -27,7 +27,6 @@ public class PendidikanPostRequest {
     private Integer tahunLulus;
     private Double gpa;
     private Boolean isLatest = false;
-    private Boolean changed_status = true;
 
 
     @JsonIgnore
@@ -52,7 +51,6 @@ public class PendidikanPostRequest {
         entity.setTahunLulus(request.getTahunLulus());
         entity.setGpa(request.getGpa());
         entity.setIsLatest(request.getIsLatest());
-        entity.setChangedStatus(request.getChanged_status());
         return entity;
     }
 }

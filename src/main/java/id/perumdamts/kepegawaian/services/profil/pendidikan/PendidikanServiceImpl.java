@@ -12,6 +12,7 @@ import id.perumdamts.kepegawaian.entities.profil.Pendidikan;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JenjangPendidikanRepository;
 import id.perumdamts.kepegawaian.repositories.profil.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.PendidikanRepository;
+import id.perumdamts.kepegawaian.services.profil.ChangedStatusResolver;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilService;
 import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,7 @@ public class PendidikanServiceImpl implements PendidikanService {
     private final JenjangPendidikanRepository jenjangPendidikanRepository;
     private final LampiranProfilService lampiranProfilService;
     private final ProfileUpdateService profileUpdateService;
+    private final ChangedStatusResolver resolver;
 
     @Override
     public List<PendidikanResponse> findAll() {
@@ -72,6 +74,7 @@ public class PendidikanServiceImpl implements PendidikanService {
                     .orElseThrow(() -> new RuntimeException(UNKNOWN_JENJANG_PENDIDIKAN));
 
             Pendidikan pendidikan = PendidikanPostRequest.from(request, biodata, jenjangPendidikan);
+            pendidikan.setChangedStatus(resolver.requiresApproval());
             Pendidikan save = repository.save(pendidikan);
             handleUpdateIsLatest(request.getIsLatest(), save.getId(), biodata, jenjangPendidikan);
             handleRevisionUpdate(save, RevisionMetadata.RevisionType.INSERT);
@@ -92,6 +95,7 @@ public class PendidikanServiceImpl implements PendidikanService {
             JenjangPendidikan jenjangPendidikan = jenjangPendidikanRepository.findById(request.getJenjangPendidikanId())
                     .orElseThrow(() -> new RuntimeException(UNKNOWN_JENJANG_PENDIDIKAN));
             Pendidikan entity = PendidikanPutRequest.from(request, pendidikan, biodata, jenjangPendidikan);
+            entity.setChangedStatus(resolver.requiresApproval());
             Pendidikan save = repository.save(entity);
             handleUpdateIsLatest(request.getIsLatest(), save.getId(), biodata, jenjangPendidikan);
             handleRevisionUpdate(save, RevisionMetadata.RevisionType.UPDATE);
@@ -107,7 +111,7 @@ public class PendidikanServiceImpl implements PendidikanService {
         return repository.findById(id)
                 .map(entity -> {
                     entity.setIsDeleted(true);
-                    entity.setChangedStatus(true);
+                    entity.setChangedStatus(resolver.requiresApproval());
                     repository.save(entity);
 
                     handleRevisionUpdate(entity, RevisionMetadata.RevisionType.DELETE);

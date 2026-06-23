@@ -124,5 +124,5 @@ custom:
     staff: ${LEVEL_STAFF:7}
   security:
     dev:
-      roles: ${DEV_ROLES:ADMIN,SYSTEM}
+      roles: ${DEV_ROLES:ADMIN,SYSTEM,SDM}
 
