@@ -12,7 +12,7 @@ Urutan klaim di bawah **mengikuti dependency**, bukan nomor issue. Kerjakan per 
 
 ## WAVE 0 — Fondasi (1 issue, blokir semua write-side)
 
-- [ ] **mee.1** · F1: `ChangedStatusResolver` (`@Component`, baca `ROLE_SDM` dari principal) + buang `changed_status` dari semua request DTO profil · `P1` · deps: —
+- [x] **mee.1** · F1: `ChangedStatusResolver` (`@Component`, baca `ROLE_SDM` dari principal) + buang `changed_status` dari semua request DTO profil · `P1` · deps: —
 
 > Tidak ada write-side slice yang boleh mulai sebelum ini merge. **Catatan kritis:** `ROLE_SDM` sebagai Spring authority **belum ada** (saat ini 'SDM' hanya jabatan di rantai cuti). Verifikasi mekanisme authority dulu; bila butuh keputusan produk, **file issue baru — jangan tebak**.
 
