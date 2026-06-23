@@ -1,0 +1,92 @@
+package id.perumdamts.kepegawaian.controllers.profil.pendidikan;
+
+import id.perumdamts.kepegawaian.dto.commons.CustomResult;
+import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
+import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
+import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
+import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanIndexQuery;
+import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanLampiranPostRequest;
+import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanPostRequest;
+import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanPutRequest;
+import id.perumdamts.kepegawaian.services.profil.pendidikan.PendidikanCommandService;
+import id.perumdamts.kepegawaian.services.profil.pendidikan.PendidikanQueryService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/profil/pendidikan")
+public class PendidikanController {
+    private final PendidikanQueryService query;
+    private final PendidikanCommandService command;
+
+    // READ
+
+    @GetMapping
+    public ResponseEntity<?> index(@ParameterObject PendidikanIndexQuery request) {
+        return CustomResult.page(query.pageQuery(request));
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<?> list() {
+        return CustomResult.list(query.listQuery());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findById(@PathVariable Long id) {
+        return CustomResult.any(query.getById(id));
+    }
+
+    // WRITE
+
+    @PostMapping
+    public ResponseEntity<?> save(@Valid @RequestBody PendidikanPostRequest request, Errors errors) {
+        if (errors.hasErrors()) return ErrorResult.build(errors);
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.create(request)));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody PendidikanPutRequest request, Errors errors) {
+        if (errors.hasErrors()) return ErrorResult.build(errors);
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.update(id, request)));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        command.delete(id);
+        return CustomResult.delete(true);
+    }
+
+    // Lampiran
+
+    @GetMapping("/lampiran/{id}/list")
+    public ResponseEntity<?> getLampiran(@PathVariable Long id) {
+        return CustomResult.list(command.getLampiran(id));
+    }
+
+    @GetMapping("/lampiran/{id}/detail")
+    public ResponseEntity<?> getLampiranById(@PathVariable Long id) {
+        return CustomResult.any(command.getLampiranById(id));
+    }
+
+    @GetMapping("/lampiran/{id}/file")
+    public ResponseEntity<?> getFileLampiranById(@PathVariable Long id) {
+        return command.getFileLampiranById(id);
+    }
+
+    @PostMapping(value = "/lampiran", consumes = "multipart/form-data")
+    public ResponseEntity<?> saveLampiran(@Valid @ModelAttribute PendidikanLampiranPostRequest request, Errors errors) {
+        if (errors.hasErrors()) return ErrorResult.build(errors);
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.addLampiran(request)));
+    }
+
+    @DeleteMapping("/lampiran/{id}")
+    public ResponseEntity<?> deleteLampiran(@PathVariable Long id) {
+        command.deleteLampiran(id);
+        return CustomResult.delete(true);
+    }
+}

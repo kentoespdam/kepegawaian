@@ -18,8 +18,8 @@ Urutan klaim di bawah **mengikuti dependency**, bukan nomor issue. Kerjakan per 
 
 ## WAVE 1 — Slice Referensi Pendidikan (2 issue, GERBANG)
 
-- [ ] **mee.2** · F2: Pendidikan **READ** (JOOQ) — slice referensi baca · `P1` · deps: mee.1
-- [ ] **mee.3** · F3: Pendidikan **WRITE** (JPA Command) — slice referensi tulis · `P1` · deps: mee.1
+- [x] **mee.2** · F2: Pendidikan **READ** (JOOQ) — slice referensi baca · `P1` · deps: mee.1
+- [x] **mee.3** · F3: Pendidikan **WRITE** (JPA Command) — slice referensi tulis · `P1` · deps: mee.1
 
 > **Gerbang replikasi.** 6 anak berikutnya meniru bentuk F2 (read) + F3 (write) persis. Review ekstra ketat — pola yang salah di sini menyebar ke banyak issue. Idealnya F2 selesai/stabil sebelum F3, tapi keduanya hanya butuh F1.
 
