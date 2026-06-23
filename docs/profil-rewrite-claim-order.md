@@ -25,11 +25,11 @@ Urutan klaim di bawah **mengikuti dependency**, bukan nomor issue. Kerjakan per 
 
 ## WAVE 2 — Replikasi 5 anak (5 issue paralel, semua butuh F2+F3)
 
-- [ ] **mee.4** · F4: KartuIdentitas READ+WRITE — **revive-on-create** (kunci NIK+jenis kartu), varian Pendidikan · `P2` · deps: mee.2, mee.3
-- [ ] **mee.5** · F5: Keahlian READ+WRITE — **append-only** (tanpa kunci alami, tanpa revive) · `P2` · deps: mee.2, mee.3
-- [ ] **mee.6** · F6: Pelatihan READ+WRITE — append-only · `P2` · deps: mee.2, mee.3
-- [ ] **mee.7** · F7: PengalamanKerja READ+WRITE — append-only · `P2` · deps: mee.2, mee.3
-- [ ] **mee.8** · F8: ProfilKeluarga READ+WRITE — **arsip & aktif berdampingan** (re-add = baris baru, tolak hanya duplikat aktif persis) · `P2` · deps: mee.2, mee.3
+- [x] **mee.4** · F4: KartuIdentitas READ+WRITE — **revive-on-create** (kunci NIK+jenis kartu), varian Pendidikan · `P2` · deps: mee.2, mee.3
+- [x] **mee.5** · F5: Keahlian READ+WRITE — **append-only** (tanpa kunci alami, tanpa revive) · `P2` · deps: mee.2, mee.3
+- [x] **mee.6** · F6: Pelatihan READ+WRITE — append-only · `P2` · deps: mee.2, mee.3
+- [x] **mee.7** · F7: PengalamanKerja READ+WRITE — append-only · `P2` · deps: mee.2, mee.3
+- [x] **mee.8** · F8: ProfilKeluarga READ+WRITE — **arsip & aktif berdampingan** (re-add = baris baru, tolak hanya duplikat aktif persis) · `P2` · deps: mee.2, mee.3
 
 ## WAVE 3 — Akar Agregat (1 issue)
 

@@ -15,6 +15,22 @@ public interface ProfilKeluargaRepository extends
         JpaRepository<ProfilKeluarga, Long>,
         JpaSpecificationExecutor<ProfilKeluarga>,
         RevisionRepository<ProfilKeluarga, Long, Integer> {
+
+    /**
+     * Finds an active (is_deleted=false) ProfilKeluarga row by biodataId + nama + tanggalLahir.
+     * Bypasses {@code @SQLRestriction} so both active and archived rows are visible to the caller;
+     * we filter by is_deleted=false explicitly to detect the arsip & aktif berdampingan duplicate.
+     */
+    @Query("""
+            select p from ProfilKeluarga p
+            where p.biodata.nik = :biodataId
+              and p.nama = :nama
+              and p.tanggalLahir = :tanggalLahir
+              and p.isDeleted = false
+            """)
+    java.util.Optional<ProfilKeluarga> findActiveByBiodataIdAndNamaAndTanggalLahir(
+            String biodataId, String nama, LocalDate tanggalLahir);
+
     @Transactional
     @Modifying
     @Query(

@@ -1,19 +1,15 @@
 package id.perumdamts.kepegawaian.dto.profil.pelatihan;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.master.JenisPelatihan;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.Pelatihan;
-import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Data
 public class PelatihanPostRequest {
@@ -39,17 +35,6 @@ public class PelatihanPostRequest {
     private LocalDate tanggalAkhirIkatan;
     private String notes;
 
-    @JsonIgnore
-    public Specification<Pelatihan> getSpecification() {
-        return SpecificationBuilder.<Pelatihan>of()
-                .addEqual(biodataId, "biodata", "nik")
-                .addEqual(jenisPelatihanId, "jenisPelatihan", "id")
-                .addEqual(nama, "nama")
-                .addEqual(lembaga, "lembaga")
-                .addEqual(tanggalMulai, "tanggalMulai")
-                .build();
-    }
-
     public static Pelatihan toEntity(PelatihanPostRequest request, Biodata biodata, JenisPelatihan jenisPelatihan) {
         Pelatihan entity = new Pelatihan();
         entity.setBiodata(biodata);
@@ -63,8 +48,6 @@ public class PelatihanPostRequest {
         entity.setIkatanDinas(request.getIkatanDinas());
         entity.setTanggalAkhirIkatan(request.getTanggalAkhirIkatan());
         entity.setNotes(request.getNotes());
-        entity.setDisetujui(true);
-        entity.setTanggalPengajuan(LocalDateTime.now());
         return entity;
     }
 }
