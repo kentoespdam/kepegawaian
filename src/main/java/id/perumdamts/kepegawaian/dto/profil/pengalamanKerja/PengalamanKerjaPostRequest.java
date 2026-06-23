@@ -16,11 +16,8 @@ public class PengalamanKerjaPostRequest {
     private String biodataId;
     @NotEmpty(message = "Nama Perusahaan is required")
     private String namaPerusahaan;
-    @NotEmpty(message = "Type Perusahaan is required")
     private String typePerusahaan;
-    @NotEmpty(message = "Jabatan is required")
     private String jabatan;
-    @NotEmpty(message = "Lokasi is required")
     private String lokasi;
     private Integer tahunMasuk;
     private Integer tahunKeluar;

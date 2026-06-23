@@ -1,0 +1,86 @@
+package id.perumdamts.kepegawaian.services.profil.pengalamanKerja;
+
+import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilPostRequest;
+import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilResponse;
+import id.perumdamts.kepegawaian.dto.profil.pengalamanKerja.PengalamanKerjaPostRequest;
+import id.perumdamts.kepegawaian.dto.profil.pengalamanKerja.PengalamanKerjaPutRequest;
+import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
+import id.perumdamts.kepegawaian.entities.commons.EProfileUpdateTable;
+import id.perumdamts.kepegawaian.entities.profil.Biodata;
+import id.perumdamts.kepegawaian.entities.profil.PengalamanKerja;
+import id.perumdamts.kepegawaian.exceptions.NotFoundException;
+import id.perumdamts.kepegawaian.repositories.profil.BiodataRepository;
+import id.perumdamts.kepegawaian.repositories.profil.PengalamanKerjaRepository;
+import id.perumdamts.kepegawaian.services.profil.ChangedStatusResolver;
+import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilService;
+import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.history.RevisionMetadata;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@RequiredArgsConstructor
+public class PengalamanKerjaCommandService {
+    private static final String UNKNOWN_BIODATA = "Unknown Biodata";
+    private static final String UNKNOWN_PENGALAMAN = "Unknown Pengalaman Kerja";
+
+    private final PengalamanKerjaRepository repository;
+    private final BiodataRepository biodataRepository;
+    private final LampiranProfilService lampiranProfilService;
+    private final ProfileUpdateService profileUpdateService;
+    private final ChangedStatusResolver resolver;
+
+    @Transactional
+    public Long create(PengalamanKerjaPostRequest request) {
+        Biodata biodata = biodataRepository.findById(request.getBiodataId())
+                .orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
+        PengalamanKerja entity = PengalamanKerjaPostRequest.toEntity(request, biodata);
+        entity.setChangedStatus(resolver.requiresApproval());
+        PengalamanKerja save = repository.save(entity);
+        handleRevisionUpdate(save, RevisionMetadata.RevisionType.INSERT);
+        return save.getId();
+    }
+
+    @Transactional
+    public Long update(Long id, PengalamanKerjaPutRequest request) {
+        PengalamanKerja entity = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException(UNKNOWN_PENGALAMAN));
+        Biodata biodata = biodataRepository.findById(request.getBiodataId())
+                .orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
+        PengalamanKerja updated = PengalamanKerjaPutRequest.toEntity(request, entity, biodata);
+        updated.setChangedStatus(resolver.requiresApproval());
+        PengalamanKerja save = repository.save(updated);
+        handleRevisionUpdate(save, RevisionMetadata.RevisionType.UPDATE);
+        return save.getId();
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        PengalamanKerja entity = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException(UNKNOWN_PENGALAMAN));
+        entity.setIsDeleted(true);
+        entity.setChangedStatus(resolver.requiresApproval());
+        repository.save(entity);
+        handleRevisionUpdate(entity, RevisionMetadata.RevisionType.DELETE);
+        lampiranProfilService.deleteByRefId(EJenisLampiranProfil.PROFIL_PENGALAMAN_KERJA, id);
+    }
+
+    public ResponseEntity<?> getFileLampiranById(Long id) {
+        return lampiranProfilService.getFileLampiranById(EJenisLampiranProfil.PROFIL_PENGALAMAN_KERJA, id);
+    }
+
+    @Transactional
+    public Long addLampiran(LampiranProfilPostRequest request) {
+        boolean exists = repository.existsById(request.getRefId());
+        if (!exists) throw new NotFoundException(UNKNOWN_PENGALAMAN);
+        lampiranProfilService.addLampiran(request);
+        return request.getRefId();
+    }
+
+    private void handleRevisionUpdate(PengalamanKerja save, RevisionMetadata.RevisionType type) {
+        if (Boolean.FALSE.equals(save.getChangedStatus())) return;
+        profileUpdateService.create(save.getId(), type, EProfileUpdateTable.PENGALAMAN_KERJA);
+    }
+}
