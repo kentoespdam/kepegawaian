@@ -33,13 +33,13 @@ Urutan klaim di bawah **mengikuti dependency**, bukan nomor issue. Kerjakan per 
 
 ## WAVE 3 — Akar Agregat (1 issue)
 
-- [ ] **mee.9** · F9: Biodata READ+WRITE — akar agregat + **cascade seed (Q19)**; read global ala master (pencarian direktori) · `P2` · deps: mee.3, **mee.4**
+- [x] **mee.9** · F9: Biodata READ+WRITE — akar agregat + **cascade seed (Q19)**; read global ala master (pencarian direktori) · `P2` · deps: mee.3, **mee.4**
 
 > Butuh F3 **dan** F4 karena `create` Biodata men-seed 1 Pendidikan (`PendidikanCommandService.seedFromBiodata`) + 1 KartuIdentitas (`KartuIdentitasCommandService.seedFromBiodata`) dalam satu `@Transactional`. Seed = aktor sistem → `changedStatus=false` eksplisit, **tak** mengantri ProfileUpdate, tapi tetap memunculkan revisi Envers.
 
 ## WAVE 4 — Integrasi & Sapu-bersih (1 issue, penutup)
 
-- [ ] **mee.10** · F10: Pensiunkan legacy `XxxServiceImpl` (cek pemakai via gitnexus_impact), amandemen ADR-0003 (profil masuk roster Envers), verifikasi silang anti-pattern, `./gradlew clean build` · `P2` · deps: mee.2–mee.9
+- [x] **mee.10** · F10: Pensiunkan legacy `XxxServiceImpl` (cek pemakai via gitnexus_impact), amandemen ADR-0003 (profil masuk roster Envers), verifikasi silang anti-pattern, `./gradlew clean build` · `P2` · deps: mee.2–mee.9
 
 > Hanya boleh mulai setelah 8 entitas selesai. Perubahan ADR-0003 = dokumen (tak butuh beads/gitnexus gate untuk `.md`).
 
