@@ -1,12 +1,14 @@
 package id.perumdamts.kepegawaian.dto.profil.pendidikan;
 
 import id.perumdamts.kepegawaian.dto.commons.PagedRequest;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class PendidikanIndexQuery extends PagedRequest {
+    @NotBlank(message = "Biodata ID is required")
     private String biodataId;
     private Long jenjangId;
     private String gelarDepan;

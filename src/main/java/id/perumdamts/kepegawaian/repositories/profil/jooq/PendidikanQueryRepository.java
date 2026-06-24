@@ -12,7 +12,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Map;
 
 import static id.perumdamts.kepegawaian.jooq.tables.Biodata.BIODATA;
@@ -64,14 +63,5 @@ public class PendidikanQueryRepository {
                 .fetch(new PendidikanRowMapper());
 
         return new PageImpl<>(data, PageRequest.of(query.getPage(), query.getSize()), count);
-    }
-
-    public List<PendidikanQuery> listQuery() {
-        return dsl.select(PendidikanSelects.COLUMNS)
-                .from(PENDIDIKAN)
-                .leftJoin(BIODATA).on(PENDIDIKAN.BIODATA_ID.eq(BIODATA.NIK))
-                .leftJoin(JENJANG_PENDIDIKAN).on(PENDIDIKAN.JENJANG_ID.eq(JENJANG_PENDIDIKAN.ID))
-                .where(PENDIDIKAN.IS_DELETED.eq(false))
-                .fetch(new PendidikanRowMapper());
     }
 }

@@ -31,11 +31,6 @@ public class PendidikanController {
         return CustomResult.page(query.pageQuery(request));
     }
 
-    @GetMapping("/list")
-    public ResponseEntity<?> list() {
-        return CustomResult.list(query.listQuery());
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
         return CustomResult.any(query.getById(id));

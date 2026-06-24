@@ -9,8 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class PendidikanQueryService {
@@ -24,9 +22,5 @@ public class PendidikanQueryService {
     public PendidikanQuery getById(Long id) {
         return detail.getById(id)
                 .orElseThrow(() -> new NotFoundException("Pendidikan not found"));
-    }
-
-    public List<PendidikanQuery> listQuery() {
-        return queries.listQuery();
     }
 }
