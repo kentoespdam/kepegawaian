@@ -85,6 +85,18 @@ public class KartuIdentitasCommandService {
         lampiranProfilService.deleteByRefId(EJenisLampiranProfil.KARTU_IDENTITAS, id);
     }
 
+    // Seed from Biodata — system seed, no profileUpdate, no approval
+    @Transactional
+    public KartuIdentitas seedFromBiodata(Biodata biodata) {
+        JenisKitas jenisKtp = jenisKitasRepository.findById(1L)
+                .orElseThrow(() -> new NotFoundException(UNKNOWN_JENIS_KARTU));
+        KartuIdentitas entity = new KartuIdentitas();
+        entity.setBiodata(biodata);
+        entity.setJenisKartu(jenisKtp);
+        entity.setChangedStatus(false);
+        return repository.save(entity);
+    }
+
     public List<LampiranProfilResponse> getLampiran(Long id) {
         return lampiranProfilService.getLampiran(EJenisLampiranProfil.KARTU_IDENTITAS, id);
     }

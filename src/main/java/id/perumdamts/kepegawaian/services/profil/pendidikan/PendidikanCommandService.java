@@ -86,6 +86,19 @@ public class PendidikanCommandService {
         lampiranProfilService.deleteByRefId(EJenisLampiranProfil.PROFIL_PENDIDIKAN, id);
     }
 
+    // Seed from Biodata — system seed, no profileUpdate
+    @Transactional
+    public Pendidikan seedFromBiodata(Biodata biodata, JenjangPendidikan jenjang) {
+        Pendidikan entity = new Pendidikan();
+        entity.setBiodata(biodata);
+        entity.setJenjangPendidikan(jenjang);
+        entity.setIsLatest(true);
+        entity.setChangedStatus(false);
+        Pendidikan saved = repository.save(entity);
+        handleUpdateIsLatest(true, saved.getId(), biodata, jenjang);
+        return saved;
+    }
+
     // Lampiran delegates
 
     public List<LampiranProfilResponse> getLampiran(Long id) {

@@ -23,7 +23,7 @@ import id.perumdamts.kepegawaian.repositories.profil.BiodataRepository;
 import id.perumdamts.kepegawaian.services.auth.AuthService;
 import id.perumdamts.kepegawaian.services.kepegawaian.riwayatKontrak.GenericKontrakService;
 import id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk.RiwayatSkService;
-import id.perumdamts.kepegawaian.services.profil.biodata.BiodataService;
+import id.perumdamts.kepegawaian.services.profil.biodata.BiodataCommandService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
@@ -44,7 +44,7 @@ public class PegawaiServiceImpl implements PegawaiService {
     private final OrganisasiRepository organisasiRepository;
     private final ProfesiRepository profesiRepository;
     private final GolonganRepository golonganRepository;
-    private final BiodataService biodataService;
+    private final BiodataCommandService biodataCommandService;
     private final RiwayatSkService riwayatSkService;
     private final GenericKontrakService genericKontrakService;
     private final GajiPendapatanNonPajakRepository gajiPendapatanNonPajakRepository;
@@ -99,7 +99,7 @@ public class PegawaiServiceImpl implements PegawaiService {
             if (oneByNipam.isPresent())
                 return SavedStatus.build(ESaveStatus.DUPLICATE, "Pegawai is Exist");
             Biodata biodata = biodataRepository.findById(request.getNik())
-                    .orElseGet(() -> biodataService.saveFromPegawai(request));
+                    .orElseGet(() -> biodataCommandService.saveFromPegawai(request));
             if (request.getStatusPegawai().equals(EStatusPegawai.NON_PEGAWAI))
                 return SavedStatus.build(ESaveStatus.SUCCESS, "Save Non Pegawai Success");
 
