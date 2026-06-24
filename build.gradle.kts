@@ -122,6 +122,17 @@ tasks.named<BootJar>("bootJar") {
 
 tasks.named<BootRun>("bootRun") {
     jvmArgs = listOf("--enable-native-access=ALL-UNNAMED")
+    val envFile = file(".env")
+    if (envFile.exists()) {
+        envFile.readLines().forEach { line ->
+            if (line.isNotBlank() && !line.startsWith("#")) {
+                val parts = line.split("=", limit = 2)
+                if (parts.size == 2) {
+                    environment(parts[0].trim(), parts[1].trim())
+                }
+            }
+        }
+    }
 }
 
 springBoot {
