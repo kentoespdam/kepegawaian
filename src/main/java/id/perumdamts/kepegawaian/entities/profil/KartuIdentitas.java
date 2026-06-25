@@ -45,6 +45,8 @@ public class KartuIdentitas extends IdsAbstract {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tanggalTerima;
     private String notes;
+    @Column(columnDefinition = "boolean default false")
+    private Boolean changedStatus;
 
     public KartuIdentitas(Biodata biodata) {
         JenisKitas jenisKitas = new JenisKitas(1L);
