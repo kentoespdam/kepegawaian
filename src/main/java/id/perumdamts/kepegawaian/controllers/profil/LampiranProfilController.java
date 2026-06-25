@@ -5,7 +5,8 @@ import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilAcceptRequest;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
-import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilService;
+import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilCommandService;
+import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilQueryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +18,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/profil/lampiran")
 public class LampiranProfilController {
-    private final LampiranProfilService service;
+    private final LampiranProfilQueryService queryService;
+    private final LampiranProfilCommandService commandService;
 
     @GetMapping("/file/{jenis}/{id}")
     public ResponseEntity<?> getFile(@PathVariable EJenisLampiranProfil jenis, @PathVariable Long id) {
-        return service.getFileLampiranById(jenis, id);
+        return queryService.getFileLampiranById(jenis, id);
     }
 
     @PostMapping("/accept")
@@ -29,11 +31,11 @@ public class LampiranProfilController {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         AppwriteUser appwriteUser = (AppwriteUser) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();
-        return CustomResult.save(service.acceptLampiran(request, appwriteUser.getName()));
+        return CustomResult.save(commandService.acceptLampiran(request, appwriteUser.getName()));
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        return CustomResult.delete(service.deleteById(id));
+        return CustomResult.delete(commandService.deleteById(id));
     }
 }

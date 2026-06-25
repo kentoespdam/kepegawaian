@@ -33,22 +33,22 @@ Tiap issue: `bd update <id> --claim` saat mulai, `bd close <id>` saat selesai (t
 - [x] detect_changes → `./gradlew test` hijau (harus tetap kompilasi tanpa ubah consumer)
 - [x] `bd close kepegawaian-94u.1`
 
-## [ ] #3 — WRITE side · `kepegawaian-94u.2` (blocked by #2)
+## [x] #3 — WRITE side · `kepegawaian-94u.2` (blocked by #2)
 > Interface lama MASIH ada (6 consumer pakai). Jangan dihapus di sini.
 
-- [ ] `bd update kepegawaian-94u.2 --claim`
-- [ ] gitnexus_impact: `addLampiran`, `deleteById`, `acceptLampiran`, `deleteByRefId` (upstream)
-- [ ] Buat `services/profil/lampiranProfil/LampiranProfilCommandService.java` (semua `@Transactional`):
-  - [ ] `addLampiran(...)` — pertahankan cek duplicate + upload; `SavedStatus.build(status, entity.getId())` (id, bukan string)
-  - [ ] `deleteById(id)` — soft-delete, return boolean
-  - [ ] `acceptLampiran(req, oleh)` — `SavedStatus` isi data = id lampiran
-  - [ ] `deleteByRefId(jenis,id)` — soft-delete batch, void
-- [ ] Update `controllers/profil/LampiranProfilController.java`: inject `command` + `query`
-  - [ ] GET `/file/{jenis}/{id}` → `query.getFileLampiranById`
-  - [ ] POST `/accept` → `command.acceptLampiran`
-  - [ ] DELETE `/delete/{id}` → `command.deleteById`
-- [ ] detect_changes → `./gradlew test` hijau
-- [ ] `bd close kepegawaian-94u.2`
+- [x] `bd update kepegawaian-94u.2 --claim`
+- [x] gitnexus_impact: `addLampiran`, `deleteById`, `acceptLampiran`, `deleteByRefId` (upstream)
+- [x] Buat `services/profil/lampiranProfil/LampiranProfilCommandService.java` (semua `@Transactional`):
+  - [x] `addLampiran(...)` — pertahankan cek duplicate + upload; `SavedStatus.build(status, entity.getId())` (id, bukan string)
+  - [x] `deleteById(id)` — soft-delete, return boolean
+  - [x] `acceptLampiran(req, oleh)` — `SavedStatus` isi data = id lampiran
+  - [x] `deleteByRefId(jenis,id)` — soft-delete batch, void
+- [x] Update `controllers/profil/LampiranProfilController.java`: inject `command` + `query`
+  - [x] GET `/file/{jenis}/{id}` → `query.getFileLampiranById`
+  - [x] POST `/accept` → `command.acceptLampiran`
+  - [x] DELETE `/delete/{id}` → `command.deleteById`
+- [x] detect_changes → `./gradlew test` hijau
+- [x] `bd close kepegawaian-94u.2`
 
 ## [ ] #4 — CUTOVER + hapus shim lama · `kepegawaian-94u.3` (blocked by #3)
 > 6 consumer: keahlian, pendidikan, pelatihan, pengalamanKerja, kartuIdentitas, keluarga (ProfilKeluarga).
