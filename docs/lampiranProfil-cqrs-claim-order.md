@@ -53,27 +53,27 @@ Tiap issue: `bd update <id> --claim` saat mulai, `bd close <id>` saat selesai (t
 ## [ ] #4 — CUTOVER + hapus shim lama · `kepegawaian-94u.3` (blocked by #3)
 > 6 consumer: keahlian, pendidikan, pelatihan, pengalamanKerja, kartuIdentitas, keluarga (ProfilKeluarga).
 
-- [ ] `bd update kepegawaian-94u.3 --claim`
-- [ ] gitnexus_impact: `LampiranProfilService` (upstream) — konfirmasi 8 importer
-- [ ] Per consumer `*CommandService.java`: ganti field `LampiranProfilService` → `LampiranProfilQueryService` + `LampiranProfilCommandService`
-  - [ ] keahlian
-  - [ ] pendidikan
-  - [ ] pelatihan
-  - [ ] pengalamanKerja
-  - [ ] kartuIdentitas
-  - [ ] keluarga (ProfilKeluarga)
-  - [ ] read delegate → QueryService, ubah return `List<LampiranProfilQuery>`/`LampiranProfilQuery`, hapus import `LampiranProfilResponse`
-  - [ ] write delegate → CommandService
-- [ ] Verifikasi tiap controller profil tetap kompilasi (CustomResult generic)
-- [ ] grep `LampiranProfilService` & `LampiranProfilResponse` = 0 pemakai produktif
-- [ ] HAPUS: `LampiranProfilService.java`, `LampiranProfilServiceImpl.java`, `LampiranProfilResponse.java` (hapus bersih, bukan shim)
-- [ ] detect_changes → `./gradlew test` hijau (satu batch `git add` di akhir)
+- [x] `bd update kepegawaian-94u.3 --claim`
+- [x] gitnexus_impact: `LampiranProfilService` (upstream) — konfirmasi 8 importer
+- [x] Per consumer `*CommandService.java`: ganti field `LampiranProfilService` → `LampiranProfilQueryService` + `LampiranProfilCommandService`
+  - [x] keahlian
+  - [x] pendidikan
+  - [x] pelatihan
+  - [x] pengalamanKerja
+  - [x] kartuIdentitas
+  - [x] keluarga (ProfilKeluarga)
+  - [x] read delegate → QueryService, ubah return `List<LampiranProfilQuery>`/`LampiranProfilQuery`, hapus import `LampiranProfilResponse`
+  - [x] write delegate → CommandService
+- [x] Verifikasi tiap controller profil tetap kompilasi (CustomResult generic)
+- [x] grep `LampiranProfilService` & `LampiranProfilResponse` = 0 pemakai produktif
+- [x] HAPUS: `LampiranProfilService.java`, `LampiranProfilServiceImpl.java`, `LampiranProfilResponse.java` (hapus bersih, bukan shim)
+- [x] detect_changes → `./gradlew test` hijau (satu batch `git add` di akhir)
 - [ ] `bd close kepegawaian-94u.3`
 
 ---
 
 ## Session close (setelah semua hijau)
-- [ ] quality gates hijau
+- [x] quality gates hijau
 - [ ] `bd dolt push`
 - [ ] `git pull --rebase`
 - [ ] `git push` → verifikasi "up to date with origin"

@@ -6,7 +6,7 @@ import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaLampiranPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaPutRequest;
-import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilResponse;
+import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilQuery;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.entities.commons.EProfileUpdateTable;
 import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
@@ -18,7 +18,8 @@ import id.perumdamts.kepegawaian.repositories.master.jpa.JenjangPendidikanReposi
 import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.ProfilKeluargaRepository;
 import id.perumdamts.kepegawaian.services.profil.ChangedStatusResolver;
-import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilService;
+import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilCommandService;
+import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilQueryService;
 import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.history.RevisionMetadata;
@@ -40,7 +41,8 @@ public class ProfilKeluargaCommandService {
     private final JenjangPendidikanRepository jenjangPendidikanRepository;
     private final ChangedStatusResolver resolver;
     private final ProfileUpdateService profileUpdateService;
-    private final LampiranProfilService lampiranProfilService;
+    private final LampiranProfilQueryService lampiranProfilQueryService;
+    private final LampiranProfilCommandService lampiranProfilCommandService;
 
     @Transactional
     public SavedStatus<?> create(ProfilKeluargaPostRequest request) {
@@ -109,16 +111,16 @@ public class ProfilKeluargaCommandService {
 
     // Lampiran delegates
 
-    public List<LampiranProfilResponse> getLampiran(Long id) {
-        return lampiranProfilService.getLampiran(EJenisLampiranProfil.PROFIL_KELUARGA, id);
+    public List<LampiranProfilQuery> getLampiran(Long id) {
+        return lampiranProfilQueryService.getLampiran(EJenisLampiranProfil.PROFIL_KELUARGA, id);
     }
 
-    public LampiranProfilResponse getLampiranById(Long id) {
-        return lampiranProfilService.getLampiranById(id);
+    public LampiranProfilQuery getLampiranById(Long id) {
+        return lampiranProfilQueryService.getLampiranById(id);
     }
 
     public ResponseEntity<?> getFileLampiranById(Long id) {
-        return lampiranProfilService.getFileLampiranById(EJenisLampiranProfil.PROFIL_KELUARGA, id);
+        return lampiranProfilQueryService.getFileLampiranById(EJenisLampiranProfil.PROFIL_KELUARGA, id);
     }
 
     @Transactional
@@ -126,13 +128,13 @@ public class ProfilKeluargaCommandService {
         boolean exists = repository.existsById(request.getRefId());
         if (!exists)
             throw new NotFoundException(UNKNOWN_KELUARGA);
-        lampiranProfilService.addLampiran(request);
+        lampiranProfilCommandService.addLampiran(request);
         return request.getRefId();
     }
 
     @Transactional
     public void deleteLampiran(Long id) {
-        lampiranProfilService.deleteById(id);
+        lampiranProfilCommandService.deleteById(id);
     }
 
     // Private helpers

@@ -1,7 +1,7 @@
 package id.perumdamts.kepegawaian.services.profil.pengalamanKerja;
 
 import id.perumdamts.kepegawaian.mapper.profil.pengalamanKerja.PengalamanKerjaMapper;
-import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilResponse;
+import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilQuery;
 import id.perumdamts.kepegawaian.dto.profil.pengalamanKerja.PengalamanKerjaPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.pengalamanKerja.PengalamanKerjaPutRequest;
 import id.perumdamts.kepegawaian.dto.profil.pengalamanKerja.PengalamanLampiranPostRequest;
@@ -13,7 +13,8 @@ import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.PengalamanKerjaRepository;
 import id.perumdamts.kepegawaian.services.profil.ChangedStatusResolver;
-import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilService;
+import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilCommandService;
+import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilQueryService;
 import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.history.RevisionMetadata;
@@ -31,7 +32,8 @@ public class PengalamanKerjaCommandService {
 
     private final PengalamanKerjaRepository repository;
     private final BiodataRepository biodataRepository;
-    private final LampiranProfilService lampiranProfilService;
+    private final LampiranProfilQueryService lampiranProfilQueryService;
+    private final LampiranProfilCommandService lampiranProfilCommandService;
     private final ProfileUpdateService profileUpdateService;
     private final ChangedStatusResolver resolver;
 
@@ -67,21 +69,21 @@ public class PengalamanKerjaCommandService {
         entity.setChangedStatus(resolver.requiresApproval());
         repository.save(entity);
         profileUpdateService.create(entity.getId(), RevisionMetadata.RevisionType.DELETE, EProfileUpdateTable.PENGALAMAN_KERJA);
-        lampiranProfilService.deleteByRefId(EJenisLampiranProfil.PROFIL_PENGALAMAN_KERJA, id);
+        lampiranProfilCommandService.deleteByRefId(EJenisLampiranProfil.PROFIL_PENGALAMAN_KERJA, id);
     }
 
     // Lampiran delegates
 
-    public List<LampiranProfilResponse> getLampiran(Long id) {
-        return lampiranProfilService.getLampiran(EJenisLampiranProfil.PROFIL_PENGALAMAN_KERJA, id);
+    public List<LampiranProfilQuery> getLampiran(Long id) {
+        return lampiranProfilQueryService.getLampiran(EJenisLampiranProfil.PROFIL_PENGALAMAN_KERJA, id);
     }
 
-    public LampiranProfilResponse getLampiranById(Long id) {
-        return lampiranProfilService.getLampiranById(id);
+    public LampiranProfilQuery getLampiranById(Long id) {
+        return lampiranProfilQueryService.getLampiranById(id);
     }
 
     public ResponseEntity<?> getFileLampiranById(Long id) {
-        return lampiranProfilService.getFileLampiranById(EJenisLampiranProfil.PROFIL_PENGALAMAN_KERJA, id);
+        return lampiranProfilQueryService.getFileLampiranById(EJenisLampiranProfil.PROFIL_PENGALAMAN_KERJA, id);
     }
 
     @Transactional
@@ -89,11 +91,11 @@ public class PengalamanKerjaCommandService {
         if (!repository.existsById(request.getRefId())) {
             throw new NotFoundException(UNKNOWN_PENGALAMAN_KERJA);
         }
-        lampiranProfilService.addLampiran(request);
+        lampiranProfilCommandService.addLampiran(request);
         return request.getRefId();
     }
 
     public void deleteLampiran(Long id) {
-        lampiranProfilService.deleteById(id);
+        lampiranProfilCommandService.deleteById(id);
     }
 }

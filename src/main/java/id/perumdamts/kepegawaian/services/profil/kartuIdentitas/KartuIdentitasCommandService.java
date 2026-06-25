@@ -4,7 +4,7 @@ import id.perumdamts.kepegawaian.mapper.profil.kartuIdentitas.KartuIdentitasMapp
 import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasLampiranPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasPutRequest;
-import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilResponse;
+import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilQuery;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.entities.master.JenisKitas;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
@@ -14,7 +14,8 @@ import id.perumdamts.kepegawaian.repositories.master.jpa.JenisKitasRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.KartuIdentitasRepository;
 import id.perumdamts.kepegawaian.services.profil.ChangedStatusResolver;
-import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilService;
+import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilCommandService;
+import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,8 @@ public class KartuIdentitasCommandService {
     private final KartuIdentitasRepository repository;
     private final BiodataRepository biodataRepository;
     private final JenisKitasRepository jenisKitasRepository;
-    private final LampiranProfilService lampiranProfilService;
+    private final LampiranProfilQueryService lampiranProfilQueryService;
+    private final LampiranProfilCommandService lampiranProfilCommandService;
     private final ChangedStatusResolver resolver;
 
     @Transactional
@@ -83,7 +85,7 @@ public class KartuIdentitasCommandService {
         entity.setChangedStatus(resolver.requiresApproval());
         repository.save(entity);
         // NO profileUpdateService — KartuIdentitas not in EProfileUpdateTable
-        lampiranProfilService.deleteByRefId(EJenisLampiranProfil.KARTU_IDENTITAS, id);
+        lampiranProfilCommandService.deleteByRefId(EJenisLampiranProfil.KARTU_IDENTITAS, id);
     }
 
     // Seed from Biodata — system seed, no profileUpdate, no approval
@@ -98,28 +100,28 @@ public class KartuIdentitasCommandService {
         return repository.save(entity);
     }
 
-    public List<LampiranProfilResponse> getLampiran(Long id) {
-        return lampiranProfilService.getLampiran(EJenisLampiranProfil.KARTU_IDENTITAS, id);
+    public List<LampiranProfilQuery> getLampiran(Long id) {
+        return lampiranProfilQueryService.getLampiran(EJenisLampiranProfil.KARTU_IDENTITAS, id);
     }
 
-    public LampiranProfilResponse getLampiranById(Long id) {
-        return lampiranProfilService.getLampiranById(id);
+    public LampiranProfilQuery getLampiranById(Long id) {
+        return lampiranProfilQueryService.getLampiranById(id);
     }
 
     public ResponseEntity<?> getFileLampiranById(Long id) {
-        return lampiranProfilService.getFileLampiranById(EJenisLampiranProfil.KARTU_IDENTITAS, id);
+        return lampiranProfilQueryService.getFileLampiranById(EJenisLampiranProfil.KARTU_IDENTITAS, id);
     }
 
     @Transactional
     public Long addLampiran(KartuIdentitasLampiranPostRequest request) {
         if (!repository.existsById(request.getRefId()))
             throw new NotFoundException(UNKNOWN_KARTU_IDENTITAS);
-        lampiranProfilService.addLampiran(request);
+        lampiranProfilCommandService.addLampiran(request);
         return request.getRefId();
     }
 
     @Transactional
     public void deleteLampiran(Long id) {
-        lampiranProfilService.deleteById(id);
+        lampiranProfilCommandService.deleteById(id);
     }
 }

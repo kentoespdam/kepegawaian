@@ -4,7 +4,7 @@ import id.perumdamts.kepegawaian.mapper.profil.keahlian.KeahlianMapper;
 import id.perumdamts.kepegawaian.dto.profil.keahlian.KeahlianLampiranPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.keahlian.KeahlianPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.keahlian.KeahlianPutRequest;
-import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilResponse;
+import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilQuery;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.entities.commons.EProfileUpdateTable;
 import id.perumdamts.kepegawaian.entities.master.JenisKeahlian;
@@ -15,7 +15,8 @@ import id.perumdamts.kepegawaian.repositories.master.jpa.JenisKeahlianRepository
 import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.KeahlianRepository;
 import id.perumdamts.kepegawaian.services.profil.ChangedStatusResolver;
-import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilService;
+import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilCommandService;
+import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilQueryService;
 import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.history.RevisionMetadata;
@@ -35,7 +36,8 @@ public class KeahlianCommandService {
     private final KeahlianRepository repository;
     private final BiodataRepository biodataRepository;
     private final JenisKeahlianRepository jenisKeahlianRepository;
-    private final LampiranProfilService lampiranProfilService;
+    private final LampiranProfilQueryService lampiranProfilQueryService;
+    private final LampiranProfilCommandService lampiranProfilCommandService;
     private final ProfileUpdateService profileUpdateService;
     private final ChangedStatusResolver resolver;
 
@@ -75,20 +77,20 @@ public class KeahlianCommandService {
         entity.setChangedStatus(resolver.requiresApproval());
         repository.save(entity);
         handleRevisionUpdate(entity, RevisionMetadata.RevisionType.DELETE);
-        lampiranProfilService.deleteByRefId(EJenisLampiranProfil.PROFIL_KEAHLIAN, id);
+        lampiranProfilCommandService.deleteByRefId(EJenisLampiranProfil.PROFIL_KEAHLIAN, id);
     }
 
     // Lampiran delegates
-    public List<LampiranProfilResponse> getLampiran(Long id) {
-        return lampiranProfilService.getLampiran(EJenisLampiranProfil.PROFIL_KEAHLIAN, id);
+    public List<LampiranProfilQuery> getLampiran(Long id) {
+        return lampiranProfilQueryService.getLampiran(EJenisLampiranProfil.PROFIL_KEAHLIAN, id);
     }
 
-    public LampiranProfilResponse getLampiranById(Long id) {
-        return lampiranProfilService.getLampiranById(id);
+    public LampiranProfilQuery getLampiranById(Long id) {
+        return lampiranProfilQueryService.getLampiranById(id);
     }
 
     public ResponseEntity<?> getFileLampiranById(Long id) {
-        return lampiranProfilService.getFileLampiranById(EJenisLampiranProfil.PROFIL_KEAHLIAN, id);
+        return lampiranProfilQueryService.getFileLampiranById(EJenisLampiranProfil.PROFIL_KEAHLIAN, id);
     }
 
     @Transactional
@@ -96,13 +98,13 @@ public class KeahlianCommandService {
         boolean exists = repository.existsById(request.getRefId());
         if (!exists)
             throw new NotFoundException(UNKNOWN_KEAHLIAN);
-        lampiranProfilService.addLampiran(request);
+        lampiranProfilCommandService.addLampiran(request);
         return request.getRefId();
     }
 
     @Transactional
     public void deleteLampiran(Long id) {
-        lampiranProfilService.deleteById(id);
+        lampiranProfilCommandService.deleteById(id);
     }
 
     private void handleRevisionUpdate(Keahlian save, RevisionMetadata.RevisionType type) {
