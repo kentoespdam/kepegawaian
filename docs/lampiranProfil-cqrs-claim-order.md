@@ -16,22 +16,22 @@ Tiap issue: `bd update <id> --claim` saat mulai, `bd close <id>` saat selesai (t
 
 ---
 
-## [ ] #2 — READ side · `kepegawaian-94u.1` (READY)
+## [x] #2 — READ side · `kepegawaian-94u.1` (READY)
 > Additive. Belum hapus apa pun. `LampiranRow` JANGAN disentuh.
 
-- [ ] `bd update kepegawaian-94u.1 --claim`
-- [ ] gitnexus_impact: `LampiranProfilServiceImpl.getLampiran` & `getLampiranById` (upstream)
-- [ ] Buat `dto/profil/lampiranProfil/LampiranProfilQuery.java` — POJO `@Data`, 9 field (id, ref, refId, fileName, mimeType, notes, disetujui, disetujuiOleh, tanggalDisetujui). Pertahankan `@JsonFormat`/`@JsonSerialize` pada `tanggalDisetujui`. TANPA `.from(entity)`.
-- [ ] Buat `repositories/profil/jooq/LampiranProfilQueryRepository.java` (JOOQ, DSLContext):
-  - [ ] `List<LampiranProfilQuery> findByRefAndRefId(ref, refId)` — where REF=`(byte) ref.ordinal()` AND REF_ID AND IS_DELETED=false
-  - [ ] `Optional<LampiranProfilQuery> getById(id)` — where ID AND IS_DELETED=false
-  - [ ] map byte ordinal → enum via `EJenisLampiranProfil.values()[b]`
-- [ ] Buat `services/profil/lampiranProfil/LampiranProfilQueryService.java`:
-  - [ ] `getLampiran(jenis,id)` → queryRepo.findByRefAndRefId
-  - [ ] `getLampiranById(id)` → queryRepo.getById(...).orElse(null)
-  - [ ] `getFileLampiranById(jenis,id)` → PINDAH logika streaming byte dari Impl (baris 47–65) APA ADANYA
-- [ ] detect_changes → `./gradlew test` hijau (harus tetap kompilasi tanpa ubah consumer)
-- [ ] `bd close kepegawaian-94u.1`
+- [x] `bd update kepegawaian-94u.1 --claim`
+- [x] gitnexus_impact: `LampiranProfilServiceImpl.getLampiran` & `getLampiranById` (upstream)
+- [x] Buat `dto/profil/lampiranProfil/LampiranProfilQuery.java` — POJO `@Data`, 9 field (id, ref, refId, fileName, mimeType, notes, disetujui, disetujuiOleh, tanggalDisetujui). Pertahankan `@JsonFormat`/`@JsonSerialize` pada `tanggalDisetujui`. TANPA `.from(entity)`.
+- [x] Buat `repositories/profil/jooq/LampiranProfilQueryRepository.java` (JOOQ, DSLContext):
+  - [x] `List<LampiranProfilQuery> findByRefAndRefId(ref, refId)` — where REF=`(byte) ref.ordinal()` AND REF_ID AND IS_DELETED=false
+  - [x] `Optional<LampiranProfilQuery> getById(id)` — where ID AND IS_DELETED=false
+  - [x] map byte ordinal → enum via `EJenisLampiranProfil.values()[b]`
+- [x] Buat `services/profil/lampiranProfil/LampiranProfilQueryService.java`:
+  - [x] `getLampiran(jenis,id)` → queryRepo.findByRefAndRefId
+  - [x] `getLampiranById(id)` → queryRepo.getById(...).orElse(null)
+  - [x] `getFileLampiranById(jenis,id)` → PINDAH logika streaming byte dari Impl (baris 47–65) APA ADANYA
+- [x] detect_changes → `./gradlew test` hijau (harus tetap kompilasi tanpa ubah consumer)
+- [x] `bd close kepegawaian-94u.1`
 
 ## [ ] #3 — WRITE side · `kepegawaian-94u.2` (blocked by #2)
 > Interface lama MASIH ada (6 consumer pakai). Jangan dihapus di sini.
