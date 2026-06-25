@@ -5,8 +5,6 @@ import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanQuery;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
 
-import java.util.Objects;
-
 public class PendidikanRowMapper implements RecordMapper<Record, PendidikanQuery> {
 
     @Override
@@ -17,8 +15,11 @@ public class PendidikanRowMapper implements RecordMapper<Record, PendidikanQuery
         q.setBiodataNik(record.get("biodata_nik", String.class));
         q.setBiodataNama(record.get("biodata_nama", String.class));
 
+        // self_jenjang_id is the authoritative FK on the pendidikan row; jenjang_id is the
+        // joined master id (present only when the FK resolves). Both null on rows without jenjang.
+        Long selfJenjangId = record.get("self_jenjang_id", Long.class);
         Long jenjangId = record.get("jenjang_id", Long.class);
-        q.setJenjangId(Objects.requireNonNullElse(record.get("self_jenjang_id", Long.class), jenjangId));
+        q.setJenjangId(selfJenjangId != null ? selfJenjangId : jenjangId);
 
         if (jenjangId != null) {
             JenjangPendidikanResponse jp = new JenjangPendidikanResponse();
