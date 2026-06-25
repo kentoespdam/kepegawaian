@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.services.profil.biodata;
 
+import id.perumdamts.kepegawaian.mapper.profil.biodata.BiodataMapper;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPatchRequest;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPutRequest;
@@ -9,7 +10,7 @@ import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JenjangPendidikanRepository;
-import id.perumdamts.kepegawaian.repositories.profil.BiodataRepository;
+import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
 import id.perumdamts.kepegawaian.services.profil.kartuIdentitas.KartuIdentitasCommandService;
 import id.perumdamts.kepegawaian.services.profil.pendidikan.PendidikanCommandService;
 import id.perumdamts.kepegawaian.utils.FileUploadUtil;
@@ -46,7 +47,7 @@ public class BiodataCommandService {
                     .orElseThrow(() -> new NotFoundException(UNKNOWN_JENJANG));
         }
 
-        Biodata entity = BiodataPostRequest.toEntity(request, jenjang);
+        Biodata entity = BiodataMapper.toEntity(request, jenjang);
         entity = repository.save(entity);
 
         // Seed: 1 Pendidikan (isLatest=true, changedStatus=false)
@@ -71,7 +72,7 @@ public class BiodataCommandService {
                     .orElseThrow(() -> new NotFoundException(UNKNOWN_JENJANG));
         }
 
-        BiodataPutRequest.toEntity(request, entity, jenjang);
+        BiodataMapper.updateEntity(entity, request, jenjang);
         return repository.save(entity);
     }
 
@@ -80,7 +81,7 @@ public class BiodataCommandService {
         Biodata entity = repository.findById(nik)
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
 
-        BiodataPatchRequest.toEntity(entity, request);
+        BiodataMapper.patchEntity(entity, request);
         return repository.save(entity);
     }
 
@@ -98,7 +99,7 @@ public class BiodataCommandService {
         JenjangPendidikan jenjang = jenjangPendidikanRepository
                 .findById(request.getPendidikanTerakhirId())
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_JENJANG));
-        Biodata entity = BiodataPostRequest.toEntity(request, jenjang);
+        Biodata entity = BiodataMapper.toEntity(request, jenjang);
         Biodata saved = repository.save(entity);
         pendidikanCommandService.seedFromBiodata(saved, jenjang);
         kartuIdentitasCommandService.seedFromBiodata(saved);

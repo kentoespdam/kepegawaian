@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.services.profil.kartuIdentitas;
 
+import id.perumdamts.kepegawaian.mapper.profil.kartuIdentitas.KartuIdentitasMapper;
 import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasLampiranPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasPutRequest;
@@ -10,8 +11,8 @@ import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.KartuIdentitas;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JenisKitasRepository;
-import id.perumdamts.kepegawaian.repositories.profil.BiodataRepository;
-import id.perumdamts.kepegawaian.repositories.profil.KartuIdentitasRepository;
+import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
+import id.perumdamts.kepegawaian.repositories.profil.jpa.KartuIdentitasRepository;
 import id.perumdamts.kepegawaian.services.profil.ChangedStatusResolver;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilService;
 import lombok.RequiredArgsConstructor;
@@ -68,7 +69,7 @@ public class KartuIdentitasCommandService {
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
         JenisKitas jenisKartu = jenisKitasRepository.findById(request.getJenisKartuId())
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_JENIS_KARTU));
-        KartuIdentitasPutRequest.toEntity(request, entity, biodata, jenisKartu);
+        KartuIdentitasMapper.updateEntity(entity, request, biodata, jenisKartu);
         entity.setChangedStatus(resolver.requiresApproval());
         // NO profileUpdateService — KartuIdentitas not in EProfileUpdateTable
         return repository.save(entity).getId();

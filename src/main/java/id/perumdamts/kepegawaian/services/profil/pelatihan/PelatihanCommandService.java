@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.services.profil.pelatihan;
 
+import id.perumdamts.kepegawaian.mapper.profil.pelatihan.PelatihanMapper;
 import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilResponse;
 import id.perumdamts.kepegawaian.dto.profil.pelatihan.PelatihanLampiranPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.pelatihan.PelatihanPostRequest;
@@ -11,8 +12,8 @@ import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.Pelatihan;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JenisPelatihanRepository;
-import id.perumdamts.kepegawaian.repositories.profil.BiodataRepository;
-import id.perumdamts.kepegawaian.repositories.profil.PelatihanRepository;
+import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
+import id.perumdamts.kepegawaian.repositories.profil.jpa.PelatihanRepository;
 import id.perumdamts.kepegawaian.services.profil.ChangedStatusResolver;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilService;
 import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
@@ -46,7 +47,7 @@ public class PelatihanCommandService {
                 .findById(request.getJenisPelatihanId())
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_JENIS_PELATIHAN));
 
-        Pelatihan entity = PelatihanPostRequest.toEntity(request, biodata, jenisPelatihan);
+        Pelatihan entity = PelatihanMapper.toEntity(request, biodata, jenisPelatihan);
         entity.setChangedStatus(resolver.requiresApproval());
 
         Pelatihan saved = repository.save(entity);
@@ -64,7 +65,7 @@ public class PelatihanCommandService {
                 .findById(request.getJenisPelatihanId())
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_JENIS_PELATIHAN));
 
-        Pelatihan updated = PelatihanPutRequest.toEntity(request, entity, biodata, jenisPelatihan);
+        Pelatihan updated = PelatihanMapper.updateEntity(entity, request, biodata, jenisPelatihan);
         updated.setChangedStatus(resolver.requiresApproval());
 
         Pelatihan saved = repository.save(updated);

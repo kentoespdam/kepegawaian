@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.services.profil.keluarga;
 
+import id.perumdamts.kepegawaian.mapper.profil.keluarga.ProfilKeluargaMapper;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaLampiranPostRequest;
@@ -14,8 +15,8 @@ import id.perumdamts.kepegawaian.entities.profil.ProfilKeluarga;
 import id.perumdamts.kepegawaian.exceptions.ConflictException;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JenjangPendidikanRepository;
-import id.perumdamts.kepegawaian.repositories.profil.BiodataRepository;
-import id.perumdamts.kepegawaian.repositories.profil.ProfilKeluargaRepository;
+import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
+import id.perumdamts.kepegawaian.repositories.profil.jpa.ProfilKeluargaRepository;
 import id.perumdamts.kepegawaian.services.profil.ChangedStatusResolver;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilService;
 import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
@@ -55,7 +56,7 @@ public class ProfilKeluargaCommandService {
 
         JenjangPendidikan jenjangPendidikan = resolveJenjangPendidikan(request.getPendidikanId());
 
-        ProfilKeluarga entity = ProfilKeluargaPostRequest.toEntity(request, biodata, jenjangPendidikan);
+        ProfilKeluarga entity = ProfilKeluargaMapper.toEntity(request, biodata, jenjangPendidikan);
         entity.setChangedStatus(resolver.requiresApproval());
 
         repository.save(entity);
@@ -90,7 +91,7 @@ public class ProfilKeluargaCommandService {
 
         JenjangPendidikan jenjangPendidikan = resolveJenjangPendidikan(request.getPendidikanId());
 
-        ProfilKeluarga updated = ProfilKeluargaPutRequest.toEntity(request, entity, jenjangPendidikan);
+        ProfilKeluarga updated = ProfilKeluargaMapper.updateEntity(entity, request, jenjangPendidikan);
         updated.setBiodata(biodata);
         updated.setChangedStatus(resolver.requiresApproval());
 

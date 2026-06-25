@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.services.profil.pendidikan;
 
+import id.perumdamts.kepegawaian.mapper.profil.pendidikan.PendidikanMapper;
 import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilResponse;
 import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanLampiranPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanPostRequest;
@@ -11,8 +12,8 @@ import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.Pendidikan;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JenjangPendidikanRepository;
-import id.perumdamts.kepegawaian.repositories.profil.BiodataRepository;
-import id.perumdamts.kepegawaian.repositories.profil.PendidikanRepository;
+import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
+import id.perumdamts.kepegawaian.repositories.profil.jpa.PendidikanRepository;
 import id.perumdamts.kepegawaian.services.profil.ChangedStatusResolver;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilService;
 import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
@@ -46,7 +47,7 @@ public class PendidikanCommandService {
                 .findById(request.getJenjangPendidikanId())
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_JENJANG));
 
-        Pendidikan pendidikan = PendidikanPostRequest.from(request, biodata, jenjangPendidikan);
+        Pendidikan pendidikan = PendidikanMapper.toEntity(request, biodata, jenjangPendidikan);
         pendidikan.setChangedStatus(resolver.requiresApproval());
 
         Pendidikan save = repository.save(pendidikan);
@@ -65,7 +66,7 @@ public class PendidikanCommandService {
                 .findById(request.getJenjangPendidikanId())
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_JENJANG));
 
-        Pendidikan entity = PendidikanPutRequest.from(request, pendidikan, biodata, jenjangPendidikan);
+        Pendidikan entity = PendidikanMapper.updateEntity(pendidikan, request, biodata, jenjangPendidikan);
         entity.setChangedStatus(resolver.requiresApproval());
 
         Pendidikan save = repository.save(entity);

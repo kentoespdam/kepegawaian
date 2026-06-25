@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.services.profil.lampiranProfil;
 
+import id.perumdamts.kepegawaian.mapper.profil.lampiranProfil.LampiranProfilMapper;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
@@ -8,7 +9,7 @@ import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilPostReq
 import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilResponse;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.entities.profil.LampiranProfil;
-import id.perumdamts.kepegawaian.repositories.profil.LampiranProfilRepository;
+import id.perumdamts.kepegawaian.repositories.profil.jpa.LampiranProfilRepository;
 import id.perumdamts.kepegawaian.utils.FileUploadUtil;
 import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import id.perumdamts.kepegawaian.utils.UploadResultUtil;
@@ -76,7 +77,7 @@ public class LampiranProfilServiceImpl implements LampiranProfilService {
             if (!uploadedFile.isSuccess())
                 return SavedStatus.build(ESaveStatus.FAILED, uploadedFile.getMessage());
 
-            LampiranProfil entity = LampiranProfilPostRequest.toEntity(
+            LampiranProfil entity = LampiranProfilMapper.toEntity(
                     request,
                     uploadedFile.getFileName(),
                     uploadedFile.getHashedFileName(),
@@ -106,7 +107,7 @@ public class LampiranProfilServiceImpl implements LampiranProfilService {
         try {
             LampiranProfil lampiranProfil = repository.findOne(request.getSpecification())
                     .orElseThrow(() -> new RuntimeException("Lampiran Profil accept not found!"));
-            LampiranProfil entity = LampiranProfilAcceptRequest.toEntity(lampiranProfil, oleh);
+            LampiranProfil entity = LampiranProfilMapper.accept(lampiranProfil, oleh);
             repository.save(entity);
             return SavedStatus.build(ESaveStatus.SUCCESS, "Success Accept Lampiran");
         } catch (Exception e) {

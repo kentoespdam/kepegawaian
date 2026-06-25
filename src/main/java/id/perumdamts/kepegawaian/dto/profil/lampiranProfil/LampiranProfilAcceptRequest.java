@@ -8,8 +8,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.time.LocalDateTime;
-
 @Data
 public class LampiranProfilAcceptRequest {
     @NotNull(message = "ID is required")
@@ -28,12 +26,5 @@ public class LampiranProfilAcceptRequest {
                 cb.equal(root.get("ref"), ref),
                 cb.equal(root.get("refId"), refId)
         );
-    }
-
-    public static LampiranProfil toEntity(LampiranProfil entity, String oleh) {
-        entity.setDisetujui(true);
-        entity.setDisetujuiOleh(oleh);
-        entity.setTanggalDisetujui(LocalDateTime.now());
-        return entity;
     }
 }

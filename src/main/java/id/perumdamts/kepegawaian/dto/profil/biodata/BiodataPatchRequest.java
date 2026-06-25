@@ -3,7 +3,6 @@ package id.perumdamts.kepegawaian.dto.profil.biodata;
 import id.perumdamts.kepegawaian.entities.commons.EAgama;
 import id.perumdamts.kepegawaian.entities.commons.EJenisKelamin;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKawin;
-import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Data;
@@ -24,17 +23,4 @@ public class BiodataPatchRequest {
     private LocalDate tanggalLahir;
     private String ibuKandung;
     private String telp;
-
-    public static Biodata toEntity(Biodata entity, BiodataPatchRequest request ){
-        entity.setNama(request.getNama());
-        entity.setAlamat(request.getAlamat());
-        entity.setJenisKelamin(request.getJenisKelamin());
-        entity.setStatusKawin(request.getStatusKawin());
-        entity.setAgama(request.getAgama());
-        entity.setTempatLahir(request.getTempatLahir());
-        entity.setTanggalLahir(request.getTanggalLahir());
-        entity.setIbuKandung(request.getIbuKandung());
-        entity.setTelp(request.getTelp());
-        return entity;
-    }
 }

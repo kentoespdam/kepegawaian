@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.repositories.profil;
+package id.perumdamts.kepegawaian.repositories.profil.jpa;
 
 import id.perumdamts.kepegawaian.entities.commons.EProfileUpdateApproval;
 import id.perumdamts.kepegawaian.entities.profil.ProfileUpdate;

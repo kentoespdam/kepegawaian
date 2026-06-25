@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.services.profil.keahlian;
 
+import id.perumdamts.kepegawaian.mapper.profil.keahlian.KeahlianMapper;
 import id.perumdamts.kepegawaian.dto.profil.keahlian.KeahlianLampiranPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.keahlian.KeahlianPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.keahlian.KeahlianPutRequest;
@@ -11,8 +12,8 @@ import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.Keahlian;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JenisKeahlianRepository;
-import id.perumdamts.kepegawaian.repositories.profil.BiodataRepository;
-import id.perumdamts.kepegawaian.repositories.profil.KeahlianRepository;
+import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
+import id.perumdamts.kepegawaian.repositories.profil.jpa.KeahlianRepository;
 import id.perumdamts.kepegawaian.services.profil.ChangedStatusResolver;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilService;
 import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
@@ -44,7 +45,7 @@ public class KeahlianCommandService {
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
         JenisKeahlian jenisKeahlian = jenisKeahlianRepository.findById(request.getKeahlianId())
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_JENIS_KEAHLIAN));
-        Keahlian keahlian = KeahlianPostRequest.toEntity(request, biodata, jenisKeahlian);
+        Keahlian keahlian = KeahlianMapper.toEntity(request, biodata, jenisKeahlian);
         keahlian.setChangedStatus(resolver.requiresApproval());
         Keahlian save = repository.save(keahlian);
         handleRevisionUpdate(save, RevisionMetadata.RevisionType.INSERT);
@@ -59,7 +60,7 @@ public class KeahlianCommandService {
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
         JenisKeahlian jenisKeahlian = jenisKeahlianRepository.findById(request.getKeahlianId())
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_JENIS_KEAHLIAN));
-        Keahlian entity = KeahlianPutRequest.toEntity(request, keahlian, biodata, jenisKeahlian);
+        Keahlian entity = KeahlianMapper.updateEntity(keahlian, request, biodata, jenisKeahlian);
         entity.setChangedStatus(resolver.requiresApproval());
         Keahlian save = repository.save(entity);
         handleRevisionUpdate(save, RevisionMetadata.RevisionType.UPDATE);

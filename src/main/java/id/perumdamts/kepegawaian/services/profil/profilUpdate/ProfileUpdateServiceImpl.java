@@ -13,7 +13,7 @@ import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.ProfileUpdate;
 import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
-import id.perumdamts.kepegawaian.repositories.profil.ProfileUpdateRepository;
+import id.perumdamts.kepegawaian.repositories.profil.jpa.ProfileUpdateRepository;
 import id.perumdamts.kepegawaian.services.revInfo.RevInfoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

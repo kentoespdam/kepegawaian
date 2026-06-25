@@ -2,8 +2,6 @@ package id.perumdamts.kepegawaian.dto.profil.kartuIdentitas;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import id.perumdamts.kepegawaian.entities.master.JenisKitas;
-import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.KartuIdentitas;
 import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.Min;
@@ -34,20 +32,5 @@ public class KartuIdentitasPostRequest {
                 .addEqual(jenisKartuId, "jenisKartu", "id")
                 .addEqual(nomorKartu, "nomorKartu")
                 .build();
-    }
-
-    public static KartuIdentitas toEntity(
-            KartuIdentitasPostRequest request,
-            Biodata biodata,
-            JenisKitas jenisKartu
-    ) {
-        KartuIdentitas entity = new KartuIdentitas();
-        entity.setBiodata(biodata);
-        entity.setJenisKartu(jenisKartu);
-        entity.setNomorKartu(request.getNomorKartu());
-        entity.setTanggalExpired(request.getTanggalExpired());
-        entity.setTanggalTerima(request.getTanggalTerima());
-        entity.setNotes(request.getNotes());
-        return entity;
     }
 }

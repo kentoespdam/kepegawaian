@@ -5,7 +5,6 @@ import id.perumdamts.kepegawaian.entities.commons.EAgama;
 import id.perumdamts.kepegawaian.entities.commons.EGolonganDarah;
 import id.perumdamts.kepegawaian.entities.commons.EJenisKelamin;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKawin;
-import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.persistence.EnumType;
@@ -56,24 +55,5 @@ public class BiodataPostRequest {
                 .addEqual(tempatLahir, "tempatLahir")
                 .addEqual(tanggalLahir, "tanggalLahir")
                 .build();
-    }
-
-    public static Biodata toEntity(BiodataPostRequest request, JenjangPendidikan pendidikanTerakhir) {
-        Biodata entity = new Biodata();
-        entity.setNik(request.getNik());
-        entity.setNama(request.getNama());
-        entity.setJenisKelamin(request.getJenisKelamin());
-        entity.setTempatLahir(request.getTempatLahir());
-        entity.setTanggalLahir(request.getTanggalLahir());
-        entity.setAlamat(request.getAlamat());
-        entity.setTelp(request.getTelp());
-        entity.setAgama(request.getAgama());
-        entity.setIbuKandung(request.getIbuKandung());
-        entity.setPendidikanTerakhir(pendidikanTerakhir);
-        entity.setGolonganDarah(request.getGolonganDarah());
-        entity.setStatusKawin(request.getStatusKawin());
-        entity.setNotes(request.getNotes());
-        entity.setIsPegawai(request.getIsPegawai());
-        return entity;
     }
 }

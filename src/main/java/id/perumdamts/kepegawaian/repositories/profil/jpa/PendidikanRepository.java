@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.repositories.profil;
+package id.perumdamts.kepegawaian.repositories.profil.jpa;
 
 import id.perumdamts.kepegawaian.entities.profil.Pendidikan;
 import org.springframework.data.jpa.repository.JpaRepository;

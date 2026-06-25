@@ -5,8 +5,6 @@ import id.perumdamts.kepegawaian.entities.commons.EAgama;
 import id.perumdamts.kepegawaian.entities.commons.EHubunganKeluarga;
 import id.perumdamts.kepegawaian.entities.commons.EJenisKelamin;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPendidikan;
-import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
-import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.ProfilKeluarga;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -61,27 +59,5 @@ public class ProfilKeluargaPostRequest {
                         criteriaBuilder.equal(root.get("jenisKelamin"), jenisKelamin),
                         criteriaBuilder.equal(root.get("hubunganKeluarga"), hubunganKeluarga)
                 );
-    }
-
-    public static ProfilKeluarga toEntity(
-            ProfilKeluargaPostRequest request,
-            Biodata biodata,
-            JenjangPendidikan pendidikan
-    ) {
-        ProfilKeluarga entity = new ProfilKeluarga();
-        entity.setBiodata(biodata);
-        entity.setNik(request.getNik());
-        entity.setNama(request.getNama());
-        entity.setJenisKelamin(request.getJenisKelamin());
-        entity.setAgama(request.getAgama());
-        entity.setHubunganKeluarga(request.getHubunganKeluarga());
-        entity.setTempatLahir(request.getTempatLahir());
-        entity.setTanggalLahir(request.getTanggalLahir());
-        entity.setTanggungan(request.getTanggungan());
-        if (pendidikan != null) entity.setPendidikan(pendidikan);
-        entity.setStatusPendidikan(request.getStatusPendidikan());
-        entity.setStatusKawin(request.getStatusKawin());
-        entity.setNotes(request.getNotes());
-        return entity;
     }
 }

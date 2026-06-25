@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.services.profil.pengalamanKerja;
 
+import id.perumdamts.kepegawaian.mapper.profil.pengalamanKerja.PengalamanKerjaMapper;
 import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilResponse;
 import id.perumdamts.kepegawaian.dto.profil.pengalamanKerja.PengalamanKerjaPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.pengalamanKerja.PengalamanKerjaPutRequest;
@@ -9,8 +10,8 @@ import id.perumdamts.kepegawaian.entities.commons.EProfileUpdateTable;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.PengalamanKerja;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
-import id.perumdamts.kepegawaian.repositories.profil.BiodataRepository;
-import id.perumdamts.kepegawaian.repositories.profil.PengalamanKerjaRepository;
+import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
+import id.perumdamts.kepegawaian.repositories.profil.jpa.PengalamanKerjaRepository;
 import id.perumdamts.kepegawaian.services.profil.ChangedStatusResolver;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilService;
 import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
@@ -38,7 +39,7 @@ public class PengalamanKerjaCommandService {
     public Long create(PengalamanKerjaPostRequest request) {
         Biodata biodata = biodataRepository.findById(request.getBiodataId())
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
-        PengalamanKerja entity = PengalamanKerjaPostRequest.toEntity(request, biodata);
+        PengalamanKerja entity = PengalamanKerjaMapper.toEntity(request, biodata);
         entity.setChangedStatus(resolver.requiresApproval());
         PengalamanKerja save = repository.save(entity);
         profileUpdateService.create(save.getId(), RevisionMetadata.RevisionType.INSERT, EProfileUpdateTable.PENGALAMAN_KERJA);
@@ -51,7 +52,7 @@ public class PengalamanKerjaCommandService {
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_PENGALAMAN_KERJA));
         Biodata biodata = biodataRepository.findById(request.getBiodataId())
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
-        PengalamanKerja updated = PengalamanKerjaPutRequest.toEntity(request, entity, biodata);
+        PengalamanKerja updated = PengalamanKerjaMapper.updateEntity(entity, request, biodata);
         updated.setChangedStatus(resolver.requiresApproval());
         PengalamanKerja save = repository.save(updated);
         profileUpdateService.create(save.getId(), RevisionMetadata.RevisionType.UPDATE, EProfileUpdateTable.PENGALAMAN_KERJA);

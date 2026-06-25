@@ -3,7 +3,7 @@ package id.perumdamts.kepegawaian.services.profil.profilUpdate;
 import id.perumdamts.kepegawaian.entities.commons.EProfileUpdateApproval;
 import id.perumdamts.kepegawaian.entities.profil.Pendidikan;
 import id.perumdamts.kepegawaian.entities.profil.ProfileUpdate;
-import id.perumdamts.kepegawaian.repositories.profil.PendidikanRepository;
+import id.perumdamts.kepegawaian.repositories.profil.jpa.PendidikanRepository;
 import id.perumdamts.kepegawaian.services.revInfo.RevInfoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

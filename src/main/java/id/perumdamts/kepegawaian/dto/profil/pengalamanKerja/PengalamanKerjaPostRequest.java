@@ -1,7 +1,6 @@
 package id.perumdamts.kepegawaian.dto.profil.pengalamanKerja;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.PengalamanKerja;
 import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.NotEmpty;
@@ -31,20 +30,5 @@ public class PengalamanKerjaPostRequest {
                 .addEqual(typePerusahaan, "typePerusahaan")
                 .addEqual(jabatan, "jabatan")
                 .build();
-    }
-
-    public static PengalamanKerja toEntity(PengalamanKerjaPostRequest request, Biodata biodata) {
-        PengalamanKerja entity = new PengalamanKerja();
-        entity.setBiodata(biodata);
-        entity.setNamaPerusahaan(request.getNamaPerusahaan());
-        entity.setTypePerusahaan(request.getTypePerusahaan());
-        entity.setJabatan(request.getJabatan());
-        entity.setLokasi(request.getLokasi());
-        entity.setTahunMasuk(request.getTahunMasuk());
-        entity.setTahunKeluar(request.getTahunKeluar());
-        entity.setNotes(request.getNotes());
-        entity.setDisetujui(true);
-        entity.setTanggalPengajuan(LocalDateTime.now());
-        return entity;
     }
 }

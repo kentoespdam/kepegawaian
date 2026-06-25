@@ -34,17 +34,4 @@ public class LampiranProfilPostRequest implements Serializable {
                 .addEqual(fileName, "fileName")
                 .build();
     }
-
-    public static LampiranProfil toEntity(LampiranProfilPostRequest request, String fileName, String hashedFileName, String mimeType) {
-        LampiranProfil entity = new LampiranProfil();
-        entity.setRef(request.getRef());
-        entity.setRefId(request.getRefId());
-        entity.setFileName(fileName);
-        entity.setNotes(request.getNotes());
-        entity.setHashedFileName(hashedFileName);
-        entity.setMimeType(mimeType);
-        entity.setDisetujui(true);
-        entity.setTanggalPengajuan(LocalDateTime.now());
-        return entity;
-    }
 }

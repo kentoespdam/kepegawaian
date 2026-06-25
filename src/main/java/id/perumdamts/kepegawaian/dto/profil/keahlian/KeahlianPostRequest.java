@@ -2,8 +2,6 @@ package id.perumdamts.kepegawaian.dto.profil.keahlian;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.commons.EKualifikasi;
-import id.perumdamts.kepegawaian.entities.master.JenisKeahlian;
-import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.Keahlian;
 import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.persistence.EnumType;
@@ -39,19 +37,5 @@ public class KeahlianPostRequest {
                 .addEqual(keahlianId, "jenisKeahlian", "id")
                 .addEqual(tahun, "tahun")
                 .build();
-    }
-
-    public static Keahlian toEntity(KeahlianPostRequest request, Biodata biodata, JenisKeahlian jenisKeahlian) {
-        Keahlian entity = new Keahlian();
-        entity.setBiodata(biodata);
-        entity.setJenisKeahlian(jenisKeahlian);
-        entity.setKualifikasi(request.getKualifikasi());
-        entity.setSertifikasi(request.getSertifikasi());
-        entity.setInstitusi(request.getInstitusi());
-        entity.setTahun(request.getTahun());
-        entity.setMasaBerlaku(request.getMasaBerlaku());
-        entity.setDisetujui(true);
-        entity.setTanggalPengajuan(LocalDateTime.now());
-        return entity;
     }
 }

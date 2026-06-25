@@ -3,7 +3,7 @@ package id.perumdamts.kepegawaian.services.profil.profilUpdate;
 import id.perumdamts.kepegawaian.entities.commons.EProfileUpdateApproval;
 import id.perumdamts.kepegawaian.entities.profil.ProfilKeluarga;
 import id.perumdamts.kepegawaian.entities.profil.ProfileUpdate;
-import id.perumdamts.kepegawaian.repositories.profil.ProfilKeluargaRepository;
+import id.perumdamts.kepegawaian.repositories.profil.jpa.ProfilKeluargaRepository;
 import id.perumdamts.kepegawaian.services.revInfo.RevInfoService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

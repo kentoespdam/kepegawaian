@@ -1,8 +1,6 @@
 package id.perumdamts.kepegawaian.dto.profil.pendidikan;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
-import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.Pendidikan;
 import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.Min;
@@ -35,22 +33,5 @@ public class PendidikanPostRequest {
                 .addEqual(biodataId, "biodata", "nik")
                 .addEqual(jenjangPendidikanId, "jenjangPendidikan", "id")
                 .build();
-    }
-
-    public static Pendidikan from(PendidikanPostRequest request, Biodata biodata, JenjangPendidikan jenjangPendidikan) {
-        Pendidikan entity = new Pendidikan();
-        entity.setBiodata(biodata);
-        entity.setJenjangPendidikan(jenjangPendidikan);
-        entity.setGelarDepan(request.getGelarDepan());
-        entity.setGelarBelakang(request.getGelarBelakang());
-        entity.setJurusan(request.getJurusan());
-        entity.setInstitusi(request.getInstitusi());
-        entity.setKota(request.getKota());
-        entity.setTahunMasuk(request.getTahunMasuk());
-        entity.setIsLulus(request.getIsLulus());
-        entity.setTahunLulus(request.getTahunLulus());
-        entity.setGpa(request.getGpa());
-        entity.setIsLatest(request.getIsLatest());
-        return entity;
     }
 }
