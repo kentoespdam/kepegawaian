@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -49,7 +50,24 @@ public class PendidikanCommandService {
                 .findById(request.getJenjangPendidikanId())
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_JENJANG));
 
-        Pendidikan pendidikan = PendidikanMapper.toEntity(request, biodata, jenjangPendidikan);
+        // Native carcass-finder — JpaSpecificationExecutor.findOne() respects
+        // @SQLRestriction and would hide soft-deleted rows (see kepegawaian-33s, ADR-0005).
+        Optional<Pendidikan> existing = repository.findAnyByUniqueKey(
+                biodata.getNik(), jenjangPendidikan.getId(), request.getTahunMasuk());
+        Pendidikan pendidikan = existing.orElseGet(Pendidikan::new);
+        pendidikan.setBiodata(biodata);
+        pendidikan.setJenjangPendidikan(jenjangPendidikan);
+        pendidikan.setGelarDepan(request.getGelarDepan());
+        pendidikan.setGelarBelakang(request.getGelarBelakang());
+        pendidikan.setJurusan(request.getJurusan());
+        pendidikan.setInstitusi(request.getInstitusi());
+        pendidikan.setKota(request.getKota());
+        pendidikan.setTahunMasuk(request.getTahunMasuk());
+        pendidikan.setIsLulus(request.getIsLulus());
+        pendidikan.setTahunLulus(request.getTahunLulus());
+        pendidikan.setGpa(request.getGpa());
+        pendidikan.setIsLatest(request.getIsLatest());
+        pendidikan.setIsDeleted(false);
         pendidikan.setChangedStatus(resolver.requiresApproval());
 
         Pendidikan save = repository.save(pendidikan);
