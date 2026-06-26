@@ -235,13 +235,24 @@ CREATE TABLE profil_keluarga (
 -- Table is created to satisfy the entity (PegawaiProfilUpdate references it
 -- for some queries). Kept minimal to mirror @Column shapes.
 -- ----------------------------------------------------------------------
-CREATE TABLE profil_update (
-    id BIGINT NOT NULL AUTO_INCREMENT,
-    biodata_id VARCHAR(255) DEFAULT NULL,
-    field_name VARCHAR(255) DEFAULT NULL,
-    old_value TEXT DEFAULT NULL,
-    new_value TEXT DEFAULT NULL,
-    PRIMARY KEY (id)
+CREATE TABLE `profil_update` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `action_type` tinyint(4) DEFAULT NULL,
+  `approval_date` datetime(6) DEFAULT NULL,
+  `approval_pic` varchar(255) DEFAULT NULL,
+  `approval_status` tinyint(4) DEFAULT NULL,
+  `data_description` varchar(255) DEFAULT NULL,
+  `jabatan` varchar(255) DEFAULT NULL,
+  `nama` varchar(255) DEFAULT NULL,
+  `nipam` varchar(255) DEFAULT NULL,
+  `req_date` timestamp NULL DEFAULT current_timestamp(),
+  `rev_id` bigint(20) DEFAULT NULL,
+  `table_name` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `idx_profile_update_nipam` (`nipam`) USING BTREE,
+  KEY `idx_profile_update_nama` (`nama`) USING BTREE,
+  KEY `idx_profile_update` (`approval_status`) USING BTREE,
+  KEY `idx_profile_update_req_date` (`req_date`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ======================================================================

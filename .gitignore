@@ -49,3 +49,4 @@ graphify-out/cache/
 *.db
 .beads-credential-key
 /dummy_prompt.md
+.antigravitycli/
