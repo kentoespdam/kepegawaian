@@ -51,6 +51,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
 
+    // Spring Actuator
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+
     // Spring Data
     implementation("org.springframework.data:spring-data-envers")
 

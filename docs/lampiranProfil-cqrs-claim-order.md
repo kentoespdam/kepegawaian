@@ -74,6 +74,6 @@ Tiap issue: `bd update <id> --claim` saat mulai, `bd close <id>` saat selesai (t
 
 ## Session close (setelah semua hijau)
 - [x] quality gates hijau
-- [ ] `bd dolt push`
-- [ ] `git pull --rebase`
-- [ ] `git push` → verifikasi "up to date with origin"
+- [x] `bd dolt push`
+- [x] `git pull --rebase`
+- [x] `git push` → verifikasi "up to date with origin"

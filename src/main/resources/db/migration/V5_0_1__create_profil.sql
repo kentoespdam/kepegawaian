@@ -90,21 +90,29 @@ CREATE TABLE keahlian (
 -- ----------------------------------------------------------------------
 -- lampiran_profil
 -- ----------------------------------------------------------------------
-CREATE TABLE lampiran_profil (
-    id BIGINT NOT NULL AUTO_INCREMENT,
-    biodata_id VARCHAR(255) NOT NULL,
-    nama VARCHAR(255) DEFAULT NULL,
-    jenis VARCHAR(255) DEFAULT NULL,
-    file_url VARCHAR(255) DEFAULT NULL,
-    notes TEXT DEFAULT NULL,
-    created_by VARCHAR(255) DEFAULT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_by VARCHAR(255) DEFAULT NULL,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    is_deleted BIT(1) NOT NULL DEFAULT 0,
-    PRIMARY KEY (id),
-    KEY idx_lampiran_profil_biodata (biodata_id),
-    CONSTRAINT fk_lampiran_profil_biodata FOREIGN KEY (biodata_id) REFERENCES biodata(nik)
+CREATE TABLE `lampiran_profil` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  
+  `file_name` varchar(255) DEFAULT NULL,
+  `hashed_file_name` varchar(255) DEFAULT NULL,
+  `mime_type` varchar(255) DEFAULT NULL,
+  `notes` varchar(255) DEFAULT NULL,
+  `ref` tinyint(4) NOT NULL,
+  `ref_id` bigint(20) NOT NULL,
+  `tanggal_pengajuan` datetime(6) DEFAULT NULL,
+  `tanggal_disetujui` datetime(6) DEFAULT NULL,
+  `disetujui` bit(1) DEFAULT NULL,
+  `disetujui_oleh` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `IDXnqxyy5rw082ve9ndt7bsti7ww` (`is_deleted`) USING BTREE,
+  KEY `IDXcbxxx72ltdffrpex2eoky44lw` (`ref`) USING BTREE,
+  KEY `IDXsr43t3b8l3f27u4q7ciqsmkke` (`ref_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------------------------------------------------
