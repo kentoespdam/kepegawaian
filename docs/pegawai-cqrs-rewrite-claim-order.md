@@ -34,9 +34,9 @@ Urutan klaim mengikuti **dependency**, bukan nomor issue. Issue dalam wave yang 
 
 ## WAVE 2 — Builder (3 issue paralel, file berbeda, tidak saling blok)
 
-- [ ] **khj.3**: `PegawaiQueryRepository` (JOOQ) — list/page + findByNipam + findById + findByIds, nested mini-projection · `P2` · deps: khj.1
-- [ ] **khj.4**: Ringkasan read (JOOQ lintas modul) — `riwayat_sk` multiset + `pendidikan.is_latest` + `kartu_identitas`; mapper + query baru · `P2` · deps: khj.1
-- [ ] **khj.5**: `PegawaiCommandService` — saga `@Transactional` (save/saveBatch/update/patchGaji/patchProfil/delete), createUser terakhir, exception tak ditelan · `P2` · deps: khj.2
+- [x] **khj.3**: `PegawaiQueryRepository` (JOOQ) — list/page + findByNipam + findById + findByIds, nested mini-projection · `P2` · deps: khj.1
+- [x] **khj.4**: Ringkasan read (JOOQ lintas modul) — `riwayat_sk` multiset + `pendidikan.is_latest` + `kartu_identitas`; mapper + query baru · `P2` · deps: khj.1
+- [x] **khj.5**: `PegawaiCommandService` — saga `@Transactional` (save/saveBatch/update/patchGaji/patchProfil/delete), createUser terakhir, exception tak ditelan · `P2` · deps: khj.2
 
 > khj.3 & khj.4 = file baru di `repositories/pegawai/jooq` (+ `mapper/pegawai` utk khj.4). khj.5 = file baru di `services/pegawai`. Tiga-tiganya file baru terpisah → aman paralel. khj.3/khj.4 butuh khj.1; khj.5 butuh khj.2.
 
@@ -71,20 +71,20 @@ khj(EPIC) ─┬─ khj.1 (read foundation) ─┬─ khj.3 (QueryRepository) �
 - [x] `detect_changes` hanya `config/` + `application.yml`
 
 **khj.3 (QueryRepository)**
-- [ ] list/page, findByNipam, findById, findByIds dilayani JOOQ; perilaku sort/paging identik lama
-- [ ] `sortBy` tak dikenal → ID, tanpa error; soft-delete terfilter
-- [ ] `detect_changes` hanya file jooq read baru
+- [x] list/page, findByNipam, findById, findByIds dilayani JOOQ; perilaku sort/paging identik lama
+- [x] `sortBy` tak dikenal → ID, tanpa error; soft-delete terfilter
+- [x] `detect_changes` hanya file jooq read baru
 
 **khj.4 (Ringkasan lintas modul)**
-- [ ] Field `PegawaiResponseRingkasan` identik lama; 7 slot SK benar; override `skCapeg` (tanggalSk = skCapeg.tmtBerlaku) jalan
-- [ ] `pendidikan.is_latest=true`; kartu difilter per nama jenis; perakitan string di Java
-- [ ] Filter kartu by-nama dicatat sbg utang (ADR-0020); `detect_changes` hanya file ringkasan baru
+- [x] Field `PegawaiResponseRingkasan` identik lama; 7 slot SK benar; override `skCapeg` (tanggalSk = skCapeg.tmtBerlaku) jalan
+- [x] `pendidikan.is_latest=true`; kartu difilter per nama jenis; perakitan string di Java
+- [x] Filter kartu by-nama dicatat sbg utang (ADR-0020); `detect_changes` hanya file ringkasan baru
 
 **khj.5 (CommandService saga)**
-- [ ] Semua endpoint tulis return `{status,id}` tanpa re-read
-- [ ] `createUser` (Appwrite) dipanggil paling akhir; `saveBatch` rollback saat 1 gagal (exception **tak** ditelan)
-- [ ] `update()` tidak menyentuh `RiwayatSk`; soft-delete pada `deleteById`
-- [ ] `gitnexus_impact` upstream `PegawaiServiceImpl` dilaporkan sebelum edit
+- [x] Semua endpoint tulis return `{status,id}` tanpa re-read
+- [x] `createUser` (Appwrite) dipanggil paling akhir; `saveBatch` rollback saat 1 gagal (exception **tak** ditelan)
+- [x] `update()` tidak menyentuh `RiwayatSk`; soft-delete pada `deleteById`
+- [x] `gitnexus_impact` upstream `PegawaiServiceImpl` dilaporkan sebelum edit
 
 **khj.6 (wiring + retire)**
 - [ ] Controller pakai `PegawaiQueryService` (baca) + `PegawaiCommandService` (tulis); semua endpoint & `@PreAuthorize` ADMIN dipertahankan
