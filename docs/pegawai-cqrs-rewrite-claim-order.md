@@ -21,7 +21,7 @@ Urutan klaim mengikuti **dependency**, bukan nomor issue. Issue dalam wave yang 
 
 ## WAVE 0 — Epic (gerbang, tidak dikerjakan langsung)
 
-- [ ] **khj** (EPIC): rewrite CQRS modul Pegawai · `P1` · deps: —
+- [x] **khj** (EPIC): rewrite CQRS modul Pegawai · `P1` · deps: —
 
 > Kontainer keputusan + grounding. Tidak ada koding di epic. Tutup setelah semua child selesai.
 
