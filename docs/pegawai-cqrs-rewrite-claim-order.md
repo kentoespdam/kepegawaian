@@ -27,8 +27,8 @@ Urutan klaim mengikuti **dependency**, bukan nomor issue. Issue dalam wave yang 
 
 ## WAVE 1 — Fondasi (2 issue paralel, file berbeda, tidak saling blok)
 
-- [ ] **khj.1**: read foundation — `PageRequest` + `SortParam` in-module + bentuk DTO mini-projection (target shape utk khj.3 & khj.4) · `P1` · deps: khj
-- [ ] **khj.2**: write foundation — `@ConfigurationProperties` externalisasi excluded jabatan `{1,2,3,25}` + golongan-statuses + `application.yml` · `P1` · deps: khj
+- [x] **khj.1**: read foundation — `PageRequest` + `SortParam` in-module + bentuk DTO mini-projection (target shape utk khj.3 & khj.4) · `P1` · deps: khj
+- [x] **khj.2**: write foundation — `@ConfigurationProperties` externalisasi excluded jabatan `{1,2,3,25}` + golongan-statuses + `application.yml` · `P1` · deps: khj
 
 > khj.1 menyentuh `dto/pegawai` + paging/sort baru. khj.2 menyentuh `config/` + `application.yml`. Tak ada file bertabrakan → aman paralel.
 
@@ -59,16 +59,16 @@ khj(EPIC) ─┬─ khj.1 (read foundation) ─┬─ khj.3 (QueryRepository) �
 ## Acceptance ringkas per issue
 
 **khj.1 (read foundation)**
-- [ ] `PageRequest` & `SortParam` ada di dalam modul pegawai (bukan `dto/commons` global)
-- [ ] Shape mini-projection terdokumentasi & dipakai khj.3/khj.4 (id+label per relasi)
-- [ ] `PegawaiResponse` tetap nested; nol DTO berat baru / MapStruct / sqids
-- [ ] Nol dependency build baru; `gitnexus_impact` dilaporkan; `detect_changes` bersih
+- [x] `PageRequest` & `SortParam` ada di dalam modul pegawai (bukan `dto/commons` global)
+- [x] Shape mini-projection terdokumentasi & dipakai khj.3/khj.4 (id+label per relasi)
+- [x] `PegawaiResponse` tetap nested; nol DTO berat baru / MapStruct / sqids
+- [x] Nol dependency build baru; `gitnexus_impact` dilaporkan; `detect_changes` bersih
 
 **khj.2 (write foundation)**
-- [ ] Properties bean terbaca dari `application.yml`; default jabatan `{1,2,3,25}` & golongan-statuses `{KONTRAK,CALON_HONORER,HONORER}`
-- [ ] Tidak ada magic-id hardcoded tersisa di jalur tulis baru
-- [ ] Pendekatan table-flag tetap backlog `kepegawaian-1dx` (P4) — tidak dikerjakan di sini
-- [ ] `detect_changes` hanya `config/` + `application.yml`
+- [x] Properties bean terbaca dari `application.yml`; default jabatan `{1,2,3,25}` & golongan-statuses `{KONTRAK,CALON_HONORER,HONORER}`
+- [x] Tidak ada magic-id hardcoded tersisa di jalur tulis baru
+- [x] Pendekatan table-flag tetap backlog `kepegawaian-1dx` (P4) — tidak dikerjakan di sini
+- [x] `detect_changes` hanya `config/` + `application.yml`
 
 **khj.3 (QueryRepository)**
 - [ ] list/page, findByNipam, findById, findByIds dilayani JOOQ; perilaku sort/paging identik lama
