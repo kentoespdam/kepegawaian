@@ -1,6 +1,9 @@
 package id.perumdamts.kepegawaian.dto.profil.keahlian;
 
+import org.springframework.data.jpa.domain.Specification;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import id.perumdamts.kepegawaian.entities.commons.EKualifikasi;
 import id.perumdamts.kepegawaian.entities.profil.Keahlian;
 import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
@@ -10,9 +13,6 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.springframework.data.jpa.domain.Specification;
-
-import java.time.LocalDateTime;
 
 @Data
 public class KeahlianPostRequest {
