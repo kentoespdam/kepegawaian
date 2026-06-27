@@ -42,7 +42,7 @@ Urutan klaim mengikuti **dependency**, bukan nomor issue. Issue dalam wave yang 
 
 ## WAVE 3 — Konvergensi (1 issue, titik tabrakan tunggal = controller)
 
-- [ ] **khj.6**: wiring + retire `ServiceImpl` — `PegawaiQueryService` orkestrasi + rewire `PegawaiController` ke Command/Query, hapus `PegawaiServiceImpl`/`PegawaiService` lama · `P2` · deps: khj.3, khj.4, khj.5
+- [x] **khj.6**: wiring + retire `ServiceImpl` — `PegawaiQueryService` orkestrasi + rewire `PegawaiController` ke Command/Query, hapus `PegawaiServiceImpl`/`PegawaiService` lama · `P2` · deps: khj.3, khj.4, khj.5
 
 > Hanya issue ini menyentuh `PegawaiController`. Dijalankan terakhir setelah ketiga builder hijau agar tak ada caller tergantung ke ServiceImpl lama saat dihapus.
 
@@ -87,10 +87,10 @@ khj(EPIC) ─┬─ khj.1 (read foundation) ─┬─ khj.3 (QueryRepository) �
 - [x] `gitnexus_impact` upstream `PegawaiServiceImpl` dilaporkan sebelum edit
 
 **khj.6 (wiring + retire)**
-- [ ] Controller pakai `PegawaiQueryService` (baca) + `PegawaiCommandService` (tulis); semua endpoint & `@PreAuthorize` ADMIN dipertahankan
-- [ ] Validasi `PegawaiTetap` utk `PEGAWAI` pakai `ignoreJabatan {1,2,3,25}` dari properties khj.2
-- [ ] `PegawaiServiceImpl`/`PegawaiService` lama dihapus tanpa caller tersisa (`gitnexus_impact` bersih)
-- [ ] `./gradlew test` hijau; `detect_changes` = controller + service wiring saja
+- [x] Controller pakai `PegawaiQueryService` (baca) + `PegawaiCommandService` (tulis); semua endpoint & `@PreAuthorize` ADMIN dipertahankan
+- [x] Validasi `PegawaiTetap` utk `PEGAWAI` pakai `ignoreJabatan {1,2,3,25}` dari properties khj.2
+- [x] `PegawaiServiceImpl`/`PegawaiService` lama dihapus tanpa caller tersisa (`gitnexus_impact` bersih)
+- [x] `./gradlew test` hijau; `detect_changes` = controller + service wiring saja
 
 ## Cara update checklist
 
