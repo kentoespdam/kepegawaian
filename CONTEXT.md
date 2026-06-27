@@ -34,6 +34,40 @@ Perlengkapan keselamatan yang melekat pada sebuah Profesi (mis. helm, sarung tan
 Peralatan kerja yang melekat pada sebuah Profesi. Daftar pendek per Profesi.
 _Catatan domain_: APD dan Alat Kerja untuk satu Profesi selalu sedikit (segelintir item) — bukan daftar besar.
 
+### Pegawai (catatan kepegawaian inti)
+
+**Pegawai**:
+Catatan kepegawaian inti seseorang — menunjuk satu **Biodata** (lewat NIK), satu Organisasi, Jabatan, Profesi, Golongan, Grade, plus status & data gaji. Kunci tampil **NIPAM**.
+_Avoid_: "karyawan", "user" (user = principal autentikasi, beda konsep).
+
+**NIPAM**:
+Nomor induk pegawai PERUMDAMTS — identitas pegawai yang bermakna bagi manusia (dipakai di endpoint `/{nipam}/nipam`). Berbeda dari `id` (kunci teknis Long).
+
+**Status Pegawai** (EStatusPegawai):
+Kelas kepegawaian: CALON (capeg), PEGAWAI (tetap), KONTRAK, HONORER, CALON_HONORER, NON_PEGAWAI, dst. Menentukan jalur saga saat pembuatan (capeg→SK Capeg, tetap/honorer→SK Pegawai, kontrak→kontrak, non-pegawai→berhenti tanpa SK) dan apakah golongan diisi.
+
+**Status Kerja** (EStatusKerja):
+Status aktif/berhenti pegawai (mis. masih bekerja, pensiun, berhenti) — terpisah dari Status Pegawai yang menyatakan kelas kepegawaian.
+
+**Jenis SK** (EJenisSk):
+Kategori Surat Keputusan, disimpan sebagai **enum ordinal** (bukan tabel referensi): SK_CAPEG, SK_PEGAWAI_TETAP, SK_KENAIKAN_PANGKAT_GOLONGAN, SK_JABATAN, SK_MUTASI, SK_LAINNYA, SK_KENAIKAN_GAJI_BERKALA, dst. Karena ordinal, nama jenis diselesaikan di Java (`EJenisSk.values()[ordinal]`), tanpa JOIN tabel.
+
+**Slot SK Terkini** (7 slot bernama):
+Detail pegawai mengekspos tepat 7 slot SK, tiap slot = baris **Riwayat SK** terbaru (`tmt_berlaku` desc) untuk satu Jenis SK: `skCapeg`=SK_CAPEG, `skPegawai`=SK_PEGAWAI_TETAP, `skGolongan`=SK_KENAIKAN_PANGKAT_GOLONGAN, `skJabatan`=SK_JABATAN, `skMutasi`=SK_MUTASI, `skKontrak`=SK_LAINNYA, `skGajiBerkala`=SK_KENAIKAN_GAJI_BERKALA. Tiap slot membawa data Golongan ringkas (id, golongan, pangkat). `skCapeg` jika ada meng-override `tanggalSk` detail = `skCapeg.tmtBerlaku`.
+
+**Riwayat SK**:
+Histori Surat Keputusan milik pegawai (entity `RiwayatSk`, domain `kepegawaian` — **modul terpisah** dari Pegawai). Tiap baris: nomor SK, tanggal, tmt berlaku, Jenis SK, golongan, gaji pokok, masa kerja golongan. Detail pegawai membacanya langsung dari **tabel** `riwayat_sk` (bukan via modul kepegawaian) supaya rewrite modul itu kelak tak membatalkan baca pegawai.
+
+**Ringkasan** vs **Detail**:
+Dua bentuk baca pegawai. **Detail** (`/{id}`) = agregat penuh + 7 slot SK terkini. **Ringkasan** (`/{id}/ringkasan`) = bentuk pipih siap-tampil, banyak field string hasil format Java (mis. `pangkatGolongan` = pangkat+"-"+golongan, `mkg` = "X Tahun Y Bulan") plus nomor kartu identitas (NPWP/JPn/BPJS/ID Card) yang difilter dari Kartu Identitas pegawai.
+_Keputusan baca Ringkasan_: satu query JOOQ proyeksi field mentah, dengan **baca tabel lintas modul langsung** — `pendidikan` (baris `is_latest=true` → institusi, tahunLulus) dan `kartu_identitas` (difilter per **nama jenis kartu**: NPWP/JPn/BPJS/ID Card). Semua perakitan string (`pangkat-golongan`, `"X Tahun Y Bulan"`, `"Grade "+grade`, label jenis kelamin) tetap **di Java** pada layer mapper, bukan di SQL. Konsisten dengan keputusan `riwayat_sk`: baca = proyeksi + post-format Java. _Risiko tercatat_: filter kartu by string nama rapuh bila master Jenis Kartu di-rename — di luar scope, tapi dicatat.
+
+**Masa Kerja Golongan** (mkg: mkgTahun + mkgBulan):
+Lama pegawai berada pada golongan saat ini, dalam tahun + bulan. Di Ringkasan diformat jadi string "X Tahun Y Bulan".
+
+**Bentuk JSON baca (nested mini)**:
+`PegawaiResponse` (list/page & `/{nipam}/nipam`) **tetap bersarang** karena FE sudah membaca `.organisasi.nama` dsb. — TIDAK dipipihkan. Tapi tiap objek bersarang adalah **mini response** (proyeksi JOOQ `row(...)` ramping), bukan DTO penuh: biodata=`nik,nama,gelarDepan,gelarBelakang`; organisasi=`id,nama`; jabatan=`id,nama`; profesi=`id,nama`; golongan=`id,golongan,pangkat`; grade=`id,grade`; kodePajak=`id,nama`. Plus field skalar denormalisasi pegawai (refSk*/tmt*, gajiPokok, mkg, dst.). Prinsip: pangkas ke `id`+label; tambah lagi kalau FE benar-benar butuh.
+
 ### Profil (self-service data pegawai)
 
 **Profil**:
@@ -105,6 +139,17 @@ Hak akses pada principal (mis. `ADMIN`, `SYSTEM`). Menentukan endpoint mana yang
   - **Keluarga** (ProfilKeluarga) — baris aktif dan baris arsip **boleh berdampingan**; menambah ulang setelah hapus adalah baris baru, bukan menghidupkan yang lama. Hanya duplikat **aktif** persis yang ditolak.
   - **Keahlian**, **Pelatihan**, **Pengalaman Kerja**, **Lampiran Profil** — tak punya kunci alami (riwayat pribadi yang menumpuk); tiap penambahan selalu baris baru, tak ada konsep "menghidupkan kembali".
 - Sisi tulis Profil tetap memicu pembuatan **Pengajuan Perubahan** (memanggil `profileUpdateService.create(...)`), tetapi seluruh logika **Disetujui/Ditolak** dan revert milik **modul updateProfile** — ketergantungan satu arah: profil → updateProfile. (Catatan: penentuan `changedStatus` berbasis role saat ini dilakukan via `@PreAuthorize`/pengecekan role tunggal; rencananya digantikan **RBAC spesifik per-entity** — hak akses per data Profil, belum diimplementasikan.)
+
+- Membuat sebuah **Pegawai** adalah **saga lintas-modul satu transaksi** (atomik): seed **Biodata** bila NIK belum ada → simpan Pegawai → buat **Riwayat SK** (atau Kontrak) sesuai **Status Pegawai** → set balik `refSk*Id` + reset mkg ke 0/0 → buat user Appwrite (`authService.createUser`). Gagal di langkah mana pun → **batal semua** (tak boleh ada pegawai yatim tanpa SK atau tanpa user). _Catatan: kode legacy `save()` tidak `@Transactional` dan menelan exception — rewrite memperbaikinya menjadi transaksional penuh._ Pembuatan **batch** tidak boleh menelan kegagalan per-item diam-diam: satu item gagal harus memicu rollback batch (atau isolasi per-item yang eksplisit), bukan commit sebagian sambil mengaku atomik.
+- **Status Pegawai NON_PEGAWAI** memutus saga lebih awal: cukup seed/temukan Biodata lalu selesai SUKSES — tak ada record Pegawai inti, SK, kontrak, maupun user yang dibuat.
+- **Pembuatan SK di saga `save()` hanya "setup data awal".** SK Capeg / SK Pegawai pertama dibuat sekali saat pegawai diciptakan. Seluruh siklus perubahan setelahnya — kenaikan pangkat/golongan, mutasi jabatan, gaji berkala, perubahan status kerja — adalah **event SK milik modul kepegawaian (di luar scope rewrite pegawai)**. Karena itu **PUT `/pegawai/{id}` (`update`) sengaja tidak menyentuh Riwayat SK**: ia koreksi snapshot administratif (perbaikan data), bukan jalur naik pangkat/mutasi. Mengubah golongan/jabatan lewat PUT mengubah field snapshot saja, tanpa membuat baris SK baru — itu by design.
+- **Pejabat non-pegawai-biasa** = **Dewan Pengawas** (jabatan id `1`) + **Direksi** (jabatan id `2`, `3`, `25`). Mereka dikecualikan dari dua aturan sekaligus: (a) tidak menjalani validasi ketat **PegawaiTetap** saat dibuat sebagai status PEGAWAI, dan (b) tidak diberi **Golongan** (golongan dipaksa null). Id ini berasal dari tabel master Jabatan dan **harus dipindah ke konfigurasi/env**, bukan di-hardcode. _Bug legacy: gerbang golongan memakai `{1,2,3,4}` (typo) sedangkan gerbang validasi memakai `{1,2,3,25}` — keduanya semestinya `{1,2,3,25}`; rewrite menyatukan keduanya ke satu konstanta bersumber-env._
+
+## Keputusan rewrite sisi-tulis Pegawai
+
+- **Struktur Command**: satu `PegawaiCommandService` `@Transactional` dengan helper privat per cabang `Status Pegawai` (capeg / tetap-honorer / kontrak / non-pegawai). BUKAN dipecah ke kelas Command/Step terpisah — mengikuti gaya CommandService tunggal modul master & profil; saga ini jarang berubah, lapisan abstraksi tambahan tak sepadan. `authService.createUser` + pembuatan SK dipanggil berurutan dalam transaksi yang sama.
+- **SortParam**: pakai implementasi nyata `final class SortParam.resolve(sortBy, sortDir, Map<String,Field<?>> allowedSorts, Field<?> defaultColumn)` (di `dto/commons`), BUKAN bentuk `record`+`Map<String,String>` yang masih tertulis di guide (guide basi, perlu dikoreksi terpisah). `sortBy` tak dikenal/blank → `defaultColumn` (default kolom ID), tanpa error; hanya `"asc"` eksplisit (case-insensitive) yang ascending, selain itu descending.
+- **Endpoint PATCH dipertahankan apa adanya**: `patchGaji` (kodePajak, gajiProfil, rumahDinas) dan `patchProfil` (golongan, organisasi, jabatan, profesi) tetap endpoint PATCH parsial terpisah dari PUT `update`. Walau field `patchProfil ⊂ update`, FE punya **menu "update profil" tersendiri** → kontrak tak boleh diubah. Semua mengembalikan `{status,id}` tanpa re-read.
 
 ## Example dialogue
 
