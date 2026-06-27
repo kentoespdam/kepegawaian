@@ -2,7 +2,6 @@ package id.perumdamts.kepegawaian.dto.pegawai;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import id.perumdamts.kepegawaian.dto.commons.CommonPageRequest;
 import id.perumdamts.kepegawaian.entities.commons.EJenisKelamin;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
@@ -12,14 +11,13 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class PegawaiRequest extends CommonPageRequest {
+public class PegawaiRequest extends PageRequest {
     private String nipam;
     private String nik;
     private String nama;
@@ -52,10 +50,9 @@ public class PegawaiRequest extends CommonPageRequest {
     }
 
     @JsonIgnore
-    @Override
     public Pageable getPageable() {
         if (sortBy == null || sortBy.isEmpty()) {
-            return PageRequest.of(page, size);
+            return org.springframework.data.domain.PageRequest.of(getPageNumber(), getSizeOrDefault());
         }
         switch (sortBy) {
             case "nik" -> sortBy = "biodata.nik";
@@ -67,7 +64,7 @@ public class PegawaiRequest extends CommonPageRequest {
             case "gradeId" -> sortBy = "grade.grade";
             case "jenisKelamin" -> sortBy = "biodata.jenisKelamin";
         }
-        return PageRequest.of(page, size,
+        return org.springframework.data.domain.PageRequest.of(getPageNumber(), getSizeOrDefault(),
                 Sort.by(Sort.Direction.fromString(sortDirection), sortBy));
     }
 }

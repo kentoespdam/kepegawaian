@@ -126,3 +126,9 @@ custom:
     dev:
       roles: ${DEV_ROLES:ADMIN,SYSTEM,SDM}
 
+app:
+  pegawai:
+    excluded-jabatan-ids: 1,2,3,25
+    excluded-golongan-statuses: KONTRAK,CALON_HONORER,HONORER
+
+

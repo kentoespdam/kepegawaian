@@ -3,16 +3,10 @@ package id.perumdamts.kepegawaian.dto.pegawai;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import id.perumdamts.kepegawaian.dto.master.golongan.GolonganResponse;
-import id.perumdamts.kepegawaian.dto.master.grade.GradeResponse;
-import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;
-import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiResponse;
-import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiResponse;
-import id.perumdamts.kepegawaian.dto.penggajian.gajiPendapatanNonPajak.GajiPendapatanNonPajakResponse;
-import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataMiniResponse;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
+import id.perumdamts.kepegawaian.entities.profil.Pendidikan;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Data;
@@ -23,14 +17,14 @@ import java.time.LocalDate;
 public class PegawaiResponse {
     private Long id;
     private String nipam;
-    private BiodataMiniResponse biodata;
+    private Biodata biodata;
     @Enumerated(EnumType.ORDINAL)
     private EStatusPegawai statusPegawai;
-    private OrganisasiResponse organisasi;
-    private JabatanMiniResponse jabatan;
-    private ProfesiResponse profesi;
-    private GolonganResponse golongan;
-    private GradeResponse grade;
+    private Organisasi organisasi;
+    private Jabatan jabatan;
+    private Profesi profesi;
+    private Golongan golongan;
+    private Grade grade;
     @Enumerated(EnumType.ORDINAL)
     private EStatusKerja statusKerja;
 
@@ -64,7 +58,7 @@ public class PegawaiResponse {
     private Double gajiPokok;
     private Double phdp;
     private Integer jmlTanggungan;
-    private GajiPendapatanNonPajakResponse kodePajak;
+    private KodePajak kodePajak;
     private Boolean isAskes;
 
     private Integer mkgTahun;
@@ -74,17 +68,100 @@ public class PegawaiResponse {
     private Long absensiId;
     private String notes;
 
+    public record Biodata(
+            String nik,
+            String nama,
+            String gelarDepan,
+            String gelarBelakang
+    ) {}
+
+    public record Organisasi(
+            Long id,
+            String nama
+    ) {}
+
+    public record Jabatan(
+            Long id,
+            String nama
+    ) {}
+
+    public record Profesi(
+            Long id,
+            String nama
+    ) {}
+
+    public record Golongan(
+            Long id,
+            String golongan,
+            String pangkat
+    ) {}
+
+    public record Grade(
+            Long id,
+            Integer grade
+    ) {}
+
+    public record KodePajak(
+            Long id,
+            String nama,
+            String kode
+    ) {}
+
     public static PegawaiResponse from(Pegawai pegawai) {
         PegawaiResponse response = new PegawaiResponse();
         response.setId(pegawai.getId());
         response.setNipam(pegawai.getNipam());
-        response.setBiodata(BiodataMiniResponse.from(pegawai.getBiodata()));
+        if (pegawai.getBiodata() != null) {
+            String gelarDepan = null;
+            String gelarBelakang = null;
+            if (pegawai.getBiodata().getPendidikanList() != null) {
+                for (Pendidikan p : pegawai.getBiodata().getPendidikanList()) {
+                    if (Boolean.TRUE.equals(p.getIsLatest())) {
+                        gelarDepan = p.getGelarDepan();
+                        gelarBelakang = p.getGelarBelakang();
+                        break;
+                    }
+                }
+            }
+            response.setBiodata(new Biodata(
+                    pegawai.getBiodata().getNik(),
+                    pegawai.getBiodata().getNama(),
+                    gelarDepan,
+                    gelarBelakang
+            ));
+        }
         response.setStatusPegawai(pegawai.getStatusPegawai());
-        response.setJabatan(JabatanMiniResponse.from(pegawai.getJabatan()));
-        response.setOrganisasi(OrganisasiResponse.from(pegawai.getOrganisasi()));
-        response.setProfesi(ProfesiResponse.from(pegawai.getProfesi()));
-        response.setGolongan(GolonganResponse.from(pegawai.getGolongan()));
-        response.setGrade(GradeResponse.from(pegawai.getGrade()));
+        if (pegawai.getJabatan() != null) {
+            response.setJabatan(new Jabatan(
+                    pegawai.getJabatan().getId(),
+                    pegawai.getJabatan().getNama()
+            ));
+        }
+        if (pegawai.getOrganisasi() != null) {
+            response.setOrganisasi(new Organisasi(
+                    pegawai.getOrganisasi().getId(),
+                    pegawai.getOrganisasi().getNama()
+            ));
+        }
+        if (pegawai.getProfesi() != null) {
+            response.setProfesi(new Profesi(
+                    pegawai.getProfesi().getId(),
+                    pegawai.getProfesi().getNama()
+            ));
+        }
+        if (pegawai.getGolongan() != null) {
+            response.setGolongan(new Golongan(
+                    pegawai.getGolongan().getId(),
+                    pegawai.getGolongan().getGolongan(),
+                    pegawai.getGolongan().getPangkat()
+            ));
+        }
+        if (pegawai.getGrade() != null) {
+            response.setGrade(new Grade(
+                    pegawai.getGrade().getId(),
+                    pegawai.getGrade().getGrade()
+            ));
+        }
         response.setStatusKerja(pegawai.getStatusKerja());
         response.setRefSkCapegId(pegawai.getRefSkCapegId());
         response.setTmtKerja(pegawai.getTmtKerja());
@@ -100,7 +177,13 @@ public class PegawaiResponse {
         response.setGajiPokok(pegawai.getGajiPokok());
         response.setPhdp(pegawai.getPhdp());
         response.setJmlTanggungan(pegawai.getJmlTanggungan());
-        response.setKodePajak(GajiPendapatanNonPajakResponse.from(pegawai.getKodePajak()));
+        if (pegawai.getKodePajak() != null) {
+            response.setKodePajak(new KodePajak(
+                    pegawai.getKodePajak().getId(),
+                    pegawai.getKodePajak().getKode(), // map kode to nama as label for compatibility
+                    pegawai.getKodePajak().getKode()
+            ));
+        }
         response.setIsAskes(pegawai.getIsAskes());
         response.setMkgTahun(pegawai.getMkgTahun());
         response.setMkgBulan(pegawai.getMkgBulan());

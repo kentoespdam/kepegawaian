@@ -121,3 +121,9 @@ custom:
     manager: ${LEVEL_MANAGER:5}
     supervisor: ${LEVEL_SUPERVISOR:6}
     staff: ${LEVEL_STAFF:7}
+
+app:
+  pegawai:
+    excluded-jabatan-ids: 1,2,3,25
+    excluded-golongan-statuses: KONTRAK,CALON_HONORER,HONORER
+
