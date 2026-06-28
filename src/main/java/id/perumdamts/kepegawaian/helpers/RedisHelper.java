@@ -1,7 +1,6 @@
 package id.perumdamts.kepegawaian.helpers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +25,10 @@ public class RedisHelper {
     }
 
     public Boolean validateToken(String token) {
-        return token == null || !redisTemplate.delete(token);
+        if (token == null) {
+            return true;
+        }
+        Boolean deleted = redisTemplate.delete(token);
+        return !Boolean.TRUE.equals(deleted);
     }
 }
