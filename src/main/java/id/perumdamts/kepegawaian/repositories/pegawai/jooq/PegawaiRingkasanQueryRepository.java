@@ -1,7 +1,7 @@
 package id.perumdamts.kepegawaian.repositories.pegawai.jooq;
 
-import id.perumdamts.kepegawaian.dto.pegawai.PegawaiResponseRingkasan;
-import id.perumdamts.kepegawaian.mapper.pegawai.PegawaiRingkasanMapper;
+import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiResponseRingkasan;
+import id.perumdamts.kepegawaian.mapper.pegawai.pegawai.PegawaiRingkasanMapper;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;

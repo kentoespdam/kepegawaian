@@ -4,7 +4,7 @@ import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.helpers.ExcelHelper;
-import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
+import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.CellStyle;

@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.dto.pegawai;
+package id.perumdamts.kepegawaian.dto.pegawai.pegawai;
 
 import id.perumdamts.kepegawaian.dto.master.golongan.GolonganResponse;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;

@@ -1,6 +1,6 @@
-package id.perumdamts.kepegawaian.mapper.pegawai;
+package id.perumdamts.kepegawaian.mapper.pegawai.pegawai;
 
-import id.perumdamts.kepegawaian.dto.pegawai.PegawaiResponseRingkasan;
+import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiResponseRingkasan;
 import id.perumdamts.kepegawaian.entities.commons.EAgama;
 import id.perumdamts.kepegawaian.entities.commons.EJenisKelamin;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKawin;

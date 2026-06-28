@@ -7,7 +7,7 @@ import id.perumdamts.kepegawaian.dto.users.UserPatchStatusRequest;
 import id.perumdamts.kepegawaian.dto.users.UserRequest;
 import id.perumdamts.kepegawaian.dto.users.UserResponse;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
-import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
+import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
 import id.perumdamts.kepegawaian.services.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

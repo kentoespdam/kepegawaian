@@ -5,7 +5,7 @@ import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkPostRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkPutRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkResponse;
-import id.perumdamts.kepegawaian.dto.pegawai.PegawaiPostRequest;
+import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiPostRequest;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import org.springframework.data.domain.Page;

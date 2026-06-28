@@ -5,7 +5,7 @@ import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiPostR
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiPutRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiResponse;
-import id.perumdamts.kepegawaian.dto.pegawai.PegawaiResponse;
+import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiResponse;
 import org.springframework.data.domain.Page;
 
 public interface RiwayatTerminasiService {

@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.dto.pegawai;
+package id.perumdamts.kepegawaian.dto.pegawai.pegawai;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;

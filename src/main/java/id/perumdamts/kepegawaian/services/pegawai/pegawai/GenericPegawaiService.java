@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.services.pegawai;
+package id.perumdamts.kepegawaian.services.pegawai.pegawai;
 
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
@@ -7,7 +7,7 @@ import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.entities.master.Profesi;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
-import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
+import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

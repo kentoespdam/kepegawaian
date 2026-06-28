@@ -1,6 +1,6 @@
-package id.perumdamts.kepegawaian.services.pegawai;
+package id.perumdamts.kepegawaian.services.pegawai.pegawai;
 
-import id.perumdamts.kepegawaian.dto.pegawai.*;
+import id.perumdamts.kepegawaian.dto.pegawai.pegawai.*;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.pegawai.jooq.PegawaiQueryRepository;
 import id.perumdamts.kepegawaian.repositories.pegawai.jooq.PegawaiRingkasanQueryRepository;

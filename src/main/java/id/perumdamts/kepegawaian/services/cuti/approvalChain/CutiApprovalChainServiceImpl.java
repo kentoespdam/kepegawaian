@@ -7,7 +7,7 @@ import id.perumdamts.kepegawaian.entities.commons.EReadWriteStatus;
 import id.perumdamts.kepegawaian.entities.cuti.CutiApprovalChain;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
-import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
+import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.CutiApprovalChainRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JabatanRepository;
 import lombok.RequiredArgsConstructor;

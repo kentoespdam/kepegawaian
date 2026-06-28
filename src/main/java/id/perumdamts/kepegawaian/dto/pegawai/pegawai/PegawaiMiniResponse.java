@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.dto.pegawai;
+package id.perumdamts.kepegawaian.dto.pegawai.pegawai;
 
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import lombok.Data;

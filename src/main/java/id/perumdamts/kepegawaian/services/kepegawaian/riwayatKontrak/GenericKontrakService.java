@@ -2,7 +2,7 @@ package id.perumdamts.kepegawaian.services.kepegawaian.riwayatKontrak;
 
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatKontrak.RiwayatKontrakPostRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatKontrak.RiwayatKontrakPutRequest;
-import id.perumdamts.kepegawaian.dto.pegawai.PegawaiPostRequest;
+import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiPostRequest;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatKontrak;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;

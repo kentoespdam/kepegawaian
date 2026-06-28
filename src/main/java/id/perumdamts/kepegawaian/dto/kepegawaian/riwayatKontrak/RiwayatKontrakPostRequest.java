@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiPostRequest;
-import id.perumdamts.kepegawaian.dto.pegawai.PegawaiPostRequest;
+import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiPostRequest;
 import id.perumdamts.kepegawaian.entities.commons.EJenisKontrak;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatKontrak;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;

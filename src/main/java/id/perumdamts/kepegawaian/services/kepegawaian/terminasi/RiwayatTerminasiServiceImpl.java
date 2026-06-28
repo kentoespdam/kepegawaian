@@ -9,7 +9,7 @@ import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiPostR
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiPutRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiResponse;
-import id.perumdamts.kepegawaian.dto.pegawai.PegawaiResponse;
+import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiResponse;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatMutasi;
@@ -20,7 +20,7 @@ import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
-import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
+import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.RiwayatMutasiRepository;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.RiwayatTerminasiRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.AlasanBerhentiRepository;

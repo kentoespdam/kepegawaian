@@ -1,9 +1,9 @@
-package id.perumdamts.kepegawaian.services.pegawai;
+package id.perumdamts.kepegawaian.services.pegawai.pegawai;
 
 import id.perumdamts.kepegawaian.config.PegawaiProperties;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
-import id.perumdamts.kepegawaian.dto.pegawai.*;
+import id.perumdamts.kepegawaian.dto.pegawai.pegawai.*;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
 import id.perumdamts.kepegawaian.entities.master.*;
@@ -13,12 +13,13 @@ import id.perumdamts.kepegawaian.entities.penggajian.GajiProfil;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.exceptions.ConflictException;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
-import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
+import id.perumdamts.kepegawaian.mapper.pegawai.pegawai.PegawaiMapper;
 import id.perumdamts.kepegawaian.repositories.master.jpa.GolonganRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JabatanRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.OrganisasiRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.ProfesiRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.RumahDinasRepository;
+import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiPendapatanNonPajakRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiProfilRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
@@ -83,7 +84,7 @@ public class PegawaiCommandService {
         GajiPendapatanNonPajak kodePajak = gajiPendapatanNonPajakRepository
                 .findById(request.getKodePajakId()).orElseThrow(() -> new NotFoundException("Unknown Kode Pajak"));
 
-        Pegawai entity = PegawaiPostRequest.toEntity(request, biodata, jabatan, organisasi, profesi, golongan, kodePajak);
+        Pegawai entity = PegawaiMapper.toEntity(request, biodata, jabatan, organisasi, profesi, golongan, kodePajak);
         Pegawai pegawai = repository.save(entity);
 
         switch (request.getStatusPegawai()) {
@@ -135,7 +136,7 @@ public class PegawaiCommandService {
         GajiPendapatanNonPajak kodePajak = gajiPendapatanNonPajakRepository.findById(request.getKodePajakId())
                 .orElseThrow(() -> new NotFoundException("Unknown Kode Pajak"));
 
-        Pegawai entity = PegawaiPutRequest.toEntity(pegawai, request, biodata, jabatan, organisasi, profesi, golongan, kodePajak);
+        Pegawai entity = PegawaiMapper.toEntity(pegawai, request, biodata, jabatan, organisasi, profesi, golongan, kodePajak);
         repository.save(entity);
         return SavedStatus.build(ESaveStatus.SUCCESS, entity.getId());
     }
@@ -151,7 +152,7 @@ public class PegawaiCommandService {
                 .orElseThrow(() -> new NotFoundException("Unknown Profil Gaji"));
         RumahDinas rumahDinas = rumahDinasRepository.findById(request.getRumahDinasId()).orElse(null);
 
-        Pegawai entity = PegawaiPatchGaji.toEntity(pegawai, request, kodePajak, profilGaji, rumahDinas);
+        Pegawai entity = PegawaiMapper.toEntity(pegawai, request, kodePajak, profilGaji, rumahDinas);
         repository.save(entity);
         return SavedStatus.build(ESaveStatus.SUCCESS, entity.getId());
     }
@@ -169,7 +170,7 @@ public class PegawaiCommandService {
                 .orElseThrow(() -> new NotFoundException("Unknown Jabatan"));
         Profesi profesi = profesiRepository.findById(request.getProfesiId()).orElse(null);
 
-        Pegawai entity = PegawaiPatchProfil.toEntity(pegawai, request, golongan, organisasi, jabatan, profesi);
+        Pegawai entity = PegawaiMapper.toEntity(pegawai, request, golongan, organisasi, jabatan, profesi);
         repository.save(entity);
         return SavedStatus.build(ESaveStatus.SUCCESS, entity.getId());
     }

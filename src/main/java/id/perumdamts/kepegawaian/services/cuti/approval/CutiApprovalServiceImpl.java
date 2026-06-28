@@ -14,7 +14,7 @@ import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.helpers.DateHelper;
 import id.perumdamts.kepegawaian.helpers.RedisHelper;
-import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
+import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.CutiApprovalChainRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.CutiApprovalRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.CutiPegawaiRepository;

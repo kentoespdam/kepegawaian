@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.dto.pegawai;
+package id.perumdamts.kepegawaian.dto.pegawai.pegawai;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

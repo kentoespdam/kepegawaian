@@ -12,7 +12,7 @@ import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.ProfileUpdate;
-import id.perumdamts.kepegawaian.repositories.PegawaiRepository;
+import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.ProfileUpdateRepository;
 import id.perumdamts.kepegawaian.services.revInfo.RevInfoService;
 import lombok.RequiredArgsConstructor;

@@ -9,7 +9,7 @@ import id.perumdamts.kepegawaian.dto.master.alasanBerhenti.AlasanBerhentiRespons
 import id.perumdamts.kepegawaian.dto.master.golongan.GolonganResponse;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiMiniResponse;
-import id.perumdamts.kepegawaian.dto.pegawai.PegawaiResponse;
+import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiResponse;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatTerminasi;
 import lombok.Data;
 

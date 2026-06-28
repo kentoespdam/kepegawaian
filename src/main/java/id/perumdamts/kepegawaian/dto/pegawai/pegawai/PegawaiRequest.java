@@ -1,7 +1,8 @@
-package id.perumdamts.kepegawaian.dto.pegawai;
+package id.perumdamts.kepegawaian.dto.pegawai.pegawai;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import id.perumdamts.kepegawaian.dto.commons.PagedRequest;
 import id.perumdamts.kepegawaian.entities.commons.EJenisKelamin;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
@@ -17,7 +18,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class PegawaiRequest extends PageRequest {
+public class PegawaiRequest extends PagedRequest {
     private String nipam;
     private String nik;
     private String nama;

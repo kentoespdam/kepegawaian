@@ -1,6 +1,6 @@
-package id.perumdamts.kepegawaian.repositories;
+package id.perumdamts.kepegawaian.repositories.pegawai.jpa;
 
-import id.perumdamts.kepegawaian.dto.pegawai.PegawaiIdNipam;
+import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiIdNipam;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;

@@ -3,7 +3,7 @@ package id.perumdamts.kepegawaian.dto.cuti.kuota;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import id.perumdamts.kepegawaian.dto.pegawai.PegawaiMiniResponse;
+import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiMiniResponse;
 import id.perumdamts.kepegawaian.entities.cuti.CutiKuota;
 import lombok.Data;
 
