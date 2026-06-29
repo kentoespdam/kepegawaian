@@ -64,9 +64,9 @@ Urutan klaim mengikuti **dependency**, bukan nomor issue. Issue dalam wave yang 
 
 ## WAVE 6 — Cleanup DTO mati (per modul, paralel, wave paling akhir)
 
-- [ ] **2u7.13**: hapus DTO mati modul **master** (verifikasi blast-radius per-DTO) · `P3` · deps: 2u7.11, 2u7.12
-- [ ] **2u7.14**: hapus DTO mati modul **profil** (verifikasi blast-radius per-DTO) · `P3` · deps: 2u7.11, 2u7.12
-- [ ] **2u7.15**: hapus DTO mati modul **pegawai** (verifikasi blast-radius per-DTO) · `P3` · deps: 2u7.11, 2u7.12
+- [x] **2u7.13**: hapus DTO mati modul **master** (verifikasi blast-radius per-DTO) · `P3` · deps: 2u7.11, 2u7.12
+- [x] **2u7.14**: hapus DTO mati modul **profil** (verifikasi blast-radius per-DTO) · `P3` · deps: 2u7.11, 2u7.12
+- [x] **2u7.15**: hapus DTO mati modul **pegawai** (verifikasi blast-radius per-DTO) · `P3` · deps: 2u7.11, 2u7.12
 
 > Dipecah per modul agar bisa diklaim & di-review terpisah. Tiap DTO: `gitnexus_impact` upstream dulu — hapus hanya jika nol caller hidup. Jangan hapus borongan.
 
@@ -141,8 +141,8 @@ Urutan klaim mengikuti **dependency**, bukan nomor issue. Issue dalam wave yang 
 - [x] Hapus permanen seluruh legacy `*ServiceImpl` dan `GenericSkService` dari source tree; test suite hijau
 
 **2u7.13 / 2u7.14 / 2u7.15 (cleanup DTO master/profil/pegawai)**
-- [ ] Tiap DTO dihapus punya bukti nol caller (`gitnexus_impact`); tidak ada hapus borongan
-- [ ] build+test hijau; `detect_changes` hanya `dto/<modul>` masing-masing
+- [x] Tiap DTO dihapus punya bukti nol caller (`gitnexus_impact`); tidak ada hapus borongan
+- [x] build+test hijau; `detect_changes` hanya `dto/<modul>` masing-masing
 
 ## Cara update checklist
 
