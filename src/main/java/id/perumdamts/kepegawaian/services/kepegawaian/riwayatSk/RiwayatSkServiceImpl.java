@@ -13,7 +13,7 @@ import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
-import id.perumdamts.kepegawaian.repositories.kepegawaian.RiwayatSkRepository;
+import id.perumdamts.kepegawaian.repositories.kepegawaian.jpa.RiwayatSkRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.GolonganRepository;
 import id.perumdamts.kepegawaian.services.kepegawaian.lampiran.LampiranSkService;
 import lombok.RequiredArgsConstructor;

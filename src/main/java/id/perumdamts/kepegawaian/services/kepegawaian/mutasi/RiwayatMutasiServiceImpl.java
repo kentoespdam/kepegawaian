@@ -8,7 +8,7 @@ import id.perumdamts.kepegawaian.dto.kepegawaian.mutasi.RiwayatMutasiRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.mutasi.RiwayatMutasiResponse;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatMutasi;
-import id.perumdamts.kepegawaian.repositories.kepegawaian.RiwayatMutasiRepository;
+import id.perumdamts.kepegawaian.repositories.kepegawaian.jpa.RiwayatMutasiRepository;
 import id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk.RiwayatSkService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -27,9 +27,9 @@ Urutan klaim mengikuti **dependency**, bukan nomor issue. Issue dalam wave yang 
 
 ## WAVE 1 — Fondasi (3 issue paralel, file berbeda, tidak saling blok)
 
-- [ ] **2u7.1**: pindah 6 repo JPA → `repositories/kepegawaian/jpa/` + scaffold `jooq/` & `mapper/<aggregate>/` (`gitnexus_rename`) · `P1` · deps: 2u7
-- [ ] **2u7.2**: definisikan `SkBootstrapPort` + `KontrakBootstrapPort` di `services/pegawai/port/` (belum di-wire) · `P1` · deps: 2u7
-- [ ] **2u7.3**: `GenericPegawaiService` → `PegawaiWriteback` (`gitnexus_rename`, method-per-operasi) · `P1` · deps: 2u7
+- [x] **2u7.1**: pindah 6 repo JPA → `repositories/kepegawaian/jpa/` + scaffold `jooq/` & `mapper/<aggregate>/` (`gitnexus_rename`) · `P1` · deps: 2u7
+- [x] **2u7.2**: definisikan `SkBootstrapPort` + `KontrakBootstrapPort` di `services/pegawai/port/` (belum di-wire) · `P1` · deps: 2u7
+- [x] **2u7.3**: `GenericPegawaiService` → `PegawaiWriteback` (`gitnexus_rename`, method-per-operasi) · `P1` · deps: 2u7
 
 > 2u7.1 menyentuh `repositories/kepegawaian`. 2u7.2 menyentuh paket baru `services/pegawai/port`. 2u7.3 menyentuh writeback + caller-nya. Tak ada file bertabrakan → aman paralel.
 
@@ -91,17 +91,17 @@ Urutan klaim mengikuti **dependency**, bukan nomor issue. Issue dalam wave yang 
 ## Acceptance ringkas per issue
 
 **2u7.1 (repo → jpa/jooq)**
-- [ ] 6 repo JPA di `repositories/kepegawaian/jpa/`; subpaket `riwayatSp/` dihapus
-- [ ] Pindah via `gitnexus_rename`; paket `jooq/` + `mapper/<aggregate>/` ter-scaffold
-- [ ] `gitnexus_impact` dilaporkan; `detect_changes` hanya perpindahan paket; `./gradlew build` hijau
+- [x] 6 repo JPA di `repositories/kepegawaian/jpa/`; subpaket `riwayatSp/` dihapus
+- [x] Pindah via `gitnexus_rename`; paket `jooq/` + `mapper/<aggregate>/` ter-scaffold
+- [x] `gitnexus_impact` dilaporkan; `detect_changes` hanya perpindahan paket; `./gradlew build` hijau
 
 **2u7.2 (DIP port)**
-- [ ] `SkBootstrapPort` & `KontrakBootstrapPort` di `services/pegawai/port/`; return `RiwayatSk`/`RiwayatKontrak`
-- [ ] Tanpa `@Service`/implementor/inject baru; javadoc rujuk ADR-0023; build hijau
+- [x] `SkBootstrapPort` & `KontrakBootstrapPort` di `services/pegawai/port/`; return `RiwayatSk`/`RiwayatKontrak`
+- [x] Tanpa `@Service`/implementor/inject baru; javadoc rujuk ADR-0023; build hijau
 
 **2u7.3 (PegawaiWriteback)**
-- [ ] Tidak ada `Generic*Service` writeback tersisa; semua caller terupdate via `gitnexus_rename`
-- [ ] `detect_changes` hanya rename writeback + caller; build hijau
+- [x] Tidak ada `Generic*Service` writeback tersisa; semua caller terupdate via `gitnexus_rename`
+- [x] `detect_changes` hanya rename writeback + caller; build hijau
 
 **2u7.4 (Lampiran)**
 - [ ] Command+Query terpisah; baca Pola A; soft-delete; `deleteByRefId` tersedia utk SK

@@ -8,7 +8,7 @@ import id.perumdamts.kepegawaian.dto.kepegawaian.lampiran.LampiranSkPostRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.lampiran.LampiranSkResponse;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.kepegawaian.LampiranSk;
-import id.perumdamts.kepegawaian.repositories.kepegawaian.LampiranSkRepository;
+import id.perumdamts.kepegawaian.repositories.kepegawaian.jpa.LampiranSkRepository;
 import id.perumdamts.kepegawaian.utils.FileUploadUtil;
 import id.perumdamts.kepegawaian.utils.UploadResultUtil;
 import lombok.RequiredArgsConstructor;

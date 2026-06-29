@@ -15,10 +15,10 @@ import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
-public class GenericPegawaiService {
+public class PegawaiWriteback {
     private final PegawaiRepository repository;
 
-    public void updateGolongan(Pegawai pegawai, RiwayatSk riwayatSk) {
+    public void writebackGolongan(Pegawai pegawai, RiwayatSk riwayatSk) {
         pegawai.setNipam(riwayatSk.getNipam());
         pegawai.setRefSkGolId(riwayatSk.getId());
         pegawai.setTmtGolongan(riwayatSk.getTmtBerlaku());
@@ -35,15 +35,15 @@ public class GenericPegawaiService {
             pegawai.setTmtGajiBerkala(riwayatSk.getTmtBerlaku());
         }
 
-        this.updatePegawai(pegawai);
+        this.savePegawai(pegawai);
     }
 
-    public void updateGolongan(Pegawai pegawai, RiwayatSk riwayatSk, LocalDate tanggalPensiun) {
+    public void writebackGolonganPensiun(Pegawai pegawai, RiwayatSk riwayatSk, LocalDate tanggalPensiun) {
         pegawai.setTmtPensiun(tanggalPensiun);
-        this.updateGolongan(pegawai, riwayatSk);
+        this.writebackGolongan(pegawai, riwayatSk);
     }
 
-    public void updateJabatan(
+    public void writebackJabatan(
             Pegawai pegawai,
             RiwayatSk riwayatSk,
             Organisasi organisasiBaru,
@@ -63,18 +63,18 @@ public class GenericPegawaiService {
         pegawai.setJabatan(jabatanBaru);
         pegawai.setProfesi(profesiBaru);
 
-        this.updatePegawai(pegawai);
+        this.savePegawai(pegawai);
     }
 
-    public void updatePegawai(Pegawai pegawai) {
+    public void savePegawai(Pegawai pegawai) {
         repository.save(pegawai);
     }
 
-    public void updateKontrak(Pegawai pegawai, RiwayatSk riwayatSk, LocalDate tanggalSelesai) {
+    public void writebackKontrak(Pegawai pegawai, RiwayatSk riwayatSk, LocalDate tanggalSelesai) {
         pegawai.setTmtPensiun(tanggalSelesai);
         pegawai.setGajiPokok(riwayatSk.getGajiPokok());
 
-        this.updatePegawai(pegawai);
+        this.savePegawai(pegawai);
     }
 
 }

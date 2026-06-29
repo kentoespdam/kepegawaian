@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.repositories.kepegawaian.riwayatSp;
+package id.perumdamts.kepegawaian.repositories.kepegawaian.jpa;
 
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSp;
 import org.springframework.data.jpa.repository.JpaRepository;

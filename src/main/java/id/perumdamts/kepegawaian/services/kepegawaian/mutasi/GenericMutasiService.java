@@ -10,7 +10,7 @@ import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.entities.master.Profesi;
-import id.perumdamts.kepegawaian.repositories.kepegawaian.RiwayatMutasiRepository;
+import id.perumdamts.kepegawaian.repositories.kepegawaian.jpa.RiwayatMutasiRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.GolonganRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JabatanRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.OrganisasiRepository;

@@ -13,7 +13,7 @@ import id.perumdamts.kepegawaian.entities.master.JenisSp;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
-import id.perumdamts.kepegawaian.repositories.kepegawaian.riwayatSp.RiwayatSpRepository;
+import id.perumdamts.kepegawaian.repositories.kepegawaian.jpa.RiwayatSpRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JabatanRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JenisSpRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.OrganisasiRepository;

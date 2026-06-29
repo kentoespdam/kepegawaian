@@ -18,10 +18,10 @@ import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.entities.master.Profesi;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
-import id.perumdamts.kepegawaian.repositories.kepegawaian.LampiranSkRepository;
-import id.perumdamts.kepegawaian.repositories.kepegawaian.RiwayatSkRepository;
+import id.perumdamts.kepegawaian.repositories.kepegawaian.jpa.LampiranSkRepository;
+import id.perumdamts.kepegawaian.repositories.kepegawaian.jpa.RiwayatSkRepository;
 import id.perumdamts.kepegawaian.services.kepegawaian.lampiran.LampiranSkService;
-import id.perumdamts.kepegawaian.services.pegawai.pegawai.GenericPegawaiService;
+import id.perumdamts.kepegawaian.services.pegawai.pegawai.PegawaiWriteback;
 import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +36,7 @@ import java.util.Objects;
 public class GenericSkService {
     private final RiwayatSkRepository repository;
     private final PegawaiRepository pegawaiRepository;
-    private final GenericPegawaiService pegawaiService;
+    private final PegawaiWriteback pegawaiService;
     private final LampiranSkService lampiranSkService;
     private final LampiranSkRepository lampiranSkRepository;
 
@@ -46,7 +46,7 @@ public class GenericSkService {
 
         RiwayatSk entity = RiwayatSkPostRequest.toEntity(request, pegawai, golongan);
         RiwayatSk save = this.saveSK(entity);
-        pegawaiService.updateGolongan(pegawai, save);
+        pegawaiService.writebackGolongan(pegawai, save);
 
         return save;
     }
@@ -55,7 +55,7 @@ public class GenericSkService {
         RiwayatSk riwayatSk = riwayatMutasi.getRiwayatSk();
         RiwayatSkPutRequest.toEntity(riwayatSk, request, golonganBaru);
         RiwayatSk save = this.saveSK(riwayatSk);
-        pegawaiService.updateGolongan(riwayatMutasi.getPegawai(), save);
+        pegawaiService.writebackGolongan(riwayatMutasi.getPegawai(), save);
         return save;
     }
 
@@ -72,7 +72,7 @@ public class GenericSkService {
                 RiwayatSkPostRequest.toEntity(request, pegawai) :
                 RiwayatSkPostRequest.toEntity(request, pegawai, pegawai.getGolongan());
         RiwayatSk riwayatSk = this.saveSK(entity);
-        pegawaiService.updateJabatan(pegawai, riwayatSk, organisasiBaru, jabatanBaru, profesiBaru);
+        pegawaiService.writebackJabatan(pegawai, riwayatSk, organisasiBaru, jabatanBaru, profesiBaru);
 
         return riwayatSk;
     }
@@ -87,7 +87,7 @@ public class GenericSkService {
         RiwayatSk riwayatSk = riwayatMutasi.getRiwayatSk();
         RiwayatSk entity = RiwayatSkPutRequest.toEntity(riwayatSk, request);
         RiwayatSk save = this.saveSK(entity);
-        pegawaiService.updateJabatan(riwayatMutasi.getPegawai(), save, organisasiBaru, jabatanBaru, profesiBaru);
+        pegawaiService.writebackJabatan(riwayatMutasi.getPegawai(), save, organisasiBaru, jabatanBaru, profesiBaru);
         return save;
     }
 
@@ -104,7 +104,7 @@ public class GenericSkService {
         entity.setNotes(request.getNotes());
 
         RiwayatSk save = this.saveSK(entity);
-        pegawaiService.updateKontrak(pegawai, save, request.getTanggalSelesai());
+        pegawaiService.writebackKontrak(pegawai, save, request.getTanggalSelesai());
     }
 
     public void saveSkKontrakFromPegawai(PegawaiPostRequest request, Pegawai pegawai) {
@@ -139,14 +139,14 @@ public class GenericSkService {
         entity.setNotes(request.getNotes());
 
         RiwayatSk save = this.saveSK(entity);
-        pegawaiService.updateGolongan(pegawai, save, request.getTanggalSelesai());
+        pegawaiService.writebackGolonganPensiun(pegawai, save, request.getTanggalSelesai());
     }
 
     public RiwayatSk saveSkTerminasi(RiwayatTerminasiPostRequest request, Pegawai pegawai, Golongan golongan) {
         RiwayatSk entity = RiwayatSkPostRequest.toEntity(request, pegawai, golongan);
         RiwayatSk riwayatSk = this.saveSK(entity);
         pegawai.setStatusKerja(EStatusKerja.BERHENTI_OR_KELUAR);
-        pegawaiService.updatePegawai(pegawai);
+        pegawaiService.savePegawai(pegawai);
         if (request.getFileName() != null) {
             LampiranSkPostRequest lampiranSkPostRequest = LampiranSkPostRequest.builder()
                     .ref(EJenisSk.SK_PENSIUN)
