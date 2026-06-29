@@ -4,75 +4,51 @@ import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatKontrak.RiwayatKontrakPostRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatKontrak.RiwayatKontrakPutRequest;
+import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatKontrak.RiwayatKontrakQuery;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatKontrak.RiwayatKontrakRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatKontrak.RiwayatKontrakResponse;
-import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
-import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatKontrak;
-import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
-import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
-import id.perumdamts.kepegawaian.repositories.kepegawaian.jpa.RiwayatKontrakRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
+@Deprecated
 public class RiwayatKontrakServiceImpl implements RiwayatKontrakService {
-    private final RiwayatKontrakRepository repository;
-    private final PegawaiRepository pegawaiRepository;
-    private final GenericKontrakService genericKontrakService;
-
+    private final RiwayatKontrakCommandService commandService;
+    private final RiwayatKontrakQueryService queryService;
 
     @Override
     public Page<RiwayatKontrakResponse> findByPegawaiId(Long id, RiwayatKontrakRequest request) {
-        if (Objects.isNull(request.getSortBy()) || request.getSortBy().isEmpty()) {
-            request.setSortBy("id");
-            request.setSortDirection("DESC");
-        }
         request.setPegawaiId(id);
-        log.info("request: {}", request);
-        return repository.findAll(request.getSpecification(), request.getPageable())
-                .map(RiwayatKontrakResponse::from);
+        return queryService.findPage(request).map(this::toResponse);
     }
 
     @Override
     public RiwayatKontrakResponse findById(Long id) {
-        return repository.findById(id).map(RiwayatKontrakResponse::from)
-                .orElse(null);
+        try {
+            var q = queryService.findById(id);
+            return toResponse(q);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
-    @Transactional
     @Override
     public SavedStatus<?> save(RiwayatKontrakPostRequest request) {
         try {
-            boolean exists = repository.exists(request.getSpecification());
-            if (exists) return SavedStatus.build(ESaveStatus.DUPLICATE, "Riwayat Kontrak sudah ada");
-            Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId()).orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
-            if (!pegawai.getStatusPegawai().equals(EStatusPegawai.KONTRAK))
-                throw new RuntimeException("Pegawai bukan Kontrak");
-            genericKontrakService.save(request, pegawai);
-
-            return SavedStatus.build(ESaveStatus.SUCCESS, "Riwayat Kontrak berhasil disimpan");
+            commandService.save(request);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Kontrak Saved");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
     }
 
-    @Transactional
     @Override
     public SavedStatus<?> update(Long id, RiwayatKontrakPutRequest request) {
         try {
-            RiwayatKontrak riwayatKontrak = repository.findById(id).orElseThrow(() -> new RuntimeException("Unknown Riwayat Kontrak"));
-            Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId()).orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
-            genericKontrakService.update(riwayatKontrak, request, pegawai);
-
-            return SavedStatus.build(ESaveStatus.SUCCESS, "Riwayat Kontrak berhasil diupdate");
+            commandService.update(id, request);
+            return SavedStatus.build(ESaveStatus.SUCCESS, "Kontrak Updated");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
@@ -80,10 +56,25 @@ public class RiwayatKontrakServiceImpl implements RiwayatKontrakService {
 
     @Override
     public boolean delete(Long id) {
-        Optional<RiwayatKontrak> byId = repository.findById(id);
-        if (byId.isEmpty()) return false;
-        byId.get().setIsDeleted(true);
-        genericKontrakService.delete(byId.get());
-        return true;
+        try {
+            commandService.delete(id);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private RiwayatKontrakResponse toResponse(RiwayatKontrakQuery q) {
+        RiwayatKontrakResponse r = new RiwayatKontrakResponse();
+        r.setId(q.getId());
+        r.setJenisKontrak(q.getJenisKontrak());
+        r.setNipam(q.getNipam());
+        r.setNama(q.getNama());
+        r.setNomorKontrak(q.getNomorKontrak());
+        r.setTanggalSk(q.getTanggalSk());
+        r.setTanggalMulai(q.getTanggalMulai());
+        r.setTanggalSelesai(q.getTanggalSelesai());
+        r.setNotes(q.getNotes());
+        return r;
     }
 }

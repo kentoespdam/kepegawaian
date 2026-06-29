@@ -24,7 +24,7 @@ import id.perumdamts.kepegawaian.repositories.penggajian.GajiPendapatanNonPajakR
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiProfilRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
 import id.perumdamts.kepegawaian.services.auth.AuthService;
-import id.perumdamts.kepegawaian.services.kepegawaian.riwayatKontrak.GenericKontrakService;
+import id.perumdamts.kepegawaian.services.pegawai.port.KontrakBootstrapPort;
 import id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk.RiwayatSkService;
 import id.perumdamts.kepegawaian.services.profil.biodata.BiodataCommandService;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +47,7 @@ public class PegawaiCommandService {
     private final GolonganRepository golonganRepository;
     private final BiodataCommandService biodataCommandService;
     private final RiwayatSkService riwayatSkService;
-    private final GenericKontrakService genericKontrakService;
+    private final KontrakBootstrapPort kontrakBootstrapPort;
     private final GajiPendapatanNonPajakRepository gajiPendapatanNonPajakRepository;
     private final GajiProfilRepository gajiProfilRepository;
     private final RumahDinasRepository rumahDinasRepository;
@@ -89,7 +89,7 @@ public class PegawaiCommandService {
 
         switch (request.getStatusPegawai()) {
             case KONTRAK:
-                genericKontrakService.saveFromPegawai(request, pegawai);
+                kontrakBootstrapPort.createKontrakFromPegawai(request, pegawai);
                 break;
             case HONORER:
             case PEGAWAI:
