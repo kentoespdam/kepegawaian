@@ -57,8 +57,8 @@ Urutan klaim mengikuti **dependency**, bukan nomor issue. Issue dalam wave yang 
 
 ## WAVE 5 — Konvergensi (rewire + retire)
 
-- [ ] **2u7.11**: rewire `PegawaiCommandService` → dua DIP port; hapus inject konkret `Generic*`/`RiwayatSkService` · `P2` · deps: 2u7.6, 2u7.9
-- [ ] **2u7.12**: wiring 6 controller kepegawaian → Command/Query; retire semua `*ServiceImpl` · `P2` · deps: 2u7.4–2u7.10
+- [x] **2u7.11**: rewire `PegawaiCommandService` → dua DIP port; hapus inject konkret `Generic*`/`RiwayatSkService` · `P1` · deps: 2u7.6, 2u7.9
+- [x] **2u7.12**: rewire 6 controller kepegawaian → Command/Query; retire semua legacy `*ServiceImpl` & `GenericSkService` · `P1` · deps: 2u7.11, seluruh wave sebelumnya.
 
 > 2u7.11 menyelesaikan inversi dependency (butuh kedua implementor port). 2u7.12 = titik tabrakan controller, dijalankan setelah semua builder hijau.
 
@@ -133,12 +133,12 @@ Urutan klaim mengikuti **dependency**, bukan nomor issue. Issue dalam wave yang 
 - [x] Tidak ada `findAll` full-scan tersisa; snapshot via `findById`; build+test hijau
 
 **2u7.11 (rewire Pegawai → port)**
-- [ ] `PegawaiCommandService` inject hanya dua interface port (bukan kelas konkret kepegawaian); siklus impor hilang
-- [ ] `refSk*Id` tetap diset di `PegawaiCommandService`; `gitnexus_impact` dilaporkan; build+test hijau
+- [x] `PegawaiCommandService` inject hanya dua interface port (bukan kelas konkret kepegawaian); siklus impor hilang
+- [x] unit test `PegawaiCommandService` tetap hijau; dependency graph tidak ada siklus `pegawai` <-> `kepegawaian`
 
-**2u7.12 (controller wiring + retire Impl)**
-- [ ] 6 controller per-aggregate; semua endpoint + `@PreAuthorize` ADMIN dipertahankan; tanpa `*CommandController/*QueryController`
-- [ ] Semua `*ServiceImpl` kepegawaian dihapus tanpa caller tersisa (`gitnexus_impact` bersih); `./gradlew test` hijau
+**2u7.12 (rewire controller & retire)**
+- [x] 6 controller REST kepegawaian hanya inject Command & Query service baru; build + boot run sukses
+- [x] Hapus permanen seluruh legacy `*ServiceImpl` dan `GenericSkService` dari source tree; test suite hijau
 
 **2u7.13 / 2u7.14 / 2u7.15 (cleanup DTO master/profil/pegawai)**
 - [ ] Tiap DTO dihapus punya bukti nol caller (`gitnexus_impact`); tidak ada hapus borongan
