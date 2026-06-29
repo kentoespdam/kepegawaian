@@ -35,9 +35,9 @@ Urutan klaim mengikuti **dependency**, bukan nomor issue. Issue dalam wave yang 
 
 ## WAVE 2 — Leaf CRUD (2 issue paralel) + akar SK Query
 
-- [ ] **2u7.4**: Lampiran Command+Query (template LampiranProfil, Pola A) · `P2` · deps: 2u7.1
-- [ ] **2u7.5**: SP Command+Query (CRUD murni + berkas, retire `RiwayatSpServiceImpl`) · `P2` · deps: 2u7.1
-- [ ] **2u7.7**: SK Query (JOOQ Pola A, mini-projection golongan) · `P2` · deps: 2u7.1
+- [x] **2u7.4**: Lampiran Command+Query (template LampiranProfil, Pola A) · `P2` · deps: 2u7.1
+- [x] **2u7.5**: SP Command+Query (CRUD murni + berkas, retire `RiwayatSpServiceImpl`) · `P2` · deps: 2u7.1
+- [x] **2u7.7**: SK Query (JOOQ Pola A, mini-projection golongan) · `P2` · deps: 2u7.1
 
 > Tiga file baru terpisah (Lampiran/SP/SK-read). 2u7.4 harus siap sebelum SK Command (SK.delete → `lampiran.deleteByRefId`).
 
@@ -104,12 +104,12 @@ Urutan klaim mengikuti **dependency**, bukan nomor issue. Issue dalam wave yang 
 - [x] `detect_changes` hanya rename writeback + caller; build hijau
 
 **2u7.4 (Lampiran)**
-- [ ] Command+Query terpisah; baca Pola A; soft-delete; `deleteByRefId` tersedia utk SK
-- [ ] `detect_changes` hanya file Lampiran; build+test hijau
+- [x] Command+Query terpisah; baca Pola A; soft-delete; `deleteByRefId` tersedia utk SK
+- [x] `detect_changes` hanya file Lampiran; build+test hijau
 
 **2u7.5 (SP)**
-- [ ] CRUD+berkas identik lama; baca Pola A; soft-delete; `RiwayatSpServiceImpl` di-retire tanpa caller tersisa
-- [ ] `detect_changes` hanya file SP; build+test hijau
+- [x] CRUD+berkas identik lama; baca Pola A; soft-delete; `RiwayatSpServiceImpl` di-retire tanpa caller tersisa
+- [x] `detect_changes` hanya file SP; build+test hijau
 
 **2u7.6 (SK Command)**
 - [ ] implements `SkBootstrapPort`; `createSk*` return entity dgn `getId()`; `getReferenceById` utk golongan
@@ -117,8 +117,8 @@ Urutan klaim mengikuti **dependency**, bukan nomor issue. Issue dalam wave yang 
 - [ ] `gitnexus_impact` upstream `RiwayatSkServiceImpl` dilaporkan; build+test hijau
 
 **2u7.7 (SK Query)**
-- [ ] Baca JOOQ Pola A; mini-projection golongan `row(id,golongan,pangkat)`; sort/paging identik lama
-- [ ] Soft-delete terfilter; `detect_changes` hanya file SK read baru; build hijau
+- [x] Baca JOOQ Pola A; mini-projection golongan `row(id,golongan,pangkat)`; sort/paging identik lama
+- [x] Soft-delete terfilter; `detect_changes` hanya file SK read baru; build hijau
 
 **2u7.8 (Mutasi)**
 - [ ] `findById` utk field yang di-snapshot (ADR-0022); Command panggil SK CommandService, bukan repo mentah
