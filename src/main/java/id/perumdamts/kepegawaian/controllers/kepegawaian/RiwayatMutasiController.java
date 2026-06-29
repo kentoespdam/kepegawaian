@@ -1,10 +1,13 @@
 package id.perumdamts.kepegawaian.controllers.kepegawaian;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
+import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
+import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.kepegawaian.mutasi.*;
 import id.perumdamts.kepegawaian.entities.commons.EJenisMutasi;
-import id.perumdamts.kepegawaian.services.kepegawaian.mutasi.RiwayatMutasiService;
+import id.perumdamts.kepegawaian.services.kepegawaian.mutasi.RiwayatMutasiCommandService;
+import id.perumdamts.kepegawaian.services.kepegawaian.mutasi.RiwayatMutasiQueryService;
 import jakarta.validation.*;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -20,9 +23,10 @@ import java.util.Set;
 @RequiredArgsConstructor
 @RequestMapping("/kepegawaian/riwayat/mutasi")
 public class RiwayatMutasiController {
-    private final RiwayatMutasiService service;
-    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-    Validator validator = factory.getValidator();
+    private final RiwayatMutasiCommandService commandService;
+    private final RiwayatMutasiQueryService queryService;
+    private final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    private final Validator validator = factory.getValidator();
 
     @GetMapping("/pegawai/{id}")
     public ResponseEntity<?> index(@PathVariable Long id, @ParameterObject RiwayatMutasiRequest request) {
@@ -31,15 +35,13 @@ public class RiwayatMutasiController {
             request.setSortBy("id");
             request.setSortDirection("DESC");
         }
-        return CustomResult.page(service.findPage(request));
+        return CustomResult.page(queryService.findPage(request));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> detail(@PathVariable Long id) {
-        return CustomResult.any(service.findById(id));
+        return CustomResult.any(queryService.findById(id));
     }
-
-
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
@@ -62,7 +64,7 @@ public class RiwayatMutasiController {
                 return ErrorResult.build(violations);
         }
 
-        return CustomResult.save(service.save(request));
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.save(request)));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -71,12 +73,13 @@ public class RiwayatMutasiController {
         if (errors.hasErrors()) {
             return ErrorResult.build(errors);
         }
-        return CustomResult.save(service.update(id, request));
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.update(id, request)));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        return CustomResult.delete(service.delete(id));
+        commandService.delete(id);
+        return CustomResult.delete(true);
     }
 }

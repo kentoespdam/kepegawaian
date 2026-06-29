@@ -25,7 +25,7 @@ import id.perumdamts.kepegawaian.repositories.penggajian.GajiProfilRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
 import id.perumdamts.kepegawaian.services.auth.AuthService;
 import id.perumdamts.kepegawaian.services.pegawai.port.KontrakBootstrapPort;
-import id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk.RiwayatSkService;
+import id.perumdamts.kepegawaian.services.pegawai.port.SkBootstrapPort;
 import id.perumdamts.kepegawaian.services.profil.biodata.BiodataCommandService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +46,7 @@ public class PegawaiCommandService {
     private final ProfesiRepository profesiRepository;
     private final GolonganRepository golonganRepository;
     private final BiodataCommandService biodataCommandService;
-    private final RiwayatSkService riwayatSkService;
+    private final SkBootstrapPort skBootstrapPort;
     private final KontrakBootstrapPort kontrakBootstrapPort;
     private final GajiPendapatanNonPajakRepository gajiPendapatanNonPajakRepository;
     private final GajiProfilRepository gajiProfilRepository;
@@ -186,7 +186,7 @@ public class PegawaiCommandService {
     }
 
     private void savePegawai(PegawaiPostRequest request, Pegawai pegawai) {
-        RiwayatSk riwayatSk = riwayatSkService.savePegawai(request, pegawai);
+        RiwayatSk riwayatSk = skBootstrapPort.createSkPegawaiTetap(request, pegawai);
         pegawai.setRefSkPegawaiId(riwayatSk.getId());
         pegawai.setMkgTahun(0);
         pegawai.setMkgBulan(0);
@@ -194,7 +194,7 @@ public class PegawaiCommandService {
     }
 
     private void saveCapeg(PegawaiPostRequest request, Pegawai pegawai) {
-        RiwayatSk riwayatSk = riwayatSkService.saveCapeg(request, pegawai);
+        RiwayatSk riwayatSk = skBootstrapPort.createSkCapeg(request, pegawai);
         pegawai.setRefSkCapegId(riwayatSk.getId());
         pegawai.setMkgTahun(0);
         pegawai.setMkgBulan(0);

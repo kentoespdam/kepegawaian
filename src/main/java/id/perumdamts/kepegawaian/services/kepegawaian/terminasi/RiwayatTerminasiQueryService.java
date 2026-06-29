@@ -9,11 +9,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiResponse;
+import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
+import java.time.LocalDate;
+
 @Service
 @RequiredArgsConstructor
 public class RiwayatTerminasiQueryService {
     private final RiwayatTerminasiQueryRepository queryRepository;
     private final PegawaiQueryRepository pegawaiQueryRepository;
+    private final PegawaiRepository pegawaiRepository;
 
     public Page<RiwayatTerminasiQuery> findPage(RiwayatTerminasiRequest request) {
         return queryRepository.pageQuery(request)
@@ -21,6 +26,17 @@ public class RiwayatTerminasiQueryService {
                     pegawaiQueryRepository.findByNipam(q.getNipam()).ifPresent(q::setPegawai);
                     return q;
                 });
+    }
+
+    public Page<PegawaiResponse> findPageCalonPensiun(RiwayatTerminasiRequest request) {
+        LocalDate now = LocalDate.now();
+        LocalDate end = now.plusMonths(3);
+        request.setTanggalTerminasi(end);
+        request.setSortBy("Biodata.nama");
+        request.setSortDirection("ASC");
+
+        return pegawaiRepository.findAll(request.getCalonPensiunSpecification(), request.getPageable())
+                .map(PegawaiResponse::from);
     }
 
     public RiwayatTerminasiQuery findById(Long id) {

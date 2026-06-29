@@ -1,12 +1,15 @@
 package id.perumdamts.kepegawaian.controllers.kepegawaian;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
+import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
+import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.GajiSk;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkPostRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkPutRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkRequest;
-import id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk.RiwayatSkService;
+import id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk.RiwayatSkCommandService;
+import id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk.RiwayatSkQueryService;
 import jakarta.validation.*;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -22,28 +25,29 @@ import java.util.Set;
 @RequiredArgsConstructor
 @RequestMapping("/kepegawaian/riwayat/sk")
 public class RiwayatSkController {
-    private final RiwayatSkService riwayatSkService;
-    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-    Validator validator = factory.getValidator();
+    private final RiwayatSkCommandService commandService;
+    private final RiwayatSkQueryService queryService;
+    private final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    private final Validator validator = factory.getValidator();
 
     @GetMapping
     public ResponseEntity<?> index(@ParameterObject RiwayatSkRequest request) {
-        return CustomResult.page(riwayatSkService.findPage(request));
+        return CustomResult.page(queryService.findPage(request));
     }
 
     @GetMapping("/list")
     public ResponseEntity<?> list(@ParameterObject RiwayatSkRequest request) {
-        return CustomResult.list(riwayatSkService.findAll(request));
+        return CustomResult.list(queryService.findAll(request));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> detail(@PathVariable Long id) {
-        return CustomResult.any(riwayatSkService.findById(id));
+        return CustomResult.any(queryService.findById(id));
     }
 
     @GetMapping("/pegawai/{id}")
     public ResponseEntity<?> findByPegawaiId(@PathVariable Long id, @ParameterObject RiwayatSkRequest request) {
-        return CustomResult.any(riwayatSkService.findByPegawaiId(id, request));
+        return CustomResult.page(queryService.findByPegawaiId(id, request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -56,7 +60,7 @@ public class RiwayatSkController {
                 return ErrorResult.build(validate);
         }
 
-        return CustomResult.save(riwayatSkService.save(request));
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.save(request)));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -68,12 +72,13 @@ public class RiwayatSkController {
             if (!validate.isEmpty())
                 return ErrorResult.build(validate);
         }
-        return CustomResult.save(riwayatSkService.update(id, request));
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.update(id, request)));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        return CustomResult.delete(riwayatSkService.delete(id));
+        commandService.delete(id);
+        return CustomResult.delete(true);
     }
 }
