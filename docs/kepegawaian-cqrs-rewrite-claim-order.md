@@ -49,9 +49,9 @@ Urutan klaim mengikuti **dependency**, bukan nomor issue. Issue dalam wave yang 
 
 ## WAVE 4 — SK-dependent (Mutasi & Kontrak paralel, lalu Terminasi)
 
-- [ ] **2u7.8**: Mutasi Command+Query (Pola B, snapshot `findById` ADR-0022) · `P2` · deps: 2u7.6
-- [ ] **2u7.9**: Kontrak Command (implements `KontrakBootstrapPort`)+Query (retire `GenericKontrakService`) · `P2` · deps: 2u7.6
-- [ ] **2u7.10**: Terminasi Command (orkestrator fan-out 4 tulis)+Query (Pola B) · `P2` · deps: 2u7.6, 2u7.8, 2u7.9
+- [x] **2u7.8**: Mutasi Command+Query (Pola B, snapshot `findById` ADR-0022) · `P2` · deps: 2u7.6
+- [x] **2u7.9**: Kontrak Command (implements `KontrakBootstrapPort`)+Query (retire `GenericKontrakService`) · `P2` · deps: 2u7.6
+- [x] **2u7.10**: Terminasi Command (orkestrator fan-out 4 tulis)+Query (Pola B) · `P2` · deps: 2u7.6, 2u7.8, 2u7.9
 
 > 2u7.8 & 2u7.9 paralel (file aggregate berbeda). 2u7.10 = orkestrator → butuh ketiganya (SK+Mutasi+Kontrak) lewat CommandService pemilik.
 
@@ -121,16 +121,16 @@ Urutan klaim mengikuti **dependency**, bukan nomor issue. Issue dalam wave yang 
 - [x] Soft-delete terfilter; `detect_changes` hanya file SK read baru; build hijau
 
 **2u7.8 (Mutasi)**
-- [ ] `findById` utk field yang di-snapshot (ADR-0022); Command panggil SK CommandService, bukan repo mentah
-- [ ] Baca Pola B mapper `static final`; `{status,id}` tanpa re-read; build+test hijau
+- [x] `findById` utk field yang di-snapshot (ADR-0022); Command panggil SK CommandService, bukan repo mentah
+- [x] Baca Pola B mapper `static final`; `{status,id}` tanpa re-read; build+test hijau
 
 **2u7.9 (Kontrak)**
-- [ ] implements `KontrakBootstrapPort` return entity; cabang PERPANJANGAN/PENGANGKATAN jelas; `setIsLatest` dipertahankan
-- [ ] `GenericKontrakService` di-retire; Command panggil SK via 2u7.6; build+test hijau
+- [x] implements `KontrakBootstrapPort` return entity; cabang PERPANJANGAN/PENGANGKATAN jelas; `setIsLatest` dipertahankan
+- [x] `GenericKontrakService` di-retire; Command panggil SK via 2u7.6; build+test hijau
 
 **2u7.10 (Terminasi)**
-- [ ] Fan-out lewat CommandService pemilik (SK/Mutasi/Kontrak), bukan repo mentah; single `@Transactional` exception tak ditelan
-- [ ] Tidak ada `findAll` full-scan tersisa; snapshot via `findById`; build+test hijau
+- [x] Fan-out lewat CommandService pemilik (SK/Mutasi/Kontrak), bukan repo mentah; single `@Transactional` exception tak ditelan
+- [x] Tidak ada `findAll` full-scan tersisa; snapshot via `findById`; build+test hijau
 
 **2u7.11 (rewire Pegawai → port)**
 - [ ] `PegawaiCommandService` inject hanya dua interface port (bukan kelas konkret kepegawaian); siklus impor hilang
