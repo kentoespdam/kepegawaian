@@ -43,7 +43,7 @@ Urutan klaim mengikuti **dependency**, bukan nomor issue. Issue dalam wave yang 
 
 ## WAVE 3 — Akar SK Command (titik konvergensi fondasi)
 
-- [ ] **2u7.6**: SK Command — implements `SkBootstrapPort`; pegang `PegawaiWriteback`; `createSk*`; guard validasi · `P2` · deps: 2u7.2, 2u7.3, 2u7.4
+- [x] **2u7.6**: SK Command — implements `SkBootstrapPort`; pegang `PegawaiWriteback`; `createSk*`; guard validasi · `P2` · deps: 2u7.2, 2u7.3, 2u7.4
 
 > Butuh port (2u7.2), writeback (2u7.3), dan Lampiran (2u7.4, utk cascade delete). Aggregate akar → blok seluruh WAVE 4.
 
@@ -112,9 +112,9 @@ Urutan klaim mengikuti **dependency**, bukan nomor issue. Issue dalam wave yang 
 - [x] `detect_changes` hanya file SP; build+test hijau
 
 **2u7.6 (SK Command)**
-- [ ] implements `SkBootstrapPort`; `createSk*` return entity dgn `getId()`; `getReferenceById` utk golongan
-- [ ] delete cascade lampiran via 2u7.4; `PegawaiWriteback` dipakai; exception tak ditelan
-- [ ] `gitnexus_impact` upstream `RiwayatSkServiceImpl` dilaporkan; build+test hijau
+- [x] implements `SkBootstrapPort`; `createSk*` return entity dgn `getId()`; `getReferenceById` utk golongan
+- [x] delete cascade lampiran via 2u7.4; `PegawaiWriteback` dipakai; exception tak ditelan
+- [x] `gitnexus_impact` upstream `RiwayatSkServiceImpl` dilaporkan; build+test hijau
 
 **2u7.7 (SK Query)**
 - [x] Baca JOOQ Pola A; mini-projection golongan `row(id,golongan,pangkat)`; sort/paging identik lama

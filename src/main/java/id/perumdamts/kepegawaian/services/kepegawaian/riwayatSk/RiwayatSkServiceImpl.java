@@ -7,85 +7,177 @@ import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkPutRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkResponse;
 import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiPostRequest;
-import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
-import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
-import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
-import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
-import id.perumdamts.kepegawaian.repositories.kepegawaian.jpa.RiwayatSkRepository;
-import id.perumdamts.kepegawaian.repositories.master.jpa.GolonganRepository;
-import id.perumdamts.kepegawaian.services.kepegawaian.lampiran.LampiranSkService;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Deprecated
 public class RiwayatSkServiceImpl implements RiwayatSkService {
-    private final RiwayatSkRepository repository;
-    private final PegawaiRepository pegawaiRepository;
-    private final GolonganRepository golonganRepository;
-    private final LampiranSkService lampiranSkService;
+    private final RiwayatSkCommandService commandService;
+    private final RiwayatSkQueryService queryService;
 
     @Override
     public List<RiwayatSkResponse> findAll(RiwayatSkRequest request) {
-        return repository.findAll(request.getSpecification()).stream().map(RiwayatSkResponse::from).toList();
+        return queryService.findAll(request).stream()
+                .map(q -> {
+                    RiwayatSkResponse response = new RiwayatSkResponse();
+                    response.setId(q.getId());
+                    response.setNipam(q.getNipam());
+                    response.setNama(q.getNama());
+                    response.setNomorSk(q.getNomorSk());
+                    response.setJenisSk(q.getJenisSk());
+                    response.setTanggalSk(q.getTanggalSk());
+                    response.setTmtBerlaku(q.getTmtBerlaku());
+                    response.setGolongan(q.getGolongan());
+                    response.setGajiPokok(q.getGajiPokok());
+                    response.setMkgTahun(q.getMkgTahun());
+                    response.setMkgBulan(q.getMkgBulan());
+                    response.setKenaikanBerikutnya(q.getKenaikanBerikutnya());
+                    response.setMkgbTahun(q.getMkgbTahun());
+                    response.setMkgbBulan(q.getMkgbBulan());
+                    response.setUpdateMaster(q.getUpdateMaster());
+                    response.setNotes(q.getNotes());
+                    return response;
+                }).toList();
     }
 
     @Override
     public Page<RiwayatSkResponse> findPage(RiwayatSkRequest request) {
-        return repository.findAll(request.getSpecification(), request.getPageable())
-                .map(RiwayatSkResponse::from);
+        return queryService.findPage(request)
+                .map(q -> {
+                    RiwayatSkResponse response = new RiwayatSkResponse();
+                    response.setId(q.getId());
+                    response.setNipam(q.getNipam());
+                    response.setNama(q.getNama());
+                    response.setNomorSk(q.getNomorSk());
+                    response.setJenisSk(q.getJenisSk());
+                    response.setTanggalSk(q.getTanggalSk());
+                    response.setTmtBerlaku(q.getTmtBerlaku());
+                    response.setGolongan(q.getGolongan());
+                    response.setGajiPokok(q.getGajiPokok());
+                    response.setMkgTahun(q.getMkgTahun());
+                    response.setMkgBulan(q.getMkgBulan());
+                    response.setKenaikanBerikutnya(q.getKenaikanBerikutnya());
+                    response.setMkgbTahun(q.getMkgbTahun());
+                    response.setMkgbBulan(q.getMkgbBulan());
+                    response.setUpdateMaster(q.getUpdateMaster());
+                    response.setNotes(q.getNotes());
+                    return response;
+                });
     }
 
     @Override
     public RiwayatSkResponse findById(Long id) {
-        return repository.findById(id).map(RiwayatSkResponse::from).orElse(null);
+        try {
+            var q = queryService.findById(id);
+            RiwayatSkResponse response = new RiwayatSkResponse();
+            response.setId(q.getId());
+            response.setNipam(q.getNipam());
+            response.setNama(q.getNama());
+            response.setNomorSk(q.getNomorSk());
+            response.setJenisSk(q.getJenisSk());
+            response.setTanggalSk(q.getTanggalSk());
+            response.setTmtBerlaku(q.getTmtBerlaku());
+            response.setGolongan(q.getGolongan());
+            response.setGajiPokok(q.getGajiPokok());
+            response.setMkgTahun(q.getMkgTahun());
+            response.setMkgBulan(q.getMkgBulan());
+            response.setKenaikanBerikutnya(q.getKenaikanBerikutnya());
+            response.setMkgbTahun(q.getMkgbTahun());
+            response.setMkgbBulan(q.getMkgbBulan());
+            response.setUpdateMaster(q.getUpdateMaster());
+            response.setNotes(q.getNotes());
+            return response;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public List<RiwayatSkResponse> findByIds(List<Long> riwayatIds) {
-        return repository.findByIdIn(riwayatIds).stream().map(RiwayatSkResponse::from).toList();
+        return queryService.findByIds(riwayatIds).stream()
+                .map(q -> {
+                    RiwayatSkResponse response = new RiwayatSkResponse();
+                    response.setId(q.getId());
+                    response.setNipam(q.getNipam());
+                    response.setNama(q.getNama());
+                    response.setNomorSk(q.getNomorSk());
+                    response.setJenisSk(q.getJenisSk());
+                    response.setTanggalSk(q.getTanggalSk());
+                    response.setTmtBerlaku(q.getTmtBerlaku());
+                    response.setGolongan(q.getGolongan());
+                    response.setGajiPokok(q.getGajiPokok());
+                    response.setMkgTahun(q.getMkgTahun());
+                    response.setMkgBulan(q.getMkgBulan());
+                    response.setKenaikanBerikutnya(q.getKenaikanBerikutnya());
+                    response.setMkgbTahun(q.getMkgbTahun());
+                    response.setMkgbBulan(q.getMkgbBulan());
+                    response.setUpdateMaster(q.getUpdateMaster());
+                    response.setNotes(q.getNotes());
+                    return response;
+                }).toList();
     }
 
     @Override
     public List<RiwayatSkResponse> findByPegawai(Long pegawaiId) {
-        return repository.findByPegawai_Id(pegawaiId).stream().map(RiwayatSkResponse::from).toList();
+        return queryService.findByPegawai(pegawaiId).stream()
+                .map(q -> {
+                    RiwayatSkResponse response = new RiwayatSkResponse();
+                    response.setId(q.getId());
+                    response.setNipam(q.getNipam());
+                    response.setNama(q.getNama());
+                    response.setNomorSk(q.getNomorSk());
+                    response.setJenisSk(q.getJenisSk());
+                    response.setTanggalSk(q.getTanggalSk());
+                    response.setTmtBerlaku(q.getTmtBerlaku());
+                    response.setGolongan(q.getGolongan());
+                    response.setGajiPokok(q.getGajiPokok());
+                    response.setMkgTahun(q.getMkgTahun());
+                    response.setMkgBulan(q.getMkgBulan());
+                    response.setKenaikanBerikutnya(q.getKenaikanBerikutnya());
+                    response.setMkgbTahun(q.getMkgbTahun());
+                    response.setMkgbBulan(q.getMkgbBulan());
+                    response.setUpdateMaster(q.getUpdateMaster());
+                    response.setNotes(q.getNotes());
+                    return response;
+                }).toList();
     }
 
     @Override
     public Page<RiwayatSkResponse> findByPegawaiId(Long pegawaiId, RiwayatSkRequest request) {
-        request.setPegawaiId(pegawaiId);
-        return repository.findAll(request.getSpecification(), request.getPageable())
-                .map(RiwayatSkResponse::from);
+        return queryService.findByPegawaiId(pegawaiId, request)
+                .map(q -> {
+                    RiwayatSkResponse response = new RiwayatSkResponse();
+                    response.setId(q.getId());
+                    response.setNipam(q.getNipam());
+                    response.setNama(q.getNama());
+                    response.setNomorSk(q.getNomorSk());
+                    response.setJenisSk(q.getJenisSk());
+                    response.setTanggalSk(q.getTanggalSk());
+                    response.setTmtBerlaku(q.getTmtBerlaku());
+                    response.setGolongan(q.getGolongan());
+                    response.setGajiPokok(q.getGajiPokok());
+                    response.setMkgTahun(q.getMkgTahun());
+                    response.setMkgBulan(q.getMkgBulan());
+                    response.setKenaikanBerikutnya(q.getKenaikanBerikutnya());
+                    response.setMkgbTahun(q.getMkgbTahun());
+                    response.setMkgbBulan(q.getMkgbBulan());
+                    response.setUpdateMaster(q.getUpdateMaster());
+                    response.setNotes(q.getNotes());
+                    return response;
+                });
     }
 
-    @Transactional
     @Override
     public SavedStatus<?> save(RiwayatSkPostRequest request) {
         try {
-            Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId())
-                    .orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
-            Golongan golongan = golonganRepository.findById(request.getGolonganId())
-                    .orElse(null);
-
-            Optional<RiwayatSk> one = repository.findOne(request.getSpecification());
-            if (one.isPresent())
-                return SavedStatus.build(ESaveStatus.DUPLICATE, "Riwayat SK is Exists");
-
-            RiwayatSk entity = RiwayatSkPostRequest.toEntity(request, pegawai, golongan);
-            RiwayatSk save = repository.save(entity);
-            if (request.getUpdateMaster())
-                this.updatePegawai(request, pegawai, save, golongan);
-
+            commandService.save(request);
             return SavedStatus.build(ESaveStatus.SUCCESS, "Riwayat SK Saved");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
@@ -94,114 +186,31 @@ public class RiwayatSkServiceImpl implements RiwayatSkService {
 
     @Override
     public RiwayatSk saveCapeg(PegawaiPostRequest request, Pegawai pegawai) {
-        Golongan golongan = golonganRepository.getReferenceById(request.getGolonganId());
-        LocalDate kenaikanBerikutnya = LocalDate.now().plusYears(2);
-
-        RiwayatSk entity = new RiwayatSk();
-        entity.setPegawai(pegawai);
-        entity.setNipam(pegawai.getNipam());
-        entity.setNama(pegawai.getBiodata().getNama());
-        entity.setNomorSk(request.getNomorSk());
-        entity.setJenisSk(EJenisSk.SK_CAPEG);
-        entity.setTanggalSk(request.getTanggalSk());
-        entity.setTmtBerlaku(request.getTmtBerlakuSk());
-        entity.setGolongan(golongan);
-        entity.setMkgTahun(0);
-        entity.setMkgBulan(0);
-        entity.setKenaikanBerikutnya(kenaikanBerikutnya);
-        entity.setMkgbTahun(2);
-        entity.setMkgbBulan(0);
-
-        return repository.save(entity);
-
+        return commandService.createSkCapeg(request, pegawai);
     }
 
     @Override
     public RiwayatSk savePegawai(PegawaiPostRequest request, Pegawai pegawai) {
-        Long[] excludeGolonganJabatan = {1L, 2L, 3L, 25L};
-        Golongan golongan = ArrayUtils.contains(excludeGolonganJabatan, request.getJabatanId()) ||
-                pegawai.getStatusPegawai() != EStatusPegawai.PEGAWAI ? null : golonganRepository.getReferenceById(request.getGolonganId());
-        LocalDate kenaikanBerikutnya = LocalDate.now().plusYears(2);
-
-        RiwayatSk entity = new RiwayatSk();
-        entity.setPegawai(pegawai);
-        entity.setNipam(pegawai.getNipam());
-        entity.setNama(pegawai.getBiodata().getNama());
-        entity.setNomorSk(request.getNomorSk());
-        entity.setJenisSk(EJenisSk.SK_PEGAWAI_TETAP);
-        entity.setTanggalSk(request.getTanggalSk());
-        entity.setTmtBerlaku(request.getTmtBerlakuSk());
-        if (Objects.nonNull(golongan))
-            entity.setGolongan(golongan);
-        entity.setMkgTahun(0);
-        entity.setMkgBulan(0);
-        entity.setKenaikanBerikutnya(kenaikanBerikutnya);
-        entity.setMkgbTahun(2);
-        entity.setMkgbBulan(0);
-
-        return repository.save(entity);
+        return commandService.createSkPegawaiTetap(request, pegawai);
     }
 
-    @Transactional
     @Override
     public SavedStatus<?> update(Long id, RiwayatSkPutRequest request) {
         try {
-            RiwayatSk riwayatSk = repository.findById(id).orElseThrow(() -> new RuntimeException("Unknown Riwayat SK"));
-            Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId()).orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
-            Golongan golongan = golonganRepository.findById(request.getGolonganId()).orElse(null);
-
-            RiwayatSk entity = RiwayatSkPutRequest.toEntity(riwayatSk, request, pegawai, golongan);
-            RiwayatSk save = repository.save(entity);
-            this.updatePegawai(request, pegawai, save, golongan);
-
+            commandService.update(id, request);
             return SavedStatus.build(ESaveStatus.SUCCESS, "Riwayat SK Updated");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
     }
 
-    @Transactional
     @Override
     public Boolean delete(Long id) {
-        Optional<RiwayatSk> byId = repository.findById(id);
-        if (byId.isEmpty()) return false;
-        byId.get().setIsDeleted(true);
-        repository.save(byId.get());
-        lampiranSkService.deleteByRefId(id);
-        return true;
-    }
-
-    private void updatePegawai(RiwayatSkPostRequest request, Pegawai pegawai, RiwayatSk sk, Golongan golongan) {
-        if (request.getGajiPokok() <= 0 || request.getGolonganId() <= 0) return;
-        pegawai.setGajiPokok(request.getGajiPokok());
-        pegawai.setGolongan(golongan);
-        switch (request.getJenisSk()) {
-            case SK_KENAIKAN_PANGKAT_GOLONGAN:
-                pegawai.setRefSkGolId(sk.getId());
-                pegawai.setTmtGolongan(request.getTmtBerlaku());
-                pegawai.setMkgTahun(sk.getMkgTahun());
-                pegawai.setMkgBulan(sk.getMkgBulan());
-                break;
-            case SK_CAPEG:
-                pegawai.setStatusPegawai(EStatusPegawai.CAPEG);
-                pegawai.setRefSkCapegId(sk.getId());
-                break;
-            case SK_PEGAWAI_TETAP:
-                if (pegawai.getStatusPegawai().equals(EStatusPegawai.CAPEG))
-                    pegawai.setStatusPegawai(EStatusPegawai.PEGAWAI);
-                else if (pegawai.getStatusPegawai().equals(EStatusPegawai.CALON_HONORER))
-                    pegawai.setStatusPegawai(EStatusPegawai.HONORER);
-                pegawai.setRefSkPegawaiId(sk.getId());
-                break;
-            case SK_JABATAN:
-                pegawai.setRefSkJabatanId(sk.getId());
-                break;
-            case SK_MUTASI:
-                pegawai.setRefSkMutasiId(sk.getId());
-                break;
-            case SK_PENYESUAIAN_GAJI:
+        try {
+            commandService.delete(id);
+            return true;
+        } catch (Exception e) {
+            return false;
         }
-
-        pegawaiRepository.save(pegawai);
     }
 }

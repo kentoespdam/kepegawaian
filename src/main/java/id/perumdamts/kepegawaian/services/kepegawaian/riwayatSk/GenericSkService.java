@@ -20,7 +20,7 @@ import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.jpa.LampiranSkRepository;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.jpa.RiwayatSkRepository;
-import id.perumdamts.kepegawaian.services.kepegawaian.lampiran.LampiranSkService;
+import id.perumdamts.kepegawaian.services.kepegawaian.lampiran.LampiranSkCommandService;
 import id.perumdamts.kepegawaian.services.pegawai.pegawai.PegawaiWriteback;
 import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +37,7 @@ public class GenericSkService {
     private final RiwayatSkRepository repository;
     private final PegawaiRepository pegawaiRepository;
     private final PegawaiWriteback pegawaiService;
-    private final LampiranSkService lampiranSkService;
+    private final LampiranSkCommandService lampiranSkService;
     private final LampiranSkRepository lampiranSkRepository;
 
     public RiwayatSk saveSkGolongan(RiwayatSkPostRequest request, Golongan golongan) {
