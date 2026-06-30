@@ -34,7 +34,7 @@
 - [x] `git status` clean; di branch `rewrite/master-cqrs`
 - [x] `npx gitnexus analyze` bila index stale (cek warning hook)
 - [x] Baca exemplar files yang akan ditiru (tercantum per fase)
-- [x] `bd update kepegawaian-is7.7 --claim` issue yang dimulai
+- [x] `bd update kepegawaian-is7.8 --claim` issue yang dimulai
 
 ---
 
@@ -194,17 +194,17 @@
 **Goal:** `generateApprovalChain` 3 metode near-dup → satu data-driven. Konsisten `existsByJabatanId` (bukan campur `findById`). Buang hardcode string jabatan.
 
 ### Pre-edit
-- [ ] `gitnexus_impact({target: "CutiApprovalChainService", direction: "upstream"})`
+- [x] `gitnexus_impact({target: "CutiApprovalChainService", direction: "upstream"})`
 
 ### Implementasi
-- [ ] Rakit chain dari daftar jabatan (data-driven by `approvalLevel` & jabatan hierarki), bukan 3 cabang `if jabatanLevelId`
-- [ ] Gunakan `existsByJabatanId` seragam (FIX asimetri findById vs existsBy)
-- [ ] Hapus hardcode "Supervisor Adm. & Pengembangan SDM" → ambil dari `CutiProperties`
-- [ ] Inject `CutiProperties` ganti `@Value` (supervisorSdm/managerSdm/direkturUtama/direkturUmum/levelSupervisor/levelManager)
+- [x] Rakit chain dari daftar jabatan (data-driven by `approvalLevel` & jabatan hierarki), bukan 3 cabang `if jabatanLevelId`
+- [x] Gunakan `existsByJabatanId` seragam (FIX asimetri findById vs existsBy)
+- [x] Hapus hardcode "Supervisor Adm. & Pengembangan SDM" → ambil dari `CutiProperties`
+- [x] Inject `CutiProperties` ganti `@Value` (supervisorSdm/managerSdm/direkturUtama/direkturUmum/levelSupervisor/levelManager)
 
 ### Acceptance
-- [ ] Satu metode generator, tabel/loop bukan copy-paste
-- [ ] `./gradlew build` → SUCCESSFUL
+- [x] Satu metode generator, tabel/loop bukan copy-paste
+- [x] `./gradlew build` → SUCCESSFUL
 
 ---
 
