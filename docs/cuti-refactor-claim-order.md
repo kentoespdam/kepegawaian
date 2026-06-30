@@ -16,8 +16,8 @@
 | **1** | `kepegawaian-scn` | SaveCutiService split | ✓ CLOSED | — |
 | **1** | `kepegawaian-sqf` | JOOQ mapper extraction | ✓ CLOSED | — |
 | **1** | `kepegawaian-39o` | Validator split | ✓ CLOSED | — |
-| **2** | `kepegawaian-hit` | PengajuanCutiCommand classifier | READY | `bd update kepegawaian-hit --claim` |
-| **2** | `kepegawaian-rq2` | KlaimCutiCommand settlement | READY | `bd update kepegawaian-rq2 --claim` |
+| **2** | `kepegawaian-hit` | PengajuanCutiCommand classifier | ✓ CLOSED | — |
+| **2** | `kepegawaian-rq2` | KlaimCutiCommand settlement | ✓ CLOSED | — |
 | **3** | `kepegawaian-llq` | ApprovalCutiCommand lifecycle | READY | `bd update kepegawaian-llq --claim` |
 
 ---
@@ -123,20 +123,20 @@ kepegawaian-y7u (Epic: 120-line enforcement)
 | | |
 |---|---|
 | **Goal** | Simplify `PengajuanCutiCommand` (161→<120 lines) |
-| **Status** | ○ BLOCKED ⟶ READY after `kepegawaian-scn` closes |
+| **Status** | ✓ CLOSED |
 | **Depends** | `kepegawaian-scn` |
 
 **Pre (after scn closes):**
-- [ ] Confirm scn CLOSED → `bd update kepegawaian-hit --claim`
-- [ ] `gitnexus_impact({target: "PengajuanCutiCommand", direction: "upstream"})`
+- [x] Confirm scn CLOSED → `bd update kepegawaian-hit --claim`
+- [x] `gitnexus_impact({target: "PengajuanCutiCommand", direction: "upstream"})`
 
 **Refactor:**
-- [ ] INJECT `CutiPeriodClassifier` | REPLACE 5-way if-else → `switch()`
-- [ ] REMOVE double-subtract | DELEGATE chain pointer init
+- [x] INJECT `CutiPeriodClassifier` | REPLACE 5-way if-else → `switch()`
+- [x] REMOVE double-subtract | DELEGATE chain pointer init
 
 **Verify & Ship:**
-- [ ] `<120 lines` | `./gradlew clean build`
-- [ ] `gitnexus_detect_changes()` → commit → `bd close kepegawaian-hit`
+- [x] `<120 lines` | `./gradlew clean build`
+- [x] `gitnexus_detect_changes()` → commit → `bd close kepegawaian-hit`
 
 ---
 
@@ -145,20 +145,20 @@ kepegawaian-y7u (Epic: 120-line enforcement)
 | | |
 |---|---|
 | **Goal** | Extract settlement service from `KlaimCutiCommand` (193→<120 lines) |
-| **Status** | ○ BLOCKED ⟶ READY after scn + 39o close |
+| **Status** | ✓ CLOSED |
 | **Depends** | `kepegawaian-scn` + `kepegawaian-39o` |
 
 **Pre (both closed):**
-- [ ] `bd update kepegawaian-rq2 --claim`
-- [ ] `gitnexus_impact({target: "KlaimCutiCommand", direction: "upstream"})`
+- [x] `bd update kepegawaian-rq2 --claim`
+- [x] `gitnexus_impact({target: "KlaimCutiCommand", direction: "upstream"})`
 
 **Extract:**
-- [ ] NEW `CutiKlaimSettlementService` — 5 period methods (mirror scn pattern)
-- [ ] REFACTOR `KlaimCutiCommand` — single `@Transactional` entry, delegate settlement
+- [x] NEW `CutiKlaimSettlementService` — 5 period methods (mirror scn pattern)
+- [x] REFACTOR `KlaimCutiCommand` — single `@Transactional` entry, delegate settlement
 
 **Verify & Ship:**
-- [ ] `<120 lines` | `./gradlew clean build`
-- [ ] `gitnexus_detect_changes()` → commit → `bd close kepegawaian-rq2`
+- [x] `<120 lines` | `./gradlew clean build`
+- [x] `gitnexus_detect_changes()` → commit → `bd close kepegawaian-rq2`
 
 ---
 

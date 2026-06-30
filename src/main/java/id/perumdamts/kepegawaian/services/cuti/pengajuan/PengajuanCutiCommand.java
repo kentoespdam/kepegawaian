@@ -5,27 +5,26 @@ import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPostRequest;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPutRequest;
+import id.perumdamts.kepegawaian.dto.master.hariLibur.TanggalHariLibur;
 import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
-import id.perumdamts.kepegawaian.entities.commons.EReadWriteStatus;
-import id.perumdamts.kepegawaian.entities.cuti.CutiApprovalChain;
+import id.perumdamts.kepegawaian.entities.commons.ECutiPeriod;
 import id.perumdamts.kepegawaian.entities.cuti.CutiJenis;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
-import id.perumdamts.kepegawaian.entities.master.Jabatan;
-import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
-import id.perumdamts.kepegawaian.helpers.DateHelper;
 import id.perumdamts.kepegawaian.helpers.RedisHelper;
+import id.perumdamts.kepegawaian.helpers.cuti.CutiPeriodClassifier;
+import id.perumdamts.kepegawaian.helpers.cuti.WorkdayCalculator;
 import id.perumdamts.kepegawaian.repositories.cuti.CutiJenisRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.CutiPegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.HariLiburRepository;
 import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
-import id.perumdamts.kepegawaian.services.cuti.approvalChain.CutiApprovalChainService;
+import id.perumdamts.kepegawaian.services.cuti.approvalChain.CutiApprovalChainGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +36,7 @@ public class PengajuanCutiCommand {
     private final HariLiburRepository hariLiburRepository;
     private final PegawaiRepository pegawaiRepository;
     private final CutiJenisRepository cutiJenisRepository;
-    private final CutiApprovalChainService cutiApprovalChainService;
+    private final CutiApprovalChainGenerator cutiApprovalChainGenerator;
     private final CutiPengajuanValidator cutiPengajuanValidator;
 
     @Transactional
@@ -47,54 +46,29 @@ public class PengajuanCutiCommand {
         }
         cutiPengajuanValidator.validate(request);
 
-        Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId())
-                .orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
-        CutiJenis jenisCuti = cutiJenisRepository.getReferenceById(request.getJenisCutiId());
-        CutiJenis subJenisCuti = request.getSubJenisCutiId() != null
-                ? cutiJenisRepository.getReferenceById(request.getSubJenisCutiId())
-                : null;
+        var pegawai = pegawaiRepository.findById(request.getPegawaiId()).orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
+        var jenisCuti = cutiJenisRepository.getReferenceById(request.getJenisCutiId());
+        var subJenisCuti = request.getSubJenisCutiId() != null ? cutiJenisRepository.getReferenceById(request.getSubJenisCutiId()) : null;
 
         int nowYear = LocalDate.now().getYear();
-        LocalDate tanggalMulai = request.getTanggalMulai();
-        LocalDate tanggalSelesai = request.getTanggalSelesai();
-        int startYear = tanggalMulai.getYear();
-        int endYear = tanggalSelesai.getYear();
-
-        int totalDays = DateHelper.countWeekdaysBetween(request.getTanggalMulai(), request.getTanggalSelesai());
-        int totalHariCuti = totalDays - hariLiburRepository.countByTanggalBetween(request.getTanggalMulai(), request.getTanggalSelesai());
+        Set<LocalDate> holidays = hariLiburRepository.findByTanggalBetween(request.getTanggalMulai(), request.getTanggalSelesai())
+                .stream().map(TanggalHariLibur::getTanggal).collect(Collectors.toSet());
+        int totalHariCuti = WorkdayCalculator.count(request.getTanggalMulai(), request.getTanggalSelesai(), holidays);
 
         CutiPegawai entity = CutiPengajuanPostRequest.toEntity(request, pegawai, jenisCuti, subJenisCuti);
-        entity.setJumlahHari(totalDays);
+        entity.setJumlahHari(totalHariCuti);
         entity.setJumlahHariKerja(totalHariCuti);
 
-        // CUTI TAHUNAN
         if (request.getJenisCutiId().equals(cutiProperties.getJenisCutiTahunan())) {
-            CutiPegawai cutiPegawai;
-            if (startYear > nowYear && endYear > nowYear) {
-                cutiPegawai = saveCutiService.forNextYear(request, entity);
-            } else if (startYear == nowYear && endYear > startYear) {
-                cutiPegawai = saveCutiService.overlappingYear(request, entity);
-            } else if (DateHelper.isBetweenDates(tanggalMulai, tanggalSelesai, startYear, 1, 6, 30)) {
-                cutiPegawai = saveCutiService.between1JanAnd30Jun(request, entity);
-            } else if (DateHelper.isBetweenDates(tanggalMulai, tanggalSelesai, startYear, 7, 12, 31)) {
-                cutiPegawai = saveCutiService.between1JulAnd31Dec(request, entity);
-            } else if (DateHelper.isOverlappingDates(tanggalMulai, tanggalSelesai, startYear)) {
-                cutiPegawai = saveCutiService.between30JunAnd1Jul(request, entity);
-            } else {
-                throw new RuntimeException("Invalid request");
-            }
-
-            List<CutiApprovalChain> cutiApprovalChains = cutiApprovalChainService.generateApprovalChain(cutiPegawai);
-            Optional<CutiApprovalChain> writeChain = cutiApprovalChains.stream()
-                    .filter(chain -> chain.getReadWriteStatus().equals(EReadWriteStatus.WRITE))
-                    .findFirst();
-            if (writeChain.isPresent()) {
-                CutiApprovalChain writeChainEntity = writeChain.get();
-                cutiPegawai.setApprovalLevel(writeChainEntity.getApprovalLevel());
-                cutiPegawai.setPicSaatIni(new Jabatan(writeChainEntity.getJabatanId()));
-                repository.save(cutiPegawai);
-            }
-
+            ECutiPeriod period = CutiPeriodClassifier.classify(request.getTanggalMulai(), request.getTanggalSelesai(), nowYear);
+            CutiPegawai cutiPegawai = switch (period) {
+                case NEXT_YEAR -> saveCutiService.forNextYear(request, entity);
+                case OVERLAPPING -> saveCutiService.overlappingYear(request, entity);
+                case JAN_JUN -> saveCutiService.between1JanAnd30Jun(request, entity);
+                case JUL_DES -> saveCutiService.between1JulAnd31Dec(request, entity);
+                case JUN_JUL -> saveCutiService.between30JunAnd1Jul(request, entity);
+            };
+            cutiApprovalChainGenerator.forPengajuan(cutiPegawai);
         } else {
             saveCutiService.saveCutiNonTahunan(request, entity);
         }
@@ -106,56 +80,41 @@ public class PengajuanCutiCommand {
         if (redisHelper.validateToken(request.getCsrfToken())) {
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Duplicate request detected");
         }
-        CutiPegawai cutiPegawai = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Unknown Cuti Pengajuan"));
-        Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId())
-                .orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
-        CutiJenis jenisCuti = cutiJenisRepository.getReferenceById(request.getJenisCutiId());
-        CutiJenis subJenisCuti = request.getSubJenisCutiId() != null
-                ? cutiJenisRepository.getReferenceById(request.getSubJenisCutiId())
-                : null;
+        var cutiPegawai = repository.findById(id).orElseThrow(() -> new RuntimeException("Unknown Cuti Pengajuan"));
+        var pegawai = pegawaiRepository.findById(request.getPegawaiId()).orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
+        var jenisCuti = cutiJenisRepository.getReferenceById(request.getJenisCutiId());
+        var subJenisCuti = request.getSubJenisCutiId() != null ? cutiJenisRepository.getReferenceById(request.getSubJenisCutiId()) : null;
 
         int nowYear = LocalDate.now().getYear();
-        LocalDate tanggalMulai = request.getTanggalMulai();
-        LocalDate tanggalSelesai = request.getTanggalSelesai();
-        int startYear = tanggalMulai.getYear();
-        int endYear = tanggalSelesai.getYear();
-
-        int totalDays = DateHelper.countWeekdaysBetween(request.getTanggalMulai(), request.getTanggalSelesai());
-        int totalHariCuti = totalDays - hariLiburRepository.countByTanggalBetween(request.getTanggalMulai(), request.getTanggalSelesai());
+        Set<LocalDate> holidays = hariLiburRepository.findByTanggalBetween(request.getTanggalMulai(), request.getTanggalSelesai())
+                .stream().map(TanggalHariLibur::getTanggal).collect(Collectors.toSet());
+        int totalHariCuti = WorkdayCalculator.count(request.getTanggalMulai(), request.getTanggalSelesai(), holidays);
 
         CutiPegawai entity = CutiPengajuanPutRequest.toEntity(cutiPegawai, request, pegawai, jenisCuti, subJenisCuti);
-        entity.setJumlahHari(totalDays);
+        entity.setJumlahHari(totalHariCuti);
         entity.setJumlahHariKerja(totalHariCuti);
 
-        // CUTI TAHUNAN
         if (request.getJenisCutiId().equals(cutiProperties.getJenisCutiTahunan())) {
-            if (startYear > nowYear && endYear > nowYear) {
-                saveCutiService.forNextYear(request, entity);
-            } else if (startYear == nowYear && endYear > startYear) {
-                saveCutiService.overlappingYear(request, entity);
-            } else if (DateHelper.isBetweenDates(tanggalMulai, tanggalSelesai, startYear, 1, 6, 30)) {
-                saveCutiService.between1JanAnd30Jun(request, entity);
-            } else if (DateHelper.isBetweenDates(tanggalMulai, tanggalSelesai, startYear, 7, 12, 31)) {
-                saveCutiService.between1JulAnd31Dec(request, entity);
-            } else if (DateHelper.isOverlappingDates(tanggalMulai, tanggalSelesai, startYear)) {
-                saveCutiService.between30JunAnd1Jul(request, entity);
+            ECutiPeriod period = CutiPeriodClassifier.classify(request.getTanggalMulai(), request.getTanggalSelesai(), nowYear);
+            switch (period) {
+                case NEXT_YEAR -> saveCutiService.forNextYear(request, entity);
+                case OVERLAPPING -> saveCutiService.overlappingYear(request, entity);
+                case JAN_JUN -> saveCutiService.between1JanAnd30Jun(request, entity);
+                case JUL_DES -> saveCutiService.between1JulAnd31Dec(request, entity);
+                case JUN_JUL -> saveCutiService.between30JunAnd1Jul(request, entity);
             }
         } else {
             saveCutiService.saveCutiNonTahunan(request, entity);
         }
-
         return SavedStatus.build(ESaveStatus.SUCCESS, "Cuti Pengajuan berhasil di update");
     }
 
     @Transactional
     public SavedStatus<?> pembatalan(Long id) {
-        CutiPegawai entity = repository.findByIdAndApprovalCutiStatus(id, EApprovalCutiStatus.PENDING)
+        var entity = repository.findByIdAndApprovalCutiStatus(id, EApprovalCutiStatus.PENDING)
                 .orElseThrow(() -> new RuntimeException("Unknown Cuti Pegawai"));
-
         entity.setApprovalCutiStatus(EApprovalCutiStatus.CANCELED);
         repository.save(entity);
-
         return SavedStatus.build(ESaveStatus.SUCCESS, "Cuti Pengajuan berhasil dibatalkan");
     }
 }
