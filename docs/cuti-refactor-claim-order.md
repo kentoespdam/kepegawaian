@@ -19,6 +19,7 @@
 | **2** | `kepegawaian-hit` | PengajuanCutiCommand classifier | ✓ CLOSED | — |
 | **2** | `kepegawaian-rq2` | KlaimCutiCommand settlement | ✓ CLOSED | — |
 | **3** | `kepegawaian-llq` | ApprovalCutiCommand lifecycle | ✓ CLOSED | — |
+| **4** | `kepegawaian-y7u.1` | Facade trio cleanup | ○ OPEN | `bd update kepegawaian-y7u.1 --claim` |
 
 ---
 
@@ -35,7 +36,10 @@ kepegawaian-y7u (Epic: 120-line enforcement)
 ├─ kepegawaian-39o [PHASE 1] Validator split (Q12)
 │   └─ kepegawaian-rq2 [PHASE 2] KlaimCutiCommand settlement (Q12)
 │
-└─ kepegawaian-llq [PHASE 3] ApprovalCutiCommand lifecycle (Q13)
+├─ kepegawaian-llq [PHASE 3] ApprovalCutiCommand lifecycle (Q13)
+│
+└─ kepegawaian-y7u.1 [PHASE 4] Facade trio cleanup (Q2)
+   └─ Depends: hit, llq, rq2 all closed
 ```
 
 ---
@@ -184,6 +188,30 @@ kepegawaian-y7u (Epic: 120-line enforcement)
 
 ---
 
+### 4 — `kepegawaian-y7u.1` · Phase 4
+
+| | |
+|---|---|
+| **Goal** | Delete facade trio: 3 interface + 3 impl (Q2) |
+| **Status** | ○ OPEN |
+| **Depends** | kepegawaian-hit, kepegawaian-llq, kepegawaian-rq2 |
+
+**Pre:**
+- [ ] Confirm hit, llq, rq2 CLOSED → `bd update kepegawaian-y7u.1 --claim`
+- [ ] `gitnexus_impact` on 6 facade files (3 interface + 3 impl)
+
+**Delete:**
+- [ ] `CutiPengajuanService` + `CutiPengajuanServiceImpl`
+- [ ] `CutiApprovalService` + `CutiApprovalServiceImpl`
+- [ ] `CutiApprovalChainService` + `CutiApprovalChainServiceImpl`
+- [ ] Update controller imports (already rewired to Command in hit/llq/rq2)
+
+**Verify & Ship:**
+- [ ] `./gradlew clean build` (no compile errors)
+- [ ] `gitnexus_detect_changes()` → commit → `bd close kepegawaian-y7u.1`
+
+---
+
 ## 📖 Design Decisions (Q11-Q17)
 
 | # | Decision | Target | Ref |
@@ -196,6 +224,7 @@ kepegawaian-y7u (Epic: 120-line enforcement)
 | Q15 | Extract mapper ~26 lines | `CutiKuotaQueryRepository` 208→182 | `decisions-cuti.md` |
 | Q16 | Extract mapper triplikasi ~42 lines | `CutiJenisQueryRepository` 146→107 | `decisions-cuti.md` |
 | Q17 | Keep as-is (data-holder lenient) | `CutiPegawai` entity 126 | `decisions-cuti.md` |
+| Q2 | Delete facade trio (interface + impl) | 6 files → 0 | `decisions-cuti.md` |
 
 ### Exception Rules
 - **JOOQ `*QueryRepository`**: >120 lines OK **if mapper extracted** (Pola B: `final`, private ctor, no `@Component`)
