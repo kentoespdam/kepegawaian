@@ -12,6 +12,7 @@ import id.perumdamts.kepegawaian.helpers.DateHelper;
 import id.perumdamts.kepegawaian.repositories.cuti.CutiKlaimDetailRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.CutiPegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.HariLiburRepository;
+import id.perumdamts.kepegawaian.helpers.cuti.MinimalCutiRule;
 import id.perumdamts.kepegawaian.services.cuti.approvalChain.CutiApprovalChainService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SaveKlaimCutiService {
     private final CutiPegawaiRepository repository;
-    private final ValidatePengajuanCutiService validatePengajuanCutiService;
+    private final CutiPengajuanValidator cutiPengajuanValidator;
     private final HariLiburRepository hariLiburRepository;
     private final CutiKlaimDetailRepository cutiKlaimDetailRepository;
     private final CutiApprovalChainService cutiApprovalChainService;
@@ -48,7 +49,7 @@ public class SaveKlaimCutiService {
     public SavedStatus<?> save(CutiPengajuanKlaimPostRequest request) {
         try {
             // Validate the leave claim request
-            CutiPegawai validCutiPegawai = validatePengajuanCutiService.validateKlaim(request);
+            CutiPegawai validCutiPegawai = cutiPengajuanValidator.validateKlaim(request);
 
             // Convert the request into an entity
             CutiPegawai entity = CutiPengajuanKlaimPostRequest.toEntity(validCutiPegawai, request);
@@ -121,7 +122,7 @@ public class SaveKlaimCutiService {
             int totalRemainingQuota = cutiPegawai.getRefCuti().getRiwayatKuota0() + cutiPegawai.getRefCuti().getRiwayatKuota1();
 
             // Validate if claimed days are within the remaining quota
-            validatePengajuanCutiService.validateMinimalCuti(totalHariCuti, totalRemainingQuota);
+            MinimalCutiRule.check(totalHariCuti, totalRemainingQuota);
 
             // If quota is insufficient, throw an exception
             if (totalRemainingQuota < totalHariCuti) {

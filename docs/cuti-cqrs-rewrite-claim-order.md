@@ -34,7 +34,7 @@
 - [x] `git status` clean; di branch `rewrite/master-cqrs`
 - [x] `npx gitnexus analyze` bila index stale (cek warning hook)
 - [x] Baca exemplar files yang akan ditiru (tercantum per fase)
-- [x] `bd update kepegawaian-is7.6 --claim` issue yang dimulai
+- [x] `bd update kepegawaian-is7.7 --claim` issue yang dimulai
 
 ---
 
@@ -175,17 +175,17 @@
 
 **Goal:** validator kolaborator khusus dipanggil Command sebelum mutasi. Ganti Specification-on-DTO → JPA derived `existsBy…`. Inject `CutiProperties`.
 
-- [ ] NEW `services/cuti/pengajuan/CutiPengajuanValidator.java` (atau pertahankan nama lama)
-  - [ ] `validate(...)` — existsBy PENDING; existsBy cuti besar; existsBy cuti ibadah → throw masing-masing
-  - [ ] panggil `MinimalCutiRule.check(...)` (fase 2)
-  - [ ] `validateKlaim(...)` → kembalikan `CutiPegawai` tervalidasi (refCuti APPROVED, jenis ∈ {tahunan,ibadah}, klaim belum ada, tak ada ibadah berlangsung)
-- [ ] Tambah derived query di repo tulis: `existsByPegawaiIdAnd…StatusIn`, `existsByPegawaiIdAndJenisCutiId…`
-- [ ] Hapus Specification-builder di DTO request (`getPendingStatusSpecification`, `getSpecificationByJenisCuti`)
-- [ ] Inject `CutiProperties` ganti `DefConfig`
+- [x] NEW `services/cuti/pengajuan/CutiPengajuanValidator.java` (atau pertahankan nama lama)
+  - [x] `validate(...)` — existsBy PENDING; existsBy cuti besar; existsBy cuti ibadah → throw masing-masing
+  - [x] panggil `MinimalCutiRule.check(...)` (fase 2)
+  - [x] `validateKlaim(...)` → kembalikan `CutiPegawai` tervalidasi (refCuti APPROVED, jenis ∈ {tahunan,ibadah}, klaim belum ada, tak ada ibadah berlangsung)
+- [x] Tambah derived query di repo tulis: `existsByPegawaiIdAnd…StatusIn`, `existsByPegawaiIdAndJenisCutiId…`
+- [x] Hapus Specification-builder di DTO request (`getPendingStatusSpecification`, `getSpecificationByJenisCuti`)
+- [x] Inject `CutiProperties` ganti `DefConfig`
 
 ### Acceptance
-- [ ] Nol `repository.exists(Specification)` di path cuti
-- [ ] Unit-test minimal rule lewat (via fase 2)
+- [x] Nol `repository.exists(Specification)` di path cuti
+- [x] Unit-test minimal rule lewat (via fase 2)
 
 ---
 

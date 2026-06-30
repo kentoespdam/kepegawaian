@@ -40,7 +40,7 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
     private final CutiJenisRepository cutiJenisRepository;
     private final CutiApprovalChainService cutiApprovalChainService;
     private final SaveKlaimCutiService klaimCutiService;
-    private final ValidatePengajuanCutiService validatePengajuanCutiService;
+    private final CutiPengajuanValidator cutiPengajuanValidator;
 
     @Override
     public Page<CutiPengajuanResponse> findPage(CutiPengajuanRequest request) {
@@ -67,7 +67,7 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
             if (redisHelper.validateToken(request.getCsrfToken())) {
                 return SavedStatus.build(ESaveStatus.DUPLICATE, "Duplicate request detected");
             }
-            validatePengajuanCutiService.validate(request);
+            cutiPengajuanValidator.validate(request);
 
             Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId())
                     .orElseThrow(() -> new RuntimeException("Unknown Pegawai"));

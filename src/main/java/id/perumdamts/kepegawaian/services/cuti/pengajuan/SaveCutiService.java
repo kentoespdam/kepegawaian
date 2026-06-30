@@ -19,7 +19,6 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class SaveCutiService {
     private final CutiPegawaiRepository repository;
-    private final ValidatePengajuanCutiService validatePengajuanCutiService;
     private final CutiKuotaRepository cutiKuotaRepository;
     private final HariLiburRepository hariLiburRepository;
     private final JabatanRepository jabatanRepository;
@@ -129,7 +128,7 @@ public class SaveCutiService {
                 .orElseThrow(() -> new RuntimeException("Kuota Cuti Tahun " + year + " tidak tersedia!"));
 
         // validasi minimal cuti
-        validatePengajuanCutiService.validateMinimalCuti(totalHariCuti, totalRemainingQuota);
+        id.perumdamts.kepegawaian.helpers.cuti.MinimalCutiRule.check(totalHariCuti, totalRemainingQuota);
 
         // jika kuota tahun berjalan tidak mencukupi maka batalkan
         if (totalRemainingQuota < totalHariCuti) {
@@ -183,7 +182,7 @@ public class SaveCutiService {
         int totalRemainingQuota = currentKuota + prevKuota;
 
         // validasi minimal cuti
-        validatePengajuanCutiService.validateMinimalCuti(totalHariCuti, totalRemainingQuota);
+        id.perumdamts.kepegawaian.helpers.cuti.MinimalCutiRule.check(totalHariCuti, totalRemainingQuota);
 
         // jika kuota tidak mencukupi maka batalkan
         if (totalRemainingQuota < totalHariCuti) {
@@ -269,7 +268,7 @@ public class SaveCutiService {
         // total jatah cuti yang tersedia
         int totalRemainingQuota = currentKuota + prevKuota;
         // validasi minimal cuti
-        validatePengajuanCutiService.validateMinimalCuti(totalHariCuti, totalRemainingQuota);
+        id.perumdamts.kepegawaian.helpers.cuti.MinimalCutiRule.check(totalHariCuti, totalRemainingQuota);
 
         if (request.getJenisCutiId().equals(cutiProperties.getJenisCutiIbadah())) {
             entity.setKuotaAkhir(totalRemainingQuota - currentKuota);
@@ -311,7 +310,7 @@ public class SaveCutiService {
         int totalRemaining = currentYearRemaining + nextYearRemaining;
 
         // Validasi minimal cuti
-        validatePengajuanCutiService.validateMinimalCuti(totalDays, totalRemaining);
+        id.perumdamts.kepegawaian.helpers.cuti.MinimalCutiRule.check(totalDays, totalRemaining);
 
         // Jika ada kuota cuti tahun berjalan yang tersedia, maka pakai kuota cuti tahun berjalan
         int remainingAfterCurrentYear = totalDays - currentYearRemaining;
@@ -362,7 +361,7 @@ public class SaveCutiService {
         // Total jatah cuti yang tersedia
         int totalRemainingQuota = currentKuota + prevKuota;
         // Validasi minimal cuti
-        validatePengajuanCutiService.validateMinimalCuti(totalDays, totalRemainingQuota);
+        id.perumdamts.kepegawaian.helpers.cuti.MinimalCutiRule.check(totalDays, totalRemainingQuota);
 
         // Cek apakah ada jatah cuti tahun lalu yang tersedia
         if (totalRemainingQuota < totalDays) {

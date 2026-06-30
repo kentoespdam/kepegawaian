@@ -34,20 +34,7 @@ public class CutiPengajuanKlaimPostRequest {
         return listHari.stream().sorted().toList();
     }
 
-    @JsonIgnore
-    public Specification<CutiPegawai> getSpecification() {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.and(
-                criteriaBuilder.equal(root.get("refCuti").get("id"), refCutiId),
-                criteriaBuilder.in(root.get("approvalCutiStatus")).value(
-                        List.of(
-                                EApprovalCutiStatus.PENDING,
-                                EApprovalCutiStatus.APPROVED,
-                                EApprovalCutiStatus.CONFIRMED,
-                                EApprovalCutiStatus.RETURNED
-                        )
-                )
-        );
-    }
+
 
     public static CutiPegawai toEntity(CutiPegawai cutiPegawai, CutiPengajuanKlaimPostRequest request) {
         CutiPegawai entity = new CutiPegawai();
