@@ -20,7 +20,7 @@
 | **2** | `kepegawaian-rq2` | KlaimCutiCommand settlement | ✓ CLOSED | — |
 | **3** | `kepegawaian-llq` | ApprovalCutiCommand lifecycle | ✓ CLOSED | — |
 | **4** | `kepegawaian-y7u.1` | Facade trio cleanup | ✓ CLOSED | — |
-| **4** | `kepegawaian-y7u.2` | CutiApprovalQueryService + JOOQ | ○ OPEN | `bd update kepegawaian-y7u.2 --claim` |
+| **4** | `kepegawaian-y7u.2` | CutiApprovalQueryService + JOOQ | ✓ CLOSED | — |
 
 ---
 
@@ -221,24 +221,24 @@ kepegawaian-y7u (Epic: 120-line enforcement)
 | | |
 |---|---|
 | **Goal** | Create CutiApprovalQueryService + JOOQ for approval history (Q5) |
-| **Status** | ○ OPEN |
+| **Status** | ✓ CLOSED |
 | **Depends** | kepegawaian-y7u.1 |
 
 **Pre:**
-- [ ] Confirm y7u.1 CLOSED → `bd update kepegawaian-y7u.2 --claim`
-- [ ] Read `CutiApprovalIndexQuery.getSpecification()` to understand filter fields
+- [x] Confirm y7u.1 CLOSED → `bd update kepegawaian-y7u.2 --claim`
+- [x] Read `CutiApprovalIndexQuery.getSpecification()` to understand filter fields
 
 **Create:**
-- [ ] NEW `services/cuti/approval/CutiApprovalQueryService` — `findByCutiId(Long)`
-- [ ] NEW `repositories/cuti/jooq/CutiApprovalQueryRepository` — SELECT + baseWhere
-- [ ] NEW `mapper/cuti/CutiApprovalJooqMapper` (Pola B) — mapToResponse
-- [ ] Port 4 filter fields (id/cutiId/approverId/jabatanId) from spec to baseWhere
-- [ ] UPDATE `CutiApprovalController` — inject QueryService for read
+- [x] NEW `services/cuti/approval/CutiApprovalQueryService` — `findByCutiId(Long)`
+- [x] NEW `repositories/cuti/jooq/CutiApprovalQueryRepository` — SELECT + baseWhere
+- [x] NEW `mapper/cuti/CutiApprovalJooqMapper` (Pola B) — mapToResponse
+- [x] Port 4 filter fields (id/cutiId/approverId/jabatanId) from spec to baseWhere
+- [x] UPDATE `CutiApprovalController` — inject QueryService for read
 
 **Verify & Ship:**
-- [ ] `./gradlew clean build`
-- [ ] Test `GET /cuti/approval/{cutiId}` returns approval history
-- [ ] `gitnexus_detect_changes()` → commit → `bd close kepegawaian-y7u.2`
+- [x] `./gradlew clean build`
+- [x] Test `GET /cuti/approval/{cutiId}` returns approval history
+- [x] `gitnexus_detect_changes()` → commit → `bd close kepegawaian-y7u.2`
 
 ---
 
