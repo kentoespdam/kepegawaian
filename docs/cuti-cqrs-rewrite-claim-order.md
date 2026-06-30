@@ -34,7 +34,7 @@
 - [x] `git status` clean; di branch `rewrite/master-cqrs`
 - [x] `npx gitnexus analyze` bila index stale (cek warning hook)
 - [x] Baca exemplar files yang akan ditiru (tercantum per fase)
-- [x] `bd update <id> --claim` issue yang dimulai
+- [x] `bd update kepegawaian-is7.5 --claim` issue yang dimulai
 
 ---
 
@@ -137,19 +137,19 @@
 
 **Goal:** CRUD + `importData` (parse Excel) + `exportTemplate` (build Excel) + `findByPegawai(pegawaiId, tahun)`. **Import & template-build tetap di sisi Command** (operasi tulis / I/O byte-stream, bukan QueryService).
 
-- [ ] NEW `mapper/cuti/kuota/CutiKuotaMapper.java`
-- [ ] NEW `repositories/cuti/jooq/CutiKuotaQueryRepository.java` — `pageQuery`/`getById`, `findByPegawai(pegawaiId, tahun → CutiKuotaSisa)`
-- [ ] NEW `services/cuti/kuota/CutiKuotaQueryService.java` — hanya baca (page/getById/sisa)
-- [ ] NEW `services/cuti/kuota/CutiKuotaCommandService.java`:
-  - [ ] `create`/`update`/`delete` (soft)
-  - [ ] `importData` — parse POI (HSSF/XSSF), dedup `existsByTahun`, expired default `LocalDate.of(tahun+1,6,30)`, filter pegawai aktif
-  - [ ] `exportTemplate` — build POI SXSSF, kembalikan byte-stream
-- [ ] Pertahankan logika POI apa adanya
-- [ ] DELETE interface + Impl lama (ADR-0007)
+- [x] NEW `mapper/cuti/kuota/CutiKuotaMapper.java`
+- [x] NEW `repositories/cuti/jooq/CutiKuotaQueryRepository.java` — `pageQuery`/`getById`, `findByPegawai(pegawaiId, tahun → CutiKuotaSisa)`
+- [x] NEW `services/cuti/kuota/CutiKuotaQueryService.java` — hanya baca (page/getById/sisa)
+- [x] NEW `services/cuti/kuota/CutiKuotaCommandService.java`:
+  - [x] `create`/`update`/`delete` (soft)
+  - [x] `importData` — parse POI (HSSF/XSSF), dedup `existsByTahun`, expired default `LocalDate.of(tahun+1,6,30)`, filter pegawai aktif
+  - [x] `exportTemplate` — build POI SXSSF, kembalikan byte-stream
+- [x] Pertahankan logika POI apa adanya
+- [x] DELETE interface + Impl lama (ADR-0007)
 
 ### Acceptance
-- [ ] `/master/cuti/kuota` (atau path lama) tetap melayani `/template`, `/import`, `/{pegawaiId}/{tahun}/sisa`
-- [ ] `./gradlew build` → SUCCESSFUL (catat status `CutiKuotaRepositoryTest` bila masih ada)
+- [x] `/master/cuti/kuota` (atau path lama) tetap melayani `/template`, `/import`, `/{pegawaiId}/{tahun}/sisa`
+- [x] `./gradlew build` → SUCCESSFUL (catat status `CutiKuotaRepositoryTest` bila masih ada)
 
 ---
 

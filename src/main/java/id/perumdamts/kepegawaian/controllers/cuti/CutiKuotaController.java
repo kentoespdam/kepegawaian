@@ -6,8 +6,8 @@ import id.perumdamts.kepegawaian.dto.cuti.kuota.CutiKuotaImportRequest;
 import id.perumdamts.kepegawaian.dto.cuti.kuota.CutiKuotaPostRequest;
 import id.perumdamts.kepegawaian.dto.cuti.kuota.CutiKuotaPutRequest;
 import id.perumdamts.kepegawaian.dto.cuti.kuota.CutiKuotaRequest;
-import id.perumdamts.kepegawaian.services.cuti.kuota.CutiKuotaService;
-import id.perumdamts.kepegawaian.services.cuti.kuota.CutiKuotaTemplateBuilder;
+import id.perumdamts.kepegawaian.services.cuti.kuota.CutiKuotaCommandService;
+import id.perumdamts.kepegawaian.services.cuti.kuota.CutiKuotaQueryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -19,49 +19,47 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/cuti/kuota")
 @RequiredArgsConstructor
 public class CutiKuotaController {
-    private final CutiKuotaService service;
-    private final CutiKuotaTemplateBuilder cutiKuotaTemplateBuilder;
+    private final CutiKuotaQueryService queryService;
+    private final CutiKuotaCommandService commandService;
 
     @GetMapping
     public ResponseEntity<?> index(@ParameterObject CutiKuotaRequest request) {
-        return CustomResult.any(service.findPage(request));
+        return CustomResult.any(queryService.findPage(request));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> show(@PathVariable Long id) {
-        return CustomResult.any(service.findById(id));
+        return CustomResult.any(queryService.findById(id));
     }
 
     @GetMapping("/{pegawaiId}/{tahun}/sisa")
     public ResponseEntity<?> showByPegawai(@PathVariable Long pegawaiId, @PathVariable Integer tahun) {
-        return CustomResult.any(service.findByPegawai(pegawaiId, tahun));
+        return CustomResult.any(queryService.findByPegawai(pegawaiId, tahun));
     }
 
     @GetMapping("/template")
     public ResponseEntity<?> template() {
-        return cutiKuotaTemplateBuilder.build();
+        return commandService.exportTemplate();
     }
-
 
     @PostMapping
     public ResponseEntity<?> store(@RequestBody CutiKuotaPostRequest request) {
-        return CustomResult.save(service.save(request));
+        return CustomResult.save(commandService.save(request));
     }
 
     @PostMapping(value = "/import", consumes = "multipart/form-data")
     public ResponseEntity<?> importData(@Valid @ModelAttribute CutiKuotaImportRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(service.importData(request));
+        return CustomResult.save(commandService.importData(request));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody CutiKuotaPutRequest request) {
-        return CustomResult.save(service.update(id, request));
+        return CustomResult.save(commandService.update(id, request));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        return CustomResult.delete(service.delete(id));
+        return CustomResult.delete(commandService.delete(id));
     }
-
 }
