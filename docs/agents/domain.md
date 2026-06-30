@@ -2,36 +2,58 @@
 
 How the engineering skills should consume this repo's domain documentation when exploring the codebase.
 
-## Before exploring, read these
+## Lazy Read Protocol
 
-- **`CONTEXT.md`** at the repo root, or
-- **`CONTEXT-MAP.md`** at the repo root if it exists — it points at one `CONTEXT.md` per context. Read each one relevant to the topic.
-- **`docs/adr/`** — read ADRs that touch the area you're about to work in. In multi-context repos, also check `src/<context>/docs/adr/` for context-scoped decisions.
+**Read `CONTEXT-MAP.md` first, then only the relevant sub-context file(s).** Do NOT load all sub-context files at once.
 
-If any of these files don't exist, **proceed silently**. Don't flag their absence; don't suggest creating them upfront. The producer skill (`/grill-with-docs`) creates them lazily when terms or decisions actually get resolved.
+| If working on... | Read |
+|------------------|------|
+| `master/` (Profesi, Jabatan, Organisasi) | [`docs/context/language-master.md`](../context/language-master.md) |
+| `pegawai/` — terminology | [`docs/context/language-pegawai.md`](../context/language-pegawai.md) |
+| `pegawai/` or `kepegawaian/` — architecture decisions | [`docs/context/decisions-pegawai.md`](../context/decisions-pegawai.md) |
+| `profil/` (biodata, pendidikan, updateProfile) | [`docs/context/language-profil.md`](../context/language-profil.md) |
+| `cuti/` — terminology | [`docs/context/language-cuti.md`](../context/language-cuti.md) |
+| `cuti/` — architecture decisions | [`docs/context/decisions-cuti.md`](../context/decisions-cuti.md) |
+| Auth, JWT, Spring profiles | [`docs/context/language-security.md`](../context/language-security.md) |
+| Cross-module relations / dependency direction | [`docs/context/relationships.md`](../context/relationships.md) |
+| Domain examples or flagged ambiguities | [`docs/context/examples-and-flags.md`](../context/examples-and-flags.md) |
 
-## File structure
+## ADRs
 
-This is a **single-context** repo:
+- **`docs/adr/`** — read ADRs that touch the area you're about to work in.
+
+If any of these files don't exist, **proceed silently**. Don't flag their absence upfront.
+
+## File Structure
+
+This is a **multi-context** repo (CONTEXT-MAP.md at root pointing to per-topic context files):
 
 ```
 /
-├── CONTEXT.md
-├── docs/adr/
-│   ├── 0001-cqrs-jooq-query-jpa-command.md
-│   └── 0002-envers-selective-three-tier-audit.md
+├── CONTEXT.md               ← entry point (pointer only)
+├── CONTEXT-MAP.md           ← lazy-read index
+├── docs/
+│   ├── adr/                 ← architectural decisions
+│   └── context/
+│       ├── language-master.md
+│       ├── language-pegawai.md
+│       ├── language-profil.md
+│       ├── language-cuti.md
+│       ├── language-security.md
+│       ├── relationships.md
+│       ├── decisions-pegawai.md
+│       ├── decisions-cuti.md
+│       └── examples-and-flags.md
 └── src/
 ```
 
-Multi-context repos (presence of `CONTEXT-MAP.md` at the root) instead point to one `CONTEXT.md` per context, with context-specific ADRs under `src/<context>/docs/adr/`. This repo does not use that layout.
+## Use the Glossary's Vocabulary
 
-## Use the glossary's vocabulary
+When your output names a domain concept (in an issue title, a refactor proposal, a hypothesis, a test name), use the term as defined in the relevant sub-context file. Don't drift to synonyms the glossary explicitly avoids.
 
-When your output names a domain concept (in an issue title, a refactor proposal, a hypothesis, a test name), use the term as defined in `CONTEXT.md`. Don't drift to synonyms the glossary explicitly avoids.
+If the concept you need isn't in the glossary yet, that's a signal — either you're inventing language the project doesn't use (reconsider) or there's a real gap (note it for `/domain-modeling`).
 
-If the concept you need isn't in the glossary yet, that's a signal — either you're inventing language the project doesn't use (reconsider) or there's a real gap (note it for `/grill-with-docs`).
-
-## Flag ADR conflicts
+## Flag ADR Conflicts
 
 If your output contradicts an existing ADR, surface it explicitly rather than silently overriding:
 

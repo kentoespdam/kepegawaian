@@ -48,11 +48,27 @@ Employee management (kepegawaian) for PERUMDAMTS — Spring Boot REST API.
 
 **Config:** `application.yml` from env vars. Docker configs in `docker/`.
 
+## Domain Context (Lazy Read)
+
+Context dipecah per modul. **Baca `CONTEXT-MAP.md` dulu**, lalu pilih sub-context yang relevan — jangan baca semua sekaligus.
+
+| Jika tugas menyentuh... | Baca |
+|-------------------------|------|
+| `master/` (Profesi, Jabatan, Organisasi) | `docs/context/language-master.md` |
+| `pegawai/` — terminologi | `docs/context/language-pegawai.md` |
+| `pegawai/` atau `kepegawaian/` — keputusan rewrite | `docs/context/decisions-pegawai.md` |
+| `profil/` (biodata, pendidikan, updateProfile) | `docs/context/language-profil.md` |
+| `cuti/` — terminologi | `docs/context/language-cuti.md` |
+| `cuti/` — keputusan rewrite | `docs/context/decisions-cuti.md` |
+| Auth, JWT, Spring profiles | `docs/context/language-security.md` |
+| Relasi / dependency lintas-modul | `docs/context/relationships.md` |
+| ADRs | `docs/adr/` |
+
 ## Agent Skills
 
 - **Issue tracker:** beads (`bd`, primary) + GitHub Issues (`kentoespdam/kepegawaian`). See `docs/agents/issue-tracker.md`.
 - **Triage labels:** needs-triage, needs-info, ready-for-agent, ready-for-human, wont-fix. See `docs/agents/triage-labels.md`.
-- **Domain docs:** `CONTEXT.md` + `docs/adr/`. See `docs/agents/domain.md`.
+- **Domain docs:** multi-context (`CONTEXT-MAP.md` → `docs/context/`). See `docs/agents/domain.md`.
 
 ## Issue Tracking (beads)
 
@@ -81,7 +97,7 @@ Indexed as **kepegawaian**. See `.claude/skills/gitnexus/` for skill files.
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
 
-This project is indexed by GitNexus as **kepegawaian** (19025 symbols, 46815 relationships, 300 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
+This project is indexed by GitNexus as **kepegawaian** (19097 symbols, 46924 relationships, 300 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
 
 > If any GitNexus tool warns the index is stale, run `npx gitnexus analyze` in terminal first.
 
