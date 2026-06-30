@@ -15,7 +15,7 @@ Tipe cuti — pohon berinduk (mis. Cuti Tahunan, Cuti Besar, Cuti Ibadah, Cuti S
 _Avoid_: "kategori cuti".
 
 **Kuota Cuti** (CutiKuota):
-Jatah cuti per-pegawai per-**tahun**: `kuota`, `kuotaTerpakai`, `kuotaTambahan`, `sisaKuota`, dan tanggal `expired`. Lifecycle sendiri — di-CRUD admin, di-import Excel, dan dipotong saat permohonan cuti tahunan disetujui. Expired default 30 Juni tahun berikutnya.
+Jatah cuti per-pegawai per-**tahun**: `kuota`, `kuotaTerpakai`, `kuotaTambahan`, `sisaKuota`, dan tanggal `expired`. Lifecycle sendiri — di-CRUD admin, di-import Excel, dan dipotong saat permohonan cuti tahunan disetujui. **Siklus-hidup**: kuota di-set/mulai **1 Juli** dan **expired 30 Juni tahun berikutnya** — karena itu boundary 30-Jun/1-Jul memisahkan dua siklus kuota, dan handler reservasi/settlement mem-bucket periode di tanggal itu (bukan tanggal arbitrer).
 
 **Jenis Pengajuan** (EJenisPengajuanCuti):
 Dua alur permohonan: **Pengajuan Cuti** (PENGAJUAN_CUTI — rencana cuti ke depan) dan **Klaim Cuti** (KLAIM_CUTI — mencatat cuti yang sudah terjadi, mis. sakit). Disimpan enum ordinal.
