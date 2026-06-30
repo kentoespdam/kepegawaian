@@ -120,16 +120,16 @@
 **Goal:** CRUD standar pola master, **flat** (response hanya bawa `parent` mini, bukan nested children).
 **Exemplar:** modul master CRUD (Command+Query+JOOQ+Mapper+Controller).
 
-- [ ] NEW `mapper/cuti/jenis/CutiJenisMapper.java` — final, private ctor, `toEntity`/`updateEntity`
-- [ ] NEW `repositories/cuti/jooq/CutiJenisQueryRepository.java` — `pageQuery`/`getById`/`listQuery`, `IS_DELETED.eq(false)`, parent via self-join mini
-- [ ] NEW `services/cuti/jenis/CutiJenisQueryService.java`
-- [ ] NEW `services/cuti/jenis/CutiJenisCommandService.java` — create (revive bila soft-deleted), update, delete (soft)
-- [ ] DELETE interface `CutiJenisService` + `CutiJenisServiceImpl` (ADR-0007)
-- [ ] `delete()` stub lama (bila ada) dibuang — andalkan soft-delete `is_deleted`
+- [x] NEW `mapper/cuti/jenis/CutiJenisMapper.java` — final, private ctor, `toEntity`/`updateEntity`
+- [x] NEW `repositories/cuti/jooq/CutiJenisQueryRepository.java` — `pageQuery`/`getById`/`listQuery`, `IS_DELETED.eq(false)`, parent via self-join mini
+- [x] NEW `services/cuti/jenis/CutiJenisQueryService.java`
+- [x] NEW `services/cuti/jenis/CutiJenisCommandService.java` — create (revive bila soft-deleted), update, delete (soft)
+- [x] DELETE interface `CutiJenisService` + `CutiJenisServiceImpl` (ADR-0007)
+- [x] `delete()` stub lama (bila ada) dibuang — andalkan soft-delete `is_deleted`
 
 ### Acceptance
-- [ ] Read = JOOQ, write = JPA `getReferenceById` untuk parent
-- [ ] `./gradlew build` → SUCCESSFUL
+- [x] Read = JOOQ, write = JPA `getReferenceById` untuk parent
+- [x] `./gradlew build` → SUCCESSFUL
 
 ---
 
