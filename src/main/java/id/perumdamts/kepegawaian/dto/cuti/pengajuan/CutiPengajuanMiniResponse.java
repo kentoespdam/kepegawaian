@@ -3,7 +3,7 @@ package id.perumdamts.kepegawaian.dto.cuti.pengajuan;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import id.perumdamts.kepegawaian.dto.cuti.jenis.JenisCutiResponse;
+import id.perumdamts.kepegawaian.dto.cuti.jenis.CutiJenisMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiMiniResponse;
 import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
@@ -29,8 +29,8 @@ public class CutiPengajuanMiniResponse {
     private EJenisPengajuanCuti jenisPengajuanCuti;
     private EApprovalCutiStatus approvalCutiStatus;
     private Integer approvalLevel;
-    private JenisCutiResponse jenisCuti;
-    private JenisCutiResponse subJenisCuti;
+    private CutiJenisMiniResponse jenisCuti;
+    private CutiJenisMiniResponse subJenisCuti;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tanggalMulai;
@@ -57,8 +57,8 @@ public class CutiPengajuanMiniResponse {
         response.setJenisPengajuanCuti(entity.getJenisPengajuanCuti());
         response.setApprovalCutiStatus(entity.getApprovalCutiStatus());
         response.setApprovalLevel(entity.getApprovalLevel());
-        response.setJenisCuti(JenisCutiResponse.from(entity.getJenisCuti()));
-        response.setSubJenisCuti(JenisCutiResponse.from(entity.getSubJenisCuti()));
+        response.setJenisCuti(CutiJenisMiniResponse.from(entity.getJenisCuti()));
+        response.setSubJenisCuti(CutiJenisMiniResponse.from(entity.getSubJenisCuti()));
         response.setTanggalMulai(entity.getTanggalMulai());
         response.setTanggalSelesai(entity.getTanggalSelesai());
         response.setAlasan(entity.getAlasan());

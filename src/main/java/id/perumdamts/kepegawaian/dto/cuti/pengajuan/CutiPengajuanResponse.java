@@ -1,6 +1,6 @@
 package id.perumdamts.kepegawaian.dto.cuti.pengajuan;
 
-import id.perumdamts.kepegawaian.dto.cuti.jenis.JenisCutiResponse;
+import id.perumdamts.kepegawaian.dto.cuti.jenis.CutiJenisMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiMiniResponse;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
@@ -28,9 +28,9 @@ public class CutiPengajuanResponse extends CutiPengajuanMiniResponse {
         response.setJenisPengajuanCuti(entity.getJenisPengajuanCuti());
         response.setApprovalCutiStatus(entity.getApprovalCutiStatus());
         response.setApprovalLevel(entity.getApprovalLevel());
-        response.setJenisCuti(JenisCutiResponse.from(entity.getJenisCuti()));
+        response.setJenisCuti(CutiJenisMiniResponse.from(entity.getJenisCuti()));
         if (Objects.nonNull(entity.getSubJenisCuti()))
-            response.setSubJenisCuti(JenisCutiResponse.from(entity.getSubJenisCuti()));
+            response.setSubJenisCuti(CutiJenisMiniResponse.from(entity.getSubJenisCuti()));
         response.setTanggalMulai(entity.getTanggalMulai());
         response.setTanggalSelesai(entity.getTanggalSelesai());
         response.setAlasan(entity.getAlasan());
