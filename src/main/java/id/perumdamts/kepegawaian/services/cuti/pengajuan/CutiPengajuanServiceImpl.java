@@ -18,6 +18,7 @@ import id.perumdamts.kepegawaian.repositories.cuti.CutiJenisRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.CutiPegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.HariLiburRepository;
 import id.perumdamts.kepegawaian.services.cuti.approvalChain.CutiApprovalChainService;
+import id.perumdamts.kepegawaian.services.cuti.klaim.KlaimCutiCommand;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -39,7 +40,7 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
     private final PegawaiRepository pegawaiRepository;
     private final CutiJenisRepository cutiJenisRepository;
     private final CutiApprovalChainService cutiApprovalChainService;
-    private final SaveKlaimCutiService klaimCutiService;
+    private final KlaimCutiCommand klaimCutiCommand;
     private final CutiPengajuanValidator cutiPengajuanValidator;
     private final PengajuanCutiCommand pengajuanCutiCommand;
 
@@ -90,33 +91,26 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
      */
     @Override
     public SavedStatus<?> klaim(CutiPengajuanKlaimPostRequest request) {
-        // Validate the CSRF token to prevent duplicate requests
-//        if (redisHelper.validateToken(request.getCsrfToken())) {
-//            // Return a duplicate status if the token is already used
-//            return SavedStatus.build(ESaveStatus.DUPLICATE, "Duplicate request detected");
-//        }
-        // Save the leave claim request using the klaimCutiService
-        return klaimCutiService.save(request);
-    }
-
-    /**
-     * Updates an existing leave claim request for an employee.
-     * This method validates the CSRF token to prevent duplicate submissions
-     * and proceeds to update the leave claim request via the klaimCutiService.
-     *
-     * @param id      the id of the leave claim request to update
-     * @param request the updated leave claim request data
-     * @return the status of the update operation, indicating success or duplication
-     */
-    @Override
-    public SavedStatus<?> updateKlaim(Long id, CutiPengajuanKlaimPostRequest request) {
-        // Validate the CSRF token to prevent duplicate submissions
         if (redisHelper.validateToken(request.getCsrfToken())) {
-            // Return a duplicate status if the token is already used
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Duplicate request detected");
         }
-        // Update the leave claim request using the klaimCutiService
-        return klaimCutiService.update(id, request);
+        try {
+            return klaimCutiCommand.save(request);
+        } catch (Exception e) {
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+        }
+    }
+
+    @Override
+    public SavedStatus<?> updateKlaim(Long id, CutiPengajuanKlaimPostRequest request) {
+        if (redisHelper.validateToken(request.getCsrfToken())) {
+            return SavedStatus.build(ESaveStatus.DUPLICATE, "Duplicate request detected");
+        }
+        try {
+            return klaimCutiCommand.update(id, request);
+        } catch (Exception e) {
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+        }
     }
 
     /**

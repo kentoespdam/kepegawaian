@@ -34,7 +34,7 @@
 - [x] `git status` clean; di branch `rewrite/master-cqrs`
 - [x] `npx gitnexus analyze` bila index stale (cek warning hook)
 - [x] Baca exemplar files yang akan ditiru (tercantum per fase)
-- [x] `bd update kepegawaian-is7.11 --claim` issue yang dimulai
+- [x] `bd update kepegawaian-is7.12 --claim` issue yang dimulai
 
 ---
 
@@ -264,19 +264,19 @@
 
 **Goal:** `KlaimCutiCommand` + port `CutiApproveKlaimCutiService` **1:1**. Klaim = settlement/refund (beda dari reservasi #5). Dispatch periode 5-cara dibiarkan duplikat. **Semua bug dipertahankan, dilacak terpisah.**
 
-- [ ] NEW `services/cuti/klaim/KlaimCutiCommand.java` (save/update klaim) — validate via `validateKlaim` (fase 7)
-- [ ] Port `CutiApproveKlaimCutiService` 5 metode periode **apa adanya** (forNextYear/overlappingYear/between1JanAnd30Jun/between1JulAnd31Dec/between30JunAnd1Jul)
-- [ ] Settlement math: `sisa = jumlahHariPengajuan − jumlahHariKlaim`, refund (`kuotaTerpakai −= sisa; sisaKuota += sisa`), set `refCuti.isClaimed = true`
-- [ ] **JANGAN** ekstrak classifier bersama — dispatch inline (keputusan eksplisit #16)
-- [ ] **Bug DIPERTAHANKAN (track, do NOT fix inline):**
-  - [ ] `forNextYear` `getYear() − 1` → `kepegawaian-ciw`
-  - [ ] `between1JanAnd30Jun` `LocalDate.now()` reject-gate → `kepegawaian-sfq`
-  - [ ] `saveKlaim` `picSaatIni.equals(jabatan)` entity-ref → `kepegawaian-s5n`
-- [ ] **Pengecualian:** exception-swallowing `saveKlaim` BUKAN dipertahankan — entry `@Transactional` tunggal tak menelan exception (selaras fase 11)
+- [x] NEW `services/cuti/klaim/KlaimCutiCommand.java` (save/update klaim) — validate via `validateKlaim` (fase 7)
+- [x] Port `CutiApproveKlaimCutiService` 5 metode periode **apa adanya** (forNextYear/overlappingYear/between1JanAnd30Jun/between1JulAnd31Dec/between30JunAnd1Jul)
+- [x] Settlement math: `sisa = jumlahHariPengajuan − jumlahHariKlaim`, refund (`kuotaTerpakai −= sisa; sisaKuota += sisa`), set `refCuti.isClaimed = true`
+- [x] **JANGAN** ekstrak classifier bersama — dispatch inline (keputusan eksplisit #16)
+- [x] **Bug DIPERTAHANKAN (track, do NOT fix inline):**
+  - [x] `forNextYear` `getYear() − 1` → `kepegawaian-ciw`
+  - [x] `between1JanAnd30Jun` `LocalDate.now()` reject-gate → `kepegawaian-sfq`
+  - [x] `saveKlaim` `picSaatIni.equals(jabatan)` entity-ref → `kepegawaian-s5n`
+- [x] **Pengecualian:** exception-swallowing `saveKlaim` BUKAN dipertahankan — entry `@Transactional` tunggal tak menelan exception (selaras fase 11)
 
 ### Acceptance
-- [ ] Tiap bug yang dipertahankan punya komentar `// PRESERVED: see kepegawaian-xxx` di kode + issue masih open
-- [ ] `./gradlew build` → SUCCESSFUL
+- [x] Tiap bug yang dipertahankan punya komentar `// PRESERVED: see kepegawaian-xxx` di kode + issue masih open
+- [x] `./gradlew build` → SUCCESSFUL
 
 ---
 
