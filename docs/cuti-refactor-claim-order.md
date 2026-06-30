@@ -1,284 +1,233 @@
 # Cuti Refactor — Claim Order & Monitoring
 
-Epic **kepegawaian-y7u** — Enforce CODING_RULES §4 (max 120 lines) untuk modul cuti service/command classes. Basis: grilling decisions Q11-Q17 di `docs/context/decisions-cuti.md`.
+> **Epic:** `kepegawaian-y7u` — Enforce CODING_RULES §4 (max 120 lines) untuk modul cuti service/command classes.  
+> **Basis:** grilling decisions Q11-Q17 di `docs/context/decisions-cuti.md`
 
-Urutan klaim di bawah **mengikuti dependency**, bukan nomor issue. Kerjakan per **PHASE**: semua issue dalam satu phase boleh diklaim paralel (tidak saling blok); phase berikutnya baru terbuka setelah phase sebelumnya selesai. `bd ready` selalu jadi sumber kebenaran issue yang sudah unblocked.
+**Urutan klaim mengikuti dependency**, bukan nomor issue. Kerjakan per **PHASE**: semua issue dalam satu phase boleh diklaim paralel (tidak saling blok); phase berikutnya baru terbuka setelah phase sebelumnya selesai. `bd ready` selalu jadi sumber kebenaran.
 
-**Sebelum klaim apa pun**, baca deskripsi epic di `bd show kepegawaian-y7u` dan WORKING AGREEMENT: gitnexus-first (`gitnexus_impact` sebelum edit symbol, `gitnexus_detect_changes` sebelum commit), **strict scope — JANGAN AI SLOP**, alur `claim → code → test → detect_changes → close → ship` (CODING_RULES.md).
+> **WORKING AGREEMENT:** gitnexus-first (`gitnexus_impact` sebelum edit symbol, `gitnexus_detect_changes` sebelum commit), **strict scope — JANGAN AI SLOP**, alur `claim → code → test → detect_changes → close → ship` (CODING_RULES.md).
 
 ---
 
-## Dependency Graph
+## 📋 Quick Reference
+
+| Phase | Issue | Title | Status | Cmd |
+|-------|-------|-------|--------|-----|
+| **1** | `kepegawaian-scn` | SaveCutiService split | READY | `bd update kepegawaian-scn --claim` |
+| **1** | `kepegawaian-sqf` | JOOQ mapper extraction | READY | `bd update kepegawaian-sqf --claim` |
+| **1** | `kepegawaian-39o` | Validator split | READY | `bd update kepegawaian-39o --claim` |
+| **2** | `kepegawaian-hit` | PengajuanCutiCommand classifier | BLOCKED | — |
+| **2** | `kepegawaian-rq2` | KlaimCutiCommand settlement | BLOCKED | — |
+| **3** | `kepegawaian-llq` | ApprovalCutiCommand lifecycle | READY | `bd update kepegawaian-llq --claim` |
+
+---
+
+## 🔗 Dependency Graph
 
 ```
 kepegawaian-y7u (Epic: 120-line enforcement)
+│
 ├─ kepegawaian-sqf [PHASE 1] JOOQ mapper extraction (Q14-Q16)
+│
 ├─ kepegawaian-scn [PHASE 1] SaveCutiService split (Q11) [FOUNDATIONAL]
-│  └─ kepegawaian-hit [PHASE 2] PengajuanCutiCommand classifier (Q13)
+│   └─ kepegawaian-hit [PHASE 2] PengajuanCutiCommand classifier (Q13)
+│
 ├─ kepegawaian-39o [PHASE 1] Validator split (Q12)
-├─ kepegawaian-rq2 [PHASE 2] KlaimCutiCommand settlement (Q12) [DEPENDS: 39o + scn]
+│   └─ kepegawaian-rq2 [PHASE 2] KlaimCutiCommand settlement (Q12)
+│
 └─ kepegawaian-llq [PHASE 3] ApprovalCutiCommand lifecycle (Q13)
 ```
 
 ---
 
-## Claim Order (by Phase)
+## 🚀 Before Any Claim (Every Time)
 
-| Order | Issue ID | Title | State when you start | Claim cmd |
-|-------|----------|-------|----------------------|-----------|
-| **PHASE 1 — Foundational (parallel OK)** |||||
-| 1a | kepegawaian-scn | SaveCutiService split (Q11) | READY | `bd update kepegawaian-scn --claim` |
-| 1b | kepegawaian-sqf | JOOQ mapper extraction (Q14-Q16) | READY | `bd update kepegawaian-sqf --claim` |
-| 1c | kepegawaian-39o | Validator split (Q12) | READY | `bd update kepegawaian-39o --claim` |
-| **PHASE 2 — Dependent (after Phase 1)** |||||
-| 2a | kepegawaian-hit | PengajuanCutiCommand classifier (Q13) | BLOCKED → READY after scn closes | `bd update kepegawaian-hit --claim` |
-| 2b | kepegawaian-rq2 | KlaimCutiCommand settlement (Q12) | BLOCKED → READY after scn + 39o close | `bd update kepegawaian-rq2 --claim` |
-| **PHASE 3 — Cleanup (anytime after Phase 1)** |||||
-| 3 | kepegawaian-llq | ApprovalCutiCommand lifecycle (Q13) | READY | `bd update kepegawaian-llq --claim` |
-| — | kepegawaian-y7u | Epic (umbrella, do not claim directly) | OPEN, auto-closes | — |
-
----
-
-## STEP 0 — Before any code (every claim)
-
-- [ ] `bd prime` (recover beads workflow context)
+- [ ] `bd prime` — recover beads workflow context
 - [ ] `git status` clean; on branch `rewrite/master-cqrs`
-- [ ] Re-read decisions-cuti.md Q11-Q17 for context
+- [ ] Re-read `decisions-cuti.md` Q11-Q17 for context
 - [ ] `bd update <id> --claim` the issue you're starting
 
 ---
 
-## ISSUE 1a — `kepegawaian-scn` (Phase 1: SaveCutiService split)
+## 📌 Issue Details
 
-**Goal:** Split SaveCutiService (262 lines) into 5 period-specific handlers + 1 classifier. Foundational for hit and rq2.
-**Status:** ○ OPEN
+### 1a — `kepegawaian-scn` · Phase 1
 
-### Pre-edit
-- [ ] `gitnexus_impact({target: "SaveCutiService", direction: "upstream"})` — report blast radius
-- [ ] Warn user if returns HIGH or CRITICAL
+| | |
+|---|---|
+| **Goal** | Split `SaveCutiService` (262→<120 lines) → 5 period handlers + classifier |
+| **Status** | ○ OPEN |
+| **Depends** | — |
 
-### Extract Components
-- [ ] NEW `helpers/cuti/CutiPeriodClassifier.java` — `final` class, private ctor, static `classify(LocalDate start, LocalDate end, int nowYear) → ECutiPeriod`
-- [ ] NEW `entities/commons/ECutiPeriod.java` enum { NEXT_YEAR, OVERLAPPING, JAN_JUN, JUL_DES, JUN_JUL }
-- [ ] NEW 5 handler classes in `services/cuti/handlers/`:
-  - [ ] `ForNextYearHandler.java`
-  - [ ] `OverlappingYearHandler.java` 
-  - [ ] `Between1JanAnd30JunHandler.java`
-  - [ ] `Between1JulAnd31DecHandler.java`
-  - [ ] `Between30JunAnd1JulHandler.java`
-- [ ] NEW `services/cuti/handlers/CutiPeriodHandlerFactory.java` — dispatch via `switch(period)`
-- [ ] REFACTOR `SaveCutiService` — keep shared logic (validation, kuota ops), delegate period-specific to factory
+**Pre:**
+- [ ] `gitnexus_impact({target: "SaveCutiService", direction: "upstream"})`
 
-### Verify
-- [ ] `wc -l SaveCutiService.java` — confirm <120 lines
-- [ ] Each handler <120 lines
-- [ ] `./gradlew clean build` — BUILD SUCCESSFUL
-- [ ] `./gradlew test` — all tests pass
+**Extract:**
+- [ ] `helpers/cuti/CutiPeriodClassifier.java` — `final` class, static `classify()`
+- [ ] `entities/commons/ECutiPeriod.java` — enum
+- [ ] 5 handlers in `services/cuti/handlers/` | Factory via `switch(period)`
+- [ ] REFACTOR `SaveCutiService` — shared logic stays, period logic delegated
 
-### Ship
-- [ ] `gitnexus_detect_changes()` — verify affected scope
-- [ ] `git add` + commit: `refactor(cuti): split SaveCutiService period handlers (Q11)`
-- [ ] `bd close kepegawaian-scn`
-- [ ] `bd dolt push` → `git pull --rebase` → `git push`
+**Verify & Ship:**
+- [ ] `wc -l SaveCutiService.java` <120 | `./gradlew clean build && test`
+- [ ] `gitnexus_detect_changes()` → commit → `bd close kepegawaian-scn`
 
 ---
 
-## ISSUE 1b — `kepegawaian-sqf` (Phase 1: JOOQ mapper extraction)
+### 1b — `kepegawaian-sqf` · Phase 1
 
-**Goal:** Extract mapper logic from 3 JOOQ query repositories to Pola B mapper classes.
-**Status:** ○ OPEN
+| | |
+|---|---|
+| **Goal** | Extract JOOQ mappers from 3 query repos → Pola B classes |
+| **Status** | ○ OPEN |
+| **Depends** | — |
 
-### Pre-edit
-- [ ] `gitnexus_impact({target: "CutiPengajuanQueryRepository", direction: "upstream"})`
-- [ ] `gitnexus_impact({target: "CutiKuotaQueryRepository", direction: "upstream"})`
-- [ ] `gitnexus_impact({target: "CutiJenisQueryRepository", direction: "upstream"})`
+**Pre:**
+- [ ] `gitnexus_impact` on all 3 query repos
 
-### Extract Mappers
-- [ ] NEW `mapper/cuti/CutiPengajuanJooqMapper.java` — extract lines 256-346 from CutiPengajuanQueryRepository
-  - [ ] Pola B: `final` class, private ctor, NOT `@Component`
-  - [ ] Static methods: `mapToResponse`, `mapToMiniResponse`, `mapCommonFields`, enum converters
-- [ ] NEW `mapper/cuti/CutiKuotaJooqMapper.java` — extract lines 182-207 from CutiKuotaQueryRepository
-  - [ ] Static method: `mapToResponse(Record)`
-- [ ] NEW `mapper/cuti/CutiJenisJooqMapper.java` — extract inline mapper triplikasi
-  - [ ] Static method: `mapToResponse(Record)`
-  - [ ] Replace 3 inline lambdas with `.fetch(CutiJenisJooqMapper::mapToResponse)`
+**Extract:**
+- [ ] `mapper/cuti/CutiPengajuanJooqMapper.java` — `final`, private ctor, static methods
+- [ ] `mapper/cuti/CutiKuotaJooqMapper.java` — `mapToResponse(Record)`
+- [ ] `mapper/cuti/CutiJenisJooqMapper.java` — replace 3 inline lambdas
 
-### Verify
-- [ ] `wc -l` all 3 query repositories — confirm reduced line counts
-- [ ] CutiPengajuanQueryRepository: ~257 lines (pure SQL acceptable)
-- [ ] CutiKuotaQueryRepository: ~182 lines (pure SQL acceptable)
-- [ ] CutiJenisQueryRepository: ~107 lines (under 120)
-- [ ] `./gradlew clean build` — BUILD SUCCESSFUL
-
-### Ship
-- [ ] `gitnexus_detect_changes()`
-- [ ] `git add` + commit: `refactor(cuti): extract JOOQ mappers to Pola B (Q14-Q16)`
-- [ ] `bd close kepegawaian-sqf`
-- [ ] Ship protocol
+**Verify & Ship:**
+- [ ] Query repos ≤257 / ≤182 / ≤107 lines | `./gradlew clean build`
+- [ ] `gitnexus_detect_changes()` → commit → `bd close kepegawaian-sqf`
 
 ---
 
-## ISSUE 1c — `kepegawaian-39o` (Phase 1: Validator split)
+### 1c — `kepegawaian-39o` · Phase 1
 
-**Goal:** Split CutiPengajuanValidator (123 lines) into two validator classes by operation seam.
-**Status:** ○ OPEN
+| | |
+|---|---|
+| **Goal** | Split `CutiPengajuanValidator` (123→<70×2 lines) |
+| **Status** | ○ OPEN |
+| **Depends** | — |
 
-### Pre-edit
+**Pre:**
 - [ ] `gitnexus_impact({target: "CutiPengajuanValidator", direction: "upstream"})`
 
-### Split Validators
-- [ ] KEEP `CutiPengajuanValidator.java` — retain `validate(CutiPengajuanPostRequest)` method (59 lines)
-- [ ] NEW `services/cuti/klaim/CutiKlaimValidator.java` — extract `validateKlaim(CutiPengajuanKlaimPostRequest)` method (36 lines)
-  - [ ] Inject shared dependencies: CutiPegawaiRepository, CutiJenisRepository, CutiKuotaQueryRepository, CutiProperties
-- [ ] UPDATE `KlaimCutiCommand` — inject new `CutiKlaimValidator` instead of `CutiPengajuanValidator`
+**Split:**
+- [ ] KEEP `CutiPengajuanValidator` — `validate(Pengajuan)` (~59 lines)
+- [ ] NEW `services/cuti/klaim/CutiKlaimValidator.java` — `validateKlaim()` (~36 lines)
+- [ ] UPDATE `KlaimCutiCommand` — inject new validator
 
-### Verify
-- [ ] `wc -l` both validators — confirm <70 lines each
-- [ ] `./gradlew clean build`
-
-### Ship
-- [ ] `gitnexus_detect_changes()`
-- [ ] `git add` + commit: `refactor(cuti): split validators by operation seam (Q12)`
-- [ ] `bd close kepegawaian-39o`
-- [ ] Ship protocol
+**Verify & Ship:**
+- [ ] Both <70 lines | `./gradlew clean build`
+- [ ] `gitnexus_detect_changes()` → commit → `bd close kepegawaian-39o`
 
 ---
 
-## ISSUE 2a — `kepegawaian-hit` (Phase 2: PengajuanCutiCommand classifier)
+### 2a — `kepegawaian-hit` · Phase 2
 
-**Goal:** Simplify PengajuanCutiCommand (161 lines) using CutiPeriodClassifier from scn.
-**Status:** ○ BLOCKED → READY after kepegawaian-scn closes
+| | |
+|---|---|
+| **Goal** | Simplify `PengajuanCutiCommand` (161→<120 lines) |
+| **Status** | ○ BLOCKED ⟶ READY after `kepegawaian-scn` closes |
+| **Depends** | `kepegawaian-scn` |
 
-### Pre-edit
-- [ ] Confirm `kepegawaian-scn` is CLOSED (`bd show kepegawaian-scn`)
-- [ ] `bd update kepegawaian-hit --claim`
+**Pre (after scn closes):**
+- [ ] Confirm scn CLOSED → `bd update kepegawaian-hit --claim`
 - [ ] `gitnexus_impact({target: "PengajuanCutiCommand", direction: "upstream"})`
 
-### Refactor
-- [ ] INJECT `CutiPeriodClassifier` (from scn)
-- [ ] REPLACE 5-way if-else blocks (lines 73-85 save, 133-143 update) with `switch(classifier.classify())`
-- [ ] REMOVE double-subtract `setJumlahHari/HariKerja` (4 lines per §47)
-- [ ] DELEGATE approval chain pointer init (lines 87-96) to `CutiApprovalChainGenerator` (if exists, else extract)
+**Refactor:**
+- [ ] INJECT `CutiPeriodClassifier` | REPLACE 5-way if-else → `switch()`
+- [ ] REMOVE double-subtract | DELEGATE chain pointer init
 
-### Verify
-- [ ] `wc -l PengajuanCutiCommand.java` — confirm <120 lines
-- [ ] `./gradlew clean build`
-
-### Ship
-- [ ] `gitnexus_detect_changes()`
-- [ ] `git add` + commit: `refactor(cuti): simplify PengajuanCutiCommand with classifier (Q13)`
-- [ ] `bd close kepegawaian-hit`
-- [ ] Ship protocol
+**Verify & Ship:**
+- [ ] `<120 lines` | `./gradlew clean build`
+- [ ] `gitnexus_detect_changes()` → commit → `bd close kepegawaian-hit`
 
 ---
 
-## ISSUE 2b — `kepegawaian-rq2` (Phase 2: KlaimCutiCommand settlement)
+### 2b — `kepegawaian-rq2` · Phase 2
 
-**Goal:** Extract settlement service from KlaimCutiCommand (193 lines).
-**Status:** ○ BLOCKED → READY after kepegawaian-scn + kepegawaian-39o close
+| | |
+|---|---|
+| **Goal** | Extract settlement service from `KlaimCutiCommand` (193→<120 lines) |
+| **Status** | ○ BLOCKED ⟶ READY after scn + 39o close |
+| **Depends** | `kepegawaian-scn` + `kepegawaian-39o` |
 
-### Pre-edit
-- [ ] Confirm `kepegawaian-scn` and `kepegawaian-39o` are CLOSED
+**Pre (both closed):**
 - [ ] `bd update kepegawaian-rq2 --claim`
 - [ ] `gitnexus_impact({target: "KlaimCutiCommand", direction: "upstream"})`
 
-### Extract Settlement
-- [ ] NEW `services/cuti/klaim/CutiKlaimSettlementService.java` — extract 5 period-specific settlement methods:
-  - [ ] `forNextYear`, `overlappingYear`, `between1JanAnd30Jun`, `between1JulAnd31Dec`, `between30JunAnd1Jul`
-  - [ ] Mirror handler pattern from scn
-- [ ] REFACTOR `KlaimCutiCommand` — inject `CutiKlaimSettlementService` + `CutiKlaimValidator` (from 39o)
-  - [ ] Keep single `@Transactional` entry point
-  - [ ] Delegate settlement to service
+**Extract:**
+- [ ] NEW `CutiKlaimSettlementService` — 5 period methods (mirror scn pattern)
+- [ ] REFACTOR `KlaimCutiCommand` — single `@Transactional` entry, delegate settlement
 
-### Verify
-- [ ] `wc -l KlaimCutiCommand.java` — confirm <120 lines
-- [ ] `./gradlew clean build`
-
-### Ship
-- [ ] `gitnexus_detect_changes()`
-- [ ] `git add` + commit: `refactor(cuti): extract KlaimCutiCommand settlement service (Q12)`
-- [ ] `bd close kepegawaian-rq2`
-- [ ] Ship protocol
+**Verify & Ship:**
+- [ ] `<120 lines` | `./gradlew clean build`
+- [ ] `gitnexus_detect_changes()` → commit → `bd close kepegawaian-rq2`
 
 ---
 
-## ISSUE 3 — `kepegawaian-llq` (Phase 3: ApprovalCutiCommand lifecycle)
+### 3 — `kepegawaian-llq` · Phase 3
 
-**Goal:** ADR-0021 lifecycle cleanup for ApprovalCutiCommand (121 lines).
-**Status:** ○ OPEN (independent, can start anytime after Phase 1)
+| | |
+|---|---|
+| **Goal** | ADR-0021 lifecycle cleanup `ApprovalCutiCommand` (121→~105 lines) |
+| **Status** | ○ OPEN |
+| **Depends** | Phase 1 complete |
 
-### Pre-edit
+**Pre:**
 - [ ] `gitnexus_impact({target: "ApprovalCutiCommand", direction: "upstream"})`
 
-### Refactor
-- [ ] REMOVE 5 redundant `save()` calls for MANAGED entities (lines 92-94, 101-102, 113, 118)
-- [ ] KEEP 3 `save(cutiApproval)` calls for NEW entity (91, 100, 112)
-- [ ] EXTRACT helper methods:
-  - [ ] NEW `advanceChainPointer(currentChain, nextChain, cutiPegawai, status)` — state mutation without persistence
-  - [ ] NEW `terminateChain(currentChain, cutiPegawai, status)` — terminal state logic
-- [ ] RENAME `validateToken()` → `isTokenAlreadyUsed()` per §33
+**Refactor:**
+- [ ] REMOVE 5 redundant `save()` MANAGED | KEEP 3 `save()` NEW
+- [ ] EXTRACT `advanceChainPointer()` + `terminateChain()` helpers
+- [ ] RENAME `validateToken()` → `isTokenAlreadyUsed()`
 
-### Verify
-- [ ] `wc -l ApprovalCutiCommand.java` — confirm ~105 lines
-- [ ] `./gradlew clean build`
-
-### Ship
-- [ ] `gitnexus_detect_changes()`
-- [ ] `git add` + commit: `refactor(cuti): ApprovalCutiCommand lifecycle cleanup (Q13 ADR-0021)`
-- [ ] `bd close kepegawaian-llq`
-- [ ] Ship protocol
+**Verify & Ship:**
+- [ ] `~105 lines` | `./gradlew clean build`
+- [ ] `gitnexus_detect_changes()` → commit → `bd close kepegawaian-llq`
 
 ---
 
-## Keputusan Desain yang Dikunci (rujukan saat coding)
+## 📖 Design Decisions (Q11-Q17)
 
-Hasil sesi grilling Q11-Q17 — detail di **docs/context/decisions-cuti.md**:
+| # | Decision | Target | Ref |
+|---|----------|--------|-----|
+| Q11 | 5 handlers + classifier + factory | `SaveCutiService` 262→<120 | `decisions-cuti.md` |
+| Q12 | Settlement service + klaim validator | `KlaimCutiCommand` 193→<120 | `decisions-cuti.md` |
+| Q13 | Use classifier, delegate chain-init | `PengajuanCutiCommand` 161→<120 | `decisions-cuti.md` |
+| Q13 | Remove redundant saves, extract helpers | `ApprovalCutiCommand` 121→~105 | `decisions-cuti.md` |
+| Q14 | Extract mapper ~91 lines | `CutiPengajuanQueryRepository` 347→257 | `decisions-cuti.md` |
+| Q15 | Extract mapper ~26 lines | `CutiKuotaQueryRepository` 208→182 | `decisions-cuti.md` |
+| Q16 | Extract mapper triplikasi ~42 lines | `CutiJenisQueryRepository` 146→107 | `decisions-cuti.md` |
+| Q17 | Keep as-is (data-holder lenient) | `CutiPegawai` entity 126 | `decisions-cuti.md` |
 
-| # | Keputusan | Rujukan |
-|---|-----------|---------||
-| Q11 | SaveCutiService (262→<120): ekstrak 5 period handlers + CutiPeriodClassifier + factory; shared logic tetap di koordinator | decisions-cuti.md Q11 |
-| Q12 | KlaimCutiCommand (193→<120): ekstrak CutiKlaimSettlementService (5 methods) + CutiKlaimValidator; koordinator tetap single @Transactional | decisions-cuti.md Q12 |
-| Q13 | PengajuanCutiCommand (161→<120): gunakan CutiPeriodClassifier (Q11), delegate chain-init, hapus double-subtract | decisions-cuti.md Q13 |
-| Q13 | ApprovalCutiCommand (121→~105): buang 5 redundant save() MANAGED entities, keep 3 save() NEW entity, ekstrak 2 helper transisi | decisions-cuti.md Q13 |
-| Q14 | CutiPengajuanQueryRepository (347): ekstrak mapper ~91 baris → CutiPengajuanJooqMapper; remaining ~257 pure SQL acceptable | decisions-cuti.md Q14 |
-| Q15 | CutiKuotaQueryRepository (208): ekstrak mapper ~26 baris; remaining ~182 pure SQL acceptable | decisions-cuti.md Q15 |
-| Q16 | CutiJenisQueryRepository (146→107): ekstrak mapper triplikasi inline ~42 baris; naturally under 120 after extraction | decisions-cuti.md Q16 |
-| Q17 | CutiPegawai entity (126): pertahankan as-is, lenient untuk data-holders | decisions-cuti.md Q17 |
+### Exception Rules
+- **JOOQ `*QueryRepository`**: >120 lines OK **if mapper extracted** (Pola B: `final`, private ctor, no `@Component`)
+- **Entity data-holders**: Lenient
+- **Service/Command/Logic**: Strict <120 lines
 
-**Exception Rules:**
-- **JOOQ `*QueryRepository`**: Pure SQL construction >120 acceptable **only if mapper extracted** (Pola B: `final` class, private ctor, NOT `@Component`)
-- **Entity data-holders**: Lenient (field count reasonable + utility methods)
-- **Strict enforcement**: Service/Command/Logic classes must be <120 lines
-
-**Pola failure (semua command):** FK/entity hilang → `.orElseThrow(RuntimeException)` atau custom exception; duplikat → `throw RuntimeException` atau `ConflictException`; unexpected → 500 via `GlobalExceptionHandler`.
-
----
-
-## Guardrails (apply on ALL issues)
-
-- NEVER edit a symbol without `gitnexus_impact` first
-- NEVER rename/move with find-and-replace — use `gitnexus_rename` or `git mv`
-- NEVER commit without `gitnexus_detect_changes()`
-- beads is the ONLY tracker — no TodoWrite / markdown TODOs
-- Stop and ask if any impact analysis returns HIGH/CRITICAL
-- Git mv invariant: Use `git mv` for file renames (CODING_RULES §17)
-- Single transaction entry: Keep ADR-0021 pattern (§32)
-- No premature abstraction: Extract only per decisions, don't over-engineer
-- Test preservation: All existing tests must pass
+### Failure Pattern (all commands)
+FK missing → `.orElseThrow()` · Duplicate → `throw` · Unexpected → 500 via `GlobalExceptionHandler`
 
 ---
 
-## Issue Terkait (bugs preserved for post-refactor fix)
+## ⚠️ Guardrails
 
-- **kepegawaian-ciw** (P2) — `forNextYear` getYear()-1 asimetri. Parent: kepegawaian-is7.12. Marked "preserve, do not fix inline".
-- **kepegawaian-ebt** (P2) — `CutiKuotaUpdateByCutiService` LocalDate.now() cross-year deduction bug. Marked "preserve".
-- **kepegawaian-s5n** (P2) — `saveKlaim` entity.equals() vs getId() inconsistency (Hibernate proxy-rapuh). Marked "preserve".
-- **kepegawaian-sfq** (P2) — `between1JanAnd30Jun` LocalDate.now() wall-clock bug (approval outcome depends on click time). Marked "preserve".
-
-> Bugs akan diselesaikan **setelah** refactoring selesai (refactor for structural clarity first, then fix bugs in clean code).
+- **NEVER** edit symbol without `gitnexus_impact` first
+- **NEVER** rename/move with find-and-replace — use `gitnexus_rename` or `git mv`
+- **NEVER** commit without `gitnexus_detect_changes()`
+- beads is the **ONLY** tracker — no TodoWrite / markdown TODOs
+- Stop & ask if impact returns HIGH/CRITICAL
+- `git mv` for file renames (CODING_RULES §17)
+- Single `@Transactional` entry (ADR-0021 §32)
+- No premature abstraction
+- All existing tests must pass
 
 ---
 
-## Cara Update Checklist Ini
+## 🐛 Preserved Bugs (post-refactor fixes)
 
-Tandai `[x]` saat subtask selesai. Sumber kebenaran status tetap **beads** (`bd show kepegawaian-y7u`, `bd ready`); file ini ringkasan manusiawi untuk monitoring phase.
+| Issue | Bug | Priority |
+|-------|-----|----------|
+| `kepegawaian-ciw` | `forNextYear` getYear()-1 asymmetry | P2 |
+| `kepegawaian-ebt` | `CutiKuotaUpdateByCutiService` LocalDate.now() cross-year deduction | P2 |
+| `kepegawaian-s5n` | `saveKlaim` entity.equals() vs getId() (Hibernate proxy) | P2 |
+| `kepegawaian-sfq` | `between1JanAnd30Jun` wall-clock bug (approval outcome depends on click time) | P2 |
+
+> Fix bugs **after** refactoring — structural clarity first, then clean code fixes.
