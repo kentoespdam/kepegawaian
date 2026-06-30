@@ -30,11 +30,11 @@
 
 ## STEP 0 — Sebelum kode apa pun (setiap klaim)
 
-- [ ] `bd prime` (recover beads workflow context)
-- [ ] `git status` clean; di branch `rewrite/master-cqrs`
-- [ ] `npx gitnexus analyze` bila index stale (cek warning hook)
-- [ ] Baca exemplar files yang akan ditiru (tercantum per fase)
-- [ ] `bd update <id> --claim` issue yang dimulai
+- [x] `bd prime` (recover beads workflow context)
+- [x] `git status` clean; di branch `rewrite/master-cqrs`
+- [x] `npx gitnexus analyze` bila index stale (cek warning hook)
+- [x] Baca exemplar files yang akan ditiru (tercantum per fase)
+- [x] `bd update <id> --claim` issue yang dimulai
 
 ---
 
@@ -42,11 +42,11 @@
 
 **Goal:** bikin struktur tracking sebelum kode. Claim-order ini work-order; beads tetap satu-satunya tracker.
 
-- [ ] `bd create` **epic** "Rewrite modul Cuti ke CQRS (Keputusan #1–#16)" — type=epic, simpan ringkasan 16 keputusan di field `--design`
-- [ ] `bd create` child issue per fase (1–13), set `--design` rujuk nomor Keputusan di `CONTEXT.md`
-- [ ] Tautkan dependency antar-fase via `bd dep add <blocked> <blocker>` sesuai kolom *State when you start*
-- [ ] Tautkan 4 bug issue (ebt/ciw/sfq/s5n) sebagai child fase 12 (klaim) & fase 9/kuota — flag "preserve, do not fix inline"
-- [ ] Update tabel di atas dengan ID issue nyata setelah dibuat
+- [x] `bd create` **epic** "Rewrite modul Cuti ke CQRS (Keputusan #1–#16)" — type=epic, simpan ringkasan 16 keputusan di field `--design`
+- [x] `bd create` child issue per fase (1–13), set `--design` rujuk nomor Keputusan di `CONTEXT.md`
+- [x] Tautkan dependency antar-fase via `bd dep add <blocked> <blocker>` sesuai kolom *State when you start*
+- [x] Tautkan 4 bug issue (ebt/ciw/sfq/s5n) sebagai child fase 12 (klaim) & fase 9/kuota — flag "preserve, do not fix inline"
+- [x] Update tabel di atas dengan ID issue nyata setelah dibuat
 
 ---
 
@@ -56,19 +56,19 @@
 **Exemplar (baca dulu):** `config/PegawaiProperties.java`.
 
 ### Pre-edit
-- [ ] `gitnexus_impact({target: "DefConfig", direction: "upstream"})` — petakan semua pembaca `getJenisCuti{Tahunan,Besar,Ibadah}`, level jabatan, dll
-- [ ] Warn manager bila HIGH/CRITICAL
+- [x] `gitnexus_impact({target: "DefConfig", direction: "upstream"})` — petakan semua pembaca `getJenisCuti{Tahunan,Besar,Ibadah}`, level jabatan, dll
+- [x] Warn manager bila HIGH/CRITICAL
 
 ### Implementasi
-- [ ] NEW `config/CutiProperties.java` — `@ConfigurationProperties(prefix="app.cuti")`, field typed: `jenisCutiTahunan/Besar/Ibadah` (id), level/jabatan SDM & direksi (lihat #4)
-- [ ] `application.yml` — blok `app.cuti.*` dari env var (pola proyek)
-- [ ] Daftarkan via `@EnableConfigurationProperties` / `@ConfigurationPropertiesScan`
-- [ ] Catat: belum hapus `DefConfig` (masih dipakai modul lain) — hanya konsumen cuti yang pindah
+- [x] NEW `config/CutiProperties.java` — `@ConfigurationProperties(prefix="app.cuti")`, field typed: `jenisCutiTahunan/Besar/Ibadah` (id), level/jabatan SDM & direksi (lihat #4)
+- [x] `application.yml` — blok `app.cuti.*` dari env var (pola proyek)
+- [x] Daftarkan via `@EnableConfigurationProperties` / `@ConfigurationPropertiesScan`
+- [x] Catat: belum hapus `DefConfig` (masih dipakai modul lain) — hanya konsumen cuti yang pindah
 
 ### Acceptance
-- [ ] Semua konsumen cuti inject `CutiProperties`, bukan `DefConfig`/`@Value`
-- [ ] `./gradlew compileJava` → SUCCESSFUL
-- [ ] `gitnexus_detect_changes()` scope sesuai
+- [x] Semua konsumen cuti inject `CutiProperties`, bukan `DefConfig`/`@Value`
+- [x] `./gradlew compileJava` → SUCCESSFUL
+- [x] `gitnexus_detect_changes()` scope sesuai
 
 ---
 
@@ -77,20 +77,20 @@
 **Goal:** ekstrak dua aturan jadi fungsi statik murni (tanpa Spring/DB), **perbaiki bug double-subtract** hari kerja.
 
 ### WorkdayCalculator (#14)
-- [ ] NEW `helpers/cuti/WorkdayCalculator.java` — `static int count(LocalDate tglMulai, LocalDate tglSelesai, Set<LocalDate> libur)`
-- [ ] Logika **satu lintasan**: hitung tanggal yang `!weekend && !libur` (pinjam logika benar `DateHelper.getWorkingDays`)
-- [ ] **FIX double-subtract**: jangan `countWeekday − countLibur` (libur di Sabtu/Minggu ter-kurang ganda)
-- [ ] Sumber libur via `HariLiburRepository.findByTanggalBetween(...)` → `Set<LocalDate>` (bukan `countByTanggalBetween`)
-- [ ] Unit test: kasus libur di weekday, libur di weekend (harus TIDAK mengurangi lagi), rentang lintas bulan
+- [x] NEW `helpers/cuti/WorkdayCalculator.java` — `static int count(LocalDate tglMulai, LocalDate tglSelesai, Set<LocalDate> libur)`
+- [x] Logika **satu lintasan**: hitung tanggal yang `!weekend && !libur` (pinjam logika benar `DateHelper.getWorkingDays`)
+- [x] **FIX double-subtract**: jangan `countWeekday − countLibur` (libur di Sabtu/Minggu ter-kurang ganda)
+- [x] Sumber libur via `HariLiburRepository.findByTanggalBetween(...)` → `Set<LocalDate>` (bukan `countByTanggalBetween`)
+- [x] Unit test: kasus libur di weekday, libur di weekend (harus TIDAK mengurangi lagi), rentang lintas bulan
 
 ### MinimalCutiRule (#12)
-- [ ] NEW `helpers/cuti/MinimalCutiRule.java` — `static void check(int totalHariKerja, int totalSisaKuota)`
-- [ ] Port aritmatika: `<3` hari → bila `sisaKuota >= 3` throw "minimal 3 hari"; else bila `hariKerja < sisaKuota` throw "Sisa Kuota … harus diambil semua"
-- [ ] Unit test tiga cabang
+- [x] NEW `helpers/cuti/MinimalCutiRule.java` — `static void check(int totalHariKerja, int totalSisaKuota)`
+- [x] Port aritmatika: `<3` hari → bila `sisaKuota >= 3` throw "minimal 3 hari"; else bila `hariKerja < sisaKuota` throw "Sisa Kuota … harus diambil semua"
+- [x] Unit test tiga cabang
 
 ### Acceptance
-- [ ] Nol dependensi Spring di kedua kelas
-- [ ] Tiga titik lama (create/update/`findTotalHariKerja`) nanti panggil `WorkdayCalculator.count` yang sama (diverifikasi di fase 6 & 10)
+- [x] Nol dependensi Spring di kedua kelas
+- [x] Tiga titik lama (create/update/`findTotalHariKerja`) nanti panggil `WorkdayCalculator.count` yang sama (diverifikasi di fase 6 & 10)
 
 ---
 
@@ -100,18 +100,18 @@
 **Exemplar:** `mapper/master/jabatan/JabatanMapper.java` (Pola B), mapper JOOQ master mana pun.
 
 ### Pre-edit
-- [ ] `gitnexus_impact` pada `JenisCutiResponse`, `JenisCutiMiniResponse`, `CutiJenisResponse`, `CutiJenisMiniResponse` — konfirmasi consumer (sudah diverifikasi: keempatnya dipakai, dua mini identik)
+- [x] `gitnexus_impact` pada `JenisCutiResponse`, `JenisCutiMiniResponse`, `CutiJenisResponse`, `CutiJenisMiniResponse` — konfirmasi consumer (sudah diverifikasi: keempatnya dipakai, dua mini identik)
 
 ### Implementasi
-- [ ] Pertahankan `CutiJenisMiniResponse {id,nama}` sebagai SATU mini kanonik
-- [ ] Pertahankan `CutiJenisResponse {id,parent,nama,maxHari,potongKuotaTahunan}` (CRUD Jenis)
-- [ ] DELETE `JenisCutiMiniResponse` (duplikat literal `{id,nama}`)
-- [ ] DELETE `JenisCutiResponse` (pengajuan rujuk `CutiJenisMiniResponse` untuk nested `jenisCuti`/`subJenisCuti` — cukup `{id,nama}`)
-- [ ] Update `CutiPengajuanResponse`/`CutiPengajuanMiniResponse` agar nested pakai `CutiJenisMiniResponse`
+- [x] Pertahankan `CutiJenisMiniResponse {id,nama}` sebagai SATU mini kanonik
+- [x] Pertahankan `CutiJenisResponse {id,parent,nama,maxHari,potongKuotaTahunan}` (CRUD Jenis)
+- [x] DELETE `JenisCutiMiniResponse` (duplikat literal `{id,nama}`)
+- [x] DELETE `JenisCutiResponse` (pengajuan rujuk `CutiJenisMiniResponse` untuk nested `jenisCuti`/`subJenisCuti` — cukup `{id,nama}`)
+- [x] Update `CutiPengajuanResponse`/`CutiPengajuanMiniResponse` agar nested pakai `CutiJenisMiniResponse`
 
 ### Acceptance
-- [ ] `grep -rn 'JenisCutiResponse\|JenisCutiMiniResponse' src` → 0 (kecuali `CutiJenisMiniResponse`)
-- [ ] `./gradlew compileJava` → SUCCESSFUL
+- [x] `grep -rn 'JenisCutiResponse\|JenisCutiMiniResponse' src` → 0 (kecuali `CutiJenisMiniResponse`)
+- [x] `./gradlew compileJava` → SUCCESSFUL
 
 ---
 
