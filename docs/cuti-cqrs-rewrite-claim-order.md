@@ -34,7 +34,7 @@
 - [x] `git status` clean; di branch `rewrite/master-cqrs`
 - [x] `npx gitnexus analyze` bila index stale (cek warning hook)
 - [x] Baca exemplar files yang akan ditiru (tercantum per fase)
-- [x] `bd update kepegawaian-is7.8 --claim` issue yang dimulai
+- [x] `bd update kepegawaian-is7.9 --claim` issue yang dimulai
 
 ---
 
@@ -212,14 +212,14 @@
 
 **Goal:** 6 metode periode → satu allocator murni untuk **reservasi** N hari ke bucket riwayat0/riwayat1. Diberi makan `jumlahHariKerja` bersih dari `WorkdayCalculator` (fase 2).
 
-- [ ] NEW allocator reservasi (murni / minim-DB) — alokasi lintas batas tahun (hanya 2 bucket)
-- [ ] FIX `saveCutiNonTahunan` double-set bila terbawa
-- [ ] Hindari `LocalDate.now()` di dalam allocator — terima `nowYear`/tahun dari pemanggil
-- [ ] Pertahankan path `CutiKuotaUpdateByCutiService` **terpisah** (deduksi/finalisasi) — **bug now() cross-year DIPERTAHANKAN** → issue `kepegawaian-ebt`
+- [x] NEW allocator reservasi (murni / minim-DB) — alokasi lintas batas tahun (hanya 2 bucket)
+- [x] FIX `saveCutiNonTahunan` double-set bila terbawa
+- [x] Hindari `LocalDate.now()` di dalam allocator — terima `nowYear`/tahun dari pemanggil
+- [x] Pertahankan path `CutiKuotaUpdateByCutiService` **terpisah** (deduksi/finalisasi) — **bug now() cross-year DIPERTAHANKAN** → issue `kepegawaian-ebt`
 
 ### Acceptance
-- [ ] Reservasi memakai `jumlahHariKerja` hasil `WorkdayCalculator` (bukan rumus buggy)
-- [ ] Unit test alokasi: dalam-tahun, menyebrang-tahun, tahun-depan
+- [x] Reservasi memakai `jumlahHariKerja` hasil `WorkdayCalculator` (bukan rumus buggy)
+- [x] Unit test alokasi: dalam-tahun, menyebrang-tahun, tahun-depan
 
 ---
 
