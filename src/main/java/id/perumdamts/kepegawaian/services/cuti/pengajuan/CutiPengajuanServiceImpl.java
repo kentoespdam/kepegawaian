@@ -41,6 +41,7 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
     private final CutiApprovalChainService cutiApprovalChainService;
     private final SaveKlaimCutiService klaimCutiService;
     private final CutiPengajuanValidator cutiPengajuanValidator;
+    private final PengajuanCutiCommand pengajuanCutiCommand;
 
     @Override
     public Page<CutiPengajuanResponse> findPage(CutiPengajuanRequest request) {
@@ -64,136 +65,17 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
     @Override
     public SavedStatus<?> save(CutiPengajuanPostRequest request) {
         try {
-            if (redisHelper.validateToken(request.getCsrfToken())) {
-                return SavedStatus.build(ESaveStatus.DUPLICATE, "Duplicate request detected");
-            }
-            cutiPengajuanValidator.validate(request);
-
-            Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId())
-                    .orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
-            CutiJenis jenisCuti = cutiJenisRepository.findById(request.getJenisCutiId())
-                    .orElseThrow(() -> new RuntimeException("Unknown Jenis Cuti"));
-            CutiJenis subJenisCuti = cutiJenisRepository.findById(request.getSubJenisCutiId())
-                    .orElse(null);
-
-            int nowYear = LocalDate.now().getYear();
-            LocalDate tanggalMulai = request.getTanggalMulai();
-            LocalDate tanggalSelesai = request.getTanggalSelesai();
-            int startYear = tanggalMulai.getYear();
-            int endYear = tanggalSelesai.getYear();
-
-            int totalDays = DateHelper.countWeekdaysBetween(request.getTanggalMulai(), request.getTanggalSelesai());
-            int totalHariCuti = totalDays - hariLiburRepository.countByTanggalBetween(request.getTanggalMulai(), request.getTanggalSelesai());
-
-            CutiPegawai entity = CutiPengajuanPostRequest.toEntity(request, pegawai, jenisCuti, subJenisCuti);
-            entity.setJumlahHari(totalDays);
-            entity.setJumlahHariKerja(totalHariCuti);
-
-            // CUTI TAHUNAN
-            if (request.getJenisCutiId().equals(cutiProperties.getJenisCutiTahunan())) {
-                CutiPegawai cutiPegawai;
-                if (startYear > nowYear && endYear > nowYear) {
-                    // pengajuan cuti tahunan untuk tahun depan
-                    cutiPegawai = saveCutiService.forNextYear(request, entity);
-                } else if (startYear == nowYear && endYear > startYear) {
-                    // pengajuan cuti menyebrang tahun
-                    cutiPegawai = saveCutiService.overlappingYear(request, entity);
-                } else if (DateHelper.isBetweenDates(tanggalMulai, tanggalSelesai, startYear, 1, 6, 30)) {
-                    // pengajuan cuti antara 1jan sampai 30 juni
-                    cutiPegawai = saveCutiService.between1JanAnd30Jun(request, entity);
-                } else if (DateHelper.isBetweenDates(tanggalMulai, tanggalSelesai, startYear, 7, 12, 31)) {
-                    // pengajuan cuti antara 1 juli sampai 31 desember
-                    cutiPegawai = saveCutiService.between1JulAnd31Dec(request, entity);
-                } else if (DateHelper.isOverlappingDates(tanggalMulai, tanggalSelesai, startYear)) {
-                    // pengajuan cuti antara tanggal 30 juni sampai 1 juli
-                    cutiPegawai = saveCutiService.between30JunAnd1Jul(request, entity);
-                } else {
-                    throw new RuntimeException("Invalid request");
-                }
-
-                List<CutiApprovalChain> cutiApprovalChains = cutiApprovalChainService.generateApprovalChain(cutiPegawai);
-                Optional<CutiApprovalChain> writeChain = cutiApprovalChains.stream().filter(chain -> chain.getReadWriteStatus().equals(EReadWriteStatus.WRITE))
-                        .findFirst();
-                if (writeChain.isPresent()) {
-                    CutiApprovalChain writeChainEntity = writeChain.get();
-                    cutiPegawai.setApprovalLevel(writeChainEntity.getApprovalLevel());
-                    cutiPegawai.setPicSaatIni(new Jabatan(writeChainEntity.getJabatanId()));
-                    repository.save(cutiPegawai);
-                }
-
-            } else {
-                saveCutiService.saveCutiNonTahunan(request, entity);
-            }
-            return SavedStatus.build(ESaveStatus.SUCCESS, "Cuti Pengajuan berhasil disimpan");
+            return pengajuanCutiCommand.save(request);
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
     }
 
-    /**
-     * Membaharui data pengajuan cuti pegawai berdasarkan id.
-     * <p>
-     * Jika pengajuan cuti pegawai berhasil diubah, maka akan mengembalikan
-     * objek {@link SavedStatus} dengan status {@link ESaveStatus#SUCCESS}.
-     * Jika terjadi kesalahan, maka akan mengembalikan objek {@link SavedStatus}
-     * dengan status {@link ESaveStatus#FAILED} dan pesan error.
-     *
-     * @param id      id pengajuan cuti pegawai yang akan diubah
-     * @param request data pengajuan cuti yang akan diubah
-     * @return SavedStatus data
-     * @throws RuntimeException jika data pengajuan cuti tidak ditemukan
-     */
     @Override
     public SavedStatus<?> update(Long id, CutiPengajuanPutRequest request) {
         try {
-            if (redisHelper.validateToken(request.getCsrfToken()))
-                return SavedStatus.build(ESaveStatus.DUPLICATE, "Duplicate request detected");
-            CutiPegawai cutiPegawai = repository.findById(id).orElseThrow(() -> new RuntimeException("Unknown Cuti Pengajuan"));
-            Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId())
-                    .orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
-            CutiJenis jenisCuti = cutiJenisRepository.findById(request.getJenisCutiId())
-                    .orElseThrow(() -> new RuntimeException("Unknown Jenis Cuti"));
-            CutiJenis subJenisCuti = cutiJenisRepository.findById(request.getSubJenisCutiId())
-                    .orElse(null);
-
-            int nowYear = LocalDate.now().getYear();
-            LocalDate tanggalMulai = request.getTanggalMulai();
-            LocalDate tanggalSelesai = request.getTanggalSelesai();
-            int startYear = tanggalMulai.getYear();
-            int endYear = tanggalSelesai.getYear();
-
-            int totalDays = DateHelper.countWeekdaysBetween(request.getTanggalMulai(), request.getTanggalSelesai());
-            int totalHariCuti = totalDays - hariLiburRepository.countByTanggalBetween(request.getTanggalMulai(), request.getTanggalSelesai());
-
-            CutiPegawai entity = CutiPengajuanPutRequest.toEntity(cutiPegawai, request, pegawai, jenisCuti, subJenisCuti);
-            entity.setJumlahHari(totalDays);
-            entity.setJumlahHariKerja(totalHariCuti);
-
-            // CUTI TAHUNAN
-            if (request.getJenisCutiId().equals(cutiProperties.getJenisCutiTahunan())) {
-                if (startYear > nowYear && endYear > nowYear) {
-                    // update cuti tahunan untuk tahun depan
-                    saveCutiService.forNextYear(request, entity);
-                } else if (startYear == nowYear && endYear > startYear) {
-                    // update cuti menyebrang tahun
-                    saveCutiService.overlappingYear(request, entity);
-                } else if (DateHelper.isBetweenDates(tanggalMulai, tanggalSelesai, startYear, 1, 6, 30)) {
-                    // update cuti antara 1jan sampai 30 juni
-                    saveCutiService.between1JanAnd30Jun(request, entity);
-                } else if (DateHelper.isBetweenDates(tanggalMulai, tanggalSelesai, startYear, 7, 12, 31)) {
-                    // update cuti antara 1 juli sampai 31 desember
-                    saveCutiService.between1JulAnd31Dec(request, entity);
-                } else if (DateHelper.isOverlappingDates(tanggalMulai, tanggalSelesai, startYear)) {
-                    // update cuti antara tanggal 30 juni sampai 1 juli
-                    saveCutiService.between30JunAnd1Jul(request, entity);
-                }
-            } else {
-                // update cuti non tahunan
-                saveCutiService.saveCutiNonTahunan(request, entity);
-            }
-
-            return SavedStatus.build(ESaveStatus.SUCCESS, "Cuti Pengajuan berhasil di update");
-        } catch (RuntimeException e) {
+            return pengajuanCutiCommand.update(id, request);
+        } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
     }
@@ -251,21 +133,11 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
      */
     @Override
     public SavedStatus<?> pembatalan(Long id) {
-        // Find the leave request by id and approval status PENDING
-        Optional<CutiPegawai> entity = repository.findByIdAndApprovalCutiStatus(id, EApprovalCutiStatus.PENDING);
-        if (entity.isEmpty()) {
-            // Return a failed status if the leave request is not found
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Cuti Pegawai");
+        try {
+            return pengajuanCutiCommand.pembatalan(id);
+        } catch (Exception e) {
+            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
-
-        // Set the approval status to CANCELED
-        entity.get().setApprovalCutiStatus(EApprovalCutiStatus.CANCELED);
-
-        // Save the updated leave request
-        repository.save(entity.get());
-
-        // Return a success status
-        return SavedStatus.build(ESaveStatus.SUCCESS, "Cuti Pengajuan berhasil dibatalkan");
     }
 
     /**

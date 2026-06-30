@@ -7,6 +7,9 @@ import id.perumdamts.kepegawaian.repositories.cuti.CutiKuotaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import id.perumdamts.kepegawaian.dto.cuti.kuota.CutiKuotaDeductionResult;
+import id.perumdamts.kepegawaian.helpers.cuti.CutiKuotaDeductionAllocator;
+
 import java.time.LocalDate;
 
 @Service
@@ -73,8 +76,13 @@ public class CutiKuotaUpdateByCutiService {
     private void updateKuotaForYear(CutiPegawai cutiPegawai, int year, int pakai) {
         repository.findByPegawai_IdAndTahun(cutiPegawai.getPegawai().getId(), year)
                 .ifPresent(kuota -> {
-                    kuota.setKuotaTerpakai(kuota.getKuotaTerpakai() + pakai);
-                    kuota.setSisaKuota(kuota.getSisaKuota() - pakai);
+                    CutiKuotaDeductionResult res = CutiKuotaDeductionAllocator.deduct(
+                            kuota.getKuotaTerpakai(),
+                            kuota.getSisaKuota(),
+                            pakai
+                    );
+                    kuota.setKuotaTerpakai(res.getNewKuotaTerpakai());
+                    kuota.setSisaKuota(res.getNewSisaKuota());
                     repository.save(kuota);
                 });
     }

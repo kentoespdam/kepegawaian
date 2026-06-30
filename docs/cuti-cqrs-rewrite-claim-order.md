@@ -34,7 +34,7 @@
 - [x] `git status` clean; di branch `rewrite/master-cqrs`
 - [x] `npx gitnexus analyze` bila index stale (cek warning hook)
 - [x] Baca exemplar files yang akan ditiru (tercantum per fase)
-- [x] `bd update kepegawaian-is7.9 --claim` issue yang dimulai
+- [x] `bd update kepegawaian-is7.10 --claim` issue yang dimulai
 
 ---
 
@@ -228,18 +228,18 @@
 **Goal:** `PengajuanCutiCommand` — save/update/pembatalan dalam satu entry `@Transactional`, tak menelan exception (ADR-0021).
 **Exemplar:** Command service modul `kepegawaian/` yang sudah selesai.
 
-- [ ] NEW `services/cuti/pengajuan/PengajuanCutiCommand.java`
-  - [ ] `save` — validate (fase 7) → `WorkdayCalculator.count` → `toEntity` (Mapper) → allocator reservasi (fase 9) → generate chain (fase 8) → set WRITE pointer
-  - [ ] `update` — sama, atas entity existing
-  - [ ] `pembatalan(id)` — set status CANCELED (bukan hard-delete); buang `delete()` stub `return false`
-  - [ ] FK via `getReferenceById` (ADR-0008)
-- [ ] CSRF single-use token Redis dipertahankan (Keputusan #7) — UUID, 5-min TTL
-- [ ] FIX `@SQLDelete` target tabel salah pada child entity (Keputusan #8)
-- [ ] **TIDAK** ada `try{...}catch(Exception){FAILED}` membungkus seluruh body — exception naik, hanya entry yang membungkus ke `SavedStatus`
+- [x] NEW `services/cuti/pengajuan/PengajuanCutiCommand.java`
+  - [x] `save` — validate (fase 7) → `WorkdayCalculator.count` → `toEntity` (Mapper) → allocator reservasi (fase 9) → generate chain (fase 8) → set WRITE pointer
+  - [x] `update` — sama, atas entity existing
+  - [x] `pembatalan(id)` — set status CANCELED (bukan hard-delete); buang `delete()` stub `return false`
+  - [x] FK via `getReferenceById` (ADR-0008)
+- [x] CSRF single-use token Redis dipertahankan (Keputusan #7) — UUID, 5-min TTL
+- [x] FIX `@SQLDelete` target tabel salah pada child entity (Keputusan #8)
+- [x] **TIDAK** ada `try{...}catch(Exception){FAILED}` membungkus seluruh body — exception naik, hanya entry yang membungkus ke `SavedStatus`
 
 ### Acceptance
-- [ ] Satu `@Transactional` public per operasi
-- [ ] `gitnexus_detect_changes()` scope sesuai
+- [x] Satu `@Transactional` public per operasi
+- [x] `gitnexus_detect_changes()` scope sesuai
 
 ---
 
