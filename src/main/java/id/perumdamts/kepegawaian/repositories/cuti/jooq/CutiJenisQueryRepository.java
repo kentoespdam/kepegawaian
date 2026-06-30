@@ -1,9 +1,9 @@
 package id.perumdamts.kepegawaian.repositories.cuti.jooq;
 
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
-import id.perumdamts.kepegawaian.dto.cuti.jenis.CutiJenisMiniResponse;
 import id.perumdamts.kepegawaian.dto.cuti.jenis.CutiJenisRequest;
 import id.perumdamts.kepegawaian.dto.cuti.jenis.CutiJenisResponse;
+import id.perumdamts.kepegawaian.mapper.cuti.CutiJenisJooqMapper;
 import lombok.RequiredArgsConstructor;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -50,20 +50,7 @@ public class CutiJenisQueryRepository {
                 .orderBy(sortOrder)
                 .limit(sizeOrDefault)
                 .offset(pageNumber * sizeOrDefault)
-                .fetch(record -> {
-                    CutiJenisResponse response = new CutiJenisResponse();
-                    response.setId(record.get(CUTI_JENIS.ID));
-                    response.setNama(record.get(CUTI_JENIS.NAMA));
-                    response.setMaxHari(record.get(CUTI_JENIS.MAX_HARI));
-                    response.setPotongKuotaTahunan(record.get(CUTI_JENIS.POTONG_KUOTA_TAHUNAN));
-                    if (record.get("parent_id") != null) {
-                        CutiJenisMiniResponse mini = new CutiJenisMiniResponse();
-                        mini.setId((Long) record.get("parent_id"));
-                        mini.setNama((String) record.get("parent_nama"));
-                        response.setParent(mini);
-                    }
-                    return response;
-                });
+                .fetch(CutiJenisJooqMapper::mapToResponse);
                 
         return new PageImpl<>(data, PageRequest.of(pageNumber, sizeOrDefault), count);
     }
@@ -84,20 +71,7 @@ public class CutiJenisQueryRepository {
                 .leftJoin(parent).on(CUTI_JENIS.PARENT_ID.eq(parent.ID))
                 .where(where)
                 .orderBy(CUTI_JENIS.NAMA.asc())
-                .fetch(record -> {
-                    CutiJenisResponse response = new CutiJenisResponse();
-                    response.setId(record.get(CUTI_JENIS.ID));
-                    response.setNama(record.get(CUTI_JENIS.NAMA));
-                    response.setMaxHari(record.get(CUTI_JENIS.MAX_HARI));
-                    response.setPotongKuotaTahunan(record.get(CUTI_JENIS.POTONG_KUOTA_TAHUNAN));
-                    if (record.get("parent_id") != null) {
-                        CutiJenisMiniResponse mini = new CutiJenisMiniResponse();
-                        mini.setId((Long) record.get("parent_id"));
-                        mini.setNama((String) record.get("parent_nama"));
-                        response.setParent(mini);
-                    }
-                    return response;
-                });
+                .fetch(CutiJenisJooqMapper::mapToResponse);
     }
 
     public CutiJenisResponse getById(Long id) {
@@ -114,20 +88,7 @@ public class CutiJenisQueryRepository {
                 .from(CUTI_JENIS)
                 .leftJoin(parent).on(CUTI_JENIS.PARENT_ID.eq(parent.ID))
                 .where(CUTI_JENIS.ID.eq(id).and(CUTI_JENIS.IS_DELETED.eq(false)))
-                .fetchOne(record -> {
-                    CutiJenisResponse response = new CutiJenisResponse();
-                    response.setId(record.get(CUTI_JENIS.ID));
-                    response.setNama(record.get(CUTI_JENIS.NAMA));
-                    response.setMaxHari(record.get(CUTI_JENIS.MAX_HARI));
-                    response.setPotongKuotaTahunan(record.get(CUTI_JENIS.POTONG_KUOTA_TAHUNAN));
-                    if (record.get("parent_id") != null) {
-                        CutiJenisMiniResponse mini = new CutiJenisMiniResponse();
-                        mini.setId((Long) record.get("parent_id"));
-                        mini.setNama((String) record.get("parent_nama"));
-                        response.setParent(mini);
-                    }
-                    return response;
-                });
+                .fetchOne(CutiJenisJooqMapper::mapToResponse);
     }
 
     private static Map<String, Field<?>> allowedSorts() {

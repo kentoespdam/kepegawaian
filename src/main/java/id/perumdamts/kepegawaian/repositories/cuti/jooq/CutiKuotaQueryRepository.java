@@ -2,7 +2,7 @@ package id.perumdamts.kepegawaian.repositories.cuti.jooq;
 
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.cuti.kuota.*;
-import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiMiniResponse;
+import id.perumdamts.kepegawaian.mapper.cuti.CutiKuotaJooqMapper;
 import lombok.RequiredArgsConstructor;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -65,7 +65,7 @@ public class CutiKuotaQueryRepository {
                 .orderBy(sortOrder)
                 .limit(sizeOrDefault)
                 .offset(pageNumber * sizeOrDefault)
-                .fetch(record -> mapToResponse(record));
+                .fetch(record -> CutiKuotaJooqMapper.mapToResponse(record));
                 
         Page<CutiKuotaResponse> page = new PageImpl<>(data, PageRequest.of(pageNumber, sizeOrDefault), count);
         if (page.isEmpty()) return null;
@@ -95,7 +95,7 @@ public class CutiKuotaQueryRepository {
                 .where(CUTI_KUOTA.PEGAWAI_ID.in(pegawaiIdList)
                         .and(CUTI_KUOTA.TAHUN.eq(query.getTahun() - 1))
                         .and(CUTI_KUOTA.IS_DELETED.eq(false)))
-                .fetch(record -> mapToResponse(record));
+                .fetch(record -> CutiKuotaJooqMapper.mapToResponse(record));
                 
         return CutiKuotaPegawaiResponse.builder()
                 .page(page)
@@ -125,7 +125,7 @@ public class CutiKuotaQueryRepository {
                 .leftJoin(JABATAN).on(PEGAWAI.JABATAN_ID.eq(JABATAN.ID))
                 .leftJoin(ORGANISASI).on(PEGAWAI.ORGANISASI_ID.eq(ORGANISASI.ID))
                 .where(CUTI_KUOTA.ID.eq(id).and(CUTI_KUOTA.IS_DELETED.eq(false)))
-                .fetchOne(record -> mapToResponse(record));
+                .fetchOne(record -> CutiKuotaJooqMapper.mapToResponse(record));
     }
 
     public CutiKuotaSisa findByPegawai(Long pegawaiId, Integer tahun) {
@@ -177,32 +177,5 @@ public class CutiKuotaQueryRepository {
             cond = cond.and(CUTI_KUOTA.EXPIRED.eq(q.getExpired()));
         }
         return cond;
-    }
-
-    private CutiKuotaResponse mapToResponse(org.jooq.Record record) {
-        CutiKuotaResponse res = new CutiKuotaResponse();
-        res.setId(record.get(CUTI_KUOTA.ID));
-        res.setTahun(record.get(CUTI_KUOTA.TAHUN));
-        res.setKuota(record.get(CUTI_KUOTA.KUOTA));
-        res.setKuotaTerpakai(record.get(CUTI_KUOTA.KUOTA_TERPAKAI));
-        res.setKuotaTambahan(record.get(CUTI_KUOTA.KUOTA_TAMBAHAN));
-        res.setSisaKuota(record.get(CUTI_KUOTA.SISA_KUOTA));
-        res.setExpired(record.get(CUTI_KUOTA.EXPIRED));
-        
-        if (record.get("pegawai_id") != null) {
-            PegawaiMiniResponse peg = new PegawaiMiniResponse();
-            peg.setId((Long) record.get("pegawai_id"));
-            peg.setNipam((String) record.get("pegawai_nipam"));
-            peg.setNama((String) record.get("pegawai_nama"));
-            
-            Object statusObj = record.get("pegawai_status");
-            if (statusObj != null) {
-                peg.setStatusPegawai(statusObj.toString());
-            }
-            peg.setJabatan((String) record.get("pegawai_jabatan"));
-            peg.setOrganisasi((String) record.get("pegawai_organisasi"));
-            res.setPegawai(peg);
-        }
-        return res;
     }
 }

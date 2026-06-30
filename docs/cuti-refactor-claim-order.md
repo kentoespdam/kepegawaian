@@ -13,11 +13,11 @@
 
 | Phase | Issue | Title | Status | Cmd |
 |-------|-------|-------|--------|-----|
-| **1** | `kepegawaian-scn` | SaveCutiService split | READY | `bd update kepegawaian-scn --claim` |
-| **1** | `kepegawaian-sqf` | JOOQ mapper extraction | READY | `bd update kepegawaian-sqf --claim` |
-| **1** | `kepegawaian-39o` | Validator split | READY | `bd update kepegawaian-39o --claim` |
-| **2** | `kepegawaian-hit` | PengajuanCutiCommand classifier | BLOCKED | — |
-| **2** | `kepegawaian-rq2` | KlaimCutiCommand settlement | BLOCKED | — |
+| **1** | `kepegawaian-scn` | SaveCutiService split | ✓ CLOSED | — |
+| **1** | `kepegawaian-sqf` | JOOQ mapper extraction | ✓ CLOSED | — |
+| **1** | `kepegawaian-39o` | Validator split | ✓ CLOSED | — |
+| **2** | `kepegawaian-hit` | PengajuanCutiCommand classifier | READY | `bd update kepegawaian-hit --claim` |
+| **2** | `kepegawaian-rq2` | KlaimCutiCommand settlement | READY | `bd update kepegawaian-rq2 --claim` |
 | **3** | `kepegawaian-llq` | ApprovalCutiCommand lifecycle | READY | `bd update kepegawaian-llq --claim` |
 
 ---
@@ -56,21 +56,21 @@ kepegawaian-y7u (Epic: 120-line enforcement)
 | | |
 |---|---|
 | **Goal** | Split `SaveCutiService` (262→<120 lines) → 5 period handlers + classifier |
-| **Status** | ○ OPEN |
+| **Status** | ✓ CLOSED |
 | **Depends** | — |
 
 **Pre:**
-- [ ] `gitnexus_impact({target: "SaveCutiService", direction: "upstream"})`
+- [x] `gitnexus_impact({target: "SaveCutiService", direction: "upstream"})`
 
 **Extract:**
-- [ ] `helpers/cuti/CutiPeriodClassifier.java` — `final` class, static `classify()`
-- [ ] `entities/commons/ECutiPeriod.java` — enum
-- [ ] 5 handlers in `services/cuti/handlers/` | Factory via `switch(period)`
-- [ ] REFACTOR `SaveCutiService` — shared logic stays, period logic delegated
+- [x] `helpers/cuti/CutiPeriodClassifier.java` — `final` class, static `classify()`
+- [x] `entities/commons/ECutiPeriod.java` — enum
+- [x] 5 handlers in `services/cuti/handlers/` | Factory via `switch(period)`
+- [x] REFACTOR `SaveCutiService` — shared logic stays, period logic delegated
 
 **Verify & Ship:**
-- [ ] `wc -l SaveCutiService.java` <120 | `./gradlew clean build && test`
-- [ ] `gitnexus_detect_changes()` → commit → `bd close kepegawaian-scn`
+- [x] `wc -l SaveCutiService.java` <120 | `./gradlew clean build && test`
+- [x] `gitnexus_detect_changes()` → commit → `bd close kepegawaian-scn`
 
 ---
 
@@ -79,20 +79,20 @@ kepegawaian-y7u (Epic: 120-line enforcement)
 | | |
 |---|---|
 | **Goal** | Extract JOOQ mappers from 3 query repos → Pola B classes |
-| **Status** | ○ OPEN |
+| **Status** | ✓ CLOSED |
 | **Depends** | — |
 
 **Pre:**
-- [ ] `gitnexus_impact` on all 3 query repos
+- [x] `gitnexus_impact` on all 3 query repos
 
 **Extract:**
-- [ ] `mapper/cuti/CutiPengajuanJooqMapper.java` — `final`, private ctor, static methods
-- [ ] `mapper/cuti/CutiKuotaJooqMapper.java` — `mapToResponse(Record)`
-- [ ] `mapper/cuti/CutiJenisJooqMapper.java` — replace 3 inline lambdas
+- [x] `mapper/cuti/CutiPengajuanJooqMapper.java` — `final`, private ctor, static methods
+- [x] `mapper/cuti/CutiKuotaJooqMapper.java` — `mapToResponse(Record)`
+- [x] `mapper/cuti/CutiJenisJooqMapper.java` — replace 3 inline lambdas
 
 **Verify & Ship:**
-- [ ] Query repos ≤257 / ≤182 / ≤107 lines | `./gradlew clean build`
-- [ ] `gitnexus_detect_changes()` → commit → `bd close kepegawaian-sqf`
+- [x] Query repos ≤257 / ≤182 / ≤107 lines | `./gradlew clean build`
+- [x] `gitnexus_detect_changes()` → commit → `bd close kepegawaian-sqf`
 
 ---
 
@@ -101,20 +101,20 @@ kepegawaian-y7u (Epic: 120-line enforcement)
 | | |
 |---|---|
 | **Goal** | Split `CutiPengajuanValidator` (123→<70×2 lines) |
-| **Status** | ○ OPEN |
+| **Status** | ✓ CLOSED |
 | **Depends** | — |
 
 **Pre:**
-- [ ] `gitnexus_impact({target: "CutiPengajuanValidator", direction: "upstream"})`
+- [x] `gitnexus_impact({target: "CutiPengajuanValidator", direction: "upstream"})`
 
 **Split:**
-- [ ] KEEP `CutiPengajuanValidator` — `validate(Pengajuan)` (~59 lines)
-- [ ] NEW `services/cuti/klaim/CutiKlaimValidator.java` — `validateKlaim()` (~36 lines)
-- [ ] UPDATE `KlaimCutiCommand` — inject new validator
+- [x] KEEP `CutiPengajuanValidator` — `validate(Pengajuan)` (~59 lines)
+- [x] NEW `services/cuti/klaim/CutiKlaimValidator.java` — `validateKlaim()` (~36 lines)
+- [x] UPDATE `KlaimCutiCommand` — inject new validator
 
 **Verify & Ship:**
-- [ ] Both <70 lines | `./gradlew clean build`
-- [ ] `gitnexus_detect_changes()` → commit → `bd close kepegawaian-39o`
+- [x] Both <70 lines | `./gradlew clean build`
+- [x] `gitnexus_detect_changes()` → commit → `bd close kepegawaian-39o`
 
 ---
 

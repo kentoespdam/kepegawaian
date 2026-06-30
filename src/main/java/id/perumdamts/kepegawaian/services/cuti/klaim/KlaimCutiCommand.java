@@ -22,7 +22,7 @@ import id.perumdamts.kepegawaian.repositories.cuti.CutiPegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.HariLiburRepository;
 import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
 import id.perumdamts.kepegawaian.services.cuti.approvalChain.CutiApprovalChainService;
-import id.perumdamts.kepegawaian.services.cuti.pengajuan.CutiPengajuanValidator;
+import id.perumdamts.kepegawaian.services.cuti.klaim.CutiKlaimValidator;
 import id.perumdamts.kepegawaian.helpers.cuti.MinimalCutiRule;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,7 +37,7 @@ import java.util.List;
 public class KlaimCutiCommand {
     private final RedisHelper redisHelper;
     private final CutiPegawaiRepository cutiPegawaiRepository;
-    private final CutiPengajuanValidator cutiPengajuanValidator;
+    private final CutiKlaimValidator cutiKlaimValidator;
     private final HariLiburRepository hariLiburRepository;
     private final CutiKlaimDetailRepository cutiKlaimDetailRepository;
     private final CutiApprovalChainRepository cutiApprovalChainRepository;
@@ -51,7 +51,7 @@ public class KlaimCutiCommand {
 
     @Transactional
     public SavedStatus<?> save(CutiPengajuanKlaimPostRequest request) {
-        CutiPegawai validCutiPegawai = cutiPengajuanValidator.validateKlaim(request);
+        CutiPegawai validCutiPegawai = cutiKlaimValidator.validateKlaim(request);
         CutiPegawai entity = CutiPengajuanKlaimPostRequest.toEntity(validCutiPegawai, request);
 
         Jabatan spvSDM = new Jabatan(supervisorSdm);
