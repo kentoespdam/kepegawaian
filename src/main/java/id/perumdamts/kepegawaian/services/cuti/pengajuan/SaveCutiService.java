@@ -1,6 +1,6 @@
 package id.perumdamts.kepegawaian.services.cuti.pengajuan;
 
-import id.perumdamts.kepegawaian.config.DefConfig;
+import id.perumdamts.kepegawaian.config.CutiProperties;
 import id.perumdamts.kepegawaian.dto.cuti.kuota.SisaCutiRecord;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPostRequest;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
@@ -11,7 +11,6 @@ import id.perumdamts.kepegawaian.repositories.cuti.CutiPegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.HariLiburRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JabatanRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -24,13 +23,7 @@ public class SaveCutiService {
     private final CutiKuotaRepository cutiKuotaRepository;
     private final HariLiburRepository hariLiburRepository;
     private final JabatanRepository jabatanRepository;
-    private final DefConfig defConfig;
-
-    @Value("${custom.levelJabatan.manager}")
-    private Long levelManager;
-
-    @Value("${custom.jabatan.supervisorSdm}")
-    private Long supervisorSdmId;
+    private final CutiProperties cutiProperties;
 
     /**
      * Pengajuan cuti untuk tahun depan.
@@ -278,7 +271,7 @@ public class SaveCutiService {
         // validasi minimal cuti
         validatePengajuanCutiService.validateMinimalCuti(totalHariCuti, totalRemainingQuota);
 
-        if (request.getJenisCutiId().equals(defConfig.getJenisCutiIbadah())) {
+        if (request.getJenisCutiId().equals(cutiProperties.getJenisCutiIbadah())) {
             entity.setKuotaAkhir(totalRemainingQuota - currentKuota);
             entity.setRiwayatPakai1(currentKuota);
             entity.setRiwayatKuota0(prevKuota);
@@ -416,10 +409,10 @@ public class SaveCutiService {
         Jabatan jabatan = cutiPegawai.getPegawai().getJabatan();
 
         // If the employee is a manager, set the PIC to the supervisor of the SDM department
-        if (jabatan.getLevel().getId().equals(levelManager)) {
+        if (jabatan.getLevel().getId().equals(cutiProperties.getLevelManager())) {
             // Find the supervisor of the SDM department
             // Set the PIC of the cuti to the supervisor of the SDM department
-            jabatanRepository.findById(supervisorSdmId).ifPresent(cutiPegawai::setPicSaatIni);
+            jabatanRepository.findById(cutiProperties.getSupervisorSdm()).ifPresent(cutiPegawai::setPicSaatIni);
         } else {
             // Set the PIC of the cuti to the parent of the employee's job title
             cutiPegawai.setPicSaatIni(jabatan.getParent());

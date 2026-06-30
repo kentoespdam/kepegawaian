@@ -1,6 +1,6 @@
 package id.perumdamts.kepegawaian.services.cuti.pengajuan;
 
-import id.perumdamts.kepegawaian.config.DefConfig;
+import id.perumdamts.kepegawaian.config.CutiProperties;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.*;
@@ -33,7 +33,7 @@ import java.util.Optional;
 public class CutiPengajuanServiceImpl implements CutiPengajuanService {
     private final RedisHelper redisHelper;
     private final CutiPegawaiRepository repository;
-    private final DefConfig defConfig;
+    private final CutiProperties cutiProperties;
     private final SaveCutiService saveCutiService;
     private final HariLiburRepository hariLiburRepository;
     private final PegawaiRepository pegawaiRepository;
@@ -90,7 +90,7 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
             entity.setJumlahHariKerja(totalHariCuti);
 
             // CUTI TAHUNAN
-            if (request.getJenisCutiId().equals(defConfig.getJenisCutiTahunan())) {
+            if (request.getJenisCutiId().equals(cutiProperties.getJenisCutiTahunan())) {
                 CutiPegawai cutiPegawai;
                 if (startYear > nowYear && endYear > nowYear) {
                     // pengajuan cuti tahunan untuk tahun depan
@@ -170,7 +170,7 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
             entity.setJumlahHariKerja(totalHariCuti);
 
             // CUTI TAHUNAN
-            if (request.getJenisCutiId().equals(defConfig.getJenisCutiTahunan())) {
+            if (request.getJenisCutiId().equals(cutiProperties.getJenisCutiTahunan())) {
                 if (startYear > nowYear && endYear > nowYear) {
                     // update cuti tahunan untuk tahun depan
                     saveCutiService.forNextYear(request, entity);

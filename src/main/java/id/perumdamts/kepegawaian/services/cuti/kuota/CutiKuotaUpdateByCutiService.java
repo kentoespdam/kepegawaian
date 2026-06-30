@@ -1,10 +1,10 @@
 package id.perumdamts.kepegawaian.services.cuti.kuota;
 
+import id.perumdamts.kepegawaian.config.CutiProperties;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import id.perumdamts.kepegawaian.helpers.DateHelper;
 import id.perumdamts.kepegawaian.repositories.cuti.CutiKuotaRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -13,9 +13,7 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class CutiKuotaUpdateByCutiService {
     private final CutiKuotaRepository repository;
-
-    @Value("${custom.jenisCuti.tahunan}")
-    private Long jenisCutiTahunan;
+    private final CutiProperties cutiProperties;
 
     /**
      * Update the leave quota of the employee in the database.
@@ -41,7 +39,7 @@ public class CutiKuotaUpdateByCutiService {
         int startYear = tanggalMulai.getYear();
         int endYear = tanggalSelesai.getYear();
 
-        if (cutiPegawai.getJenisCuti().getId().equals(jenisCutiTahunan)) {
+        if (cutiPegawai.getJenisCuti().getId().equals(cutiProperties.getJenisCutiTahunan())) {
             if (startYear > currentYear && endYear > currentYear) {
                 int previousYear = startYear - 1;
                 doUpdateKuota(cutiPegawai, previousYear, endYear);

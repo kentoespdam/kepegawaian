@@ -7,20 +7,20 @@
 
 | Order | Fase                                  | Keputusan | State when you start                | Catatan                                  |
 |-------|---------------------------------------|-----------|-------------------------------------|------------------------------------------|
-| 0     | Pra-implementasi (setup)              | —         | READY                               | Bikin epic + child issues beads dulu     |
-| 1     | `CutiProperties` (config)             | #2        | READY                               | Fondasi — dipakai semua fase             |
-| 2     | Fungsi murni (Workday + MinimalCuti)  | #14, #12  | READY (paralel fase 1)              | Tanpa Spring/DB, unit-test dulu          |
-| 3     | DTO Jenis konsolidasi + mini-proj     | #15, #3   | READY                               | Buang `JenisCuti{Mini,}Response` duplikat |
-| 4     | CutiJenis CRUD (non-akar)             | #11, #15  | BLOCKED → after #1,#3               | Mirror master, flat CRUD                 |
-| 5     | CutiKuota CRUD + Excel POI            | #11       | BLOCKED → after #1,#3               | Import/template tetap di Command         |
-| 6     | Read-side JOOQ (Pengajuan/Inbox)      | #3, #15   | BLOCKED → after #3                  | mini-projection, `refCuti` self-join     |
-| 7     | Validator pengajuan + klaim           | #12       | BLOCKED → after #1,#2               | `existsBy` eksplisit, `CutiProperties`   |
-| 8     | Chain generator (approval chain)      | #4        | BLOCKED → after #1                  | data-driven, `existsByJabatanId` konsisten |
-| 9     | Quota allocator (reservasi)           | #5        | BLOCKED → after #2,#5(kuota)        | allocator murni, feed `jumlahHariKerja`  |
-| 10    | Pengajuan Command (save/update/batal) | #1,#6,#8,#9 | BLOCKED → after #4,#7,#8,#9       | entry `@Transactional` tunggal           |
-| 11    | Approval Command (state-machine)      | #6        | BLOCKED → after #8,#9               | tak telan exception (ADR-0021)           |
-| 12    | Klaim Command + allocator klaim 1:1   | #16, #10  | BLOCKED → after #11                 | port 1:1, bug dilacak (lihat di bawah)   |
-| 13    | Controllers (4, URL persis)           | #13       | BLOCKED → after semua Command/Query | buang `CutiController` kosong            |
+| 0     | Pra-implementasi (setup)              | —         | kepegawaian-is7                     | Bikin epic + child issues beads dulu     |
+| 1     | `CutiProperties` (config)             | #2        | kepegawaian-is7.1                   | Fondasi — dipakai semua fase             |
+| 2     | Fungsi murni (Workday + MinimalCuti)  | #14, #12  | kepegawaian-is7.2                   | Tanpa Spring/DB, unit-test dulu          |
+| 3     | DTO Jenis konsolidasi + mini-proj     | #15, #3   | kepegawaian-is7.3                   | Buang `JenisCuti{Mini,}Response` duplikat |
+| 4     | CutiJenis CRUD (non-akar)             | #11, #15  | kepegawaian-is7.4                   | Mirror master, flat CRUD                 |
+| 5     | CutiKuota CRUD + Excel POI            | #11       | kepegawaian-is7.5                   | Import/template tetap di Command         |
+| 6     | Read-side JOOQ (Pengajuan/Inbox)      | #3, #15   | kepegawaian-is7.6                   | mini-projection, `refCuti` self-join     |
+| 7     | Validator pengajuan + klaim           | #12       | kepegawaian-is7.7                   | `existsBy` eksplisit, `CutiProperties`   |
+| 8     | Chain generator (approval chain)      | #4        | kepegawaian-is7.8                   | data-driven, `existsByJabatanId` konsisten |
+| 9     | Quota allocator (reservasi)           | #5        | kepegawaian-is7.9                   | allocator murni, feed `jumlahHariKerja`  |
+| 10    | Pengajuan Command (save/update/batal) | #1,#6,#8,#9 | kepegawaian-is7.10                | entry `@Transactional` tunggal           |
+| 11    | Approval Command (state-machine)      | #6        | kepegawaian-is7.11                  | tak telan exception (ADR-0021)           |
+| 12    | Klaim Command + allocator klaim 1:1   | #16, #10  | kepegawaian-is7.12                  | port 1:1, bug dilacak (lihat di bawah)   |
+| 13    | Controllers (4, URL persis)           | #13       | kepegawaian-is7.13                  | buang `CutiController` kosong            |
 
 **Bug issue terkait (JANGAN diperbaiki inline — preserve & track):**
 `kepegawaian-ebt` (#10 now() cross-year), `kepegawaian-ciw` (#16 forNextYear −1),

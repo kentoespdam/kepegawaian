@@ -130,5 +130,15 @@ app:
   pegawai:
     excluded-jabatan-ids: 1,2,3,25
     excluded-golongan-statuses: KONTRAK,CALON_HONORER,HONORER
+  cuti:
+    jenis-cuti-tahunan: ${JENIS_CUTI_TAHUNAN:1}
+    jenis-cuti-besar: ${JENIS_CUTI_BESAR:2}
+    jenis-cuti-ibadah: ${JENIS_CUTI_IBADAH:4}
+    supervisor-sdm: ${JABATAN_SUPERVISOR_SDM:49}
+    manager-sdm: ${JABATAN_MANAGER_SDM:48}
+    direktur-utama: ${JABATAN_DIREKTUR_UTAMA:2}
+    direktur-umum: ${JABATAN_DIREKTUR_UMUM:25}
+    level-supervisor: ${LEVEL_SUPERVISOR:6}
+    level-manager: ${LEVEL_MANAGER:5}
 
 

@@ -1,6 +1,6 @@
 package id.perumdamts.kepegawaian.services.cuti.pengajuan;
 
-import id.perumdamts.kepegawaian.config.DefConfig;
+import id.perumdamts.kepegawaian.config.CutiProperties;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanKlaimPostRequest;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPostRequest;
 import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ValidatePengajuanCutiService {
     private final CutiPegawaiRepository repository;
-    private final DefConfig defConfig;
+    private final CutiProperties cutiProperties;
 
     /**
      * Validate the leave request. This validation is done to check if the employee
@@ -32,12 +32,12 @@ public class ValidatePengajuanCutiService {
             throw new RuntimeException("Masih ada pengajuan cuti yang belum diapprove");
         }
         // Check if the employee has taken a long leave
-        boolean existBesar = repository.exists(request.getSpecificationByJenisCuti(defConfig.getJenisCutiBesar(), request.getTanggalMulai()));
+        boolean existBesar = repository.exists(request.getSpecificationByJenisCuti(cutiProperties.getJenisCutiBesar(), request.getTanggalMulai()));
         if (existBesar) {
             throw new RuntimeException("Anda tidak berhak cuti tahunan karena telah mengambil cuti besar");
         }
         // Check if the employee has taken a leave for performing a religious obligation
-        boolean existIbadah = repository.exists(request.getSpecificationByJenisCuti(defConfig.getJenisCutiIbadah()));
+        boolean existIbadah = repository.exists(request.getSpecificationByJenisCuti(cutiProperties.getJenisCutiIbadah()));
         if (existIbadah) {
             throw new RuntimeException("Anda tidak berhak cuti tahunan karena telah mengambil cuti melaksanakan ibadah");
         }
@@ -84,7 +84,7 @@ public class ValidatePengajuanCutiService {
                 request.getRefCutiId(), EApprovalCutiStatus.APPROVED
         ).orElseThrow(() -> new RuntimeException("Unknown Cuti Pegawai"));
 
-        if (!List.of(defConfig.getJenisCutiTahunan(), defConfig.getJenisCutiIbadah()).contains(cutiPegawai.getJenisCuti().getId()))
+        if (!List.of(cutiProperties.getJenisCutiTahunan(), cutiProperties.getJenisCutiIbadah()).contains(cutiPegawai.getJenisCuti().getId()))
             throw new RuntimeException("Cuti ini tidak perlu di klaim");
 
         // cek apakah pengajuan klaim cuti ini sudah ada
@@ -96,7 +96,7 @@ public class ValidatePengajuanCutiService {
         // cek apakah ada cuti melaksanakan ibadah yang masih berlangsung atau belum disetujui
         boolean existCutiIbadah = repository.existsByPegawai_IdAndJenisCuti_IdAndApprovalCutiStatusIn(
                 request.getPegawaiId(),
-                defConfig.getJenisCutiIbadah(),
+                cutiProperties.getJenisCutiIbadah(),
                 List.of(EApprovalCutiStatus.PENDING, EApprovalCutiStatus.RETURNED)
         );
         if (existCutiIbadah) {
