@@ -39,6 +39,7 @@ public class CutiApprovalServiceImpl implements CutiApprovalService {
     private final PegawaiRepository pegawaiRepository;
     private final CutiKuotaUpdateByCutiService cutiKuotaUpdateByCutiService;
     private final CutiApproveKlaimCutiService cutiApproveKlaimCutiService;
+    private final ApprovalCutiCommand approvalCutiCommand;
 
 
     /**
@@ -76,135 +77,10 @@ public class CutiApprovalServiceImpl implements CutiApprovalService {
     @Override
     public SavedStatus<?> savePengajuan(CutiApprovalPostRequest request) {
         try {
-            // Validate CSRF token
-            if (redisHelper.validateToken(request.getCsrfToken())) {
-                throw new RuntimeException("Duplicate request detected");
-            }
-
-            // Validate leave request existence and status
-            CutiPegawai leaveRequest = cutiPegawaiRepository
-                    .findByIdAndApprovalCutiStatusIn(request.getCutiId(), List.of(EApprovalCutiStatus.PENDING, EApprovalCutiStatus.RETURNED))
-                    .orElseThrow(() -> new RuntimeException("Unknown Cuti Pegawai"));
-
-            // Validate approver existence
-            Pegawai approver = pegawaiRepository.findById(request.getApproverId())
-                    .orElseThrow(() -> new RuntimeException("Unknown Approver Pegawai"));
-
-            // Validate approver's jabatan
-            Long approverJabatanId = approver.getJabatan().getId();
-            Long currentPicJabatanId = leaveRequest.getPicSaatIni().getId();
-            if (!approverJabatanId.equals(currentPicJabatanId)) {
-                throw new RuntimeException("You are not allowed to approve this leave request");
-            }
-
-            // Create new cuti approval entity
-            CutiApproval approvalEntity = CutiApprovalPostRequest.toEntity(request, leaveRequest, approver);
-
-            // Handle approval status
-            switch (request.getApprovalStatus()) {
-                case APPROVED, RETURNED -> doSaveAcceptReject(approvalEntity, leaveRequest);
-                case REJECTED -> rejectCutiPegawai(approvalEntity, leaveRequest);
-                default -> throw new RuntimeException("Unknown Approval Status");
-            }
-
-            // Return success status
-            return SavedStatus.build(ESaveStatus.SUCCESS, "Persetujuan Cuti Berhasil Disimpan");
+            return approvalCutiCommand.savePengajuan(request);
         } catch (Exception e) {
-            // Return failure status with error message
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
         }
-    }
-
-    /**
-     * Processes the acceptance or rejection of a leave request.
-     * <p>
-     * Updates the current approval chain based on the approval status
-     * of the given {@link CutiApproval}. Adjusts the read/write status and approval
-     * level of the current and next chains (if applicable). If the leave request is
-     * approved, it progresses to the next approval level. If rejected, it reverses
-     * to the previous level. Saves the updated entities to their respective repositories.
-     *
-     * @param cutiApproval the {@link CutiApproval} entity containing the approval status
-     * @param cutiPegawai  the {@link CutiPegawai} entity associated with the leave request
-     * @throws RuntimeException if there is no current writable approval chain
-     */
-    private void doSaveAcceptReject(CutiApproval cutiApproval, CutiPegawai cutiPegawai) {
-        // Retrieve all approval chains associated with the leave request
-        List<CutiApprovalChain> approvalChains = cutiApprovalChainRepository.findByRefCuti_Id(cutiPegawai.getId());
-
-        // Find the current writable approval chain
-        CutiApprovalChain currentChain = approvalChains.stream()
-                .filter(chain -> chain.getReadWriteStatus() == EReadWriteStatus.WRITE)
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Writable approval chain not found"));
-
-        // Determine the next approval level based on the approval status
-        int currentLevel = currentChain.getApprovalLevel();
-        int nextLevel = cutiApproval.getApprovalStatus().equals(EApprovalCutiStatus.APPROVED) ?
-                currentLevel + 1 : currentLevel - 1;
-
-        // Attempt to find the next approval chain
-        Optional<CutiApprovalChain> nextChainOpt = approvalChains.stream()
-                .filter(chain -> chain.getApprovalLevel() == nextLevel)
-                .findFirst();
-
-        if (nextChainOpt.isPresent()) {
-            // If a next chain exists, update the current chain and transition to the next chain
-            currentChain.setApprovalStatus(cutiApproval.getApprovalStatus());
-            currentChain.setReadWriteStatus(EReadWriteStatus.READ);
-
-            CutiApprovalChain nextChain = nextChainOpt.get();
-            nextChain.setReadWriteStatus(EReadWriteStatus.WRITE);
-            cutiPegawai.setApprovalLevel(nextChain.getApprovalLevel());
-            cutiPegawai.setPicSaatIni(new Jabatan(nextChain.getJabatanId()));
-
-            // Save the updated entities
-            repository.save(cutiApproval);
-            cutiPegawaiRepository.save(cutiPegawai);
-            cutiApprovalChainRepository.save(currentChain);
-            cutiApprovalChainRepository.save(nextChain);
-        } else {
-            // If no next chain exists, finalize the current chain and update the leave request status
-            currentChain.setApprovalStatus(cutiApproval.getApprovalStatus());
-            currentChain.setReadWriteStatus(EReadWriteStatus.READ);
-            cutiPegawai.setApprovalCutiStatus(cutiApproval.getApprovalStatus());
-
-            // Save the updated entities and update leave quotas
-            repository.save(cutiApproval);
-            cutiPegawaiRepository.save(cutiPegawai);
-            cutiApprovalChainRepository.save(currentChain);
-            cutiKuotaUpdateByCutiService.updateKuota(cutiPegawai);
-        }
-    }
-
-
-    /**
-     * Rejects a cuti pegawai.
-     * This method updates the status of the cuti pegawai to REJECTED. It also
-     * updates the approval level and the current position in charge (pic saat ini)
-     * to reflect the rejection.
-     *
-     * @param cutiApproval The cuti approval entity containing the rejection details.
-     * @param cutiPegawai  The cuti pegawai entity that is being rejected.
-     */
-    private void rejectCutiPegawai(CutiApproval cutiApproval, CutiPegawai cutiPegawai) {
-        // Update the approval status of the leave request to the status from the rejection details
-        cutiPegawai.setApprovalCutiStatus(cutiApproval.getApprovalStatus());
-
-        // Set the approval level to the level from the rejection details
-        cutiPegawai.setApprovalLevel(cutiApproval.getApprovalLevel());
-
-        // Update the current position in charge to the position of the approver who rejected
-        cutiPegawai.setPicSaatIni(new Jabatan(cutiApproval.getJabatan().getId()));
-
-        // Save the updated cuti approval and cuti pegawai entities to the database
-        repository.save(cutiApproval);
-        cutiPegawaiRepository.save(cutiPegawai);
-        cutiApprovalChainRepository.findByRefCutiIdAndJabatanId(cutiPegawai.getId(), cutiApproval.getJabatan().getId())
-                .ifPresent(chain -> {
-                    chain.setReadWriteStatus(EReadWriteStatus.READ);
-                    cutiApprovalChainRepository.save(chain);
-                });
     }
 
     public SavedStatus<?> saveKlaim(CutiApprovalPostRequest request) {

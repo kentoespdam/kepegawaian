@@ -34,7 +34,7 @@
 - [x] `git status` clean; di branch `rewrite/master-cqrs`
 - [x] `npx gitnexus analyze` bila index stale (cek warning hook)
 - [x] Baca exemplar files yang akan ditiru (tercantum per fase)
-- [x] `bd update kepegawaian-is7.10 --claim` issue yang dimulai
+- [x] `bd update kepegawaian-is7.11 --claim` issue yang dimulai
 
 ---
 
@@ -247,16 +247,16 @@
 
 **Goal:** `ApprovalCutiCommand.savePengajuan` — advance/retreat chain pointer (APPROVED→level+1, REJECTED→level−1), finalisasi panggil deduksi kuota. Tak menelan exception.
 
-- [ ] NEW `services/cuti/approval/ApprovalCutiCommand.java`
-  - [ ] validasi approver = `picSaatIni` **via `.getId()`** (konsisten)
-  - [ ] `doSaveAcceptReject` — temukan WRITE chain, advance/retreat, set pointer, finalisasi → `cutiKuotaUpdateByCutiService.updateKuota`
-  - [ ] `rejectCutiPegawai` — set REJECTED, mundurkan chain
-  - [ ] CSRF token check (Keputusan #7)
-- [ ] **TIDAK** ada exception-swallowing (ADR-0021) — perbaikan ini in-scope (beda dari math klaim #16)
+- [x] NEW `services/cuti/approval/ApprovalCutiCommand.java`
+  - [x] validasi approver = `picSaatIni` **via `.getId()`** (konsisten)
+  - [x] `doSaveAcceptReject` — temukan WRITE chain, advance/retreat, set pointer, finalisasi → `cutiKuotaUpdateByCutiService.updateKuota`
+  - [x] `rejectCutiPegawai` — set REJECTED, mundurkan chain
+  - [x] CSRF token check (Keputusan #7)
+- [x] **TIDAK** ada exception-swallowing (ADR-0021) — perbaikan ini in-scope (beda dari math klaim #16)
 
 ### Acceptance
-- [ ] Pointer chain benar saat APPROVED/REJECTED/RETURNED
-- [ ] `./gradlew build` → SUCCESSFUL
+- [x] Pointer chain benar saat APPROVED/REJECTED/RETURNED
+- [x] `./gradlew build` → SUCCESSFUL
 
 ---
 
