@@ -80,7 +80,7 @@ public class KlaimCutiCommand {
 
     @Transactional
     public SavedStatus<?> saveKlaim(CutiApprovalPostRequest request) {
-        if (redisHelper.validateToken(request.getCsrfToken())) {
+        if (redisHelper.isTokenAlreadyUsed(request.getCsrfToken())) {
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Duplicate request detected");
         }
 

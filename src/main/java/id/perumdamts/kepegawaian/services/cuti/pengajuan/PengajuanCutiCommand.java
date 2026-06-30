@@ -41,7 +41,7 @@ public class PengajuanCutiCommand {
 
     @Transactional
     public SavedStatus<?> save(CutiPengajuanPostRequest request) {
-        if (redisHelper.validateToken(request.getCsrfToken())) {
+        if (redisHelper.isTokenAlreadyUsed(request.getCsrfToken())) {
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Duplicate request detected");
         }
         cutiPengajuanValidator.validate(request);
@@ -77,7 +77,7 @@ public class PengajuanCutiCommand {
 
     @Transactional
     public SavedStatus<?> update(Long id, CutiPengajuanPutRequest request) {
-        if (redisHelper.validateToken(request.getCsrfToken())) {
+        if (redisHelper.isTokenAlreadyUsed(request.getCsrfToken())) {
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Duplicate request detected");
         }
         var cutiPegawai = repository.findById(id).orElseThrow(() -> new RuntimeException("Unknown Cuti Pengajuan"));

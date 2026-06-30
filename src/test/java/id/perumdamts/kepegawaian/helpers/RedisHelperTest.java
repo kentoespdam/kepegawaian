@@ -38,10 +38,10 @@ class RedisHelperTest {
         assertEquals(token, redisToken);
 
         // First validation should be successful (returns false, meaning NOT duplicate)
-        assertFalse(redisHelper.validateToken(token));
+        assertFalse(redisHelper.isTokenAlreadyUsed(token));
 
         // Second validation should detect a duplicate/invalid token (returns true)
-        assertTrue(redisHelper.validateToken(token));
+        assertTrue(redisHelper.isTokenAlreadyUsed(token));
 
         // Verify token is indeed removed from Redis
         assertNull(redisTemplate.opsForValue().get(token));

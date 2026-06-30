@@ -18,7 +18,7 @@
 | **1** | `kepegawaian-39o` | Validator split | ✓ CLOSED | — |
 | **2** | `kepegawaian-hit` | PengajuanCutiCommand classifier | ✓ CLOSED | — |
 | **2** | `kepegawaian-rq2` | KlaimCutiCommand settlement | ✓ CLOSED | — |
-| **3** | `kepegawaian-llq` | ApprovalCutiCommand lifecycle | READY | `bd update kepegawaian-llq --claim` |
+| **3** | `kepegawaian-llq` | ApprovalCutiCommand lifecycle | ✓ CLOSED | — |
 
 ---
 
@@ -167,20 +167,20 @@ kepegawaian-y7u (Epic: 120-line enforcement)
 | | |
 |---|---|
 | **Goal** | ADR-0021 lifecycle cleanup `ApprovalCutiCommand` (121→~105 lines) |
-| **Status** | ○ OPEN |
+| **Status** | ✓ CLOSED |
 | **Depends** | Phase 1 complete |
 
 **Pre:**
-- [ ] `gitnexus_impact({target: "ApprovalCutiCommand", direction: "upstream"})`
+- [x] `gitnexus_impact({target: "ApprovalCutiCommand", direction: "upstream"})`
 
 **Refactor:**
-- [ ] REMOVE 5 redundant `save()` MANAGED | KEEP 3 `save()` NEW
-- [ ] EXTRACT `advanceChainPointer()` + `terminateChain()` helpers
-- [ ] RENAME `validateToken()` → `isTokenAlreadyUsed()`
+- [x] REMOVE 5 redundant `save()` MANAGED | KEEP 3 `save()` NEW
+- [x] EXTRACT `advanceChainPointer()` + `terminateChain()` helpers
+- [x] RENAME `validateToken()` → `isTokenAlreadyUsed()`
 
 **Verify & Ship:**
-- [ ] `~105 lines` | `./gradlew clean build`
-- [ ] `gitnexus_detect_changes()` → commit → `bd close kepegawaian-llq`
+- [x] `~105 lines` | `./gradlew clean build`
+- [x] `gitnexus_detect_changes()` → commit → `bd close kepegawaian-llq`
 
 ---
 

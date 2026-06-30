@@ -24,7 +24,7 @@ public class RedisHelper {
         return token;
     }
 
-    public Boolean validateToken(String token) {
+    public Boolean isTokenAlreadyUsed(String token) {
         if (token == null) {
             return true;
         }

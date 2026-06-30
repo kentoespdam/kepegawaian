@@ -91,7 +91,7 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
      */
     @Override
     public SavedStatus<?> klaim(CutiPengajuanKlaimPostRequest request) {
-        if (redisHelper.validateToken(request.getCsrfToken())) {
+        if (redisHelper.isTokenAlreadyUsed(request.getCsrfToken())) {
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Duplicate request detected");
         }
         try {
@@ -103,7 +103,7 @@ public class CutiPengajuanServiceImpl implements CutiPengajuanService {
 
     @Override
     public SavedStatus<?> updateKlaim(Long id, CutiPengajuanKlaimPostRequest request) {
-        if (redisHelper.validateToken(request.getCsrfToken())) {
+        if (redisHelper.isTokenAlreadyUsed(request.getCsrfToken())) {
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Duplicate request detected");
         }
         try {

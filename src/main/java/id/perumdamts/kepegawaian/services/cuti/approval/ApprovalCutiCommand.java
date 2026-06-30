@@ -35,7 +35,7 @@ public class ApprovalCutiCommand {
 
     @Transactional
     public SavedStatus<?> savePengajuan(CutiApprovalPostRequest request) {
-        if (redisHelper.validateToken(request.getCsrfToken())) {
+        if (redisHelper.isTokenAlreadyUsed(request.getCsrfToken())) {
             return SavedStatus.build(ESaveStatus.DUPLICATE, "Duplicate request detected");
         }
 
@@ -80,28 +80,27 @@ public class ApprovalCutiCommand {
                 .findFirst();
 
         if (nextChainOpt.isPresent()) {
-            currentChain.setApprovalStatus(cutiApproval.getApprovalStatus());
-            currentChain.setReadWriteStatus(EReadWriteStatus.READ);
-
-            CutiApprovalChain nextChain = nextChainOpt.get();
-            nextChain.setReadWriteStatus(EReadWriteStatus.WRITE);
-            cutiPegawai.setApprovalLevel(nextChain.getApprovalLevel());
-            cutiPegawai.setPicSaatIni(new Jabatan(nextChain.getJabatanId()));
-
+            advanceChainPointer(currentChain, nextChainOpt.get(), cutiPegawai, cutiApproval.getApprovalStatus());
             repository.save(cutiApproval);
-            cutiPegawaiRepository.save(cutiPegawai);
-            cutiApprovalChainRepository.save(currentChain);
-            cutiApprovalChainRepository.save(nextChain);
         } else {
-            currentChain.setApprovalStatus(cutiApproval.getApprovalStatus());
-            currentChain.setReadWriteStatus(EReadWriteStatus.READ);
-            cutiPegawai.setApprovalCutiStatus(cutiApproval.getApprovalStatus());
-
+            terminateChain(currentChain, cutiPegawai, cutiApproval.getApprovalStatus());
             repository.save(cutiApproval);
-            cutiPegawaiRepository.save(cutiPegawai);
-            cutiApprovalChainRepository.save(currentChain);
             cutiKuotaUpdateByCutiService.updateKuota(cutiPegawai);
         }
+    }
+
+    private void advanceChainPointer(CutiApprovalChain current, CutiApprovalChain next, CutiPegawai cuti, EApprovalCutiStatus status) {
+        current.setApprovalStatus(status);
+        current.setReadWriteStatus(EReadWriteStatus.READ);
+        next.setReadWriteStatus(EReadWriteStatus.WRITE);
+        cuti.setApprovalLevel(next.getApprovalLevel());
+        cuti.setPicSaatIni(new Jabatan(next.getJabatanId()));
+    }
+
+    private void terminateChain(CutiApprovalChain current, CutiPegawai cuti, EApprovalCutiStatus status) {
+        current.setApprovalStatus(status);
+        current.setReadWriteStatus(EReadWriteStatus.READ);
+        cuti.setApprovalCutiStatus(status);
     }
 
     private void rejectCutiPegawai(CutiApproval cutiApproval, CutiPegawai cutiPegawai) {
@@ -110,12 +109,10 @@ public class ApprovalCutiCommand {
         cutiPegawai.setPicSaatIni(new Jabatan(cutiApproval.getJabatan().getId()));
 
         repository.save(cutiApproval);
-        cutiPegawaiRepository.save(cutiPegawai);
         cutiApprovalChainRepository.findByRefCutiIdAndJabatanId(cutiPegawai.getId(), cutiApproval.getJabatan().getId())
                 .ifPresent(chain -> {
                     chain.setReadWriteStatus(EReadWriteStatus.READ);
                     chain.setApprovalStatus(EApprovalCutiStatus.REJECTED);
-                    cutiApprovalChainRepository.save(chain);
                 });
     }
 }
