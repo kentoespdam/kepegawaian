@@ -4,7 +4,8 @@ import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.dto.cuti.approvalChain.CutiApprovalChainRequest;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.*;
-import id.perumdamts.kepegawaian.services.cuti.approvalChain.CutiApprovalChainService;
+import id.perumdamts.kepegawaian.services.cuti.approvalChain.CutiInboxQueryService;
+import id.perumdamts.kepegawaian.services.cuti.pengajuan.CutiPengajuanQueryService;
 import id.perumdamts.kepegawaian.services.cuti.pengajuan.CutiPengajuanService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,27 +22,28 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class CutiPengajuanController {
     private final CutiPengajuanService service;
-    private final CutiApprovalChainService cutiApprovalChainService;
+    private final CutiPengajuanQueryService queryService;
+    private final CutiInboxQueryService cutiInboxQueryService;
 
     @GetMapping
     public ResponseEntity<?> index(@ParameterObject CutiPengajuanRequest request) {
-        return CustomResult.page(service.findPage(request));
+        return CustomResult.page(queryService.findPage(request));
     }
 
     @GetMapping("/approval")
     public ResponseEntity<?> indexApproval(@ParameterObject CutiApprovalChainRequest request) {
-        return CustomResult.page(cutiApprovalChainService.findCutiPegawai(request));
+        return CustomResult.page(cutiInboxQueryService.findCutiPegawai(request));
     }
 
     @GetMapping("/{pegawaiId}/pegawai")
     public ResponseEntity<?> index(@PathVariable Long pegawaiId, @ParameterObject CutiPengajuanRequest request) {
         request.setPegawaiId(pegawaiId);
-        return CustomResult.page(service.findPage(request));
+        return CustomResult.page(queryService.findPage(request));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> detail(@PathVariable Long id) {
-        return CustomResult.any(service.findById(id));
+        return CustomResult.any(queryService.findById(id));
     }
 
     @GetMapping("/{tanggalMulai}/{tanggalSelesai}/total-hari-kerja")

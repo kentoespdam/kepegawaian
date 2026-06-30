@@ -34,7 +34,7 @@
 - [x] `git status` clean; di branch `rewrite/master-cqrs`
 - [x] `npx gitnexus analyze` bila index stale (cek warning hook)
 - [x] Baca exemplar files yang akan ditiru (tercantum per fase)
-- [x] `bd update kepegawaian-is7.5 --claim` issue yang dimulai
+- [x] `bd update kepegawaian-is7.6 --claim` issue yang dimulai
 
 ---
 
@@ -157,17 +157,17 @@
 
 **Goal:** `CutiPegawaiQuery` JOOQ — index pengajuan, by-pegawai, by-id, **inbox approval** (`/cuti/pengajuan/approval`). mini-projection, nested = `row(id+label)`, rakit string di Java mapper. `refCuti` via **self-join** ke `cuti_pegawai`.
 
-- [ ] NEW `repositories/cuti/jooq/CutiPegawaiQueryRepository.java`
-  - [ ] index pengajuan (filter status/pegawai/tahun — **FIX bug filter tahun** MONTH→YEAR bila terbawa)
-  - [ ] inbox: pengajuan dengan `picSaatIni` = jabatan approver, status PENDING/RETURNED
-  - [ ] `getById` rakit nested: pegawai/biodata, jenisCuti/subJenisCuti (mini `{id,nama}`), `refCuti` self-join
-- [ ] NEW `services/cuti/pengajuan/CutiPegawaiQueryService.java`
-- [ ] Mapper JOOQ rakit `CutiPengajuanResponse` — **bukan** `from(entity)` lazy (Pola B)
+- [x] NEW `repositories/cuti/jooq/CutiPengajuanQueryRepository.java` & `CutiInboxQueryRepository.java`
+  - [x] index pengajuan (filter status/pegawai/tahun — **FIX bug filter tahun** MONTH→YEAR bila terbawa)
+  - [x] inbox: pengajuan dengan `picSaatIni` = jabatan approver, status PENDING/RETURNED
+  - [x] `getById` rakit nested: pegawai/biodata, jenisCuti/subJenisCuti (mini `{id,nama}`), `refCuti` self-join
+- [x] NEW `services/cuti/pengajuan/CutiPengajuanQueryService.java` & `CutiInboxQueryService.java`
+- [x] Mapper JOOQ rakit `CutiPengajuanResponse` — **bukan** `from(entity)` lazy (Pola B)
 
 ### Acceptance
-- [ ] Tidak ada `CutiPengajuanResponse.from(CutiPegawai)` lazy tersisa di read-path
-- [ ] Inbox diarahkan ke Query JOOQ, bukan `CutiApprovalChainService`
-- [ ] `./gradlew build` → SUCCESSFUL
+- [x] Tidak ada `CutiPengajuanResponse.from(CutiPegawai)` lazy tersisa di read-path
+- [x] Inbox diarahkan to Query JOOQ, bukan `CutiApprovalChainService`
+- [x] `./gradlew build` → SUCCESSFUL
 
 ---
 
