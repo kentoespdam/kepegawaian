@@ -19,7 +19,7 @@
 | **2** | `kepegawaian-hit` | PengajuanCutiCommand classifier | ✓ CLOSED | — |
 | **2** | `kepegawaian-rq2` | KlaimCutiCommand settlement | ✓ CLOSED | — |
 | **3** | `kepegawaian-llq` | ApprovalCutiCommand lifecycle | ✓ CLOSED | — |
-| **4** | `kepegawaian-y7u.1` | Facade trio cleanup | ○ OPEN | `bd update kepegawaian-y7u.1 --claim` |
+| **4** | `kepegawaian-y7u.1` | Facade trio cleanup | ✓ CLOSED | — |
 | **4** | `kepegawaian-y7u.2` | CutiApprovalQueryService + JOOQ | ○ OPEN | `bd update kepegawaian-y7u.2 --claim` |
 
 ---
@@ -197,22 +197,22 @@ kepegawaian-y7u (Epic: 120-line enforcement)
 | | |
 |---|---|
 | **Goal** | Delete facade trio: 3 interface + 3 impl (Q2) |
-| **Status** | ○ OPEN |
+| **Status** | ✓ CLOSED |
 | **Depends** | kepegawaian-hit, kepegawaian-llq, kepegawaian-rq2 |
 
 **Pre:**
-- [ ] Confirm hit, llq, rq2 CLOSED → `bd update kepegawaian-y7u.1 --claim`
-- [ ] `gitnexus_impact` on 6 facade files (3 interface + 3 impl)
+- [x] Confirm hit, llq, rq2 CLOSED → `bd update kepegawaian-y7u.1 --claim`
+- [x] `gitnexus_impact` on 6 facade files (3 interface + 3 impl)
 
 **Delete:**
-- [ ] `CutiPengajuanService` + `CutiPengajuanServiceImpl`
-- [ ] `CutiApprovalService` + `CutiApprovalServiceImpl`
-- [ ] `CutiApprovalChainService` + `CutiApprovalChainServiceImpl`
-- [ ] Update controller imports (already rewired to Command in hit/llq/rq2)
+- [x] `CutiPengajuanService` + `CutiPengajuanServiceImpl`
+- [x] `CutiApprovalService` + `CutiApprovalServiceImpl`
+- [x] `CutiApprovalChainService` + `CutiApprovalChainServiceImpl`
+- [x] Update controller imports (already rewired to Command in hit/llq/rq2)
 
 **Verify & Ship:**
-- [ ] `./gradlew clean build` (no compile errors)
-- [ ] `gitnexus_detect_changes()` → commit → `bd close kepegawaian-y7u.1`
+- [x] `./gradlew clean build` (no compile errors)
+- [x] `gitnexus_detect_changes()` → commit → `bd close kepegawaian-y7u.1`
 
 ---
 

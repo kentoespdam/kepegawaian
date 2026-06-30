@@ -6,7 +6,8 @@ import id.perumdamts.kepegawaian.dto.cuti.approvalChain.CutiApprovalChainRequest
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.*;
 import id.perumdamts.kepegawaian.services.cuti.approvalChain.CutiInboxQueryService;
 import id.perumdamts.kepegawaian.services.cuti.pengajuan.CutiPengajuanQueryService;
-import id.perumdamts.kepegawaian.services.cuti.pengajuan.CutiPengajuanService;
+import id.perumdamts.kepegawaian.services.cuti.pengajuan.PengajuanCutiCommand;
+import id.perumdamts.kepegawaian.services.cuti.klaim.KlaimCutiCommand;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -21,9 +22,10 @@ import java.util.Objects;
 @RequestMapping("/cuti/pengajuan")
 @RequiredArgsConstructor
 public class CutiPengajuanController {
-    private final CutiPengajuanService service;
     private final CutiPengajuanQueryService queryService;
     private final CutiInboxQueryService cutiInboxQueryService;
+    private final PengajuanCutiCommand pengajuanCutiCommand;
+    private final KlaimCutiCommand klaimCutiCommand;
 
     @GetMapping
     public ResponseEntity<?> index(@ParameterObject CutiPengajuanRequest request) {
@@ -52,7 +54,7 @@ public class CutiPengajuanController {
             return ErrorResult.build("Tanggal mulai dan selesai harus di isi");
         if (tanggalSelesai.isBefore(tanggalMulai))
             return ErrorResult.build("Tanggal selesai tidak boleh dibuat sebelum tanggal mulai");
-        return CustomResult.any(service.findTotalHariKerja(tanggalMulai, tanggalSelesai));
+        return CustomResult.any(queryService.findTotalHariKerja(tanggalMulai, tanggalSelesai));
     }
 
     @PostMapping
@@ -62,7 +64,7 @@ public class CutiPengajuanController {
             return ErrorResult.build("Tanggal selesai tidak boleh dibuat sebelum tanggal mulai");
         if (request.getTanggalMulai().isBefore(LocalDate.now()))
             return ErrorResult.build("Pengajuan cuti tidak boleh dibuat sebelum tanggal sekarang");
-        return CustomResult.save(service.save(request));
+        return CustomResult.save(pengajuanCutiCommand.save(request));
     }
 
     @PutMapping("/{id}")
@@ -72,23 +74,23 @@ public class CutiPengajuanController {
             return ErrorResult.build("Tanggal selesai tidak boleh dibuat sebelum tanggal mulai");
         if (request.getTanggalMulai().isBefore(LocalDate.now()))
             return ErrorResult.build("Pengajuan cuti tidak boleh dibuat sebelum tanggal sekarang");
-        return CustomResult.save(service.update(id, request));
+        return CustomResult.save(pengajuanCutiCommand.update(id, request));
     }
 
     @PostMapping("/klaim")
     public ResponseEntity<?> klaim(@Valid @RequestBody CutiPengajuanKlaimPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(service.klaim(request));
+        return CustomResult.save(klaimCutiCommand.save(request));
     }
 
     @PutMapping("/klaim/{id}")
     public ResponseEntity<?> updateKlaim(@PathVariable Long id, @Valid @RequestBody CutiPengajuanKlaimPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(service.updateKlaim(id, request));
+        return CustomResult.save(klaimCutiCommand.update(id, request));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> pembatalan(@PathVariable Long id) {
-        return CustomResult.save(service.pembatalan(id));
+        return CustomResult.save(pengajuanCutiCommand.pembatalan(id));
     }
 }
