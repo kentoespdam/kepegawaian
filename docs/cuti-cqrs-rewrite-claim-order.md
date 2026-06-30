@@ -34,7 +34,7 @@
 - [x] `git status` clean; di branch `rewrite/master-cqrs`
 - [x] `npx gitnexus analyze` bila index stale (cek warning hook)
 - [x] Baca exemplar files yang akan ditiru (tercantum per fase)
-- [x] `bd update kepegawaian-is7.12 --claim` issue yang dimulai
+- [x] `bd update kepegawaian-is7.13 --claim` issue yang dimulai
 
 ---
 
@@ -284,22 +284,22 @@
 
 **Goal:** pertahankan kontrak URL **persis** (kompat FE), 4 controller, buang `CutiController` kosong.
 
-- [ ] DELETE `controllers/cuti/CutiController.java` (kosong/dead)
-- [ ] `CutiPengajuanController` (`/cuti/pengajuan`) ← `PengajuanCutiCommand` + `KlaimCutiCommand` + `CutiPegawaiQuery`
-  - [ ] Routes lama persis: index, `/approval` (inbox→Query), `/{pegawaiId}/pegawai`, `/{id}`, `/{tglMulai}/{tglSelesai}/total-hari-kerja`, POST create, PUT `/{id}`, POST `/klaim`, PUT `/klaim/{id}`, DELETE `/{id}` (pembatalan)
-  - [ ] Guard tanggal di controller: `tanggalMulai.isAfter(tanggalSelesai)`, `tanggalMulai.isBefore(LocalDate.now())`
-- [ ] `CutiApprovalController` (`/cuti/approval`) ← `ApprovalCutiCommand`
-- [ ] `CutiJenisController` (`/cuti/jenis`) ← Query+Command (fase 4)
-- [ ] `CutiKuotaController` (`/cuti/kuota`) ← Query+Command + `/template`, `/import`, `/{pegawaiId}/{tahun}/sisa` (fase 5)
-- [ ] Semua mutating endpoint `@PreAuthorize("hasRole('ADMIN')")` + `@Valid` + `Errors`
-- [ ] Envelope `CustomResult.any/list/page/save/delete`
+- [x] DELETE `controllers/cuti/CutiController.java` (kosong/dead)
+- [x] `CutiPengajuanController` (`/cuti/pengajuan`) ← `PengajuanCutiCommand` + `KlaimCutiCommand` + `CutiPegawaiQuery`
+  - [x] Routes lama persis: index, `/approval` (inbox→Query), `/{pegawaiId}/pegawai`, `/{id}`, `/{tglMulai}/{tglSelesai}/total-hari-kerja`, POST create, PUT `/{id}`, POST `/klaim`, PUT `/klaim/{id}`, DELETE `/{id}` (pembatalan)
+  - [x] Guard tanggal di controller: `tanggalMulai.isAfter(tanggalSelesai)`, `tanggalMulai.isBefore(LocalDate.now())`
+- [x] `CutiApprovalController` (`/cuti/approval`) ← `ApprovalCutiCommand`
+- [x] `CutiJenisController` (`/cuti/jenis`) ← Query+Command (fase 4)
+- [x] `CutiKuotaController` (`/cuti/kuota`) ← Query+Command + `/template`, `/import`, `/{pegawaiId}/{tahun}/sisa` (fase 5)
+- [x] Semua mutating endpoint `@PreAuthorize("hasRole('ADMIN')")` + `@Valid` + `Errors`
+- [x] Envelope `CustomResult.any/list/page/save/delete`
 
 ### Acceptance (final modul)
-- [ ] Semua path & verb lama identik (kompat FE) — diff kontrak = 0
-- [ ] `grep -rn 'CutiController' src` → 0
-- [ ] `./gradlew clean build` → BUILD SUCCESSFUL
-- [ ] `gitnexus_detect_changes()` scope = modul cuti
-- [ ] Verifikasi subagent: read=JOOQ, write=JPA, tak ada interface+Impl sisa, tak ada exception-swallowing (kecuali bug klaim yang ter-track)
+- [x] Semua path & verb lama identik (kompat FE) — diff kontrak = 0
+- [x] `grep -rn 'CutiController' src` → 0
+- [x] `./gradlew clean build` → BUILD SUCCESSFUL
+- [x] `gitnexus_detect_changes()` scope = modul cuti
+- [x] Verifikasi subagent: read=JOOQ, write=JPA, tak ada interface+Impl sisa, tak ada exception-swallowing (kecuali bug klaim yang ter-track)
 
 ---
 
