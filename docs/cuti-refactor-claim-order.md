@@ -20,6 +20,7 @@
 | **2** | `kepegawaian-rq2` | KlaimCutiCommand settlement | ✓ CLOSED | — |
 | **3** | `kepegawaian-llq` | ApprovalCutiCommand lifecycle | ✓ CLOSED | — |
 | **4** | `kepegawaian-y7u.1` | Facade trio cleanup | ○ OPEN | `bd update kepegawaian-y7u.1 --claim` |
+| **4** | `kepegawaian-y7u.2` | CutiApprovalQueryService + JOOQ | ○ OPEN | `bd update kepegawaian-y7u.2 --claim` |
 
 ---
 
@@ -38,8 +39,11 @@ kepegawaian-y7u (Epic: 120-line enforcement)
 │
 ├─ kepegawaian-llq [PHASE 3] ApprovalCutiCommand lifecycle (Q13)
 │
-└─ kepegawaian-y7u.1 [PHASE 4] Facade trio cleanup (Q2)
-   └─ Depends: hit, llq, rq2 all closed
+├─ kepegawaian-y7u.1 [PHASE 4] Facade trio cleanup (Q2)
+│  └─ Depends: hit, llq, rq2 all closed
+│
+└─ kepegawaian-y7u.2 [PHASE 4] CutiApprovalQueryService + JOOQ (Q5)
+   └─ Depends: y7u.1 closed (facade gone)
 ```
 
 ---
@@ -212,6 +216,32 @@ kepegawaian-y7u (Epic: 120-line enforcement)
 
 ---
 
+### 4b — `kepegawaian-y7u.2` · Phase 4
+
+| | |
+|---|---|
+| **Goal** | Create CutiApprovalQueryService + JOOQ for approval history (Q5) |
+| **Status** | ○ OPEN |
+| **Depends** | kepegawaian-y7u.1 |
+
+**Pre:**
+- [ ] Confirm y7u.1 CLOSED → `bd update kepegawaian-y7u.2 --claim`
+- [ ] Read `CutiApprovalIndexQuery.getSpecification()` to understand filter fields
+
+**Create:**
+- [ ] NEW `services/cuti/approval/CutiApprovalQueryService` — `findByCutiId(Long)`
+- [ ] NEW `repositories/cuti/jooq/CutiApprovalQueryRepository` — SELECT + baseWhere
+- [ ] NEW `mapper/cuti/CutiApprovalJooqMapper` (Pola B) — mapToResponse
+- [ ] Port 4 filter fields (id/cutiId/approverId/jabatanId) from spec to baseWhere
+- [ ] UPDATE `CutiApprovalController` — inject QueryService for read
+
+**Verify & Ship:**
+- [ ] `./gradlew clean build`
+- [ ] Test `GET /cuti/approval/{cutiId}` returns approval history
+- [ ] `gitnexus_detect_changes()` → commit → `bd close kepegawaian-y7u.2`
+
+---
+
 ## 📖 Design Decisions (Q11-Q17)
 
 | # | Decision | Target | Ref |
@@ -225,6 +255,7 @@ kepegawaian-y7u (Epic: 120-line enforcement)
 | Q16 | Extract mapper triplikasi ~42 lines | `CutiJenisQueryRepository` 146→107 | `decisions-cuti.md` |
 | Q17 | Keep as-is (data-holder lenient) | `CutiPegawai` entity 126 | `decisions-cuti.md` |
 | Q2 | Delete facade trio (interface + impl) | 6 files → 0 | `decisions-cuti.md` |
+| Q5 | CutiApprovalQueryService + JOOQ repo | GET /cuti/approval/{cutiId} | `decisions-cuti.md` |
 
 ### Exception Rules
 - **JOOQ `*QueryRepository`**: >120 lines OK **if mapper extracted** (Pola B: `final`, private ctor, no `@Component`)
