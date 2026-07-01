@@ -113,15 +113,15 @@
 
 **State when you start:** `kepegawaian-mfq`. **Goal:** interface single-impl (20 baris, 1 impl) dibuang.
 
-- [ ] `gitnexus_impact({target:"ProfileUpdateService", direction:"upstream"})` — konfirmasi 6 injector
-- [ ] `gitnexus_rename` `ProfileUpdateServiceImpl` → `ProfileUpdateService` (JANGAN find/replace)
-- [ ] Hapus file interface lama
-- [ ] Karena field injection bertipe interface (`private final ProfileUpdateService ...`), teks 6 injector (5 CommandService + `ProfilUpdateController`) **tidak berubah** — tak perlu disentuh
-- [ ] `./gradlew compileJava` → SUCCESSFUL
+- [x] `gitnexus_impact({target:"ProfileUpdateService", direction:"upstream"})` — konfirmasi 6 injector
+- [x] `gitnexus_rename` `ProfileUpdateServiceImpl` → `ProfileUpdateService` (JANGAN find/replace)
+- [x] Hapus file interface lama
+- [x] Karena field injection bertipe interface (`private final ProfileUpdateService ...`), teks 6 injector (5 CommandService + `ProfilUpdateController`) **tidak berubah** — tak perlu disentuh
+- [x] `./gradlew compileJava` → SUCCESSFUL
 
 ### Acceptance
-- [ ] `grep -rn "ProfileUpdateServiceImpl" src` → 0
-- [ ] Tak ada interface single-impl `ProfileUpdateService` tersisa
+- [x] `grep -rn "ProfileUpdateServiceImpl" src` → 0
+- [x] Tak ada interface single-impl `ProfileUpdateService` tersisa
 
 ---
 
