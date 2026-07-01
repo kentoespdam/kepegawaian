@@ -31,7 +31,7 @@ public class JenisKitasQueryRepository {
                 .from(JENIS_KITAS)
                 .where(JENIS_KITAS.IS_DELETED.eq(false))
                 .and(query.getNama() != null ? JENIS_KITAS.NAMA.likeIgnoreCase("%" + query.getNama() + "%") : DSL.noCondition())
-                .fetchOne(0, Long.class);
+                .fetchOptional(0, Long.class).orElse(0L);
 
         var data = dsl.select(JENIS_KITAS.ID, JENIS_KITAS.NAMA)
                 .from(JENIS_KITAS)

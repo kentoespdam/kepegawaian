@@ -5,14 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.history.RevisionRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface ProfesiRepository extends JpaRepository<Profesi, Long>,
         JpaSpecificationExecutor<Profesi>,
         RevisionRepository<Profesi, Long, Integer> {
-    List<Profesi> findByJabatan_Id(Long id);
-
     /**
      * Eagerly fetches a live Profesi row matching the (nama, jabatanId, gradeId) tuple.
      * Explicit JPQL avoids any future {@code @SQLRestriction} side effects.

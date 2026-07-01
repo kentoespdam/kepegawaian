@@ -53,7 +53,7 @@ public class PelatihanQueryRepository {
         var count = dsl.selectCount()
                 .from(PELATIHAN)
                 .where(conditions)
-                .fetchOne(0, Long.class);
+                .fetchOptional(0, Long.class).orElse(0L);
 
         var data = dsl.select(PelatihanSelects.COLUMNS)
                 .from(PELATIHAN)

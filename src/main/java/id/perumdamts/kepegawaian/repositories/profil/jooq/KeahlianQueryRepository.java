@@ -49,7 +49,7 @@ public class KeahlianQueryRepository {
         long count = dsl.selectCount()
                 .from(KEAHLIAN)
                 .where(conditions)
-                .fetchOne(0, Long.class);
+                .fetchOptional(0, Long.class).orElse(0L);
 
         List<KeahlianQuery> data = dsl.select(KeahlianSelects.COLUMNS)
                 .from(KEAHLIAN)

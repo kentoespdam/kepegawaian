@@ -34,7 +34,7 @@ public class HariLiburQueryRepository {
                 .and(query.getJenisLibur() != null ? HARI_LIBUR.JENIS_LIBUR.eq(findJenisLiburOrdinal(query.getJenisLibur())) : DSL.noCondition())
                 .and(query.getTahun() != null ? DSL.year(HARI_LIBUR.TANGGAL).eq(query.getTahun()) : DSL.noCondition())
                 .and(query.getBulan() != null ? DSL.month(HARI_LIBUR.TANGGAL).eq(query.getBulan()) : DSL.noCondition())
-                .fetchOne(0, Long.class);
+                .fetchOptional(0, Long.class).orElse(0L);
         var data = dsl.select(
                         HARI_LIBUR.ID,
                         HARI_LIBUR.TANGGAL,
@@ -94,7 +94,7 @@ public class HariLiburQueryRepository {
     private static String jenisLiburByteToString(Byte ordinal) {
         if (ordinal == null) return null;
         for (EJenisLibur e : EJenisLibur.values()) {
-            if (e.ordinal() == ordinal.byteValue())
+            if (e.ordinal() == ordinal)
                 return e.getValue();
         }
         return null;

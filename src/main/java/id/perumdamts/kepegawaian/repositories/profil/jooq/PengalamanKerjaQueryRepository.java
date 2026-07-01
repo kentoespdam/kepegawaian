@@ -49,7 +49,7 @@ public class PengalamanKerjaQueryRepository {
         var count = dsl.selectCount()
                 .from(PENGALAMAN_KERJA)
                 .where(conditions)
-                .fetchOne(0, Long.class);
+                .fetchOptional(0, Long.class).orElse(0L);
 
         var data = dsl.select(PengalamanKerjaSelects.COLUMNS)
                 .from(PENGALAMAN_KERJA)

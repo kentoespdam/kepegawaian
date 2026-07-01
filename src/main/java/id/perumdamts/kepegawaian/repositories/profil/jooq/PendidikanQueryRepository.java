@@ -51,7 +51,7 @@ public class PendidikanQueryRepository {
         var count = dsl.selectCount()
                 .from(PENDIDIKAN)
                 .where(conditions)
-                .fetchOne(0, Long.class);
+                .fetchOptional(0, Long.class).orElse(0L);
 
         var data = dsl.select(PendidikanSelects.COLUMNS)
                 .from(PENDIDIKAN)

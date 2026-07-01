@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.repositories.master.jooq;
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiIndexQuery;
 import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiQuery;
+import id.perumdamts.kepegawaian.mapper.master.profesi.ProfesiJooqMapper;
 import lombok.RequiredArgsConstructor;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -31,7 +32,7 @@ public class ProfesiQueryRepository {
         var sortOrder = SortParam.resolve(query.getSortBy(), query.getSortDirection(),
                 allowedSorts(), PROFESI.ID);
         Condition where = baseWhere(query);
-        var count = dsl.selectCount().from(PROFESI).where(where).fetchOne(0, Long.class);
+        var count = dsl.selectCount().from(PROFESI).where(where).fetchOptional(0, Long.class).orElse(0L);
         var data = dsl.select(ProfesiSelects.PROFESI_COLUMNS)
                 .from(PROFESI)
                 .leftJoin(ORGANISASI).on(PROFESI.ORGANISASI_ID.eq(ORGANISASI.ID))
@@ -42,7 +43,7 @@ public class ProfesiQueryRepository {
                 .orderBy(sortOrder)
                 .limit(query.getSizeOrDefault())
                 .offset(query.getPageNumber() * query.getSizeOrDefault())
-                .fetch(record -> ProfesiRowMapper.toQuery(record.intoMap()));
+                .fetch(record -> ProfesiJooqMapper.toQuery(record.intoMap()));
         return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
     }
 
@@ -64,7 +65,7 @@ public class ProfesiQueryRepository {
                 .leftJoin(GRADE).on(PROFESI.GRADE_ID.eq(GRADE.ID))
                 .where(PROFESI.IS_DELETED.eq(false))
                 .orderBy(PROFESI.NAMA.asc())
-                .fetch(record -> ProfesiRowMapper.toQuery(record.intoMap()));
+                .fetch(record -> ProfesiJooqMapper.toQuery(record.intoMap()));
     }
 
     private Condition baseWhere(ProfesiIndexQuery q) {

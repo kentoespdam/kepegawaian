@@ -32,7 +32,7 @@ public class CutiApprovalQueryRepository {
                 allowedSorts(), CUTI_APPROVAL.ID);
 
         var count = dsl.selectCount().from(CUTI_APPROVAL)
-                .where(where).fetchOne(0, Long.class);
+                .where(where).fetchOptional(0, Long.class).orElse(0L);
 
         int pageNumber = query.getPage() != null ? query.getPage() : 0;
         int sizeOrDefault = query.getSize() != null ? query.getSize() : 10;
@@ -60,7 +60,7 @@ public class CutiApprovalQueryRepository {
                 .offset(pageNumber * sizeOrDefault)
                 .fetch(CutiApprovalJooqMapper::mapToResponse);
 
-        return new PageImpl<>(data, PageRequest.of(pageNumber, sizeOrDefault), count != null ? count : 0);
+        return new PageImpl<>(data, PageRequest.of(pageNumber, sizeOrDefault), count);
     }
 
     private Condition baseWhere(Long cutiId, CutiApprovalRequest query) {

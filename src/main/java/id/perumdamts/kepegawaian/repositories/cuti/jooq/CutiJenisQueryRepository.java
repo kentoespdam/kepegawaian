@@ -31,7 +31,7 @@ public class CutiJenisQueryRepository {
                 allowedSorts(), CUTI_JENIS.ID);
                 
         Condition where = baseWhere(query);
-        var count = dsl.selectCount().from(CUTI_JENIS).where(where).fetchOne(0, Long.class);
+        var count = dsl.selectCount().from(CUTI_JENIS).where(where).fetchOptional(0, Long.class).orElse(0L);
         
         int pageNumber = query.getPage() != null ? query.getPage() : 0;
         int sizeOrDefault = query.getSize() != null ? query.getSize() : 10;

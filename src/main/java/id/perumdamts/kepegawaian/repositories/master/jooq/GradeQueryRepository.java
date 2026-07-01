@@ -33,7 +33,7 @@ public class GradeQueryRepository {
                 .where(GRADE.IS_DELETED.eq(false))
                 .and(query.getLevelId() != null ? GRADE.LEVEL_ID.eq(query.getLevelId()) : DSL.noCondition())
                 .and(query.getGrade() != null ? GRADE.GRADE_.eq(query.getGrade()) : DSL.noCondition())
-                .fetchOne(0, Long.class);
+                .fetchOptional(0, Long.class).orElse(0L);
         var data = dsl.select(
                         GRADE.ID,
                         GRADE.LEVEL_ID.as("self_level_id"),

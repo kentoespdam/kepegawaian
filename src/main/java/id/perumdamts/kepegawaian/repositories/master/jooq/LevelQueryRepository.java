@@ -30,7 +30,7 @@ public class LevelQueryRepository {
                 .from(Level.LEVEL)
                 .where(Level.LEVEL.IS_DELETED.eq(false))
                 .and(query.getNama() != null ? Level.LEVEL.NAMA.likeIgnoreCase("%" + query.getNama() + "%") : DSL.noCondition())
-                .fetchOne(0, Long.class);
+                .fetchOptional(0, Long.class).orElse(0L);
 
         var data = dsl.select(Level.LEVEL.ID, Level.LEVEL.NAMA)
                 .from(Level.LEVEL)

@@ -33,7 +33,7 @@ public class GolonganQueryRepository {
                 .where(Golongan.GOLONGAN.IS_DELETED.eq(false))
                 .and(query.getGolongan() != null ? Golongan.GOLONGAN.GOLONGAN_.likeIgnoreCase("%" + query.getGolongan() + "%") : DSL.noCondition())
                 .and(query.getPangkat() != null ? Golongan.GOLONGAN.PANGKAT.likeIgnoreCase("%" + query.getPangkat() + "%") : DSL.noCondition())
-                .fetchOne(0, Long.class);
+                .fetchOptional(0, Long.class).orElse(0L);
 
         // Data query
         var data = dsl.select(Golongan.GOLONGAN.ID, Golongan.GOLONGAN.GOLONGAN_, Golongan.GOLONGAN.PANGKAT)

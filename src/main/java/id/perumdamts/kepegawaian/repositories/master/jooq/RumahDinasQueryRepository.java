@@ -30,7 +30,7 @@ public class RumahDinasQueryRepository {
                 .from(RUMAH_DINAS)
                 .where(RUMAH_DINAS.IS_DELETED.eq(false))
                 .and(query.getNama() != null ? RUMAH_DINAS.NAMA.likeIgnoreCase("%" + query.getNama() + "%") : DSL.noCondition())
-                .fetchOne(0, Long.class);
+                .fetchOptional(0, Long.class).orElse(0L);
         var data = dsl.select(
                         RUMAH_DINAS.ID,
                         RUMAH_DINAS.NAMA,

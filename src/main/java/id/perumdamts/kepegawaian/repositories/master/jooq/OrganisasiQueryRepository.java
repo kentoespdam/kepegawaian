@@ -36,7 +36,7 @@ public class OrganisasiQueryRepository {
                 .and(query.getParentId() != null ? ORGANISASI.PARENT_ID.eq(query.getParentId()) : DSL.noCondition())
                 .and(query.getLevelOrg() != null ? ORGANISASI.LEVEL_ORG.eq(query.getLevelOrg()) : DSL.noCondition())
                 .and(query.getCategory() != null ? ORGANISASI.CATEGORY.eq(query.getCategory()) : DSL.noCondition())
-                .fetchOne(0, Long.class);
+                .fetchOptional(0, Long.class).orElse(0L);
         var data = dsl.select(
                         ORGANISASI.ID,
                         ORGANISASI.KODE,

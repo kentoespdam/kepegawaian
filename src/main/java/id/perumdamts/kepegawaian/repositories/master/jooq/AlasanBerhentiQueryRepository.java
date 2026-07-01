@@ -31,7 +31,7 @@ public class AlasanBerhentiQueryRepository {
                 .from(AlasanBerhenti.ALASAN_BERHENTI)
                 .where(AlasanBerhenti.ALASAN_BERHENTI.IS_DELETED.eq(false))
                 .and(query.getNama() != null ? AlasanBerhenti.ALASAN_BERHENTI.NAMA.likeIgnoreCase("%" + query.getNama() + "%") : DSL.noCondition())
-                .fetchOne(0, Long.class);
+                .fetchOptional(0, Long.class).orElse(0L);
 
         // Data query
         var data = dsl.select(AlasanBerhenti.ALASAN_BERHENTI.ID, AlasanBerhenti.ALASAN_BERHENTI.NAMA, AlasanBerhenti.ALASAN_BERHENTI.NOTES)

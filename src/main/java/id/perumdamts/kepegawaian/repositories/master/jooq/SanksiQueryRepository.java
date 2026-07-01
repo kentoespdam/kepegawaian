@@ -34,7 +34,7 @@ public class SanksiQueryRepository {
                 .and(query.getKode() != null ? SANKSI_SP.KODE.eq(query.getKode()) : DSL.noCondition())
                 .and(query.getKeterangan() != null ? SANKSI_SP.KETERANGAN.likeIgnoreCase("%" + query.getKeterangan() + "%") : DSL.noCondition())
                 .and(query.getJenisSpId() != null ? SANKSI_SP.JENIS_SP_ID.eq(query.getJenisSpId()) : DSL.noCondition())
-                .fetchOne(0, Long.class);
+                .fetchOptional(0, Long.class).orElse(0L);
         var data = dsl.select(
                         SANKSI_SP.ID,
                         SANKSI_SP.KODE,

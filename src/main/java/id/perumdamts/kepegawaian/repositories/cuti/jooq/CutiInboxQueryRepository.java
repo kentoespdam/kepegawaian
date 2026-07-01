@@ -34,7 +34,7 @@ public class CutiInboxQueryRepository {
         var count = dsl.select(DSL.countDistinct(CUTI_APPROVAL_CHAIN.REF_CUTI_ID))
                 .from(CUTI_APPROVAL_CHAIN)
                 .leftJoin(CUTI_PEGAWAI).on(CUTI_APPROVAL_CHAIN.REF_CUTI_ID.eq(CUTI_PEGAWAI.ID))
-                .where(where).fetchOne(0, Long.class);
+                .where(where).fetchOptional(0, Long.class).orElse(0L);
                 
         int pageNumber = query.getPage() != null ? query.getPage() : 0;
         int sizeOrDefault = query.getSize() != null ? query.getSize() : 10;
@@ -70,7 +70,7 @@ public class CutiInboxQueryRepository {
                     return res;
                 });
                 
-        return new PageImpl<>(data, PageRequest.of(pageNumber, sizeOrDefault), count != null ? count : 0L);
+        return new PageImpl<>(data, PageRequest.of(pageNumber, sizeOrDefault), count);
     }
 
     private static Map<String, Field<?>> allowedSorts() {

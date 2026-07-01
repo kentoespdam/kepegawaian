@@ -31,7 +31,7 @@ public class JenisKeahlianQueryRepository {
                 .from(JenisKeahlian.JENIS_KEAHLIAN)
                 .where(JenisKeahlian.JENIS_KEAHLIAN.IS_DELETED.eq(false))
                 .and(query.getNama() != null ? JenisKeahlian.JENIS_KEAHLIAN.NAMA.likeIgnoreCase("%" + query.getNama() + "%") : DSL.noCondition())
-                .fetchOne(0, Long.class);
+                .fetchOptional(0, Long.class).orElse(0L);
 
         // Data query
         var data = dsl.select(JenisKeahlian.JENIS_KEAHLIAN.ID, JenisKeahlian.JENIS_KEAHLIAN.NAMA)

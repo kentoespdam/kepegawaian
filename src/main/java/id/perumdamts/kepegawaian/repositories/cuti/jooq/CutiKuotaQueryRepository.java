@@ -39,7 +39,7 @@ public class CutiKuotaQueryRepository {
         var count = dsl.selectCount().from(CUTI_KUOTA)
                 .leftJoin(PEGAWAI).on(CUTI_KUOTA.PEGAWAI_ID.eq(PEGAWAI.ID))
                 .leftJoin(BIODATA).on(PEGAWAI.NIK.eq(BIODATA.NIK))
-                .where(where).fetchOne(0, Long.class);
+                .where(where).fetchOptional(0, Long.class).orElse(0L);
                 
         int pageNumber = query.getPage() != null ? query.getPage() : 0;
         int sizeOrDefault = query.getSize() != null ? query.getSize() : 10;
@@ -68,7 +68,7 @@ public class CutiKuotaQueryRepository {
                 .orderBy(sortOrder)
                 .limit(sizeOrDefault)
                 .offset(pageNumber * sizeOrDefault)
-                .fetch(record -> CutiKuotaJooqMapper.mapToResponse(record));
+                .fetch(CutiKuotaJooqMapper::mapToResponse);
                 
         Page<CutiKuotaResponse> page = new PageImpl<>(data, PageRequest.of(pageNumber, sizeOrDefault), count);
         if (page.isEmpty()) return null;
@@ -98,7 +98,7 @@ public class CutiKuotaQueryRepository {
                 .where(CUTI_KUOTA.PEGAWAI_ID.in(pegawaiIdList)
                         .and(CUTI_KUOTA.TAHUN.eq(query.getTahun() - 1))
                         .and(CUTI_KUOTA.IS_DELETED.eq(false)))
-                .fetch(record -> CutiKuotaJooqMapper.mapToResponse(record));
+                .fetch(CutiKuotaJooqMapper::mapToResponse);
                 
         return CutiKuotaPegawaiResponse.builder()
                 .page(page)
@@ -128,7 +128,7 @@ public class CutiKuotaQueryRepository {
                 .leftJoin(JABATAN).on(PEGAWAI.JABATAN_ID.eq(JABATAN.ID))
                 .leftJoin(ORGANISASI).on(PEGAWAI.ORGANISASI_ID.eq(ORGANISASI.ID))
                 .where(CUTI_KUOTA.ID.eq(id).and(CUTI_KUOTA.IS_DELETED.eq(false)))
-                .fetchOne(record -> CutiKuotaJooqMapper.mapToResponse(record));
+                .fetchOne(CutiKuotaJooqMapper::mapToResponse);
     }
 
     public CutiKuotaSisa findByPegawai(Long pegawaiId, Integer tahun) {

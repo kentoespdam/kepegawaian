@@ -40,7 +40,7 @@ public class JabatanQueryRepository {
                 .and(query.getParentId() != null ? JABATAN.PARENT_ID.eq(query.getParentId()) : DSL.noCondition())
                 .and(query.getOrganisasiId() != null ? JABATAN.ORGANISASI_ID.eq(query.getOrganisasiId()) : DSL.noCondition())
                 .and(query.getLevelId() != null ? JABATAN.LEVEL_ID.eq(query.getLevelId()) : DSL.noCondition())
-                .fetchOne(0, Long.class);
+                .fetchOptional(0, Long.class).orElse(0L);
         var data = dsl.select(
                         JABATAN.ID,
                         JABATAN.KODE,

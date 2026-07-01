@@ -36,7 +36,7 @@ public class RiwayatSkQueryRepository {
         var count = dsl.selectCount()
                 .from(RIWAYAT_SK)
                 .where(condition)
-                .fetchOne(0, Long.class);
+                .fetchOptional(0, Long.class).orElse(0L);
 
         int pageNum = Objects.requireNonNullElse(request.getPage(), 0);
         int pageSize = Objects.requireNonNullElse(request.getSize(), 10);

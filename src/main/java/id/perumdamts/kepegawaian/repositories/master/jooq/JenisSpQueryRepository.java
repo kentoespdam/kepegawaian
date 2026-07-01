@@ -31,7 +31,7 @@ public class JenisSpQueryRepository {
                 .where(JENIS_SP.IS_DELETED.eq(false))
                 .and(query.getKode() != null ? JENIS_SP.KODE.likeIgnoreCase("%" + query.getKode() + "%") : DSL.noCondition())
                 .and(query.getNama() != null ? JENIS_SP.NAMA.likeIgnoreCase("%" + query.getNama() + "%") : DSL.noCondition())
-                .fetchOne(0, Long.class);
+                .fetchOptional(0, Long.class).orElse(0L);
         var data = dsl.select(
                         JENIS_SP.ID,
                         JENIS_SP.KODE,

@@ -61,9 +61,9 @@ public class ProfilKeluargaQueryRepository {
         Long total = dsl.selectCount()
                 .from(PROFIL_KELUARGA)
                 .where(conditions)
-                .fetchOne(0, Long.class);
+                .fetchOptional(0, Long.class).orElse(0L);
 
         return new PageImpl<>(records, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()),
-                total != null ? total : 0L);
+                total);
     }
 }

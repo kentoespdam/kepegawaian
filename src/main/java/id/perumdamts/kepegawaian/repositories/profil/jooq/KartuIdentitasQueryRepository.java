@@ -49,7 +49,7 @@ public class KartuIdentitasQueryRepository {
         var count = dsl.selectCount()
                 .from(KARTU_IDENTITAS)
                 .where(conditions)
-                .fetchOne(0, Long.class);
+                .fetchOptional(0, Long.class).orElse(0L);
 
         var data = dsl.select(KartuIdentitasSelects.COLUMNS)
                 .from(KARTU_IDENTITAS)

@@ -38,7 +38,7 @@ public class CutiPengajuanQueryRepository {
         var count = dsl.selectCount().from(CUTI_PEGAWAI)
                 .leftJoin(PEGAWAI).on(CUTI_PEGAWAI.PEGAWAI_ID.eq(PEGAWAI.ID))
                 .leftJoin(BIODATA).on(PEGAWAI.NIK.eq(BIODATA.NIK))
-                .where(where).fetchOne(0, Long.class);
+                .where(where).fetchOptional(0, Long.class).orElse(0L);
                 
         int pageNumber = query.getPage() != null ? query.getPage() : 0;
         int sizeOrDefault = query.getSize() != null ? query.getSize() : 10;
@@ -201,7 +201,7 @@ public class CutiPengajuanQueryRepository {
                 .leftJoin(subJenisCuti).on(CUTI_PEGAWAI.SUB_JENIS_CUTI_ID.eq(subJenisCuti.ID))
                 .leftJoin(pic).on(CUTI_PEGAWAI.PIC_SAAT_INI_ID.eq(pic.ID))
                 .where(CUTI_PEGAWAI.ID.eq(id).and(CUTI_PEGAWAI.IS_DELETED.eq(false)))
-                .fetchOne(record -> CutiPegawaiJooqMapper.mapToMiniResponse(record));
+                .fetchOne(CutiPegawaiJooqMapper::mapToMiniResponse);
     }
 
     private Condition baseWhere(CutiPengajuanRequest q) {
