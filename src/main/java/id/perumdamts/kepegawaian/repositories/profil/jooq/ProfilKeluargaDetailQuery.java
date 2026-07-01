@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.repositories.profil.jooq;
 
 import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaDetail;
 import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaQuery;
+import id.perumdamts.kepegawaian.mapper.profil.keluarga.ProfilKeluargaJooqMapper;
 import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranRow;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import lombok.RequiredArgsConstructor;
@@ -39,8 +40,7 @@ public class ProfilKeluargaDetailQuery {
                 .where(PROFIL_KELUARGA.ID.eq(id))
                 .fetch(record -> {
                     ProfilKeluargaDetail detail = new ProfilKeluargaDetail();
-                    ProfilKeluargaRowMapper mapper = new ProfilKeluargaRowMapper();
-                    ProfilKeluargaQuery base = mapper.map(record);
+                    ProfilKeluargaQuery base = ProfilKeluargaJooqMapper.INSTANCE.map(record);
                     detail.setId(base.getId());
                     detail.setBiodataId(base.getBiodataId());
                     detail.setBiodataNik(base.getBiodataNik());

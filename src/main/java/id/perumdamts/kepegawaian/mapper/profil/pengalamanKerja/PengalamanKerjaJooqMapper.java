@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.repositories.profil.jooq;
+package id.perumdamts.kepegawaian.mapper.profil.pengalamanKerja;
 
 import id.perumdamts.kepegawaian.dto.profil.pengalamanKerja.PengalamanKerjaQuery;
 import org.jooq.Record;
@@ -6,7 +6,10 @@ import org.jooq.RecordMapper;
 
 import java.util.Map;
 
-final class PengalamanKerjaRowMapper implements RecordMapper<Record, PengalamanKerjaQuery> {
+public final class PengalamanKerjaJooqMapper implements RecordMapper<Record, PengalamanKerjaQuery> {
+    public static final PengalamanKerjaJooqMapper INSTANCE = new PengalamanKerjaJooqMapper();
+
+    private PengalamanKerjaJooqMapper() {}
     @Override
     public PengalamanKerjaQuery map(Record record) {
         Map<String, Object> map = record.intoMap();

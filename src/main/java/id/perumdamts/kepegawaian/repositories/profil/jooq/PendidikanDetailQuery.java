@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.repositories.profil.jooq;
 
 import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanQuery;
+import id.perumdamts.kepegawaian.mapper.profil.pendidikan.PendidikanJooqMapper;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
@@ -22,7 +23,7 @@ public class PendidikanDetailQuery {
                 .leftJoin(BIODATA).on(PENDIDIKAN.BIODATA_ID.eq(BIODATA.NIK))
                 .leftJoin(JENJANG_PENDIDIKAN).on(PENDIDIKAN.JENJANG_ID.eq(JENJANG_PENDIDIKAN.ID))
                 .where(PENDIDIKAN.ID.eq(id))
-                .fetch(new PendidikanRowMapper())
+                .fetch(PendidikanJooqMapper.INSTANCE)
                 .stream()
                 .findFirst();
     }

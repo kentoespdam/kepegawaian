@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.repositories.profil.jooq;
 
 import id.perumdamts.kepegawaian.dto.profil.keahlian.KeahlianDetail;
 import id.perumdamts.kepegawaian.dto.profil.keahlian.KeahlianQuery;
+import id.perumdamts.kepegawaian.mapper.profil.keahlian.KeahlianJooqMapper;
 import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranRow;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.jooq.tables.Biodata;
@@ -52,7 +53,7 @@ public class KeahlianDetailQuery {
                 .and(KEAHLIAN.IS_DELETED.eq(false))
                 .fetch(record -> {
                     KeahlianDetail detail = new KeahlianDetail();
-                    KeahlianQuery base = new KeahlianRowMapper().map(record);
+                    KeahlianQuery base = KeahlianJooqMapper.INSTANCE.map(record);
                     detail.setId(base.getId());
                     detail.setBiodataId(base.getBiodataId());
                     detail.setBiodataNik(base.getBiodataNik());

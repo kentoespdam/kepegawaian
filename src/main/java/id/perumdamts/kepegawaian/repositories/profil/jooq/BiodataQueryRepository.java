@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.repositories.profil.jooq;
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataIndexQuery;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataQuery;
+import id.perumdamts.kepegawaian.mapper.profil.biodata.BiodataJooqMapper;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -66,7 +67,7 @@ public class BiodataQueryRepository {
                 .orderBy(sortOrder)
                 .limit(query.getSizeOrDefault())
                 .offset(query.offset())
-                .fetch(new BiodataRowMapper());
+                .fetch(BiodataJooqMapper.INSTANCE);
 
         return new PageImpl<>(rows, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()),
                 total != null ? total : 0L);
@@ -80,6 +81,6 @@ public class BiodataQueryRepository {
                 .from(BIODATA)
                 .leftJoin(JENJANG_PENDIDIKAN).on(BIODATA.PENDIDIKAN_ID.eq(JENJANG_PENDIDIKAN.ID))
                 .where(conditions)
-                .fetch(new BiodataRowMapper());
+                .fetch(BiodataJooqMapper.INSTANCE);
     }
 }

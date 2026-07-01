@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.repositories.profil.jooq;
+package id.perumdamts.kepegawaian.mapper.profil.keluarga;
 
 import id.perumdamts.kepegawaian.dto.master.jenjangPendidikan.JenjangPendidikanResponse;
 import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaQuery;
@@ -11,7 +11,10 @@ import org.jooq.RecordMapper;
 
 import java.util.Objects;
 
-public class ProfilKeluargaRowMapper implements RecordMapper<Record, ProfilKeluargaQuery> {
+public final class ProfilKeluargaJooqMapper implements RecordMapper<Record, ProfilKeluargaQuery> {
+    public static final ProfilKeluargaJooqMapper INSTANCE = new ProfilKeluargaJooqMapper();
+
+    private ProfilKeluargaJooqMapper() {}
 
     @Override
     public ProfilKeluargaQuery map(Record record) {

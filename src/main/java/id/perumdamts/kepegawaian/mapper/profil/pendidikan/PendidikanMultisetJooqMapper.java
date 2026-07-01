@@ -1,10 +1,14 @@
-package id.perumdamts.kepegawaian.repositories.profil.jooq;
+package id.perumdamts.kepegawaian.mapper.profil.pendidikan;
 
 import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanQuery;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
 
-class PendidikanMultisetMapper implements RecordMapper<Record, PendidikanQuery> {
+public final class PendidikanMultisetJooqMapper implements RecordMapper<Record, PendidikanQuery> {
+    public static final PendidikanMultisetJooqMapper INSTANCE = new PendidikanMultisetJooqMapper();
+
+    private PendidikanMultisetJooqMapper() {}
+
     @Override
     public PendidikanQuery map(Record record) {
         PendidikanQuery q = new PendidikanQuery();

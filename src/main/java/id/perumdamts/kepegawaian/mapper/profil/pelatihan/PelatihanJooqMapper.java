@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.repositories.profil.jooq;
+package id.perumdamts.kepegawaian.mapper.profil.pelatihan;
 
 import id.perumdamts.kepegawaian.dto.profil.pelatihan.PelatihanQuery;
 import org.jooq.Record;
@@ -6,7 +6,10 @@ import org.jooq.RecordMapper;
 
 import java.util.Objects;
 
-public class PelatihanRowMapper implements RecordMapper<Record, PelatihanQuery> {
+public final class PelatihanJooqMapper implements RecordMapper<Record, PelatihanQuery> {
+    public static final PelatihanJooqMapper INSTANCE = new PelatihanJooqMapper();
+
+    private PelatihanJooqMapper() {}
     @Override
     public PelatihanQuery map(Record record) {
         PelatihanQuery q = new PelatihanQuery();

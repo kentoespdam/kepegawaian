@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.repositories.profil.jooq;
+package id.perumdamts.kepegawaian.mapper.profil.pendidikan;
 
 import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanQuery;
 import org.jooq.DSLContext;
@@ -19,10 +19,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
  * whose internal param name "defaultObj" leaked into the response. The mapper must map such
  * rows null-safely. See bd kepegawaian-ouk.
  */
-class PendidikanRowMapperTest {
+class PendidikanJooqMapperTest {
 
     private final DSLContext dsl = DSL.using(SQLDialect.MARIADB);
-    private final PendidikanRowMapper mapper = new PendidikanRowMapper();
+    private final PendidikanJooqMapper mapper = PendidikanJooqMapper.INSTANCE;
 
     private static final Field<Long> ID = DSL.field("id", Long.class);
     private static final Field<String> BIODATA_ID = DSL.field("biodata_id", String.class);

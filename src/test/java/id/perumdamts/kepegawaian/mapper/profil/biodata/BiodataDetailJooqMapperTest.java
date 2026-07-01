@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.repositories.profil.jooq;
+package id.perumdamts.kepegawaian.mapper.profil.biodata;
 
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataDetail;
 import id.perumdamts.kepegawaian.entities.commons.EAgama;
@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
  * TINYINT ordinals (Byte) -> could not coerce to enum. Mapper must convert by ordinal.
  * See bd kepegawaian-9qo.
  */
-class BiodataDetailRowMapperTest {
+class BiodataDetailJooqMapperTest {
 
     private final DSLContext dsl = DSL.using(SQLDialect.MARIADB);
 
@@ -64,7 +64,7 @@ class BiodataDetailRowMapperTest {
         row.set(IS_PEGAWAI, true);
 
         BiodataDetail d = assertDoesNotThrow(
-                () -> BiodataDetailRowMapper.map(row, List.of(), List.of()),
+                () -> BiodataDetailJooqMapper.map(row, List.of(), List.of()),
                 "map() must not throw on byte-ordinal enum columns");
 
         assertEquals("1234567890", d.nik());
@@ -87,7 +87,7 @@ class BiodataDetailRowMapperTest {
         row.set(STATUS_KAWIN, (Byte) null);
 
         BiodataDetail d = assertDoesNotThrow(
-                () -> BiodataDetailRowMapper.map(row, List.of(), List.of()),
+                () -> BiodataDetailJooqMapper.map(row, List.of(), List.of()),
                 "map() must be null-safe for absent enum columns");
 
         assertNull(d.jenisKelamin());
@@ -103,7 +103,7 @@ class BiodataDetailRowMapperTest {
         row.set(AGAMA, (byte) 0);            // TIDAK_TAHU
         row.set(STATUS_KAWIN, (byte) 0);     // BELUM_KAWIN
 
-        BiodataDetail d = BiodataDetailRowMapper.map(row, List.of(), List.of());
+        BiodataDetail d = BiodataDetailJooqMapper.map(row, List.of(), List.of());
 
         assertEquals(EJenisKelamin.LAKI_LAKI, d.jenisKelamin());
         assertEquals(EAgama.TIDAK_TAHU, d.agama());

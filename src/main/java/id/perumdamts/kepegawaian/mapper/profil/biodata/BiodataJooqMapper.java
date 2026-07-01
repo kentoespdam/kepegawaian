@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.repositories.profil.jooq;
+package id.perumdamts.kepegawaian.mapper.profil.biodata;
 
 import id.perumdamts.kepegawaian.dto.master.jenjangPendidikan.JenjangPendidikanResponse;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataQuery;
@@ -9,7 +9,10 @@ import org.jooq.RecordMapper;
 
 import java.util.Objects;
 
-public class BiodataRowMapper implements RecordMapper<Record, BiodataQuery> {
+public final class BiodataJooqMapper implements RecordMapper<Record, BiodataQuery> {
+    public static final BiodataJooqMapper INSTANCE = new BiodataJooqMapper();
+
+    private BiodataJooqMapper() {}
 
     @Override
     public BiodataQuery map(Record record) {

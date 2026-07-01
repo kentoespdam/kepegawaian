@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.repositories.profil.jooq;
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaIndexQuery;
 import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaQuery;
+import id.perumdamts.kepegawaian.mapper.profil.keluarga.ProfilKeluargaJooqMapper;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -56,7 +57,7 @@ public class ProfilKeluargaQueryRepository {
                 .orderBy(sortOrder)
                 .limit(query.getSizeOrDefault())
                 .offset((long) query.getPageNumber() * query.getSizeOrDefault())
-                .fetch(new ProfilKeluargaRowMapper());
+                .fetch(ProfilKeluargaJooqMapper.INSTANCE);
 
         Long total = dsl.selectCount()
                 .from(PROFIL_KELUARGA)

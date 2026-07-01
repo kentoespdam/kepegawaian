@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.repositories.profil.jooq;
+package id.perumdamts.kepegawaian.mapper.profil.keahlian;
 
 import id.perumdamts.kepegawaian.dto.master.jenisKeahlian.JenisKeahlianResponse;
 import id.perumdamts.kepegawaian.dto.profil.keahlian.KeahlianQuery;
@@ -6,7 +6,10 @@ import id.perumdamts.kepegawaian.entities.commons.EKualifikasi;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
 
-public class KeahlianRowMapper implements RecordMapper<Record, KeahlianQuery> {
+public final class KeahlianJooqMapper implements RecordMapper<Record, KeahlianQuery> {
+    public static final KeahlianJooqMapper INSTANCE = new KeahlianJooqMapper();
+
+    private KeahlianJooqMapper() {}
 
     @Override
     public KeahlianQuery map(Record record) {

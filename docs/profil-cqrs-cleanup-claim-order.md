@@ -29,11 +29,11 @@
 
 ## STEP 0 — Sebelum kode apa pun (setiap klaim)
 
-- [ ] `bd prime` (recover beads workflow context)
-- [ ] `git status` clean; di branch `rewrite/master-cqrs`
-- [ ] `npx gitnexus analyze` bila index stale (cek warning hook — index terakhir 48725e6)
-- [ ] Baca exemplar `cuti`: satu `mapper/cuti/<aggregate>/*Mapper.java` (Pola B) + `CutiPengajuanQueryRepository`
-- [ ] `bd update kepegawaian-<id> --claim` issue yang dimulai
+- [x] `bd prime` (recover beads workflow context)
+- [x] `git status` clean; di branch `rewrite/master-cqrs`
+- [x] `npx gitnexus analyze` bila index stale (cek warning hook — index terakhir 48725e6)
+- [x] Baca exemplar `cuti`: satu `mapper/cuti/<aggregate>/*Mapper.java` (Pola B) + `CutiPengajuanQueryRepository`
+- [x] `bd update kepegawaian-<id> --claim` issue yang dimulai
 
 ---
 
@@ -45,7 +45,7 @@
 - [x] `bd create` 15 child (W1a–h, W2a–e, PU-1, PU-2), tautkan parent-child ke epik
 - [x] `bd dep add kepegawaian-996 kepegawaian-mfq` (PU-2 blocked by PU-1)
 - [x] `decisions-pegawai.md` ditambah 4 bullet keputusan (§51, §53, §55) — commit `fc6d071`
-- [ ] Push epik + issue ke Dolt/remote saat session-close
+- [x] Push epik + issue ke Dolt/remote saat session-close
 
 ---
 
@@ -64,24 +64,24 @@
 5. **single `git add` batch di akhir** (NEVER paralel `git add` + Edit; NEVER amend)
 6. `git diff --cached` → `./gradlew compileJava`
 
-- [ ] **W1a `iki`** `BiodataRowMapper` → `mapper/profil/biodata/BiodataJooqMapper.java`. Importer: `BiodataQueryRepository.java`
-- [ ] **W1b `g5n`** 3 mapper, importer TUNGGAL `BiodataDetailQuery.java` (edit sekali):
+- [x] **W1a `iki`** `BiodataRowMapper` → `mapper/profil/biodata/BiodataJooqMapper.java`. Importer: `BiodataQueryRepository.java`
+- [x] **W1b `g5n`** 3 mapper, importer TUNGGAL `BiodataDetailQuery.java` (edit sekali):
   - `BiodataDetailRowMapper` → `mapper/profil/biodata/`
   - `PendidikanMultisetMapper` → `mapper/profil/pendidikan/`
   - `KartuIdentitasMultisetMapper` → `mapper/profil/kartuIdentitas/`
-- [ ] **W1c `fvi`** `PendidikanRowMapper` → `mapper/profil/pendidikan/`. Importer: `PendidikanQueryRepository` + `PendidikanDetailQuery`
-- [ ] **W1d `5ny`** `ProfilKeluargaRowMapper` → `mapper/profil/keluarga/`. Importer: `ProfilKeluargaQueryRepository` + `ProfilKeluargaDetailQuery`
-- [ ] **W1e `rpq`** `KeahlianRowMapper` → `mapper/profil/keahlian/`. Importer: `KeahlianQueryRepository` + `KeahlianDetailQuery`
-- [ ] **W1f `ure`** `KartuIdentitasRowMapper` → `mapper/profil/kartuIdentitas/`. Importer: `KartuIdentitasQueryRepository` (inline `new KartuIdentitasRowMapper()`)
-- [ ] **W1g `4lt`** `PelatihanRowMapper` → `mapper/profil/pelatihan/`. Importer: `PelatihanQueryRepository`
-- [ ] **W1h `lep`** `PengalamanKerjaRowMapper` → `mapper/profil/pengalamanKerja/`. Importer: `PengalamanKerjaQueryRepository`
+- [x] **W1c `fvi`** `PendidikanRowMapper` → `mapper/profil/pendidikan/`. Importer: `PendidikanQueryRepository` + `PendidikanDetailQuery`
+- [x] **W1d `5ny`** `ProfilKeluargaRowMapper` → `mapper/profil/keluarga/`. Importer: `ProfilKeluargaQueryRepository` + `ProfilKeluargaDetailQuery`
+- [x] **W1e `rpq`** `KeahlianRowMapper` → `mapper/profil/keahlian/`. Importer: `KeahlianQueryRepository` + `KeahlianDetailQuery`
+- [x] **W1f `ure`** `KartuIdentitasRowMapper` → `mapper/profil/kartuIdentitas/`. Importer: `KartuIdentitasQueryRepository` (inline `new KartuIdentitasRowMapper()`)
+- [x] **W1g `4lt`** `PelatihanRowMapper` → `mapper/profil/pelatihan/`. Importer: `PelatihanQueryRepository`
+- [x] **W1h `lep`** `PengalamanKerjaRowMapper` → `mapper/profil/pengalamanKerja/`. Importer: `PengalamanKerjaQueryRepository`
 
 ### Acceptance (Wave 1)
-- [ ] `grep -rl "repositories.profil.jooq" src --include='*.java'` → 0 referensi ke mapper yang dipindah
-- [ ] Tak ada `*RowMapper`/`*MultisetMapper` tersisa di `repositories/profil/jooq/`
-- [ ] Tiap mapper = `final class` + private ctor + `implements RecordMapper`, tanpa `@Component`
-- [ ] `./gradlew compileJava` → SUCCESSFUL
-- [ ] `gitnexus_detect_changes()` scope = mapper + importer terkait saja
+- [x] `grep -rl "repositories.profil.jooq" src --include='*.java'` → 0 referensi ke mapper yang dipindah
+- [x] Tak ada `*RowMapper`/`*MultisetMapper` tersisa di `repositories/profil/jooq/`
+- [x] Tiap mapper = `final class` + private ctor + `implements RecordMapper`, tanpa `@Component`
+- [x] `./gradlew compileJava` → SUCCESSFUL
+- [x] `gitnexus_detect_changes()` scope = mapper + importer terkait saja
 
 ---
 

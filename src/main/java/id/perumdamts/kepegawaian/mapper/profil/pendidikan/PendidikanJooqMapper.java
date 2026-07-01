@@ -1,11 +1,14 @@
-package id.perumdamts.kepegawaian.repositories.profil.jooq;
+package id.perumdamts.kepegawaian.mapper.profil.pendidikan;
 
 import id.perumdamts.kepegawaian.dto.master.jenjangPendidikan.JenjangPendidikanResponse;
 import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanQuery;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
 
-public class PendidikanRowMapper implements RecordMapper<Record, PendidikanQuery> {
+public final class PendidikanJooqMapper implements RecordMapper<Record, PendidikanQuery> {
+    public static final PendidikanJooqMapper INSTANCE = new PendidikanJooqMapper();
+
+    private PendidikanJooqMapper() {}
 
     @Override
     public PendidikanQuery map(Record record) {

@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.repositories.profil.jooq;
+package id.perumdamts.kepegawaian.mapper.profil.kartuIdentitas;
 
 import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasQuery;
 import org.jooq.Record;
@@ -6,7 +6,10 @@ import org.jooq.RecordMapper;
 
 import java.util.Objects;
 
-public class KartuIdentitasRowMapper implements RecordMapper<Record, KartuIdentitasQuery> {
+public final class KartuIdentitasJooqMapper implements RecordMapper<Record, KartuIdentitasQuery> {
+    public static final KartuIdentitasJooqMapper INSTANCE = new KartuIdentitasJooqMapper();
+
+    private KartuIdentitasJooqMapper() {}
     @Override
     public KartuIdentitasQuery map(Record record) {
         KartuIdentitasQuery q = new KartuIdentitasQuery();

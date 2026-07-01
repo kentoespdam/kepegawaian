@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.repositories.profil.jooq;
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasIndexQuery;
 import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasQuery;
+import id.perumdamts.kepegawaian.mapper.profil.kartuIdentitas.KartuIdentitasJooqMapper;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -58,7 +59,7 @@ public class KartuIdentitasQueryRepository {
                 .orderBy(sortOrder)
                 .offset(query.getPage() * query.getSize())
                 .limit(query.getSize())
-                .fetch(new KartuIdentitasRowMapper());
+                .fetch(KartuIdentitasJooqMapper.INSTANCE);
 
         return new PageImpl<>(data, PageRequest.of(query.getPage(), query.getSize()), count);
     }

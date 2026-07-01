@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.repositories.profil.jooq;
+package id.perumdamts.kepegawaian.mapper.profil.biodata;
 
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataDetail;
 import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasQuery;
@@ -13,12 +13,12 @@ import org.jooq.Record;
 import java.time.LocalDate;
 import java.util.List;
 
-final class BiodataDetailRowMapper {
+public final class BiodataDetailJooqMapper {
 
-    private BiodataDetailRowMapper() {
+    private BiodataDetailJooqMapper() {
     }
 
-    static BiodataDetail map(Record record,
+    public static BiodataDetail map(Record record,
                              List<PendidikanQuery> pendidikan,
                              List<KartuIdentitasQuery> kartuIdentitas) {
         Byte jk = record.get("jenis_kelamin", Byte.class);

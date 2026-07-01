@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.repositories.profil.jooq;
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.profil.pengalamanKerja.PengalamanKerjaIndexQuery;
 import id.perumdamts.kepegawaian.dto.profil.pengalamanKerja.PengalamanKerjaQuery;
+import id.perumdamts.kepegawaian.mapper.profil.pengalamanKerja.PengalamanKerjaJooqMapper;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -58,7 +59,7 @@ public class PengalamanKerjaQueryRepository {
                 .orderBy(sortOrder)
                 .offset(query.getPage() * query.getSize())
                 .limit(query.getSize())
-                .fetch(new PengalamanKerjaRowMapper());
+                .fetch(PengalamanKerjaJooqMapper.INSTANCE);
 
         return new PageImpl<>(data, PageRequest.of(query.getPage(), query.getSize()), count);
     }

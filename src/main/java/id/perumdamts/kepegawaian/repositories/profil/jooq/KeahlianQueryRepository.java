@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.repositories.profil.jooq;
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.profil.keahlian.KeahlianIndexQuery;
 import id.perumdamts.kepegawaian.dto.profil.keahlian.KeahlianQuery;
+import id.perumdamts.kepegawaian.mapper.profil.keahlian.KeahlianJooqMapper;
 import id.perumdamts.kepegawaian.jooq.tables.Biodata;
 import id.perumdamts.kepegawaian.jooq.tables.JenisKeahlian;
 import lombok.RequiredArgsConstructor;
@@ -60,7 +61,7 @@ public class KeahlianQueryRepository {
                 .orderBy(sort)
                 .offset(query.getPageNumber() * query.getSizeOrDefault())
                 .limit(query.getSizeOrDefault())
-                .fetch(new KeahlianRowMapper());
+                .fetch(KeahlianJooqMapper.INSTANCE);
 
         return new PageImpl<>(data,
                 PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()),

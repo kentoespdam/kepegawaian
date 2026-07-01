@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.repositories.profil.jooq;
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanIndexQuery;
 import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanQuery;
+import id.perumdamts.kepegawaian.mapper.profil.pendidikan.PendidikanJooqMapper;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -60,7 +61,7 @@ public class PendidikanQueryRepository {
                 .orderBy(sortOrder)
                 .offset(query.getPage() * query.getSize())
                 .limit(query.getSize())
-                .fetch(new PendidikanRowMapper());
+                .fetch(PendidikanJooqMapper.INSTANCE);
 
         return new PageImpl<>(data, PageRequest.of(query.getPage(), query.getSize()), count);
     }

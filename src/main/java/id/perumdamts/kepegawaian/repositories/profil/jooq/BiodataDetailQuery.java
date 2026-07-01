@@ -1,6 +1,9 @@
 package id.perumdamts.kepegawaian.repositories.profil.jooq;
 
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataDetail;
+import id.perumdamts.kepegawaian.mapper.profil.biodata.BiodataDetailJooqMapper;
+import id.perumdamts.kepegawaian.mapper.profil.kartuIdentitas.KartuIdentitasMultisetJooqMapper;
+import id.perumdamts.kepegawaian.mapper.profil.pendidikan.PendidikanMultisetJooqMapper;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
@@ -45,7 +48,7 @@ public class BiodataDetailQuery {
                         .leftJoin(JENJANG_PENDIDIKAN).on(PENDIDIKAN.JENJANG_ID.eq(JENJANG_PENDIDIKAN.ID))
                         .where(PENDIDIKAN.BIODATA_ID.eq(nik))
                         .and(PENDIDIKAN.IS_DELETED.eq(false))
-        ).as("pendidikan").convertFrom(r -> r.map(new PendidikanMultisetMapper()));
+        ).as("pendidikan").convertFrom(r -> r.map(PendidikanMultisetJooqMapper.INSTANCE));
 
         var kartuIdentitasMultiset = multiset(
                 select(
@@ -62,7 +65,7 @@ public class BiodataDetailQuery {
                         .leftJoin(JENIS_KITAS).on(KARTU_IDENTITAS.JENIS_KITAS_ID.eq(JENIS_KITAS.ID))
                         .where(KARTU_IDENTITAS.NIK.eq(nik))
                         .and(KARTU_IDENTITAS.IS_DELETED.eq(false))
-        ).as("kartu_identitas").convertFrom(r -> r.map(new KartuIdentitasMultisetMapper()));
+        ).as("kartu_identitas").convertFrom(r -> r.map(KartuIdentitasMultisetJooqMapper.INSTANCE));
 
         return dsl.select(
                         BIODATA.NIK,
@@ -86,7 +89,7 @@ public class BiodataDetailQuery {
                 .where(BIODATA.NIK.eq(nik))
                 .and(BIODATA.IS_DELETED.eq(false))
                 .fetchOptional()
-                .map(r -> BiodataDetailRowMapper.map(
+                .map(r -> BiodataDetailJooqMapper.map(
                         r,
                         r.get(pendidikanMultiset),
                         r.get(kartuIdentitasMultiset)));
