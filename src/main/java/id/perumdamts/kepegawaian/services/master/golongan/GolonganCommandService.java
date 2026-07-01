@@ -1,7 +1,5 @@
 package id.perumdamts.kepegawaian.services.master.golongan;
 
-import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
-import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.master.golongan.GolonganPostRequest;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.exceptions.ConflictException;

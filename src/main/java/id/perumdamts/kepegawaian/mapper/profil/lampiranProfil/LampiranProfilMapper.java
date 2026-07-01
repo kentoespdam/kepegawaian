@@ -1,6 +1,5 @@
 package id.perumdamts.kepegawaian.mapper.profil.lampiranProfil;
 
-import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilAcceptRequest;
 import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilPostRequest;
 import id.perumdamts.kepegawaian.entities.profil.LampiranProfil;
 

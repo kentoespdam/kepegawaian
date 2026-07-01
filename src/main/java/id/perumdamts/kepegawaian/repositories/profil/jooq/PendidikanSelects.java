@@ -1,8 +1,6 @@
 package id.perumdamts.kepegawaian.repositories.profil.jooq;
 
 import org.jooq.Field;
-import org.jooq.TableField;
-import org.jooq.impl.DSL;
 
 import java.util.List;
 

@@ -5,10 +5,9 @@ package id.perumdamts.kepegawaian.jooq.tables.records;
 
 
 import id.perumdamts.kepegawaian.jooq.tables.VPegawai;
+import org.jooq.impl.TableRecordImpl;
 
 import java.time.LocalDate;
-
-import org.jooq.impl.TableRecordImpl;
 
 
 /**

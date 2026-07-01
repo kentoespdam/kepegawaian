@@ -9,11 +9,7 @@ import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiPutRe
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
-import id.perumdamts.kepegawaian.entities.kepegawaian.LampiranSk;
-import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatKontrak;
-import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatMutasi;
-import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
-import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatTerminasi;
+import id.perumdamts.kepegawaian.entities.kepegawaian.*;
 import id.perumdamts.kepegawaian.entities.master.AlasanBerhenti;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
@@ -21,16 +17,12 @@ import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.exceptions.ConflictException;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
-import id.perumdamts.kepegawaian.repositories.kepegawaian.jpa.LampiranSkRepository;
-import id.perumdamts.kepegawaian.repositories.kepegawaian.jpa.RiwayatMutasiRepository;
-import id.perumdamts.kepegawaian.repositories.kepegawaian.jpa.RiwayatSkRepository;
-import id.perumdamts.kepegawaian.repositories.kepegawaian.jpa.RiwayatTerminasiRepository;
+import id.perumdamts.kepegawaian.repositories.kepegawaian.jpa.*;
 import id.perumdamts.kepegawaian.repositories.master.jpa.AlasanBerhentiRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.GolonganRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JabatanRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.OrganisasiRepository;
 import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
-import id.perumdamts.kepegawaian.repositories.kepegawaian.jpa.RiwayatKontrakRepository;
 import id.perumdamts.kepegawaian.services.kepegawaian.lampiran.LampiranSkCommandService;
 import id.perumdamts.kepegawaian.services.pegawai.pegawai.PegawaiWriteback;
 import lombok.RequiredArgsConstructor;
@@ -142,7 +134,7 @@ public class RiwayatTerminasiCommandService {
         if (request.getFileName() != null) {
             var oldLampirans = lampiranSkRepository.findByRefAndRefId(EJenisSk.SK_PENSIUN, savedSk.getId());
             if (!oldLampirans.isEmpty()) {
-                LampiranSk oldLampiran = oldLampirans.get(0);
+                LampiranSk oldLampiran = oldLampirans.getFirst();
                 if (oldLampiran != null) {
                     lampiranSkCommandService.deleteById(oldLampiran.getId());
                 }

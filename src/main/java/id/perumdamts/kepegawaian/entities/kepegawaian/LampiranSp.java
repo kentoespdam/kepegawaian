@@ -2,7 +2,9 @@ package id.perumdamts.kepegawaian.entities.kepegawaian;
 
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
 import jakarta.persistence.MappedSuperclass;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.envers.Audited;
 
 

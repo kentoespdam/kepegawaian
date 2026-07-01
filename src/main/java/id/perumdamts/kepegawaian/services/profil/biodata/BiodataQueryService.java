@@ -1,9 +1,9 @@
 package id.perumdamts.kepegawaian.services.profil.biodata;
 
+import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataDetail;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataIndexQuery;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataQuery;
-import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;

@@ -1,8 +1,8 @@
 package id.perumdamts.kepegawaian.repositories.master.jooq;
 
+import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.master.level.LevelIndexQuery;
 import id.perumdamts.kepegawaian.dto.master.level.LevelQuery;
-import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.jooq.tables.Level;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;

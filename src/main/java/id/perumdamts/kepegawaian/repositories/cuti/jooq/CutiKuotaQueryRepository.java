@@ -1,7 +1,10 @@
 package id.perumdamts.kepegawaian.repositories.cuti.jooq;
 
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
-import id.perumdamts.kepegawaian.dto.cuti.kuota.*;
+import id.perumdamts.kepegawaian.dto.cuti.kuota.CutiKuotaPegawaiResponse;
+import id.perumdamts.kepegawaian.dto.cuti.kuota.CutiKuotaRequest;
+import id.perumdamts.kepegawaian.dto.cuti.kuota.CutiKuotaResponse;
+import id.perumdamts.kepegawaian.dto.cuti.kuota.CutiKuotaSisa;
 import id.perumdamts.kepegawaian.mapper.cuti.CutiKuotaJooqMapper;
 import lombok.RequiredArgsConstructor;
 import org.jooq.Condition;

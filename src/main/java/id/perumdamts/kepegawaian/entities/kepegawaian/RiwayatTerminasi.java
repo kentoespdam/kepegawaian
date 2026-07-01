@@ -11,7 +11,9 @@ import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
@@ -46,7 +48,7 @@ public class RiwayatTerminasi extends IdsAbstract {
     private String nomorSk;
     @JsonBackReference
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "riwayat_sk_id", referencedColumnName = "id")
+    @JoinColumn(name = "sk_terminasi_id", referencedColumnName = "id")
     private RiwayatSk skTerminasi;
     @ManyToOne
     @JoinColumn(name = "organisasi_id", referencedColumnName = "id")

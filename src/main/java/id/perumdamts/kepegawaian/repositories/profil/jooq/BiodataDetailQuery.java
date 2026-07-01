@@ -11,10 +11,10 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 import static id.perumdamts.kepegawaian.jooq.tables.Biodata.BIODATA;
+import static id.perumdamts.kepegawaian.jooq.tables.JenisKitas.JENIS_KITAS;
 import static id.perumdamts.kepegawaian.jooq.tables.JenjangPendidikan.JENJANG_PENDIDIKAN;
 import static id.perumdamts.kepegawaian.jooq.tables.KartuIdentitas.KARTU_IDENTITAS;
 import static id.perumdamts.kepegawaian.jooq.tables.Pendidikan.PENDIDIKAN;
-import static id.perumdamts.kepegawaian.jooq.tables.JenisKitas.JENIS_KITAS;
 import static org.jooq.impl.DSL.multiset;
 import static org.jooq.impl.DSL.select;
 

@@ -2,9 +2,9 @@ package id.perumdamts.kepegawaian.repositories.profil.jooq;
 
 import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaDetail;
 import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaQuery;
-import id.perumdamts.kepegawaian.mapper.profil.keluarga.ProfilKeluargaJooqMapper;
 import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranRow;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
+import id.perumdamts.kepegawaian.mapper.profil.keluarga.ProfilKeluargaJooqMapper;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;

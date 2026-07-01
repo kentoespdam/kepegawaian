@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record;
-import org.jooq.impl.DSL;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -20,8 +19,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import static id.perumdamts.kepegawaian.jooq.tables.RiwayatSk.RIWAYAT_SK;
 import static id.perumdamts.kepegawaian.jooq.tables.Golongan.GOLONGAN;
+import static id.perumdamts.kepegawaian.jooq.tables.RiwayatSk.RIWAYAT_SK;
 
 @Repository
 @RequiredArgsConstructor

@@ -2,11 +2,11 @@ package id.perumdamts.kepegawaian.repositories.profil.jooq;
 
 import id.perumdamts.kepegawaian.dto.profil.keahlian.KeahlianDetail;
 import id.perumdamts.kepegawaian.dto.profil.keahlian.KeahlianQuery;
-import id.perumdamts.kepegawaian.mapper.profil.keahlian.KeahlianJooqMapper;
 import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranRow;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.jooq.tables.Biodata;
 import id.perumdamts.kepegawaian.jooq.tables.JenisKeahlian;
+import id.perumdamts.kepegawaian.mapper.profil.keahlian.KeahlianJooqMapper;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;

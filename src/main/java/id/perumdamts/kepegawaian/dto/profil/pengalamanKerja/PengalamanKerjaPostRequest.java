@@ -7,8 +7,6 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.time.LocalDateTime;
-
 @Data
 public class PengalamanKerjaPostRequest {
     @NotEmpty(message = "Biodata ID is required")

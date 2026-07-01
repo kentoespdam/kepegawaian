@@ -1,11 +1,11 @@
 package id.perumdamts.kepegawaian.controllers.master;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
+import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
+import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.master.jenisKitas.JenisKitasIndexQuery;
 import id.perumdamts.kepegawaian.dto.master.jenisKitas.JenisKitasPostRequest;
-import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
-import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.services.master.jenisKitas.JenisKitasCommandService;
 import id.perumdamts.kepegawaian.services.master.jenisKitas.JenisKitasQueryService;
 import jakarta.validation.Valid;

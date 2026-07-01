@@ -1,6 +1,5 @@
 package id.perumdamts.kepegawaian.services.profil.kartuIdentitas;
 
-import id.perumdamts.kepegawaian.mapper.profil.kartuIdentitas.KartuIdentitasMapper;
 import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasPutRequest;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
@@ -8,6 +7,7 @@ import id.perumdamts.kepegawaian.entities.master.JenisKitas;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.KartuIdentitas;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
+import id.perumdamts.kepegawaian.mapper.profil.kartuIdentitas.KartuIdentitasMapper;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JenisKitasRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.KartuIdentitasRepository;

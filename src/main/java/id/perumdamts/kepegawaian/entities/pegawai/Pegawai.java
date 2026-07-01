@@ -15,7 +15,10 @@ import id.perumdamts.kepegawaian.entities.penggajian.GajiProfil;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
@@ -43,7 +46,7 @@ public class Pegawai extends IdsAbstract {
     private String nipam;
     @JsonBackReference
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "nik", referencedColumnName = "nik")
+    @JoinColumn(name = "biodata_id", referencedColumnName = "nik")
     private Biodata biodata;
     @Column(name = "status_pegawai", nullable = false)
     @Enumerated(EnumType.ORDINAL)

@@ -1,8 +1,8 @@
 package id.perumdamts.kepegawaian.repositories.profil.jooq;
 
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
-import id.perumdamts.kepegawaian.dto.profil.profileUpdate.ProfileUpdateRequest;
 import id.perumdamts.kepegawaian.dto.profil.profileUpdate.ProfileUpdateQuery;
+import id.perumdamts.kepegawaian.dto.profil.profileUpdate.ProfileUpdateRequest;
 import id.perumdamts.kepegawaian.mapper.profil.profilUpdate.ProfileUpdateJooqMapper;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;

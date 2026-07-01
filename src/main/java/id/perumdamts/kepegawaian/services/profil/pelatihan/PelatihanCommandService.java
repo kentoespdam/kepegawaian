@@ -1,6 +1,5 @@
 package id.perumdamts.kepegawaian.services.profil.pelatihan;
 
-import id.perumdamts.kepegawaian.mapper.profil.pelatihan.PelatihanMapper;
 import id.perumdamts.kepegawaian.dto.profil.pelatihan.PelatihanLampiranPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.pelatihan.PelatihanPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.pelatihan.PelatihanPutRequest;
@@ -10,6 +9,7 @@ import id.perumdamts.kepegawaian.entities.master.JenisPelatihan;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.Pelatihan;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
+import id.perumdamts.kepegawaian.mapper.profil.pelatihan.PelatihanMapper;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JenisPelatihanRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.PelatihanRepository;

@@ -1,9 +1,9 @@
 package id.perumdamts.kepegawaian.services.profil.keahlian;
 
-import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilQuery;
 import id.perumdamts.kepegawaian.dto.profil.keahlian.KeahlianDetail;
 import id.perumdamts.kepegawaian.dto.profil.keahlian.KeahlianIndexQuery;
 import id.perumdamts.kepegawaian.dto.profil.keahlian.KeahlianQuery;
+import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilQuery;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.profil.jooq.KeahlianDetailQuery;

@@ -6,12 +6,11 @@ package id.perumdamts.kepegawaian.jooq.tables.records;
 
 import id.perumdamts.kepegawaian.jooq.enums.BiodataAudGolonganDarah;
 import id.perumdamts.kepegawaian.jooq.tables.BiodataAud;
+import org.jooq.Record2;
+import org.jooq.impl.UpdatableRecordImpl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
-import org.jooq.Record2;
-import org.jooq.impl.UpdatableRecordImpl;
 
 
 /**

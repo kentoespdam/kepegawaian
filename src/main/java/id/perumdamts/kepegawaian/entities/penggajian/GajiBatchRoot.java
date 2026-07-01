@@ -1,10 +1,10 @@
 package id.perumdamts.kepegawaian.entities.penggajian;
 
-import id.perumdamts.kepegawaian.entities.commons.EProsesGaji;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import id.perumdamts.kepegawaian.entities.commons.EProsesGaji;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

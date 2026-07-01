@@ -1,6 +1,5 @@
 package id.perumdamts.kepegawaian.services.profil.pendidikan;
 
-import id.perumdamts.kepegawaian.mapper.profil.pendidikan.PendidikanMapper;
 import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanPutRequest;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
@@ -9,6 +8,7 @@ import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.Pendidikan;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
+import id.perumdamts.kepegawaian.mapper.profil.pendidikan.PendidikanMapper;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JenjangPendidikanRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.PendidikanRepository;

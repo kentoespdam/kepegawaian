@@ -1,8 +1,8 @@
 package id.perumdamts.kepegawaian.services.profil.profilUpdate;
 
 import id.perumdamts.kepegawaian.dto.profil.profileUpdate.ProfilUpdateDetail;
-import id.perumdamts.kepegawaian.dto.profil.profileUpdate.ProfileUpdateRequest;
 import id.perumdamts.kepegawaian.dto.profil.profileUpdate.ProfileUpdateQuery;
+import id.perumdamts.kepegawaian.dto.profil.profileUpdate.ProfileUpdateRequest;
 import id.perumdamts.kepegawaian.entities.commons.EProfileUpdateApproval;
 import id.perumdamts.kepegawaian.entities.commons.EProfileUpdateTable;
 import id.perumdamts.kepegawaian.entities.profil.ProfileUpdate;

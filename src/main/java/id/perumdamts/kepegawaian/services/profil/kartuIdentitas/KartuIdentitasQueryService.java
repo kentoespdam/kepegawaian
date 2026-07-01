@@ -1,9 +1,9 @@
 package id.perumdamts.kepegawaian.services.profil.kartuIdentitas;
 
-import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilQuery;
 import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasDetail;
 import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasIndexQuery;
 import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasQuery;
+import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilQuery;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.profil.jooq.KartuIdentitasDetailQuery;
