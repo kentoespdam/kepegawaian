@@ -2,6 +2,11 @@ package id.perumdamts.kepegawaian.repositories.pegawai.jooq;
 
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkResponse;
+import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiListResponse;
+import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiRequest;
+import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiResponse;
+import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiResponseDetail;
+import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.golongan.GolonganResponse;
 import id.perumdamts.kepegawaian.dto.master.grade.GradeResponse;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;
@@ -11,19 +16,15 @@ import id.perumdamts.kepegawaian.dto.master.level.LevelResponse;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.rumahDinas.RumahDinasResponse;
-import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiListResponse;
-import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiRequest;
-import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiResponse;
-import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiResponseDetail;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiPendapatanNonPajak.GajiPendapatanNonPajakResponse;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiProfil.GajiProfilResponse;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataResponse;
-import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasMiniResponse;
 import id.perumdamts.kepegawaian.entities.commons.*;
+import id.perumdamts.kepegawaian.mapper.pegawai.pegawai.PegawaiRecordMapper;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Field;
-import org.jooq.Record;
+import org.jooq.SelectField;
 import org.jooq.impl.DSL;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -136,6 +137,73 @@ public class PegawaiQueryRepository {
         return conditions;
     }
 
+    private SelectField<?>[] pegawaiResponseFields() {
+        return new SelectField<?>[]{
+                PEGAWAI.ID,
+                PEGAWAI.NIPAM,
+                PEGAWAI.STATUS_PEGAWAI,
+                PEGAWAI.STATUS_KERJA,
+                PEGAWAI.REF_SK_CAPEG_ID,
+                PEGAWAI.TMT_KERJA,
+                PEGAWAI.TMT_PENSIUN,
+                PEGAWAI.REF_SK_PEGAWAI_ID,
+                PEGAWAI.TMT_PEGAWAI,
+                PEGAWAI.REF_SK_GOL_ID,
+                PEGAWAI.TMT_GOLONGAN,
+                PEGAWAI.REF_SK_JABATAN_ID,
+                PEGAWAI.TMT_JABATAN,
+                PEGAWAI.REF_SK_MUTASI_ID,
+                PEGAWAI.TMT_MUTASI,
+                PEGAWAI.GAJI_POKOK,
+                PEGAWAI.PHDP,
+                PEGAWAI.JML_TANGGUNGAN,
+                PEGAWAI.IS_ASKES,
+                PEGAWAI.MKG_TAHUN,
+                PEGAWAI.MKG_BULAN,
+                PEGAWAI.EMAIL,
+                PEGAWAI.ABSENSI_ID,
+                PEGAWAI.NOTES,
+                BIODATA.NIK.as("biodata_nik"),
+                BIODATA.NAMA.as("biodata_nama"),
+                PENDIDIKAN.GELAR_DEPAN.as("biodata_gelar_depan"),
+                PENDIDIKAN.GELAR_BELAKANG.as("biodata_gelar_belakang"),
+                ORGANISASI.ID.as("organisasi_id"),
+                ORGANISASI.NAMA.as("organisasi_nama"),
+                JABATAN.ID.as("jabatan_id"),
+                JABATAN.NAMA.as("jabatan_nama"),
+                PROFESI.ID.as("profesi_id"),
+                PROFESI.NAMA.as("profesi_nama"),
+                GOLONGAN.ID.as("golongan_id"),
+                GOLONGAN.GOLONGAN_.as("golongan_golongan"),
+                GOLONGAN.PANGKAT.as("golongan_pangkat"),
+                GRADE.ID.as("grade_id"),
+                GRADE.GRADE_.as("grade_grade"),
+                GAJI_PENDAPATAN_NON_PAJAK.ID.as("kode_pajak_id"),
+                GAJI_PENDAPATAN_NON_PAJAK.KODE.as("kode_pajak_kode")
+        };
+    }
+
+    private SelectField<?>[] pegawaiListResponseFields() {
+        return new SelectField<?>[]{
+                PEGAWAI.ID,
+                PEGAWAI.NIPAM,
+                PEGAWAI.STATUS_PEGAWAI,
+                BIODATA.NAMA.as("biodata_nama"),
+                ORGANISASI.ID.as("organisasi_id"),
+                ORGANISASI.KODE.as("organisasi_kode"),
+                ORGANISASI.NAMA.as("organisasi_nama"),
+                ORGANISASI.SHORT_NAME.as("organisasi_short_name"),
+                JABATAN.ID.as("jabatan_id"),
+                JABATAN.KODE.as("jabatan_kode"),
+                JABATAN.NAMA.as("jabatan_nama"),
+                LEVEL.ID.as("level_id"),
+                LEVEL.NAMA.as("level_nama"),
+                GOLONGAN.ID.as("golongan_id"),
+                GOLONGAN.GOLONGAN_.as("golongan_golongan"),
+                GOLONGAN.PANGKAT.as("golongan_pangkat")
+        };
+    }
+
     public Page<PegawaiResponse> findPage(PegawaiRequest request) {
         var conditions = buildConditions(request);
         var sortOrder = SortParam.resolve(request.getSortBy(), request.getSortDirection(), ALLOWED_SORTS, PEGAWAI.ID);
@@ -146,49 +214,7 @@ public class PegawaiQueryRepository {
                 .where(conditions)
                 .fetchOneInto(Long.class);
 
-        var rows = dsl.select(
-                        PEGAWAI.ID,
-                        PEGAWAI.NIPAM,
-                        PEGAWAI.STATUS_PEGAWAI,
-                        PEGAWAI.STATUS_KERJA,
-                        PEGAWAI.REF_SK_CAPEG_ID,
-                        PEGAWAI.TMT_KERJA,
-                        PEGAWAI.TMT_PENSIUN,
-                        PEGAWAI.REF_SK_PEGAWAI_ID,
-                        PEGAWAI.TMT_PEGAWAI,
-                        PEGAWAI.REF_SK_GOL_ID,
-                        PEGAWAI.TMT_GOLONGAN,
-                        PEGAWAI.REF_SK_JABATAN_ID,
-                        PEGAWAI.TMT_JABATAN,
-                        PEGAWAI.REF_SK_MUTASI_ID,
-                        PEGAWAI.TMT_MUTASI,
-                        PEGAWAI.GAJI_POKOK,
-                        PEGAWAI.PHDP,
-                        PEGAWAI.JML_TANGGUNGAN,
-                        PEGAWAI.IS_ASKES,
-                        PEGAWAI.MKG_TAHUN,
-                        PEGAWAI.MKG_BULAN,
-                        PEGAWAI.EMAIL,
-                        PEGAWAI.ABSENSI_ID,
-                        PEGAWAI.NOTES,
-                        BIODATA.NIK.as("biodata_nik"),
-                        BIODATA.NAMA.as("biodata_nama"),
-                        PENDIDIKAN.GELAR_DEPAN.as("biodata_gelar_depan"),
-                        PENDIDIKAN.GELAR_BELAKANG.as("biodata_gelar_belakang"),
-                        ORGANISASI.ID.as("organisasi_id"),
-                        ORGANISASI.NAMA.as("organisasi_nama"),
-                        JABATAN.ID.as("jabatan_id"),
-                        JABATAN.NAMA.as("jabatan_nama"),
-                        PROFESI.ID.as("profesi_id"),
-                        PROFESI.NAMA.as("profesi_nama"),
-                        GOLONGAN.ID.as("golongan_id"),
-                        GOLONGAN.GOLONGAN_.as("golongan_golongan"),
-                        GOLONGAN.PANGKAT.as("golongan_pangkat"),
-                        GRADE.ID.as("grade_id"),
-                        GRADE.GRADE_.as("grade_grade"),
-                        GAJI_PENDAPATAN_NON_PAJAK.ID.as("kode_pajak_id"),
-                        GAJI_PENDAPATAN_NON_PAJAK.KODE.as("kode_pajak_kode")
-                )
+        var rows = dsl.select(pegawaiResponseFields())
                 .from(PEGAWAI)
                 .leftJoin(BIODATA).on(PEGAWAI.NIK.eq(BIODATA.NIK))
                 .leftJoin(PENDIDIKAN).on(PENDIDIKAN.BIODATA_ID.eq(BIODATA.NIK)
@@ -204,7 +230,7 @@ public class PegawaiQueryRepository {
                 .orderBy(sortOrder)
                 .limit(request.getSizeOrDefault())
                 .offset(request.offset())
-                .fetch(PegawaiQueryRepository::mapPegawaiResponse);
+                .fetch(PegawaiRecordMapper::mapResponse);
 
         return new PageImpl<>(rows, PageRequest.of(request.getPageNumber(), request.getSizeOrDefault()), total != null ? total : 0L);
     }
@@ -213,24 +239,7 @@ public class PegawaiQueryRepository {
         var conditions = buildConditions(request);
         var sortOrder = SortParam.resolve(request.getSortBy(), request.getSortDirection(), ALLOWED_SORTS, PEGAWAI.ID);
 
-        return dsl.select(
-                        PEGAWAI.ID,
-                        PEGAWAI.NIPAM,
-                        PEGAWAI.STATUS_PEGAWAI,
-                        BIODATA.NAMA.as("biodata_nama"),
-                        ORGANISASI.ID.as("organisasi_id"),
-                        ORGANISASI.KODE.as("organisasi_kode"),
-                        ORGANISASI.NAMA.as("organisasi_nama"),
-                        ORGANISASI.SHORT_NAME.as("organisasi_short_name"),
-                        JABATAN.ID.as("jabatan_id"),
-                        JABATAN.KODE.as("jabatan_kode"),
-                        JABATAN.NAMA.as("jabatan_nama"),
-                        LEVEL.ID.as("level_id"),
-                        LEVEL.NAMA.as("level_nama"),
-                        GOLONGAN.ID.as("golongan_id"),
-                        GOLONGAN.GOLONGAN_.as("golongan_golongan"),
-                        GOLONGAN.PANGKAT.as("golongan_pangkat")
-                )
+        return dsl.select(pegawaiListResponseFields())
                 .from(PEGAWAI)
                 .leftJoin(BIODATA).on(PEGAWAI.NIK.eq(BIODATA.NIK))
                 .leftJoin(ORGANISASI).on(PEGAWAI.ORGANISASI_ID.eq(ORGANISASI.ID))
@@ -239,31 +248,14 @@ public class PegawaiQueryRepository {
                 .leftJoin(GOLONGAN).on(PEGAWAI.GOLONGAN_ID.eq(GOLONGAN.ID))
                 .where(conditions)
                 .orderBy(sortOrder)
-                .fetch(PegawaiQueryRepository::mapPegawaiListResponse);
+                .fetch(PegawaiRecordMapper::mapListResponse);
     }
 
     public List<PegawaiListResponse> findByIds(List<Long> ids) {
         if (ids == null || ids.isEmpty()) {
             return new ArrayList<>();
         }
-        return dsl.select(
-                        PEGAWAI.ID,
-                        PEGAWAI.NIPAM,
-                        PEGAWAI.STATUS_PEGAWAI,
-                        BIODATA.NAMA.as("biodata_nama"),
-                        ORGANISASI.ID.as("organisasi_id"),
-                        ORGANISASI.KODE.as("organisasi_kode"),
-                        ORGANISASI.NAMA.as("organisasi_nama"),
-                        ORGANISASI.SHORT_NAME.as("organisasi_short_name"),
-                        JABATAN.ID.as("jabatan_id"),
-                        JABATAN.KODE.as("jabatan_kode"),
-                        JABATAN.NAMA.as("jabatan_nama"),
-                        LEVEL.ID.as("level_id"),
-                        LEVEL.NAMA.as("level_nama"),
-                        GOLONGAN.ID.as("golongan_id"),
-                        GOLONGAN.GOLONGAN_.as("golongan_golongan"),
-                        GOLONGAN.PANGKAT.as("golongan_pangkat")
-                )
+        return dsl.select(pegawaiListResponseFields())
                 .from(PEGAWAI)
                 .leftJoin(BIODATA).on(PEGAWAI.NIK.eq(BIODATA.NIK))
                 .leftJoin(ORGANISASI).on(PEGAWAI.ORGANISASI_ID.eq(ORGANISASI.ID))
@@ -271,56 +263,14 @@ public class PegawaiQueryRepository {
                 .leftJoin(LEVEL).on(JABATAN.LEVEL_ID.eq(LEVEL.ID))
                 .leftJoin(GOLONGAN).on(PEGAWAI.GOLONGAN_ID.eq(GOLONGAN.ID))
                 .where(PEGAWAI.ID.in(ids).and(PEGAWAI.IS_DELETED.eq(false)))
-                .fetch(PegawaiQueryRepository::mapPegawaiListResponse);
+                .fetch(PegawaiRecordMapper::mapListResponse);
     }
 
     public Optional<PegawaiResponse> findByNipam(String nipam) {
         if (nipam == null || nipam.isBlank()) {
             return Optional.empty();
         }
-        return dsl.select(
-                        PEGAWAI.ID,
-                        PEGAWAI.NIPAM,
-                        PEGAWAI.STATUS_PEGAWAI,
-                        PEGAWAI.STATUS_KERJA,
-                        PEGAWAI.REF_SK_CAPEG_ID,
-                        PEGAWAI.TMT_KERJA,
-                        PEGAWAI.TMT_PENSIUN,
-                        PEGAWAI.REF_SK_PEGAWAI_ID,
-                        PEGAWAI.TMT_PEGAWAI,
-                        PEGAWAI.REF_SK_GOL_ID,
-                        PEGAWAI.TMT_GOLONGAN,
-                        PEGAWAI.REF_SK_JABATAN_ID,
-                        PEGAWAI.TMT_JABATAN,
-                        PEGAWAI.REF_SK_MUTASI_ID,
-                        PEGAWAI.TMT_MUTASI,
-                        PEGAWAI.GAJI_POKOK,
-                        PEGAWAI.PHDP,
-                        PEGAWAI.JML_TANGGUNGAN,
-                        PEGAWAI.IS_ASKES,
-                        PEGAWAI.MKG_TAHUN,
-                        PEGAWAI.MKG_BULAN,
-                        PEGAWAI.EMAIL,
-                        PEGAWAI.ABSENSI_ID,
-                        PEGAWAI.NOTES,
-                        BIODATA.NIK.as("biodata_nik"),
-                        BIODATA.NAMA.as("biodata_nama"),
-                        PENDIDIKAN.GELAR_DEPAN.as("biodata_gelar_depan"),
-                        PENDIDIKAN.GELAR_BELAKANG.as("biodata_gelar_belakang"),
-                        ORGANISASI.ID.as("organisasi_id"),
-                        ORGANISASI.NAMA.as("organisasi_nama"),
-                        JABATAN.ID.as("jabatan_id"),
-                        JABATAN.NAMA.as("jabatan_nama"),
-                        PROFESI.ID.as("profesi_id"),
-                        PROFESI.NAMA.as("profesi_nama"),
-                        GOLONGAN.ID.as("golongan_id"),
-                        GOLONGAN.GOLONGAN_.as("golongan_golongan"),
-                        GOLONGAN.PANGKAT.as("golongan_pangkat"),
-                        GRADE.ID.as("grade_id"),
-                        GRADE.GRADE_.as("grade_grade"),
-                        GAJI_PENDAPATAN_NON_PAJAK.ID.as("kode_pajak_id"),
-                        GAJI_PENDAPATAN_NON_PAJAK.KODE.as("kode_pajak_kode")
-                )
+        return dsl.select(pegawaiResponseFields())
                 .from(PEGAWAI)
                 .leftJoin(BIODATA).on(PEGAWAI.NIK.eq(BIODATA.NIK))
                 .leftJoin(PENDIDIKAN).on(PENDIDIKAN.BIODATA_ID.eq(BIODATA.NIK)
@@ -333,7 +283,7 @@ public class PegawaiQueryRepository {
                 .leftJoin(GRADE).on(PEGAWAI.GRADE_ID.eq(GRADE.ID))
                 .leftJoin(GAJI_PENDAPATAN_NON_PAJAK).on(PEGAWAI.GAJI_PENDAPATAN_NON_PAJAK_ID.eq(GAJI_PENDAPATAN_NON_PAJAK.ID))
                 .where(PEGAWAI.NIPAM.eq(nipam).and(PEGAWAI.IS_DELETED.eq(false)))
-                .fetchOptional(PegawaiQueryRepository::mapPegawaiResponse);
+                .fetchOptional(PegawaiRecordMapper::mapResponse);
     }
 
     public Optional<PegawaiResponseDetail> findById(Long id) {
@@ -636,147 +586,6 @@ public class PegawaiQueryRepository {
                 .orElse(null);
     }
 
-    private static PegawaiResponse mapPegawaiResponse(Record record) {
-        PegawaiResponse response = new PegawaiResponse();
-        response.setId(record.get(PEGAWAI.ID));
-        response.setNipam(record.get(PEGAWAI.NIPAM));
-
-        Byte statusPegawaiByte = record.get(PEGAWAI.STATUS_PEGAWAI);
-        response.setStatusPegawai(statusPegawaiByte != null ? EStatusPegawai.values()[statusPegawaiByte] : null);
-
-        Byte statusKerjaByte = record.get(PEGAWAI.STATUS_KERJA);
-        response.setStatusKerja(statusKerjaByte != null ? EStatusKerja.values()[statusKerjaByte] : null);
-
-        response.setRefSkCapegId(record.get(PEGAWAI.REF_SK_CAPEG_ID));
-        response.setTmtKerja(record.get(PEGAWAI.TMT_KERJA));
-        response.setTmtPensiun(record.get(PEGAWAI.TMT_PENSIUN));
-        response.setRefSkPegawaiId(record.get(PEGAWAI.REF_SK_PEGAWAI_ID));
-        response.setTmtPegawai(record.get(PEGAWAI.TMT_PEGAWAI));
-        response.setRefSkGolId(record.get(PEGAWAI.REF_SK_GOL_ID));
-        response.setTmtGolongan(record.get(PEGAWAI.TMT_GOLONGAN));
-        response.setRefSkJabatanId(record.get(PEGAWAI.REF_SK_JABATAN_ID));
-        response.setTmtJabatan(record.get(PEGAWAI.TMT_JABATAN));
-        response.setRefSkMutasiId(record.get(PEGAWAI.REF_SK_MUTASI_ID));
-        response.setTmtMutasi(record.get(PEGAWAI.TMT_MUTASI));
-        response.setGajiPokok(record.get(PEGAWAI.GAJI_POKOK));
-        response.setPhdp(record.get(PEGAWAI.PHDP));
-        response.setJmlTanggungan(record.get(PEGAWAI.JML_TANGGUNGAN));
-        response.setIsAskes(record.get(PEGAWAI.IS_ASKES));
-        response.setMkgTahun(record.get(PEGAWAI.MKG_TAHUN));
-        response.setMkgBulan(record.get(PEGAWAI.MKG_BULAN));
-        response.setEmail(record.get(PEGAWAI.EMAIL));
-        response.setAbsensiId(record.get(PEGAWAI.ABSENSI_ID));
-        response.setNotes(record.get(PEGAWAI.NOTES));
-
-        String bioNik = record.get("biodata_nik", String.class);
-        if (bioNik != null) {
-            response.setBiodata(new PegawaiResponse.Biodata(
-                    bioNik,
-                    record.get("biodata_nama", String.class),
-                    record.get("biodata_gelar_depan", String.class),
-                    record.get("biodata_gelar_belakang", String.class)
-            ));
-        }
-
-        Long orgId = record.get("organisasi_id", Long.class);
-        if (orgId != null) {
-            response.setOrganisasi(new PegawaiResponse.Organisasi(
-                    orgId,
-                    record.get("organisasi_nama", String.class)
-            ));
-        }
-
-        Long jabId = record.get("jabatan_id", Long.class);
-        if (jabId != null) {
-            response.setJabatan(new PegawaiResponse.Jabatan(
-                    jabId,
-                    record.get("jabatan_nama", String.class)
-            ));
-        }
-
-        Long profId = record.get("profesi_id", Long.class);
-        if (profId != null) {
-            response.setProfesi(new PegawaiResponse.Profesi(
-                    profId,
-                    record.get("profesi_nama", String.class)
-            ));
-        }
-
-        Long golId = record.get("golongan_id", Long.class);
-        if (golId != null) {
-            response.setGolongan(new PegawaiResponse.Golongan(
-                    golId,
-                    record.get("golongan_golongan", String.class),
-                    record.get("golongan_pangkat", String.class)
-            ));
-        }
-
-        Long grdId = record.get("grade_id", Long.class);
-        if (grdId != null) {
-            response.setGrade(new PegawaiResponse.Grade(
-                    grdId,
-                    record.get("grade_grade", Integer.class)
-            ));
-        }
-
-        Long pajakId = record.get("kode_pajak_id", Long.class);
-        if (pajakId != null) {
-            String pajakKode = record.get("kode_pajak_kode", String.class);
-            response.setKodePajak(new PegawaiResponse.KodePajak(
-                    pajakId,
-                    pajakKode,
-                    pajakKode
-            ));
-        }
-
-        return response;
-    }
-
-    private static PegawaiListResponse mapPegawaiListResponse(Record record) {
-        PegawaiListResponse response = new PegawaiListResponse();
-        response.setId(record.get(PEGAWAI.ID));
-        response.setNipam(record.get(PEGAWAI.NIPAM));
-        response.setNama(record.get("biodata_nama", String.class));
-
-        Byte statusPegawaiByte = record.get(PEGAWAI.STATUS_PEGAWAI);
-        response.setStatusPegawai(statusPegawaiByte != null ? EStatusPegawai.values()[statusPegawaiByte] : null);
-
-        Long orgId = record.get("organisasi_id", Long.class);
-        if (orgId != null) {
-            OrganisasiMiniResponse org = new OrganisasiMiniResponse();
-            org.setId(orgId);
-            org.setKode(record.get("organisasi_kode", String.class));
-            org.setNama(record.get("organisasi_nama", String.class));
-            org.setShortName(record.get("organisasi_short_name", String.class));
-            response.setOrganisasi(org);
-        }
-
-        Long jabId = record.get("jabatan_id", Long.class);
-        if (jabId != null) {
-            JabatanMiniResponse jab = new JabatanMiniResponse();
-            jab.setId(jabId);
-            jab.setKode(record.get("jabatan_kode", String.class));
-            jab.setNama(record.get("jabatan_nama", String.class));
-
-            Long lvlId = record.get("level_id", Long.class);
-            if (lvlId != null) {
-                jab.setLevel(new LevelResponse(lvlId, record.get("level_nama", String.class)));
-            }
-            response.setJabatan(jab);
-        }
-
-        Long golId = record.get("golongan_id", Long.class);
-        if (golId != null) {
-            response.setGolongan(new GolonganResponse(
-                    golId,
-                    record.get("golongan_golongan", String.class),
-                    record.get("golongan_pangkat", String.class)
-            ));
-        }
-
-        return response;
-    }
-
     private List<RiwayatSkResponse> findRiwayatSkList(Long pegawaiId) {
         return dsl.select(
                         RIWAYAT_SK.ID,
@@ -801,37 +610,6 @@ public class PegawaiQueryRepository {
                 .leftJoin(GOLONGAN).on(RIWAYAT_SK.GOLONGAN_ID.eq(GOLONGAN.ID))
                 .where(RIWAYAT_SK.PEGAWAI_ID.eq(pegawaiId).and(RIWAYAT_SK.IS_DELETED.eq(false)))
                 .orderBy(RIWAYAT_SK.TMT_BERLAKU.desc())
-                .fetch(r -> {
-                    RiwayatSkResponse res = new RiwayatSkResponse();
-                    res.setId(r.get(RIWAYAT_SK.ID));
-                    res.setNipam(r.get(RIWAYAT_SK.NIPAM));
-                    res.setNama(r.get(RIWAYAT_SK.NAMA));
-                    res.setNomorSk(r.get(RIWAYAT_SK.NOMOR_SK));
-
-                    Byte jsByte = r.get(RIWAYAT_SK.JENIS_SK);
-                    res.setJenisSk(jsByte != null ? EJenisSk.values()[jsByte] : null);
-
-                    res.setTanggalSk(r.get(RIWAYAT_SK.TANGGAL_SK));
-                    res.setTmtBerlaku(r.get(RIWAYAT_SK.TMT_BERLAKU));
-
-                    Long golId = r.get("golongan_id", Long.class);
-                    if (golId != null) {
-                        res.setGolongan(new GolonganResponse(
-                                golId,
-                                r.get("golongan_golongan", String.class),
-                                r.get("golongan_pangkat", String.class)
-                        ));
-                    }
-
-                    res.setGajiPokok(r.get(RIWAYAT_SK.GAJI_POKOK));
-                    res.setMkgTahun(r.get(RIWAYAT_SK.MKG_TAHUN));
-                    res.setMkgBulan(r.get(RIWAYAT_SK.MKG_BULAN));
-                    res.setKenaikanBerikutnya(r.get(RIWAYAT_SK.KENAIKAN_BERIKUTNYA));
-                    res.setMkgbTahun(r.get(RIWAYAT_SK.MKGB_TAHUN));
-                    res.setMkgbBulan(r.get(RIWAYAT_SK.MKGB_BULAN));
-                    res.setUpdateMaster(r.get(RIWAYAT_SK.UPDATE_MASTER));
-                    res.setNotes(r.get(RIWAYAT_SK.NOTES));
-                    return res;
-                });
+                .fetch(PegawaiRecordMapper::mapRiwayatSk);
     }
 }
