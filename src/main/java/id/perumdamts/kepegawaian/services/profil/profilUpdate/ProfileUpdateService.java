@@ -4,8 +4,6 @@ import id.perumdamts.kepegawaian.dto.appwrite.AppwriteUser;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.profil.profileUpdate.ProfilUpdateAcceptRequest;
-import id.perumdamts.kepegawaian.dto.profil.profileUpdate.ProfilUpdateDetail;
-import id.perumdamts.kepegawaian.dto.profil.profileUpdate.ProfileUpdateRequest;
 import id.perumdamts.kepegawaian.entities.commons.EProfileUpdateApproval;
 import id.perumdamts.kepegawaian.entities.commons.EProfileUpdateTable;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
@@ -14,10 +12,8 @@ import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.ProfileUpdate;
 import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.ProfileUpdateRepository;
-import id.perumdamts.kepegawaian.services.revInfo.RevInfoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.history.RevisionMetadata;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -30,22 +26,11 @@ import java.util.Optional;
 @Slf4j
 public class ProfileUpdateService {
     private final ProfileUpdateRepository repository;
-    private final RevInfoService revInfoService;
     private final PegawaiRepository pegawaiRepository;
     private final ProfileUpdateKeluargaApprovalService approvalKeluargaService;
     private final ProfileUpdatePendidikanApprovalService approvalPendidikanService;
 
-    public Page<ProfileUpdate> findPage(ProfileUpdateRequest request) {
-        return repository.findAll(request.getSpecification(), request.getPageable());
-    }
 
-    public ProfilUpdateDetail<?> findById(Long id) {
-        Optional<ProfileUpdate> byId = repository.findById(id);
-        if (byId.isEmpty() || !byId.get().getApprovalStatus().equals(EProfileUpdateApproval.PENDING)) return null;
-        if (byId.get().getTableName().equals(EProfileUpdateTable.KELUARGA))
-            return byId.map(revInfoService::findKeluargaRevision).orElse(null);
-        return byId.map(revInfoService::findPendidikan).orElse(null);
-    }
 
     public void create(Long revId, RevisionMetadata.RevisionType actionType, EProfileUpdateTable tableName) {
         AppwriteUser principal = (AppwriteUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -91,9 +76,6 @@ public class ProfileUpdateService {
                     approvalPendidikanService.changeHandler(profileUpdate, request.getApproval());
                     break;
             }
-//            if (tableName.equals(EProfileUpdateTable.KELUARGA)) {
-//                approvalKeluargaService.changeHandler(profileUpdate, request.getApproval());
-//            }
             handleApproval(profileUpdate, request);
             return SavedStatus.build(ESaveStatus.SUCCESS, "Success saving approval profil update");
         } catch (Exception e) {
@@ -124,9 +106,7 @@ public class ProfileUpdateService {
     }
 
     private void handleApproval(ProfileUpdate entity, ProfilUpdateAcceptRequest request) {
-        Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId())
-                .orElseThrow(() -> new RuntimeException("Unknown Pic"));
-
+        Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId()).orElseThrow(() -> new RuntimeException("Unknown Pic"));
         entity.setApprovalStatus(request.getApproval());
         entity.setApprovalDate(LocalDateTime.now());
         entity.setApprovalPic(pegawai.getBiodata().getNama());

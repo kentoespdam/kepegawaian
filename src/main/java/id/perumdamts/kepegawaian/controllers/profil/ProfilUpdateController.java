@@ -4,6 +4,7 @@ import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.dto.profil.profileUpdate.ProfilUpdateAcceptRequest;
 import id.perumdamts.kepegawaian.dto.profil.profileUpdate.ProfileUpdateRequest;
+import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateQueryService;
 import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,16 +17,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/profil/profil-update")
 @RequiredArgsConstructor
 public class ProfilUpdateController {
+    private final ProfileUpdateQueryService queryService;
     private final ProfileUpdateService service;
 
     @GetMapping
     public ResponseEntity<?> index(@ParameterObject ProfileUpdateRequest request) {
-        return CustomResult.page(service.findPage(request));
+        return CustomResult.page(queryService.findPage(request));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> show(@PathVariable Long id) {
-        return CustomResult.any(service.findById(id));
+        return CustomResult.any(queryService.findById(id));
     }
 
     @PutMapping("/{id}")

@@ -129,18 +129,18 @@
 
 **State when you start:** `kepegawaian-996` (depends on `mfq`). **Goal:** read-side `ProfileUpdate` masih JPA Specification (`repository.findAll(spec, pageable)` di baris ~40) — migrasi ke JOOQ selaras arah modul. **Scope terbesar** — bila membengkak, boleh dipromosikan jadi epik terpisah.
 
-- [ ] Tunggu PU-1 selesai (nama kelas final `ProfileUpdateService`)
-- [ ] `gitnexus_impact` pada method read `findPage`/`findById` ProfileUpdate
-- [ ] NEW `repositories/profil/jooq/ProfileUpdateQueryRepository.java` (JOOQ) + mapper Pola B di `mapper/profil/<aggregate>/`
-- [ ] Ganti `findPage`/`findById` dari Specification → JOOQ `where` + `SortParam.resolve`
-- [ ] Hapus Specification-builder pada DTO request bila blast-radius kosong
-- [ ] Split command vs query bila file hasil >120
+- [x] Tunggu PU-1 selesai (nama kelas final `ProfileUpdateService`)
+- [x] `gitnexus_impact` pada method read `findPage`/`findById` ProfileUpdate
+- [x] NEW `repositories/profil/jooq/ProfileUpdateQueryRepository.java` (JOOQ) + mapper Pola B di `mapper/profil/<aggregate>/`
+- [x] Ganti `findPage`/`findById` dari Specification → JOOQ `where` + `SortParam.resolve`
+- [x] Hapus Specification-builder pada DTO request bila blast-radius kosong
+- [x] Split command vs query bila file hasil >120
 
 ### Acceptance
-- [ ] Nol `repository.findAll(Specification, ...)` di path ProfileUpdate
-- [ ] Read = JOOQ, write = JPA
-- [ ] `wc -l` file hasil ≤ 120
-- [ ] `./gradlew build` → SUCCESSFUL
+- [x] Nol `repository.findAll(Specification, ...)` di path ProfileUpdate
+- [x] Read = JOOQ, write = JPA
+- [x] `wc -l` file hasil ≤ 120
+- [x] `./gradlew build` → SUCCESSFUL
 
 ---
 
