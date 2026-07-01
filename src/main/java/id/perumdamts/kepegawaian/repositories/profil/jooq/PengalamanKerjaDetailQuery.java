@@ -3,11 +3,11 @@ package id.perumdamts.kepegawaian.repositories.profil.jooq;
 import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranRow;
 import id.perumdamts.kepegawaian.dto.profil.pengalamanKerja.PengalamanKerjaDetail;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
+import id.perumdamts.kepegawaian.mapper.profil.pengalamanKerja.PengalamanKerjaDetailJooqMapper;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 
-import java.util.Map;
 import java.util.Optional;
 
 import static id.perumdamts.kepegawaian.jooq.tables.Biodata.BIODATA;
@@ -34,25 +34,6 @@ public class PengalamanKerjaDetailQuery {
                 .leftJoin(BIODATA).on(PENGALAMAN_KERJA.BIODATA_ID.eq(BIODATA.NIK))
                 .where(PENGALAMAN_KERJA.ID.eq(id))
                 .and(PENGALAMAN_KERJA.IS_DELETED.eq(false))
-                .fetchOptional(record -> toDetail(record.intoMap()));
-    }
-
-    @SuppressWarnings("unchecked")
-    private PengalamanKerjaDetail toDetail(Map<String, Object> map) {
-        var detail = new PengalamanKerjaDetail();
-        detail.setId((Long) map.get("id"));
-        detail.setBiodataId((String) map.get("biodata_id"));
-        detail.setBiodataNik((String) map.get("biodata_nik"));
-        detail.setBiodataNama((String) map.get("biodata_nama"));
-        detail.setNamaPerusahaan((String) map.get("nama_perusahaan"));
-        detail.setTypePerusahaan((String) map.get("type_perusahaan"));
-        detail.setJabatan((String) map.get("jabatan"));
-        detail.setLokasi((String) map.get("lokasi"));
-        detail.setTahunMasuk((Integer) map.get("tahun_masuk"));
-        detail.setTahunKeluar((Integer) map.get("tahun_keluar"));
-        detail.setNotes((String) map.get("notes"));
-        detail.setChangedStatus((Byte) map.get("changed_status"));
-        detail.setLampiran((java.util.List<LampiranRow>) map.get("lampiran"));
-        return detail;
+                .fetchOptional(PengalamanKerjaDetailJooqMapper.INSTANCE);
     }
 }

@@ -31,7 +31,7 @@ public interface PendidikanRepository extends JpaRepository<Pendidikan, Long>, J
     @Modifying
     @Query(value = """
             update pendidikan p set
-                    p.biodata_id = ?1, p.jenjang_id = ?2, p.gelar_depan = ?3, p.gelar_belakang = ?4, p.jurusan = ?5, p.institusi = ?6,
+                    p.biodata_id = ?1, p.jenjang_pendidikan_id = ?2, p.gelar_depan = ?3, p.gelar_belakang = ?4, p.jurusan = ?5, p.institusi = ?6,
                     p.kota = ?7, p.tahun_masuk = ?8, p.is_lulus = ?9, p.tahun_lulus = ?10, p.gpa = ?11, p.is_latest = ?12, p.changed_status = ?13
             where p.id = ?14
             """, nativeQuery = true)
