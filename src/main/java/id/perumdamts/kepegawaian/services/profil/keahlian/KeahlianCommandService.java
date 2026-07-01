@@ -4,7 +4,6 @@ import id.perumdamts.kepegawaian.mapper.profil.keahlian.KeahlianMapper;
 import id.perumdamts.kepegawaian.dto.profil.keahlian.KeahlianLampiranPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.keahlian.KeahlianPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.keahlian.KeahlianPutRequest;
-import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilQuery;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.entities.commons.EProfileUpdateTable;
 import id.perumdamts.kepegawaian.entities.master.JenisKeahlian;
@@ -16,15 +15,11 @@ import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.KeahlianRepository;
 import id.perumdamts.kepegawaian.services.profil.ChangedStatusResolver;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilCommandService;
-import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilQueryService;
 import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.history.RevisionMetadata;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +31,6 @@ public class KeahlianCommandService {
     private final KeahlianRepository repository;
     private final BiodataRepository biodataRepository;
     private final JenisKeahlianRepository jenisKeahlianRepository;
-    private final LampiranProfilQueryService lampiranProfilQueryService;
     private final LampiranProfilCommandService lampiranProfilCommandService;
     private final ProfileUpdateService profileUpdateService;
     private final ChangedStatusResolver resolver;
@@ -80,18 +74,7 @@ public class KeahlianCommandService {
         lampiranProfilCommandService.deleteByRefId(EJenisLampiranProfil.PROFIL_KEAHLIAN, id);
     }
 
-    // Lampiran delegates
-    public List<LampiranProfilQuery> getLampiran(Long id) {
-        return lampiranProfilQueryService.getLampiran(EJenisLampiranProfil.PROFIL_KEAHLIAN, id);
-    }
 
-    public LampiranProfilQuery getLampiranById(Long id) {
-        return lampiranProfilQueryService.getLampiranById(id);
-    }
-
-    public ResponseEntity<?> getFileLampiranById(Long id) {
-        return lampiranProfilQueryService.getFileLampiranById(EJenisLampiranProfil.PROFIL_KEAHLIAN, id);
-    }
 
     @Transactional
     public Long addLampiran(KeahlianLampiranPostRequest request) {

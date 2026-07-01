@@ -54,17 +54,17 @@ public class KeahlianController {
 
     @GetMapping("/{id}/lampiran")
     public ResponseEntity<?> getLampiran(@PathVariable Long id) {
-        return CustomResult.list(command.getLampiran(id));
+        return CustomResult.list(query.getLampiran(id));
     }
 
     @GetMapping("/lampiran/{id}")
     public ResponseEntity<?> getLampiranById(@PathVariable Long id) {
-        return CustomResult.any(command.getLampiranById(id));
+        return CustomResult.any(query.getLampiranById(id));
     }
 
     @GetMapping("/lampiran/{id}/file")
     public ResponseEntity<?> getFileLampiranById(@PathVariable Long id) {
-        return command.getFileLampiranById(id);
+        return query.getFileLampiranById(id);
     }
 
     @PostMapping(value = "/lampiran", consumes = "multipart/form-data")

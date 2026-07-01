@@ -63,7 +63,7 @@ public class BiodataController {
 
     @GetMapping("/{id}/foto-profil")
     public ResponseEntity<?> getFotoProfil(@PathVariable String id) {
-        return commandService.findFotoProfil(id);
+        return queryService.findFotoProfil(id);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

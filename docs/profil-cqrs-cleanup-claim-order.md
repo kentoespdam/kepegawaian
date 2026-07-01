@@ -94,18 +94,18 @@
 
 **Workflow:** `gitnexus_impact` dulu → edit → `./gradlew compileJava` → verifikasi `wc -l ≤ 120` tiap file hasil.
 
-- [ ] **W2a `z6c`** `PendidikanCommandService` (164) → download ke Query, split CRUD vs `PendidikanLampiranCommandService`
-- [ ] **W2b `yp6`** `ProfilKeluargaCommandService` (151) → download ke Query, split bila masih >120
-- [ ] **W2c `0bv`** `BiodataCommandService` (148) → `findFotoProfil` ke Query, split bila >120. Entity `Biodata.java` dikecualikan
-- [ ] **W2d `44t`** `KartuIdentitasCommandService` (126) → download ke Query (kemungkinan ≤120 tanpa split lanjutan)
-- [ ] **W2e `xfh`** `Keahlian`(113)/`Pelatihan`(118)/`PengalamanKerja`(101)CommandService → **hanya relokasi download** (sudah ≤120, tak perlu split)
+- [x] **W2a `z6c`** `PendidikanCommandService` (164) → download ke Query, split CRUD vs `PendidikanLampiranCommandService`
+- [x] **W2b `yp6`** `ProfilKeluargaCommandService` (151) → download ke Query, split bila masih >120
+- [x] **W2c `0bv`** `BiodataCommandService` (148) → `findFotoProfil` ke Query, split bila >120. Entity `Biodata.java` dikecualikan
+- [x] **W2d `44t`** `KartuIdentitasCommandService` (126) → download ke Query (kemungkinan ≤120 tanpa split lanjutan)
+- [x] **W2e `xfh`** `Keahlian`(113)/`Pelatihan`(118)/`PengalamanKerja`(101)CommandService → **hanya relokasi download** (sudah ≤120, tak perlu split)
 
 ### Acceptance (Wave 2)
-- [ ] Nol method file-download tersisa di `*CommandService` profil
-- [ ] Controller download endpoint memanggil `*QueryService`, bukan `*CommandService`
-- [ ] `wc -l` semua `*CommandService`/`*LampiranCommandService` profil ≤ 120 (entity dikecualikan)
-- [ ] `./gradlew build` → SUCCESSFUL
-- [ ] `gitnexus_detect_changes()` scope sesuai
+- [x] Nol method file-download tersisa di `*CommandService` profil
+- [x] Controller download endpoint memanggil `*QueryService`, bukan `*CommandService`
+- [x] `wc -l` semua `*CommandService`/`*LampiranCommandService` profil ≤ 120 (entity dikecualikan)
+- [x] `./gradlew build` → SUCCESSFUL
+- [x] `gitnexus_detect_changes()` scope sesuai
 
 ---
 

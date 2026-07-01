@@ -4,7 +4,6 @@ import id.perumdamts.kepegawaian.mapper.profil.biodata.BiodataMapper;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPatchRequest;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPutRequest;
-import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
@@ -16,16 +15,9 @@ import id.perumdamts.kepegawaian.services.profil.pendidikan.PendidikanCommandSer
 import id.perumdamts.kepegawaian.utils.FileUploadUtil;
 import id.perumdamts.kepegawaian.utils.UploadResultUtil;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.io.FilenameUtils;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.nio.file.Path;
 
 @Service
 @RequiredArgsConstructor
@@ -120,29 +112,5 @@ public class BiodataCommandService {
 
         biodata.setFotoProfil(result.getFileName());
         return repository.save(biodata);
-    }
-
-    public ResponseEntity<?> findFotoProfil(String id) {
-        Biodata biodata = repository.findById(id)
-                .orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
-
-        if (biodata.getFotoProfil() == null || biodata.getFotoProfil().isEmpty()) {
-            return ErrorResult.build("Foto Profil Not Found!");
-        }
-
-        try {
-            Path path = fileUploadUtil.generatePath(EJenisLampiranProfil.FOTO_PROFIL, id, biodata.getFotoProfil());
-            FileInputStream stream = new FileInputStream(path.toFile());
-            String extension = FilenameUtils.getExtension(path.toFile().getName());
-            ByteArrayResource resource = new ByteArrayResource(stream.readAllBytes());
-            stream.close();
-            return ResponseEntity.ok()
-                    .contentLength(resource.contentLength())
-                    .header("Content-Type", "image/" + extension)
-                    .header("Content-Disposition", "inline; filename=\"" + biodata.getFotoProfil() + "\"")
-                    .body(resource);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

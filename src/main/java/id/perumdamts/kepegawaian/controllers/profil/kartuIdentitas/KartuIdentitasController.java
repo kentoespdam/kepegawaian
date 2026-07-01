@@ -9,6 +9,7 @@ import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasLampira
 import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasPutRequest;
 import id.perumdamts.kepegawaian.services.profil.kartuIdentitas.KartuIdentitasCommandService;
+import id.perumdamts.kepegawaian.services.profil.kartuIdentitas.KartuIdentitasLampiranCommandService;
 import id.perumdamts.kepegawaian.services.profil.kartuIdentitas.KartuIdentitasQueryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 public class KartuIdentitasController {
     private final KartuIdentitasQueryService query;
     private final KartuIdentitasCommandService command;
+    private final KartuIdentitasLampiranCommandService lampiranCommand;
 
     @GetMapping
     public ResponseEntity<?> index(@ParameterObject KartuIdentitasIndexQuery request) {
@@ -54,28 +56,28 @@ public class KartuIdentitasController {
 
     @GetMapping("/{id}/lampiran")
     public ResponseEntity<?> getLampiran(@PathVariable Long id) {
-        return CustomResult.list(command.getLampiran(id));
+        return CustomResult.list(query.getLampiran(id));
     }
 
     @GetMapping("/lampiran/{id}")
     public ResponseEntity<?> getLampiranById(@PathVariable Long id) {
-        return CustomResult.any(command.getLampiranById(id));
+        return CustomResult.any(query.getLampiranById(id));
     }
 
     @GetMapping("/lampiran/{id}/file")
     public ResponseEntity<?> getFileLampiranById(@PathVariable Long id) {
-        return command.getFileLampiranById(id);
+        return query.getFileLampiranById(id);
     }
 
     @PostMapping(value = "/lampiran", consumes = "multipart/form-data")
     public ResponseEntity<?> saveLampiran(@Valid @ModelAttribute KartuIdentitasLampiranPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.addLampiran(request)));
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, lampiranCommand.addLampiran(request)));
     }
 
     @DeleteMapping("/lampiran/{id}")
     public ResponseEntity<?> deleteLampiran(@PathVariable Long id) {
-        command.deleteLampiran(id);
+        lampiranCommand.deleteLampiran(id);
         return CustomResult.delete(true);
     }
 }

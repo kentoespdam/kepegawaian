@@ -1,8 +1,6 @@
 package id.perumdamts.kepegawaian.services.profil.pendidikan;
 
 import id.perumdamts.kepegawaian.mapper.profil.pendidikan.PendidikanMapper;
-import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilQuery;
-import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanLampiranPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanPutRequest;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
@@ -16,15 +14,12 @@ import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.PendidikanRepository;
 import id.perumdamts.kepegawaian.services.profil.ChangedStatusResolver;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilCommandService;
-import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilQueryService;
 import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.history.RevisionMetadata;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -37,23 +32,16 @@ public class PendidikanCommandService {
     private final PendidikanRepository repository;
     private final BiodataRepository biodataRepository;
     private final JenjangPendidikanRepository jenjangPendidikanRepository;
-    private final LampiranProfilQueryService lampiranProfilQueryService;
     private final LampiranProfilCommandService lampiranProfilCommandService;
     private final ProfileUpdateService profileUpdateService;
     private final ChangedStatusResolver resolver;
 
     @Transactional
     public Long create(PendidikanPostRequest request) {
-        Biodata biodata = biodataRepository.findById(request.getBiodataId())
-                .orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
-        JenjangPendidikan jenjangPendidikan = jenjangPendidikanRepository
-                .findById(request.getJenjangPendidikanId())
-                .orElseThrow(() -> new NotFoundException(UNKNOWN_JENJANG));
+        Biodata biodata = biodataRepository.findById(request.getBiodataId()).orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
+        JenjangPendidikan jenjangPendidikan = jenjangPendidikanRepository.findById(request.getJenjangPendidikanId()).orElseThrow(() -> new NotFoundException(UNKNOWN_JENJANG));
 
-        // Native carcass-finder — JpaSpecificationExecutor.findOne() respects
-        // @SQLRestriction and would hide soft-deleted rows (see kepegawaian-33s, ADR-0005).
-        Optional<Pendidikan> existing = repository.findAnyByUniqueKey(
-                biodata.getNik(), jenjangPendidikan.getId(), request.getTahunMasuk());
+        Optional<Pendidikan> existing = repository.findAnyByUniqueKey(biodata.getNik(), jenjangPendidikan.getId(), request.getTahunMasuk());
         Pendidikan pendidikan = existing.orElseGet(Pendidikan::new);
         pendidikan.setBiodata(biodata);
         pendidikan.setJenjangPendidikan(jenjangPendidikan);
@@ -78,13 +66,9 @@ public class PendidikanCommandService {
 
     @Transactional
     public Long update(Long id, PendidikanPutRequest request) {
-        Pendidikan pendidikan = repository.findById(id)
-                .orElseThrow(() -> new NotFoundException(UNKNOWN_PENDIDIKAN));
-        Biodata biodata = biodataRepository.findById(request.getBiodataId())
-                .orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
-        JenjangPendidikan jenjangPendidikan = jenjangPendidikanRepository
-                .findById(request.getJenjangPendidikanId())
-                .orElseThrow(() -> new NotFoundException(UNKNOWN_JENJANG));
+        Pendidikan pendidikan = repository.findById(id).orElseThrow(() -> new NotFoundException(UNKNOWN_PENDIDIKAN));
+        Biodata biodata = biodataRepository.findById(request.getBiodataId()).orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
+        JenjangPendidikan jenjangPendidikan = jenjangPendidikanRepository.findById(request.getJenjangPendidikanId()).orElseThrow(() -> new NotFoundException(UNKNOWN_JENJANG));
 
         Pendidikan entity = PendidikanMapper.updateEntity(pendidikan, request, biodata, jenjangPendidikan);
         entity.setChangedStatus(resolver.requiresApproval());
@@ -97,8 +81,7 @@ public class PendidikanCommandService {
 
     @Transactional
     public void delete(Long id) {
-        Pendidikan entity = repository.findById(id)
-                .orElseThrow(() -> new NotFoundException(UNKNOWN_PENDIDIKAN));
+        Pendidikan entity = repository.findById(id).orElseThrow(() -> new NotFoundException(UNKNOWN_PENDIDIKAN));
         entity.setIsDeleted(true);
         entity.setChangedStatus(resolver.requiresApproval());
         repository.save(entity);
@@ -107,7 +90,6 @@ public class PendidikanCommandService {
         lampiranProfilCommandService.deleteByRefId(EJenisLampiranProfil.PROFIL_PENDIDIKAN, id);
     }
 
-    // Seed from Biodata — system seed, no profileUpdate
     @Transactional
     public Pendidikan seedFromBiodata(Biodata biodata, JenjangPendidikan jenjang) {
         Pendidikan entity = new Pendidikan();
@@ -119,36 +101,6 @@ public class PendidikanCommandService {
         handleUpdateIsLatest(true, saved.getId(), biodata, jenjang);
         return saved;
     }
-
-    // Lampiran delegates
-
-    public List<LampiranProfilQuery> getLampiran(Long id) {
-        return lampiranProfilQueryService.getLampiran(EJenisLampiranProfil.PROFIL_PENDIDIKAN, id);
-    }
-
-    public LampiranProfilQuery getLampiranById(Long id) {
-        return lampiranProfilQueryService.getLampiranById(id);
-    }
-
-    public ResponseEntity<?> getFileLampiranById(Long id) {
-        return lampiranProfilQueryService.getFileLampiranById(EJenisLampiranProfil.PROFIL_PENDIDIKAN, id);
-    }
-
-    @Transactional
-    public Long addLampiran(PendidikanLampiranPostRequest request) {
-        boolean exists = repository.existsById(request.getRefId());
-        if (!exists)
-            throw new NotFoundException(UNKNOWN_PENDIDIKAN);
-        lampiranProfilCommandService.addLampiran(request);
-        return request.getRefId();
-    }
-
-    @Transactional
-    public void deleteLampiran(Long id) {
-        lampiranProfilCommandService.deleteById(id);
-    }
-
-    // Private helpers
 
     private void handleUpdateIsLatest(Boolean isLatest, Long id, Biodata biodata, JenjangPendidikan jenjangPendidikan) {
         if (Boolean.FALSE.equals(isLatest)) return;
