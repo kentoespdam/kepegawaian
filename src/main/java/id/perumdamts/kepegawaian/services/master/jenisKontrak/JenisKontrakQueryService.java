@@ -8,8 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class JenisKontrakServiceImpl implements JenisKontrakService {
-    @Override
+public class JenisKontrakQueryService {
     public List<JenisKontrakResponse> findAll() {
         return Arrays.stream(EJenisKontrak.values())
                 .map(e -> new JenisKontrakResponse(e.name(), e.value))

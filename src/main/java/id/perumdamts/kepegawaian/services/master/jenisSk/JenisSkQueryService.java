@@ -8,8 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class JenisSkServiceImpl implements JenisSkService {
-    @Override
+public class JenisSkQueryService {
     public List<JenisSkResponse> findAll() {
         return Arrays.stream(EJenisSk.values())
                 .map(e -> new JenisSkResponse(e.name(), e.value))

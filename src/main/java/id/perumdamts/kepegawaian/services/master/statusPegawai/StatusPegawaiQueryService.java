@@ -8,8 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class StatusPegawaiServiceImpl implements StatusPegawaiService {
-    @Override
+public class StatusPegawaiQueryService {
     public List<StatusPegawaiResponse> findAll() {
         return Arrays.stream(EStatusPegawai.values())
                 .map(e -> new StatusPegawaiResponse(e.name(), e.value, getUrut(e)))

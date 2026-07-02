@@ -8,8 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class JenisMutasiServiceImpl implements JenisMutasiService {
-    @Override
+public class JenisMutasiQueryService {
     public List<JenisMutasiResponse> findAll() {
         return Arrays.stream(EJenisMutasi.values())
                 .map(e -> new JenisMutasiResponse(e.name(), e.value))

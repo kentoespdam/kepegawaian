@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.controllers.profil;
+package id.perumdamts.kepegawaian.controllers.profil.biodata;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;

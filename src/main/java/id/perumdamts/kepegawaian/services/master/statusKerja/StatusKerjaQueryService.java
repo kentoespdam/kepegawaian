@@ -8,8 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class StatusKerjaServiceImpl implements StatusKerjaService {
-    @Override
+public class StatusKerjaQueryService {
     public List<StatusKerjaResponse> findAll() {
         return Arrays.stream(EStatusKerja.values())
                 .map(e -> new StatusKerjaResponse(e.name(), e.value))
