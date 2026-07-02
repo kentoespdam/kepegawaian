@@ -11,7 +11,7 @@ Dokumen ini menetapkan **urutan claim** (`bd update <id> --claim`) supaya ekseku
 
 Cermin status beads dalam urutan claim. Centang saat isu terkait `closed`. Sumber kebenaran tetap `bd ready` / `bd show <id>` — checklist ini untuk pandangan sekilas.
 
-- [ ] **1. `kepegawaian-6bu.1`** — `#foundation`: fix `PagedRequest` + guard ArchUnit + fix `@Valid` `BiodataController.index` *(WAJIB pertama)*
+- [x] **1. `kepegawaian-6bu.1`** — `#foundation`: fix `PagedRequest` + guard ArchUnit + fix `@Valid` `BiodataController.index` *(WAJIB pertama)*
 - [ ] **2. `kepegawaian-6bu.2.1`** — cuti: CQRS `CutiJenis`
 - [ ] **3. `kepegawaian-6bu.2.2`** — cuti: CQRS `CutiKuota`
 - [ ] **4. `kepegawaian-6bu.2.3`** — cuti: CQRS `CutiApprovalChain`
@@ -27,7 +27,7 @@ Cermin status beads dalam urutan claim. Centang saat isu terkait `closed`. Sumbe
 - [ ] **14. `kepegawaian-6bu.5.2`** — users: CQRS `User`
 - [ ] **15. `kepegawaian-6bu.6`** — `#final`: hapus `CommonPageRequest` + verifikasi 0 referensi *(WAJIB terakhir)*
 
-> **Progress:** 0/15 selesai · Epik `kepegawaian-6bu` masih `open`.
+> **Progress:** 1/15 selesai · Epik `kepegawaian-6bu` masih `open`.
 
 ---
 

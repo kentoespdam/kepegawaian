@@ -29,7 +29,7 @@ public class BiodataController {
     private final MimeTypesUtils mimeTypesUtils;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject BiodataIndexQuery query) {
+    public ResponseEntity<?> index(@Valid @ParameterObject BiodataIndexQuery query) {
         return CustomResult.page(queryService.pageQuery(query));
     }
 

@@ -102,6 +102,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-data-redis-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("org.testcontainers:testcontainers-junit-jupiter")
+    testImplementation("com.tngtech.archunit:archunit-junit5:1.3.0")
 }
 
 tasks.named<Test>("test") {
