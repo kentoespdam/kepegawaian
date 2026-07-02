@@ -1,7 +1,6 @@
 package id.perumdamts.kepegawaian.controllers.cuti;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
-import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.dto.cuti.kuota.CutiKuotaImportRequest;
 import id.perumdamts.kepegawaian.dto.cuti.kuota.CutiKuotaPostRequest;
 import id.perumdamts.kepegawaian.dto.cuti.kuota.CutiKuotaPutRequest;
@@ -12,7 +11,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,7 +21,7 @@ public class CutiKuotaController {
     private final CutiKuotaCommandService commandService;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject CutiKuotaRequest request) {
+    public ResponseEntity<?> index(@Valid @ParameterObject CutiKuotaRequest request) {
         return CustomResult.any(queryService.findPage(request));
     }
 
@@ -48,8 +46,7 @@ public class CutiKuotaController {
     }
 
     @PostMapping(value = "/import", consumes = "multipart/form-data")
-    public ResponseEntity<?> importData(@Valid @ModelAttribute CutiKuotaImportRequest request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
+    public ResponseEntity<?> importData(@Valid @ModelAttribute CutiKuotaImportRequest request) {
         return CustomResult.save(commandService.importData(request));
     }
 

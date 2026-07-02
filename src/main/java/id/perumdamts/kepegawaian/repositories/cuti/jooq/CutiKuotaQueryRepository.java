@@ -37,13 +37,10 @@ public class CutiKuotaQueryRepository {
                 allowedSorts(), CUTI_KUOTA.ID);
                 
         var count = dsl.selectCount().from(CUTI_KUOTA)
-                .leftJoin(PEGAWAI).on(CUTI_KUOTA.PEGAWAI_ID.eq(PEGAWAI.ID))
-                .leftJoin(BIODATA).on(PEGAWAI.NIK.eq(BIODATA.NIK))
-                .where(where).fetchOptional(0, Long.class).orElse(0L);
-                
-        int pageNumber = query.getPage() != null ? query.getPage() : 0;
-        int sizeOrDefault = query.getSize() != null ? query.getSize() : 10;
-        
+                 .leftJoin(PEGAWAI).on(CUTI_KUOTA.PEGAWAI_ID.eq(PEGAWAI.ID))
+                 .leftJoin(BIODATA).on(PEGAWAI.NIK.eq(BIODATA.NIK))
+                 .where(where).fetchOptional(0, Long.class).orElse(0L);
+
         var data = dsl.select(
                         CUTI_KUOTA.ID,
                         CUTI_KUOTA.TAHUN,
@@ -66,11 +63,11 @@ public class CutiKuotaQueryRepository {
                 .leftJoin(ORGANISASI).on(PEGAWAI.ORGANISASI_ID.eq(ORGANISASI.ID))
                 .where(where)
                 .orderBy(sortOrder)
-                .limit(sizeOrDefault)
-                .offset(pageNumber * sizeOrDefault)
+                .limit(query.getSizeOrDefault())
+                .offset(query.offset())
                 .fetch(CutiKuotaJooqMapper::mapToResponse);
                 
-        Page<CutiKuotaResponse> page = new PageImpl<>(data, PageRequest.of(pageNumber, sizeOrDefault), count);
+        Page<CutiKuotaResponse> page = new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
         if (page.isEmpty()) return null;
         
         List<Long> pegawaiIdList = page.getContent().stream().map(c -> c.getPegawai().getId()).toList();
