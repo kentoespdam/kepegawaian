@@ -6,7 +6,6 @@ plugins {
     application
     id("org.springframework.boot") version "4.0.3"
     id("io.spring.dependency-management") version "1.1.7"
-    id("co.uzzu.dotenv.gradle") version "4.0.0"
     id("org.flywaydb.flyway") version "12.8.1"
 }
 
@@ -51,9 +50,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
 
-    // Spring Actuator
-    implementation("org.springframework.boot:spring-boot-starter-actuator")
-
     // Spring Data
     implementation("org.springframework.data:spring-data-envers")
 
@@ -67,11 +63,14 @@ dependencies {
 
     // Flyway Gradle plugin uses runtimeClasspath for JDBC drivers
 
-    // Lombok
-    compileOnly("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok")
-    testCompileOnly("org.projectlombok:lombok")
-    testAnnotationProcessor("org.projectlombok:lombok")
+    // Lombok — override Spring Boot 4.0.3 BOM (1.18.42) to 1.18.46 for the
+    // JDK 25 `val`/@ExtensionMethod javac bugfix (1.18.44, #3947). Does NOT fix
+    // the sun.misc.Unsafe warning — that call still exists upstream; see the
+    // --sun-misc-unsafe-memory-access workaround in the JavaCompile block.
+    compileOnly("org.projectlombok:lombok:1.18.46")
+    annotationProcessor("org.projectlombok:lombok:1.18.46")
+    testCompileOnly("org.projectlombok:lombok:1.18.46")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.46")
 
     // Dev tools
     developmentOnly("org.springframework.boot:spring-boot-devtools")
@@ -112,9 +111,17 @@ tasks.named<Test>("test") {
 tasks.withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
     options.compilerArgs.add("-parameters")
+    // Lombok's annotation processor (lombok.permit.Permit) calls the terminally
+    // deprecated sun.misc.Unsafe::objectFieldOffset (JEP 498). Silence the JDK 25
+    // warning by allowing it in the forked compiler JVM until Lombok drops the call.
+    options.isFork = true
+    options.forkOptions.jvmArgs =
+        (options.forkOptions.jvmArgs ?: emptyList()) + "--sun-misc-unsafe-memory-access=allow"
 }
 
 tasks.register<JooqCodegenTask>("jooqCodegen") {
+    description = "Generates JOOQ classes from the database schema"
+    group = "codegen"
     jdbcUrl.set(
         "jdbc:mariadb://${flyEnv("DB_HOST", "localhost")}:" +
         "${flyEnv("DB_PORT", "3307")}/${flyEnv("DB_SCHEMA", "kepegawaian")}"
@@ -153,13 +160,11 @@ val flywayEnv: Map<String, String> = run {
         val f = rootProject.file(it)
         if (f.exists()) f else null
     }
-    if (file == null) emptyMap()
-    else file.readLines()
-        .filter { l -> "=" in l && !l.startsWith("#") && !l.startsWith("import") }
-        .associate { l ->
-            val (k, v) = l.split("=", limit = 2)
-            k.trim() to v.trim()
-        }
+    file?.readLines()?.filter { l -> "=" in l && !l.startsWith("#") && !l.startsWith("import") }?.associate { l ->
+        val (k, v) = l.split("=", limit = 2)
+        k.trim() to v.trim()
+    }
+        ?: emptyMap()
 }
 
 fun flyEnv(key: String, default: String): String =
