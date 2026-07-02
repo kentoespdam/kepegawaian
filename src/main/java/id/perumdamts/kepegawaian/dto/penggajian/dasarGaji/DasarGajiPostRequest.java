@@ -35,12 +35,4 @@ public class DasarGajiPostRequest {
                 .build();
     }
 
-    public static DasarGaji toEntity(DasarGajiPostRequest request) {
-        DasarGaji dasarGaji = new DasarGaji();
-        dasarGaji.setDeskripsi(request.getDeskripsi());
-        dasarGaji.setTanggalAwal(request.getTanggalAwal());
-        dasarGaji.setTanggalAkhir(request.getTanggalAkhir());
-        dasarGaji.setAktif(request.getAktif());
-        return dasarGaji;
-    }
 }

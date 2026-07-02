@@ -49,12 +49,12 @@
 
 ## STEP 0 — Before any code (setiap claim)
 
-- [ ] `bd prime` (recover beads workflow context)
-- [ ] `git status` bersih; di branch `rewrite/master-cqrs`
-- [ ] Baca ulang exemplar `cuti/` (CutiJenis*) + `mapper/profil/` yang di-mirror
-- [ ] Baca `profil-cqrs-implementation-patterns.md` §1–§5
-- [ ] `bd show <id>` — baca checklist §5 di issue
-- [ ] `bd update <id> --claim` issue yang mulai dikerjakan
+- [x] `bd prime` (recover beads workflow context)
+- [x] `git status` bersih; di branch `rewrite/master-cqrs`
+- [x] Baca ulang exemplar `cuti/` (CutiJenis*) + `mapper/profil/` yang di-mirror
+- [x] Baca `profil-cqrs-implementation-patterns.md` §1–§5
+- [x] `bd show <id>` — baca checklist §5 di issue
+- [x] `bd update <id> --claim` issue yang mulai dikerjakan
 
 ---
 
@@ -65,34 +65,34 @@
 ### Template per aggregate (ulangi untuk .1 s/d .9)
 
 **Pre-edit**
-- [ ] `gitnexus_impact({target: "<Agg>ServiceImpl", direction: "upstream"})` — laporkan blast radius
-- [ ] `gitnexus_impact({target: "<Agg>Repository", direction: "upstream"})` — laporkan blast radius
-- [ ] WARN manager bila HIGH/CRITICAL sebelum lanjut
+- [x] `gitnexus_impact({target: "<Agg>ServiceImpl", direction: "upstream"})` — laporkan blast radius
+- [x] `gitnexus_impact({target: "<Agg>Repository", direction: "upstream"})` — laporkan blast radius
+- [x] WARN manager bila HIGH/CRITICAL sebelum lanjut
 
 **DTO**
-- [ ] `<Agg>PostRequest` / `<Agg>PutRequest` — `@Data`, validasi, `@JsonIgnore` di `getSpecification()`
-- [ ] `<Agg>IndexQuery extends PagedRequest` — request baca; **WAJIB `extends PagedRequest`** (base baru: `@Max(100)` clamp, `getPageNumber()`/`getSizeOrDefault()`, sort-whitelist type-safe), `@EqualsAndHashCode(callSuper = true) @Data`; tambah field filter domain saja (tanpa Specification). **JANGAN pakai `CommonPageRequest`** (base lama, tanpa clamp/whitelist). Exemplar: `GradeIndexQuery`.
-- [ ] `<Agg>Response`/`<Agg>Query` — POJO datar (nested → `*MiniResponse`)
+- [x] `<Agg>PostRequest` / `<Agg>PutRequest` — `@Data`, validasi, `@JsonIgnore` di `getSpecification()`
+- [x] `<Agg>IndexQuery extends PagedRequest` — request baca; **WAJIB `extends PagedRequest`** (base baru: `@Max(100)` clamp, `getPageNumber()`/`getSizeOrDefault()`, sort-whitelist type-safe), `@EqualsAndHashCode(callSuper = true) @Data`; tambah field filter domain saja (tanpa Specification). **JANGAN pakai `CommonPageRequest`** (base lama, tanpa clamp/whitelist). Exemplar: `GradeIndexQuery`.
+- [x] `<Agg>Response`/`<Agg>Query` — POJO datar (nested → `*MiniResponse`)
 
 **Mapper** (di `mapper/penggajian/<agg>/`, BUKAN di `repositories/`)
-- [ ] Write `<Agg>Mapper` — `final`, private ctor, static `toEntity`/`updateEntity`
-- [ ] Read `<Agg>JooqMapper` — Pola A (`mapToResponse` static) ATAU Pola B (`RecordMapper` + `INSTANCE`); boolean MariaDB = `Byte` → `!= null && == 1`
+- [x] Write `<Agg>Mapper` — `final`, private ctor, static `toEntity`/`updateEntity`
+- [x] Read `<Agg>JooqMapper` — Pola A (`mapToResponse` static) ATAU Pola B (`RecordMapper` + `INSTANCE`); boolean MariaDB = `Byte` → `!= null && == 1`
 
 **Repository** (split teknologi)
-- [ ] `git mv` JPA repo → `repositories/penggajian/jpa/<Agg>Repository` (+ package decl); mirror Git-mv invariant CODING_RULES §17
-- [ ] NEW `repositories/penggajian/jooq/<Agg>QueryRepository` — `@Repository @RequiredArgsConstructor`, inject `DSLContext`; `pageQuery(<Agg>IndexQuery)`/`listQuery`/`getById`; `SortParam.resolve(query.getSortBy(), query.getSortDirection(), allowedSorts(), <TBL>.ID)`; paging via `query.getSizeOrDefault()` + `query.getPageNumber()`; `baseWhere` shared; **WAJIB `IS_DELETED.eq(false)`**; kondisi opsional → `DSL.noCondition()`. Exemplar: `GradeQueryRepository`.
+- [x] `git mv` JPA repo → `repositories/penggajian/jpa/<Agg>Repository` (+ package decl); mirror Git-mv invariant CODING_RULES §17
+- [x] NEW `repositories/penggajian/jooq/<Agg>QueryRepository` — `@Repository @RequiredArgsConstructor`, inject `DSLContext`; `pageQuery(<Agg>IndexQuery)`/`listQuery`/`getById`; `SortParam.resolve(query.getSortBy(), query.getSortDirection(), allowedSorts(), <TBL>.ID)`; paging via `query.getSizeOrDefault()` + `query.getPageNumber()`; `baseWhere` shared; **WAJIB `IS_DELETED.eq(false)`**; kondisi opsional → `DSL.noCondition()`. Exemplar: `GradeQueryRepository`.
 
 **Service**
-- [ ] `<Agg>QueryService` tipis — delegasi `findPage`/`findList`/`findById` (+ file-download bila ada, milik QueryService)
-- [ ] `<Agg>CommandService` `@Transactional` — `exists(spec)`→DUPLICATE, `getReferenceById` FK murni, write mapper; **rename `<Agg>ServiceImpl` → `<Agg>CommandService` via `gitnexus_rename`**
+- [x] `<Agg>QueryService` tipis — delegasi `findPage`/`findList`/`findById` (+ file-download bila ada, milik QueryService)
+- [x] `<Agg>CommandService` `@Transactional` — `exists(spec)`→DUPLICATE, `getReferenceById` FK murni, write mapper; **rename `<Agg>ServiceImpl` → `<Agg>CommandService` via `gitnexus_rename`**
 
 **Controller & gates**
-- [ ] Controller inject KEDUA service; pertahankan `@PreAuthorize`/`@Valid`/`Errors`; tanpa `*CommandController`
-- [ ] Semua file ≤ 120 baris (DetailDasarGaji 131 & GajiKomponen 126 otomatis mengecil setelah baca pindah ke QueryService)
-- [ ] **Cleanup — dead code:** hapus field/method/DTO lama yang tak lagi ter-referensi setelah split (mis. `getSpecification()` di request baca, mapper manual yang tergantikan JOOQ). Verifikasi zero-ref via `gitnexus_impact({direction: "upstream"})` SEBELUM hapus.
-- [ ] **Cleanup — unused import:** buang import yang menggantung setelah pindah/hapus kode (`gitnexus_rename` & split kerap menyisakan import mati). Pastikan `./gradlew clean compileJava` bersih tanpa warning import.
-- [ ] `gitnexus_detect_changes()` scope sesuai; `./gradlew clean compileJava` SUCCESS
-- [ ] `bd close <id>` → ship (lihat "Ship tiap issue")
+- [x] Controller inject KEDUA service; pertahankan `@PreAuthorize`/`@Valid`/`Errors`; tanpa `*CommandController`
+- [x] Semua file ≤ 120 baris (DetailDasarGaji 131 & GajiKomponen 126 otomatis mengecil setelah baca pindah ke QueryService)
+- [x] **Cleanup — dead code:** hapus field/method/DTO lama yang tak lagi ter-referensi setelah split (mis. `getSpecification()` di request baca, mapper manual yang tergantikan JOOQ). Verifikasi zero-ref via `gitnexus_impact({direction: "upstream"})` SEBELUM hapus.
+- [x] **Cleanup — unused import:** buang import yang menggantung setelah pindah/hapus kode (`gitnexus_rename` & split kerap menyisakan import mati). Pastikan `./gradlew clean compileJava` bersih tanpa warning import.
+- [x] `gitnexus_detect_changes()` scope sesuai; `./gradlew clean compileJava` SUCCESS
+- [x] `bd close <id>` → ship (lihat "Ship tiap issue")
 
 **Tabel JOOQ per aggregate:** `.1` DASAR_GAJI · `.2` DETAIL_DASAR_GAJI · `.3` GAJI_KOMPONEN · `.4` GAJI_TUNJANGAN · `.5` GAJI_PHDP · `.6` GAJI_PROFIL · `.7` GAJI_POTONGAN_TKK · `.8` GAJI_PARAMETER_SETTING · `.9` GAJI_PENDAPATAN_NON_PAJAK.
 
