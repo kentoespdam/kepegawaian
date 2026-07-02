@@ -3,7 +3,7 @@ package id.perumdamts.kepegawaian.services.setupMaster;
 import id.perumdamts.kepegawaian.entities.commons.EJenisGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiKomponen;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiProfil;
-import id.perumdamts.kepegawaian.repositories.penggajian.GajiKomponenRepository;
+import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiKomponenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

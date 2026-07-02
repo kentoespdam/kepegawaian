@@ -7,7 +7,7 @@ import id.perumdamts.kepegawaian.dto.penggajian.gajiProfil.GajiProfilPutRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiProfil.GajiProfilResponse;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiProfil;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiProfilRepository;
-import id.perumdamts.kepegawaian.services.penggajian.gajiKomponen.GajiKomponenService;
+import id.perumdamts.kepegawaian.services.penggajian.gajiKomponen.GajiKomponenCommandService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +20,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class GajiProfilServiceImpl implements GajiProfilService {
     private final GajiProfilRepository repository;
-    private final GajiKomponenService gajiKomponenService;
+    private final GajiKomponenCommandService gajiKomponenService;
 
     @Override
     public Page<GajiProfilResponse> findAll() {

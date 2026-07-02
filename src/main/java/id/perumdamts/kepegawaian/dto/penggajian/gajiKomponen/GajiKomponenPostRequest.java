@@ -39,16 +39,4 @@ public class GajiKomponenPostRequest {
                 .build();
     }
 
-    public static GajiKomponen toEntity(GajiKomponenPostRequest request, GajiProfil profilGaji) {
-        GajiKomponen entity = new GajiKomponen();
-        entity.setUrut(request.getUrut());
-        entity.setProfilGaji(profilGaji);
-        entity.setKode(request.getKode().toUpperCase());
-        entity.setNama(request.getNama());
-        entity.setJenisGaji(request.getJenisGaji());
-        entity.setNilai(request.getNilai());
-        entity.setIsReference(request.getIsReference());
-        entity.setFormula(request.getFormula());
-        return entity;
-    }
 }
