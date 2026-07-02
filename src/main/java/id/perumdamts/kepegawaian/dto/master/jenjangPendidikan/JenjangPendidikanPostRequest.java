@@ -26,11 +26,4 @@ public class JenjangPendidikanPostRequest {
                 .build();
     }
 
-    public static JenjangPendidikan toEntity(JenjangPendidikanPostRequest request) {
-        return new JenjangPendidikan(request.getNama(), request.getShortName(), request.getSeq(), request.getIsStatistik());
-    }
-
-    public static List<JenjangPendidikan> toEntities(List<JenjangPendidikanPostRequest> requests) {
-        return requests.stream().map(JenjangPendidikanPostRequest::toEntity).toList();
-    }
 }

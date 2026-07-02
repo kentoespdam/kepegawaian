@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.services.master.jenjangPendidikan;
 import id.perumdamts.kepegawaian.dto.master.jenjangPendidikan.JenjangPendidikanPostRequest;
 import id.perumdamts.kepegawaian.dto.master.jenjangPendidikan.JenjangPendidikanPutRequest;
 import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
+import id.perumdamts.kepegawaian.mapper.master.jenjangPendidikan.JenjangPendidikanMapper;
 import id.perumdamts.kepegawaian.exceptions.ConflictException;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JenjangPendidikanRepository;
@@ -30,13 +31,13 @@ public class JenjangPendidikanCommandService {
                 throw new ConflictException("JenjangPendidikan already exists");
             }
         }
-        JenjangPendidikan entity = JenjangPendidikanPostRequest.toEntity(request);
+        JenjangPendidikan entity = JenjangPendidikanMapper.toEntity(request);
         return repository.save(entity);
     }
 
     @Transactional
     public List<JenjangPendidikan> saveBatch(List<JenjangPendidikanPostRequest> requests) {
-        List<JenjangPendidikan> entities = JenjangPendidikanPostRequest.toEntities(requests);
+        List<JenjangPendidikan> entities = requests.stream().map(JenjangPendidikanMapper::toEntity).toList();
         return repository.saveAll(entities);
     }
 
@@ -50,8 +51,8 @@ public class JenjangPendidikanCommandService {
             throw new ConflictException("JenjangPendidikan with same nama already exists");
         }
 
-        JenjangPendidikan updated = JenjangPendidikanPutRequest.toEntity(request, existing);
-        return repository.save(updated);
+        JenjangPendidikanMapper.updateEntity(existing, request);
+        return repository.save(existing);
     }
 
     @Transactional
