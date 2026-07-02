@@ -13,6 +13,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import id.perumdamts.kepegawaian.mapper.master.sanksi.SanksiJooqMapper;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -61,7 +63,7 @@ public class SanksiQueryRepository {
                 .orderBy(sortOrder)
                 .limit(query.getSizeOrDefault())
                 .offset(query.offset())
-                .fetch(record -> toQuery(record.intoMap()));
+                .fetch(SanksiJooqMapper::mapToQuery);
         return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
     }
 
@@ -95,7 +97,7 @@ public class SanksiQueryRepository {
                 .leftJoin(JENIS_SP).on(SANKSI_SP.JENIS_SP_ID.eq(JENIS_SP.ID))
                 .where(SANKSI_SP.ID.eq(id))
                 .and(SANKSI_SP.IS_DELETED.eq(false))
-                .fetchOptional(record -> toQuery(record.intoMap()));
+                .fetchOptional(SanksiJooqMapper::mapToQuery);
     }
 
     public List<SanksiQuery> listQuery() {
@@ -120,7 +122,7 @@ public class SanksiQueryRepository {
                 .leftJoin(JENIS_SP).on(SANKSI_SP.JENIS_SP_ID.eq(JENIS_SP.ID))
                 .where(SANKSI_SP.IS_DELETED.eq(false))
                 .orderBy(SANKSI_SP.KODE.asc())
-                .fetch(record -> toQuery(record.intoMap()));
+                .fetch(SanksiJooqMapper::mapToQuery);
     }
 
     public List<SanksiQuery> findByJenisSpId(Long jenisSpId) {
@@ -146,31 +148,7 @@ public class SanksiQueryRepository {
                 .where(SANKSI_SP.JENIS_SP_ID.eq(jenisSpId))
                 .and(SANKSI_SP.IS_DELETED.eq(false))
                 .orderBy(SANKSI_SP.KODE.asc())
-                .fetch(record -> toQuery(record.intoMap()));
+                .fetch(SanksiJooqMapper::mapToQuery);
     }
 
-    private SanksiQuery toQuery(Map<String, Object> map) {
-        var query = new SanksiQuery();
-        query.setId((Long) map.get("id"));
-        query.setKode((String) map.get("kode"));
-        query.setKeterangan((String) map.get("keterangan"));
-        query.setJenisSpId((Long) map.get("jenis_sp_id"));
-        query.setPotTkk((Boolean) map.get("pot_tkk"));
-        query.setJmlPotTkk((Integer) map.get("jml_pot_tkk"));
-        query.setIsPendingPangkat((Boolean) map.get("is_pending_pangkat"));
-        query.setIsPendingGaji((Boolean) map.get("is_pending_gaji"));
-        query.setIsTurunPangkat((Boolean) map.get("is_turun_pangkat"));
-        query.setIsTurunJabatan((Boolean) map.get("is_turun_jabatan"));
-        query.setIsSuspension((Boolean) map.get("is_suspension"));
-        query.setIsTerminateDh((Boolean) map.get("is_terminate_dh"));
-        query.setIsTerminateTh((Boolean) map.get("is_terminate_th"));
-        if (map.get("jenissp_id") != null) {
-            var j = new JenisSpMiniResponse();
-            j.setId((Long) map.get("jenissp_id"));
-            j.setKode((String) map.get("jenissp_kode"));
-            j.setNama((String) map.get("jenissp_nama"));
-            query.setJenisSp(j);
-        }
-        return query;
-    }
 }

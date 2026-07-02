@@ -13,6 +13,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import id.perumdamts.kepegawaian.mapper.master.grade.GradeJooqMapper;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -49,7 +51,7 @@ public class GradeQueryRepository {
                 .orderBy(sortOrder)
                 .limit(query.getSizeOrDefault())
                 .offset(query.getPageNumber() * query.getSizeOrDefault())
-                .fetch(record -> toQuery(record.intoMap()));
+                .fetch(GradeJooqMapper::mapToQuery);
         return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
     }
 
@@ -73,7 +75,7 @@ public class GradeQueryRepository {
                 .leftJoin(LEVEL).on(GRADE.LEVEL_ID.eq(LEVEL.ID))
                 .where(GRADE.ID.eq(id))
                 .and(GRADE.IS_DELETED.eq(false))
-                .fetchOptional(record -> toQuery(record.intoMap()));
+                .fetchOptional(GradeJooqMapper::mapToQuery);
     }
 
     public List<GradeQuery> listQuery() {
@@ -88,7 +90,7 @@ public class GradeQueryRepository {
                 .leftJoin(LEVEL).on(GRADE.LEVEL_ID.eq(LEVEL.ID))
                 .where(GRADE.IS_DELETED.eq(false))
                 .orderBy(GRADE.GRADE_.asc())
-                .fetch(record -> toQuery(record.intoMap()));
+                .fetch(GradeJooqMapper::mapToQuery);
     }
 
     public List<GradeQuery> findByLevelId(Long levelId) {
@@ -104,19 +106,7 @@ public class GradeQueryRepository {
                 .where(GRADE.LEVEL_ID.eq(levelId))
                 .and(GRADE.IS_DELETED.eq(false))
                 .orderBy(GRADE.GRADE_.asc())
-                .fetch(record -> toQuery(record.intoMap()));
+                .fetch(GradeJooqMapper::mapToQuery);
     }
 
-    private GradeQuery toQuery(Map<String, Object> map) {
-        var query = new GradeQuery();
-        query.setId((Long) map.get("id"));
-        query.setLevelId((Long) map.get("self_level_id"));
-        query.setGrade((Integer) map.get("grade"));
-        query.setTukin((Double) map.get("tukin"));
-        if (map.get("level_id") != null) {
-            var l = new LevelResponse((Long) map.get("level_id"), (String) map.get("level_nama"));
-            query.setLevel(l);
-        }
-        return query;
-    }
 }
