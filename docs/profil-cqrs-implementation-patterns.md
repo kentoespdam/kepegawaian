@@ -54,6 +54,8 @@ public class CutiJenisPostRequest {
 
 Field paging/sort/filter: `page`, `size`, `sortBy`, `sortDirection`, plus filter domain (`nama`, `parentId`). Dikonsumsi `QueryRepository`. Tidak ada Specification di sini.
 
+> **Base class — modul baru WAJIB `<Agg>IndexQuery extends PagedRequest`** (base baru: `@Max(100)` clamp, `getPageNumber()`/`getSizeOrDefault()`, sort-whitelist type-safe; `@EqualsAndHashCode(callSuper = true) @Data`). Exemplar `GradeIndexQuery`/`GradeQueryRepository`. Cuplikan `CutiJenisRequest`/`CutiJenisQueryRepository` di §3b memakai `CommonPageRequest` (base lama, tanpa clamp/whitelist) — akurat secara historis untuk `cuti/`, TAPI **jangan disalin untuk aggregate baru** (mis. seluruh `penggajian/`). Pakai `getSizeOrDefault()`/`getPageNumber()`, bukan pola `getSize() != null ? … : 10`.
+
 ### 1c. Response baca — `<Agg>Response` / `<Agg>Query`
 
 `@Data` POJO datar. Nested pakai `*MiniResponse`. Contoh `CutiJenisResponse` (factory `from(entity)` boleh ada untuk jalur non-JOOQ, tapi jalur JOOQ diisi via JooqMapper):
@@ -293,11 +295,13 @@ public class CutiJenisCommandService {
 
 ## 5. Checklist penerapan (tiap aggregate)
 
-- [ ] DTO: PostRequest/PutRequest (`@Data`, validasi, `@JsonIgnore` di `getSpecification`); Request (paging); Response/Query datar
+- [ ] DTO: PostRequest/PutRequest (`@Data`, validasi, `@JsonIgnore` di `getSpecification`); request baca **`<Agg>IndexQuery extends PagedRequest`** untuk aggregate baru (BUKAN `CommonPageRequest`; exemplar `GradeIndexQuery`); Response/Query datar
 - [ ] Write mapper `<Agg>Mapper` — `final`, private ctor, static `toEntity`/`updateEntity`
 - [ ] Read mapper `<Agg>JooqMapper` — Pola A (`mapToResponse` static) ATAU Pola B (`implements RecordMapper` + `INSTANCE`); di `mapper/profil/<agg>/`, BUKAN di `repositories/`
 - [ ] JPA repo di `jpa/` (Specification + Revision); JOOQ repo di `jooq/` (`baseWhere` + `SortParam` + `IS_DELETED=false`)
 - [ ] QueryService tipis (delegasi + file-download); CommandService `@Transactional` (exists→duplicate, getReferenceById FK, write mapper)
 - [ ] Controller inject KEDUA service; tanpa `*CommandController`/`*QueryController` terpisah
 - [ ] Semua file ≤ 120 baris kecuali entity data-holder & pure-query repo
+- [ ] **Cleanup dead code:** hapus field/method/DTO tak ter-referensi pasca-split (mis. `getSpecification()` di request baca, mapper manual tergantikan JOOQ); verifikasi zero-ref via `gitnexus_impact({direction: "upstream"})` SEBELUM hapus
+- [ ] **Cleanup unused import:** buang import menggantung pasca pindah/hapus/rename; `./gradlew clean compileJava` bersih tanpa warning import
 - [ ] `./gradlew compileJava` SUCCESSFUL; `gitnexus_detect_changes()` scope sesuai

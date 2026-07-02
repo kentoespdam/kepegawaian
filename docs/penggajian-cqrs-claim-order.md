@@ -71,7 +71,7 @@
 
 **DTO**
 - [ ] `<Agg>PostRequest` / `<Agg>PutRequest` — `@Data`, validasi, `@JsonIgnore` di `getSpecification()`
-- [ ] `<Agg>Request` — paging/sort/filter (tanpa Specification)
+- [ ] `<Agg>IndexQuery extends PagedRequest` — request baca; **WAJIB `extends PagedRequest`** (base baru: `@Max(100)` clamp, `getPageNumber()`/`getSizeOrDefault()`, sort-whitelist type-safe), `@EqualsAndHashCode(callSuper = true) @Data`; tambah field filter domain saja (tanpa Specification). **JANGAN pakai `CommonPageRequest`** (base lama, tanpa clamp/whitelist). Exemplar: `GradeIndexQuery`.
 - [ ] `<Agg>Response`/`<Agg>Query` — POJO datar (nested → `*MiniResponse`)
 
 **Mapper** (di `mapper/penggajian/<agg>/`, BUKAN di `repositories/`)
@@ -80,7 +80,7 @@
 
 **Repository** (split teknologi)
 - [ ] `git mv` JPA repo → `repositories/penggajian/jpa/<Agg>Repository` (+ package decl); mirror Git-mv invariant CODING_RULES §17
-- [ ] NEW `repositories/penggajian/jooq/<Agg>QueryRepository` — `@Repository @RequiredArgsConstructor`, inject `DSLContext`; `pageQuery`/`listQuery`/`getById`; `baseWhere` + `SortParam.resolve`; **WAJIB `IS_DELETED.eq(false)`**; kondisi opsional → `DSL.noCondition()`
+- [ ] NEW `repositories/penggajian/jooq/<Agg>QueryRepository` — `@Repository @RequiredArgsConstructor`, inject `DSLContext`; `pageQuery(<Agg>IndexQuery)`/`listQuery`/`getById`; `SortParam.resolve(query.getSortBy(), query.getSortDirection(), allowedSorts(), <TBL>.ID)`; paging via `query.getSizeOrDefault()` + `query.getPageNumber()`; `baseWhere` shared; **WAJIB `IS_DELETED.eq(false)`**; kondisi opsional → `DSL.noCondition()`. Exemplar: `GradeQueryRepository`.
 
 **Service**
 - [ ] `<Agg>QueryService` tipis — delegasi `findPage`/`findList`/`findById` (+ file-download bila ada, milik QueryService)
@@ -89,6 +89,8 @@
 **Controller & gates**
 - [ ] Controller inject KEDUA service; pertahankan `@PreAuthorize`/`@Valid`/`Errors`; tanpa `*CommandController`
 - [ ] Semua file ≤ 120 baris (DetailDasarGaji 131 & GajiKomponen 126 otomatis mengecil setelah baca pindah ke QueryService)
+- [ ] **Cleanup — dead code:** hapus field/method/DTO lama yang tak lagi ter-referensi setelah split (mis. `getSpecification()` di request baca, mapper manual yang tergantikan JOOQ). Verifikasi zero-ref via `gitnexus_impact({direction: "upstream"})` SEBELUM hapus.
+- [ ] **Cleanup — unused import:** buang import yang menggantung setelah pindah/hapus kode (`gitnexus_rename` & split kerap menyisakan import mati). Pastikan `./gradlew clean compileJava` bersih tanpa warning import.
 - [ ] `gitnexus_detect_changes()` scope sesuai; `./gradlew clean compileJava` SUCCESS
 - [ ] `bd close <id>` → ship (lihat "Ship tiap issue")
 
@@ -103,7 +105,7 @@
 **Goal:** CQRS split; read=JOOQ; pertahankan RestClient PATCH upload eksternal + download/upload xlsx. **TANPA filter `IS_DELETED`** (tabel hard-delete).
 
 - [ ] `gitnexus_impact` `GajiBatchMasterServiceImpl` (upstream) + WARN bila HIGH/CRITICAL
-- [ ] DTO baca/tulis + write mapper + `GajiBatchMasterJooqMapper` (read)
+- [ ] DTO tulis (`*PostRequest`/`*PutRequest`) + **`GajiBatchMasterIndexQuery extends PagedRequest`** (baca) + write mapper + `GajiBatchMasterJooqMapper` (read)
 - [ ] JPA repo → `jpa/`; NEW `jooq/GajiBatchMasterQueryRepository` (tabel GAJI_BATCH_MASTER; **tanpa** `IS_DELETED`; `findByPegawaiId` filter `EProsesGaji.FINISHED`)
 - [ ] `GajiBatchMasterQueryService` — `findAll`/`findById`/`findByPegawaiId` (paged) + **download** `downloadTableGaji`/`downloadPotonganGaji` (xlsx `ByteArrayResource`, milik QueryService)
 - [ ] `GajiBatchMasterCommandService` `@Transactional` — `uploadPotonganTambahan` (FileUploadUtil + save `GajiBatchRootLampiran` + RestClient PATCH ke `${penggajian.endpoint}/upload/{id}/additional_gaji`); **konversi `@Autowired` field → constructor injection** (`@RequiredArgsConstructor`)
@@ -115,7 +117,7 @@
 **Goal:** CQRS split; read=JOOQ; pertahankan `recalculateAdditional` (math payroll) + `rollback`. **TANPA filter `IS_DELETED`**. **Cleanup dead field `ENDPOINT`** (tak dipakai RestClient apa pun).
 
 - [ ] `gitnexus_impact` `GajiBatchMasterProsesServiceImpl` (upstream) + WARN bila HIGH/CRITICAL
-- [ ] DTO + write mapper + `GajiBatchMasterProsesJooqMapper` (read)
+- [ ] DTO tulis + **`GajiBatchMasterProsesIndexQuery extends PagedRequest`** (baca) + write mapper + `GajiBatchMasterProsesJooqMapper` (read)
 - [ ] JPA repo → `jpa/`; NEW `jooq/GajiBatchMasterProsesQueryRepository` (tabel GAJI_BATCH_MASTER_PROSES; **tanpa** `IS_DELETED`); baca `findPage`/`findById`/`findByMasterId` + `getSumByJenisGaji`/`getSumAdditionalByJenisGaji` (kode `startsWith "ADD_"`)/`filterGajiBatchMasterProses`
 - [ ] `GajiBatchMasterProsesQueryService` — delegasi sum/filter queries
 - [ ] `GajiBatchMasterProsesCommandService` `@Transactional` — `save` (+`recalculateAdditional`: `penghasilanBersih2`/`pembulatan2`/`penghasilanBersihFinal2` via `Math.round`/`Math.ceil`), `rollback(rootBatchId)` (hapus proses `ADD_%` + nolkan total), `delete` (+recalculate)
@@ -131,7 +133,7 @@
 **Goal:** state machine + Kafka + upload. **PUNYA `is_deleted` → baca WAJIB `IS_DELETED.eq(false)`.** Membangun di atas 4 issue Kafka yang SUDAH close. Split menjadi 4 file agar tiap ≤120 baris:
 
 - [ ] `gitnexus_impact` `GajiBatchRootServiceImpl` (upstream) + WARN bila HIGH/CRITICAL (kemungkinan tinggi — state-machine hub)
-- [ ] DTO baca/tulis + write mapper + `GajiBatchRootJooqMapper` (read)
+- [ ] DTO tulis + **`GajiBatchRootIndexQuery extends PagedRequest`** (baca) + write mapper + `GajiBatchRootJooqMapper` (read)
 - [ ] JPA repo → `jpa/`; NEW `jooq/GajiBatchRootQueryRepository` (tabel GAJI_BATCH_ROOT; **WAJIB `IS_DELETED.eq(false)`**)
 - [ ] **`GajiBatchRootQueryService`** — `findAll`/`findById` (delegasi JOOQ)
 - [ ] **`GajiBatchRootCommandService`** `@Transactional` — `save` (upload PotonganTKK + `ProcessPotonganTkk` + compensating action), `delete` (soft-delete)
@@ -145,6 +147,7 @@
 
 ## Ship tiap issue (CODING_RULES §Ship)
 
+- [ ] **Cleanup dead code + unused import** — verifikasi zero-ref (`gitnexus_impact` upstream) sebelum hapus; `clean compileJava` bersih tanpa import menggantung
 - [ ] `gitnexus_detect_changes()` — scope hanya aggregate terkait
 - [ ] `git add` batch tunggal di akhir; `git diff --cached` menampilkan konten (moved files bukan 0 baris)
 - [ ] commit `refactor(penggajian): split <Agg> into CQRS command/query (read=JOOQ)`
