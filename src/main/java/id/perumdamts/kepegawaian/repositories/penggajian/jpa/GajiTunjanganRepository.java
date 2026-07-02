@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.repositories.penggajian;
+package id.perumdamts.kepegawaian.repositories.penggajian.jpa;
 
 import id.perumdamts.kepegawaian.entities.commons.EJenisTunjangan;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiTunjangan;

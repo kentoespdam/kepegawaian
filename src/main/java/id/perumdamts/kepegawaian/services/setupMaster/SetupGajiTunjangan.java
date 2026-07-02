@@ -4,7 +4,7 @@ import id.perumdamts.kepegawaian.entities.commons.EJenisTunjangan;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.master.Level;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiTunjangan;
-import id.perumdamts.kepegawaian.repositories.penggajian.GajiTunjanganRepository;
+import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiTunjanganRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

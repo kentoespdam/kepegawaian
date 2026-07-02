@@ -4,41 +4,28 @@ import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiTunjangan.GajiTunjanganPostRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiTunjangan.GajiTunjanganPutRequest;
-import id.perumdamts.kepegawaian.dto.penggajian.gajiTunjangan.GajiTunjanganRequest;
-import id.perumdamts.kepegawaian.dto.penggajian.gajiTunjangan.GajiTunjanganResponse;
 import id.perumdamts.kepegawaian.entities.commons.EJenisTunjangan;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.master.Level;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiTunjangan;
+import id.perumdamts.kepegawaian.mapper.penggajian.gajiTunjangan.GajiTunjanganMapper;
 import id.perumdamts.kepegawaian.repositories.master.jpa.GolonganRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.LevelRepository;
-import id.perumdamts.kepegawaian.repositories.penggajian.GajiTunjanganRepository;
+import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiTunjanganRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class GajiTunjanganServiceImpl implements GajiTunjanganService {
+public class GajiTunjanganCommandService {
     private final GajiTunjanganRepository repository;
     private final LevelRepository levelRepository;
     private final GolonganRepository golonganRepository;
 
-    @Override
-    public Page<GajiTunjanganResponse> findPage(GajiTunjanganRequest request) {
-        return repository.findAll(request.getSpecification(), request.getPageable())
-                .map(GajiTunjanganResponse::from);
-    }
-
-    @Override
-    public GajiTunjanganResponse findById(EJenisTunjangan jenis, Long id) {
-        return repository.findByIdAndJenisTunjangan(id, jenis)
-                .map(GajiTunjanganResponse::from).orElse(null);
-    }
-
-    @Override
+    @Transactional
     public SavedStatus<?> save(EJenisTunjangan jenis, GajiTunjanganPostRequest request) {
         try {
             boolean exists = repository.exists(request.getSpecification());
@@ -49,7 +36,7 @@ public class GajiTunjanganServiceImpl implements GajiTunjanganService {
             Golongan golongan = golonganRepository.findById(request.getGolonganId())
                     .orElse(null);
 
-            GajiTunjangan entity = GajiTunjanganPostRequest.toEntity(request, level, golongan);
+            GajiTunjangan entity = GajiTunjanganMapper.toEntity(request, level, golongan);
             repository.save(entity);
             return SavedStatus.build(ESaveStatus.SUCCESS, "Gaji Tunjangan Saved");
         } catch (Exception e) {
@@ -57,7 +44,7 @@ public class GajiTunjanganServiceImpl implements GajiTunjanganService {
         }
     }
 
-    @Override
+    @Transactional
     public SavedStatus<?> update(EJenisTunjangan jenis, Long id, GajiTunjanganPutRequest request) {
         try {
             Optional<GajiTunjangan> byId = repository.findByIdAndJenisTunjangan(id, jenis);
@@ -68,7 +55,8 @@ public class GajiTunjanganServiceImpl implements GajiTunjanganService {
             Golongan golongan = golonganRepository.findById(request.getGolonganId())
                     .orElse(null);
 
-            GajiTunjangan entity = GajiTunjanganPutRequest.toEntity(byId.get(), request, level, golongan);
+            GajiTunjangan entity = byId.get();
+            GajiTunjanganMapper.updateEntity(entity, request, level, golongan);
             repository.save(entity);
             return SavedStatus.build(ESaveStatus.SUCCESS, "Gaji Tunjangan Updated");
         } catch (Exception e) {
@@ -76,7 +64,7 @@ public class GajiTunjanganServiceImpl implements GajiTunjanganService {
         }
     }
 
-    @Override
+    @Transactional
     public boolean deleteById(EJenisTunjangan jenis, Long id) {
         Optional<GajiTunjangan> byId = repository.findByIdAndJenisTunjangan(id, jenis);
         if (byId.isEmpty()) return false;

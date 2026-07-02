@@ -2,11 +2,12 @@ package id.perumdamts.kepegawaian.controllers.penggajian;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiTunjangan.GajiTunjanganIndexQuery;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiTunjangan.GajiTunjanganPostRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiTunjangan.GajiTunjanganPutRequest;
-import id.perumdamts.kepegawaian.dto.penggajian.gajiTunjangan.GajiTunjanganRequest;
 import id.perumdamts.kepegawaian.entities.commons.EJenisTunjangan;
-import id.perumdamts.kepegawaian.services.penggajian.gajiTunjangan.GajiTunjanganService;
+import id.perumdamts.kepegawaian.services.penggajian.gajiTunjangan.GajiTunjanganCommandService;
+import id.perumdamts.kepegawaian.services.penggajian.gajiTunjangan.GajiTunjanganQueryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -23,7 +24,8 @@ import java.util.Map;
 @RequestMapping("/penggajian/tunjangan")
 @RequiredArgsConstructor
 public class GajiTunjanganController {
-    private final GajiTunjanganService service;
+    private final GajiTunjanganCommandService commandService;
+    private final GajiTunjanganQueryService queryService;
 
     @GetMapping
     public ResponseEntity<?> index() {
@@ -38,14 +40,14 @@ public class GajiTunjanganController {
     }
 
     @GetMapping("/{jenis}")
-    public ResponseEntity<?> index(@PathVariable EJenisTunjangan jenis, @ParameterObject GajiTunjanganRequest request) {
+    public ResponseEntity<?> index(@PathVariable EJenisTunjangan jenis, @ParameterObject GajiTunjanganIndexQuery request) {
         request.setJenis(jenis);
-        return CustomResult.page(service.findPage(request));
+        return CustomResult.page(queryService.findPage(jenis, request));
     }
 
     @GetMapping("/{jenis}/{id}")
     public ResponseEntity<?> show(@PathVariable EJenisTunjangan jenis, @PathVariable Long id) {
-        return CustomResult.any(service.findById(jenis, id));
+        return CustomResult.any(queryService.findById(jenis, id).orElse(null));
     }
 
     @PostMapping("/{jenis}")
@@ -53,7 +55,7 @@ public class GajiTunjanganController {
         if (errors.hasErrors()) {
             return ErrorResult.build(errors);
         }
-        return CustomResult.save(service.save(jenis, request));
+        return CustomResult.save(commandService.save(jenis, request));
     }
 
     @PutMapping("/{jenis}/{id}")
@@ -61,11 +63,11 @@ public class GajiTunjanganController {
         if (errors.hasErrors()) {
             return ErrorResult.build(errors);
         }
-        return CustomResult.save(service.update(jenis, id, request));
+        return CustomResult.save(commandService.update(jenis, id, request));
     }
 
     @DeleteMapping("/{jenis}/{id}")
     public ResponseEntity<?> deleteById(@PathVariable EJenisTunjangan jenis, @PathVariable Long id) {
-        return CustomResult.delete(service.deleteById(jenis, id));
+        return CustomResult.delete(commandService.deleteById(jenis, id));
     }
 }

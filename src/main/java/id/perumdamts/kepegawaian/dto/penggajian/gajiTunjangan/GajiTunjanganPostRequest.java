@@ -28,12 +28,4 @@ public class GajiTunjanganPostRequest {
                 .build();
     }
 
-    public static GajiTunjangan toEntity(GajiTunjanganPostRequest request, Level level, Golongan golongan) {
-        GajiTunjangan entity = new GajiTunjangan();
-        entity.setJenisTunjangan(request.getJenisTunjangan());
-        entity.setLevel(level);
-        entity.setGolongan(golongan);
-        entity.setNominal(request.getNominal());
-        return entity;
-    }
 }

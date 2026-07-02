@@ -29,10 +29,10 @@
 
 | Order | Issue ID | Aggregate | Wave | State when you start | Claim cmd |
 |-------|----------|-----------|------|----------------------|-----------|
-| 1  | kepegawaian-awf.1  | DasarGaji (pilot pattern)   | W1 | READY | `bd update kepegawaian-awf.1 --claim` |
-| 2  | kepegawaian-awf.2  | DetailDasarGaji             | W1 | READY | `bd update kepegawaian-awf.2 --claim` |
-| 3  | kepegawaian-awf.3  | GajiKomponen                | W1 | READY | `bd update kepegawaian-awf.3 --claim` |
-| 4  | kepegawaian-awf.4  | GajiTunjangan               | W1 | READY | `bd update kepegawaian-awf.4 --claim` |
+| 1  | kepegawaian-awf.1  | DasarGaji (pilot pattern)   | W1 | CLOSED | `bd update kepegawaian-awf.1 --claim` |
+| 2  | kepegawaian-awf.2  | DetailDasarGaji             | W1 | CLOSED | `bd update kepegawaian-awf.2 --claim` |
+| 3  | kepegawaian-awf.3  | GajiKomponen                | W1 | CLOSED | `bd update kepegawaian-awf.3 --claim` |
+| 4  | kepegawaian-awf.4  | GajiTunjangan               | W1 | CLOSED | `bd update kepegawaian-awf.4 --claim` |
 | 5  | kepegawaian-awf.5  | GajiPhdp                    | W1 | READY | `bd update kepegawaian-awf.5 --claim` |
 | 6  | kepegawaian-awf.6  | GajiProfil                  | W1 | READY | `bd update kepegawaian-awf.6 --claim` |
 | 7  | kepegawaian-awf.7  | GajiPotonganTkk             | W1 | READY | `bd update kepegawaian-awf.7 --claim` |
