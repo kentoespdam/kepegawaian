@@ -2,7 +2,6 @@ package id.perumdamts.kepegawaian.controllers.profil;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
-import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanIndexQuery;
 import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanLampiranPostRequest;
@@ -15,7 +14,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,7 +27,7 @@ public class PendidikanController {
     // READ
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject PendidikanIndexQuery request) {
+    public ResponseEntity<?> index(@Valid @ParameterObject PendidikanIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 
@@ -41,14 +39,12 @@ public class PendidikanController {
     // WRITE
 
     @PostMapping
-    public ResponseEntity<?> save(@Valid @RequestBody PendidikanPostRequest request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
+    public ResponseEntity<?> save(@Valid @RequestBody PendidikanPostRequest request) {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.create(request)));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody PendidikanPutRequest request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody PendidikanPutRequest request) {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.update(id, request)));
     }
 
@@ -76,8 +72,7 @@ public class PendidikanController {
     }
 
     @PostMapping(value = "/lampiran", consumes = "multipart/form-data")
-    public ResponseEntity<?> saveLampiran(@Valid @ModelAttribute PendidikanLampiranPostRequest request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
+    public ResponseEntity<?> saveLampiran(@Valid @ModelAttribute PendidikanLampiranPostRequest request) {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, lampiranCommand.addLampiran(request)));
     }
 

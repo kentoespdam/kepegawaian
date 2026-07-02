@@ -1,6 +1,6 @@
 package id.perumdamts.kepegawaian.dto.users;
 
-import id.perumdamts.kepegawaian.dto.commons.CommonPageRequest;
+import id.perumdamts.kepegawaian.dto.commons.PagedRequest;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
@@ -10,7 +10,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class UserRequest extends CommonPageRequest {
+public class UserRequest extends PagedRequest {
     private String nipam;
     private String nama;
     private EStatusKerja statusKerja = EStatusKerja.KARYAWAN_AKTIF;

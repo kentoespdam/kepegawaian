@@ -59,10 +59,10 @@ public class PendidikanQueryRepository {
                 .leftJoin(JENJANG_PENDIDIKAN).on(PENDIDIKAN.JENJANG_ID.eq(JENJANG_PENDIDIKAN.ID))
                 .where(conditions)
                 .orderBy(sortOrder)
-                .offset(query.getPage() * query.getSize())
-                .limit(query.getSize())
+                .limit(query.getSizeOrDefault())
+                .offset(query.offset())
                 .fetch(PendidikanJooqMapper.INSTANCE);
 
-        return new PageImpl<>(data, PageRequest.of(query.getPage(), query.getSize()), count);
+        return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
     }
 }
