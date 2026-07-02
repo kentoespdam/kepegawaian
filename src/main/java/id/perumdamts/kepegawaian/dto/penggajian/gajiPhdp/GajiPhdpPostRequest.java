@@ -23,11 +23,4 @@ public class GajiPhdpPostRequest {
                 .build();
     }
 
-    public static GajiPhdp toEntity(GajiPhdpPostRequest request) {
-        GajiPhdp gajiPhdp = new GajiPhdp();
-        gajiPhdp.setUrut(request.getUrut());
-        gajiPhdp.setKondisi(request.getKondisi().toUpperCase());
-        gajiPhdp.setFormula(request.getFormula().toUpperCase());
-        return gajiPhdp;
-    }
 }
