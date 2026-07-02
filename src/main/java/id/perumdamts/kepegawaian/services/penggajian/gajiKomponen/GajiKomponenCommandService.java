@@ -9,7 +9,7 @@ import id.perumdamts.kepegawaian.entities.penggajian.GajiKomponen;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiProfil;
 import id.perumdamts.kepegawaian.mapper.penggajian.gajiKomponen.GajiKomponenMapper;
 import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiKomponenRepository;
-import id.perumdamts.kepegawaian.repositories.penggajian.GajiProfilRepository;
+import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiProfilRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

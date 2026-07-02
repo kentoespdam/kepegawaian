@@ -20,7 +20,7 @@ import id.perumdamts.kepegawaian.mapper.pegawai.pegawai.PegawaiMapper;
 import id.perumdamts.kepegawaian.repositories.master.jpa.*;
 import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiPendapatanNonPajakRepository;
-import id.perumdamts.kepegawaian.repositories.penggajian.GajiProfilRepository;
+import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiProfilRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
 import id.perumdamts.kepegawaian.services.auth.AuthService;
 import id.perumdamts.kepegawaian.services.pegawai.port.KontrakBootstrapPort;

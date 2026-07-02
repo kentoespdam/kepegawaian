@@ -21,9 +21,4 @@ public class GajiProfilPostRequest {
                 .build();
     }
 
-    public static GajiProfil toEntity(GajiProfilPostRequest request) {
-        GajiProfil entity = new GajiProfil();
-        entity.setNama(request.getNama());
-        return entity;
-    }
 }
