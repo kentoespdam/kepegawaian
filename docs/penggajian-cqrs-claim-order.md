@@ -35,7 +35,7 @@
 | 4  | kepegawaian-awf.4  | GajiTunjangan               | W1 | CLOSED | `bd update kepegawaian-awf.4 --claim` |
 | 5  | kepegawaian-awf.5  | GajiPhdp                    | W1 | CLOSED | `bd update kepegawaian-awf.5 --claim` |
 | 6  | kepegawaian-awf.6  | GajiProfil                  | W1 | CLOSED | `bd update kepegawaian-awf.6 --claim` |
-| 7  | kepegawaian-awf.7  | GajiPotonganTkk             | W1 | READY | `bd update kepegawaian-awf.7 --claim` |
+| 7  | kepegawaian-awf.7  | GajiPotonganTkk             | W1 | CLOSED | `bd update kepegawaian-awf.7 --claim` |
 | 8  | kepegawaian-awf.8  | GajiParameterSetting        | W1 | READY | `bd update kepegawaian-awf.8 --claim` |
 | 9  | kepegawaian-awf.9  | GajiPendapatanNonPajak      | W1 | READY | `bd update kepegawaian-awf.9 --claim` |
 | 10 | kepegawaian-awf.10 | GajiBatchMaster             | W2 | READY | `bd update kepegawaian-awf.10 --claim` |

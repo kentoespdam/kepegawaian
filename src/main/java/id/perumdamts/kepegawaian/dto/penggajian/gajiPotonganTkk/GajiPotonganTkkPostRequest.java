@@ -31,12 +31,4 @@ public class GajiPotonganTkkPostRequest {
     }
 
 
-    public static GajiPotonganTkk toEntity(GajiPotonganTkkPostRequest request, Level level, Golongan golongan) {
-        GajiPotonganTkk entity = new GajiPotonganTkk();
-        entity.setStatusPegawai(request.getStatusPegawai());
-        entity.setLevel(level);
-        entity.setGolongan(golongan);
-        entity.setNominal(request.getNominal());
-        return entity;
-    }
 }

@@ -4,7 +4,7 @@ import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.master.Level;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiPotonganTkk;
-import id.perumdamts.kepegawaian.repositories.penggajian.GajiPotonganTkkRepository;
+import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiPotonganTkkRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -2,10 +2,11 @@ package id.perumdamts.kepegawaian.controllers.penggajian;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiPotonganTkk.GajiPotonganTkkIndexQuery;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiPotonganTkk.GajiPotonganTkkPostRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiPotonganTkk.GajiPotonganTkkPutRequest;
-import id.perumdamts.kepegawaian.dto.penggajian.gajiPotonganTkk.GajiPotonganTkkRequest;
-import id.perumdamts.kepegawaian.services.penggajian.gajiPotonganTkk.GajiPotonganTkkService;
+import id.perumdamts.kepegawaian.services.penggajian.gajiPotonganTkk.GajiPotonganTkkCommandService;
+import id.perumdamts.kepegawaian.services.penggajian.gajiPotonganTkk.GajiPotonganTkkQueryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -17,32 +18,33 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/penggajian/potongan-tkk")
 @RequiredArgsConstructor
 public class GajiPotonganTkkController {
-    private final GajiPotonganTkkService service;
+    private final GajiPotonganTkkCommandService commandService;
+    private final GajiPotonganTkkQueryService queryService;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject GajiPotonganTkkRequest request) {
-        return CustomResult.page(service.findPage(request));
+    public ResponseEntity<?> index(@ParameterObject GajiPotonganTkkIndexQuery request) {
+        return CustomResult.page(queryService.findPage(request));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> detail(@PathVariable Long id) {
-        return CustomResult.any(service.findById(id));
+        return CustomResult.any(queryService.findById(id).orElse(null));
     }
 
     @PostMapping
     public ResponseEntity<?> save(@Valid @RequestBody GajiPotonganTkkPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(service.create(request));
+        return CustomResult.save(commandService.create(request));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody GajiPotonganTkkPutRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(service.update(id, request));
+        return CustomResult.save(commandService.update(id, request));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        return CustomResult.delete(service.delete(id));
+        return CustomResult.delete(commandService.delete(id));
     }
 }
