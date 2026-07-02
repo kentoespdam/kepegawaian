@@ -93,8 +93,7 @@
 - [x] **Cleanup — dead code:** hapus field/method/DTO lama yang tak lagi ter-referensi setelah split (mis. `getSpecification()` di request baca, mapper manual yang tergantikan JOOQ). Verifikasi zero-ref via `gitnexus_impact({direction: "upstream"})` SEBELUM hapus.
 - [x] **Cleanup — unused import:** buang import yang menggantung setelah pindah/hapus kode (`gitnexus_rename` & split kerap menyisakan import mati). Pastikan `./gradlew clean compileJava` bersih tanpa warning import.
 - [x] `gitnexus_detect_changes()` scope sesuai; `./gradlew clean compileJava` SUCCESS
-- [x] `bd close <id>` → ship (lihat "Ship tiap issue")e sesuai; `./gradlew clean compileJava` SUCCESS
-- [ ] `bd close <id>` → ship (lihat "Ship tiap issue")
+- [x] `bd close <id>` → ship (lihat "Ship tiap issue")
 
 **Tabel JOOQ per aggregate:** `.1` DASAR_GAJI · `.2` DETAIL_DASAR_GAJI · `.3` GAJI_KOMPONEN · `.4` GAJI_TUNJANGAN · `.5` GAJI_PHDP · `.6` GAJI_PROFIL · `.7` GAJI_POTONGAN_TKK · `.8` GAJI_PARAMETER_SETTING · `.9` GAJI_PENDAPATAN_NON_PAJAK.
 
@@ -106,25 +105,25 @@
 
 **Goal:** CQRS split; read=JOOQ; pertahankan RestClient PATCH upload eksternal + download/upload xlsx. **TANPA filter `IS_DELETED`** (tabel hard-delete).
 
-- [ ] `gitnexus_impact` `GajiBatchMasterServiceImpl` (upstream) + WARN bila HIGH/CRITICAL
-- [ ] DTO tulis (`*PostRequest`/`*PutRequest`) + **`GajiBatchMasterIndexQuery extends PagedRequest`** (baca) + write mapper + `GajiBatchMasterJooqMapper` (read)
-- [ ] JPA repo → `jpa/`; NEW `jooq/GajiBatchMasterQueryRepository` (tabel GAJI_BATCH_MASTER; **tanpa** `IS_DELETED`; `findByPegawaiId` filter `EProsesGaji.FINISHED`)
-- [ ] `GajiBatchMasterQueryService` — `findAll`/`findById`/`findByPegawaiId` (paged) + **download** `downloadTableGaji`/`downloadPotonganGaji` (xlsx `ByteArrayResource`, milik QueryService)
-- [ ] `GajiBatchMasterCommandService` `@Transactional` — `uploadPotonganTambahan` (FileUploadUtil + save `GajiBatchRootLampiran` + RestClient PATCH ke `${penggajian.endpoint}/upload/{id}/additional_gaji`); **konversi `@Autowired` field → constructor injection** (`@RequiredArgsConstructor`)
-- [ ] Controller inject KEDUA service; endpoint download panggil QueryService
-- [ ] ≤120 baris/file; `detect_changes`; `clean compileJava` SUCCESS
+- [x] `gitnexus_impact` `GajiBatchMasterServiceImpl` (upstream) + WARN bila HIGH/CRITICAL
+- [x] DTO tulis (`*PostRequest`/`*PutRequest`) + **`GajiBatchMasterIndexQuery extends PagedRequest`** (baca) + write mapper + `GajiBatchMasterJooqMapper` (read)
+- [x] JPA repo → `jpa/`; NEW `jooq/GajiBatchMasterQueryRepository` (tabel GAJI_BATCH_MASTER; **tanpa** `IS_DELETED`; `findByPegawaiId` filter `EProsesGaji.FINISHED`)
+- [x] `GajiBatchMasterQueryService` — `findAll`/`findById`/`findByPegawaiId` (paged) + **download** `downloadTableGaji`/`downloadPotonganGaji` (xlsx `ByteArrayResource`, milik QueryService)
+- [x] `GajiBatchMasterCommandService` `@Transactional` — `uploadPotonganTambahan` (FileUploadUtil + save `GajiBatchRootLampiran` + RestClient PATCH ke `${penggajian.endpoint}/upload/{id}/additional_gaji`); **konversi `@Autowired` field → constructor injection** (`@RequiredArgsConstructor`)
+- [x] Controller inject KEDUA service; endpoint download panggil QueryService
+- [x] ≤120 baris/file; `detect_changes`; `clean compileJava` SUCCESS
 
 ### ISSUE 11 — `kepegawaian-awf.11` GajiBatchMasterProses
 
 **Goal:** CQRS split; read=JOOQ; pertahankan `recalculateAdditional` (math payroll) + `rollback`. **TANPA filter `IS_DELETED`**. **Cleanup dead field `ENDPOINT`** (tak dipakai RestClient apa pun).
 
-- [ ] `gitnexus_impact` `GajiBatchMasterProsesServiceImpl` (upstream) + WARN bila HIGH/CRITICAL
-- [ ] DTO tulis + **`GajiBatchMasterProsesIndexQuery extends PagedRequest`** (baca) + write mapper + `GajiBatchMasterProsesJooqMapper` (read)
-- [ ] JPA repo → `jpa/`; NEW `jooq/GajiBatchMasterProsesQueryRepository` (tabel GAJI_BATCH_MASTER_PROSES; **tanpa** `IS_DELETED`); baca `findPage`/`findById`/`findByMasterId` + `getSumByJenisGaji`/`getSumAdditionalByJenisGaji` (kode `startsWith "ADD_"`)/`filterGajiBatchMasterProses`
-- [ ] `GajiBatchMasterProsesQueryService` — delegasi sum/filter queries
-- [ ] `GajiBatchMasterProsesCommandService` `@Transactional` — `save` (+`recalculateAdditional`: `penghasilanBersih2`/`pembulatan2`/`penghasilanBersihFinal2` via `Math.round`/`Math.ceil`), `rollback(rootBatchId)` (hapus proses `ADD_%` + nolkan total), `delete` (+recalculate)
-- [ ] **HAPUS `@Value("${penggajian.endpoint}") private String ENDPOINT;`** (dead field) — verifikasi zero-ref dulu
-- [ ] Controller inject KEDUA service; ≤120 baris/file; `detect_changes`; `clean compileJava` SUCCESS
+- [x] `gitnexus_impact` `GajiBatchMasterProsesServiceImpl` (upstream) + WARN bila HIGH/CRITICAL
+- [x] DTO tulis + **`GajiBatchMasterProsesIndexQuery extends PagedRequest`** (baca) + write mapper + `GajiBatchMasterProsesJooqMapper` (read)
+- [x] JPA repo → `jpa/`; NEW `jooq/GajiBatchMasterProsesQueryRepository` (tabel GAJI_BATCH_MASTER_PROSES; **tanpa** `IS_DELETED`); baca `findPage`/`findById`/`findByMasterId` + `getSumByJenisGaji`/`getSumAdditionalByJenisGaji` (kode `startsWith "ADD_"`)/`filterGajiBatchMasterProses`
+- [x] `GajiBatchMasterProsesQueryService` — delegasi sum/filter queries
+- [x] `GajiBatchMasterProsesCommandService` `@Transactional` — `save` (+`recalculateAdditional`: `penghasilanBersih2`/`pembulatan2`/`penghasilanBersihFinal2` via `Math.round`/`Math.ceil`), `rollback(rootBatchId)` (hapus proses `ADD_%` + nolkan total), `delete` (+recalculate)
+- [x] **HAPUS `@Value("${penggajian.endpoint}") private String ENDPOINT;`** (dead field) — verifikasi zero-ref dulu
+- [x] Controller inject KEDUA service; ≤120 baris/file; `detect_changes`; `clean compileJava` SUCCESS
 
 ---
 
