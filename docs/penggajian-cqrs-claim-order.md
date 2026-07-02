@@ -39,8 +39,8 @@
 | 8     | kepegawaian-awf.8  | GajiParameterSetting                   | W1   | CLOSED                                | `bd update kepegawaian-awf.8 --claim`  |
 | 9     | kepegawaian-awf.9  | GajiPendapatanNonPajak                 | W1   | CLOSED                                | `bd update kepegawaian-awf.9 --claim`  |
 | 10    | kepegawaian-awf.10 | GajiBatchMaster                        | W2   | CLOSED                                | `bd update kepegawaian-awf.10 --claim` |
-| 11    | kepegawaian-awf.11 | GajiBatchMasterProses                  | W2   | READY                                 | `bd update kepegawaian-awf.11 --claim` |
-| 12    | kepegawaian-awf.12 | GajiBatchRoot                          | W3   | BLOCKED → READY after #10 & #11 close | `bd update kepegawaian-awf.12 --claim` |
+| 11    | kepegawaian-awf.11 | GajiBatchMasterProses                  | W2   | CLOSED                                | `bd update kepegawaian-awf.11 --claim` |
+| 12    | kepegawaian-awf.12 | GajiBatchRoot                          | W3   | READY                                 | `bd update kepegawaian-awf.12 --claim` |
 | —     | kepegawaian-awf    | Epic (umbrella, do not claim directly) | —    | OPEN, auto-closes                     | —                                      |
 
 > Wave 1 issues #2–#9 tak diblokir secara teknis (paralel-able), tapi **selesaikan #1 dulu** sebagai pilot: ia menetapkan bentuk file yang di-mirror 8 issue lainnya. Setelah #1 hijau, #2–#9 boleh dikerjakan berurutan/paralel.

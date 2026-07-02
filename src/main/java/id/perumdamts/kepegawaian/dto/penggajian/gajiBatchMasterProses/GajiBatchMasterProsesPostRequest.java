@@ -27,14 +27,4 @@ public class GajiBatchMasterProsesPostRequest {
                 .build();
     }
 
-    public static GajiBatchMasterProses toEntity(GajiBatchMasterProsesPostRequest request) {
-        GajiBatchMasterProses entity = new GajiBatchMasterProses();
-        entity.setBatchMasterId(request.getBatchMasterId());
-        entity.setKode("ADD_" + request.getNama().replace(" ", "_"));
-        entity.setUrut(99);
-        entity.setNama(request.getNama());
-        entity.setJenisGaji(request.getJenisGaji());
-        entity.setNilai(request.getNilai());
-        return entity;
-    }
 }
