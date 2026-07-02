@@ -18,6 +18,7 @@ Domain context dipecah per modul/topik di `docs/context/`:
 | [`language-pegawai.md`](docs/context/language-pegawai.md) | Pegawai, NIPAM, SK, Ringkasan, JSON baca |
 | [`language-profil.md`](docs/context/language-profil.md) | Profil, Pengajuan Perubahan, changedStatus |
 | [`language-cuti.md`](docs/context/language-cuti.md) | Cuti, Approval Chain, Kuota Cuti, PIC |
+| [`language-penggajian.md`](docs/context/language-penggajian.md) | Penggajian, Dasar Gaji, Batch Gaji, Status Proses, Potongan Tambahan |
 | [`language-security.md`](docs/context/language-security.md) | Lingkungan, Dev User, Appwrite JWT, Role |
 | [`relationships.md`](docs/context/relationships.md) | Relasi & dependency lintas-modul |
 | [`decisions-pegawai.md`](docs/context/decisions-pegawai.md) | Keputusan rewrite pegawai & kepegawaian |
