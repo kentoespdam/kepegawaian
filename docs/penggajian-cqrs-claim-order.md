@@ -17,8 +17,8 @@
 
 ### Aturan `IS_DELETED` per aggregate (WAJIB benar)
 
-| Punya kolom `is_deleted` → baca `WAJIB IS_DELETED.eq(false)` | TANPA kolom (hard-delete → baca tanpa filter) |
-|---|---|
+| Punya kolom `is_deleted` → baca `WAJIB IS_DELETED.eq(false)`                                                                                                    | TANPA kolom (hard-delete → baca tanpa filter)                                                               |
+|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
 | DasarGaji, DetailDasarGaji, GajiKomponen, GajiTunjangan, GajiPhdp, GajiProfil, GajiPotonganTkk, GajiParameterSetting, GajiPendapatanNonPajak, **GajiBatchRoot** | GajiBatchMaster, GajiBatchMasterProses, GajiBatchPotonganTkk, GajiBatchRootLampiran, GajiBatchRootErrorLogs |
 
 > Grup A/B dibedakan lewat basis SCHEMA (kehadiran tabel Envers `_Aud`), bukan tebakan. Grup B pada dasarnya **tetap CRUD** — pengecualian nyata hanya Kafka (GajiBatchRoot), RestClient PATCH eksternal (GajiBatchMaster), download/upload xlsx, math `recalculateAdditional`, dan verb state-machine — semua sebagai side-effect di dalam method tulis, dipertahankan verbatim.
@@ -27,21 +27,21 @@
 
 ## Claim order
 
-| Order | Issue ID | Aggregate | Wave | State when you start | Claim cmd |
-|-------|----------|-----------|------|----------------------|-----------|
-| 1  | kepegawaian-awf.1  | DasarGaji (pilot pattern)   | W1 | CLOSED | `bd update kepegawaian-awf.1 --claim` |
-| 2  | kepegawaian-awf.2  | DetailDasarGaji             | W1 | CLOSED | `bd update kepegawaian-awf.2 --claim` |
-| 3  | kepegawaian-awf.3  | GajiKomponen                | W1 | CLOSED | `bd update kepegawaian-awf.3 --claim` |
-| 4  | kepegawaian-awf.4  | GajiTunjangan               | W1 | CLOSED | `bd update kepegawaian-awf.4 --claim` |
-| 5  | kepegawaian-awf.5  | GajiPhdp                    | W1 | CLOSED | `bd update kepegawaian-awf.5 --claim` |
-| 6  | kepegawaian-awf.6  | GajiProfil                  | W1 | CLOSED | `bd update kepegawaian-awf.6 --claim` |
-| 7  | kepegawaian-awf.7  | GajiPotonganTkk             | W1 | CLOSED | `bd update kepegawaian-awf.7 --claim` |
-| 8  | kepegawaian-awf.8  | GajiParameterSetting        | W1 | CLOSED | `bd update kepegawaian-awf.8 --claim` |
-| 9  | kepegawaian-awf.9  | GajiPendapatanNonPajak      | W1 | CLOSED | `bd update kepegawaian-awf.9 --claim` |
-| 10 | kepegawaian-awf.10 | GajiBatchMaster             | W2 | READY | `bd update kepegawaian-awf.10 --claim` |
-| 11 | kepegawaian-awf.11 | GajiBatchMasterProses       | W2 | READY | `bd update kepegawaian-awf.11 --claim` |
-| 12 | kepegawaian-awf.12 | GajiBatchRoot               | W3 | BLOCKED → READY after #10 & #11 close | `bd update kepegawaian-awf.12 --claim` |
-| —  | kepegawaian-awf    | Epic (umbrella, do not claim directly) | — | OPEN, auto-closes | — |
+| Order | Issue ID           | Aggregate                              | Wave | State when you start                  | Claim cmd                              |
+|-------|--------------------|----------------------------------------|------|---------------------------------------|----------------------------------------|
+| 1     | kepegawaian-awf.1  | DasarGaji (pilot pattern)              | W1   | CLOSED                                | `bd update kepegawaian-awf.1 --claim`  |
+| 2     | kepegawaian-awf.2  | DetailDasarGaji                        | W1   | CLOSED                                | `bd update kepegawaian-awf.2 --claim`  |
+| 3     | kepegawaian-awf.3  | GajiKomponen                           | W1   | CLOSED                                | `bd update kepegawaian-awf.3 --claim`  |
+| 4     | kepegawaian-awf.4  | GajiTunjangan                          | W1   | CLOSED                                | `bd update kepegawaian-awf.4 --claim`  |
+| 5     | kepegawaian-awf.5  | GajiPhdp                               | W1   | CLOSED                                | `bd update kepegawaian-awf.5 --claim`  |
+| 6     | kepegawaian-awf.6  | GajiProfil                             | W1   | CLOSED                                | `bd update kepegawaian-awf.6 --claim`  |
+| 7     | kepegawaian-awf.7  | GajiPotonganTkk                        | W1   | CLOSED                                | `bd update kepegawaian-awf.7 --claim`  |
+| 8     | kepegawaian-awf.8  | GajiParameterSetting                   | W1   | CLOSED                                | `bd update kepegawaian-awf.8 --claim`  |
+| 9     | kepegawaian-awf.9  | GajiPendapatanNonPajak                 | W1   | CLOSED                                | `bd update kepegawaian-awf.9 --claim`  |
+| 10    | kepegawaian-awf.10 | GajiBatchMaster                        | W2   | READY                                 | `bd update kepegawaian-awf.10 --claim` |
+| 11    | kepegawaian-awf.11 | GajiBatchMasterProses                  | W2   | READY                                 | `bd update kepegawaian-awf.11 --claim` |
+| 12    | kepegawaian-awf.12 | GajiBatchRoot                          | W3   | BLOCKED → READY after #10 & #11 close | `bd update kepegawaian-awf.12 --claim` |
+| —     | kepegawaian-awf    | Epic (umbrella, do not claim directly) | —    | OPEN, auto-closes                     | —                                      |
 
 > Wave 1 issues #2–#9 tak diblokir secara teknis (paralel-able), tapi **selesaikan #1 dulu** sebagai pilot: ia menetapkan bentuk file yang di-mirror 8 issue lainnya. Setelah #1 hijau, #2–#9 boleh dikerjakan berurutan/paralel.
 
