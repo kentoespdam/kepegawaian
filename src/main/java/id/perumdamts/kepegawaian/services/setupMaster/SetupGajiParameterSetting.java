@@ -1,7 +1,7 @@
 package id.perumdamts.kepegawaian.services.setupMaster;
 
 import id.perumdamts.kepegawaian.entities.penggajian.GajiParameterSetting;
-import id.perumdamts.kepegawaian.repositories.penggajian.GajiParameterSettingRepository;
+import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiParameterSettingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -4,63 +4,42 @@ import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiParameterSetting.GajiParameterSettingPostRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiParameterSetting.GajiParameterSettingPutRequest;
-import id.perumdamts.kepegawaian.dto.penggajian.gajiParameterSetting.GajiParameterSettingRequest;
-import id.perumdamts.kepegawaian.dto.penggajian.gajiParameterSetting.GajiParameterSettingResponse;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiParameterSetting;
-import id.perumdamts.kepegawaian.repositories.penggajian.GajiParameterSettingRepository;
+import id.perumdamts.kepegawaian.mapper.penggajian.gajiParameterSetting.GajiParameterSettingMapper;
+import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiParameterSettingRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class GajiParameterSettingServiceImpl implements GajiParameterSettingService {
+public class GajiParameterSettingCommandService {
     private final GajiParameterSettingRepository repository;
 
-    @Override
-    public Page<GajiParameterSettingResponse> findPage(GajiParameterSettingRequest request) {
-        return repository.findAll(request.getSpecification(), request.getPageable())
-                .map(GajiParameterSettingResponse::from);
-    }
-
-    @Override
-    public List<GajiParameterSettingResponse> findAll() {
-        return repository.findAll().stream()
-                .map(GajiParameterSettingResponse::from)
-                .toList();
-    }
-
-    @Override
-    public GajiParameterSettingResponse findById(Long id) {
-        return repository.findById(id)
-                .map(GajiParameterSettingResponse::from)
-                .orElse(null);
-    }
-
-    @Override
+    @Transactional
     public SavedStatus<?> save(GajiParameterSettingPostRequest request) {
         Optional<GajiParameterSetting> one = repository.findOne(request.getSpecification());
         if (one.isPresent())
-            return SavedStatus.build(ESaveStatus.DUPLICATE, "Pendapatan Non Pajak sudah ada");
-        GajiParameterSetting entity = GajiParameterSettingPostRequest.toEntity(request);
+            return SavedStatus.build(ESaveStatus.DUPLICATE, "Setting Parameter Gaji sudah ada");
+        GajiParameterSetting entity = GajiParameterSettingMapper.toEntity(request);
         repository.save(entity);
         return SavedStatus.build(ESaveStatus.SUCCESS, "Setting Parameter Gaji Saved");
     }
 
-    @Override
+    @Transactional
     public SavedStatus<?> update(Long id, GajiParameterSettingPutRequest request) {
         Optional<GajiParameterSetting> byId = repository.findById(id);
         if (byId.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Pendapatan Non Pajak");
-        GajiParameterSetting entity = GajiParameterSettingPutRequest.toEntity(byId.get(), request);
+            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Setting Parameter Gaji");
+        GajiParameterSetting entity = byId.get();
+        GajiParameterSettingMapper.updateEntity(entity, request);
         repository.save(entity);
         return SavedStatus.build(ESaveStatus.SUCCESS, "Setting Parameter Gaji Updated");
     }
 
-    @Override
+    @Transactional
     public Boolean delete(Long id) {
         Optional<GajiParameterSetting> byId = repository.findById(id);
         if (byId.isEmpty())

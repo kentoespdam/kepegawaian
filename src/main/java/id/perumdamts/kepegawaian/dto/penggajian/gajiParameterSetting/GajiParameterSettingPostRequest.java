@@ -22,10 +22,4 @@ public class GajiParameterSettingPostRequest {
                 .build();
     }
 
-    public static GajiParameterSetting toEntity(GajiParameterSettingPostRequest request) {
-        GajiParameterSetting entity = new GajiParameterSetting();
-        entity.setKode(request.getKode());
-        entity.setNominal(request.getNominal());
-        return entity;
-    }
 }
