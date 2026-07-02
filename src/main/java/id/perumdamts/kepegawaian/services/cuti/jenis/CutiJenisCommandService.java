@@ -6,7 +6,7 @@ import id.perumdamts.kepegawaian.dto.cuti.jenis.CutiJenisPostRequest;
 import id.perumdamts.kepegawaian.dto.cuti.jenis.CutiJenisPutRequest;
 import id.perumdamts.kepegawaian.entities.cuti.CutiJenis;
 import id.perumdamts.kepegawaian.mapper.cuti.jenis.CutiJenisMapper;
-import id.perumdamts.kepegawaian.repositories.cuti.CutiJenisRepository;
+import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiJenisRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

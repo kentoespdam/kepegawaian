@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.repositories.cuti;
+package id.perumdamts.kepegawaian.repositories.cuti.jpa;
 
 import id.perumdamts.kepegawaian.entities.cuti.CutiJenis;
 import org.springframework.data.jpa.repository.JpaRepository;

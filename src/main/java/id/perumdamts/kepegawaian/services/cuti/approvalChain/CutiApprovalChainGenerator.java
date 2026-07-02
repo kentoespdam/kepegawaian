@@ -6,8 +6,8 @@ import id.perumdamts.kepegawaian.entities.commons.EReadWriteStatus;
 import id.perumdamts.kepegawaian.entities.cuti.CutiApprovalChain;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
-import id.perumdamts.kepegawaian.repositories.cuti.CutiApprovalChainRepository;
-import id.perumdamts.kepegawaian.repositories.cuti.CutiPegawaiRepository;
+import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiApprovalChainRepository;
+import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiPegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JabatanRepository;
 import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
 import lombok.RequiredArgsConstructor;
@@ -113,7 +113,7 @@ public class CutiApprovalChainGenerator {
 
     public void forKlaim(CutiPegawai cutiPegawai) {
         List<CutiApprovalChain> approvalChain = new ArrayList<>();
-        addApprovalChainIfJabatanExists(approvalChain, cutiPegawai, cutiProperties.getSupervisorSdm(), 1);
+        addApprovalChainIfJabatanExists(approvalChain, cutiPegawai, cutiProperties.getSupervisorSdm());
         if (!approvalChain.isEmpty()) {
             approvalChain.getFirst().setApprovalStatus(EApprovalCutiStatus.PENDING);
             approvalChain.getFirst().setReadWriteStatus(EReadWriteStatus.WRITE);
@@ -124,15 +124,14 @@ public class CutiApprovalChainGenerator {
     private void addApprovalChainIfJabatanExists(
             List<CutiApprovalChain> approvalChain,
             CutiPegawai cutiPegawai,
-            Long jabatanId,
-            int sequence
+            Long jabatanId
     ) {
         jabatanRepository.findById(jabatanId)
                 .map(jabatan -> new CutiApprovalChain(
                         cutiPegawai,
                         jabatan.getId(),
                         jabatan.getNama(),
-                        sequence
+                        1
                 ))
                 .ifPresent(approvalChain::add);
     }

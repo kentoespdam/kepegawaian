@@ -9,7 +9,7 @@ import id.perumdamts.kepegawaian.helpers.DateHelper;
 import id.perumdamts.kepegawaian.helpers.cuti.CutiKuotaAllocator;
 import id.perumdamts.kepegawaian.helpers.cuti.MinimalCutiRule;
 import id.perumdamts.kepegawaian.helpers.cuti.WorkdayCalculator;
-import id.perumdamts.kepegawaian.repositories.cuti.CutiKuotaRepository;
+import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiKuotaRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.HariLiburRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

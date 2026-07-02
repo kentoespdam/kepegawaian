@@ -4,7 +4,7 @@ import id.perumdamts.kepegawaian.config.CutiProperties;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanKlaimPostRequest;
 import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
-import id.perumdamts.kepegawaian.repositories.cuti.CutiPegawaiRepository;
+import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiPegawaiRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

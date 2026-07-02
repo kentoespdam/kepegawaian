@@ -6,7 +6,7 @@ import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPostRequest;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import id.perumdamts.kepegawaian.helpers.cuti.CutiKuotaAllocator;
 import id.perumdamts.kepegawaian.helpers.cuti.MinimalCutiRule;
-import id.perumdamts.kepegawaian.repositories.cuti.CutiKuotaRepository;
+import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiKuotaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

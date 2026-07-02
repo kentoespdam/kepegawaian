@@ -8,7 +8,7 @@ import id.perumdamts.kepegawaian.dto.cuti.kuota.CutiKuotaPutRequest;
 import id.perumdamts.kepegawaian.entities.cuti.CutiKuota;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.mapper.cuti.kuota.CutiKuotaMapper;
-import id.perumdamts.kepegawaian.repositories.cuti.CutiKuotaRepository;
+import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiKuotaRepository;
 import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

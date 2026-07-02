@@ -5,7 +5,7 @@ import id.perumdamts.kepegawaian.dto.cuti.kuota.CutiKuotaDeductionResult;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import id.perumdamts.kepegawaian.helpers.DateHelper;
 import id.perumdamts.kepegawaian.helpers.cuti.CutiKuotaDeductionAllocator;
-import id.perumdamts.kepegawaian.repositories.cuti.CutiKuotaRepository;
+import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiKuotaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
