@@ -32,9 +32,6 @@ public class CutiJenisQueryRepository {
                 
         Condition where = baseWhere(query);
         var count = dsl.selectCount().from(CUTI_JENIS).where(where).fetchOptional(0, Long.class).orElse(0L);
-        
-        int pageNumber = query.getPage() != null ? query.getPage() : 0;
-        int sizeOrDefault = query.getSize() != null ? query.getSize() : 10;
 
         var data = dsl.select(
                         CUTI_JENIS.ID,
@@ -48,11 +45,11 @@ public class CutiJenisQueryRepository {
                 .leftJoin(parent).on(CUTI_JENIS.PARENT_ID.eq(parent.ID))
                 .where(where)
                 .orderBy(sortOrder)
-                .limit(sizeOrDefault)
-                .offset(pageNumber * sizeOrDefault)
+                .limit(query.getSizeOrDefault())
+                .offset(query.offset())
                 .fetch(CutiJenisJooqMapper::mapToResponse);
                 
-        return new PageImpl<>(data, PageRequest.of(pageNumber, sizeOrDefault), count);
+        return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
     }
 
     public List<CutiJenisResponse> listQuery(CutiJenisRequest query) {
