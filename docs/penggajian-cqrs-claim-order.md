@@ -40,7 +40,7 @@
 | 9     | kepegawaian-awf.9  | GajiPendapatanNonPajak                 | W1   | CLOSED                                | `bd update kepegawaian-awf.9 --claim`  |
 | 10    | kepegawaian-awf.10 | GajiBatchMaster                        | W2   | CLOSED                                | `bd update kepegawaian-awf.10 --claim` |
 | 11    | kepegawaian-awf.11 | GajiBatchMasterProses                  | W2   | CLOSED                                | `bd update kepegawaian-awf.11 --claim` |
-| 12    | kepegawaian-awf.12 | GajiBatchRoot                          | W3   | READY                                 | `bd update kepegawaian-awf.12 --claim` |
+| 12    | kepegawaian-awf.12 | GajiBatchRoot                          | W3   | CLOSED                                | `bd update kepegawaian-awf.12 --claim` |
 | —     | kepegawaian-awf    | Epic (umbrella, do not claim directly) | —    | OPEN, auto-closes                     | —                                      |
 
 > Wave 1 issues #2–#9 tak diblokir secara teknis (paralel-able), tapi **selesaikan #1 dulu** sebagai pilot: ia menetapkan bentuk file yang di-mirror 8 issue lainnya. Setelah #1 hijau, #2–#9 boleh dikerjakan berurutan/paralel.
@@ -133,16 +133,16 @@
 
 **Goal:** state machine + Kafka + upload. **PUNYA `is_deleted` → baca WAJIB `IS_DELETED.eq(false)`.** Membangun di atas 4 issue Kafka yang SUDAH close. Split menjadi 4 file agar tiap ≤120 baris:
 
-- [ ] `gitnexus_impact` `GajiBatchRootServiceImpl` (upstream) + WARN bila HIGH/CRITICAL (kemungkinan tinggi — state-machine hub)
-- [ ] DTO tulis + **`GajiBatchRootIndexQuery extends PagedRequest`** (baca) + write mapper + `GajiBatchRootJooqMapper` (read)
-- [ ] JPA repo → `jpa/`; NEW `jooq/GajiBatchRootQueryRepository` (tabel GAJI_BATCH_ROOT; **WAJIB `IS_DELETED.eq(false)`**)
-- [ ] **`GajiBatchRootQueryService`** — `findAll`/`findById` (delegasi JOOQ)
-- [ ] **`GajiBatchRootCommandService`** `@Transactional` — `save` (upload PotonganTKK + `ProcessPotonganTkk` + compensating action), `delete` (soft-delete)
-- [ ] **`GajiBatchRootWorkflowCommandService`** `@Transactional` — verb state-machine `reprocess`/`verify1`/`verify2`/`accept` (EProsesGaji: PENDING→PROSES→WAIT_VERIFICATION_PHASE_1→WAIT_VERIFICATION_PHASE_2→WAIT_APPROVAL→FINISHED) + `reprocessHandler`/`logAndBuildFailure`
-- [ ] **`GajiBatchRootEventPublisher`** — Kafka `publishAfterCommit` via `TransactionSynchronizationManager.registerSynchronization(...)` (fire-and-forget after DB commit); `@Value PENGGAJIAN_TOPIC` + `KafkaTemplate` diisolasi ke sini
-- [ ] Controller inject Query + Command + Workflow service; publisher diinject ke Command/Workflow (bukan controller)
-- [ ] ≤120 baris/file; `detect_changes`; `clean compileJava` SUCCESS
-- [ ] **ADR** — isolasi Kafka ke `GajiBatchRootEventPublisher` sudah didokumentasikan di [ADR-0024](adr/0024-gajibatchroot-kafka-diisolasi-ke-eventpublisher.md) (publish after-commit, fire-and-forget). Implementasi WAJIB sesuai keputusan itu; bila menyimpang → update ADR sebelum ship.
+- [x] `gitnexus_impact` `GajiBatchRootServiceImpl` (upstream) + WARN bila HIGH/CRITICAL (kemungkinan tinggi — state-machine hub)
+- [x] DTO tulis + **`GajiBatchRootIndexQuery extends PagedRequest`** (baca) + write mapper + `GajiBatchRootJooqMapper` (read)
+- [x] JPA repo → `jpa/`; NEW `jooq/GajiBatchRootQueryRepository` (tabel GAJI_BATCH_ROOT; **WAJIB `IS_DELETED.eq(false)`**)
+- [x] **`GajiBatchRootQueryService`** — `findAll`/`findById` (delegasi JOOQ)
+- [x] **`GajiBatchRootCommandService`** `@Transactional` — `save` (upload PotonganTKK + `ProcessPotonganTkk` + compensating action), `delete` (soft-delete)
+- [x] **`GajiBatchRootWorkflowCommandService`** `@Transactional` — verb state-machine `reprocess`/`verify1`/`verify2`/`accept` (EProsesGaji: PENDING→PROSES→WAIT_VERIFICATION_PHASE_1→WAIT_VERIFICATION_PHASE_2→WAIT_APPROVAL→FINISHED) + `reprocessHandler`/`logAndBuildFailure`
+- [x] **`GajiBatchRootEventPublisher`** — Kafka `publishAfterCommit` via `TransactionSynchronizationManager.registerSynchronization(...)` (fire-and-forget after DB commit); `@Value PENGGAJIAN_TOPIC` + `KafkaTemplate` diisolasi ke sini
+- [x] Controller inject Query + Command + Workflow service; publisher diinject ke Command/Workflow (bukan controller)
+- [x] ≤120 baris/file; `detect_changes`; `clean compileJava` SUCCESS
+- [x] **ADR** — isolasi Kafka ke `GajiBatchRootEventPublisher` sudah didokumentasikan di [ADR-0024](adr/0024-gajibatchroot-kafka-diisolasi-ke-eventpublisher.md) (publish after-commit, fire-and-forget). Implementasi WAJIB sesuai keputusan itu; bila menyimpang → update ADR sebelum ship.
 
 ---
 
