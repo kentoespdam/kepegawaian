@@ -25,9 +25,9 @@ Cermin status beads dalam urutan claim. Centang saat isu terkait `closed`. Sumbe
 - [x] **12. `kepegawaian-6bu.4.1`** — profil: CQRS `Pendidikan`
 - [x] **13. `kepegawaian-6bu.5.1`** — system: CQRS `PrefRole`
 - [x] **14. `kepegawaian-6bu.5.2`** — users: CQRS `User`
-- [ ] **15. `kepegawaian-6bu.6`** — `#final`: hapus `CommonPageRequest` + verifikasi 0 referensi *(WAJIB terakhir)*
+- [x] **15. `kepegawaian-6bu.6`** — `#final`: hapus `CommonPageRequest` + verifikasi 0 referensi *(WAJIB terakhir)*
 
-> **Progress:** 14/15 selesai · Epik `kepegawaian-6bu` masih `open`.
+> **Progress:** 15/15 selesai · Epik `kepegawaian-6bu` telah `selesai`.
 
 ---
 

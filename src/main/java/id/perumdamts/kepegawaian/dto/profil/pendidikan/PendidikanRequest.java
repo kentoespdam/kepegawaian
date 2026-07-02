@@ -1,16 +1,18 @@
 package id.perumdamts.kepegawaian.dto.profil.pendidikan;
 
-import id.perumdamts.kepegawaian.dto.commons.CommonPageRequest;
+import id.perumdamts.kepegawaian.dto.commons.PagedRequest;
 import id.perumdamts.kepegawaian.entities.profil.Pendidikan;
 import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class PendidikanRequest extends CommonPageRequest {
+public class PendidikanRequest extends PagedRequest {
     private String biodataId;
     private Long jenjangId;
     private String gelarDepan;
@@ -37,13 +39,13 @@ public class PendidikanRequest extends CommonPageRequest {
                 .addEqual(gpa, "gpa")
                 .addEqual(isLatest, "isLatest")
                 .build();
-
     }
 
     @Override
     public Pageable getPageable() {
-        if(super.sortBy==null)
-            super.sortBy="JenjangPendidikan.Id";
-        return super.getPageable();
+        String activeSortBy = getSortBy() == null ? "JenjangPendidikan.Id" : getSortBy();
+        Sort.Direction activeDirection = getSortDirection() == null || getSortDirection().equalsIgnoreCase("asc")
+                ? Sort.Direction.ASC : Sort.Direction.DESC;
+        return PageRequest.of(getPageNumber(), getSizeOrDefault(), Sort.by(activeDirection, activeSortBy));
     }
 }
