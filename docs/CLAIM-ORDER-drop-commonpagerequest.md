@@ -7,6 +7,30 @@ Dokumen ini menetapkan **urutan claim** (`bd update <id> --claim`) supaya ekseku
 
 ---
 
+## Checklist Pengerjaan (Master)
+
+Cermin status beads dalam urutan claim. Centang saat isu terkait `closed`. Sumber kebenaran tetap `bd ready` / `bd show <id>` — checklist ini untuk pandangan sekilas.
+
+- [ ] **1. `kepegawaian-6bu.1`** — `#foundation`: fix `PagedRequest` + guard ArchUnit + fix `@Valid` `BiodataController.index` *(WAJIB pertama)*
+- [ ] **2. `kepegawaian-6bu.2.1`** — cuti: CQRS `CutiJenis`
+- [ ] **3. `kepegawaian-6bu.2.2`** — cuti: CQRS `CutiKuota`
+- [ ] **4. `kepegawaian-6bu.2.3`** — cuti: CQRS `CutiApprovalChain`
+- [ ] **5. `kepegawaian-6bu.2.4`** — cuti: CQRS `CutiApproval`
+- [ ] **6. `kepegawaian-6bu.2.5`** — cuti: CQRS `CutiPengajuan`
+- [ ] **7. `kepegawaian-6bu.3.1`** — kepegawaian: CQRS `RiwayatSk`
+- [ ] **8. `kepegawaian-6bu.3.2`** — kepegawaian: CQRS `RiwayatSp`
+- [ ] **9. `kepegawaian-6bu.3.3`** — kepegawaian: CQRS `RiwayatMutasi`
+- [ ] **10. `kepegawaian-6bu.3.4`** — kepegawaian: CQRS `RiwayatKontrak`
+- [ ] **11. `kepegawaian-6bu.3.5`** — kepegawaian: CQRS `RiwayatTerminasi`
+- [ ] **12. `kepegawaian-6bu.4.1`** — profil: CQRS `Pendidikan`
+- [ ] **13. `kepegawaian-6bu.5.1`** — system: CQRS `PrefRole`
+- [ ] **14. `kepegawaian-6bu.5.2`** — users: CQRS `User`
+- [ ] **15. `kepegawaian-6bu.6`** — `#final`: hapus `CommonPageRequest` + verifikasi 0 referensi *(WAJIB terakhir)*
+
+> **Progress:** 0/15 selesai · Epik `kepegawaian-6bu` masih `open`.
+
+---
+
 ## Aturan Wajib (jangan dilanggar)
 
 1. **`#foundation` (`kepegawaian-6bu.1`) DULU, sendirian.** Semua slice diblokir olehnya — `bd ready` tak akan memunculkan slice sebelum foundation `closed`.
