@@ -9,7 +9,7 @@ import id.perumdamts.kepegawaian.entities.commons.EJenisGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchMaster;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchMasterProses;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchMasterProsesRepository;
-import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchMasterRepository;
+import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiBatchMasterRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
