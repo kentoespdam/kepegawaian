@@ -1,15 +1,15 @@
-package id.perumdamts.kepegawaian.controllers.profil.pelatihan;
+package id.perumdamts.kepegawaian.controllers.profil;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
-import id.perumdamts.kepegawaian.dto.profil.pelatihan.PelatihanIndexQuery;
-import id.perumdamts.kepegawaian.dto.profil.pelatihan.PelatihanLampiranPostRequest;
-import id.perumdamts.kepegawaian.dto.profil.pelatihan.PelatihanPostRequest;
-import id.perumdamts.kepegawaian.dto.profil.pelatihan.PelatihanPutRequest;
-import id.perumdamts.kepegawaian.services.profil.pelatihan.PelatihanCommandService;
-import id.perumdamts.kepegawaian.services.profil.pelatihan.PelatihanQueryService;
+import id.perumdamts.kepegawaian.dto.profil.keahlian.KeahlianIndexQuery;
+import id.perumdamts.kepegawaian.dto.profil.keahlian.KeahlianLampiranPostRequest;
+import id.perumdamts.kepegawaian.dto.profil.keahlian.KeahlianPostRequest;
+import id.perumdamts.kepegawaian.dto.profil.keahlian.KeahlianPutRequest;
+import id.perumdamts.kepegawaian.services.profil.keahlian.KeahlianCommandService;
+import id.perumdamts.kepegawaian.services.profil.keahlian.KeahlianQueryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -19,13 +19,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/profil/pelatihan")
-public class PelatihanController {
-    private final PelatihanQueryService query;
-    private final PelatihanCommandService command;
+@RequestMapping("/profil/keahlian")
+public class KeahlianController {
+    private final KeahlianQueryService query;
+    private final KeahlianCommandService command;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject PelatihanIndexQuery request) {
+    public ResponseEntity<?> index(@ParameterObject KeahlianIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 
@@ -35,13 +35,13 @@ public class PelatihanController {
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@Valid @RequestBody PelatihanPostRequest request, Errors errors) {
+    public ResponseEntity<?> save(@Valid @RequestBody KeahlianPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.create(request)));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody PelatihanPutRequest request, Errors errors) {
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody KeahlianPutRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.update(id, request)));
     }
@@ -68,7 +68,7 @@ public class PelatihanController {
     }
 
     @PostMapping(value = "/lampiran", consumes = "multipart/form-data")
-    public ResponseEntity<?> saveLampiran(@Valid @ModelAttribute PelatihanLampiranPostRequest request, Errors errors) {
+    public ResponseEntity<?> saveLampiran(@Valid @ModelAttribute KeahlianLampiranPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.addLampiran(request)));
     }

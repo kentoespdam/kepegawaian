@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.controllers.profil.pendidikan;
+package id.perumdamts.kepegawaian.controllers.profil;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;

@@ -1,16 +1,15 @@
-package id.perumdamts.kepegawaian.controllers.profil.keluarga;
+package id.perumdamts.kepegawaian.controllers.profil;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
-import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaIndexQuery;
-import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaLampiranPostRequest;
-import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaPostRequest;
-import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaPutRequest;
-import id.perumdamts.kepegawaian.services.profil.keluarga.ProfilKeluargaCommandService;
-import id.perumdamts.kepegawaian.services.profil.keluarga.ProfilKeluargaLampiranCommandService;
-import id.perumdamts.kepegawaian.services.profil.keluarga.ProfilKeluargaQueryService;
+import id.perumdamts.kepegawaian.dto.profil.pengalamanKerja.PengalamanKerjaIndexQuery;
+import id.perumdamts.kepegawaian.dto.profil.pengalamanKerja.PengalamanKerjaPostRequest;
+import id.perumdamts.kepegawaian.dto.profil.pengalamanKerja.PengalamanKerjaPutRequest;
+import id.perumdamts.kepegawaian.dto.profil.pengalamanKerja.PengalamanLampiranPostRequest;
+import id.perumdamts.kepegawaian.services.profil.pengalamanKerja.PengalamanKerjaCommandService;
+import id.perumdamts.kepegawaian.services.profil.pengalamanKerja.PengalamanKerjaQueryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -20,14 +19,15 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/profil/keluarga")
-public class ProfilKeluargaController {
-    private final ProfilKeluargaQueryService query;
-    private final ProfilKeluargaCommandService command;
-    private final ProfilKeluargaLampiranCommandService lampiranCommand;
+@RequestMapping("/profil/pengalaman-kerja")
+public class PengalamanKerjaController {
+    private final PengalamanKerjaQueryService query;
+    private final PengalamanKerjaCommandService command;
+
+    // READ
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject ProfilKeluargaIndexQuery request) {
+    public ResponseEntity<?> index(@ParameterObject PengalamanKerjaIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 
@@ -36,14 +36,16 @@ public class ProfilKeluargaController {
         return CustomResult.any(query.getById(id));
     }
 
+    // WRITE
+
     @PostMapping
-    public ResponseEntity<?> save(@Valid @RequestBody ProfilKeluargaPostRequest request, Errors errors) {
+    public ResponseEntity<?> save(@Valid @RequestBody PengalamanKerjaPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.create(request)));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody ProfilKeluargaPutRequest request, Errors errors) {
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody PengalamanKerjaPutRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.update(id, request)));
     }
@@ -54,12 +56,14 @@ public class ProfilKeluargaController {
         return CustomResult.delete(true);
     }
 
-    @GetMapping("/{id}/lampiran")
+    // Lampiran
+
+    @GetMapping("/lampiran/{id}/list")
     public ResponseEntity<?> getLampiran(@PathVariable Long id) {
         return CustomResult.list(query.getLampiran(id));
     }
 
-    @GetMapping("/lampiran/{id}")
+    @GetMapping("/lampiran/{id}/detail")
     public ResponseEntity<?> getLampiranById(@PathVariable Long id) {
         return CustomResult.any(query.getLampiranById(id));
     }
@@ -70,14 +74,14 @@ public class ProfilKeluargaController {
     }
 
     @PostMapping(value = "/lampiran", consumes = "multipart/form-data")
-    public ResponseEntity<?> saveLampiran(@Valid @ModelAttribute ProfilKeluargaLampiranPostRequest request, Errors errors) {
+    public ResponseEntity<?> saveLampiran(@Valid @ModelAttribute PengalamanLampiranPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, lampiranCommand.addLampiran(request)));
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.addLampiran(request)));
     }
 
     @DeleteMapping("/lampiran/{id}")
     public ResponseEntity<?> deleteLampiran(@PathVariable Long id) {
-        lampiranCommand.deleteLampiran(id);
+        command.deleteLampiran(id);
         return CustomResult.delete(true);
     }
 }
