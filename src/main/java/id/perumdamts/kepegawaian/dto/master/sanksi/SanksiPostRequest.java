@@ -1,7 +1,6 @@
 package id.perumdamts.kepegawaian.dto.master.sanksi;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import id.perumdamts.kepegawaian.entities.master.JenisSp;
 import id.perumdamts.kepegawaian.entities.master.Sanksi;
 import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.Min;
@@ -38,22 +37,5 @@ public class SanksiPostRequest {
                 .addEqual(keterangan, "keterangan")
                 .addEqual(jenisSpId, "jenisSp", "id")
                 .build();
-    }
-
-    public static Sanksi toEntity(SanksiPostRequest request, JenisSp jenisSp) {
-        Sanksi sanksi = new Sanksi();
-        sanksi.setKode(request.getKode());
-        sanksi.setKeterangan(request.getKeterangan());
-        sanksi.setJenisSp(jenisSp);
-        sanksi.setPotTkk(request.getPotTkk());
-        sanksi.setJmlPotTkk(request.getJmlPotTkk());
-        sanksi.setIsPendingPangkat(request.getIsPendingPangkat());
-        sanksi.setIsPendingGaji(request.getIsPendingGaji());
-        sanksi.setIsTurunPangkat(request.getIsTurunPangkat());
-        sanksi.setIsTurunJabatan(request.getIsTurunJabatan());
-        sanksi.setIsSuspension(request.getIsSuspension());
-        sanksi.setIsTerminateDh(request.getIsTerminateDh());
-        sanksi.setIsTerminateTh(request.getIsTerminateTh());
-        return sanksi;
     }
 }

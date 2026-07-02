@@ -19,16 +19,4 @@ public class JenisKeahlianPostRequest {
                 criteriaBuilder.and(criteriaBuilder.equal(root.get("nama"), nama));
     }
 
-    public static JenisKeahlian toEntity(JenisKeahlianPostRequest request) {
-        return new JenisKeahlian(request.getNama());
-    }
-
-    public static JenisKeahlian toEntity(JenisKeahlianPostRequest request, JenisKeahlian entity) {
-        entity.setNama(request.getNama());
-        return entity;
-    }
-
-    public static List<JenisKeahlian> toEntities(List<JenisKeahlianPostRequest> requests) {
-        return requests.stream().map(JenisKeahlianPostRequest::toEntity).toList();
-    }
 }

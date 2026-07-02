@@ -21,15 +21,4 @@ public class GolonganPostRequest {
                 .build();
     }
 
-    public static Golongan toEntity(GolonganPostRequest request) {
-        return new Golongan(request.getGolongan(), request.getPangkat());
-    }
-
-    public static Golongan toEntity(GolonganPostRequest request, Long id) {
-        return new Golongan(id, request.getGolongan(), request.getPangkat());
-    }
-
-    public static List<Golongan> toEntities(List<GolonganPostRequest> requests) {
-        return requests.stream().map(GolonganPostRequest::toEntity).toList();
-    }
 }

@@ -28,23 +28,4 @@ public class GradePostRequest {
                 .build();
     }
 
-    public static Grade toEntity(GradePostRequest request) {
-        Grade entity = new Grade();
-        entity.setLevel(new Level(request.getLevelId()));
-        entity.setGrade(request.getGrade());
-        entity.setTukin(request.getTukin());
-        return entity;
-    }
-
-    public static Grade toEntity(GradePostRequest request, Long id) {
-        Grade entity = new Grade(id);
-        entity.setLevel(new Level(request.getLevelId()));
-        entity.setGrade(request.getGrade());
-        entity.setTukin(request.getTukin());
-        return entity;
-    }
-
-    public static List<Grade> toEntities(List<GradePostRequest> requests) {
-        return requests.stream().map(GradePostRequest::toEntity).toList();
-    }
 }

@@ -20,10 +20,4 @@ public class AlasanBerhentiPostRequest {
                 .build();
     }
 
-    public static AlasanBerhenti toEntity(AlasanBerhentiPostRequest request) {
-        AlasanBerhenti entity = new AlasanBerhenti();
-        entity.setNama(request.getNama());
-        entity.setNotes(request.getNotes());
-        return entity;
-    }
 }

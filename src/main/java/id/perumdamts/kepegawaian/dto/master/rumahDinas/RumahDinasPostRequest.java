@@ -18,10 +18,4 @@ public class RumahDinasPostRequest {
                 .build();
     }
 
-    public static RumahDinas toEntity(RumahDinasPostRequest request) {
-        RumahDinas entity = new RumahDinas();
-        entity.setNama(request.getNama());
-        entity.setNilai(request.getNilai());
-        return entity;
-    }
 }

@@ -21,16 +21,4 @@ public class JenisKitasPostRequest {
                 .build();
     }
 
-    public static JenisKitas toEntity(JenisKitasPostRequest request) {
-        return new JenisKitas(request.getNama());
-    }
-
-    public static JenisKitas toEntity(JenisKitasPostRequest request, JenisKitas entity) {
-        entity.setNama(request.getNama());
-        return entity;
-    }
-
-    public static List<JenisKitas> toEntities(List<JenisKitasPostRequest> requests) {
-        return requests.stream().map(JenisKitasPostRequest::toEntity).toList();
-    }
 }

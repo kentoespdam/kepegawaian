@@ -18,10 +18,4 @@ public class JenisSpPostRequest {
                 .build();
     }
 
-    public static JenisSp toEntity(JenisSpPostRequest request) {
-        JenisSp entity = new JenisSp();
-        entity.setKode(request.getKode());
-        entity.setNama(request.getNama());
-        return entity;
-    }
 }

@@ -34,11 +34,4 @@ public class HariLiburPostRequest {
                 .build();
     }
 
-    public static HariLibur toEntity(HariLiburPostRequest request) {
-        HariLibur entity = new HariLibur();
-        entity.setTanggal(request.getTanggal());
-        entity.setJenisLibur(request.getJenisLibur());
-        entity.setNotes(request.getNotes());
-        return entity;
-    }
 }

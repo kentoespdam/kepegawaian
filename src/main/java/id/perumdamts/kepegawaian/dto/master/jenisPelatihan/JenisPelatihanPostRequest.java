@@ -21,16 +21,4 @@ public class JenisPelatihanPostRequest {
                 .build();
     }
 
-    public static JenisPelatihan toEntity(JenisPelatihanPostRequest request) {
-        return new JenisPelatihan(request.getNama());
-    }
-
-    public static JenisPelatihan toEntity(JenisPelatihanPostRequest request, JenisPelatihan entity) {
-        entity.setNama(request.getNama());
-        return entity;
-    }
-
-    public static List<JenisPelatihan> toEntities(List<JenisPelatihanPostRequest> requests) {
-        return requests.stream().map(JenisPelatihanPostRequest::toEntity).toList();
-    }
 }

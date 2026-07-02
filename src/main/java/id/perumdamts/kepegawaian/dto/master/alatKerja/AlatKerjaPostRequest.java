@@ -2,7 +2,6 @@ package id.perumdamts.kepegawaian.dto.master.alatKerja;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.master.AlatKerja;
-import id.perumdamts.kepegawaian.entities.master.Profesi;
 import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -22,12 +21,5 @@ public class AlatKerjaPostRequest {
         return SpecificationBuilder.<AlatKerja>of()
                 .addEqual(nama, "nama")
                 .build();
-    }
-
-    public static AlatKerja toEntity(AlatKerjaPostRequest request, Profesi profesi) {
-        AlatKerja entity = new AlatKerja();
-        entity.setProfesi(profesi);
-        entity.setNama(request.getNama());
-        return entity;
     }
 }

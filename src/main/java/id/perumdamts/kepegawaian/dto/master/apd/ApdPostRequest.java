@@ -2,7 +2,6 @@ package id.perumdamts.kepegawaian.dto.master.apd;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.master.Apd;
-import id.perumdamts.kepegawaian.entities.master.Profesi;
 import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -22,12 +21,5 @@ public class ApdPostRequest {
         return SpecificationBuilder.<Apd>of()
                 .addEqual(nama, "nama")
                 .build();
-    }
-
-    public static Apd toEntity(ApdPostRequest request, Profesi profesi) {
-        Apd entity = new Apd();
-        entity.setProfesi(profesi);
-        entity.setNama(request.getNama());
-        return entity;
     }
 }

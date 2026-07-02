@@ -38,19 +38,4 @@ public class JabatanPostRequest {
                 .build();
     }
 
-    public static Jabatan toEntity(
-            JabatanPostRequest request,
-            Jabatan parent,
-            Organisasi organisasi,
-            Level level
-    ) {
-        Jabatan entity = new Jabatan();
-        entity.setKode(request.getKode());
-        if (Objects.nonNull(parent))
-            entity.setParent(parent);
-        entity.setOrganisasi(organisasi);
-        entity.setLevel(level);
-        entity.setNama(request.getNama());
-        return entity;
-    }
 }
