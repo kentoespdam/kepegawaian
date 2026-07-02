@@ -48,6 +48,28 @@ Urutan klaim di bawah **mengikuti dependency**, bukan nomor issue. Kerjakan per 
 
 ---
 
+## WAVE 6 — Cleanup CQRS (epic `kepegawaian-be8`, 4 issue)
+
+> Keputusan desain: [`docs/context/decisions-master.md`](context/decisions-master.md). ADR baru: [ADR-0025](adr/0025-fetchinto-flat-jooqmapper-join-nested-master.md).
+
+**be8.C1, be8.C2, be8.C4 paralel (tidak saling blok). be8.C3 blokir be8.C2.**
+
+- [x] **be8/lle** · C1: Enum-backed — drop Service/ServiceImpl, rename ke \*QueryService (5 aggregate: JenisKontrak, JenisMutasi, JenisSk, StatusKerja, StatusPegawai) · `P2` · deps: —
+- [x] **be8/r35** · C2: JenjangPendidikan write mapper — buat `JenjangPendidikanMapper`, hapus `toEntity` dari DTO · `P2` · deps: —
+- [x] **be8/drm** · C3: DTO dead-code cleanup — hapus `static toEntity/updateEntity` dari semua DTO yang sudah punya Mapper · `P3` · deps: **be8/r35**
+- [x] **be8/bve** · C4: JooqMapper extract — `GradeJooqMapper` + `SanksiJooqMapper` dari `private toQuery` di repo · `P2` · deps: —
+
+### Apa yang disentuh tiap issue
+
+| Issue | File BARU | File UPDATE | File HAPUS |
+|-------|-----------|-------------|------------|
+| C1/lle | — | 5 controller (tipe injeksi) | 5 `*Service.java` (interface) |
+| C2/r35 | `mapper/master/jenjangPendidikan/JenjangPendidikanMapper.java` | `JenjangPendidikanCommandService.java`, 2 DTO (hapus static method) | — |
+| C3/drm | — | ~15 DTO (hapus dead static) | — |
+| C4/bve | `mapper/master/grade/GradeJooqMapper.java`, `mapper/master/sanksi/SanksiJooqMapper.java` | `GradeQueryRepository.java`, `SanksiQueryRepository.java` | — |
+
+---
+
 ## Dependency map (ringkas)
 
 ```
