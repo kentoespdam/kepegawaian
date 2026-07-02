@@ -2,10 +2,11 @@ package id.perumdamts.kepegawaian.controllers.penggajian;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiPendapatanNonPajak.GajiPendapatanNonPajakIndexQuery;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiPendapatanNonPajak.GajiPendapatanNonPajakPostRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiPendapatanNonPajak.GajiPendapatanNonPajakPutRequest;
-import id.perumdamts.kepegawaian.dto.penggajian.gajiPendapatanNonPajak.GajiPendapatanNonPajakRequest;
-import id.perumdamts.kepegawaian.services.penggajian.gajiPendapatanNonPajak.GajiPendapatanNonPajakService;
+import id.perumdamts.kepegawaian.services.penggajian.gajiPendapatanNonPajak.GajiPendapatanNonPajakCommandService;
+import id.perumdamts.kepegawaian.services.penggajian.gajiPendapatanNonPajak.GajiPendapatanNonPajakQueryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -17,37 +18,38 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/penggajian/pendapatan-non-pajak")
 @RequiredArgsConstructor
 public class GajiPendapatanNonPajakController {
-    private final GajiPendapatanNonPajakService service;
+    private final GajiPendapatanNonPajakCommandService commandService;
+    private final GajiPendapatanNonPajakQueryService queryService;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject GajiPendapatanNonPajakRequest request) {
-        return CustomResult.page(service.findPage(request));
+    public ResponseEntity<?> index(@ParameterObject GajiPendapatanNonPajakIndexQuery request) {
+        return CustomResult.page(queryService.findPage(request));
     }
 
     @GetMapping("/list")
-    public ResponseEntity<?> list() {
-        return CustomResult.list(service.findAll());
+    public ResponseEntity<?> list(@ParameterObject GajiPendapatanNonPajakIndexQuery request) {
+        return CustomResult.list(queryService.findAll(request));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> show(@PathVariable Long id) {
-        return CustomResult.any(service.findById(id));
+        return CustomResult.any(queryService.findById(id).orElse(null));
     }
 
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody GajiPendapatanNonPajakPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(service.save(request));
+        return CustomResult.save(commandService.save(request));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody GajiPendapatanNonPajakPutRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(service.update(id, request));
+        return CustomResult.save(commandService.update(id, request));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        return CustomResult.delete(service.delete(id));
+        return CustomResult.delete(commandService.delete(id));
     }
 }

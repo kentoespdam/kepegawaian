@@ -23,11 +23,4 @@ public class GajiPendapatanNonPajakPostRequest {
                 .build();
     }
 
-    public static GajiPendapatanNonPajak toEntity(GajiPendapatanNonPajakPostRequest request) {
-        GajiPendapatanNonPajak entity = new GajiPendapatanNonPajak();
-        entity.setKode(request.getKode());
-        entity.setNominal(request.getNominal());
-        entity.setNotes(request.getNotes());
-        return entity;
-    }
 }

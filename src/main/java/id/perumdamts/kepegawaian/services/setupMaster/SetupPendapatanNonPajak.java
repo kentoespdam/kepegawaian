@@ -1,7 +1,7 @@
 package id.perumdamts.kepegawaian.services.setupMaster;
 
 import id.perumdamts.kepegawaian.entities.penggajian.GajiPendapatanNonPajak;
-import id.perumdamts.kepegawaian.repositories.penggajian.GajiPendapatanNonPajakRepository;
+import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiPendapatanNonPajakRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
