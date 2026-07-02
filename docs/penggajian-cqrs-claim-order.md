@@ -38,8 +38,8 @@
 | 7  | kepegawaian-awf.7  | GajiPotonganTkk             | W1 | READY | `bd update kepegawaian-awf.7 --claim` |
 | 8  | kepegawaian-awf.8  | GajiParameterSetting        | W1 | READY | `bd update kepegawaian-awf.8 --claim` |
 | 9  | kepegawaian-awf.9  | GajiPendapatanNonPajak      | W1 | READY | `bd update kepegawaian-awf.9 --claim` |
-| 10 | kepegawaian-awf.10 | GajiBatchMaster             | W2 | BLOCKED → READY after #1 closes | `bd update kepegawaian-awf.10 --claim` |
-| 11 | kepegawaian-awf.11 | GajiBatchMasterProses       | W2 | BLOCKED → READY after #1 closes | `bd update kepegawaian-awf.11 --claim` |
+| 10 | kepegawaian-awf.10 | GajiBatchMaster             | W2 | READY | `bd update kepegawaian-awf.10 --claim` |
+| 11 | kepegawaian-awf.11 | GajiBatchMasterProses       | W2 | READY | `bd update kepegawaian-awf.11 --claim` |
 | 12 | kepegawaian-awf.12 | GajiBatchRoot               | W3 | BLOCKED → READY after #10 & #11 close | `bd update kepegawaian-awf.12 --claim` |
 | —  | kepegawaian-awf    | Epic (umbrella, do not claim directly) | — | OPEN, auto-closes | — |
 
