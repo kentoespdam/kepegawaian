@@ -10,7 +10,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,18 +21,18 @@ public class CutiApprovalController {
     private final KlaimCutiCommand klaimCutiCommand;
 
     @GetMapping("/{cutiId}")
-    public ResponseEntity<?> findApproval(@PathVariable Long cutiId, @ParameterObject CutiApprovalRequest request) {
+    public ResponseEntity<?> findApproval(@PathVariable Long cutiId, @Valid @ParameterObject CutiApprovalRequest request) {
         request.setCutiId(cutiId);
         return CustomResult.page(queryService.findPage(cutiId, request));
     }
 
     @PostMapping
-    public ResponseEntity<?> saveApproval(@Valid @RequestBody CutiApprovalPostRequest request, Errors errors) {
+    public ResponseEntity<?> saveApproval(@Valid @RequestBody CutiApprovalPostRequest request) {
         return CustomResult.save(approvalCutiCommand.savePengajuan(request));
     }
 
     @PostMapping("/klaim")
-    public ResponseEntity<?> klaim(@Valid @RequestBody CutiApprovalPostRequest request, Errors errors) {
+    public ResponseEntity<?> klaim(@Valid @RequestBody CutiApprovalPostRequest request) {
         return CustomResult.save(klaimCutiCommand.saveKlaim(request));
     }
 }

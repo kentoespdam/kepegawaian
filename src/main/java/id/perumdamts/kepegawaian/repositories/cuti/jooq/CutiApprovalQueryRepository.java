@@ -34,9 +34,6 @@ public class CutiApprovalQueryRepository {
         var count = dsl.selectCount().from(CUTI_APPROVAL)
                 .where(where).fetchOptional(0, Long.class).orElse(0L);
 
-        int pageNumber = query.getPage() != null ? query.getPage() : 0;
-        int sizeOrDefault = query.getSize() != null ? query.getSize() : 10;
-
         var data = dsl.select(
                         CUTI_APPROVAL.ID,
                         CUTI_APPROVAL.APPROVAL_LEVEL,
@@ -56,11 +53,11 @@ public class CutiApprovalQueryRepository {
                 .leftJoin(JABATAN).on(CUTI_APPROVAL.JABATAN_ID.eq(JABATAN.ID))
                 .where(where)
                 .orderBy(sortOrder)
-                .limit(sizeOrDefault)
-                .offset(pageNumber * sizeOrDefault)
+                .limit(query.getSizeOrDefault())
+                .offset(query.offset())
                 .fetch(CutiApprovalJooqMapper::mapToResponse);
 
-        return new PageImpl<>(data, PageRequest.of(pageNumber, sizeOrDefault), count);
+        return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
     }
 
     private Condition baseWhere(Long cutiId, CutiApprovalRequest query) {

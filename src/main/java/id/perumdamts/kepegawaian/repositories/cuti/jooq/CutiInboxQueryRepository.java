@@ -24,7 +24,6 @@ import static id.perumdamts.kepegawaian.jooq.tables.CutiPegawai.CUTI_PEGAWAI;
 public class CutiInboxQueryRepository {
     private final DSLContext dsl;
     private final CutiPengajuanQueryRepository pengajuanQueryRepository;
-
     public Page<CutiApprovalChainResponse> pageQuery(CutiApprovalChainRequest query) {
         Condition where = baseWhere(query);
         
@@ -35,10 +34,7 @@ public class CutiInboxQueryRepository {
                 .from(CUTI_APPROVAL_CHAIN)
                 .leftJoin(CUTI_PEGAWAI).on(CUTI_APPROVAL_CHAIN.REF_CUTI_ID.eq(CUTI_PEGAWAI.ID))
                 .where(where).fetchOptional(0, Long.class).orElse(0L);
-                
-        int pageNumber = query.getPage() != null ? query.getPage() : 0;
-        int sizeOrDefault = query.getSize() != null ? query.getSize() : 10;
-        
+
         var data = dsl.select(
                         DSL.max(CUTI_APPROVAL_CHAIN.ID).as("id"),
                         DSL.max(CUTI_APPROVAL_CHAIN.APPROVAL_LEVEL).as("approval_level"),
@@ -50,8 +46,8 @@ public class CutiInboxQueryRepository {
                 .where(where)
                 .groupBy(CUTI_APPROVAL_CHAIN.REF_CUTI_ID)
                 .orderBy(sortOrder)
-                .limit(sizeOrDefault)
-                .offset(pageNumber * sizeOrDefault)
+                .limit(query.getSizeOrDefault())
+                .offset(query.offset())
                 .fetch(record -> {
                     CutiApprovalChainResponse res = new CutiApprovalChainResponse();
                     res.setId(record.get("id", Long.class));
@@ -70,7 +66,7 @@ public class CutiInboxQueryRepository {
                     return res;
                 });
                 
-        return new PageImpl<>(data, PageRequest.of(pageNumber, sizeOrDefault), count);
+        return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
     }
 
     private static Map<String, Field<?>> allowedSorts() {

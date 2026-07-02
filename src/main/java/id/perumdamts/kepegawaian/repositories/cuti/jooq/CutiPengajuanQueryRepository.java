@@ -40,9 +40,6 @@ public class CutiPengajuanQueryRepository {
                 .leftJoin(BIODATA).on(PEGAWAI.NIK.eq(BIODATA.NIK))
                 .where(where).fetchOptional(0, Long.class).orElse(0L);
                 
-        int pageNumber = query.getPage() != null ? query.getPage() : 0;
-        int sizeOrDefault = query.getSize() != null ? query.getSize() : 10;
-        
         var jenisCuti = CUTI_JENIS.as("jc");
         var subJenisCuti = CUTI_JENIS.as("sjc");
         var pic = JABATAN.as("pic");
@@ -88,8 +85,8 @@ public class CutiPengajuanQueryRepository {
                 .leftJoin(pic).on(CUTI_PEGAWAI.PIC_SAAT_INI_ID.eq(pic.ID))
                 .where(where)
                 .orderBy(sortOrder)
-                .limit(sizeOrDefault)
-                .offset(pageNumber * sizeOrDefault)
+                .limit(query.getSizeOrDefault())
+                .offset(query.offset())
                 .fetch(record -> {
                     CutiPengajuanResponse res = CutiPegawaiJooqMapper.mapToResponse(record);
                     if (record.get(CUTI_PEGAWAI.REF_CUTI_ID) != null) {
@@ -98,7 +95,7 @@ public class CutiPengajuanQueryRepository {
                     return res;
                 });
                 
-        return new PageImpl<>(data, PageRequest.of(pageNumber, sizeOrDefault), count);
+        return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
     }
 
     public CutiPengajuanResponse getById(Long id) {

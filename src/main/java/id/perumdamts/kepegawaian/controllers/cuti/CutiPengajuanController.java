@@ -15,7 +15,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -31,17 +30,17 @@ public class CutiPengajuanController {
     private final KlaimCutiCommand klaimCutiCommand;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject CutiPengajuanRequest request) {
+    public ResponseEntity<?> index(@Valid @ParameterObject CutiPengajuanRequest request) {
         return CustomResult.page(queryService.findPage(request));
     }
 
     @GetMapping("/approval")
-    public ResponseEntity<?> indexApproval(@ParameterObject CutiApprovalChainRequest request) {
+    public ResponseEntity<?> indexApproval(@Valid @ParameterObject CutiApprovalChainRequest request) {
         return CustomResult.page(cutiInboxQueryService.findCutiPegawai(request));
     }
 
     @GetMapping("/{pegawaiId}/pegawai")
-    public ResponseEntity<?> index(@PathVariable Long pegawaiId, @ParameterObject CutiPengajuanRequest request) {
+    public ResponseEntity<?> index(@PathVariable Long pegawaiId, @Valid @ParameterObject CutiPengajuanRequest request) {
         request.setPegawaiId(pegawaiId);
         return CustomResult.page(queryService.findPage(request));
     }
@@ -61,8 +60,7 @@ public class CutiPengajuanController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody CutiPengajuanPostRequest request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
+    public ResponseEntity<?> create(@Valid @RequestBody CutiPengajuanPostRequest request) {
         if (request.getTanggalMulai().isAfter(request.getTanggalSelesai()))
             return ErrorResult.build("Tanggal selesai tidak boleh dibuat sebelum tanggal mulai");
         if (request.getTanggalMulai().isBefore(LocalDate.now()))
@@ -71,8 +69,7 @@ public class CutiPengajuanController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody CutiPengajuanPutRequest request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody CutiPengajuanPutRequest request) {
         if (request.getTanggalMulai().isAfter(request.getTanggalSelesai()))
             return ErrorResult.build("Tanggal selesai tidak boleh dibuat sebelum tanggal mulai");
         if (request.getTanggalMulai().isBefore(LocalDate.now()))
@@ -81,14 +78,12 @@ public class CutiPengajuanController {
     }
 
     @PostMapping("/klaim")
-    public ResponseEntity<?> klaim(@Valid @RequestBody CutiPengajuanKlaimPostRequest request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
+    public ResponseEntity<?> klaim(@Valid @RequestBody CutiPengajuanKlaimPostRequest request) {
         return CustomResult.save(klaimCutiCommand.save(request));
     }
 
     @PutMapping("/klaim/{id}")
-    public ResponseEntity<?> updateKlaim(@PathVariable Long id, @Valid @RequestBody CutiPengajuanKlaimPostRequest request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
+    public ResponseEntity<?> updateKlaim(@PathVariable Long id, @Valid @RequestBody CutiPengajuanKlaimPostRequest request) {
         return CustomResult.save(klaimCutiCommand.update(id, request));
     }
 
