@@ -6,7 +6,7 @@ import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterP
 import id.perumdamts.kepegawaian.entities.commons.EJenisPotonganGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchRootLampiran;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchRootLampiranRepository;
-import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchRootRepository;
+import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiBatchRootRepository;
 import id.perumdamts.kepegawaian.utils.FileUploadUtil;
 import id.perumdamts.kepegawaian.utils.UploadResultUtil;
 import lombok.RequiredArgsConstructor;

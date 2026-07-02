@@ -6,7 +6,7 @@ import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchRoot;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchRootLampiran;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchPotonganTkkRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchRootLampiranRepository;
-import id.perumdamts.kepegawaian.repositories.penggajian.GajiBatchRootRepository;
+import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiBatchRootRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;

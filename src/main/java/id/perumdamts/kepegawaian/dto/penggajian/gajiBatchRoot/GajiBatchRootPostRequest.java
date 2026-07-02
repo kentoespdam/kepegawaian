@@ -34,19 +34,4 @@ public class GajiBatchRootPostRequest {
         return arrString[0] + "-" + urutString;
     }
 
-    public static GajiBatchRoot toEntityPhase1(GajiBatchRootPostRequest request) {
-        GajiBatchRoot entity = new GajiBatchRoot();
-        entity.setId(request.getBatchId());
-        entity.setPeriode(request.getPeriode());
-        entity.setStatus(EProsesGaji.PENDING);
-        entity.setDiProsesOleh(request.getDiProsesOleh());
-        entity.setJabatanPemroses(request.getJabatanPemroses());
-        return entity;
-    }
-
-    public static GajiBatchRoot toEntityPhase2(GajiBatchRoot entity) {
-        entity.setTanggalProses(LocalDateTime.now());
-        entity.setStatus(EProsesGaji.PROSES);
-        return entity;
-    }
 }

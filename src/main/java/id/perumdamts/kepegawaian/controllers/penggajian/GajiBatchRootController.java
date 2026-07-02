@@ -2,11 +2,13 @@ package id.perumdamts.kepegawaian.controllers.penggajian;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRoot.GajiBatchRootIndexQuery;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRoot.GajiBatchRootPostRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRoot.GajiBatchRootProcessRequest;
-import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRoot.GajiBatchRootRequest;
 import id.perumdamts.kepegawaian.entities.commons.EProsesGaji;
-import id.perumdamts.kepegawaian.services.penggajian.gajiBatchRoot.GajiBatchRootService;
+import id.perumdamts.kepegawaian.services.penggajian.gajiBatchRoot.GajiBatchRootCommandService;
+import id.perumdamts.kepegawaian.services.penggajian.gajiBatchRoot.GajiBatchRootQueryService;
+import id.perumdamts.kepegawaian.services.penggajian.gajiBatchRoot.GajiBatchRootWorkflowCommandService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -20,29 +22,31 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/penggajian/batch")
 @RequiredArgsConstructor
 public class GajiBatchRootController {
-    private final GajiBatchRootService service;
+    private final GajiBatchRootCommandService commandService;
+    private final GajiBatchRootWorkflowCommandService workflowCommandService;
+    private final GajiBatchRootQueryService queryService;
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject GajiBatchRootRequest request) {
-        return CustomResult.any(service.findAll(request));
+    public ResponseEntity<?> index(@ParameterObject GajiBatchRootIndexQuery request) {
+        return CustomResult.any(queryService.findAll(request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{periode}/periode/{status}/status")
     public ResponseEntity<?> byPeriode(@PathVariable String periode, @PathVariable EProsesGaji status) {
-        GajiBatchRootRequest request = new GajiBatchRootRequest();
+        GajiBatchRootIndexQuery request = new GajiBatchRootIndexQuery();
         request.setPeriode(periode);
-        request.setGtStatus(status.name());
+        request.setStatus(status);
 
-        return CustomResult.any(service.findAll(request));
+        return CustomResult.any(queryService.findAll(request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> create(@Valid @ModelAttribute GajiBatchRootPostRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(service.save(request));
+        return CustomResult.save(commandService.save(request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -50,7 +54,7 @@ public class GajiBatchRootController {
     public ResponseEntity<?> reprocess(@PathVariable String id, @Valid @RequestBody GajiBatchRootProcessRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         if (!request.getId().equals(id)) return ErrorResult.build("Error Process");
-        return CustomResult.save(service.reprocess(request));
+        return CustomResult.save(workflowCommandService.reprocess(request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -58,7 +62,7 @@ public class GajiBatchRootController {
     public ResponseEntity<?> verify1(@PathVariable String id, @Valid @RequestBody GajiBatchRootProcessRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         if (!request.getId().equals(id)) return ErrorResult.build("Error Process");
-        return CustomResult.save(service.verify1(id, request));
+        return CustomResult.save(workflowCommandService.verify1(id, request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -66,7 +70,7 @@ public class GajiBatchRootController {
     public ResponseEntity<?> verify2(@PathVariable String id, @Valid @RequestBody GajiBatchRootProcessRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         if (!request.getId().equals(id)) return ErrorResult.build("Error Process");
-        return CustomResult.save(service.verify2(id, request));
+        return CustomResult.save(workflowCommandService.verify2(id, request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -74,12 +78,12 @@ public class GajiBatchRootController {
     public ResponseEntity<?> accept(@PathVariable String id, @Valid @RequestBody GajiBatchRootProcessRequest request, Errors errors) {
         if (errors.hasErrors()) return ErrorResult.build(errors);
         if (!request.getId().equals(id)) return ErrorResult.build("Error Process");
-        return CustomResult.save(service.accept(id, request));
+        return CustomResult.save(workflowCommandService.accept(id, request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable String id) {
-        return CustomResult.delete(service.delete(id));
+        return CustomResult.delete(commandService.delete(id));
     }
 }
