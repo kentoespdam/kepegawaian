@@ -12,7 +12,8 @@ Index lazy-read domain context. **Jangan membaca semua file sekaligus** — pili
 
 | Jika tugas menyentuh... | Baca file ini |
 |-------------------------|---------------|
-| Modul `master/` (Profesi, Jabatan, Organisasi, Grade, Level, APD) | [`docs/context/language-master.md`](docs/context/language-master.md) |
+| Modul `master/` — terminologi (Profesi, Jabatan, Organisasi, Grade, Level, APD) | [`docs/context/language-master.md`](docs/context/language-master.md) |
+| Modul `master/` — keputusan CQRS cleanup (mapper, fetchInto, enum, FK) | [`docs/context/decisions-master.md`](docs/context/decisions-master.md) |
 | Modul `pegawai/` — terminologi (NIPAM, Status, SK, Ringkasan, JSON baca) | [`docs/context/language-pegawai.md`](docs/context/language-pegawai.md) |
 | Modul `pegawai/` — keputusan rewrite & arsitektur | [`docs/context/decisions-pegawai.md`](docs/context/decisions-pegawai.md) |
 | Modul `kepegawaian/` (SK, Mutasi, Kontrak, Terminasi, SP) — keputusan | [`docs/context/decisions-pegawai.md`](docs/context/decisions-pegawai.md) |
@@ -30,6 +31,7 @@ Index lazy-read domain context. **Jangan membaca semua file sekaligus** — pili
 | File | Ukuran perkiraan | Isi |
 |------|-----------------|-----|
 | [`language-master.md`](docs/context/language-master.md) | ~3 KB | Glossary modul master |
+| [`decisions-master.md`](docs/context/decisions-master.md) | ~4 KB | Keputusan rewrite CQRS cleanup modul master |
 | [`language-pegawai.md`](docs/context/language-pegawai.md) | ~5 KB | Glossary modul pegawai |
 | [`language-profil.md`](docs/context/language-profil.md) | ~5 KB | Glossary modul profil |
 | [`language-cuti.md`](docs/context/language-cuti.md) | ~4 KB | Glossary modul cuti |

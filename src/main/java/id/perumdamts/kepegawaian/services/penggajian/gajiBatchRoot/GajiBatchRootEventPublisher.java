@@ -28,7 +28,7 @@ public class GajiBatchRootEventPublisher {
                 kafkaTemplate.send(topic, batchId).whenComplete((result, ex) -> {
                     if (ex != null) {
                         log.error("Failed to publish batch {} to topic {}", batchId, topic, ex);
-                    } else if (result != null && result.getRecordMetadata() != null) {
+                    } else if (result != null) {
                         log.info("Published batch {} to topic {} partition={} offset={}",
                                 batchId, topic,
                                 result.getRecordMetadata().partition(),

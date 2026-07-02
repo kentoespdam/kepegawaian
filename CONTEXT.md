@@ -15,6 +15,7 @@ Domain context dipecah per modul/topik di `docs/context/`:
 | Sub-context | Topik |
 |-------------|-------|
 | [`language-master.md`](docs/context/language-master.md) | Profesi, Jabatan, Organisasi, Grade, Level |
+| [`decisions-master.md`](docs/context/decisions-master.md) | Keputusan CQRS cleanup modul master (mapper, fetchInto, enum, FK) |
 | [`language-pegawai.md`](docs/context/language-pegawai.md) | Pegawai, NIPAM, SK, Ringkasan, JSON baca |
 | [`language-profil.md`](docs/context/language-profil.md) | Profil, Pengajuan Perubahan, changedStatus |
 | [`language-cuti.md`](docs/context/language-cuti.md) | Cuti, Approval Chain, Kuota Cuti, PIC |

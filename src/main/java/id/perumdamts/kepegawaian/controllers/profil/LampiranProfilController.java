@@ -1,4 +1,4 @@
-package id.perumdamts.kepegawaian.controllers.profil.lampiranProfil;
+package id.perumdamts.kepegawaian.controllers.profil;
 
 import id.perumdamts.kepegawaian.dto.appwrite.AppwriteUser;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
