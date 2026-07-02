@@ -2,7 +2,7 @@ package id.perumdamts.kepegawaian.services.setupMaster;
 
 import id.perumdamts.kepegawaian.entities.penggajian.DasarGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.DetailDasarGaji;
-import id.perumdamts.kepegawaian.repositories.penggajian.DetailDasarGajiRepository;
+import id.perumdamts.kepegawaian.repositories.penggajian.jpa.DetailDasarGajiRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

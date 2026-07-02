@@ -54,17 +54,18 @@
 - [x] Baca ulang exemplar `cuti/` (CutiJenis*) + `mapper/profil/` yang di-mirror
 - [x] Baca `profil-cqrs-implementation-patterns.md` §1–§5
 - [x] `bd show <id>` — baca checklist §5 di issue
+- [x] `bd prime` (recover beads workflow context)
+- [x] `git status` bersih; di branch `rewrite/master-cqrs`
+- [x] Baca ulang exemplar `cuti/` (CutiJenis*) + `mapper/profil/` yang di-mirror
+- [x] Baca `profil-cqrs-implementation-patterns.md` §1–§5
+- [x] `bd show <id>` — baca checklist §5 di issue
 - [x] `bd update <id> --claim` issue yang mulai dikerjakan
 
 ---
 
 ## WAVE 1 — 9 master aggregate (grup A, CRUD murni)
 
-**Pola identik untuk .1–.9.** Tiap issue = satu aggregate. Mirror `CutiJenis*` exemplar; ganti nama aggregate + tabel JOOQ + kolom filter. Checklist per-issue (dari §5 pattern):
-
-### Template per aggregate (ulangi untuk .1 s/d .9)
-
-**Pre-edit**
+**Pola identik untuk .1–.9.** Tiap issue = satu aggregate. Mirror `CutiJenis*` exemplar; ganti nama aggregate + tabel JOOQ + kolom filter. Checklist per-issue (dari §5 p**Pre-edit**
 - [x] `gitnexus_impact({target: "<Agg>ServiceImpl", direction: "upstream"})` — laporkan blast radius
 - [x] `gitnexus_impact({target: "<Agg>Repository", direction: "upstream"})` — laporkan blast radius
 - [x] WARN manager bila HIGH/CRITICAL sebelum lanjut
@@ -88,11 +89,12 @@
 
 **Controller & gates**
 - [x] Controller inject KEDUA service; pertahankan `@PreAuthorize`/`@Valid`/`Errors`; tanpa `*CommandController`
-- [x] Semua file ≤ 120 baris (DetailDasarGaji 131 & GajiKomponen 126 otomatis mengecil setelah baca pindah ke QueryService)
+- [x] Semua file ≤ 120 baris (DetailDasarGaji 131 & GajiKomponen 126 otomatis mengecil setelah baca pindah to QueryService)
 - [x] **Cleanup — dead code:** hapus field/method/DTO lama yang tak lagi ter-referensi setelah split (mis. `getSpecification()` di request baca, mapper manual yang tergantikan JOOQ). Verifikasi zero-ref via `gitnexus_impact({direction: "upstream"})` SEBELUM hapus.
 - [x] **Cleanup — unused import:** buang import yang menggantung setelah pindah/hapus kode (`gitnexus_rename` & split kerap menyisakan import mati). Pastikan `./gradlew clean compileJava` bersih tanpa warning import.
 - [x] `gitnexus_detect_changes()` scope sesuai; `./gradlew clean compileJava` SUCCESS
-- [x] `bd close <id>` → ship (lihat "Ship tiap issue")
+- [x] `bd close <id>` → ship (lihat "Ship tiap issue")e sesuai; `./gradlew clean compileJava` SUCCESS
+- [ ] `bd close <id>` → ship (lihat "Ship tiap issue")
 
 **Tabel JOOQ per aggregate:** `.1` DASAR_GAJI · `.2` DETAIL_DASAR_GAJI · `.3` GAJI_KOMPONEN · `.4` GAJI_TUNJANGAN · `.5` GAJI_PHDP · `.6` GAJI_PROFIL · `.7` GAJI_POTONGAN_TKK · `.8` GAJI_PARAMETER_SETTING · `.9` GAJI_PENDAPATAN_NON_PAJAK.
 

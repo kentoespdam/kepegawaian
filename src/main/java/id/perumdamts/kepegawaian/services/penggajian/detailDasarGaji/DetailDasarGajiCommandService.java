@@ -4,18 +4,16 @@ import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji.DetailDasarGajiPostRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji.DetailDasarGajiPutRequest;
-import id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji.DetailDasarGajiRequest;
-import id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji.DetailDasarGajiResponse;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.penggajian.DasarGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.DetailDasarGaji;
+import id.perumdamts.kepegawaian.mapper.penggajian.detailDasarGaji.DetailDasarGajiMapper;
 import id.perumdamts.kepegawaian.repositories.master.jpa.GolonganRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.jpa.DasarGajiRepository;
-import id.perumdamts.kepegawaian.repositories.penggajian.DetailDasarGajiRepository;
+import id.perumdamts.kepegawaian.repositories.penggajian.jpa.DetailDasarGajiRepository;
 import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -25,29 +23,11 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class DetailDasarGajiServiceImpl implements DetailDasarGajiService {
+public class DetailDasarGajiCommandService {
     private final DetailDasarGajiRepository repository;
     private final DasarGajiRepository dasarGajiRepository;
     private final GolonganRepository golonganRepository;
 
-    @Override
-    public List<DetailDasarGajiResponse> findAll(DetailDasarGajiRequest request) {
-        return repository.findAll(request.getSpecification()).stream()
-                .map(DetailDasarGajiResponse::from).toList();
-    }
-
-    @Override
-    public Page<DetailDasarGajiResponse> findPage(DetailDasarGajiRequest request) {
-        return repository.findAll(request.getSpecification(), request.getPageable())
-                .map(DetailDasarGajiResponse::from);
-    }
-
-    @Override
-    public DetailDasarGajiResponse findById(Long id) {
-        return repository.findById(id).map(DetailDasarGajiResponse::from).orElse(null);
-    }
-
-    @Override
     public DetailDasarGaji findDetailDasarGajiByGolonganAndMasaKerja(Long golonganId, Integer masaKerja) {
         Optional<Golongan> golongan = golonganRepository.findById(golonganId);
         if (golongan.isEmpty())
@@ -62,7 +42,6 @@ public class DetailDasarGajiServiceImpl implements DetailDasarGajiService {
     }
 
     @Transactional
-    @Override
     public SavedStatus<?> save(DetailDasarGajiPostRequest request) {
         try {
             Optional<DasarGaji> dasarGaji = dasarGajiRepository.findById(request.getDasarGajiId());
@@ -71,7 +50,7 @@ public class DetailDasarGajiServiceImpl implements DetailDasarGajiService {
             Optional<Golongan> golongan = golonganRepository.findById(request.getGolonganId());
             if (golongan.isEmpty())
                 return SavedStatus.build(ESaveStatus.FAILED, "Golongan not found");
-            DetailDasarGaji entity = DetailDasarGajiPostRequest.toEntity(request, dasarGaji.get(), golongan.get());
+            DetailDasarGaji entity = DetailDasarGajiMapper.toEntity(request, dasarGaji.get(), golongan.get());
             repository.save(entity);
             return SavedStatus.build(ESaveStatus.SUCCESS, "Detail Dasar Gaji Saved");
         } catch (Exception e) {
@@ -80,7 +59,6 @@ public class DetailDasarGajiServiceImpl implements DetailDasarGajiService {
     }
 
     @Transactional
-    @Override
     public SavedStatus<?> saveBatch(List<DetailDasarGajiPostRequest> requests) {
         try {
             List<DetailDasarGaji> entities = new ArrayList<>();
@@ -91,7 +69,7 @@ public class DetailDasarGajiServiceImpl implements DetailDasarGajiService {
                 Optional<Golongan> golongan = golonganRepository.findById(request.getGolonganId());
                 if (golongan.isEmpty())
                     throw new RuntimeException("Golongan not found: " + request.getGolonganId());
-                DetailDasarGaji entity = DetailDasarGajiPostRequest.toEntity(request, dasarGaji.get(), golongan.get());
+                DetailDasarGaji entity = DetailDasarGajiMapper.toEntity(request, dasarGaji.get(), golongan.get());
                 entities.add(entity);
             }
             repository.saveAll(entities);
@@ -102,7 +80,6 @@ public class DetailDasarGajiServiceImpl implements DetailDasarGajiService {
     }
 
     @Transactional
-    @Override
     public SavedStatus<?> update(Long id, DetailDasarGajiPutRequest request) {
         try {
             DasarGaji dasarGaji = dasarGajiRepository.findById(request.getDasarGajiId())
@@ -111,8 +88,8 @@ public class DetailDasarGajiServiceImpl implements DetailDasarGajiService {
                     .orElseThrow(() -> new RuntimeException("Golongan not found"));
             DetailDasarGaji detailDasarGaji = repository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Detail Dasar Gaji not found"));
-            DetailDasarGaji entity = DetailDasarGajiPutRequest.toEntity(detailDasarGaji, request, dasarGaji, golongan);
-            repository.save(entity);
+            DetailDasarGajiMapper.updateEntity(detailDasarGaji, request, dasarGaji, golongan);
+            repository.save(detailDasarGaji);
             return SavedStatus.build(ESaveStatus.SUCCESS, "Detail Dasar Gaji Updated");
         } catch (Exception e) {
             return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
@@ -120,7 +97,6 @@ public class DetailDasarGajiServiceImpl implements DetailDasarGajiService {
     }
 
     @Transactional
-    @Override
     public boolean deleteById(Long id) {
         boolean exists = repository.existsById(id);
         if (!exists)
