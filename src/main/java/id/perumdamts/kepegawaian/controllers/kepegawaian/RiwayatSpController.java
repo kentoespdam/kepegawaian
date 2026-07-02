@@ -2,7 +2,6 @@ package id.perumdamts.kepegawaian.controllers.kepegawaian;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
-import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSp.RiwayatSpPostRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSp.RiwayatSpPutRequest;
@@ -14,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,7 +23,7 @@ public class RiwayatSpController {
     private final RiwayatSpQueryService queryService;
 
     @GetMapping("/pegawai/{id}")
-    public ResponseEntity<?> index(@PathVariable Long id, @ParameterObject RiwayatSpRequest request) {
+    public ResponseEntity<?> index(@PathVariable Long id, @Valid @ParameterObject RiwayatSpRequest request) {
         return CustomResult.page(queryService.pageQuery(id, request));
     }
 
@@ -41,15 +39,13 @@ public class RiwayatSpController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<?> create(@Valid @ModelAttribute RiwayatSpPostRequest request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
+    public ResponseEntity<?> create(@Valid @ModelAttribute RiwayatSpPostRequest request) {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.save(request)));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @ModelAttribute RiwayatSpPutRequest request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @ModelAttribute RiwayatSpPutRequest request) {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.update(id, request)));
     }
 

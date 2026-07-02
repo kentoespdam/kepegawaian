@@ -17,17 +17,17 @@ Cermin status beads dalam urutan claim. Centang saat isu terkait `closed`. Sumbe
 - [x] **4. `kepegawaian-6bu.2.3`** — cuti: CQRS `CutiApprovalChain`
 - [x] **5. `kepegawaian-6bu.2.4`** — cuti: CQRS `CutiApproval`
 - [x] **6. `kepegawaian-6bu.2.5`** — cuti: CQRS `CutiPengajuan`
-- [ ] **7. `kepegawaian-6bu.3.1`** — kepegawaian: CQRS `RiwayatSk`
-- [ ] **8. `kepegawaian-6bu.3.2`** — kepegawaian: CQRS `RiwayatSp`
-- [ ] **9. `kepegawaian-6bu.3.3`** — kepegawaian: CQRS `RiwayatMutasi`
-- [ ] **10. `kepegawaian-6bu.3.4`** — kepegawaian: CQRS `RiwayatKontrak`
-- [ ] **11. `kepegawaian-6bu.3.5`** — kepegawaian: CQRS `RiwayatTerminasi`
+- [x] **7. `kepegawaian-6bu.3.1`** — kepegawaian: CQRS `RiwayatSk`
+- [x] **8. `kepegawaian-6bu.3.2`** — kepegawaian: CQRS `RiwayatSp`
+- [x] **9. `kepegawaian-6bu.3.3`** — kepegawaian: CQRS `RiwayatMutasi`
+- [x] **10. `kepegawaian-6bu.3.4`** — kepegawaian: CQRS `RiwayatKontrak`
+- [x] **11. `kepegawaian-6bu.3.5`** — kepegawaian: CQRS `RiwayatTerminasi`
 - [ ] **12. `kepegawaian-6bu.4.1`** — profil: CQRS `Pendidikan`
 - [ ] **13. `kepegawaian-6bu.5.1`** — system: CQRS `PrefRole`
 - [ ] **14. `kepegawaian-6bu.5.2`** — users: CQRS `User`
 - [ ] **15. `kepegawaian-6bu.6`** — `#final`: hapus `CommonPageRequest` + verifikasi 0 referensi *(WAJIB terakhir)*
 
-> **Progress:** 6/15 selesai · Epik `kepegawaian-6bu` masih `open`.
+> **Progress:** 11/15 selesai · Epik `kepegawaian-6bu` masih `open`.
 
 ---
 

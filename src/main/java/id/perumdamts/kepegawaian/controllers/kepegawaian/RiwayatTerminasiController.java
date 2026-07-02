@@ -2,7 +2,6 @@ package id.perumdamts.kepegawaian.controllers.kepegawaian;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
-import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiPostRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiPutRequest;
@@ -13,7 +12,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,12 +22,12 @@ public class RiwayatTerminasiController {
     private final RiwayatTerminasiQueryService queryService;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject RiwayatTerminasiRequest request) {
+    public ResponseEntity<?> index(@Valid @ParameterObject RiwayatTerminasiRequest request) {
         return CustomResult.page(queryService.findPage(request));
     }
 
     @GetMapping("/calon-pensiun")
-    public ResponseEntity<?> indexCalonPensiun(@ParameterObject RiwayatTerminasiRequest request) {
+    public ResponseEntity<?> indexCalonPensiun(@Valid @ParameterObject RiwayatTerminasiRequest request) {
         return CustomResult.page(queryService.findPageCalonPensiun(request));
     }
 
@@ -39,14 +37,12 @@ public class RiwayatTerminasiController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @ModelAttribute RiwayatTerminasiPostRequest request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
+    public ResponseEntity<?> create(@Valid @ModelAttribute RiwayatTerminasiPostRequest request) {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.save(request)));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @ModelAttribute RiwayatTerminasiPutRequest request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @ModelAttribute RiwayatTerminasiPutRequest request) {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.update(id, request)));
     }
 }

@@ -47,9 +47,6 @@ public class RiwayatMutasiQueryRepository {
                 .where(condition)
                 .fetchOptional(0, Long.class).orElse(0L);
 
-        int pageNum = Objects.requireNonNullElse(request.getPage(), 0);
-        int pageSize = Objects.requireNonNullElse(request.getSize(), 10);
-
         var golLama = GOLONGAN.as("gol_lama");
         var orgLama = ORGANISASI.as("org_lama");
         var jabLama = JABATAN.as("jab_lama");
@@ -98,11 +95,11 @@ public class RiwayatMutasiQueryRepository {
                 .leftJoin(skGol).on(RIWAYAT_SK.GOLONGAN_ID.eq(skGol.ID))
                 .where(condition)
                 .orderBy(sortOrder)
-                .limit(pageSize)
-                .offset(pageNum * pageSize)
+                .limit(request.getSizeOrDefault())
+                .offset(request.offset())
                 .fetch(this::toQuery);
 
-        return new PageImpl<>(data, PageRequest.of(pageNum, pageSize), count);
+        return new PageImpl<>(data, PageRequest.of(request.getPageNumber(), request.getSizeOrDefault()), count);
     }
 
     public Optional<RiwayatMutasiQuery> getById(Long id) {

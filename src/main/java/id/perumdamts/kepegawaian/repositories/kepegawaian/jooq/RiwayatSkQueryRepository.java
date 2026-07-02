@@ -38,9 +38,6 @@ public class RiwayatSkQueryRepository {
                 .where(condition)
                 .fetchOptional(0, Long.class).orElse(0L);
 
-        int pageNum = Objects.requireNonNullElse(request.getPage(), 0);
-        int pageSize = Objects.requireNonNullElse(request.getSize(), 10);
-
         var data = dsl.select(
                         RIWAYAT_SK.ID,
                         RIWAYAT_SK.NIPAM,
@@ -65,11 +62,11 @@ public class RiwayatSkQueryRepository {
                 .leftJoin(GOLONGAN).on(RIWAYAT_SK.GOLONGAN_ID.eq(GOLONGAN.ID))
                 .where(condition)
                 .orderBy(sortOrder)
-                .limit(pageSize)
-                .offset(pageNum * pageSize)
+                .limit(request.getSizeOrDefault())
+                .offset(request.offset())
                 .fetch(this::toQuery);
 
-        return new PageImpl<>(data, PageRequest.of(pageNum, pageSize), count);
+        return new PageImpl<>(data, PageRequest.of(request.getPageNumber(), request.getSizeOrDefault()), count);
     }
 
     public List<RiwayatSkQuery> listQuery(RiwayatSkRequest request) {

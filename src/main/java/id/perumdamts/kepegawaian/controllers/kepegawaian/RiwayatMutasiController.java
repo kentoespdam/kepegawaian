@@ -13,10 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Objects;
 import java.util.Set;
 
 @RestController
@@ -29,12 +27,8 @@ public class RiwayatMutasiController {
     private final Validator validator = factory.getValidator();
 
     @GetMapping("/pegawai/{id}")
-    public ResponseEntity<?> index(@PathVariable Long id, @ParameterObject RiwayatMutasiRequest request) {
+    public ResponseEntity<?> index(@PathVariable Long id, @Valid @ParameterObject RiwayatMutasiRequest request) {
         request.setPegawaiId(id);
-        if (Objects.isNull(request.getSortBy()) || request.getSortBy().isEmpty()) {
-            request.setSortBy("id");
-            request.setSortDirection("DESC");
-        }
         return CustomResult.page(queryService.findPage(request));
     }
 
@@ -45,8 +39,7 @@ public class RiwayatMutasiController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<?> save(@Valid @RequestBody RiwayatMutasiPostRequest request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
+    public ResponseEntity<?> save(@Valid @RequestBody RiwayatMutasiPostRequest request) {
         if (request.getJenisMutasi().equals(EJenisMutasi.MUTASI_GOLONGAN) ||
                 request.getJenisMutasi().equals(EJenisMutasi.MUTASI_GAJI) ||
                 request.getJenisMutasi().equals(EJenisMutasi.MUTASI_GAJI_BERKALA)
@@ -69,10 +62,7 @@ public class RiwayatMutasiController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody RiwayatMutasiPutRequest request, Errors errors) {
-        if (errors.hasErrors()) {
-            return ErrorResult.build(errors);
-        }
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody RiwayatMutasiPutRequest request) {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.update(id, request)));
     }
 

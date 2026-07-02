@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
@@ -31,12 +30,12 @@ public class RiwayatSkController {
     private final Validator validator = factory.getValidator();
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject RiwayatSkRequest request) {
+    public ResponseEntity<?> index(@Valid @ParameterObject RiwayatSkRequest request) {
         return CustomResult.page(queryService.findPage(request));
     }
 
     @GetMapping("/list")
-    public ResponseEntity<?> list(@ParameterObject RiwayatSkRequest request) {
+    public ResponseEntity<?> list(@Valid @ParameterObject RiwayatSkRequest request) {
         return CustomResult.list(queryService.findAll(request));
     }
 
@@ -46,14 +45,13 @@ public class RiwayatSkController {
     }
 
     @GetMapping("/pegawai/{id}")
-    public ResponseEntity<?> findByPegawaiId(@PathVariable Long id, @ParameterObject RiwayatSkRequest request) {
+    public ResponseEntity<?> findByPegawaiId(@PathVariable Long id, @Valid @ParameterObject RiwayatSkRequest request) {
         return CustomResult.page(queryService.findByPegawaiId(id, request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<?> save(@Valid @RequestBody RiwayatSkPostRequest request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
+    public ResponseEntity<?> save(@Valid @RequestBody RiwayatSkPostRequest request) {
         if (Objects.nonNull(request.getUpdateMaster()) && request.getUpdateMaster()) {
             Set<ConstraintViolation<RiwayatSkPostRequest>> validate = validator.validate(request, GajiSk.class);
             if (!validate.isEmpty())
@@ -65,8 +63,7 @@ public class RiwayatSkController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody RiwayatSkPutRequest request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody RiwayatSkPutRequest request) {
         if (Objects.nonNull(request.getUpdateMaster()) && request.getUpdateMaster()) {
             Set<ConstraintViolation<RiwayatSkPostRequest>> validate = validator.validate(request, GajiSk.class);
             if (!validate.isEmpty())
