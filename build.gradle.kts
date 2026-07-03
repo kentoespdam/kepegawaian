@@ -19,6 +19,13 @@ group = "id.perumdamts"
 version = "0.0.1-SNAPSHOT"
 description = "kepegawaian"
 
+val flywayVersion = "12.8.1"
+val lombokVersion = "1.18.46"
+val springdocVersion = "3.0.3"
+val poiVersion = "5.4.1"
+val commonsIoVersion = "2.16.1"
+val archunitVersion = "1.4.1"
+
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(25)
@@ -59,7 +66,7 @@ dependencies {
 
     // Flyway
     implementation("org.springframework.boot:spring-boot-starter-flyway")
-    implementation("org.flywaydb:flyway-mysql:12.8.1")
+    implementation("org.flywaydb:flyway-mysql:$flywayVersion")
 
     // Flyway Gradle plugin uses runtimeClasspath for JDBC drivers
 
@@ -67,10 +74,10 @@ dependencies {
     // JDK 25 `val`/@ExtensionMethod javac bugfix (1.18.44, #3947). Does NOT fix
     // the sun.misc.Unsafe warning — that call still exists upstream; see the
     // --sun-misc-unsafe-memory-access workaround in the JavaCompile block.
-    compileOnly("org.projectlombok:lombok:1.18.46")
-    annotationProcessor("org.projectlombok:lombok:1.18.46")
-    testCompileOnly("org.projectlombok:lombok:1.18.46")
-    testAnnotationProcessor("org.projectlombok:lombok:1.18.46")
+    compileOnly("org.projectlombok:lombok:$lombokVersion")
+    annotationProcessor("org.projectlombok:lombok:$lombokVersion")
+    testCompileOnly("org.projectlombok:lombok:$lombokVersion")
+    testAnnotationProcessor("org.projectlombok:lombok:$lombokVersion")
 
     // Dev tools
     developmentOnly("org.springframework.boot:spring-boot-devtools")
@@ -82,12 +89,12 @@ dependencies {
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
     // SpringDoc OpenAPI 3.x (Boot 4 compatible)
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.3")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$springdocVersion")
 
     // WebFlux (temporary - will be removed in F6.S2)
 
     // Apache POI for Excel
-    implementation("org.apache.poi:poi-ooxml:5.4.1")
+    implementation("org.apache.poi:poi-ooxml:$poiVersion")
 
     // Jackson
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
@@ -101,7 +108,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-data-redis-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("org.testcontainers:testcontainers-junit-jupiter")
-    testImplementation("com.tngtech.archunit:archunit-junit5:1.3.0")
+    testImplementation("com.tngtech.archunit:archunit-junit5:1.4.1")
 }
 
 tasks.named<Test>("test") {
