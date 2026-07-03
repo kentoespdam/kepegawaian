@@ -2,7 +2,7 @@ package id.perumdamts.kepegawaian.repositories.master.jooq;
 
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.master.level.LevelIndexQuery;
-import id.perumdamts.kepegawaian.dto.master.level.LevelQuery;
+import id.perumdamts.kepegawaian.dto.master.level.LevelResponse;
 import id.perumdamts.kepegawaian.jooq.tables.Level;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
@@ -22,7 +22,7 @@ import java.util.Optional;
 public class LevelQueryRepository {
     private final DSLContext dsl;
 
-    public Page<LevelQuery> pageQuery(LevelIndexQuery query) {
+    public Page<LevelResponse> pageQuery(LevelIndexQuery query) {
         var sortOrder = SortParam.resolve(query.getSortBy(), query.getSortDirection(),
                 allowedSorts(), Level.LEVEL.ID);
 
@@ -39,7 +39,7 @@ public class LevelQueryRepository {
                 .orderBy(sortOrder)
                 .limit(query.getSizeOrDefault())
                 .offset(query.getPageNumber() * query.getSizeOrDefault())
-                .fetchInto(LevelQuery.class);
+                .fetchInto(LevelResponse.class);
 
         return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
     }
@@ -50,19 +50,19 @@ public class LevelQueryRepository {
         );
     }
 
-    public Optional<LevelQuery> getById(Long id) {
+    public Optional<LevelResponse> getById(Long id) {
         return dsl.select(Level.LEVEL.ID, Level.LEVEL.NAMA)
                 .from(Level.LEVEL)
                 .where(Level.LEVEL.ID.eq(id))
                 .and(Level.LEVEL.IS_DELETED.eq(false))
-                .fetchOptionalInto(LevelQuery.class);
+                .fetchOptionalInto(LevelResponse.class);
     }
 
-    public List<LevelQuery> listQuery() {
+    public List<LevelResponse> listQuery() {
         return dsl.select(Level.LEVEL.ID, Level.LEVEL.NAMA)
                 .from(Level.LEVEL)
                 .where(Level.LEVEL.IS_DELETED.eq(false))
                 .orderBy(Level.LEVEL.NAMA.asc())
-                .fetchInto(LevelQuery.class);
+                .fetchInto(LevelResponse.class);
     }
 }

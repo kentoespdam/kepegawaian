@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.dto.master.jabatan;
 
 import id.perumdamts.kepegawaian.dto.master.level.LevelResponse;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
+import id.perumdamts.kepegawaian.mapper.master.level.LevelMapper;
 import lombok.Data;
 
 @Data
@@ -16,7 +17,7 @@ public class JabatanMiniResponse {
         JabatanMiniResponse response = new JabatanMiniResponse();
         response.setId(entity.getId());
         response.setKode(entity.getKode());
-        response.setLevel(LevelResponse.from(entity.getLevel()));
+        response.setLevel(LevelMapper.toResponse(entity.getLevel()));
         response.setNama(entity.getNama());
         return response;
     }

@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.dto.penggajian.gajiTunjangan;
 import id.perumdamts.kepegawaian.dto.master.golongan.GolonganResponse;
 import id.perumdamts.kepegawaian.dto.master.level.LevelResponse;
 import id.perumdamts.kepegawaian.entities.commons.EJenisTunjangan;
+import id.perumdamts.kepegawaian.mapper.master.level.LevelMapper;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiTunjangan;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -25,7 +26,7 @@ public class GajiTunjanganResponse {
         GajiTunjanganResponse result = new GajiTunjanganResponse();
         result.setId(entity.getId());
         result.setJenisTunjangan(entity.getJenisTunjangan());
-        result.setLevel(LevelResponse.from(entity.getLevel()));
+        result.setLevel(LevelMapper.toResponse(entity.getLevel()));
         if (entity.getGolongan() != null)
             result.setGolongan(GolonganResponse.from(entity.getGolongan()));
         result.setNominal(entity.getNominal());

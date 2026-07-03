@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.mapper.master.level;
 
 import id.perumdamts.kepegawaian.dto.master.level.LevelPostRequest;
+import id.perumdamts.kepegawaian.dto.master.level.LevelResponse;
 import id.perumdamts.kepegawaian.entities.master.Level;
 
 public final class LevelMapper {
@@ -12,5 +13,9 @@ public final class LevelMapper {
 
     public static void updateEntity(Level entity, LevelPostRequest request) {
         entity.setNama(request.getNama());
+    }
+
+    public static LevelResponse toResponse(Level level) {
+        return new LevelResponse(level.getId(), level.getNama());
     }
 }
