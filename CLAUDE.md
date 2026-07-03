@@ -11,7 +11,7 @@ Dipisah agar tidak compile bareng. Detail: [WORKTREE.md](WORKTREE.md).
 
 ## Build & Run
 
-Java 21, Spring Boot 3.5.6, Gradle.
+Java 21, Spring Boot 4.0.3, Gradle.
 
 ```bash
 ./gradlew build       # Build

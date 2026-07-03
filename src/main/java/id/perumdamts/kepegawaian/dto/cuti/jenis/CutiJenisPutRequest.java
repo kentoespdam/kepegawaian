@@ -1,7 +1,7 @@
 package id.perumdamts.kepegawaian.dto.cuti.jenis;
 
 import id.perumdamts.kepegawaian.entities.cuti.CutiJenis;
-import jakarta.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class CutiJenisPutRequest extends CutiJenisPostRequest {
     public static CutiJenis toEntity(CutiJenis entity, CutiJenisPutRequest request, @Nullable CutiJenis parent) {

@@ -3,7 +3,7 @@ package id.perumdamts.kepegawaian.dto.users;
 import id.perumdamts.kepegawaian.dto.appwrite.AppwriteUser;
 import id.perumdamts.kepegawaian.dto.appwrite.Prefs;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
-import jakarta.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import lombok.Data;
 
 @Data
