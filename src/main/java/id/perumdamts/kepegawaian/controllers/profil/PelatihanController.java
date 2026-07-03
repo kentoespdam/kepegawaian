@@ -25,7 +25,7 @@ public class PelatihanController {
     private final PelatihanCommandService command;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject PelatihanIndexQuery request) {
+    public ResponseEntity<?> index(@ParameterObject @Valid PelatihanIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 

@@ -22,12 +22,12 @@ public class GajiProfilController {
     private final GajiProfilQueryService queryService;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject GajiProfilIndexQuery request) {
+    public ResponseEntity<?> index(@ParameterObject @Valid GajiProfilIndexQuery request) {
         return CustomResult.page(queryService.findAll(request));
     }
 
     @GetMapping("/list")
-    public ResponseEntity<?> list(@ParameterObject GajiProfilIndexQuery request) {
+    public ResponseEntity<?> list(@ParameterObject @Valid GajiProfilIndexQuery request) {
         return CustomResult.list(queryService.list(request));
     }
 

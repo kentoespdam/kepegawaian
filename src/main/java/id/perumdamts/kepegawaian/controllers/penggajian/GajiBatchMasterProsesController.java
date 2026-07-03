@@ -23,7 +23,7 @@ public class GajiBatchMasterProsesController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject GajiBatchMasterProsesIndexQuery request) {
+    public ResponseEntity<?> index(@ParameterObject @Valid GajiBatchMasterProsesIndexQuery request) {
         return CustomResult.page(queryService.findPage(request));
     }
 

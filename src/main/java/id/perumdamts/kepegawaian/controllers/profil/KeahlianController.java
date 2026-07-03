@@ -25,7 +25,7 @@ public class KeahlianController {
     private final KeahlianCommandService command;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject KeahlianIndexQuery request) {
+    public ResponseEntity<?> index(@ParameterObject @Valid KeahlianIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 

@@ -40,7 +40,7 @@ public class GajiTunjanganController {
     }
 
     @GetMapping("/{jenis}")
-    public ResponseEntity<?> index(@PathVariable EJenisTunjangan jenis, @ParameterObject GajiTunjanganIndexQuery request) {
+    public ResponseEntity<?> index(@PathVariable EJenisTunjangan jenis, @ParameterObject @Valid GajiTunjanganIndexQuery request) {
         request.setJenis(jenis);
         return CustomResult.page(queryService.findPage(jenis, request));
     }

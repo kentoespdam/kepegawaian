@@ -25,7 +25,7 @@ public class JenisSpController {
     private final JenisSpCommandService command;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject JenisSpIndexQuery request) {
+    public ResponseEntity<?> index(@ParameterObject @Valid JenisSpIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 

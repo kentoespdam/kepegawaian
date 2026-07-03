@@ -27,7 +27,7 @@ public class PengalamanKerjaController {
     // READ
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject PengalamanKerjaIndexQuery request) {
+    public ResponseEntity<?> index(@ParameterObject @Valid PengalamanKerjaIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 

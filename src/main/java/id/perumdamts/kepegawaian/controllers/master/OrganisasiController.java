@@ -25,7 +25,7 @@ public class OrganisasiController {
     private final OrganisasiCommandService command;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject OrganisasiIndexQuery request) {
+    public ResponseEntity<?> index(@ParameterObject @Valid OrganisasiIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 

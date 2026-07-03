@@ -28,7 +28,7 @@ public class GajiBatchRootController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject GajiBatchRootIndexQuery request) {
+    public ResponseEntity<?> index(@ParameterObject @Valid GajiBatchRootIndexQuery request) {
         return CustomResult.any(queryService.findAll(request));
     }
 

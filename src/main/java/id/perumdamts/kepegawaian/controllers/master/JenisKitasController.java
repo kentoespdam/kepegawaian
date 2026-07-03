@@ -24,7 +24,7 @@ public class JenisKitasController {
     private final JenisKitasCommandService command;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject JenisKitasIndexQuery request) {
+    public ResponseEntity<?> index(@ParameterObject @Valid JenisKitasIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 

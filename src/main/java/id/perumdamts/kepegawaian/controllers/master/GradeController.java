@@ -24,7 +24,7 @@ public class GradeController {
     private final GradeCommandService command;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject GradeIndexQuery request) {
+    public ResponseEntity<?> index(@ParameterObject @Valid GradeIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 

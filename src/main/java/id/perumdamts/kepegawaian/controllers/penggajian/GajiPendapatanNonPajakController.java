@@ -22,12 +22,12 @@ public class GajiPendapatanNonPajakController {
     private final GajiPendapatanNonPajakQueryService queryService;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject GajiPendapatanNonPajakIndexQuery request) {
+    public ResponseEntity<?> index(@ParameterObject @Valid GajiPendapatanNonPajakIndexQuery request) {
         return CustomResult.page(queryService.findPage(request));
     }
 
     @GetMapping("/list")
-    public ResponseEntity<?> list(@ParameterObject GajiPendapatanNonPajakIndexQuery request) {
+    public ResponseEntity<?> list(@ParameterObject @Valid GajiPendapatanNonPajakIndexQuery request) {
         return CustomResult.list(queryService.findAll(request));
     }
 

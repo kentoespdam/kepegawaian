@@ -27,7 +27,7 @@ public class ProfilKeluargaController {
     private final ProfilKeluargaLampiranCommandService lampiranCommand;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject ProfilKeluargaIndexQuery request) {
+    public ResponseEntity<?> index(@ParameterObject @Valid ProfilKeluargaIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 

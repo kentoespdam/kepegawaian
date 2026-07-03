@@ -24,7 +24,7 @@ public class GolonganController {
     private final GolonganCommandService command;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject GolonganIndexQuery request) {
+    public ResponseEntity<?> index(@ParameterObject @Valid GolonganIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 

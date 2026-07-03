@@ -24,7 +24,7 @@ public class JenisKeahlianController {
     private final JenisKeahlianCommandService command;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject JenisKeahlianIndexQuery request) {
+    public ResponseEntity<?> index(@ParameterObject @Valid JenisKeahlianIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 

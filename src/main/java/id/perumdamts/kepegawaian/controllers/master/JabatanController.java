@@ -25,7 +25,7 @@ public class JabatanController {
     private final JabatanCommandService command;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject JabatanIndexQuery request) {
+    public ResponseEntity<?> index(@ParameterObject @Valid JabatanIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 

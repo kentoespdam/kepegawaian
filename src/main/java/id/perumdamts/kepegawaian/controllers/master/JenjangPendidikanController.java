@@ -28,7 +28,7 @@ public class JenjangPendidikanController {
     private final JenjangPendidikanCommandService commandService;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject JenjangPendidikanIndexQuery request) {
+    public ResponseEntity<?> index(@ParameterObject @Valid JenjangPendidikanIndexQuery request) {
         return CustomResult.page(queryService.pageQuery(request));
     }
 

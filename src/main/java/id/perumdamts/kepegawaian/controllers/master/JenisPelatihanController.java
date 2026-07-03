@@ -24,7 +24,7 @@ public class JenisPelatihanController {
     private final JenisPelatihanCommandService command;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject JenisPelatihanIndexQuery request) {
+    public ResponseEntity<?> index(@ParameterObject @Valid JenisPelatihanIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 

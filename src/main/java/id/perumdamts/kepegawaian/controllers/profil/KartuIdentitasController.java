@@ -27,7 +27,7 @@ public class KartuIdentitasController {
     private final KartuIdentitasLampiranCommandService lampiranCommand;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject KartuIdentitasIndexQuery request) {
+    public ResponseEntity<?> index(@ParameterObject @Valid KartuIdentitasIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 

@@ -25,12 +25,12 @@ public class DasarGajiController {
     private final DasarGajiQueryService queryService;
 
     @GetMapping
-    public ResponseEntity<?> get(@ParameterObject DasarGajiIndexQuery request) {
+    public ResponseEntity<?> get(@ParameterObject @Valid DasarGajiIndexQuery request) {
         return CustomResult.any(queryService.findPage(request));
     }
 
     @GetMapping("/list")
-    public ResponseEntity<?> list(@ParameterObject DasarGajiIndexQuery request) {
+    public ResponseEntity<?> list(@ParameterObject @Valid DasarGajiIndexQuery request) {
         return CustomResult.list(queryService.findList(request));
     }
 

@@ -21,7 +21,7 @@ public class ProfilUpdateController {
     private final ProfileUpdateService service;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject ProfileUpdateRequest request) {
+    public ResponseEntity<?> index(@ParameterObject @Valid ProfileUpdateRequest request) {
         return CustomResult.page(queryService.findPage(request));
     }
 

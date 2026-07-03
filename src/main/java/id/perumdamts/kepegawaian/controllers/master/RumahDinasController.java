@@ -24,7 +24,7 @@ public class RumahDinasController {
     private final RumahDinasCommandService command;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject RumahDinasIndexQuery request) {
+    public ResponseEntity<?> index(@ParameterObject @Valid RumahDinasIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 

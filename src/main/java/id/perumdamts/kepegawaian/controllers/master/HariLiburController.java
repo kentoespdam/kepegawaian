@@ -24,7 +24,7 @@ public class HariLiburController {
     private final HariLiburCommandService command;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject HariLiburIndexQuery request) {
+    public ResponseEntity<?> index(@ParameterObject @Valid HariLiburIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 

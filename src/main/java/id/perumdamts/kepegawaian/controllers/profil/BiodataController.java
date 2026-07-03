@@ -34,7 +34,7 @@ public class BiodataController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<?> list(@ParameterObject BiodataIndexQuery query) {
+    public ResponseEntity<?> list(@ParameterObject @Valid BiodataIndexQuery query) {
         return CustomResult.list(queryService.findAll(query));
     }
 

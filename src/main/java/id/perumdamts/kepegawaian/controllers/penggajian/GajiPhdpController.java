@@ -22,7 +22,7 @@ public class GajiPhdpController {
     private final GajiPhdpQueryService queryService;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject GajiPhdpIndexQuery request) {
+    public ResponseEntity<?> index(@ParameterObject @Valid GajiPhdpIndexQuery request) {
         return CustomResult.page(queryService.findPage(request));
     }
 

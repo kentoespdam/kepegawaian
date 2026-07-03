@@ -27,7 +27,7 @@ public class LevelController {
     private final LevelCommandService command;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject LevelIndexQuery request) {
+    public ResponseEntity<?> index(@ParameterObject @Valid LevelIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 

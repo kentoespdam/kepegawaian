@@ -26,7 +26,7 @@ public class SanksiController {
     private final SanksiCommandService command;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject SanksiIndexQuery request) {
+    public ResponseEntity<?> index(@ParameterObject @Valid SanksiIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 

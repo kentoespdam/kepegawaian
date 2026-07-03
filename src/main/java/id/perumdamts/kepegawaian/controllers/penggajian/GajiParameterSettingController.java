@@ -22,12 +22,12 @@ public class GajiParameterSettingController {
     private final GajiParameterSettingQueryService queryService;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject GajiParameterSettingIndexQuery request) {
+    public ResponseEntity<?> index(@ParameterObject @Valid GajiParameterSettingIndexQuery request) {
         return CustomResult.page(queryService.findPage(request));
     }
 
     @GetMapping("/list")
-    public ResponseEntity<?> list(@ParameterObject GajiParameterSettingIndexQuery request) {
+    public ResponseEntity<?> list(@ParameterObject @Valid GajiParameterSettingIndexQuery request) {
         return CustomResult.list(queryService.findAll(request));
     }
 

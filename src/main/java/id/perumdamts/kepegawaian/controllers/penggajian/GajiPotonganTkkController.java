@@ -22,7 +22,7 @@ public class GajiPotonganTkkController {
     private final GajiPotonganTkkQueryService queryService;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject GajiPotonganTkkIndexQuery request) {
+    public ResponseEntity<?> index(@ParameterObject @Valid GajiPotonganTkkIndexQuery request) {
         return CustomResult.page(queryService.findPage(request));
     }
 

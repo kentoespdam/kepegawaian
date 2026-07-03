@@ -29,12 +29,12 @@ public class PegawaiController {
     Validator validator = factory.getValidator();
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject PegawaiRequest request) {
+    public ResponseEntity<?> index(@ParameterObject @Valid PegawaiRequest request) {
         return CustomResult.any(queryService.findPage(request));
     }
 
     @GetMapping("/list")
-    public ResponseEntity<?> list(@ParameterObject PegawaiRequest request) {
+    public ResponseEntity<?> list(@ParameterObject @Valid PegawaiRequest request) {
         return CustomResult.list(queryService.findAll(request));
     }
 

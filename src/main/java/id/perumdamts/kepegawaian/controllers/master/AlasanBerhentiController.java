@@ -24,7 +24,7 @@ public class AlasanBerhentiController {
     private final AlasanBerhentiCommandService command;
 
     @GetMapping
-    public ResponseEntity<?> get(@ParameterObject AlasanBerhentiIndexQuery request) {
+    public ResponseEntity<?> get(@ParameterObject @Valid AlasanBerhentiIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 

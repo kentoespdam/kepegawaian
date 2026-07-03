@@ -27,7 +27,7 @@ public class GajiKomponenController {
     }
 
     @GetMapping("/{profilId}/profil")
-    public ResponseEntity<?> index(@PathVariable Long profilId, @ParameterObject GajiKomponenIndexQuery request) {
+    public ResponseEntity<?> index(@PathVariable Long profilId, @ParameterObject @Valid GajiKomponenIndexQuery request) {
         return CustomResult.page(queryService.findPage(profilId, request));
     }
 

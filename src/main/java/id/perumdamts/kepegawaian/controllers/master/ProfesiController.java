@@ -25,7 +25,7 @@ public class ProfesiController {
     private final ProfesiCommandService command;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject ProfesiIndexQuery request) {
+    public ResponseEntity<?> index(@ParameterObject @Valid ProfesiIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 
