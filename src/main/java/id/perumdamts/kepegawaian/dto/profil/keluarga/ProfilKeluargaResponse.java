@@ -10,54 +10,45 @@ import id.perumdamts.kepegawaian.entities.commons.EHubunganKeluarga;
 import id.perumdamts.kepegawaian.entities.commons.EJenisKelamin;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPendidikan;
 import id.perumdamts.kepegawaian.entities.profil.ProfilKeluarga;
-import jakarta.persistence.Enumerated;
-import lombok.Data;
 
 import java.time.LocalDate;
 
-@Data
-public class ProfilKeluargaResponse {
-    private Long id;
-    private BiodataMiniResponse biodata;
-    private String nik;
-    private String nama;
-    @Enumerated
-    private EJenisKelamin jenisKelamin;
-    @Enumerated
-    private EAgama agama;
-    @Enumerated
-    private EHubunganKeluarga hubunganKeluarga;
-    private String tempatLahir;
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate tanggalLahir;
-    private Boolean tanggungan;
-    private JenjangPendidikanMiniResponse pendidikan;
-    @Enumerated
-    private EStatusPendidikan statusPendidikan;
-    private Boolean statusKawin;
-    private String notes;
-    private Boolean changedStatus;
-
-
+public record ProfilKeluargaResponse(
+        Long id,
+        BiodataMiniResponse biodata,
+        String nik,
+        String nama,
+        EJenisKelamin jenisKelamin,
+        EAgama agama,
+        EHubunganKeluarga hubunganKeluarga,
+        String tempatLahir,
+        @JsonSerialize(using = LocalDateSerializer.class)
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        LocalDate tanggalLahir,
+        Boolean tanggungan,
+        JenjangPendidikanMiniResponse pendidikan,
+        EStatusPendidikan statusPendidikan,
+        Boolean statusKawin,
+        String notes,
+        Boolean changedStatus
+) {
     public static ProfilKeluargaResponse from(ProfilKeluarga entity) {
-        ProfilKeluargaResponse response = new ProfilKeluargaResponse();
-        response.setId(entity.getId());
-        response.setBiodata(BiodataMiniResponse.from(entity.getBiodata()));
-        response.setNik(entity.getNik());
-        response.setNama(entity.getNama());
-        response.setJenisKelamin(entity.getJenisKelamin());
-        response.setAgama(entity.getAgama());
-        response.setHubunganKeluarga(entity.getHubunganKeluarga());
-        response.setTempatLahir(entity.getTempatLahir());
-        response.setTanggalLahir(entity.getTanggalLahir());
-        response.setTanggungan(entity.getTanggungan());
-        if (entity.getPendidikan() != null)
-            response.setPendidikan(JenjangPendidikanMiniResponse.from(entity.getPendidikan()));
-        response.setStatusPendidikan(entity.getStatusPendidikan());
-        response.setStatusKawin(entity.getStatusKawin());
-        response.setNotes(entity.getNotes());
-        response.setChangedStatus(entity.getChangedStatus());
-        return response;
+        return new ProfilKeluargaResponse(
+                entity.getId(),
+                BiodataMiniResponse.from(entity.getBiodata()),
+                entity.getNik(),
+                entity.getNama(),
+                entity.getJenisKelamin(),
+                entity.getAgama(),
+                entity.getHubunganKeluarga(),
+                entity.getTempatLahir(),
+                entity.getTanggalLahir(),
+                entity.getTanggungan(),
+                entity.getPendidikan() != null ? JenjangPendidikanMiniResponse.from(entity.getPendidikan()) : null,
+                entity.getStatusPendidikan(),
+                entity.getStatusKawin(),
+                entity.getNotes(),
+                entity.getChangedStatus()
+        );
     }
 }

@@ -15,30 +15,26 @@ public final class GajiTunjanganJooqMapper {
 
     public static GajiTunjanganResponse mapToResponse(Record record) {
         if (record == null) return null;
-        GajiTunjanganResponse response = new GajiTunjanganResponse();
-        response.setId(record.get(GAJI_TUNJANGAN.ID));
-        response.setNominal(record.get(GAJI_TUNJANGAN.NOMINAL));
+        var jenisObj = record.get(GAJI_TUNJANGAN.JENIS_TUNJANGAN);
+        EJenisTunjangan jenisTunjangan = jenisObj != null ? EJenisTunjangan.values()[jenisObj.intValue()] : null;
 
-        var jenis = record.get(GAJI_TUNJANGAN.JENIS_TUNJANGAN);
-        if (jenis != null) {
-            response.setJenisTunjangan(EJenisTunjangan.values()[jenis.intValue()]);
-        }
+        LevelResponse level = record.get(GAJI_TUNJANGAN.LEVEL_ID) != null
+                ? new LevelResponse(record.get(GAJI_TUNJANGAN.LEVEL_ID), record.get(LEVEL.NAMA))
+                : null;
 
-        if (record.get(GAJI_TUNJANGAN.LEVEL_ID) != null) {
-            response.setLevel(new LevelResponse(
-                    record.get(GAJI_TUNJANGAN.LEVEL_ID),
-                    record.get(LEVEL.NAMA)
-            ));
-        }
+        GolonganResponse golongan = record.get(GAJI_TUNJANGAN.GOLONGAN_ID) != null
+                ? new GolonganResponse(
+                record.get(GAJI_TUNJANGAN.GOLONGAN_ID),
+                record.get(GOLONGAN.GOLONGAN_),
+                record.get(GOLONGAN.PANGKAT))
+                : null;
 
-        if (record.get(GAJI_TUNJANGAN.GOLONGAN_ID) != null) {
-            response.setGolongan(new GolonganResponse(
-                    record.get(GAJI_TUNJANGAN.GOLONGAN_ID),
-                    record.get(GOLONGAN.GOLONGAN_),
-                    record.get(GOLONGAN.PANGKAT)
-            ));
-        }
-
-        return response;
+        return new GajiTunjanganResponse(
+                record.get(GAJI_TUNJANGAN.ID),
+                jenisTunjangan,
+                level,
+                golongan,
+                record.get(GAJI_TUNJANGAN.NOMINAL)
+        );
     }
 }

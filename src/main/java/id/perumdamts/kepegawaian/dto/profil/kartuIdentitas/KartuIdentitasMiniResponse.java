@@ -2,23 +2,20 @@ package id.perumdamts.kepegawaian.dto.profil.kartuIdentitas;
 
 import id.perumdamts.kepegawaian.dto.master.jenisKitas.JenisKitasResponse;
 import id.perumdamts.kepegawaian.entities.profil.KartuIdentitas;
-import lombok.Data;
 
 import java.util.List;
 
-@Data
-public class KartuIdentitasMiniResponse {
-    private Long id;
-    private JenisKitasResponse jenisKartu;
-    private String nomorKartu;
-
+public record KartuIdentitasMiniResponse(
+        Long id,
+        JenisKitasResponse jenisKartu,
+        String nomorKartu
+) {
     public static KartuIdentitasMiniResponse from(KartuIdentitas entity) {
-        JenisKitasResponse jenisKitas = JenisKitasResponse.from(entity.getJenisKartu());
-        KartuIdentitasMiniResponse response = new KartuIdentitasMiniResponse();
-        response.setId(entity.getId());
-        response.setJenisKartu(jenisKitas);
-        response.setNomorKartu(entity.getNomorKartu());
-        return response;
+        return new KartuIdentitasMiniResponse(
+                entity.getId(),
+                JenisKitasResponse.from(entity.getJenisKartu()),
+                entity.getNomorKartu()
+        );
     }
 
     public static List<KartuIdentitasMiniResponse> from(List<KartuIdentitas> kartuIdentitas) {

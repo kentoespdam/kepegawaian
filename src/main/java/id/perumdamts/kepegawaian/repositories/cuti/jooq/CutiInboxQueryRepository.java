@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.repositories.cuti.jooq;
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.cuti.approvalChain.CutiApprovalChainRequest;
 import id.perumdamts.kepegawaian.dto.cuti.approvalChain.CutiApprovalChainResponse;
+import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanResponse;
 import id.perumdamts.kepegawaian.entities.commons.EReadWriteStatus;
 import lombok.RequiredArgsConstructor;
 import org.jooq.Condition;
@@ -49,21 +50,19 @@ public class CutiInboxQueryRepository {
                 .limit(query.getSizeOrDefault())
                 .offset(query.offset())
                 .fetch(record -> {
-                    CutiApprovalChainResponse res = new CutiApprovalChainResponse();
-                    res.setId(record.get("id", Long.class));
-                    res.setApprovalLevel(record.get("approval_level", Integer.class));
+                    Long id = record.get("id", Long.class);
+                    Integer approvalLevel = record.get("approval_level", Integer.class);
                     
                     Byte rwVal = record.get("read_write_status", Byte.class);
-                    if (rwVal != null && rwVal >= 0 && rwVal < EReadWriteStatus.values().length) {
-                        res.setReadWriteStatus(EReadWriteStatus.values()[rwVal]);
-                    }
+                    EReadWriteStatus readWriteStatus = (rwVal != null && rwVal >= 0 && rwVal < EReadWriteStatus.values().length)
+                            ? EReadWriteStatus.values()[rwVal] : null;
                     
                     Long refCutiId = record.get(CUTI_APPROVAL_CHAIN.REF_CUTI_ID);
-                    if (refCutiId != null) {
-                        res.setRefCuti(pengajuanQueryRepository.getById(refCutiId));
-                    }
+                    CutiPengajuanResponse refCuti = refCutiId != null ? pengajuanQueryRepository.getById(refCutiId) : null;
                     
-                    return res;
+                    return new CutiApprovalChainResponse(
+                            id, approvalLevel, readWriteStatus, refCuti
+                    );
                 });
                 
         return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);

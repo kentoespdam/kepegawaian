@@ -58,43 +58,55 @@ public class GajiBatchRootQueryRepository {
     }
 
     public Optional<GajiBatchRootResponse> getById(String id) {
-        Optional<GajiBatchRootResponse> responseOpt = dsl.selectFrom(GAJI_BATCH_ROOT)
+        return dsl.selectFrom(GAJI_BATCH_ROOT)
                 .where(GAJI_BATCH_ROOT.ID.eq(id))
                 .and(GAJI_BATCH_ROOT.IS_DELETED.eq(false))
-                .fetchOptional(GajiBatchRootJooqMapper::mapToResponse);
+                .fetchOptional(GajiBatchRootJooqMapper::mapToResponse)
+                .map(response -> {
+                    List<GajiBatchRootErrorLogsResponse> errorLogs = dsl.selectFrom(GAJI_BATCH_ROOT_ERROR_LOGS)
+                            .where(GAJI_BATCH_ROOT_ERROR_LOGS.ROOT_BATCH_ID.eq(id))
+                            .fetch(record -> new GajiBatchRootErrorLogsResponse(
+                                    record.get(GAJI_BATCH_ROOT_ERROR_LOGS.ID),
+                                    record.get(GAJI_BATCH_ROOT_ERROR_LOGS.NIPAM),
+                                    record.get(GAJI_BATCH_ROOT_ERROR_LOGS.NAMA),
+                                    record.get(GAJI_BATCH_ROOT_ERROR_LOGS.NOTES)
+                            ));
 
-        if (responseOpt.isPresent()) {
-            GajiBatchRootResponse response = responseOpt.get();
+                    List<GajiBatchRootLampiranMiniResponse> lampirans = dsl.selectFrom(GAJI_BATCH_ROOT_LAMPIRAN)
+                            .where(GAJI_BATCH_ROOT_LAMPIRAN.ROOT_BATCH_ID.eq(id))
+                            .fetch(record -> {
+                                var jenisByte = record.get(GAJI_BATCH_ROOT_LAMPIRAN.JENIS_LAMPIRAN_GAJI);
+                                EJenisPotonganGaji jenis = jenisByte != null ? EJenisPotonganGaji.values()[jenisByte.intValue()] : null;
+                                return new GajiBatchRootLampiranMiniResponse(
+                                        record.get(GAJI_BATCH_ROOT_LAMPIRAN.ID),
+                                        jenis,
+                                        record.get(GAJI_BATCH_ROOT_LAMPIRAN.FILE_NAME),
+                                        record.get(GAJI_BATCH_ROOT_LAMPIRAN.MIME_TYPE)
+                                );
+                            });
 
-            List<GajiBatchRootErrorLogsResponse> errorLogs = dsl.selectFrom(GAJI_BATCH_ROOT_ERROR_LOGS)
-                    .where(GAJI_BATCH_ROOT_ERROR_LOGS.ROOT_BATCH_ID.eq(id))
-                    .fetch(record -> {
-                        GajiBatchRootErrorLogsResponse res = new GajiBatchRootErrorLogsResponse();
-                        res.setId(record.get(GAJI_BATCH_ROOT_ERROR_LOGS.ID));
-                        res.setNipam(record.get(GAJI_BATCH_ROOT_ERROR_LOGS.NIPAM));
-                        res.setNama(record.get(GAJI_BATCH_ROOT_ERROR_LOGS.NAMA));
-                        res.setNotes(record.get(GAJI_BATCH_ROOT_ERROR_LOGS.NOTES));
-                        return res;
-                    });
-            response.setErrorLogs(errorLogs);
-
-            List<GajiBatchRootLampiranMiniResponse> lampirans = dsl.selectFrom(GAJI_BATCH_ROOT_LAMPIRAN)
-                    .where(GAJI_BATCH_ROOT_LAMPIRAN.ROOT_BATCH_ID.eq(id))
-                    .fetch(record -> {
-                        GajiBatchRootLampiranMiniResponse res = new GajiBatchRootLampiranMiniResponse();
-                        res.setId(record.get(GAJI_BATCH_ROOT_LAMPIRAN.ID));
-                        var jenis = record.get(GAJI_BATCH_ROOT_LAMPIRAN.JENIS_LAMPIRAN_GAJI);
-                        if (jenis != null) {
-                            res.setJenisLampiranGaji(EJenisPotonganGaji.values()[jenis.intValue()]);
-                        }
-                        res.setFileName(record.get(GAJI_BATCH_ROOT_LAMPIRAN.FILE_NAME));
-                        res.setMimeType(record.get(GAJI_BATCH_ROOT_LAMPIRAN.MIME_TYPE));
-                        return res;
-                    });
-            response.setLampiran(lampirans);
-        }
-
-        return responseOpt;
+                    return new GajiBatchRootResponse(
+                            response.id(),
+                            response.periode(),
+                            response.status(),
+                            response.totalPegawai(),
+                            response.tanggalProses(),
+                            response.diProsesOleh(),
+                            response.jabatanPemroses(),
+                            response.tanggalVerifikasiTahap1(),
+                            response.diVerifikasiOlehTahap1(),
+                            response.jabatanVerifikasiTahap1(),
+                            response.tanggalVerifikasiTahap2(),
+                            response.diVerifikasiOlehTahap2(),
+                            response.jabatanVerifikasiTahap2(),
+                            response.tanggalPersetujuan(),
+                            response.diSetujuiOleh(),
+                            response.jabatanPenyetuju(),
+                            response.notes(),
+                            errorLogs,
+                            lampirans
+                    );
+                });
     }
 
     private static Map<String, Field<?>> allowedSorts() {

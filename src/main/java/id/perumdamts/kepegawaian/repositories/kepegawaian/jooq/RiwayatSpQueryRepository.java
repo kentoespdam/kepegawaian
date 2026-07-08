@@ -153,55 +153,58 @@ public class RiwayatSpQueryRepository {
     }
 
     private RiwayatSpQuery toQuery(Record record) {
-        RiwayatSpQuery query = new RiwayatSpQuery();
-        query.setId(record.get(RIWAYAT_SP.ID));
-        query.setPegawaiId(record.get(RIWAYAT_SP.PEGAWAI_ID));
-        query.setNipam(record.get(RIWAYAT_SP.NIPAM));
-        query.setNama(record.get(RIWAYAT_SP.NAMA));
-        query.setNamaOrganisasi(record.get(RIWAYAT_SP.NAMA_ORGANISASI));
-        query.setNamaJabatan(record.get(RIWAYAT_SP.NAMA_JABATAN));
-        query.setNomorSp(record.get(RIWAYAT_SP.NOMOR_SP));
-        query.setTanggalSp(record.get(RIWAYAT_SP.TANGGAL_SP));
-        query.setSanksiNotes(record.get(RIWAYAT_SP.SANKSI_NOTES));
-        query.setTanggalEksekusiSanksi(record.get(RIWAYAT_SP.TANGGAL_EKSEKUSI_SANKSI));
-        query.setTanggalMulai(record.get(RIWAYAT_SP.TANGGAL_MULAI));
-        query.setTanggalSelesai(record.get(RIWAYAT_SP.TANGGAL_SELESAI));
-        query.setPenandaTangan(record.get(RIWAYAT_SP.PENANDA_TANGAN));
-        query.setJabatanPenandaTangan(record.get(RIWAYAT_SP.JABATAN_PENANDA_TANGAN));
-        query.setFileName(record.get(RIWAYAT_SP.FILE_NAME));
-        query.setMimeType(record.get(RIWAYAT_SP.MIME_TYPE));
-        query.setNotes(record.get(RIWAYAT_SP.NOTES));
+        OrganisasiMiniResponse organisasi = record.get("org_id") != null
+                ? new OrganisasiMiniResponse(
+                (Long) record.get("org_id"),
+                null,
+                (String) record.get("org_nama"),
+                null)
+                : null;
+        JabatanMiniResponse jabatan = record.get("jab_id") != null
+                ? new JabatanMiniResponse(
+                (Long) record.get("jab_id"),
+                null,
+                null,
+                (String) record.get("jab_nama"))
+                : null;
+        JenisSpMiniResponse jenisSp = record.get("sp_id") != null
+                ? new JenisSpMiniResponse(
+                (Long) record.get("sp_id"),
+                (String) record.get("sp_kode"),
+                (String) record.get("sp_nama"),
+                null)
+                : null;
+        SanksiMiniResponse sanksi = record.get("san_id") != null
+                ? new SanksiMiniResponse(
+                (Long) record.get("san_id"),
+                (String) record.get("san_kode"),
+                (String) record.get("san_keterangan"),
+                null)
+                : null;
 
-        if (record.get("org_id") != null) {
-            query.setOrganisasi(new OrganisasiMiniResponse(
-                    (Long) record.get("org_id"),
-                    null,
-                    (String) record.get("org_nama"),
-                    null));
-        }
-        if (record.get("jab_id") != null) {
-            query.setJabatan(new JabatanMiniResponse(
-                    (Long) record.get("jab_id"),
-                    null,
-                    null,
-                    (String) record.get("jab_nama")));
-        }
-        if (record.get("sp_id") != null) {
-            query.setJenisSp(new JenisSpMiniResponse(
-                    (Long) record.get("sp_id"),
-                    (String) record.get("sp_kode"),
-                    (String) record.get("sp_nama"),
-                    null));
-        }
-        if (record.get("san_id") != null) {
-            SanksiMiniResponse san = new SanksiMiniResponse();
-            san.setId((Long) record.get("san_id"));
-            san.setKode((String) record.get("san_kode"));
-            san.setKeterangan((String) record.get("san_keterangan"));
-            query.setSanksi(san);
-        }
-
-        return query;
+        return new RiwayatSpQuery(
+                record.get(RIWAYAT_SP.ID),
+                record.get(RIWAYAT_SP.PEGAWAI_ID),
+                record.get(RIWAYAT_SP.NIPAM),
+                record.get(RIWAYAT_SP.NAMA),
+                organisasi,
+                record.get(RIWAYAT_SP.NAMA_ORGANISASI),
+                jabatan,
+                record.get(RIWAYAT_SP.NAMA_JABATAN),
+                record.get(RIWAYAT_SP.NOMOR_SP),
+                record.get(RIWAYAT_SP.TANGGAL_SP),
+                jenisSp,
+                sanksi,
+                record.get(RIWAYAT_SP.SANKSI_NOTES),
+                record.get(RIWAYAT_SP.TANGGAL_EKSEKUSI_SANKSI),
+                record.get(RIWAYAT_SP.TANGGAL_MULAI),
+                record.get(RIWAYAT_SP.TANGGAL_SELESAI),
+                record.get(RIWAYAT_SP.PENANDA_TANGAN),
+                record.get(RIWAYAT_SP.JABATAN_PENANDA_TANGAN),
+                record.get(RIWAYAT_SP.FILE_NAME),
+                record.get(RIWAYAT_SP.MIME_TYPE),
+                record.get(RIWAYAT_SP.NOTES)
+        );
     }
 
     public record HashedSpFileInfo(String fileName, String hashedFileName, String mimeType, String jenisSpKode) {}

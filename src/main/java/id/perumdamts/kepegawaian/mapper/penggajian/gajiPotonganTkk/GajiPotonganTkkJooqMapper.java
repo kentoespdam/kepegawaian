@@ -15,30 +15,26 @@ public final class GajiPotonganTkkJooqMapper {
 
     public static GajiPotonganTkkResponse mapToResponse(Record record) {
         if (record == null) return null;
-        GajiPotonganTkkResponse response = new GajiPotonganTkkResponse();
-        response.setId(record.get(GAJI_POTONGAN_TKK.ID));
-        response.setNominal(record.get(GAJI_POTONGAN_TKK.NOMINAL));
-
         var statusByte = record.get(GAJI_POTONGAN_TKK.STATUS_PEGAWAI);
-        if (statusByte != null) {
-            response.setStatusPegawai(EStatusPegawai.values()[statusByte.intValue()]);
-        }
+        EStatusPegawai statusPegawai = statusByte != null ? EStatusPegawai.values()[statusByte.intValue()] : null;
 
-        if (record.get(GAJI_POTONGAN_TKK.LEVEL_ID) != null) {
-            response.setLevel(new LevelResponse(
-                    record.get(GAJI_POTONGAN_TKK.LEVEL_ID),
-                    record.get(LEVEL.NAMA)
-            ));
-        }
+        LevelResponse level = record.get(GAJI_POTONGAN_TKK.LEVEL_ID) != null
+                ? new LevelResponse(record.get(GAJI_POTONGAN_TKK.LEVEL_ID), record.get(LEVEL.NAMA))
+                : null;
 
-        if (record.get(GAJI_POTONGAN_TKK.GOLONGAN_ID) != null) {
-            response.setGolongan(new GolonganResponse(
-                    record.get(GAJI_POTONGAN_TKK.GOLONGAN_ID),
-                    record.get(GOLONGAN.GOLONGAN_),
-                    record.get(GOLONGAN.PANGKAT)
-            ));
-        }
+        GolonganResponse golongan = record.get(GAJI_POTONGAN_TKK.GOLONGAN_ID) != null
+                ? new GolonganResponse(
+                record.get(GAJI_POTONGAN_TKK.GOLONGAN_ID),
+                record.get(GOLONGAN.GOLONGAN_),
+                record.get(GOLONGAN.PANGKAT))
+                : null;
 
-        return response;
+        return new GajiPotonganTkkResponse(
+                record.get(GAJI_POTONGAN_TKK.ID),
+                statusPegawai,
+                level,
+                golongan,
+                record.get(GAJI_POTONGAN_TKK.NOMINAL)
+        );
     }
 }

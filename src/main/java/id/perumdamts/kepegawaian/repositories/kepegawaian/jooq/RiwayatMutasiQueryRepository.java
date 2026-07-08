@@ -172,108 +172,111 @@ public class RiwayatMutasiQueryRepository {
     }
 
     private RiwayatMutasiQuery toQuery(Record record) {
-        RiwayatMutasiQuery query = new RiwayatMutasiQuery();
-        query.setId(record.get(RIWAYAT_MUTASI.ID));
-        query.setNipam(record.get(RIWAYAT_MUTASI.NIPAM));
-        query.setNama(record.get(RIWAYAT_MUTASI.NAMA));
         Byte jmByte = record.get(RIWAYAT_MUTASI.JENIS_MUTASI);
-        if (jmByte != null) {
-            query.setJenisMutasi(EJenisMutasi.values()[jmByte.intValue()]);
-        }
-        query.setTmtBerlaku(record.get(RIWAYAT_MUTASI.TMT_BERLAKU));
-        query.setTanggalBerakhir(record.get(RIWAYAT_MUTASI.TANGGAL_BERAKHIR));
-        query.setNamaOrganisasi(record.get(RIWAYAT_MUTASI.NAMA_ORGANISASI));
-        query.setNamaOrganisasiLama(record.get(RIWAYAT_MUTASI.NAMA_ORGANISASI_LAMA));
-        query.setNamaJabatan(record.get(RIWAYAT_MUTASI.NAMA_JABATAN));
-        query.setNamaJabatanLama(record.get(RIWAYAT_MUTASI.NAMA_JABATAN_LAMA));
-        query.setNamaProfesi(record.get(RIWAYAT_MUTASI.NAMA_PROFESI));
-        query.setNamaProfesiLama(record.get(RIWAYAT_MUTASI.NAMA_PROFESI_LAMA));
-        query.setNotes(record.get(RIWAYAT_MUTASI.NOTES));
+        EJenisMutasi jenisMutasi = jmByte != null ? EJenisMutasi.values()[jmByte.intValue()] : null;
 
-        if (record.get("gol_id") != null) {
-            query.setGolongan(new GolonganResponse(
-                    (Long) record.get("gol_id"),
-                    (String) record.get("gol_golongan"),
-                    (String) record.get("gol_pangkat")
-            ));
-        }
-        if (record.get("gol_l_id") != null) {
-            query.setGolonganLama(new GolonganResponse(
-                    (Long) record.get("gol_l_id"),
-                    (String) record.get("gol_l_golongan"),
-                    (String) record.get("gol_l_pangkat")
-            ));
-        }
-        if (record.get("org_id") != null) {
-            query.setOrganisasi(new OrganisasiMiniResponse(
-                    (Long) record.get("org_id"),
-                    null,
-                    (String) record.get("org_nama"),
-                    null));
-        }
-        if (record.get("org_l_id") != null) {
-            query.setOrganisasiLama(new OrganisasiMiniResponse(
-                    (Long) record.get("org_l_id"),
-                    null,
-                    (String) record.get("org_l_nama"),
-                    null));
-        }
-        if (record.get("jab_id") != null) {
-            query.setJabatan(new JabatanMiniResponse(
-                    (Long) record.get("jab_id"),
-                    null,
-                    null,
-                    (String) record.get("jab_nama")));
-        }
-        if (record.get("jab_l_id") != null) {
-            query.setJabatanLama(new JabatanMiniResponse(
-                    (Long) record.get("jab_l_id"),
-                    null,
-                    null,
-                    (String) record.get("jab_l_nama")));
-        }
-        if (record.get("prof_id") != null) {
-            query.setProfesi(new ProfesiMiniResponse());
-            query.getProfesi().setId((Long) record.get("prof_id"));
-            query.getProfesi().setNama((String) record.get("prof_nama"));
-        }
-        if (record.get("prof_l_id") != null) {
-            query.setProfesiLama(new ProfesiMiniResponse());
-            query.getProfesiLama().setId((Long) record.get("prof_l_id"));
-            query.getProfesiLama().setNama((String) record.get("prof_l_nama"));
-        }
+        GolonganResponse golongan = record.get("gol_id") != null
+                ? new GolonganResponse(
+                (Long) record.get("gol_id"),
+                (String) record.get("gol_golongan"),
+                (String) record.get("gol_pangkat"))
+                : null;
+        GolonganResponse golonganLama = record.get("gol_l_id") != null
+                ? new GolonganResponse(
+                (Long) record.get("gol_l_id"),
+                (String) record.get("gol_l_golongan"),
+                (String) record.get("gol_l_pangkat"))
+                : null;
+        OrganisasiMiniResponse organisasi = record.get("org_id") != null
+                ? new OrganisasiMiniResponse(
+                (Long) record.get("org_id"),
+                null,
+                (String) record.get("org_nama"),
+                null)
+                : null;
+        OrganisasiMiniResponse organisasiLama = record.get("org_l_id") != null
+                ? new OrganisasiMiniResponse(
+                (Long) record.get("org_l_id"),
+                null,
+                (String) record.get("org_l_nama"),
+                null)
+                : null;
+        JabatanMiniResponse jabatan = record.get("jab_id") != null
+                ? new JabatanMiniResponse(
+                (Long) record.get("jab_id"),
+                null,
+                null,
+                (String) record.get("jab_nama"))
+                : null;
+        JabatanMiniResponse jabatanLama = record.get("jab_l_id") != null
+                ? new JabatanMiniResponse(
+                (Long) record.get("jab_l_id"),
+                null,
+                null,
+                (String) record.get("jab_l_nama"))
+                : null;
+        ProfesiMiniResponse profesi = record.get("prof_id") != null
+                ? new ProfesiMiniResponse((Long) record.get("prof_id"), (String) record.get("prof_nama"))
+                : null;
+        ProfesiMiniResponse profesiLama = record.get("prof_l_id") != null
+                ? new ProfesiMiniResponse((Long) record.get("prof_l_id"), (String) record.get("prof_l_nama"))
+                : null;
 
+        RiwayatSkQuery skMutasi = null;
         if (record.get("sk_id") != null) {
-            RiwayatSkQuery sk = new RiwayatSkQuery();
-            sk.setId((Long) record.get("sk_id"));
-            sk.setNipam(query.getNipam());
-            sk.setNama(query.getNama());
-            sk.setNomorSk((String) record.get("sk_nomor"));
             Byte skJenisByte = record.get("sk_jenis", Byte.class);
-            if (skJenisByte != null) {
-                sk.setJenisSk(EJenisSk.values()[skJenisByte.intValue()]);
-            }
-            sk.setTanggalSk(record.get("sk_tgl", LocalDate.class));
-            sk.setTmtBerlaku(record.get("sk_tmt", LocalDate.class));
-            sk.setGajiPokok(record.get("sk_gaji", Double.class));
-            sk.setMkgTahun(record.get("sk_mkg_t", Integer.class));
-            sk.setMkgBulan(record.get("sk_mkg_b", Integer.class));
-            sk.setKenaikanBerikutnya(record.get("sk_kenaikan", LocalDate.class));
-            sk.setMkgbTahun(record.get("sk_mkgb_t", Integer.class));
-            sk.setMkgbBulan(record.get("sk_mkgb_b", Integer.class));
-            sk.setUpdateMaster(record.get("sk_upd", Boolean.class));
-            sk.setNotes((String) record.get("sk_notes"));
+            EJenisSk skJenis = skJenisByte != null ? EJenisSk.values()[skJenisByte.intValue()] : null;
 
-            if (record.get("sk_gol_id") != null) {
-                sk.setGolongan(new GolonganResponse(
-                        (Long) record.get("sk_gol_id"),
-                        (String) record.get("sk_gol_golongan"),
-                        (String) record.get("sk_gol_pangkat")
-                ));
-            }
-            query.setSkMutasi(sk);
+            GolonganResponse skGolongan = record.get("sk_gol_id") != null
+                    ? new GolonganResponse(
+                    (Long) record.get("sk_gol_id"),
+                    (String) record.get("sk_gol_golongan"),
+                    (String) record.get("sk_gol_pangkat"))
+                    : null;
+
+            skMutasi = new RiwayatSkQuery(
+                    (Long) record.get("sk_id"),
+                    record.get(RIWAYAT_MUTASI.NIPAM),
+                    record.get(RIWAYAT_MUTASI.NAMA),
+                    (String) record.get("sk_nomor"),
+                    skJenis,
+                    record.get("sk_tgl", LocalDate.class),
+                    record.get("sk_tmt", LocalDate.class),
+                    skGolongan,
+                    record.get("sk_gaji", Double.class),
+                    record.get("sk_mkg_t", Integer.class),
+                    record.get("sk_mkg_b", Integer.class),
+                    record.get("sk_kenaikan", LocalDate.class),
+                    record.get("sk_mkgb_t", Integer.class),
+                    record.get("sk_mkgb_b", Integer.class),
+                    record.get("sk_upd", Boolean.class),
+                    (String) record.get("sk_notes")
+            );
         }
 
-        return query;
+        return new RiwayatMutasiQuery(
+                record.get(RIWAYAT_MUTASI.ID),
+                record.get(RIWAYAT_MUTASI.NIPAM),
+                record.get(RIWAYAT_MUTASI.NAMA),
+                skMutasi,
+                jenisMutasi,
+                record.get(RIWAYAT_MUTASI.TMT_BERLAKU),
+                record.get(RIWAYAT_MUTASI.TANGGAL_BERAKHIR),
+                golongan,
+                organisasi,
+                record.get(RIWAYAT_MUTASI.NAMA_ORGANISASI),
+                jabatan,
+                record.get(RIWAYAT_MUTASI.NAMA_JABATAN),
+                profesi,
+                record.get(RIWAYAT_MUTASI.NAMA_PROFESI),
+                golonganLama,
+                organisasiLama,
+                record.get(RIWAYAT_MUTASI.NAMA_ORGANISASI_LAMA),
+                jabatanLama,
+                record.get(RIWAYAT_MUTASI.NAMA_JABATAN_LAMA),
+                profesiLama,
+                record.get(RIWAYAT_MUTASI.NAMA_PROFESI_LAMA),
+                record.get(RIWAYAT_MUTASI.NOTES)
+        );
     }
 }

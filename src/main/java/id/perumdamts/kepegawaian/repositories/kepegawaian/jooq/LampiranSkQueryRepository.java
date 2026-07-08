@@ -46,20 +46,19 @@ public class LampiranSkQueryRepository {
     }
 
     private LampiranSkQuery toQuery(Record record) {
-        LampiranSkQuery query = new LampiranSkQuery();
-        query.setId(record.get(LAMPIRAN_SK.ID));
         Byte refByte = record.get(LAMPIRAN_SK.REF);
-        if (refByte != null) {
-            query.setRef(EJenisSk.values()[refByte.intValue()]);
-        }
-        query.setRefId(record.get(LAMPIRAN_SK.REF_ID));
-        query.setFileName(record.get(LAMPIRAN_SK.FILE_NAME));
-        query.setMimeType(record.get(LAMPIRAN_SK.MIME_TYPE));
-        query.setNotes(record.get(LAMPIRAN_SK.NOTES));
-        query.setDisetujui(record.get(LAMPIRAN_SK.DISETUJUI));
-        query.setDisetujuiOleh(record.get(LAMPIRAN_SK.DISETUJUI_OLEH));
-        query.setTanggalDisetujui(record.get(LAMPIRAN_SK.TANGGAL_DISETUJUI));
-        return query;
+        EJenisSk ref = refByte != null ? EJenisSk.values()[refByte.intValue()] : null;
+        return new LampiranSkQuery(
+                record.get(LAMPIRAN_SK.ID),
+                ref,
+                record.get(LAMPIRAN_SK.REF_ID),
+                record.get(LAMPIRAN_SK.FILE_NAME),
+                record.get(LAMPIRAN_SK.MIME_TYPE),
+                record.get(LAMPIRAN_SK.NOTES),
+                record.get(LAMPIRAN_SK.DISETUJUI),
+                record.get(LAMPIRAN_SK.DISETUJUI_OLEH),
+                record.get(LAMPIRAN_SK.TANGGAL_DISETUJUI)
+        );
     }
 
     public record HashedFileInfo(Long refId, String hashedFileName, String fileName, String mimeType) {}

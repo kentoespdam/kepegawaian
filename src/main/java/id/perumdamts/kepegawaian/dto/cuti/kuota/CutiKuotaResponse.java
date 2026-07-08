@@ -6,35 +6,33 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiMiniResponse;
 import id.perumdamts.kepegawaian.mapper.pegawai.pegawai.PegawaiReadMapper;
 import id.perumdamts.kepegawaian.entities.cuti.CutiKuota;
-import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
-public class CutiKuotaResponse {
-    private Long id;
-    private PegawaiMiniResponse pegawai;
-    private Integer tahun;
-    private Integer kuota;
-    private Integer kuotaTerpakai;
-    private Integer kuotaTambahan;
-    private Integer sisaKuota;
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate expired;
-
+public record CutiKuotaResponse(
+        Long id,
+        PegawaiMiniResponse pegawai,
+        Integer tahun,
+        Integer kuota,
+        Integer kuotaTerpakai,
+        Integer kuotaTambahan,
+        Integer sisaKuota,
+        @JsonSerialize(using = LocalDateSerializer.class)
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        LocalDate expired
+) {
     public static CutiKuotaResponse from(CutiKuota entity) {
-        CutiKuotaResponse response = new CutiKuotaResponse();
-        response.setId(entity.getId());
-        response.setPegawai(PegawaiReadMapper.toMiniResponse(entity.getPegawai()));
-        response.setTahun(entity.getTahun());
-        response.setKuota(entity.getKuota());
-        response.setKuotaTerpakai(entity.getKuotaTerpakai());
-        response.setKuotaTambahan(entity.getKuotaTambahan());
-        response.setSisaKuota(entity.getSisaKuota());
-        response.setExpired(entity.getExpired());
-        return response;
+        return new CutiKuotaResponse(
+                entity.getId(),
+                PegawaiReadMapper.toMiniResponse(entity.getPegawai()),
+                entity.getTahun(),
+                entity.getKuota(),
+                entity.getKuotaTerpakai(),
+                entity.getKuotaTambahan(),
+                entity.getSisaKuota(),
+                entity.getExpired()
+        );
     }
 
     public static List<CutiKuotaResponse> fromList(List<CutiKuota> cutiKuota) {

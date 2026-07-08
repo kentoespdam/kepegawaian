@@ -8,31 +8,29 @@ import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiMiniResponse;
 import id.perumdamts.kepegawaian.mapper.pegawai.pegawai.PegawaiReadMapper;
 import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
 import id.perumdamts.kepegawaian.entities.cuti.CutiApproval;
-import lombok.Data;
 
 import java.time.LocalDateTime;
 
-@Data
-public class CutiApprovalMiniResponse {
-    private Long id;
-    private PegawaiMiniResponse approver;
-    private JabatanMiniResponse jabatan;
-    private Integer approvalLevel;
-    private EApprovalCutiStatus approvalStatus;
-    private String notes;
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime createdAt;
-
+public record CutiApprovalMiniResponse(
+        Long id,
+        PegawaiMiniResponse approver,
+        JabatanMiniResponse jabatan,
+        Integer approvalLevel,
+        EApprovalCutiStatus approvalStatus,
+        String notes,
+        @JsonSerialize(using = LocalDateTimeSerializer.class)
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        LocalDateTime createdAt
+) {
     public static CutiApprovalMiniResponse from(CutiApproval entity) {
-        CutiApprovalMiniResponse response = new CutiApprovalMiniResponse();
-        response.setId(entity.getId());
-        response.setApprover(PegawaiReadMapper.toMiniResponse(entity.getApprover()));
-        response.setJabatan(JabatanMiniResponse.from(entity.getJabatan()));
-        response.setApprovalLevel(entity.getApprovalLevel());
-        response.setApprovalStatus(entity.getApprovalStatus());
-        response.setNotes(entity.getNotes());
-        response.setCreatedAt(entity.getCreatedAt());
-        return response;
+        return new CutiApprovalMiniResponse(
+                entity.getId(),
+                PegawaiReadMapper.toMiniResponse(entity.getApprover()),
+                JabatanMiniResponse.from(entity.getJabatan()),
+                entity.getApprovalLevel(),
+                entity.getApprovalStatus(),
+                entity.getNotes(),
+                entity.getCreatedAt()
+        );
     }
 }

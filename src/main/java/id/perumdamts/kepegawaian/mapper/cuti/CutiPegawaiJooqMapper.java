@@ -7,6 +7,8 @@ import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiMiniResponse;
 import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
 import id.perumdamts.kepegawaian.entities.commons.EJenisPengajuanCuti;
+
+import java.time.LocalDate;
 import org.jooq.Record;
 
 import static id.perumdamts.kepegawaian.jooq.tables.CutiPegawai.CUTI_PEGAWAI;
@@ -14,80 +16,104 @@ import static id.perumdamts.kepegawaian.jooq.tables.CutiPegawai.CUTI_PEGAWAI;
 public final class CutiPegawaiJooqMapper {
     private CutiPegawaiJooqMapper() {}
 
+    public static CutiPengajuanMiniResponse mapToMiniResponse(Record record) {
+        return populateFromRecord(record);
+    }
+
     public static CutiPengajuanResponse mapToResponse(Record record) {
         if (record == null) return null;
-        CutiPengajuanResponse res = new CutiPengajuanResponse();
-        mapCommonFields(record, res);
-        return res;
+        CutiPengajuanMiniResponse mini = populateFromRecord(record);
+        if (mini == null) return null;
+        return new CutiPengajuanResponse(
+                mini.id(),
+                mini.pegawaiId(),
+                mini.nama(),
+                mini.nipam(),
+                mini.pangkatGolongan(),
+                mini.organisasi(),
+                mini.jabatan(),
+                mini.tanggalPengajuan(),
+                mini.jenisPengajuanCuti(),
+                mini.approvalCutiStatus(),
+                mini.approvalLevel(),
+                mini.jenisCuti(),
+                mini.subJenisCuti(),
+                mini.tanggalMulai(),
+                mini.tanggalSelesai(),
+                mini.alasan(),
+                mini.jumlahHari(),
+                mini.jumlahHariKerja(),
+                mini.picSaatIni(),
+                mini.isClaimed(),
+                null
+        );
     }
 
-    public static CutiPengajuanMiniResponse mapToMiniResponse(Record record) {
+    public static CutiPengajuanMiniResponse populateFromRecord(Record record) {
         if (record == null) return null;
-        CutiPengajuanMiniResponse res = new CutiPengajuanMiniResponse();
-        mapCommonFields(record, res);
-        return res;
-    }
 
-    public static void mapCommonFields(Record record, CutiPengajuanMiniResponse res) {
-        res.setId(record.get(CUTI_PEGAWAI.ID));
-        res.setPegawaiId(record.get(CUTI_PEGAWAI.PEGAWAI_ID));
-        res.setNipam(record.get(CUTI_PEGAWAI.NIPAM));
-        res.setNama(record.get(CUTI_PEGAWAI.NAMA));
-        res.setPangkatGolongan(record.get(CUTI_PEGAWAI.PANGKAT_GOLONGAN));
-        
+        OrganisasiMiniResponse organisasi = null;
         if (record.get("org_id") != null) {
-            res.setOrganisasi(new OrganisasiMiniResponse(
-                    (Long) record.get("org_id"),
-                    (String) record.get("org_kode"),
-                    (String) record.get("org_nama"),
-                    null));
+            organisasi = new OrganisasiMiniResponse(
+                    (Long) record.get("org_id"), (String) record.get("org_kode"),
+                    (String) record.get("org_nama"), null);
         }
+
+        JabatanMiniResponse jabatan = null;
         if (record.get("jab_id") != null) {
-            res.setJabatan(new JabatanMiniResponse(
-                    (Long) record.get("jab_id"),
-                    (String) record.get("jab_kode"),
-                    null,
-                    (String) record.get("jab_nama")));
+            jabatan = new JabatanMiniResponse(
+                    (Long) record.get("jab_id"), (String) record.get("jab_kode"),
+                    null, (String) record.get("jab_nama"));
         }
-        
+
+        LocalDate tanggalPengajuan = null;
         var createdAt = record.get(CUTI_PEGAWAI.CREATED_AT);
         if (createdAt != null) {
-            res.setTanggalPengajuan(createdAt.toLocalDate());
+            tanggalPengajuan = createdAt.toLocalDate();
         }
-        
-        res.setJenisPengajuanCuti(toJenisPengajuanCuti(record.get(CUTI_PEGAWAI.JENIS_PENGAJUAN_CUTI)));
-        res.setApprovalCutiStatus(toApprovalCutiStatus(record.get(CUTI_PEGAWAI.APPROVAL_CUTI_STATUS)));
-        res.setApprovalLevel(record.get(CUTI_PEGAWAI.APPROVAL_LEVEL));
-        
+
+        CutiJenisMiniResponse jenisCuti = null;
         if (record.get("jc_id") != null) {
-            CutiJenisMiniResponse jc = new CutiJenisMiniResponse();
-            jc.setId((Long) record.get("jc_id"));
-            jc.setNama((String) record.get("jc_nama"));
-            res.setJenisCuti(jc);
+            jenisCuti = new CutiJenisMiniResponse((Long) record.get("jc_id"), (String) record.get("jc_nama"));
         }
+
+        CutiJenisMiniResponse subJenisCuti = null;
         if (record.get("sjc_id") != null) {
-            CutiJenisMiniResponse sjc = new CutiJenisMiniResponse();
-            sjc.setId((Long) record.get("sjc_id"));
-            sjc.setNama((String) record.get("sjc_nama"));
-            res.setSubJenisCuti(sjc);
+            subJenisCuti = new CutiJenisMiniResponse((Long) record.get("sjc_id"), (String) record.get("sjc_nama"));
         }
-        
-        res.setTanggalMulai(record.get(CUTI_PEGAWAI.TANGGAL_MULAI));
-        res.setTanggalSelesai(record.get(CUTI_PEGAWAI.TANGGAL_SELESAI));
-        res.setAlasan(record.get(CUTI_PEGAWAI.ALASAN));
-        res.setJumlahHari(record.get(CUTI_PEGAWAI.JUMLAH_HARI));
-        res.setJumlahHariKerja(record.get(CUTI_PEGAWAI.JUMLAH_HARI_KERJA));
-        
+
+        JabatanMiniResponse picSaatIni = null;
         if (record.get("pic_id") != null) {
-            res.setPicSaatIni(new JabatanMiniResponse(
-                    (Long) record.get("pic_id"),
-                    (String) record.get("pic_kode"),
-                    null,
-                    (String) record.get("pic_nama")));
+            picSaatIni = new JabatanMiniResponse(
+                    (Long) record.get("pic_id"), (String) record.get("pic_kode"),
+                    null, (String) record.get("pic_nama"));
         }
-        
+
         Byte claimedByte = record.get(CUTI_PEGAWAI.IS_CLAIMED);
-        res.setIsClaimed(claimedByte != null && claimedByte != 0);
+        Boolean isClaimed = claimedByte != null && claimedByte != 0;
+
+        return new CutiPengajuanMiniResponse(
+                record.get(CUTI_PEGAWAI.ID),
+                record.get(CUTI_PEGAWAI.PEGAWAI_ID),
+                record.get(CUTI_PEGAWAI.NAMA),
+                record.get(CUTI_PEGAWAI.NIPAM),
+                record.get(CUTI_PEGAWAI.PANGKAT_GOLONGAN),
+                organisasi,
+                jabatan,
+                tanggalPengajuan,
+                toJenisPengajuanCuti(record.get(CUTI_PEGAWAI.JENIS_PENGAJUAN_CUTI)),
+                toApprovalCutiStatus(record.get(CUTI_PEGAWAI.APPROVAL_CUTI_STATUS)),
+                record.get(CUTI_PEGAWAI.APPROVAL_LEVEL),
+                jenisCuti,
+                subJenisCuti,
+                record.get(CUTI_PEGAWAI.TANGGAL_MULAI),
+                record.get(CUTI_PEGAWAI.TANGGAL_SELESAI),
+                record.get(CUTI_PEGAWAI.ALASAN),
+                record.get(CUTI_PEGAWAI.JUMLAH_HARI),
+                record.get(CUTI_PEGAWAI.JUMLAH_HARI_KERJA),
+                picSaatIni,
+                isClaimed
+        );
     }
 
     public static EJenisPengajuanCuti toJenisPengajuanCuti(Byte val) {

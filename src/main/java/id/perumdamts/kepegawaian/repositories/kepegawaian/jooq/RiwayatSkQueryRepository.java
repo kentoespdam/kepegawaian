@@ -219,34 +219,33 @@ public class RiwayatSkQueryRepository {
     }
 
     private RiwayatSkQuery toQuery(Record record) {
-        RiwayatSkQuery query = new RiwayatSkQuery();
-        query.setId(record.get(RIWAYAT_SK.ID));
-        query.setNipam(record.get(RIWAYAT_SK.NIPAM));
-        query.setNama(record.get(RIWAYAT_SK.NAMA));
-        query.setNomorSk(record.get(RIWAYAT_SK.NOMOR_SK));
         Byte jenisSkByte = record.get(RIWAYAT_SK.JENIS_SK);
-        if (jenisSkByte != null) {
-            query.setJenisSk(EJenisSk.values()[jenisSkByte.intValue()]);
-        }
-        query.setTanggalSk(record.get(RIWAYAT_SK.TANGGAL_SK));
-        query.setTmtBerlaku(record.get(RIWAYAT_SK.TMT_BERLAKU));
-        query.setGajiPokok(record.get(RIWAYAT_SK.GAJI_POKOK));
-        query.setMkgTahun(record.get(RIWAYAT_SK.MKG_TAHUN));
-        query.setMkgBulan(record.get(RIWAYAT_SK.MKG_BULAN));
-        query.setKenaikanBerikutnya(record.get(RIWAYAT_SK.KENAIKAN_BERIKUTNYA));
-        query.setMkgbTahun(record.get(RIWAYAT_SK.MKGB_TAHUN));
-        query.setMkgbBulan(record.get(RIWAYAT_SK.MKGB_BULAN));
-        query.setUpdateMaster(record.get(RIWAYAT_SK.UPDATE_MASTER));
-        query.setNotes(record.get(RIWAYAT_SK.NOTES));
+        EJenisSk jenisSk = jenisSkByte != null ? EJenisSk.values()[jenisSkByte.intValue()] : null;
 
-        if (record.get("gol_id") != null) {
-            query.setGolongan(new GolonganResponse(
-                    (Long) record.get("gol_id"),
-                    (String) record.get("gol_golongan"),
-                    (String) record.get("gol_pangkat")
-            ));
-        }
+        GolonganResponse golongan = record.get("gol_id") != null
+                ? new GolonganResponse(
+                (Long) record.get("gol_id"),
+                (String) record.get("gol_golongan"),
+                (String) record.get("gol_pangkat")
+        ) : null;
 
-        return query;
+        return new RiwayatSkQuery(
+                record.get(RIWAYAT_SK.ID),
+                record.get(RIWAYAT_SK.NIPAM),
+                record.get(RIWAYAT_SK.NAMA),
+                record.get(RIWAYAT_SK.NOMOR_SK),
+                jenisSk,
+                record.get(RIWAYAT_SK.TANGGAL_SK),
+                record.get(RIWAYAT_SK.TMT_BERLAKU),
+                golongan,
+                record.get(RIWAYAT_SK.GAJI_POKOK),
+                record.get(RIWAYAT_SK.MKG_TAHUN),
+                record.get(RIWAYAT_SK.MKG_BULAN),
+                record.get(RIWAYAT_SK.KENAIKAN_BERIKUTNYA),
+                record.get(RIWAYAT_SK.MKGB_TAHUN),
+                record.get(RIWAYAT_SK.MKGB_BULAN),
+                record.get(RIWAYAT_SK.UPDATE_MASTER),
+                record.get(RIWAYAT_SK.NOTES)
+        );
     }
 }

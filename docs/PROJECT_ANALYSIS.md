@@ -6,20 +6,20 @@ Sistem manajemen kepegawaian (HRM) untuk PERUMDAMTS berbasis Spring Boot 3.5.6 (
 
 ## Tech Stack
 
-| Komponen | Teknologi |
-|----------|-----------|
-| Framework | Spring Boot 3.5.6 |
-| Bahasa | Java 21 |
-| Build Tool | Gradle |
-| Database | MariaDB |
-| ORM | JPA/Hibernate 6.6.29 + Spring Data Envers |
-| Autentikasi | JWT via Appwrite |
-| Cache | Redis |
-| Message Queue | Kafka (topic: penggajian) |
-| API Docs | Springdoc OpenAPI 3 |
-| Excel | Apache POI |
-| HTTP Client | Spring WebFlux (WebClient) |
-| Code Gen | Lombok |
+| Komponen      | Teknologi                                 |
+|---------------|-------------------------------------------|
+| Framework     | Spring Boot 3.5.6                         |
+| Bahasa        | Java 25                                   |
+| Build Tool    | Gradle                                    |
+| Database      | MariaDB                                   |
+| ORM           | JPA/Hibernate 6.6.29 + Spring Data Envers |
+| Autentikasi   | JWT via Appwrite                          |
+| Cache         | Redis                                     |
+| Message Queue | Kafka (topic: penggajian)                 |
+| API Docs      | Springdoc OpenAPI 3                       |
+| Excel         | Apache POI                                |
+| HTTP Client   | Spring WebFlux (WebClient)                |
+| Code Gen      | Lombok                                    |
 
 ## Struktur Direktori
 
@@ -78,47 +78,47 @@ Entity utama `Pegawai` dengan identifier unik **NIPAM**.
 
 ### 2. Profil (Data Pribadi)
 
-| Entity | Keterangan |
-|--------|-----------|
-| Biodata | Data pribadi (PK: NIK). Nama, gender, tanggal lahir, alamat, agama, golongan darah, status pernikahan |
-| KartuIdentitas | Kartu identitas (KTP, Paspor, dll) |
-| Pendidikan | Riwayat pendidikan |
-| Pelatihan | Riwayat pelatihan |
-| Keahlian | Keahlian/kompetensi |
-| ProfilKeluarga | Data anggota keluarga |
-| PengalamanKerja | Riwayat pengalaman kerja |
-| LampiranProfil | Dokumen lampiran profil |
+| Entity          | Keterangan                                                                                            |
+|-----------------|-------------------------------------------------------------------------------------------------------|
+| Biodata         | Data pribadi (PK: NIK). Nama, gender, tanggal lahir, alamat, agama, golongan darah, status pernikahan |
+| KartuIdentitas  | Kartu identitas (KTP, Paspor, dll)                                                                    |
+| Pendidikan      | Riwayat pendidikan                                                                                    |
+| Pelatihan       | Riwayat pelatihan                                                                                     |
+| Keahlian        | Keahlian/kompetensi                                                                                   |
+| ProfilKeluarga  | Data anggota keluarga                                                                                 |
+| PengalamanKerja | Riwayat pengalaman kerja                                                                              |
+| LampiranProfil  | Dokumen lampiran profil                                                                               |
 
 ### 3. Master Data (Referensi)
 
-| Entity | Keterangan |
-|--------|-----------|
-| Organisasi | Struktur organisasi (hierarki parent-child) |
-| Jabatan | Jabatan/posisi (hierarki parent-child) |
-| Golongan | Golongan/klasifikasi gaji |
-| Grade | Grade detail dengan tukin/tunjangan |
-| Level | Level jabatan: Direktur, Manager, Supervisor, Staff |
-| Profesi | Profesi/spesialisasi |
-| JenjangPendidikan | Jenjang pendidikan |
-| JenisKeahlian | Jenis keahlian |
-| JenisPelatihan | Jenis pelatihan |
-| JenisSp | Jenis surat peringatan |
-| Sanksi | Sanksi disipliner |
-| AlatKerja | Alat kerja |
-| Apd | Alat pelindung diri |
-| AlasanBerhenti | Alasan berhenti/terminasi |
-| RumahDinas | Rumah dinas |
-| HariLibur | Hari libur |
+| Entity            | Keterangan                                          |
+|-------------------|-----------------------------------------------------|
+| Organisasi        | Struktur organisasi (hierarki parent-child)         |
+| Jabatan           | Jabatan/posisi (hierarki parent-child)              |
+| Golongan          | Golongan/klasifikasi gaji                           |
+| Grade             | Grade detail dengan tukin/tunjangan                 |
+| Level             | Level jabatan: Direktur, Manager, Supervisor, Staff |
+| Profesi           | Profesi/spesialisasi                                |
+| JenjangPendidikan | Jenjang pendidikan                                  |
+| JenisKeahlian     | Jenis keahlian                                      |
+| JenisPelatihan    | Jenis pelatihan                                     |
+| JenisSp           | Jenis surat peringatan                              |
+| Sanksi            | Sanksi disipliner                                   |
+| AlatKerja         | Alat kerja                                          |
+| Apd               | Alat pelindung diri                                 |
+| AlasanBerhenti    | Alasan berhenti/terminasi                           |
+| RumahDinas        | Rumah dinas                                         |
+| HariLibur         | Hari libur                                          |
 
 ### 4. Cuti (Manajemen Cuti)
 
-| Entity | Keterangan |
-|--------|-----------|
-| CutiPegawai | Pengajuan cuti |
-| CutiJenis | Jenis cuti (Tahunan, Besar, Ibadah) |
-| CutiApprovalChain | Rantai approval multi-level |
-| CutiApproval | Record approval per level |
-| CutiKuota | Kuota cuti per pegawai |
+| Entity            | Keterangan                          |
+|-------------------|-------------------------------------|
+| CutiPegawai       | Pengajuan cuti                      |
+| CutiJenis         | Jenis cuti (Tahunan, Besar, Ibadah) |
+| CutiApprovalChain | Rantai approval multi-level         |
+| CutiApproval      | Record approval per level           |
+| CutiKuota         | Kuota cuti per pegawai              |
 
 **Alur Approval:**
 ```
@@ -129,33 +129,33 @@ Status: `PENDING` → `APPROVED` / `REJECTED`
 
 ### 5. Kepegawaian (Administrasi Pegawai)
 
-| Entity | Keterangan |
-|--------|-----------|
-| RiwayatSk | Riwayat Surat Keputusan |
-| RiwayatSp | Riwayat Surat Peringatan |
-| RiwayatMutasi | Riwayat mutasi/transfer |
-| RiwayatKontrak | Riwayat kontrak kerja |
+| Entity           | Keterangan                 |
+|------------------|----------------------------|
+| RiwayatSk        | Riwayat Surat Keputusan    |
+| RiwayatSp        | Riwayat Surat Peringatan   |
+| RiwayatMutasi    | Riwayat mutasi/transfer    |
+| RiwayatKontrak   | Riwayat kontrak kerja      |
 | RiwayatTerminasi | Riwayat terminasi/berhenti |
-| LampiranSk | Lampiran dokumen SK |
+| LampiranSk       | Lampiran dokumen SK        |
 
 ### 6. Penggajian (Payroll)
 
 15 entity terkait penggajian:
 
-| Entity | Keterangan |
-|--------|-----------|
-| GajiProfil | Profil gaji pegawai |
-| DasarGaji | Gaji dasar |
-| DetailDasarGaji | Detail breakdown gaji |
-| GajiKomponen | Komponen gaji |
-| GajiTunjangan | Tunjangan |
-| GajiPendapatanNonPajak | Pendapatan non-pajak |
-| GajiPotonganTkk | Potongan TKK |
-| GajiPhdp | Perhitungan PHDP (pajak) |
-| GajiParameterSetting | Parameter konfigurasi gaji |
-| GajiBatchRoot | Master batch penggajian |
-| GajiBatchMaster | Detail batch |
-| GajiBatchMasterProses | Status proses batch |
+| Entity                 | Keterangan                 |
+|------------------------|----------------------------|
+| GajiProfil             | Profil gaji pegawai        |
+| DasarGaji              | Gaji dasar                 |
+| DetailDasarGaji        | Detail breakdown gaji      |
+| GajiKomponen           | Komponen gaji              |
+| GajiTunjangan          | Tunjangan                  |
+| GajiPendapatanNonPajak | Pendapatan non-pajak       |
+| GajiPotonganTkk        | Potongan TKK               |
+| GajiPhdp               | Perhitungan PHDP (pajak)   |
+| GajiParameterSetting   | Parameter konfigurasi gaji |
+| GajiBatchRoot          | Master batch penggajian    |
+| GajiBatchMaster        | Detail batch               |
+| GajiBatchMasterProses  | Status proses batch        |
 
 Penggajian menggunakan batch processing bulanan dan terintegrasi dengan external service via Kafka.
 
@@ -163,17 +163,17 @@ Penggajian menggunakan batch processing bulanan dan terintegrasi dengan external
 
 ### Endpoint Groups
 
-| Prefix | Keterangan |
-|--------|-----------|
-| `/auth/**` | Autentikasi |
-| `/profil/**` | Manajemen profil pegawai |
-| `/pegawai/**` | Data pegawai |
-| `/master/**` | Master data |
-| `/kepegawaian/**` | Administrasi kepegawaian |
-| `/penggajian/**` | Penggajian |
-| `/cuti/**` | Manajemen cuti |
-| `/laporan/kepegawaian/**` | Laporan |
-| `/system/**` | Konfigurasi sistem |
+| Prefix                    | Keterangan               |
+|---------------------------|--------------------------|
+| `/auth/**`                | Autentikasi              |
+| `/profil/**`              | Manajemen profil pegawai |
+| `/pegawai/**`             | Data pegawai             |
+| `/master/**`              | Master data              |
+| `/kepegawaian/**`         | Administrasi kepegawaian |
+| `/penggajian/**`          | Penggajian               |
+| `/cuti/**`                | Manajemen cuti           |
+| `/laporan/kepegawaian/**` | Laporan                  |
+| `/system/**`              | Konfigurasi sistem       |
 
 ### Pola Controller
 
@@ -302,10 +302,10 @@ File konfigurasi tersedia di `docker/` directory untuk kedua profile.
 
 ## Integrasi External
 
-| Service | Protokol | Fungsi |
-|---------|----------|--------|
-| Appwrite | REST (WebClient) | Autentikasi JWT & user management |
-| Kafka | Message Queue | Event publishing penggajian |
-| Redis | Cache | Token caching & utility |
-| Penggajian Service | REST (WebClient) | Kalkulasi gaji external |
-| Laporan Service | REST (WebClient) | Reporting external |
+| Service            | Protokol         | Fungsi                            |
+|--------------------|------------------|-----------------------------------|
+| Appwrite           | REST (WebClient) | Autentikasi JWT & user management |
+| Kafka              | Message Queue    | Event publishing penggajian       |
+| Redis              | Cache            | Token caching & utility           |
+| Penggajian Service | REST (WebClient) | Kalkulasi gaji external           |
+| Laporan Service    | REST (WebClient) | Reporting external                |

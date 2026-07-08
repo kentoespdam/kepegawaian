@@ -151,96 +151,102 @@ public class RiwayatTerminasiQueryRepository {
     }
 
     private RiwayatTerminasiQuery toQuery(Record record) {
-        RiwayatTerminasiQuery query = new RiwayatTerminasiQuery();
-        query.setId(record.get(RIWAYAT_TERMINASI.ID));
-        query.setNipam(record.get(RIWAYAT_TERMINASI.NIPAM));
-        query.setNama(record.get(RIWAYAT_TERMINASI.NAMA));
-        query.setNomorSk(record.get(RIWAYAT_TERMINASI.NOMOR_SK));
-        query.setNamaOrganisasi(record.get(RIWAYAT_TERMINASI.NAMA_ORGANISASI));
-        query.setNamaGolongan(record.get(RIWAYAT_TERMINASI.NAMA_GOLONGAN));
-        query.setNamaJabatan(record.get(RIWAYAT_TERMINASI.NAMA_JABATAN));
-        query.setTanggalTerminasi(record.get(RIWAYAT_TERMINASI.TANGGAL_TERMINASI));
-        query.setTahunTerminasi(record.get(RIWAYAT_TERMINASI.TAHUN_TERMINASI));
-        query.setMasaKerja(record.get(RIWAYAT_TERMINASI.MASA_KERJA));
-        query.setNotes(record.get(RIWAYAT_TERMINASI.NOTES));
+        AlasanBerhentiResponse alasanTerminasi = record.get("ab_id") != null
+                ? new AlasanBerhentiResponse(
+                (Long) record.get("ab_id"),
+                (String) record.get("ab_nama"),
+                (String) record.get("ab_notes"))
+                : null;
 
-        if (record.get("ab_id") != null) {
-            AlasanBerhentiResponse ab = new AlasanBerhentiResponse();
-            ab.setId((Long) record.get("ab_id"));
-            ab.setNama((String) record.get("ab_nama"));
-            ab.setNotes((String) record.get("ab_notes"));
-            query.setAlasanTerminasi(ab);
-        }
+        OrganisasiMiniResponse organisasi = record.get("org_id") != null
+                ? new OrganisasiMiniResponse(
+                (Long) record.get("org_id"),
+                null,
+                (String) record.get("org_nama"),
+                null)
+                : null;
 
-        if (record.get("org_id") != null) {
-            query.setOrganisasi(new OrganisasiMiniResponse(
-                    (Long) record.get("org_id"),
-                    null,
-                    (String) record.get("org_nama"),
-                    null));
-        }
+        JabatanMiniResponse jabatan = record.get("jab_id") != null
+                ? new JabatanMiniResponse(
+                (Long) record.get("jab_id"),
+                null,
+                null,
+                (String) record.get("jab_nama"))
+                : null;
 
-        if (record.get("jab_id") != null) {
-            query.setJabatan(new JabatanMiniResponse(
-                    (Long) record.get("jab_id"),
-                    null,
-                    null,
-                    (String) record.get("jab_nama")));
-        }
+        GolonganResponse golongan = record.get("gol_id") != null
+                ? new GolonganResponse(
+                (Long) record.get("gol_id"),
+                (String) record.get("gol_golongan"),
+                (String) record.get("gol_pangkat"))
+                : null;
 
-        if (record.get("gol_id") != null) {
-            query.setGolongan(new GolonganResponse(
-                    (Long) record.get("gol_id"),
-                    (String) record.get("gol_golongan"),
-                    (String) record.get("gol_pangkat")
-            ));
-        }
-
+        RiwayatSkQuery skTerminasi = null;
         if (record.get("sk_id") != null) {
-            RiwayatSkQuery sk = new RiwayatSkQuery();
-            sk.setId((Long) record.get("sk_id"));
-            sk.setNipam(query.getNipam());
-            sk.setNama(query.getNama());
-            sk.setNomorSk((String) record.get("sk_nomor"));
             Byte skJenisByte = record.get("sk_jenis", Byte.class);
-            if (skJenisByte != null) {
-                sk.setJenisSk(EJenisSk.values()[skJenisByte.intValue()]);
-            }
-            sk.setTanggalSk(record.get("sk_tgl", LocalDate.class));
-            sk.setTmtBerlaku(record.get("sk_tmt", LocalDate.class));
-            sk.setGajiPokok(record.get("sk_gaji", Double.class));
-            sk.setMkgTahun(record.get("sk_mkg_t", Integer.class));
-            sk.setMkgBulan(record.get("sk_mkg_b", Integer.class));
-            sk.setKenaikanBerikutnya(record.get("sk_kenaikan", LocalDate.class));
-            sk.setMkgbTahun(record.get("sk_mkgb_t", Integer.class));
-            sk.setMkgbBulan(record.get("sk_mkgb_b", Integer.class));
-            sk.setUpdateMaster(record.get("sk_upd", Boolean.class));
-            sk.setNotes((String) record.get("sk_notes"));
+            EJenisSk skJenis = skJenisByte != null ? EJenisSk.values()[skJenisByte.intValue()] : null;
 
-            if (record.get("sk_gol_id") != null) {
-                sk.setGolongan(new GolonganResponse(
-                        (Long) record.get("sk_gol_id"),
-                        (String) record.get("sk_gol_golongan"),
-                        (String) record.get("sk_gol_pangkat")
-                ));
-            }
-            query.setSkTerminasi(sk);
+            GolonganResponse skGolongan = record.get("sk_gol_id") != null
+                    ? new GolonganResponse(
+                    (Long) record.get("sk_gol_id"),
+                    (String) record.get("sk_gol_golongan"),
+                    (String) record.get("sk_gol_pangkat"))
+                    : null;
+
+            skTerminasi = new RiwayatSkQuery(
+                    (Long) record.get("sk_id"),
+                    record.get(RIWAYAT_TERMINASI.NIPAM),
+                    record.get(RIWAYAT_TERMINASI.NAMA),
+                    (String) record.get("sk_nomor"),
+                    skJenis,
+                    record.get("sk_tgl", LocalDate.class),
+                    record.get("sk_tmt", LocalDate.class),
+                    skGolongan,
+                    record.get("sk_gaji", Double.class),
+                    record.get("sk_mkg_t", Integer.class),
+                    record.get("sk_mkg_b", Integer.class),
+                    record.get("sk_kenaikan", LocalDate.class),
+                    record.get("sk_mkgb_t", Integer.class),
+                    record.get("sk_mkgb_b", Integer.class),
+                    record.get("sk_upd", Boolean.class),
+                    (String) record.get("sk_notes")
+            );
         }
 
+        LampiranSkQuery lampiranSkTerminasi = null;
         if (record.get("lam_id") != null) {
-            LampiranSkQuery lam = new LampiranSkQuery();
-            lam.setId((Long) record.get("lam_id"));
-            lam.setRef(EJenisSk.SK_PENSIUN);
-            lam.setRefId((Long) record.get("sk_id"));
-            lam.setFileName((String) record.get("lam_file_name"));
-            lam.setMimeType((String) record.get("lam_mime_type"));
-            lam.setNotes((String) record.get("lam_notes"));
-            lam.setDisetujui((Boolean) record.get("lam_disetujui"));
-            lam.setDisetujuiOleh((String) record.get("lam_disetujui_oleh"));
-            lam.setTanggalDisetujui(record.get("lam_tgl_disetujui", java.time.LocalDateTime.class));
-            query.setLampiranSkTerminasi(lam);
+            lampiranSkTerminasi = new LampiranSkQuery(
+                    (Long) record.get("lam_id"),
+                    EJenisSk.SK_PENSIUN,
+                    (Long) record.get("sk_id"),
+                    (String) record.get("lam_file_name"),
+                    (String) record.get("lam_mime_type"),
+                    (String) record.get("lam_notes"),
+                    (Boolean) record.get("lam_disetujui"),
+                    (String) record.get("lam_disetujui_oleh"),
+                    record.get("lam_tgl_disetujui", java.time.LocalDateTime.class)
+            );
         }
 
-        return query;
+        return new RiwayatTerminasiQuery(
+                record.get(RIWAYAT_TERMINASI.ID),
+                alasanTerminasi,
+                null, // pegawai - not fetched in query
+                record.get(RIWAYAT_TERMINASI.NIPAM),
+                record.get(RIWAYAT_TERMINASI.NAMA),
+                record.get(RIWAYAT_TERMINASI.NOMOR_SK),
+                skTerminasi,
+                lampiranSkTerminasi,
+                organisasi,
+                record.get(RIWAYAT_TERMINASI.NAMA_ORGANISASI),
+                jabatan,
+                record.get(RIWAYAT_TERMINASI.NAMA_JABATAN),
+                golongan,
+                record.get(RIWAYAT_TERMINASI.NAMA_GOLONGAN),
+                record.get(RIWAYAT_TERMINASI.TANGGAL_TERMINASI),
+                record.get(RIWAYAT_TERMINASI.TAHUN_TERMINASI),
+                record.get(RIWAYAT_TERMINASI.MASA_KERJA),
+                record.get(RIWAYAT_TERMINASI.NOTES)
+        );
     }
 }

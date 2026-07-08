@@ -7,70 +7,67 @@ import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRootErrorLog.GajiBatchR
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRootLampiran.GajiBatchRootLampiranMiniResponse;
 import id.perumdamts.kepegawaian.entities.commons.EProsesGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchRoot;
-import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
-@Data
-public class GajiBatchRootResponse {
-    private String id;
-    private String periode;
-    private EProsesGaji status;
-    private Integer totalPegawai;
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime tanggalProses;
-    private String diProsesOleh;
-    private String jabatanPemroses;
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime tanggalVerifikasiTahap1;
-    private String diVerifikasiOlehTahap1;
-    private String jabatanVerifikasiTahap1;
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime tanggalVerifikasiTahap2;
-    private String diVerifikasiOlehTahap2;
-    private String jabatanVerifikasiTahap2;
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime tanggalPersetujuan;
-    private String diSetujuiOleh;
-    private String jabatanPenyetuju;
-    private String notes;
-    private List<GajiBatchRootErrorLogsResponse> errorLogs;
-    private List<GajiBatchRootLampiranMiniResponse> lampiran;
-
+public record GajiBatchRootResponse(
+        String id,
+        String periode,
+        EProsesGaji status,
+        Integer totalPegawai,
+        @JsonSerialize(using = LocalDateTimeSerializer.class)
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        LocalDateTime tanggalProses,
+        String diProsesOleh,
+        String jabatanPemroses,
+        @JsonSerialize(using = LocalDateTimeSerializer.class)
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        LocalDateTime tanggalVerifikasiTahap1,
+        String diVerifikasiOlehTahap1,
+        String jabatanVerifikasiTahap1,
+        @JsonSerialize(using = LocalDateTimeSerializer.class)
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        LocalDateTime tanggalVerifikasiTahap2,
+        String diVerifikasiOlehTahap2,
+        String jabatanVerifikasiTahap2,
+        @JsonSerialize(using = LocalDateTimeSerializer.class)
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        LocalDateTime tanggalPersetujuan,
+        String diSetujuiOleh,
+        String jabatanPenyetuju,
+        String notes,
+        List<GajiBatchRootErrorLogsResponse> errorLogs,
+        List<GajiBatchRootLampiranMiniResponse> lampiran
+) {
     public static GajiBatchRootResponse from(GajiBatchRoot entity) {
-        GajiBatchRootResponse response = new GajiBatchRootResponse();
-        response.setId(entity.getId());
-        response.setPeriode(entity.getPeriode());
-        response.setStatus(entity.getStatus());
-        response.setTotalPegawai(entity.getTotalPegawai());
-        response.setTanggalProses(entity.getTanggalProses());
-        response.setDiProsesOleh(entity.getDiProsesOleh());
-        response.setJabatanPemroses(entity.getJabatanPemroses());
-        response.setTanggalVerifikasiTahap1(entity.getTanggalVerifikasiTahap1());
-        response.setDiVerifikasiOlehTahap1(entity.getDiVerifikasiOlehTahap1());
-        response.setJabatanVerifikasiTahap1(entity.getJabatanVerifikasiTahap1());
-        response.setTanggalVerifikasiTahap2(entity.getTanggalVerifikasiTahap2());
-        response.setDiVerifikasiOlehTahap2(entity.getDiVerifikasiOlehTahap2());
-        response.setJabatanVerifikasiTahap2(entity.getJabatanVerifikasiTahap2());
-        response.setTanggalPersetujuan(entity.getTanggalPersetujuan());
-        response.setDiSetujuiOleh(entity.getDiSetujuiOleh());
-        response.setJabatanPenyetuju(entity.getJabatanPenyetuju());
-        response.setNotes(entity.getNotes());
-        response.setErrorLogs(entity.getErrorLogs().stream().map(GajiBatchRootErrorLogsResponse::from).toList());
-        response.setLampiran(entity.getLampiranList().stream().map(GajiBatchRootLampiranMiniResponse::from).toList());
-        return response;
+        List<GajiBatchRootErrorLogsResponse> errorLogs = entity.getErrorLogs() != null
+                ? entity.getErrorLogs().stream().map(GajiBatchRootErrorLogsResponse::from).toList()
+                : null;
+        List<GajiBatchRootLampiranMiniResponse> lampiran = entity.getLampiranList() != null
+                ? entity.getLampiranList().stream().map(GajiBatchRootLampiranMiniResponse::from).toList()
+                : null;
+        return new GajiBatchRootResponse(
+                entity.getId(),
+                entity.getPeriode(),
+                entity.getStatus(),
+                entity.getTotalPegawai(),
+                entity.getTanggalProses(),
+                entity.getDiProsesOleh(),
+                entity.getJabatanPemroses(),
+                entity.getTanggalVerifikasiTahap1(),
+                entity.getDiVerifikasiOlehTahap1(),
+                entity.getJabatanVerifikasiTahap1(),
+                entity.getTanggalVerifikasiTahap2(),
+                entity.getDiVerifikasiOlehTahap2(),
+                entity.getJabatanVerifikasiTahap2(),
+                entity.getTanggalPersetujuan(),
+                entity.getDiSetujuiOleh(),
+                entity.getJabatanPenyetuju(),
+                entity.getNotes(),
+                errorLogs,
+                lampiran
+        );
     }
-
-//    public static GajiBatchRootResponse from(GajiBatchRoot entity, List<GajiBatchRootErrorLogs> errorLogs) {
-//        GajiBatchRootResponse response = from(entity);
-//        if (errorLogs != null)
-//            response.setErrorLogs(errorLogs.stream().map(GajiBatchRootErrorLogsResponse::from).toList());
-//        response.setNotes(entity.getNotes());
-//        return response;
-//    }
 }

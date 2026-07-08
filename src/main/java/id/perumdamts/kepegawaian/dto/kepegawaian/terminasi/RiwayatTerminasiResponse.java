@@ -12,62 +12,79 @@ import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiMiniResponse;
 import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiResponse;
 import id.perumdamts.kepegawaian.mapper.pegawai.pegawai.PegawaiReadMapper;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatTerminasi;
-import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
-public class RiwayatTerminasiResponse {
-    private Long id;
-    private AlasanBerhentiResponse alasanTerminasi;
-    private PegawaiResponse pegawai;
-    private String nipam;
-    private String nama;
-    private String nomorSk;
-    private RiwayatSkResponse skTerminasi;
-    private LampiranSkResponse lampiranSkTerminasi;
-    private OrganisasiMiniResponse organisasi;
-    private String namaOrganisasi;
-    private JabatanMiniResponse jabatan;
-    private String namaJabatan;
-    private GolonganResponse golongan;
-    private String namaGolongan;
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate tanggalTerminasi;
-    private Integer tahunTerminasi;
-    private Integer masaKerja;
-    private String notes;
-
+public record RiwayatTerminasiResponse(
+        Long id,
+        AlasanBerhentiResponse alasanTerminasi,
+        PegawaiResponse pegawai,
+        String nipam,
+        String nama,
+        String nomorSk,
+        RiwayatSkResponse skTerminasi,
+        LampiranSkResponse lampiranSkTerminasi,
+        OrganisasiMiniResponse organisasi,
+        String namaOrganisasi,
+        JabatanMiniResponse jabatan,
+        String namaJabatan,
+        GolonganResponse golongan,
+        String namaGolongan,
+        @JsonSerialize(using = LocalDateSerializer.class)
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        LocalDate tanggalTerminasi,
+        Integer tahunTerminasi,
+        Integer masaKerja,
+        String notes
+) {
     public static RiwayatTerminasiResponse from(RiwayatTerminasi entity) {
-        RiwayatTerminasiResponse response = new RiwayatTerminasiResponse();
-        response.setId(entity.getId());
-        response.setAlasanTerminasi(AlasanBerhentiResponse.from(entity.getAlasanTerminasi()));
-        response.setPegawai(PegawaiReadMapper.toResponse(entity.getPegawai()));
-        response.setNipam(entity.getNipam());
-        response.setNama(entity.getNama());
-        response.setNomorSk(entity.getNomorSk());
-        response.setSkTerminasi(RiwayatSkResponse.from(entity.getSkTerminasi()));
-        response.setOrganisasi(OrganisasiMiniResponse.from(entity.getOrganisasi()));
-        response.setNamaOrganisasi(entity.getNamaOrganisasi());
-        response.setJabatan(JabatanMiniResponse.from(entity.getJabatan()));
-        response.setNamaJabatan(entity.getNamaJabatan());
-        if (entity.getGolongan() != null) {
-            response.setGolongan(GolonganResponse.from(entity.getGolongan()));
-            response.setNamaGolongan(entity.getNamaGolongan());
-        }
-        response.setTanggalTerminasi(entity.getTanggalTerminasi());
-        response.setTahunTerminasi(entity.getTahunTerminasi());
-        response.setMasaKerja(entity.getMasaKerja());
-        response.setNotes(entity.getNotes());
-        return response;
+        return new RiwayatTerminasiResponse(
+                entity.getId(),
+                AlasanBerhentiResponse.from(entity.getAlasanTerminasi()),
+                PegawaiReadMapper.toResponse(entity.getPegawai()),
+                entity.getNipam(),
+                entity.getNama(),
+                entity.getNomorSk(),
+                RiwayatSkResponse.from(entity.getSkTerminasi()),
+                null,
+                OrganisasiMiniResponse.from(entity.getOrganisasi()),
+                entity.getNamaOrganisasi(),
+                JabatanMiniResponse.from(entity.getJabatan()),
+                entity.getNamaJabatan(),
+                entity.getGolongan() != null ? GolonganResponse.from(entity.getGolongan()) : null,
+                entity.getNamaGolongan(),
+                entity.getTanggalTerminasi(),
+                entity.getTahunTerminasi(),
+                entity.getMasaKerja(),
+                entity.getNotes()
+        );
     }
 
     public static RiwayatTerminasiResponse from(RiwayatTerminasi entity, List<LampiranSkResponse> lampiranSkResponses) {
-        RiwayatTerminasiResponse response = RiwayatTerminasiResponse.from(entity);
-        if (lampiranSkResponses != null && !lampiranSkResponses.isEmpty())
-            response.setLampiranSkTerminasi(lampiranSkResponses.getFirst());
-        return response;
+        LampiranSkResponse lampiran = (lampiranSkResponses != null && !lampiranSkResponses.isEmpty())
+                ? lampiranSkResponses.getFirst()
+                : null;
+        RiwayatTerminasiResponse base = RiwayatTerminasiResponse.from(entity);
+        return new RiwayatTerminasiResponse(
+                base.id(),
+                base.alasanTerminasi(),
+                base.pegawai(),
+                base.nipam(),
+                base.nama(),
+                base.nomorSk(),
+                base.skTerminasi(),
+                lampiran,
+                base.organisasi(),
+                base.namaOrganisasi(),
+                base.jabatan(),
+                base.namaJabatan(),
+                base.golongan(),
+                base.namaGolongan(),
+                base.tanggalTerminasi(),
+                base.tahunTerminasi(),
+                base.masaKerja(),
+                base.notes()
+        );
     }
 }

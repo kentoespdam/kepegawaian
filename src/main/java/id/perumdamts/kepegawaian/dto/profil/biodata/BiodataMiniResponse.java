@@ -7,39 +7,35 @@ import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasMiniRes
 import id.perumdamts.kepegawaian.entities.commons.EJenisKelamin;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKawin;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import lombok.Data;
 
 import java.time.LocalDate;
 
-@Data
-public class BiodataMiniResponse {
-    private String nik;
-    private String nama;
-    @Enumerated(EnumType.ORDINAL)
-    private EJenisKelamin jenisKelamin;
-    @Enumerated(EnumType.ORDINAL)
-    private EStatusKawin statusKawin;
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate tanggalLahir;
-    private KartuIdentitasMiniResponse bpjs;
-
+public record BiodataMiniResponse(
+        String nik,
+        String nama,
+        EJenisKelamin jenisKelamin,
+        EStatusKawin statusKawin,
+        @JsonSerialize(using = LocalDateSerializer.class)
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        LocalDate tanggalLahir,
+        KartuIdentitasMiniResponse bpjs
+) {
     public static BiodataMiniResponse from(Biodata biodata) {
-        BiodataMiniResponse response = new BiodataMiniResponse();
-        response.setNik(biodata.getNik());
-        response.setNama(biodata.getNama());
-        response.setJenisKelamin(biodata.getJenisKelamin());
-        response.setStatusKawin(biodata.getStatusKawin());
-        response.setTanggalLahir(biodata.getTanggalLahir());
-
-        if (biodata.getKartuIdentitas() != null)
-            biodata.getKartuIdentitas().stream()
+        KartuIdentitasMiniResponse bpjs = null;
+        if (biodata.getKartuIdentitas() != null) {
+            bpjs = biodata.getKartuIdentitas().stream()
                     .filter(item -> item.getJenisKartu().getNama().equalsIgnoreCase("ASKES"))
                     .findFirst()
-                    .ifPresent(item -> response.setBpjs(KartuIdentitasMiniResponse.from(item)));
-
-        return response;
+                    .map(KartuIdentitasMiniResponse::from)
+                    .orElse(null);
+        }
+        return new BiodataMiniResponse(
+                biodata.getNik(),
+                biodata.getNama(),
+                biodata.getJenisKelamin(),
+                biodata.getStatusKawin(),
+                biodata.getTanggalLahir(),
+                bpjs
+        );
     }
 }

@@ -10,10 +10,10 @@ public final class GajiParameterSettingJooqMapper {
 
     public static GajiParameterSettingResponse mapToResponse(Record record) {
         if (record == null) return null;
-        GajiParameterSettingResponse response = new GajiParameterSettingResponse();
-        response.setId(record.get(GAJI_PARAMETER_SETTING.ID));
-        response.setKode(record.get(GAJI_PARAMETER_SETTING.KODE));
-        response.setNominal(record.get(GAJI_PARAMETER_SETTING.NOMINAL));
-        return response;
+        return new GajiParameterSettingResponse(
+                record.get(GAJI_PARAMETER_SETTING.ID),
+                record.get(GAJI_PARAMETER_SETTING.KODE),
+                record.get(GAJI_PARAMETER_SETTING.NOMINAL)
+        );
     }
 }

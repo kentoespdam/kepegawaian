@@ -11,28 +11,24 @@ public final class CutiKuotaJooqMapper {
 
     public static CutiKuotaResponse mapToResponse(Record record) {
         if (record == null) return null;
-        CutiKuotaResponse res = new CutiKuotaResponse();
-        res.setId(record.get(CUTI_KUOTA.ID));
-        res.setTahun(record.get(CUTI_KUOTA.TAHUN));
-        res.setKuota(record.get(CUTI_KUOTA.KUOTA));
-        res.setKuotaTerpakai(record.get(CUTI_KUOTA.KUOTA_TERPAKAI));
-        res.setKuotaTambahan(record.get(CUTI_KUOTA.KUOTA_TAMBAHAN));
-        res.setSisaKuota(record.get(CUTI_KUOTA.SISA_KUOTA));
-        res.setExpired(record.get(CUTI_KUOTA.EXPIRED));
-        
-        if (record.get("pegawai_id") != null) {
-            Object statusObj = record.get("pegawai_status");
-            String statusPegawai = statusObj != null ? statusObj.toString() : null;
-            PegawaiMiniResponse peg = new PegawaiMiniResponse(
-                    (Long) record.get("pegawai_id"),
-                    (String) record.get("pegawai_nipam"),
-                    (String) record.get("pegawai_nama"),
-                    statusPegawai,
-                    (String) record.get("pegawai_jabatan"),
-                    (String) record.get("pegawai_organisasi")
-            );
-            res.setPegawai(peg);
-        }
-        return res;
+        PegawaiMiniResponse pegawai = record.get("pegawai_id") != null
+                ? new PegawaiMiniResponse(
+                (Long) record.get("pegawai_id"),
+                (String) record.get("pegawai_nipam"),
+                (String) record.get("pegawai_nama"),
+                record.get("pegawai_status", String.class),
+                (String) record.get("pegawai_jabatan"),
+                (String) record.get("pegawai_organisasi"))
+                : null;
+        return new CutiKuotaResponse(
+                record.get(CUTI_KUOTA.ID),
+                pegawai,
+                record.get(CUTI_KUOTA.TAHUN),
+                record.get(CUTI_KUOTA.KUOTA),
+                record.get(CUTI_KUOTA.KUOTA_TERPAKAI),
+                record.get(CUTI_KUOTA.KUOTA_TAMBAHAN),
+                record.get(CUTI_KUOTA.SISA_KUOTA),
+                record.get(CUTI_KUOTA.EXPIRED)
+        );
     }
 }

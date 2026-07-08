@@ -1,43 +1,73 @@
 package id.perumdamts.kepegawaian.dto.cuti.pengajuan;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.dto.cuti.jenis.CutiJenisMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiMiniResponse;
+import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
+import id.perumdamts.kepegawaian.entities.commons.EJenisPengajuanCuti;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
-public class CutiPengajuanResponse extends CutiPengajuanMiniResponse {
-    private CutiPengajuanMiniResponse refCuti;
-
+public record CutiPengajuanResponse(
+        Long id,
+        Long pegawaiId,
+        String nama,
+        String nipam,
+        String pangkatGolongan,
+        OrganisasiMiniResponse organisasi,
+        JabatanMiniResponse jabatan,
+        @JsonSerialize(using = LocalDateSerializer.class)
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        LocalDate tanggalPengajuan,
+        EJenisPengajuanCuti jenisPengajuanCuti,
+        EApprovalCutiStatus approvalCutiStatus,
+        Integer approvalLevel,
+        CutiJenisMiniResponse jenisCuti,
+        CutiJenisMiniResponse subJenisCuti,
+        @JsonSerialize(using = LocalDateSerializer.class)
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        LocalDate tanggalMulai,
+        @JsonSerialize(using = LocalDateSerializer.class)
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        LocalDate tanggalSelesai,
+        String alasan,
+        Integer jumlahHari,
+        Integer jumlahHariKerja,
+        JabatanMiniResponse picSaatIni,
+        Boolean isClaimed,
+        CutiPengajuanMiniResponse refCuti
+) {
     public static CutiPengajuanResponse from(CutiPegawai entity) {
-        CutiPengajuanResponse response = new CutiPengajuanResponse();
-        response.setId(entity.getId());
-        response.setPegawaiId(entity.getPegawai().getId());
-        response.setNipam(entity.getPegawai().getNipam());
-        response.setNama(entity.getPegawai().getBiodata().getNama());
-        response.setPangkatGolongan(entity.getPangkatGolongan());
-        response.setOrganisasi(OrganisasiMiniResponse.from(entity.getPegawai().getOrganisasi()));
-        response.setJabatan(JabatanMiniResponse.from(entity.getPegawai().getJabatan()));
-        response.setRefCuti(CutiPengajuanMiniResponse.from(entity.getRefCuti()));
-        response.setTanggalPengajuan(entity.getCreatedAt().toLocalDate());
-        response.setJenisPengajuanCuti(entity.getJenisPengajuanCuti());
-        response.setApprovalCutiStatus(entity.getApprovalCutiStatus());
-        response.setApprovalLevel(entity.getApprovalLevel());
-        response.setJenisCuti(CutiJenisMiniResponse.from(entity.getJenisCuti()));
-        if (Objects.nonNull(entity.getSubJenisCuti()))
-            response.setSubJenisCuti(CutiJenisMiniResponse.from(entity.getSubJenisCuti()));
-        response.setTanggalMulai(entity.getTanggalMulai());
-        response.setTanggalSelesai(entity.getTanggalSelesai());
-        response.setAlasan(entity.getAlasan());
-        response.setJumlahHari(entity.getJumlahHari());
-        response.setJumlahHariKerja(entity.getJumlahHariKerja());
-        response.setPicSaatIni(JabatanMiniResponse.from(entity.getPicSaatIni()));
-        response.setIsClaimed(entity.getIsClaimed());
-        return response;
+        if (Objects.isNull(entity)) return null;
+        return new CutiPengajuanResponse(
+                entity.getId(),
+                entity.getPegawai().getId(),
+                entity.getPegawai().getBiodata().getNama(),
+                entity.getPegawai().getNipam(),
+                entity.getPangkatGolongan(),
+                OrganisasiMiniResponse.from(entity.getPegawai().getOrganisasi()),
+                JabatanMiniResponse.from(entity.getPegawai().getJabatan()),
+                entity.getCreatedAt().toLocalDate(),
+                entity.getJenisPengajuanCuti(),
+                entity.getApprovalCutiStatus(),
+                entity.getApprovalLevel(),
+                CutiJenisMiniResponse.from(entity.getJenisCuti()),
+                Objects.nonNull(entity.getSubJenisCuti())
+                        ? CutiJenisMiniResponse.from(entity.getSubJenisCuti())
+                        : null,
+                entity.getTanggalMulai(),
+                entity.getTanggalSelesai(),
+                entity.getAlasan(),
+                entity.getJumlahHari(),
+                entity.getJumlahHariKerja(),
+                JabatanMiniResponse.from(entity.getPicSaatIni()),
+                entity.getIsClaimed(),
+                CutiPengajuanMiniResponse.from(entity.getRefCuti())
+        );
     }
 }

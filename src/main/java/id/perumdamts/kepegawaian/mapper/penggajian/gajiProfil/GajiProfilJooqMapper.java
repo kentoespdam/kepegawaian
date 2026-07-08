@@ -10,9 +10,9 @@ public final class GajiProfilJooqMapper {
 
     public static GajiProfilResponse mapToResponse(Record record) {
         if (record == null) return null;
-        GajiProfilResponse response = new GajiProfilResponse();
-        response.setId(record.get(GAJI_PROFIL.ID));
-        response.setNama(record.get(GAJI_PROFIL.NAMA));
-        return response;
+        return new GajiProfilResponse(
+                record.get(GAJI_PROFIL.ID),
+                record.get(GAJI_PROFIL.NAMA)
+        );
     }
 }

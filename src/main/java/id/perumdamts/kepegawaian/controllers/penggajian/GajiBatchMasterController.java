@@ -1,18 +1,23 @@
 package id.perumdamts.kepegawaian.controllers.penggajian;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
-import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
+import id.perumdamts.kepegawaian.dto.commons.ListResult;
+import id.perumdamts.kepegawaian.dto.commons.PageResult;
+import id.perumdamts.kepegawaian.dto.commons.SavedResult;
+import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
+import id.perumdamts.kepegawaian.dto.commons.SingleResult;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterIndexQuery;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterPostRequest;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterResponse;
 import id.perumdamts.kepegawaian.services.penggajian.gajiBatchMaster.GajiBatchMasterCommandService;
 import id.perumdamts.kepegawaian.services.penggajian.gajiBatchMaster.GajiBatchMasterQueryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,19 +29,20 @@ public class GajiBatchMasterController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
-    public ResponseEntity<?> getGajiBatchMasterByPeriode(@Valid @ParameterObject GajiBatchMasterIndexQuery request, Errors errors) {
-        if (errors.hasErrors())
-            return ErrorResult.build(errors);
+    public ResponseEntity<ListResult<GajiBatchMasterResponse>> getGajiBatchMasterByPeriode(
+            @Valid @ParameterObject GajiBatchMasterIndexQuery request) {
         return CustomResult.list(queryService.findAll(request));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getGajiBatchMasterById(@PathVariable Long id) {
+    public ResponseEntity<SingleResult<GajiBatchMasterResponse>> getGajiBatchMasterById(@PathVariable Long id) {
         return CustomResult.any(queryService.findById(id).orElse(null));
     }
 
     @GetMapping("/pegawai/{pegawaiId}")
-    public ResponseEntity<?> getGajiBatchMasterByPegawaiId(@PathVariable Long pegawaiId, @ParameterObject @Valid GajiBatchMasterIndexQuery query) {
+    public ResponseEntity<PageResult<Page<GajiBatchMasterResponse>>> getGajiBatchMasterByPegawaiId(
+            @PathVariable Long pegawaiId,
+            @ParameterObject @Valid GajiBatchMasterIndexQuery query) {
         return CustomResult.page(queryService.findByPegawaiId(pegawaiId, query));
     }
 
@@ -54,9 +60,14 @@ public class GajiBatchMasterController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping(value = "upload/{rootBatchId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> uploadPotonganTambahan(@PathVariable String rootBatchId, @Valid @ModelAttribute GajiBatchMasterPostRequest request, Errors errors) {
-        if (errors.hasErrors())
-            return ErrorResult.build(errors);
-        return CustomResult.save(commandService.uploadPotonganTambahan(rootBatchId, request));
+    public ResponseEntity<SavedResult<Object>> uploadPotonganTambahan(
+            @PathVariable String rootBatchId,
+            @Valid @ModelAttribute GajiBatchMasterPostRequest request) {
+        return saveResult(commandService.uploadPotonganTambahan(rootBatchId, request));
+    }
+
+    @SuppressWarnings("unchecked")
+    private static ResponseEntity<SavedResult<Object>> saveResult(SavedStatus<?> status) {
+        return CustomResult.save((SavedStatus<Object>) status);
     }
 }

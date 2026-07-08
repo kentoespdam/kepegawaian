@@ -1,18 +1,13 @@
 package id.perumdamts.kepegawaian.dto.master.profesi;
 
 import id.perumdamts.kepegawaian.entities.master.Profesi;
-import lombok.Data;
 
-@Data
-public class ProfesiMiniResponse {
-    private Long id;
-    private String nama;
-
+public record ProfesiMiniResponse(
+        Long id,
+        String nama
+) {
     public static ProfesiMiniResponse from(Profesi profesi) {
         if (profesi == null) return null;
-        ProfesiMiniResponse response = new ProfesiMiniResponse();
-        response.setId(profesi.getId());
-        response.setNama(profesi.getNama());
-        return response;
+        return new ProfesiMiniResponse(profesi.getId(), profesi.getNama());
     }
 }

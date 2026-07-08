@@ -418,16 +418,16 @@ public class PegawaiQueryRepository {
         List<KartuIdentitasMiniResponse> kartuIdentitasList = new ArrayList<>();
         if (cards != null) {
             for (var cardRecord : cards) {
-                KartuIdentitasMiniResponse responseCard = new KartuIdentitasMiniResponse();
-                responseCard.setId(cardRecord.get("id", Long.class));
-                responseCard.setNomorKartu(cardRecord.get("nomor_kartu", String.class));
-                Long jenisId = cardRecord.get("jenis_kartu_id", Long.class);
-                if (jenisId != null) {
-                    JenisKitasResponse jk = new JenisKitasResponse();
-                    jk.setId(jenisId);
-                    jk.setNama(cardRecord.get("jenis_kartu_nama", String.class));
-                    responseCard.setJenisKartu(jk);
-                }
+                JenisKitasResponse jenisKartu = cardRecord.get("jenis_kartu_id", Long.class) != null
+                        ? new JenisKitasResponse(
+                        cardRecord.get("jenis_kartu_id", Long.class),
+                        cardRecord.get("jenis_kartu_nama", String.class))
+                        : null;
+                KartuIdentitasMiniResponse responseCard = new KartuIdentitasMiniResponse(
+                        cardRecord.get("id", Long.class),
+                        jenisKartu,
+                        cardRecord.get("nomor_kartu", String.class)
+                );
                 kartuIdentitasList.add(responseCard);
             }
         }
@@ -436,43 +436,38 @@ public class PegawaiQueryRepository {
         String nik = r.get("biodata_nik", String.class);
         BiodataResponse biodata = null;
         if (nik != null) {
-            biodata = new BiodataResponse();
-            biodata.setNik(nik);
-            biodata.setNama(r.get("biodata_nama", String.class));
-
             Byte jkByte = r.get("biodata_jenis_kelamin", Byte.class);
-            biodata.setJenisKelamin(jkByte != null ? EJenisKelamin.values()[jkByte] : null);
-
-            biodata.setTempatLahir(r.get("biodata_tempat_lahir", String.class));
-            biodata.setTanggalLahir(r.get("biodata_tanggal_lahir", LocalDate.class));
-            biodata.setAlamat(r.get("biodata_alamat", String.class));
-            biodata.setTelp(r.get("biodata_telp", String.class));
-
             Byte agByte = r.get("biodata_agama", Byte.class);
-            biodata.setAgama(agByte != null ? EAgama.values()[agByte] : null);
-
-            biodata.setIbuKandung(r.get("biodata_ibu_kandung", String.class));
+            String gdStr = r.get("biodata_golongan_darah", String.class);
+            Byte skByte = r.get("biodata_status_kawin", Byte.class);
 
             Long jpId = r.get("jenjang_id", Long.class);
-            if (jpId != null) {
-                biodata.setPendidikanTerakhir(new JenjangPendidikanResponse(
-                        jpId,
-                        r.get("jenjang_nama", String.class),
-                        r.get("jenjang_short_name", String.class),
-                        r.get("jenjang_seq", Integer.class),
-                        r.get("jenjang_is_statistik", Boolean.class)
-                ));
-            }
+            JenjangPendidikanResponse pendidikanTerakhir = jpId != null
+                    ? new JenjangPendidikanResponse(
+                    jpId,
+                    r.get("jenjang_nama", String.class),
+                    r.get("jenjang_short_name", String.class),
+                    r.get("jenjang_seq", Integer.class),
+                    r.get("jenjang_is_statistik", Boolean.class))
+                    : null;
 
-            String gdStr = r.get("biodata_golongan_darah", String.class);
-            biodata.setGolonganDarah(gdStr != null ? EGolonganDarah.valueOf(gdStr) : null);
-
-            Byte skByte = r.get("biodata_status_kawin", Byte.class);
-            biodata.setStatusKawin(skByte != null ? EStatusKawin.values()[skByte] : null);
-
-            biodata.setFotoProfil(r.get("biodata_foto_profil", String.class));
-            biodata.setNotes(r.get("biodata_notes", String.class));
-            biodata.setKartuIdentitas(kartuIdentitasList);
+            biodata = new BiodataResponse(
+                    nik,
+                    r.get("biodata_nama", String.class),
+                    jkByte != null ? EJenisKelamin.values()[jkByte] : null,
+                    r.get("biodata_tempat_lahir", String.class),
+                    r.get("biodata_tanggal_lahir", LocalDate.class),
+                    r.get("biodata_alamat", String.class),
+                    r.get("biodata_telp", String.class),
+                    agByte != null ? EAgama.values()[agByte] : null,
+                    r.get("biodata_ibu_kandung", String.class),
+                    pendidikanTerakhir,
+                    gdStr != null ? EGolonganDarah.valueOf(gdStr) : null,
+                    skByte != null ? EStatusKawin.values()[skByte] : null,
+                    r.get("biodata_foto_profil", String.class),
+                    r.get("biodata_notes", String.class),
+                    kartuIdentitasList
+            );
         }
 
         // -- OrganisasiMiniResponse --
@@ -501,9 +496,7 @@ public class PegawaiQueryRepository {
         Long profId = r.get("profesi_id", Long.class);
         ProfesiMiniResponse profesi = null;
         if (profId != null) {
-            profesi = new ProfesiMiniResponse();
-            profesi.setId(profId);
-            profesi.setNama(r.get("profesi_nama", String.class));
+            profesi = new ProfesiMiniResponse(profId, r.get("profesi_nama", String.class));
         }
 
         // -- GolonganResponse --
@@ -519,45 +512,50 @@ public class PegawaiQueryRepository {
         Long grdId = r.get("grade_id", Long.class);
         GradeResponse grade = null;
         if (grdId != null) {
-            grade = new GradeResponse();
-            grade.setId(grdId);
-            grade.setGrade(r.get("grade_grade", Integer.class));
-            grade.setTukin(r.get("grade_tukin", Double.class));
-
+            LevelResponse level = null;
             Long glvlId = r.get("grade_level_id", Long.class);
             if (glvlId != null) {
-                grade.setLevel(new LevelResponse(glvlId, r.get("grade_level_nama", String.class)));
+                level = new LevelResponse(glvlId, r.get("grade_level_nama", String.class));
             }
+            grade = new GradeResponse(
+                    grdId,
+                    level,
+                    r.get("grade_grade", Integer.class),
+                    r.get("grade_tukin", Double.class)
+            );
         }
 
         // -- GajiPendapatanNonPajakResponse --
         Long pajId = r.get("kode_pajak_id", Long.class);
         GajiPendapatanNonPajakResponse kodePajak = null;
         if (pajId != null) {
-            kodePajak = new GajiPendapatanNonPajakResponse();
-            kodePajak.setId(pajId);
-            kodePajak.setKode(r.get("kode_pajak_kode", String.class));
-            kodePajak.setNominal(r.get("kode_pajak_nominal", Double.class));
-            kodePajak.setNotes(r.get("kode_pajak_notes", String.class));
+            kodePajak = new GajiPendapatanNonPajakResponse(
+                    pajId,
+                    r.get("kode_pajak_kode", String.class),
+                    r.get("kode_pajak_nominal", Double.class),
+                    r.get("kode_pajak_notes", String.class)
+            );
         }
 
         // -- GajiProfilResponse --
         Long gpId = r.get("gaji_profil_id", Long.class);
         GajiProfilResponse gajiProfil = null;
         if (gpId != null) {
-            gajiProfil = new GajiProfilResponse();
-            gajiProfil.setId(gpId);
-            gajiProfil.setNama(r.get("gaji_profil_nama", String.class));
+            gajiProfil = new GajiProfilResponse(
+                    gpId,
+                    r.get("gaji_profil_nama", String.class)
+            );
         }
 
         // -- RumahDinasResponse --
         Long rdId = r.get("rumah_dinas_id", Long.class);
         RumahDinasResponse rumahDinas = null;
         if (rdId != null) {
-            rumahDinas = new RumahDinasResponse();
-            rumahDinas.setId(rdId);
-            rumahDinas.setNama(r.get("rumah_dinas_nama", String.class));
-            rumahDinas.setNilai(r.get("rumah_dinas_nilai", Double.class));
+            rumahDinas = new RumahDinasResponse(
+                    rdId,
+                    r.get("rumah_dinas_nama", String.class),
+                    r.get("rumah_dinas_nilai", Double.class)
+            );
         }
 
         // -- Fetch & compute SKs --
@@ -572,7 +570,7 @@ public class PegawaiQueryRepository {
 
         LocalDate tanggalSk = tmtPegawai;
         if (skCapeg != null) {
-            tanggalSk = skCapeg.getTmtBerlaku();
+            tanggalSk = skCapeg.tmtBerlaku();
         }
 
         PegawaiResponseDetail response = new PegawaiResponseDetail(
@@ -593,7 +591,7 @@ public class PegawaiQueryRepository {
 
     private static RiwayatSkResponse getLastFromResponseList(List<RiwayatSkResponse> list, EJenisSk jenisSk) {
         return list.stream()
-                .filter(sk -> sk.getJenisSk() == jenisSk)
+                .filter(sk -> sk.jenisSk() == jenisSk)
                 .findFirst()
                 .orElse(null);
     }

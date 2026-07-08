@@ -10,12 +10,12 @@ public final class DasarGajiJooqMapper {
 
     public static DasarGajiResponse mapToResponse(Record record) {
         if (record == null) return null;
-        DasarGajiResponse response = new DasarGajiResponse();
-        response.setId(record.get(DASAR_GAJI.ID));
-        response.setDeskripsi(record.get(DASAR_GAJI.DESKRIPSI));
-        response.setTanggalMulai(record.get(DASAR_GAJI.TANGGAL_AWAL));
-        response.setTanggalAkhir(record.get(DASAR_GAJI.TANGGAL_AKHIR));
-        response.setAktif(record.get(DASAR_GAJI.AKTIF));
-        return response;
+        return new DasarGajiResponse(
+                record.get(DASAR_GAJI.ID),
+                record.get(DASAR_GAJI.DESKRIPSI),
+                record.get(DASAR_GAJI.TANGGAL_AWAL),
+                record.get(DASAR_GAJI.TANGGAL_AKHIR),
+                record.get(DASAR_GAJI.AKTIF)
+        );
     }
 }

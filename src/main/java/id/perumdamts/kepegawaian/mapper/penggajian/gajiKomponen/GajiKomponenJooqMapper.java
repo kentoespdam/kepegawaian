@@ -15,27 +15,26 @@ public final class GajiKomponenJooqMapper {
 
     public static GajiKomponenResponse mapToResponse(Record record) {
         if (record == null) return null;
-        GajiKomponenResponse response = new GajiKomponenResponse();
-        response.setId(record.get(GAJI_KOMPONEN.ID));
-        response.setUrut(record.get(GAJI_KOMPONEN.URUT));
-        response.setKode(record.get(GAJI_KOMPONEN.KODE));
-        response.setNama(record.get(GAJI_KOMPONEN.NAMA));
-        response.setNilai(record.get(GAJI_KOMPONEN.NILAI));
-        response.setIsReference(record.get(GAJI_KOMPONEN.IS_REFERENCE));
-        response.setFormula(record.get(GAJI_KOMPONEN.FORMULA));
+        var jenisGajiObj = record.get(GAJI_KOMPONEN.JENIS_GAJI);
+        EJenisGaji jenisGaji = jenisGajiObj != null ? EJenisGaji.valueOf(jenisGajiObj.name()) : null;
 
-        var jenisGaji = record.get(GAJI_KOMPONEN.JENIS_GAJI);
-        if (jenisGaji != null) {
-            response.setJenisGaji(EJenisGaji.valueOf(jenisGaji.name()));
-        }
+        GajiProfilResponse profilGaji = record.get(GAJI_KOMPONEN.PROFIL_GAJI_ID) != null
+                ? new GajiProfilResponse(
+                record.get(GAJI_KOMPONEN.PROFIL_GAJI_ID),
+                record.get(GAJI_PROFIL.NAMA))
+                : null;
 
-        if (record.get(GAJI_KOMPONEN.PROFIL_GAJI_ID) != null) {
-            GajiProfilResponse profil = new GajiProfilResponse();
-            profil.setId(record.get(GAJI_KOMPONEN.PROFIL_GAJI_ID));
-            profil.setNama(record.get(GAJI_PROFIL.NAMA));
-            response.setProfilGaji(profil);
-        }
-        return response;
+        return new GajiKomponenResponse(
+                record.get(GAJI_KOMPONEN.ID),
+                record.get(GAJI_KOMPONEN.URUT),
+                profilGaji,
+                record.get(GAJI_KOMPONEN.KODE),
+                record.get(GAJI_KOMPONEN.NAMA),
+                jenisGaji,
+                record.get(GAJI_KOMPONEN.NILAI),
+                record.get(GAJI_KOMPONEN.IS_REFERENCE),
+                record.get(GAJI_KOMPONEN.FORMULA)
+        );
     }
 
     public static GajiKomponenMiniProjection mapToMiniProjection(Record record) {

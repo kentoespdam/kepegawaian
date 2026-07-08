@@ -90,7 +90,7 @@ public class CutiPengajuanQueryRepository {
                 .fetch(record -> {
                     CutiPengajuanResponse res = CutiPegawaiJooqMapper.mapToResponse(record);
                     if (record.get(CUTI_PEGAWAI.REF_CUTI_ID) != null) {
-                        res.setRefCuti(getMiniById(record.get(CUTI_PEGAWAI.REF_CUTI_ID)));
+                        res = setRefCuti(res, getMiniById(record.get(CUTI_PEGAWAI.REF_CUTI_ID)));
                     }
                     return res;
                 });
@@ -149,9 +149,23 @@ public class CutiPengajuanQueryRepository {
         
         CutiPengajuanResponse res = CutiPegawaiJooqMapper.mapToResponse(record);
         if (record.get(CUTI_PEGAWAI.REF_CUTI_ID) != null) {
-            res.setRefCuti(getMiniById(record.get(CUTI_PEGAWAI.REF_CUTI_ID)));
+            res = setRefCuti(res, getMiniById(record.get(CUTI_PEGAWAI.REF_CUTI_ID)));
         }
         return res;
+    }
+
+    private CutiPengajuanResponse setRefCuti(CutiPengajuanResponse res, CutiPengajuanMiniResponse refCuti) {
+        return new CutiPengajuanResponse(
+                res.id(), res.pegawaiId(), res.nama(), res.nipam(),
+                res.pangkatGolongan(), res.organisasi(), res.jabatan(),
+                res.tanggalPengajuan(), res.jenisPengajuanCuti(),
+                res.approvalCutiStatus(), res.approvalLevel(),
+                res.jenisCuti(), res.subJenisCuti(),
+                res.tanggalMulai(), res.tanggalSelesai(),
+                res.alasan(), res.jumlahHari(), res.jumlahHariKerja(),
+                res.picSaatIni(), res.isClaimed(),
+                refCuti
+        );
     }
 
     private CutiPengajuanMiniResponse getMiniById(Long id) {

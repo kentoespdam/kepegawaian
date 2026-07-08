@@ -10,30 +10,28 @@ import id.perumdamts.kepegawaian.dto.master.golongan.GolonganResponse;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiMiniResponse;
 import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiResponse;
-import lombok.Data;
 
 import java.time.LocalDate;
 
-@Data
-public class RiwayatTerminasiQuery {
-    private Long id;
-    private AlasanBerhentiResponse alasanTerminasi;
-    private PegawaiResponse pegawai;
-    private String nipam;
-    private String nama;
-    private String nomorSk;
-    private RiwayatSkQuery skTerminasi;
-    private LampiranSkQuery lampiranSkTerminasi;
-    private OrganisasiMiniResponse organisasi;
-    private String namaOrganisasi;
-    private JabatanMiniResponse jabatan;
-    private String namaJabatan;
-    private GolonganResponse golongan;
-    private String namaGolongan;
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate tanggalTerminasi;
-    private Integer tahunTerminasi;
-    private Integer masaKerja;
-    private String notes;
-}
+public record RiwayatTerminasiQuery(
+        Long id,
+        AlasanBerhentiResponse alasanTerminasi,
+        PegawaiResponse pegawai,
+        String nipam,
+        String nama,
+        String nomorSk,
+        RiwayatSkQuery skTerminasi,
+        LampiranSkQuery lampiranSkTerminasi,
+        OrganisasiMiniResponse organisasi,
+        String namaOrganisasi,
+        JabatanMiniResponse jabatan,
+        String namaJabatan,
+        GolonganResponse golongan,
+        String namaGolongan,
+        @JsonSerialize(using = LocalDateSerializer.class)
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        LocalDate tanggalTerminasi,
+        Integer tahunTerminasi,
+        Integer masaKerja,
+        String notes
+) {}

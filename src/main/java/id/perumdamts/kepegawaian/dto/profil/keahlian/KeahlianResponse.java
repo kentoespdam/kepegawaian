@@ -4,38 +4,31 @@ import id.perumdamts.kepegawaian.dto.master.jenisKeahlian.JenisKeahlianResponse;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataMiniResponse;
 import id.perumdamts.kepegawaian.entities.commons.EKualifikasi;
 import id.perumdamts.kepegawaian.entities.profil.Keahlian;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import lombok.Data;
 
-@Data
-public class KeahlianResponse {
-    private Long id;
-    private BiodataMiniResponse biodata;
-    private JenisKeahlianResponse jenisKeahlian;
-    @Enumerated(EnumType.ORDINAL)
-    private EKualifikasi kualifikasi;
-    private Boolean sertifikasi;
-    private String institusi;
-    private Integer tahun;
-    private String masaBerlaku;
-    private Boolean disetujui;
-    private String disetujuiOleh;
-
+public record KeahlianResponse(
+        Long id,
+        BiodataMiniResponse biodata,
+        JenisKeahlianResponse jenisKeahlian,
+        EKualifikasi kualifikasi,
+        Boolean sertifikasi,
+        String institusi,
+        Integer tahun,
+        String masaBerlaku,
+        Boolean disetujui,
+        String disetujuiOleh
+) {
     public static KeahlianResponse from(Keahlian entity) {
-        BiodataMiniResponse biodata = BiodataMiniResponse.from(entity.getBiodata());
-        JenisKeahlianResponse jenisKeahlian = JenisKeahlianResponse.from(entity.getJenisKeahlian());
-        KeahlianResponse response = new KeahlianResponse();
-        response.setId(entity.getId());
-        response.setBiodata(biodata);
-        response.setJenisKeahlian(jenisKeahlian);
-        response.setKualifikasi(entity.getKualifikasi());
-        response.setSertifikasi(entity.getSertifikasi());
-        response.setInstitusi(entity.getInstitusi());
-        response.setTahun(entity.getTahun());
-        response.setMasaBerlaku(entity.getMasaBerlaku());
-        response.setDisetujui(entity.getDisetujui());
-        response.setDisetujuiOleh(entity.getDisetujuiOleh());
-        return response;
+        return new KeahlianResponse(
+                entity.getId(),
+                BiodataMiniResponse.from(entity.getBiodata()),
+                JenisKeahlianResponse.from(entity.getJenisKeahlian()),
+                entity.getKualifikasi(),
+                entity.getSertifikasi(),
+                entity.getInstitusi(),
+                entity.getTahun(),
+                entity.getMasaBerlaku(),
+                entity.getDisetujui(),
+                entity.getDisetujuiOleh()
+        );
     }
 }

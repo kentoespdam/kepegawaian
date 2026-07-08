@@ -5,32 +5,23 @@ import id.perumdamts.kepegawaian.dto.master.level.LevelResponse;
 import id.perumdamts.kepegawaian.entities.commons.EJenisTunjangan;
 import id.perumdamts.kepegawaian.mapper.master.level.LevelMapper;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiTunjangan;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Data
-public class GajiTunjanganResponse {
-    private Long id;
-    @Enumerated(EnumType.ORDINAL)
-    private EJenisTunjangan jenisTunjangan;
-    private LevelResponse level;
-    private GolonganResponse golongan;
-    private Double nominal;
+import java.util.Objects;
 
+public record GajiTunjanganResponse(
+        Long id,
+        EJenisTunjangan jenisTunjangan,
+        LevelResponse level,
+        GolonganResponse golongan,
+        Double nominal
+) {
     public static GajiTunjanganResponse from(GajiTunjangan entity) {
-        GajiTunjanganResponse result = new GajiTunjanganResponse();
-        result.setId(entity.getId());
-        result.setJenisTunjangan(entity.getJenisTunjangan());
-        result.setLevel(LevelMapper.toResponse(entity.getLevel()));
-        if (entity.getGolongan() != null)
-            result.setGolongan(GolonganResponse.from(entity.getGolongan()));
-        result.setNominal(entity.getNominal());
-        return result;
+        return new GajiTunjanganResponse(
+                entity.getId(),
+                entity.getJenisTunjangan(),
+                LevelMapper.toResponse(entity.getLevel()),
+                Objects.nonNull(entity.getGolongan()) ? GolonganResponse.from(entity.getGolongan()) : null,
+                entity.getNominal()
+        );
     }
-
 }

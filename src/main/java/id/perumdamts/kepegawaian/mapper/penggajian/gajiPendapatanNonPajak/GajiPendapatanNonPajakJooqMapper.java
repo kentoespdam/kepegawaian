@@ -10,11 +10,11 @@ public final class GajiPendapatanNonPajakJooqMapper {
 
     public static GajiPendapatanNonPajakResponse mapToResponse(Record record) {
         if (record == null) return null;
-        GajiPendapatanNonPajakResponse response = new GajiPendapatanNonPajakResponse();
-        response.setId(record.get(GAJI_PENDAPATAN_NON_PAJAK.ID));
-        response.setKode(record.get(GAJI_PENDAPATAN_NON_PAJAK.KODE));
-        response.setNominal(record.get(GAJI_PENDAPATAN_NON_PAJAK.NOMINAL));
-        response.setNotes(record.get(GAJI_PENDAPATAN_NON_PAJAK.NOTES));
-        return response;
+        return new GajiPendapatanNonPajakResponse(
+                record.get(GAJI_PENDAPATAN_NON_PAJAK.ID),
+                record.get(GAJI_PENDAPATAN_NON_PAJAK.KODE),
+                record.get(GAJI_PENDAPATAN_NON_PAJAK.NOMINAL),
+                record.get(GAJI_PENDAPATAN_NON_PAJAK.NOTES)
+        );
     }
 }

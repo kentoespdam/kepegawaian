@@ -70,19 +70,18 @@ public class RiwayatKontrakQueryRepository {
     }
 
     private RiwayatKontrakQuery toQuery(Record record) {
-        RiwayatKontrakQuery query = new RiwayatKontrakQuery();
-        query.setId(record.get(RIWAYAT_KONTRAK.ID));
         Byte jkByte = record.get(RIWAYAT_KONTRAK.JENIS_KONTRAK);
-        if (jkByte != null) {
-            query.setJenisKontrak(EJenisKontrak.values()[jkByte.intValue()]);
-        }
-        query.setNipam(record.get(RIWAYAT_KONTRAK.NIPAM));
-        query.setNama(record.get(RIWAYAT_KONTRAK.NAMA));
-        query.setNomorKontrak(record.get(RIWAYAT_KONTRAK.NOMOR_KONTRAK));
-        query.setTanggalSk(record.get(RIWAYAT_KONTRAK.TANGGAL_SK));
-        query.setTanggalMulai(record.get(RIWAYAT_KONTRAK.TANGGAL_MULAI));
-        query.setTanggalSelesai(record.get(RIWAYAT_KONTRAK.TANGGAL_SELESAI));
-        query.setNotes(record.get(RIWAYAT_KONTRAK.NOTES));
-        return query;
+        EJenisKontrak jenisKontrak = jkByte != null ? EJenisKontrak.values()[jkByte.intValue()] : null;
+        return new RiwayatKontrakQuery(
+                record.get(RIWAYAT_KONTRAK.ID),
+                jenisKontrak,
+                record.get(RIWAYAT_KONTRAK.NIPAM),
+                record.get(RIWAYAT_KONTRAK.NAMA),
+                record.get(RIWAYAT_KONTRAK.NOMOR_KONTRAK),
+                record.get(RIWAYAT_KONTRAK.TANGGAL_SK),
+                record.get(RIWAYAT_KONTRAK.TANGGAL_MULAI),
+                record.get(RIWAYAT_KONTRAK.TANGGAL_SELESAI),
+                record.get(RIWAYAT_KONTRAK.NOTES)
+        );
     }
 }

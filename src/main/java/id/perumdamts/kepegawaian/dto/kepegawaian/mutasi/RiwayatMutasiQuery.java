@@ -9,36 +9,34 @@ import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiMiniResponse;
 import id.perumdamts.kepegawaian.entities.commons.EJenisMutasi;
-import lombok.Data;
 
 import java.time.LocalDate;
 
-@Data
-public class RiwayatMutasiQuery {
-    private Long id;
-    private String nipam;
-    private String nama;
-    private RiwayatSkQuery skMutasi;
-    private EJenisMutasi jenisMutasi;
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate tmtBerlaku;
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate tanggalBerakhir;
-    private GolonganResponse golongan;
-    private OrganisasiMiniResponse organisasi;
-    private String namaOrganisasi;
-    private JabatanMiniResponse jabatan;
-    private String namaJabatan;
-    private ProfesiMiniResponse profesi;
-    private String namaProfesi;
-    private GolonganResponse golonganLama;
-    private OrganisasiMiniResponse organisasiLama;
-    private String namaOrganisasiLama;
-    private JabatanMiniResponse jabatanLama;
-    private String namaJabatanLama;
-    private ProfesiMiniResponse profesiLama;
-    private String namaProfesiLama;
-    private String notes;
-}
+public record RiwayatMutasiQuery(
+        Long id,
+        String nipam,
+        String nama,
+        RiwayatSkQuery skMutasi,
+        EJenisMutasi jenisMutasi,
+        @JsonSerialize(using = LocalDateSerializer.class)
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        LocalDate tmtBerlaku,
+        @JsonSerialize(using = LocalDateSerializer.class)
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        LocalDate tanggalBerakhir,
+        GolonganResponse golongan,
+        OrganisasiMiniResponse organisasi,
+        String namaOrganisasi,
+        JabatanMiniResponse jabatan,
+        String namaJabatan,
+        ProfesiMiniResponse profesi,
+        String namaProfesi,
+        GolonganResponse golonganLama,
+        OrganisasiMiniResponse organisasiLama,
+        String namaOrganisasiLama,
+        JabatanMiniResponse jabatanLama,
+        String namaJabatanLama,
+        ProfesiMiniResponse profesiLama,
+        String namaProfesiLama,
+        String notes
+) {}

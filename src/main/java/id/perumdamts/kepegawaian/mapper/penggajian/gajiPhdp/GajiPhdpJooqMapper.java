@@ -10,11 +10,11 @@ public final class GajiPhdpJooqMapper {
 
     public static GajiPhdpResponse mapToResponse(Record record) {
         if (record == null) return null;
-        GajiPhdpResponse response = new GajiPhdpResponse();
-        response.setId(record.get(GAJI_PHDP.ID));
-        response.setUrut(record.get(GAJI_PHDP.URUT));
-        response.setKondisi(record.get(GAJI_PHDP.KONDISI));
-        response.setFormula(record.get(GAJI_PHDP.FORMULA));
-        return response;
+        return new GajiPhdpResponse(
+                record.get(GAJI_PHDP.ID),
+                record.get(GAJI_PHDP.URUT),
+                record.get(GAJI_PHDP.KONDISI),
+                record.get(GAJI_PHDP.FORMULA)
+        );
     }
 }

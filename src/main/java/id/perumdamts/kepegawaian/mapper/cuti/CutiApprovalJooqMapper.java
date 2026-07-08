@@ -13,30 +13,29 @@ public final class CutiApprovalJooqMapper {
 
     public static CutiApprovalMiniResponse mapToResponse(Record record) {
         if (record == null) return null;
-        CutiApprovalMiniResponse res = new CutiApprovalMiniResponse();
-        res.setId(record.get(CUTI_APPROVAL.ID));
-        res.setApprovalLevel(record.get(CUTI_APPROVAL.APPROVAL_LEVEL));
-        res.setApprovalStatus(toApprovalCutiStatus(record.get(CUTI_APPROVAL.APPROVAL_STATUS)));
-        res.setNotes(record.get(CUTI_APPROVAL.NOTES));
-        res.setCreatedAt(record.get(CUTI_APPROVAL.CREATED_AT));
-
-        if (record.get("approver_id") != null) {
-            PegawaiMiniResponse app = new PegawaiMiniResponse(
-                    (Long) record.get("approver_id"),
-                    (String) record.get("approver_nipam"),
-                    (String) record.get("approver_nama"),
-                    null, null, null
-            );
-            res.setApprover(app);
-        }
-        if (record.get("jab_id") != null) {
-            res.setJabatan(new JabatanMiniResponse(
-                    (Long) record.get("jab_id"),
-                    (String) record.get("jab_kode"),
-                    null,
-                    (String) record.get("jab_nama")));
-        }
-        return res;
+        PegawaiMiniResponse approver = record.get("approver_id") != null
+                ? new PegawaiMiniResponse(
+                (Long) record.get("approver_id"),
+                (String) record.get("approver_nipam"),
+                (String) record.get("approver_nama"),
+                null, null, null)
+                : null;
+        JabatanMiniResponse jabatan = record.get("jab_id") != null
+                ? new JabatanMiniResponse(
+                (Long) record.get("jab_id"),
+                (String) record.get("jab_kode"),
+                null,
+                (String) record.get("jab_nama"))
+                : null;
+        return new CutiApprovalMiniResponse(
+                record.get(CUTI_APPROVAL.ID),
+                approver,
+                jabatan,
+                record.get(CUTI_APPROVAL.APPROVAL_LEVEL),
+                toApprovalCutiStatus(record.get(CUTI_APPROVAL.APPROVAL_STATUS)),
+                record.get(CUTI_APPROVAL.NOTES),
+                record.get(CUTI_APPROVAL.CREATED_AT)
+        );
     }
 
     private static EApprovalCutiStatus toApprovalCutiStatus(Byte val) {

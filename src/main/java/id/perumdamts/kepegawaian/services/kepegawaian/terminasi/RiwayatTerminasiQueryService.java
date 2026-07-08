@@ -24,8 +24,13 @@ public class RiwayatTerminasiQueryService {
     public Page<RiwayatTerminasiQuery> findPage(RiwayatTerminasiRequest request) {
         return queryRepository.pageQuery(request)
                 .map(q -> {
-                    pegawaiQueryRepository.findByNipam(q.getNipam()).ifPresent(q::setPegawai);
-                    return q;
+                    PegawaiResponse pegawai = pegawaiQueryRepository.findByNipam(q.nipam()).orElse(null);
+                    return new RiwayatTerminasiQuery(
+                            q.id(), q.alasanTerminasi(), pegawai, q.nipam(), q.nama(), q.nomorSk(),
+                            q.skTerminasi(), q.lampiranSkTerminasi(), q.organisasi(), q.namaOrganisasi(),
+                            q.jabatan(), q.namaJabatan(), q.golongan(), q.namaGolongan(),
+                            q.tanggalTerminasi(), q.tahunTerminasi(), q.masaKerja(), q.notes()
+                    );
                 });
     }
 
@@ -43,7 +48,12 @@ public class RiwayatTerminasiQueryService {
     public RiwayatTerminasiQuery findById(Long id) {
         RiwayatTerminasiQuery q = queryRepository.getById(id)
                 .orElseThrow(() -> new NotFoundException("Riwayat Terminasi not found"));
-        pegawaiQueryRepository.findByNipam(q.getNipam()).ifPresent(q::setPegawai);
-        return q;
+        PegawaiResponse pegawai = pegawaiQueryRepository.findByNipam(q.nipam()).orElse(null);
+        return new RiwayatTerminasiQuery(
+                q.id(), q.alasanTerminasi(), pegawai, q.nipam(), q.nama(), q.nomorSk(),
+                q.skTerminasi(), q.lampiranSkTerminasi(), q.organisasi(), q.namaOrganisasi(),
+                q.jabatan(), q.namaJabatan(), q.golongan(), q.namaGolongan(),
+                q.tanggalTerminasi(), q.tahunTerminasi(), q.masaKerja(), q.notes()
+        );
     }
 }

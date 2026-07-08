@@ -70,7 +70,7 @@ public class CutiKuotaQueryRepository {
         Page<CutiKuotaResponse> page = new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
         if (page.isEmpty()) return null;
         
-        List<Long> pegawaiIdList = page.getContent().stream().map(c -> c.getPegawai().id()).toList();
+        List<Long> pegawaiIdList = page.getContent().stream().map(c -> c.pegawai().id()).toList();
         
         List<CutiKuotaResponse> additionalData = dsl.select(
                         CUTI_KUOTA.ID,
@@ -97,10 +97,7 @@ public class CutiKuotaQueryRepository {
                         .and(CUTI_KUOTA.IS_DELETED.eq(false)))
                 .fetch(CutiKuotaJooqMapper::mapToResponse);
                 
-        return CutiKuotaPegawaiResponse.builder()
-                .page(page)
-                .additional(additionalData)
-                .build();
+        return new CutiKuotaPegawaiResponse(page, additionalData);
     }
 
     public CutiKuotaResponse getById(Long id) {
@@ -144,10 +141,10 @@ public class CutiKuotaQueryRepository {
                         .and(CUTI_KUOTA.IS_DELETED.eq(false)))
                 .fetchOne(record -> record.get(CUTI_KUOTA.SISA_KUOTA));
                 
-        return CutiKuotaSisa.builder()
-                .sisaCutiTahunIni(sisaTahunIni != null ? sisaTahunIni : 0)
-                .sisaCutiTahunLalu(sisaTahunLalu != null ? sisaTahunLalu : 0)
-                .build();
+        return new CutiKuotaSisa(
+                sisaTahunIni != null ? sisaTahunIni : 0,
+                sisaTahunLalu != null ? sisaTahunLalu : 0
+        );
     }
 
     private static Map<String, Field<?>> allowedSorts() {

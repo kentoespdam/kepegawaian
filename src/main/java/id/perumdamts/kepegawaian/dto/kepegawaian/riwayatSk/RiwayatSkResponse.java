@@ -6,61 +6,55 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.dto.master.golongan.GolonganResponse;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-@Data
-public class RiwayatSkResponse {
-    private Long id;
-    private String nipam;
-    private String nama;
-    private String nomorSk;
-    @Enumerated(EnumType.ORDINAL)
-    private EJenisSk jenisSk;
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate tanggalSk;
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate tmtBerlaku;
-    private GolonganResponse golongan;
-    private Double gajiPokok;
-    private Integer mkgTahun;
-    private Integer mkgBulan;
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate kenaikanBerikutnya;
-    private Integer mkgbTahun;
-    private Integer mkgbBulan;
-    private Boolean updateMaster;
-    private String notes;
-
+public record RiwayatSkResponse(
+        Long id,
+        String nipam,
+        String nama,
+        String nomorSk,
+        EJenisSk jenisSk,
+        @JsonSerialize(using = LocalDateSerializer.class)
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        LocalDate tanggalSk,
+        @JsonSerialize(using = LocalDateSerializer.class)
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        LocalDate tmtBerlaku,
+        GolonganResponse golongan,
+        Double gajiPokok,
+        Integer mkgTahun,
+        Integer mkgBulan,
+        @JsonSerialize(using = LocalDateSerializer.class)
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        LocalDate kenaikanBerikutnya,
+        Integer mkgbTahun,
+        Integer mkgbBulan,
+        Boolean updateMaster,
+        String notes
+) {
     public static RiwayatSkResponse from(RiwayatSk entity) {
-        RiwayatSkResponse response = new RiwayatSkResponse();
-        response.setId(entity.getId());
-        response.setNipam(entity.getNipam());
-        response.setNama(entity.getNama());
-        response.setNomorSk(entity.getNomorSk());
-        response.setJenisSk(entity.getJenisSk());
-        response.setTanggalSk(entity.getTanggalSk());
-        response.setTmtBerlaku(entity.getTmtBerlaku());
-        if (Objects.nonNull(entity.getGolongan()))
-            response.setGolongan(GolonganResponse.from(entity.getGolongan()));
-        response.setGajiPokok(entity.getGajiPokok());
-        response.setMkgTahun(entity.getMkgTahun());
-        response.setMkgBulan(entity.getMkgBulan());
-        response.setKenaikanBerikutnya(entity.getKenaikanBerikutnya());
-        response.setMkgbTahun(entity.getMkgbTahun());
-        response.setMkgbBulan(entity.getMkgbBulan());
-        response.setUpdateMaster(entity.getUpdateMaster());
-        response.setNotes(entity.getNotes());
-        return response;
+        return new RiwayatSkResponse(
+                entity.getId(),
+                entity.getNipam(),
+                entity.getNama(),
+                entity.getNomorSk(),
+                entity.getJenisSk(),
+                entity.getTanggalSk(),
+                entity.getTmtBerlaku(),
+                Objects.nonNull(entity.getGolongan()) ? GolonganResponse.from(entity.getGolongan()) : null,
+                entity.getGajiPokok(),
+                entity.getMkgTahun(),
+                entity.getMkgBulan(),
+                entity.getKenaikanBerikutnya(),
+                entity.getMkgbTahun(),
+                entity.getMkgbBulan(),
+                entity.getUpdateMaster(),
+                entity.getNotes()
+        );
     }
 
     public static RiwayatSkResponse getLastFromList(List<RiwayatSk> list, EJenisSk jenisSk){

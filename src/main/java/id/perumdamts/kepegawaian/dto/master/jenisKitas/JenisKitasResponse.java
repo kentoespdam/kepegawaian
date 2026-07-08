@@ -1,20 +1,15 @@
 package id.perumdamts.kepegawaian.dto.master.jenisKitas;
 
 import id.perumdamts.kepegawaian.entities.master.JenisKitas;
-import lombok.Data;
 
 import java.util.List;
 
-@Data
-public class JenisKitasResponse {
-    private Long id;
-    private String nama;
-
+public record JenisKitasResponse(
+        Long id,
+        String nama
+) {
     public static JenisKitasResponse from(JenisKitas entity) {
-        JenisKitasResponse response = new JenisKitasResponse();
-        response.setId(entity.getId());
-        response.setNama(entity.getNama());
-        return response;
+        return new JenisKitasResponse(entity.getId(), entity.getNama());
     }
 
     public static List<JenisKitasResponse> from(List<JenisKitas> entities) {

@@ -11,17 +11,15 @@ public final class CutiJenisJooqMapper {
 
     public static CutiJenisResponse mapToResponse(Record record) {
         if (record == null) return null;
-        CutiJenisResponse response = new CutiJenisResponse();
-        response.setId(record.get(CUTI_JENIS.ID));
-        response.setNama(record.get(CUTI_JENIS.NAMA));
-        response.setMaxHari(record.get(CUTI_JENIS.MAX_HARI));
-        response.setPotongKuotaTahunan(record.get(CUTI_JENIS.POTONG_KUOTA_TAHUNAN));
-        if (record.get("parent_id") != null) {
-            CutiJenisMiniResponse mini = new CutiJenisMiniResponse();
-            mini.setId((Long) record.get("parent_id"));
-            mini.setNama((String) record.get("parent_nama"));
-            response.setParent(mini);
-        }
-        return response;
+        CutiJenisMiniResponse parent = record.get("parent_id") != null
+                ? new CutiJenisMiniResponse((Long) record.get("parent_id"), (String) record.get("parent_nama"))
+                : null;
+        return new CutiJenisResponse(
+                record.get(CUTI_JENIS.ID),
+                parent,
+                record.get(CUTI_JENIS.NAMA),
+                record.get(CUTI_JENIS.MAX_HARI),
+                record.get(CUTI_JENIS.POTONG_KUOTA_TAHUNAN)
+        );
     }
 }

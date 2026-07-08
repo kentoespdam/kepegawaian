@@ -54,7 +54,7 @@ public class CutiPengajuanValidator {
                 .orElseThrow(() -> new RuntimeException("Unknown Jenis Cuti"));
 
         CutiKuotaSisa kuotaSisa = cutiKuotaQueryRepository.findByPegawai(request.getPegawaiId(), request.getTanggalMulai().getYear());
-        int totalSisaKuota = kuotaSisa.getSisaCutiTahunIni() + kuotaSisa.getSisaCutiTahunLalu();
+        int totalSisaKuota = kuotaSisa.sisaCutiTahunIni() + kuotaSisa.sisaCutiTahunLalu();
 
         if (Boolean.TRUE.equals(cutiJenis.getPotongKuotaTahunan())) {
             MinimalCutiRule.check(request.getJumlahHariKerja(), totalSisaKuota);

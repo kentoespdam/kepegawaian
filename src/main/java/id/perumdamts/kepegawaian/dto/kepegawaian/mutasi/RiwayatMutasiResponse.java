@@ -10,78 +10,62 @@ import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiMiniResponse;
 import id.perumdamts.kepegawaian.entities.commons.EJenisMutasi;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatMutasi;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
-@Data
-public class RiwayatMutasiResponse {
-    private Long id;
-    private String nipam;
-    private String nama;
-    private RiwayatSkResponse skMutasi;
-    @Enumerated(EnumType.ORDINAL)
-    private EJenisMutasi jenisMutasi;
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate tmtBerlaku;
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate tanggalBerakhir;
-    private GolonganResponse golongan;
-    private OrganisasiMiniResponse organisasi;
-    private String namaOrganisasi;
-    private JabatanMiniResponse jabatan;
-    private String namaJabatan;
-    private ProfesiMiniResponse profesi;
-    private String namaProfesi;
-    private GolonganResponse golonganLama;
-    private OrganisasiMiniResponse organisasiLama;
-    private String namaOrganisasiLama;
-    private JabatanMiniResponse jabatanLama;
-    private String namaJabatanLama;
-    private ProfesiMiniResponse profesiLama;
-    private String namaProfesiLama;
-    private String notes;
-
+public record RiwayatMutasiResponse(
+        Long id,
+        String nipam,
+        String nama,
+        RiwayatSkResponse skMutasi,
+        EJenisMutasi jenisMutasi,
+        @JsonSerialize(using = LocalDateSerializer.class)
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        LocalDate tmtBerlaku,
+        @JsonSerialize(using = LocalDateSerializer.class)
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        LocalDate tanggalBerakhir,
+        GolonganResponse golongan,
+        OrganisasiMiniResponse organisasi,
+        String namaOrganisasi,
+        JabatanMiniResponse jabatan,
+        String namaJabatan,
+        ProfesiMiniResponse profesi,
+        String namaProfesi,
+        GolonganResponse golonganLama,
+        OrganisasiMiniResponse organisasiLama,
+        String namaOrganisasiLama,
+        JabatanMiniResponse jabatanLama,
+        String namaJabatanLama,
+        ProfesiMiniResponse profesiLama,
+        String namaProfesiLama,
+        String notes
+) {
     public static RiwayatMutasiResponse from(RiwayatMutasi entity) {
-        RiwayatMutasiResponse response = new RiwayatMutasiResponse();
-        response.setId(entity.getId());
-        response.setNipam(entity.getNipam());
-        response.setNama(entity.getNama());
-        response.setJenisMutasi(entity.getJenisMutasi());
-        if (Objects.nonNull(entity.getRiwayatSk()))
-            response.setSkMutasi(RiwayatSkResponse.from(entity.getRiwayatSk()));
-        response.setTmtBerlaku(entity.getTmtBerlaku());
-        response.setTanggalBerakhir(entity.getTanggalBerakhir());
-        if (Objects.nonNull(entity.getGolongan())) {
-            response.setGolongan(GolonganResponse.from(entity.getGolongan()));
-            response.setGolonganLama(GolonganResponse.from(entity.getGolonganLama()));
-        }
-        if (Objects.nonNull(entity.getOrganisasi()))
-            response.setOrganisasi(OrganisasiMiniResponse.from(entity.getOrganisasi()));
-
-        response.setNamaOrganisasi(entity.getNamaOrganisasi());
-        if (Objects.nonNull(entity.getOrganisasiLama()))
-            response.setJabatan(JabatanMiniResponse.from(entity.getJabatan()));
-        response.setNamaJabatan(entity.getNamaJabatan());
-        if (Objects.nonNull(entity.getProfesi()))
-            response.setProfesi(ProfesiMiniResponse.from(entity.getProfesi()));
-        response.setNamaProfesi(entity.getNamaProfesi());
-        if (Objects.nonNull(entity.getOrganisasiLama()))
-            response.setOrganisasiLama(OrganisasiMiniResponse.from(entity.getOrganisasiLama()));
-        response.setNamaOrganisasiLama(entity.getNamaOrganisasiLama());
-        if (Objects.nonNull(entity.getJabatanLama()))
-            response.setJabatanLama(JabatanMiniResponse.from(entity.getJabatanLama()));
-        response.setNamaJabatanLama(entity.getNamaJabatanLama());
-        if (Objects.nonNull(entity.getProfesiLama()))
-            response.setProfesiLama(ProfesiMiniResponse.from(entity.getProfesiLama()));
-        response.setNamaProfesiLama(entity.getNamaProfesiLama());
-
-        response.setNotes(entity.getNotes());
-        return response;
+        return new RiwayatMutasiResponse(
+                entity.getId(),
+                entity.getNipam(),
+                entity.getNama(),
+                Objects.nonNull(entity.getRiwayatSk()) ? RiwayatSkResponse.from(entity.getRiwayatSk()) : null,
+                entity.getJenisMutasi(),
+                entity.getTmtBerlaku(),
+                entity.getTanggalBerakhir(),
+                Objects.nonNull(entity.getGolongan()) ? GolonganResponse.from(entity.getGolongan()) : null,
+                Objects.nonNull(entity.getOrganisasi()) ? OrganisasiMiniResponse.from(entity.getOrganisasi()) : null,
+                entity.getNamaOrganisasi(),
+                Objects.nonNull(entity.getJabatan()) ? JabatanMiniResponse.from(entity.getJabatan()) : null,
+                entity.getNamaJabatan(),
+                Objects.nonNull(entity.getProfesi()) ? ProfesiMiniResponse.from(entity.getProfesi()) : null,
+                entity.getNamaProfesi(),
+                Objects.nonNull(entity.getGolonganLama()) ? GolonganResponse.from(entity.getGolonganLama()) : null,
+                Objects.nonNull(entity.getOrganisasiLama()) ? OrganisasiMiniResponse.from(entity.getOrganisasiLama()) : null,
+                entity.getNamaOrganisasiLama(),
+                Objects.nonNull(entity.getJabatanLama()) ? JabatanMiniResponse.from(entity.getJabatanLama()) : null,
+                entity.getNamaJabatanLama(),
+                Objects.nonNull(entity.getProfesiLama()) ? ProfesiMiniResponse.from(entity.getProfesiLama()) : null,
+                entity.getNamaProfesiLama(),
+                entity.getNotes()
+        );
     }
 }
