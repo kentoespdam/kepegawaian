@@ -13,6 +13,7 @@ import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.entities.master.Profesi;
 import id.perumdamts.kepegawaian.exceptions.ConflictException;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
+import id.perumdamts.kepegawaian.mapper.kepegawaian.riwayatMutasi.RiwayatMutasiMapper;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.jpa.RiwayatMutasiRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.GolonganRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JabatanRepository;
@@ -55,7 +56,7 @@ public class RiwayatMutasiCommandService {
             Golongan golonganLama = golonganRepository.findById(request.getGolonganLamaId())
                     .orElseThrow(() -> new NotFoundException("Unknown Golongan"));
 
-            entity = RiwayatMutasiPostRequest.toEntity(request, riwayatSk, golonganBaru, golonganLama);
+            entity = RiwayatMutasiMapper.toEntity(request, riwayatSk, golonganBaru, golonganLama);
             pegawaiWriteback.writebackGolongan(riwayatSk.getPegawai(), riwayatSk);
         } else {
             Organisasi organisasiBaru = organisasiRepository.findById(request.getOrganisasiId())
@@ -71,7 +72,7 @@ public class RiwayatMutasiCommandService {
             Profesi profesiLama = profesiRepository.findById(request.getProfesiLamaId())
                     .orElseThrow(() -> new NotFoundException("Unknown Profesi"));
 
-            entity = RiwayatMutasiPostRequest.toEntity(request, riwayatSk, organisasiBaru, jabatanBaru, profesiBaru, organisasiLama, jabatanLama, profesiLama);
+            entity = RiwayatMutasiMapper.toEntity(request, riwayatSk, organisasiBaru, jabatanBaru, profesiBaru, organisasiLama, jabatanLama, profesiLama);
             pegawaiWriteback.writebackJabatan(riwayatSk.getPegawai(), riwayatSk, organisasiBaru, jabatanBaru, profesiBaru);
         }
 
@@ -112,7 +113,7 @@ public class RiwayatMutasiCommandService {
             Golongan golonganLama = golonganRepository.findById(request.getGolonganLamaId())
                     .orElseThrow(() -> new NotFoundException("Unknown Golongan"));
 
-            entity = RiwayatMutasiPutRequest.toEntity(riwayatMutasi, riwayatSk, request, golonganBaru, golonganLama);
+            entity = RiwayatMutasiMapper.updateEntity(riwayatMutasi, riwayatSk, request, golonganBaru, golonganLama);
             pegawaiWriteback.writebackGolongan(riwayatSk.getPegawai(), riwayatSk);
         } else {
             Organisasi organisasiBaru = organisasiRepository.findById(request.getOrganisasiId())
@@ -128,7 +129,7 @@ public class RiwayatMutasiCommandService {
             Profesi profesiLama = profesiRepository.findById(request.getProfesiLamaId())
                     .orElseThrow(() -> new NotFoundException("Unknown Profesi"));
 
-            entity = RiwayatMutasiPutRequest.toEntity(riwayatMutasi, riwayatSk, request, organisasiBaru, jabatanBaru, profesiBaru, organisasiLama, jabatanLama, profesiLama);
+            entity = RiwayatMutasiMapper.updateEntity(riwayatMutasi, riwayatSk, request, organisasiBaru, jabatanBaru, profesiBaru, organisasiLama, jabatanLama, profesiLama);
             pegawaiWriteback.writebackJabatan(riwayatSk.getPegawai(), riwayatSk, organisasiBaru, jabatanBaru, profesiBaru);
         }
 

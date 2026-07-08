@@ -4,6 +4,7 @@ import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.master.grade.GradeIndexQuery;
 import id.perumdamts.kepegawaian.dto.master.grade.GradeListResponse;
 import id.perumdamts.kepegawaian.dto.master.grade.GradeQuery;
+import id.perumdamts.kepegawaian.mapper.master.grade.GradeJooqMapper;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -12,8 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
-
-import id.perumdamts.kepegawaian.mapper.master.grade.GradeJooqMapper;
 
 import java.util.List;
 import java.util.Map;

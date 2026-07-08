@@ -1,18 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.master;
 
-import id.perumdamts.kepegawaian.dto.commons.CustomResult;
-import id.perumdamts.kepegawaian.dto.commons.DeletedResult;
-import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
-import id.perumdamts.kepegawaian.dto.commons.ListResult;
-import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
-import id.perumdamts.kepegawaian.dto.commons.PageResult;
-import id.perumdamts.kepegawaian.dto.commons.SavedResult;
-import id.perumdamts.kepegawaian.dto.commons.SingleResult;
-import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanIndexQuery;
-import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanListResponse;
-import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanPostRequest;
-import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanPutRequest;
-import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanQuery;
+import id.perumdamts.kepegawaian.dto.commons.*;
+import id.perumdamts.kepegawaian.dto.master.jabatan.*;
 import id.perumdamts.kepegawaian.services.master.jabatan.JabatanCommandService;
 import id.perumdamts.kepegawaian.services.master.jabatan.JabatanQueryService;
 import jakarta.validation.Valid;
@@ -22,8 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor

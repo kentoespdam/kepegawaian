@@ -1,8 +1,6 @@
 package id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import id.perumdamts.kepegawaian.entities.master.Golongan;
-import id.perumdamts.kepegawaian.entities.penggajian.DasarGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.DetailDasarGaji;
 import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import lombok.Data;

@@ -1,6 +1,5 @@
 package id.perumdamts.kepegawaian.mapper.profil.pelatihan;
 
-import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranRow;
 import id.perumdamts.kepegawaian.dto.profil.pelatihan.PelatihanDetail;
 import org.jooq.Record;
 import org.jooq.RecordMapper;

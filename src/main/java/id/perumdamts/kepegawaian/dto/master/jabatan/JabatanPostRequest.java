@@ -2,16 +2,12 @@ package id.perumdamts.kepegawaian.dto.master.jabatan;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
-import id.perumdamts.kepegawaian.entities.master.Level;
-import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
-
-import java.util.Objects;
 
 @Data
 public class JabatanPostRequest {

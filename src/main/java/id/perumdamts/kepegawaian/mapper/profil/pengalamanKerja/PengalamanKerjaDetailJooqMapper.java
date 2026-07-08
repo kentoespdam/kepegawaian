@@ -1,6 +1,5 @@
 package id.perumdamts.kepegawaian.mapper.profil.pengalamanKerja;
 
-import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranRow;
 import id.perumdamts.kepegawaian.dto.profil.pengalamanKerja.PengalamanKerjaDetail;
 import org.jooq.Record;
 import org.jooq.RecordMapper;

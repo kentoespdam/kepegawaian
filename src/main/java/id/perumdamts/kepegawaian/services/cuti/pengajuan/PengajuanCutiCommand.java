@@ -12,6 +12,7 @@ import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import id.perumdamts.kepegawaian.helpers.RedisHelper;
 import id.perumdamts.kepegawaian.helpers.cuti.CutiPeriodClassifier;
 import id.perumdamts.kepegawaian.helpers.cuti.WorkdayCalculator;
+import id.perumdamts.kepegawaian.mapper.cuti.pengajuan.CutiPegawaiMapper;
 import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiJenisRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiPegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.HariLiburRepository;
@@ -54,7 +55,7 @@ public class PengajuanCutiCommand {
                 .stream().map(TanggalHariLibur::getTanggal).collect(Collectors.toSet());
         int totalHariCuti = WorkdayCalculator.count(request.getTanggalMulai(), request.getTanggalSelesai(), holidays);
 
-        CutiPegawai entity = CutiPengajuanPostRequest.toEntity(request, pegawai, jenisCuti, subJenisCuti);
+        CutiPegawai entity = CutiPegawaiMapper.toEntity(request, pegawai, jenisCuti, subJenisCuti);
         entity.setJumlahHari(totalHariCuti);
         entity.setJumlahHariKerja(totalHariCuti);
 
@@ -89,7 +90,7 @@ public class PengajuanCutiCommand {
                 .stream().map(TanggalHariLibur::getTanggal).collect(Collectors.toSet());
         int totalHariCuti = WorkdayCalculator.count(request.getTanggalMulai(), request.getTanggalSelesai(), holidays);
 
-        CutiPegawai entity = CutiPengajuanPutRequest.toEntity(cutiPegawai, request, pegawai, jenisCuti, subJenisCuti);
+        CutiPegawai entity = CutiPegawaiMapper.updateEntity(cutiPegawai, request, pegawai, jenisCuti, subJenisCuti);
         entity.setJumlahHari(totalHariCuti);
         entity.setJumlahHariKerja(totalHariCuti);
 

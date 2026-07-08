@@ -4,6 +4,7 @@ import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiIndexQuery;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiListResponse;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiQuery;
+import id.perumdamts.kepegawaian.jooq.tables.Organisasi;
 import id.perumdamts.kepegawaian.mapper.master.organisasi.OrganisasiJooqMapper;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
@@ -14,13 +15,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
-import id.perumdamts.kepegawaian.jooq.tables.Organisasi;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static id.perumdamts.kepegawaian.jooq.tables.Organisasi.ORGANISASI;
 

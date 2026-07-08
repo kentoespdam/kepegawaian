@@ -3,8 +3,8 @@ package id.perumdamts.kepegawaian.dto.penggajian.gajiTunjangan;
 import id.perumdamts.kepegawaian.dto.master.golongan.GolonganResponse;
 import id.perumdamts.kepegawaian.dto.master.level.LevelResponse;
 import id.perumdamts.kepegawaian.entities.commons.EJenisTunjangan;
-import id.perumdamts.kepegawaian.mapper.master.level.LevelMapper;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiTunjangan;
+import id.perumdamts.kepegawaian.mapper.master.level.LevelMapper;
 
 import java.util.Objects;
 

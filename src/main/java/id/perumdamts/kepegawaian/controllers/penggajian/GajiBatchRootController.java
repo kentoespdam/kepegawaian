@@ -1,11 +1,6 @@
 package id.perumdamts.kepegawaian.controllers.penggajian;
 
-import id.perumdamts.kepegawaian.dto.commons.CustomResult;
-import id.perumdamts.kepegawaian.dto.commons.DeletedResult;
-import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
-import id.perumdamts.kepegawaian.dto.commons.ListResult;
-import id.perumdamts.kepegawaian.dto.commons.SavedResult;
-import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
+import id.perumdamts.kepegawaian.dto.commons.*;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRoot.GajiBatchRootIndexQuery;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRoot.GajiBatchRootPostRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRoot.GajiBatchRootProcessRequest;

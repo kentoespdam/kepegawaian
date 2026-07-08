@@ -10,8 +10,8 @@ import id.perumdamts.kepegawaian.dto.master.golongan.GolonganResponse;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiMiniResponse;
 import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiResponse;
-import id.perumdamts.kepegawaian.mapper.pegawai.pegawai.PegawaiReadMapper;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatTerminasi;
+import id.perumdamts.kepegawaian.mapper.pegawai.pegawai.PegawaiReadMapper;
 
 import java.time.LocalDate;
 import java.util.List;

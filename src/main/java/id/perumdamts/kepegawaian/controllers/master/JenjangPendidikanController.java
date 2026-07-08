@@ -1,13 +1,6 @@
 package id.perumdamts.kepegawaian.controllers.master;
 
-import id.perumdamts.kepegawaian.dto.commons.CustomResult;
-import id.perumdamts.kepegawaian.dto.commons.DeletedResult;
-import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
-import id.perumdamts.kepegawaian.dto.commons.ListResult;
-import id.perumdamts.kepegawaian.dto.commons.PageResult;
-import id.perumdamts.kepegawaian.dto.commons.SavedResult;
-import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
-import id.perumdamts.kepegawaian.dto.commons.SingleResult;
+import id.perumdamts.kepegawaian.dto.commons.*;
 import id.perumdamts.kepegawaian.dto.master.jenjangPendidikan.JenjangPendidikanIndexQuery;
 import id.perumdamts.kepegawaian.dto.master.jenjangPendidikan.JenjangPendidikanPostRequest;
 import id.perumdamts.kepegawaian.dto.master.jenjangPendidikan.JenjangPendidikanPutRequest;

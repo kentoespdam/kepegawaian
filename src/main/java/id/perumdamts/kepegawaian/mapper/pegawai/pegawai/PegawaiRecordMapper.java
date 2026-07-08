@@ -1,9 +1,9 @@
 package id.perumdamts.kepegawaian.mapper.pegawai.pegawai;
 
 import id.perumdamts.kepegawaian.dto.master.golongan.GolonganResponse;
+import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.level.LevelResponse;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiMiniResponse;
-import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;
 import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiListResponse;
 import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiResponse;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;

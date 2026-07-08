@@ -6,9 +6,9 @@ import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPostRequest;
 import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
 import id.perumdamts.kepegawaian.entities.cuti.CutiJenis;
 import id.perumdamts.kepegawaian.helpers.cuti.MinimalCutiRule;
+import id.perumdamts.kepegawaian.repositories.cuti.jooq.CutiKuotaQueryRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiJenisRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiPegawaiRepository;
-import id.perumdamts.kepegawaian.repositories.cuti.jooq.CutiKuotaQueryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

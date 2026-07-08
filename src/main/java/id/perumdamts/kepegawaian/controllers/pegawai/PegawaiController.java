@@ -1,12 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.pegawai;
 
 import id.perumdamts.kepegawaian.config.PegawaiProperties;
-import id.perumdamts.kepegawaian.dto.commons.CustomResult;
-import id.perumdamts.kepegawaian.dto.commons.DeletedResult;
-import id.perumdamts.kepegawaian.dto.commons.ListResult;
-import id.perumdamts.kepegawaian.dto.commons.PageResult;
-import id.perumdamts.kepegawaian.dto.commons.SavedResult;
-import id.perumdamts.kepegawaian.dto.commons.SingleResult;
+import id.perumdamts.kepegawaian.dto.commons.*;
 import id.perumdamts.kepegawaian.dto.pegawai.pegawai.*;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.services.pegawai.pegawai.PegawaiCommandService;

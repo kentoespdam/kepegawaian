@@ -2,8 +2,6 @@ package id.perumdamts.kepegawaian.dto.penggajian.gajiTunjangan;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.commons.EJenisTunjangan;
-import id.perumdamts.kepegawaian.entities.master.Golongan;
-import id.perumdamts.kepegawaian.entities.master.Level;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiTunjangan;
 import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.persistence.EnumType;

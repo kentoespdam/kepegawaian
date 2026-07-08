@@ -1,10 +1,9 @@
 package id.perumdamts.kepegawaian.repositories.master.jooq;
 
+import id.perumdamts.kepegawaian.jooq.tables.Jabatan;
 import org.jooq.Field;
 
 import static id.perumdamts.kepegawaian.jooq.tables.Jabatan.JABATAN;
-
-import id.perumdamts.kepegawaian.jooq.tables.Jabatan;
 
 public final class JabatanSelects {
     private JabatanSelects() {}

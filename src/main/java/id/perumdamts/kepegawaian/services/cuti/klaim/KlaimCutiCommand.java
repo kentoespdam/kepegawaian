@@ -16,6 +16,8 @@ import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.helpers.DateHelper;
 import id.perumdamts.kepegawaian.helpers.RedisHelper;
 import id.perumdamts.kepegawaian.helpers.cuti.CutiPeriodClassifier;
+import id.perumdamts.kepegawaian.mapper.cuti.approval.CutiApprovalMapper;
+import id.perumdamts.kepegawaian.mapper.cuti.pengajuan.CutiPegawaiMapper;
 import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiApprovalChainRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiKlaimDetailRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiPegawaiRepository;
@@ -50,7 +52,7 @@ public class KlaimCutiCommand {
     @Transactional
     public SavedStatus<?> save(CutiPengajuanKlaimPostRequest request) {
         CutiPegawai validCuti = cutiKlaimValidator.validateKlaim(request);
-        CutiPegawai entity = CutiPengajuanKlaimPostRequest.toEntity(validCuti, request);
+        CutiPegawai entity = CutiPegawaiMapper.toEntity(validCuti, request);
         entity.setPicSaatIni(new Jabatan(supervisorSdm));
 
         List<LocalDate> working = setWorkingDays(request.getListHari(), entity);
@@ -91,7 +93,7 @@ public class KlaimCutiCommand {
             throw new RuntimeException("Approver Pegawai not found");
         }
 
-        CutiApproval entity = CutiApprovalPostRequest.toEntity(request, cutiPegawai, approver);
+        CutiApproval entity = CutiApprovalMapper.toEntity(request, cutiPegawai, approver);
         cutiPegawai.setApprovalCutiStatus(request.getApprovalStatus());
 
         if (!request.getApprovalStatus().equals(EApprovalCutiStatus.APPROVED)) {

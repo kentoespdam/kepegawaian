@@ -18,7 +18,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 import static id.perumdamts.kepegawaian.jooq.tables.Jabatan.JABATAN;

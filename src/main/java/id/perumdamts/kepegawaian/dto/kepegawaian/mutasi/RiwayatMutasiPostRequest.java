@@ -7,13 +7,6 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkPostRequest;
 import id.perumdamts.kepegawaian.entities.commons.EJenisMutasi;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatMutasi;
-import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
-import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatTerminasi;
-import id.perumdamts.kepegawaian.entities.master.Golongan;
-import id.perumdamts.kepegawaian.entities.master.Jabatan;
-import id.perumdamts.kepegawaian.entities.master.Organisasi;
-import id.perumdamts.kepegawaian.entities.master.Profesi;
-import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -22,7 +15,6 @@ import lombok.EqualsAndHashCode;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -60,70 +52,4 @@ public class RiwayatMutasiPostRequest extends RiwayatSkPostRequest {
                 .build();
     }
 
-    public static RiwayatMutasi toEntity(RiwayatMutasiPostRequest request, RiwayatSk riwayatSk) {
-        RiwayatMutasi entity = new RiwayatMutasi();
-        entity.setNipam(riwayatSk.getNipam());
-        entity.setNama(riwayatSk.getNama());
-        entity.setRiwayatSk(riwayatSk);
-        entity.setPegawai(riwayatSk.getPegawai());
-        entity.setTmtBerlaku(request.getTmtBerlaku());
-        entity.setTanggalBerakhir(request.getTanggalBerakhir());
-        entity.setJenisMutasi(request.getJenisMutasi());
-        entity.setNotes(request.getNotes());
-        return entity;
-    }
-
-    public static RiwayatMutasi toEntity(RiwayatMutasiPostRequest request, RiwayatSk riwayatSk, Golongan golongan, Golongan golonganLama) {
-        RiwayatMutasi entity = toEntity(request, riwayatSk);
-        entity.setGolongan(golongan);
-        entity.setNamaGolongan(golongan.getPangkat() + " - " + golongan.getGolongan());
-        entity.setGolonganLama(golonganLama);
-        entity.setNamaGolonganLama(golonganLama.getPangkat() + " - " + golonganLama.getGolongan());
-        return entity;
-    }
-
-    public static RiwayatMutasi toEntity(RiwayatMutasiPostRequest request, RiwayatSk riwayatSk, Organisasi organisasi, Jabatan jabatan, Profesi profesi, Organisasi organisasiLama, Jabatan jabatanLama, Profesi profesiLama) {
-        RiwayatMutasi entity = toEntity(request, riwayatSk);
-        if (Objects.nonNull(riwayatSk.getGolongan())) {
-            entity.setGolongan(riwayatSk.getGolongan());
-            entity.setNamaGolongan(riwayatSk.getGolongan().getPangkat() + " - " + riwayatSk.getGolongan().getGolongan());
-            entity.setGolonganLama(riwayatSk.getGolongan());
-            entity.setNamaGolonganLama(riwayatSk.getGolongan().getPangkat() + " - " + riwayatSk.getGolongan().getGolongan());
-        }
-
-        entity.setOrganisasi(organisasi);
-        entity.setNamaOrganisasi(organisasi.getNama());
-        entity.setJabatan(jabatan);
-        entity.setNamaJabatan(jabatan.getNama());
-        entity.setProfesi(profesi);
-        entity.setNamaProfesi(profesi.getNama());
-
-        entity.setOrganisasiLama(organisasiLama);
-        entity.setNamaOrganisasiLama(organisasiLama.getNama());
-        entity.setJabatanLama(jabatanLama);
-        entity.setNamaJabatanLama(jabatanLama.getNama());
-        entity.setProfesiLama(profesiLama);
-        entity.setNamaProfesiLama(profesiLama.getNama());
-        return entity;
-    }
-
-    public static RiwayatMutasi toEntity(RiwayatTerminasi riwayatTerminasi) {
-        RiwayatMutasi entity = new RiwayatMutasi();
-        Pegawai pegawai = riwayatTerminasi.getPegawai();
-        entity.setPegawai(pegawai);
-        entity.setNipam(pegawai.getNipam());
-        entity.setNama(pegawai.getBiodata().getNama());
-        entity.setTmtBerlaku(riwayatTerminasi.getTanggalTerminasi());
-        entity.setTanggalBerakhir(riwayatTerminasi.getTanggalTerminasi());
-        entity.setJenisMutasi(EJenisMutasi.TERMINASI);
-        entity.setNotes(riwayatTerminasi.getNotes());
-
-        entity.setOrganisasiLama(pegawai.getOrganisasi());
-        entity.setNamaOrganisasiLama(pegawai.getOrganisasi().getNama());
-        entity.setJabatanLama(pegawai.getJabatan());
-        entity.setNamaJabatanLama(pegawai.getJabatan().getNama());
-        entity.setProfesiLama(pegawai.getProfesi());
-        entity.setNamaProfesiLama(pegawai.getProfesi().getNama());
-        return entity;
-    }
 }

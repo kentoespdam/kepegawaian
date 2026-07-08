@@ -55,3 +55,17 @@ Bagian dari [CONTEXT-MAP.md](../../CONTEXT-MAP.md). Baca file ini saat mengerjak
 - **`ProfileUpdateService` interface single-impl + read masih JPA Specification**: interface (20 baris, 1 impl) dibuang per decisions-cuti §11 — `ProfileUpdateServiceImpl` di-rename jadi `ProfileUpdateService`, 6 injector tak berubah teksnya (`kepegawaian-mfq`). Read-side `ProfileUpdate` masih pakai `repository.findAll(spec, pageable)` — **belum** migrasi JOOQ; dijadwalkan terpisah (`kepegawaian-996`, blocked oleh `mfq`).
 
 - **Pembersihan DTO mati (master/profil/pegawai)**: hapus **hanya** bila blast-radius kosong (verifikasi via `gitnexus_impact(direction:"upstream")` + grep). Jalur tulis dipertahankan. Eksekusi di **wave paling akhir** setelah Command/Query kepegawaian beres.
+
+---
+
+## Interface Cleanup Lintas-Modul
+
+- **AuthService, RevInfoService, UserService — interface single-impl dibuang** (grilling 2026-07-08, sesi improve-codebase-architecture): ketiga service ini masih punya interface + Impl (violasi ADR-0007). 
+  - `AuthService` + `AuthServiceImpl` → collapse jadi `AuthService` (konkret `@Service`), 3 consumer tak berubah
+  - `RevInfoService` + `RevInfoServiceImpl` → collapse jadi `RevInfoService` (konkret `@Service`), 3 consumer tak berubah
+  - `UserService` + `UserServiceImpl` → collapse jadi `UserService` (konkret `@Service`), 1 consumer tak berubah
+  - `ProfileUpdateApprovalService` **dipertahankan** sebagai interface — punya 2 implementasi legitimate (`Pendidikan`, `Keluarga`).
+
+- **Appwrite REST client extraction — `AppwriteClient` typed adapter** (grilling 2026-07-08): AuthService dan JwtTokenService sebelumnya memanggil REST API Appwrite langsung via RestClient dengan duplikasi header dan URL concatenation di 6 titik berbeda. Diekstrak ke `AppwriteClient` (`config/appwrite/AppwriteClient.java`) + `AppwriteProperties` (`@ConfigurationProperties`). Detail: [ADR-0029](../adr/0029-appwriteclient-typed-adapter.md).
+
+- **CustomResult.optional(Optional<T>) — type-safe handler untuk Optional return** (grilling 2026-07-08): `CustomResult.any(T data)` sebelumnya punya `instanceof Optional` hack yang tidak type-safe. Ditambahkan method `optional(Optional<T>)` yang clean tanpa `instanceof`, langsung `orElse(null)` → SingleResult otomatis return 404 untuk empty. `any()` diperbaiki pakai Java 21 pattern matching. Issue follow-up: [kepegawaian-vf5](../beads/issues/kepegawaian-vf5) untuk migrasi caller controller dari `.any()` ke `.optional()`.

@@ -1,9 +1,6 @@
 package id.perumdamts.kepegawaian.services.kepegawaian.terminasi;
 
 import id.perumdamts.kepegawaian.dto.kepegawaian.lampiran.LampiranSkPostRequest;
-import id.perumdamts.kepegawaian.dto.kepegawaian.mutasi.RiwayatMutasiPostRequest;
-import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatKontrak.RiwayatKontrakPostRequest;
-import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkPostRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiPostRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiPutRequest;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
@@ -17,6 +14,10 @@ import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.exceptions.ConflictException;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
+import id.perumdamts.kepegawaian.mapper.kepegawaian.riwayatKontrak.RiwayatKontrakMapper;
+import id.perumdamts.kepegawaian.mapper.kepegawaian.riwayatMutasi.RiwayatMutasiMapper;
+import id.perumdamts.kepegawaian.mapper.kepegawaian.riwayatSk.RiwayatSkMapper;
+import id.perumdamts.kepegawaian.mapper.kepegawaian.terminasi.RiwayatTerminasiMapper;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.jpa.*;
 import id.perumdamts.kepegawaian.repositories.master.jpa.AlasanBerhentiRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.GolonganRepository;
@@ -66,7 +67,7 @@ public class RiwayatTerminasiCommandService {
                 .orElseThrow(() -> new NotFoundException("Unknown Jabatan"));
 
         // 1. Save SK
-        RiwayatSk skEntity = RiwayatSkPostRequest.toEntity(request, pegawai, golongan);
+        RiwayatSk skEntity = RiwayatSkMapper.toEntity(request, pegawai, golongan);
         RiwayatSk savedSk = skRepository.save(skEntity);
 
         // Update Pegawai
@@ -85,16 +86,16 @@ public class RiwayatTerminasiCommandService {
         }
 
         // 2. Save Terminasi
-        RiwayatTerminasi terminasi = RiwayatTerminasiPostRequest.toEntity(request, alasanBerhenti, savedSk, golongan, jabatan, organisasi);
+        RiwayatTerminasi terminasi = RiwayatTerminasiMapper.toEntity(request, alasanBerhenti, savedSk, golongan, jabatan, organisasi);
         RiwayatTerminasi savedTerminasi = repository.save(terminasi);
 
         // 3. Save Mutasi
-        RiwayatMutasi riwayatMutasi = RiwayatMutasiPostRequest.toEntity(savedTerminasi);
+        RiwayatMutasi riwayatMutasi = RiwayatMutasiMapper.toEntity(savedTerminasi);
         riwayatMutasiRepository.save(riwayatMutasi);
 
         // 4. Save Kontrak if pegawai status is KONTRAK
         if (pegawai.getStatusPegawai() == EStatusPegawai.KONTRAK) {
-            RiwayatKontrak kontrakEntity = RiwayatKontrakPostRequest.toEntity(request, pegawai);
+            RiwayatKontrak kontrakEntity = RiwayatKontrakMapper.toEntity(request, pegawai);
             RiwayatKontrak savedKontrak = kontrakRepository.save(kontrakEntity);
             updateKontrakLatest(savedKontrak);
         }
@@ -150,7 +151,7 @@ public class RiwayatTerminasiCommandService {
         }
 
         // Update Terminasi
-        RiwayatTerminasi entity = RiwayatTerminasiPutRequest.toEntity(request, terminasi, alasanTerminasi, savedSk, golongan, jabatan, organisasi);
+        RiwayatTerminasi entity = RiwayatTerminasiMapper.updateEntity(request, terminasi, alasanTerminasi, savedSk, golongan, jabatan, organisasi);
         return repository.save(entity);
     }
 

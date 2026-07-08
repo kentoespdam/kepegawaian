@@ -1,19 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.master;
 
-import id.perumdamts.kepegawaian.dto.commons.CustomResult;
-import id.perumdamts.kepegawaian.dto.commons.DeletedResult;
-import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
-import id.perumdamts.kepegawaian.dto.commons.ListResult;
-import id.perumdamts.kepegawaian.dto.commons.PageResult;
-import id.perumdamts.kepegawaian.dto.commons.SavedResult;
-import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
-import id.perumdamts.kepegawaian.dto.commons.SingleResult;
-import id.perumdamts.kepegawaian.dto.master.sanksi.PatchSanksiJenisSpRequest;
-import id.perumdamts.kepegawaian.dto.master.sanksi.SanksiIndexQuery;
-import id.perumdamts.kepegawaian.dto.master.sanksi.SanksiJenisSpList;
-import id.perumdamts.kepegawaian.dto.master.sanksi.SanksiPostRequest;
-import id.perumdamts.kepegawaian.dto.master.sanksi.SanksiPutRequest;
-import id.perumdamts.kepegawaian.dto.master.sanksi.SanksiQuery;
+import id.perumdamts.kepegawaian.dto.commons.*;
+import id.perumdamts.kepegawaian.dto.master.sanksi.*;
 import id.perumdamts.kepegawaian.services.master.sanksi.SanksiCommandService;
 import id.perumdamts.kepegawaian.services.master.sanksi.SanksiQueryService;
 import jakarta.validation.Valid;

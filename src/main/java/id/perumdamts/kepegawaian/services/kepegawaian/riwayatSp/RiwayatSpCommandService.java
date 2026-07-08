@@ -9,6 +9,7 @@ import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.exceptions.ConflictException;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
+import id.perumdamts.kepegawaian.mapper.kepegawaian.riwayatSp.RiwayatSpMapper;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.jpa.RiwayatSpRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JabatanRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JenisSpRepository;
@@ -47,7 +48,7 @@ public class RiwayatSpCommandService {
         JenisSp jenisSp = jenisSpRepository.findById(request.getJenisSpId())
                 .orElseThrow(() -> new NotFoundException("Unknown Jenis SP"));
 
-        RiwayatSp entity = RiwayatSpPostRequest.toEntity(request, jenisSp, pegawai, jabatan, organisasi);
+        RiwayatSp entity = RiwayatSpMapper.toEntity(request, jenisSp, pegawai, jabatan, organisasi);
         RiwayatSp entityWithFile = saveFile(entity, request);
         return repository.save(entityWithFile);
     }
@@ -65,7 +66,7 @@ public class RiwayatSpCommandService {
         JenisSp jenisSp = jenisSpRepository.findById(request.getJenisSpId())
                 .orElseThrow(() -> new NotFoundException("Unknown Jenis SP"));
 
-        RiwayatSp entity = RiwayatSpPutRequest.toEntity(riwayatSp, request, jenisSp, pegawai, jabatan, organisasi);
+        RiwayatSp entity = RiwayatSpMapper.updateEntity(riwayatSp, request, jenisSp, pegawai, jabatan, organisasi);
         RiwayatSp entityWithFile = saveFile(entity, request);
         return repository.save(entityWithFile);
     }

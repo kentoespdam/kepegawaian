@@ -1,8 +1,7 @@
 package id.perumdamts.kepegawaian.repositories.master.jooq;
 
-import org.jooq.Field;
-
 import id.perumdamts.kepegawaian.jooq.tables.Organisasi;
+import org.jooq.Field;
 
 import static id.perumdamts.kepegawaian.jooq.tables.Organisasi.ORGANISASI;
 

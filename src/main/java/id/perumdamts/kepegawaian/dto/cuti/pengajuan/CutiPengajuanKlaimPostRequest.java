@@ -1,8 +1,5 @@
 package id.perumdamts.kepegawaian.dto.cuti.pengajuan;
 
-import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
-import id.perumdamts.kepegawaian.entities.commons.EJenisPengajuanCuti;
-import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -34,21 +31,4 @@ public class CutiPengajuanKlaimPostRequest {
 
 
 
-    public static CutiPegawai toEntity(CutiPegawai cutiPegawai, CutiPengajuanKlaimPostRequest request) {
-        CutiPegawai entity = new CutiPegawai();
-        entity.setRefCuti(cutiPegawai);
-        entity.setPegawai(cutiPegawai.getPegawai());
-        entity.setNipam(cutiPegawai.getNipam());
-        entity.setNama(cutiPegawai.getNama());
-        entity.setPangkatGolongan(cutiPegawai.getPangkatGolongan());
-        entity.setOrganisasi(cutiPegawai.getOrganisasi());
-        entity.setJabatan(cutiPegawai.getJabatan());
-        entity.setJenisPengajuanCuti(EJenisPengajuanCuti.KLAIM_CUTI);
-        entity.setJenisCuti(cutiPegawai.getJenisCuti());
-        entity.setSubJenisCuti(cutiPegawai.getSubJenisCuti());
-        entity.setAlasan(request.getKeterangan());
-        entity.setApprovalCutiStatus(EApprovalCutiStatus.PENDING);
-        entity.setApprovalLevel(1);
-        return entity;
-    }
 }

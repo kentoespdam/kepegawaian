@@ -1,10 +1,6 @@
 package id.perumdamts.kepegawaian.controllers.profil;
 
-import id.perumdamts.kepegawaian.dto.commons.CustomResult;
-import id.perumdamts.kepegawaian.dto.commons.DeletedResult;
-import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
-import id.perumdamts.kepegawaian.dto.commons.SavedResult;
-import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
+import id.perumdamts.kepegawaian.dto.commons.*;
 import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaIndexQuery;
 import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaLampiranPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaPostRequest;
@@ -39,13 +35,13 @@ public class ProfilKeluargaController {
     @SuppressWarnings("unchecked")
     @PostMapping
     public ResponseEntity<SavedResult<Object>> save(@Valid @RequestBody ProfilKeluargaPostRequest request) {
-        return (ResponseEntity<SavedResult<Object>>) (ResponseEntity<?>) CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.create(request)));
+        return (ResponseEntity<?>) CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.create(request)));
     }
 
     @SuppressWarnings("unchecked")
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<Object>> update(@PathVariable Long id, @Valid @RequestBody ProfilKeluargaPutRequest request) {
-        return (ResponseEntity<SavedResult<Object>>) (ResponseEntity<?>) CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.update(id, request)));
+        return (ResponseEntity<?>) CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.update(id, request)));
     }
 
     @DeleteMapping("/{id}")

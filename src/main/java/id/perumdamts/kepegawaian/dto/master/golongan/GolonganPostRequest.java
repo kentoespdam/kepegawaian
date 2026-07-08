@@ -6,8 +6,6 @@ import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.util.List;
-
 @Data
 public class GolonganPostRequest {
     private String golongan;

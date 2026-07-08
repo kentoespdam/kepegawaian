@@ -11,6 +11,7 @@ import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.helpers.RedisHelper;
+import id.perumdamts.kepegawaian.mapper.cuti.approval.CutiApprovalMapper;
 import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiApprovalChainRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiApprovalRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiPegawaiRepository;
@@ -52,7 +53,7 @@ public class ApprovalCutiCommand {
             throw new RuntimeException("You are not allowed to approve this leave request");
         }
 
-        CutiApproval approvalEntity = CutiApprovalPostRequest.toEntity(request, leaveRequest, approver);
+        CutiApproval approvalEntity = CutiApprovalMapper.toEntity(request, leaveRequest, approver);
 
         switch (request.getApprovalStatus()) {
             case APPROVED, RETURNED -> doSaveAcceptReject(approvalEntity, leaveRequest);

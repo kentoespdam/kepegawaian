@@ -21,7 +21,6 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 import static id.perumdamts.kepegawaian.jooq.tables.Golongan.GOLONGAN;

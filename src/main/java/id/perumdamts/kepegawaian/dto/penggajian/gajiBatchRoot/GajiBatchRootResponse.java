@@ -10,7 +10,6 @@ import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchRoot;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 public record GajiBatchRootResponse(
         String id,

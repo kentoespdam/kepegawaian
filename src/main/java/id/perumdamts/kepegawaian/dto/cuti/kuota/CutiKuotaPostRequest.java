@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.entities.cuti.CutiKuota;
-import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -35,16 +34,5 @@ public class CutiKuotaPostRequest {
                 criteriaBuilder.equal(root.get("pegawai").get("id"), pegawaiId),
                 criteriaBuilder.equal(root.get("tahun"), tahun)
         );
-    }
-
-    public static CutiKuota toEntity(CutiKuotaPostRequest request, Pegawai pegawai) {
-        CutiKuota entity = new CutiKuota();
-        entity.setPegawai(pegawai);
-        entity.setTahun(request.getTahun());
-        entity.setKuota(request.getKuota());
-        entity.setKuotaTambahan(request.getKuotaTambahan());
-        entity.setSisaKuota(request.getSisaKuota());
-        entity.setExpired(request.getExpired());
-        return entity;
     }
 }

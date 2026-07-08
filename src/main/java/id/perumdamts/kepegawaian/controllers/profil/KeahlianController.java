@@ -1,10 +1,6 @@
 package id.perumdamts.kepegawaian.controllers.profil;
 
-import id.perumdamts.kepegawaian.dto.commons.CustomResult;
-import id.perumdamts.kepegawaian.dto.commons.DeletedResult;
-import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
-import id.perumdamts.kepegawaian.dto.commons.SavedResult;
-import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
+import id.perumdamts.kepegawaian.dto.commons.*;
 import id.perumdamts.kepegawaian.dto.profil.keahlian.KeahlianIndexQuery;
 import id.perumdamts.kepegawaian.dto.profil.keahlian.KeahlianLampiranPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.keahlian.KeahlianPostRequest;

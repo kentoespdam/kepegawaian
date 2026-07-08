@@ -2,13 +2,10 @@ package id.perumdamts.kepegawaian.dto.master.grade;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.master.Grade;
-import id.perumdamts.kepegawaian.entities.master.Level;
 import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.Min;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
-
-import java.util.List;
 
 @Data
 public class GradePostRequest {

@@ -10,6 +10,7 @@ import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.exceptions.ConflictException;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
+import id.perumdamts.kepegawaian.mapper.kepegawaian.riwayatSk.RiwayatSkMapper;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.jpa.RiwayatSkRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.GolonganRepository;
 import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
@@ -43,7 +44,7 @@ public class RiwayatSkCommandService implements SkBootstrapPort {
             throw new ConflictException("Riwayat SK is Exists");
         }
 
-        RiwayatSk entity = RiwayatSkPostRequest.toEntity(request, pegawai, golongan);
+        RiwayatSk entity = RiwayatSkMapper.toEntity(request, pegawai, golongan);
         RiwayatSk save = repository.save(entity);
         if (request.getUpdateMaster()) {
             this.updatePegawai(request, pegawai, save, golongan);
@@ -61,7 +62,7 @@ public class RiwayatSkCommandService implements SkBootstrapPort {
         Golongan golongan = golonganRepository.findById(request.getGolonganId())
                 .orElse(null);
 
-        RiwayatSk entity = RiwayatSkPutRequest.toEntity(riwayatSk, request, pegawai, golongan);
+        RiwayatSk entity = RiwayatSkMapper.updateEntity(riwayatSk, request, pegawai, golongan);
         RiwayatSk save = repository.save(entity);
         if (request.getUpdateMaster()) {
             this.updatePegawai(request, pegawai, save, golongan);

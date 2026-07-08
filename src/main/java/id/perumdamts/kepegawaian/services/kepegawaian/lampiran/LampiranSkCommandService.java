@@ -7,6 +7,7 @@ import id.perumdamts.kepegawaian.entities.kepegawaian.LampiranSk;
 import id.perumdamts.kepegawaian.exceptions.BadRequestException;
 import id.perumdamts.kepegawaian.exceptions.ConflictException;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
+import id.perumdamts.kepegawaian.mapper.kepegawaian.lampiran.LampiranSkMapper;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.jpa.LampiranSkRepository;
 import id.perumdamts.kepegawaian.utils.FileUploadUtil;
 import id.perumdamts.kepegawaian.utils.UploadResultUtil;
@@ -33,7 +34,7 @@ public class LampiranSkCommandService {
         if (!uploadedFile.isSuccess()) {
             throw new BadRequestException(uploadedFile.getMessage());
         }
-        LampiranSk entity = LampiranSkPostRequest.toEntity(request, uploadedFile.getFileName(), uploadedFile.getHashedFileName(), uploadedFile.getMimeType());
+        LampiranSk entity = LampiranSkMapper.toEntity(request, uploadedFile.getFileName(), uploadedFile.getHashedFileName(), uploadedFile.getMimeType());
         return repository.save(entity);
     }
 
@@ -63,7 +64,7 @@ public class LampiranSkCommandService {
     public LampiranSk acceptLampiran(LampiranSkAcceptRequest request, String oleh) {
         LampiranSk one = repository.findOne(request.getSpecification())
                 .orElseThrow(() -> new NotFoundException("Lampiran SK Not Found"));
-        LampiranSk entity = LampiranSkAcceptRequest.toEntity(one, oleh);
+        LampiranSk entity = LampiranSkMapper.acceptEntity(one, oleh);
         return repository.save(entity);
     }
 

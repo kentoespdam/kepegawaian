@@ -1,7 +1,6 @@
 package id.perumdamts.kepegawaian.mapper.profil.kartuIdentitas;
 
 import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasDetail;
-import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranRow;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
 

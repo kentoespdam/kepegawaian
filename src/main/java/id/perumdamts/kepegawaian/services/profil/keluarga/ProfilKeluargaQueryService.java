@@ -1,7 +1,7 @@
 package id.perumdamts.kepegawaian.services.profil.keluarga;
 
-import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaIndexQuery;
 import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaDetail;
+import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaIndexQuery;
 import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaQuery;
 import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilQuery;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;

@@ -2,7 +2,6 @@ package id.perumdamts.kepegawaian.mapper.profil.keluarga;
 
 import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaDetail;
 import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaQuery;
-import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranRow;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
 

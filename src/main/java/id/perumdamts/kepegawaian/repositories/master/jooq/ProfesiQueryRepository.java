@@ -3,7 +3,6 @@ package id.perumdamts.kepegawaian.repositories.master.jooq;
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiIndexQuery;
 import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiListResponse;
-import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiQuery;
 import id.perumdamts.kepegawaian.mapper.master.profesi.ProfesiJooqMapper;
 import lombok.RequiredArgsConstructor;

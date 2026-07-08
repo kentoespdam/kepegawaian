@@ -7,9 +7,9 @@ import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiMiniResponse;
 import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
 import id.perumdamts.kepegawaian.entities.commons.EJenisPengajuanCuti;
+import org.jooq.Record;
 
 import java.time.LocalDate;
-import org.jooq.Record;
 
 import static id.perumdamts.kepegawaian.jooq.tables.CutiPegawai.CUTI_PEGAWAI;
 

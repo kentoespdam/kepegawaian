@@ -10,6 +10,7 @@ import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.exceptions.ConflictException;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
+import id.perumdamts.kepegawaian.mapper.kepegawaian.riwayatKontrak.RiwayatKontrakMapper;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.jpa.RiwayatKontrakRepository;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.jpa.RiwayatSkRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.GolonganRepository;
@@ -45,7 +46,7 @@ public class RiwayatKontrakCommandService implements KontrakBootstrapPort {
         sk.setNotes(request.getNotes());
         skRepository.save(sk);
 
-        RiwayatKontrak entity = RiwayatKontrakPostRequest.toEntity(request, pegawai);
+        RiwayatKontrak entity = RiwayatKontrakMapper.toEntity(request, pegawai);
         entity.setIsLatest(true);
         RiwayatKontrak saved = repository.save(entity);
         updateLatest(saved);
@@ -61,7 +62,7 @@ public class RiwayatKontrakCommandService implements KontrakBootstrapPort {
         Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId())
                 .orElseThrow(() -> new NotFoundException("Unknown Pegawai"));
 
-        RiwayatKontrak entity = RiwayatKontrakPostRequest.toEntity(request, pegawai);
+        RiwayatKontrak entity = RiwayatKontrakMapper.toEntity(request, pegawai);
 
         switch (request.getJenisKontrak()) {
             case PERPANJANGAN: {
@@ -116,7 +117,7 @@ public class RiwayatKontrakCommandService implements KontrakBootstrapPort {
         Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId())
                 .orElseThrow(() -> new NotFoundException("Unknown Pegawai"));
 
-        RiwayatKontrak entity = RiwayatKontrakPutRequest.toEntity(riwayatKontrak, request, pegawai);
+        RiwayatKontrak entity = RiwayatKontrakMapper.updateEntity(riwayatKontrak, request, pegawai);
 
         switch (request.getJenisKontrak()) {
             case PERPANJANGAN: {

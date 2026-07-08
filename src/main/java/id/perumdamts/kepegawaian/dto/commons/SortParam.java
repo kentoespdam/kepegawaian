@@ -35,6 +35,6 @@ public final class SortParam {
                 ? defaultColumn
                 : allowedSorts.get(sortBy);
         boolean asc = sortDir != null && "asc".equalsIgnoreCase(sortDir.trim());
-        return (SortField) (asc ? sortField.asc() : sortField.desc());
+        return asc ? sortField.asc() : sortField.desc();
     }
 }

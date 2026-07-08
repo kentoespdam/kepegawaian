@@ -1,19 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.master;
 
-import id.perumdamts.kepegawaian.dto.commons.CustomResult;
-import id.perumdamts.kepegawaian.dto.commons.DeletedResult;
-import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
-import id.perumdamts.kepegawaian.dto.commons.ListResult;
-import id.perumdamts.kepegawaian.dto.commons.PageResult;
-import id.perumdamts.kepegawaian.dto.commons.SavedResult;
-import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
-import id.perumdamts.kepegawaian.dto.commons.SingleResult;
-import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiDetail;
-import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiIndexQuery;
-import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiListResponse;
-import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiPostRequest;
-import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiPutRequest;
-import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiQuery;
+import id.perumdamts.kepegawaian.dto.commons.*;
+import id.perumdamts.kepegawaian.dto.master.profesi.*;
 import id.perumdamts.kepegawaian.services.master.profesi.ProfesiCommandService;
 import id.perumdamts.kepegawaian.services.master.profesi.ProfesiQueryService;
 import jakarta.validation.Valid;

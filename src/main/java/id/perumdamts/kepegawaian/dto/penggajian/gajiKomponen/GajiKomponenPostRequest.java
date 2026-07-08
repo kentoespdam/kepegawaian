@@ -3,7 +3,6 @@ package id.perumdamts.kepegawaian.dto.penggajian.gajiKomponen;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.commons.EJenisGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiKomponen;
-import id.perumdamts.kepegawaian.entities.penggajian.GajiProfil;
 import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

@@ -4,11 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatKontrak.RiwayatKontrakPostRequest;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
-import id.perumdamts.kepegawaian.entities.master.Golongan;
-import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -73,45 +70,4 @@ public class RiwayatSkPostRequest {
                 .build();
     }
 
-    public static RiwayatSk toEntity(RiwayatSkPostRequest request, Pegawai pegawai) {
-        RiwayatSk entity = new RiwayatSk();
-        entity.setPegawai(pegawai);
-        entity.setNipam(pegawai.getNipam());
-        entity.setNama(pegawai.getBiodata().getNama());
-        entity.setNomorSk(request.getNomorSk());
-        entity.setJenisSk(request.getJenisSk());
-        entity.setTanggalSk(request.getTanggalSk());
-        entity.setTmtBerlaku(request.getTmtBerlaku());
-        entity.setGajiPokok(request.getGajiPokok());
-        entity.setMkgTahun(request.getMkgTahun());
-        entity.setMkgBulan(request.getMkgBulan());
-        entity.setKenaikanBerikutnya(request.getKenaikanBerikutnya());
-        entity.setMkgbTahun(request.getMkgbTahun());
-        entity.setMkgbBulan(request.getMkgbBulan());
-        entity.setUpdateMaster(request.getUpdateMaster());
-        entity.setNotes(request.getNotes());
-        return entity;
-    }
-
-    public static RiwayatSk toEntity(RiwayatSkPostRequest request, Pegawai pegawai, Golongan golongan) {
-        RiwayatSk entity = toEntity(request, pegawai);
-        if (golongan == null)
-            return entity;
-        entity.setGolongan(golongan);
-        return entity;
-    }
-
-    public static RiwayatSk toEntity(RiwayatKontrakPostRequest request, Pegawai pegawai) {
-        RiwayatSk entity = new RiwayatSk();
-        entity.setPegawai(pegawai);
-        entity.setNipam(pegawai.getNipam());
-        entity.setNama(pegawai.getBiodata().getNama());
-        entity.setNomorSk(request.getNomorKontrak());
-        entity.setJenisSk(EJenisSk.SK_LAINNYA);
-        entity.setTmtBerlaku(request.getTanggalMulai());
-        entity.setTanggalSk(request.getTanggalSk());
-        entity.setGajiPokok(request.getGajiPokok());
-        entity.setNotes(request.getNotes());
-        return entity;
-    }
 }

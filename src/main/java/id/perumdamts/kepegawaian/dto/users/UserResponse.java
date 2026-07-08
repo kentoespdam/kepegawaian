@@ -3,8 +3,8 @@ package id.perumdamts.kepegawaian.dto.users;
 import id.perumdamts.kepegawaian.dto.appwrite.AppwriteUser;
 import id.perumdamts.kepegawaian.dto.appwrite.Prefs;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
-import org.jspecify.annotations.Nullable;
 import lombok.Data;
+import org.jspecify.annotations.Nullable;
 
 @Data
 public class UserResponse {

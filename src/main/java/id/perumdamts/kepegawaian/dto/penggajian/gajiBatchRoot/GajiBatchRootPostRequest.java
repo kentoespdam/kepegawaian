@@ -1,12 +1,8 @@
 package id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRoot;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import id.perumdamts.kepegawaian.entities.commons.EProsesGaji;
-import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchRoot;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.time.LocalDateTime;
 
 @Data
 public class GajiBatchRootPostRequest {

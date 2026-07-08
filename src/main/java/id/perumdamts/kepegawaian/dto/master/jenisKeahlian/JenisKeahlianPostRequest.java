@@ -6,8 +6,6 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.util.List;
-
 @Data
 public class JenisKeahlianPostRequest {
     @NotEmpty(message = "Nama is required")

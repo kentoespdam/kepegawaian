@@ -9,9 +9,13 @@ import java.util.Optional;
 @Slf4j
 public class CustomResult {
     public static <T> ResponseEntity<SingleResult<T>> any(T data) {
-        if (data instanceof Optional<?> && ((Optional<?>) data).isEmpty())
-            data = null;
         SingleResult<T> result = new SingleResult<>(data);
+        return ResponseEntity.status(result.statusText).body(result);
+    }
+
+    public static <T> ResponseEntity<SingleResult<T>> optional(Optional<T> data) {
+        T value = data.orElse(null);
+        SingleResult<T> result = new SingleResult<>(value);
         return ResponseEntity.status(result.statusText).body(result);
     }
 
