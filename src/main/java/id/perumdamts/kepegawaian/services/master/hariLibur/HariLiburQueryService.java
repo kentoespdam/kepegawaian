@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.services.master.hariLibur;
 
 import id.perumdamts.kepegawaian.dto.master.hariLibur.HariLiburIndexQuery;
+import id.perumdamts.kepegawaian.dto.master.hariLibur.HariLiburListResponse;
 import id.perumdamts.kepegawaian.dto.master.hariLibur.HariLiburQuery;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.master.jooq.HariLiburQueryRepository;
@@ -24,7 +25,7 @@ public class HariLiburQueryService {
                 .orElseThrow(() -> new NotFoundException("HariLibur not found"));
     }
 
-    public List<HariLiburQuery> listQuery() {
+    public List<HariLiburListResponse> listQuery() {
         return queries.listQuery();
     }
 }

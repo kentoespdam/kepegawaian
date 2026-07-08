@@ -1,6 +1,8 @@
 package id.perumdamts.kepegawaian.controllers.master;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
+import id.perumdamts.kepegawaian.dto.commons.EnumOption;
+import id.perumdamts.kepegawaian.dto.commons.ListResult;
 import id.perumdamts.kepegawaian.services.master.jenisMutasi.JenisMutasiQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,12 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/master/jenis-mutasi")
-@SuppressWarnings("DuplicatedCode")
 public class JenisMutasiController {
     private final JenisMutasiQueryService service;
 
     @GetMapping
-    public ResponseEntity<?> index() {
+    public ResponseEntity<ListResult<EnumOption>> index() {
         return CustomResult.list(service.findAll());
     }
 }

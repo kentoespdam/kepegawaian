@@ -1,6 +1,8 @@
 package id.perumdamts.kepegawaian.controllers.master;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
+import id.perumdamts.kepegawaian.dto.commons.ListResult;
+import id.perumdamts.kepegawaian.dto.master.statusPegawai.StatusPegawaiResponse;
 import id.perumdamts.kepegawaian.services.master.statusPegawai.StatusPegawaiQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,12 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/master/status-pegawai")
-@SuppressWarnings("DuplicatedCode")
 public class StatusPegawaiController {
     private final StatusPegawaiQueryService service;
 
     @GetMapping("/list")
-    public ResponseEntity<?> index() {
+    public ResponseEntity<ListResult<StatusPegawaiResponse>> index() {
         return CustomResult.list(service.findAll());
     }
 }

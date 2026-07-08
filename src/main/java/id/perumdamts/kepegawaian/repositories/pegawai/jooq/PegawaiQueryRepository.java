@@ -450,13 +450,13 @@ public class PegawaiQueryRepository {
 
             Long jpId = r.get("jenjang_id", Long.class);
             if (jpId != null) {
-                JenjangPendidikanResponse jp = new JenjangPendidikanResponse();
-                jp.setId(jpId);
-                jp.setNama(r.get("jenjang_nama", String.class));
-                jp.setShortName(r.get("jenjang_short_name", String.class));
-                jp.setSeq(r.get("jenjang_seq", Integer.class));
-                jp.setIsStatistik(r.get("jenjang_is_statistik", Boolean.class));
-                bio.setPendidikanTerakhir(jp);
+                bio.setPendidikanTerakhir(new JenjangPendidikanResponse(
+                        jpId,
+                        r.get("jenjang_nama", String.class),
+                        r.get("jenjang_short_name", String.class),
+                        r.get("jenjang_seq", Integer.class),
+                        r.get("jenjang_is_statistik", Boolean.class)
+                ));
             }
 
             String gdStr = r.get("biodata_golongan_darah", String.class);
@@ -475,27 +475,22 @@ public class PegawaiQueryRepository {
         // OrganisasiMiniResponse
         Long orgId = r.get("organisasi_id", Long.class);
         if (orgId != null) {
-            OrganisasiMiniResponse org = new OrganisasiMiniResponse();
-            org.setId(orgId);
-            org.setKode(r.get("organisasi_kode", String.class));
-            org.setNama(r.get("organisasi_nama", String.class));
-            org.setShortName(r.get("organisasi_short_name", String.class));
-            response.setOrganisasi(org);
+            response.setOrganisasi(new OrganisasiMiniResponse(
+                    orgId,
+                    r.get("organisasi_kode", String.class),
+                    r.get("organisasi_nama", String.class),
+                    r.get("organisasi_short_name", String.class)));
         }
 
         // JabatanMiniResponse
         Long jabId = r.get("jabatan_id", Long.class);
         if (jabId != null) {
-            JabatanMiniResponse jab = new JabatanMiniResponse();
-            jab.setId(jabId);
-            jab.setKode(r.get("jabatan_kode", String.class));
-            jab.setNama(r.get("jabatan_nama", String.class));
-
             Long lvlId = r.get("level_id", Long.class);
-            if (lvlId != null) {
-                jab.setLevel(new LevelResponse(lvlId, r.get("level_nama", String.class)));
-            }
-            response.setJabatan(jab);
+            response.setJabatan(new JabatanMiniResponse(
+                    jabId,
+                    r.get("jabatan_kode", String.class),
+                    lvlId != null ? new LevelResponse(lvlId, r.get("level_nama", String.class)) : null,
+                    r.get("jabatan_nama", String.class)));
         }
 
         // ProfesiMiniResponse

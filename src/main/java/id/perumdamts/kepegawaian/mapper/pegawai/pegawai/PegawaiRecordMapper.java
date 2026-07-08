@@ -127,26 +127,21 @@ public final class PegawaiRecordMapper {
 
         Long orgId = record.get("organisasi_id", Long.class);
         if (orgId != null) {
-            OrganisasiMiniResponse org = new OrganisasiMiniResponse();
-            org.setId(orgId);
-            org.setKode(record.get("organisasi_kode", String.class));
-            org.setNama(record.get("organisasi_nama", String.class));
-            org.setShortName(record.get("organisasi_short_name", String.class));
-            response.setOrganisasi(org);
+            response.setOrganisasi(new OrganisasiMiniResponse(
+                    orgId,
+                    record.get("organisasi_kode", String.class),
+                    record.get("organisasi_nama", String.class),
+                    record.get("organisasi_short_name", String.class)));
         }
 
         Long jabId = record.get("jabatan_id", Long.class);
         if (jabId != null) {
-            JabatanMiniResponse jab = new JabatanMiniResponse();
-            jab.setId(jabId);
-            jab.setKode(record.get("jabatan_kode", String.class));
-            jab.setNama(record.get("jabatan_nama", String.class));
-
             Long lvlId = record.get("level_id", Long.class);
-            if (lvlId != null) {
-                jab.setLevel(new LevelResponse(lvlId, record.get("level_nama", String.class)));
-            }
-            response.setJabatan(jab);
+            response.setJabatan(new JabatanMiniResponse(
+                    jabId,
+                    record.get("jabatan_kode", String.class),
+                    lvlId != null ? new LevelResponse(lvlId, record.get("level_nama", String.class)) : null,
+                    record.get("jabatan_nama", String.class)));
         }
 
         Long golId = record.get("golongan_id", Long.class);

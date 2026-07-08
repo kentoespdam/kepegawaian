@@ -37,13 +37,13 @@ public final class ProfilKeluargaJooqMapper implements RecordMapper<Record, Prof
         q.setPendidikanId(Objects.requireNonNullElse(record.get("self_pendidikan_id", Long.class), pendidikanId));
 
         if (pendidikanId != null) {
-            JenjangPendidikanResponse jp = new JenjangPendidikanResponse();
-            jp.setId(pendidikanId);
-            jp.setNama(record.get("pendidikan_nama", String.class));
-            jp.setShortName(record.get("pendidikan_short_name", String.class));
-            jp.setSeq(record.get("pendidikan_seq", Integer.class));
-            jp.setIsStatistik(record.get("pendidikan_is_statistik", Boolean.class));
-            q.setJenjangPendidikan(jp);
+            q.setJenjangPendidikan(new JenjangPendidikanResponse(
+                    pendidikanId,
+                    record.get("pendidikan_nama", String.class),
+                    record.get("pendidikan_short_name", String.class),
+                    record.get("pendidikan_seq", Integer.class),
+                    record.get("pendidikan_is_statistik", Boolean.class)
+            ));
         }
 
         q.setStatusPendidikan(toEnumName(record.get("status_pendidikan", Byte.class), EStatusPendidikan.class));

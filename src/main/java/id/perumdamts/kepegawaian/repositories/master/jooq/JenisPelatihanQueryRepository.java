@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.repositories.master.jooq;
 
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.master.jenisPelatihan.JenisPelatihanIndexQuery;
+import id.perumdamts.kepegawaian.dto.master.jenisPelatihan.JenisPelatihanListResponse;
 import id.perumdamts.kepegawaian.dto.master.jenisPelatihan.JenisPelatihanQuery;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
@@ -53,12 +54,12 @@ public class JenisPelatihanQueryRepository {
                 .fetchOptionalInto(JenisPelatihanQuery.class);
     }
 
-    public List<JenisPelatihanQuery> listQuery() {
+    public List<JenisPelatihanListResponse> listQuery() {
         return dsl.select(JENIS_PELATIHAN.ID, JENIS_PELATIHAN.NAMA)
                 .from(JENIS_PELATIHAN)
                 .where(JENIS_PELATIHAN.IS_DELETED.eq(false))
                 .orderBy(JENIS_PELATIHAN.NAMA.asc())
-                .fetchInto(JenisPelatihanQuery.class);
+                .fetchInto(JenisPelatihanListResponse.class);
     }
 
     private static Map<String, Field<?>> allowedSorts() {

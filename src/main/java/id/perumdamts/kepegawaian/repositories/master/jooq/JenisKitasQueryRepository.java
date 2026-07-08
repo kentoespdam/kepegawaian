@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.repositories.master.jooq;
 
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.master.jenisKitas.JenisKitasIndexQuery;
+import id.perumdamts.kepegawaian.dto.master.jenisKitas.JenisKitasListResponse;
 import id.perumdamts.kepegawaian.dto.master.jenisKitas.JenisKitasQuery;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
@@ -53,12 +54,12 @@ public class JenisKitasQueryRepository {
                 .fetchOptionalInto(JenisKitasQuery.class);
     }
 
-    public List<JenisKitasQuery> listQuery() {
+    public List<JenisKitasListResponse> listQuery() {
         return dsl.select(JENIS_KITAS.ID, JENIS_KITAS.NAMA)
                 .from(JENIS_KITAS)
                 .where(JENIS_KITAS.IS_DELETED.eq(false))
                 .orderBy(JENIS_KITAS.NAMA.asc())
-                .fetchInto(JenisKitasQuery.class);
+                .fetchInto(JenisKitasListResponse.class);
     }
 
     private static Map<String, Field<?>> allowedSorts() {

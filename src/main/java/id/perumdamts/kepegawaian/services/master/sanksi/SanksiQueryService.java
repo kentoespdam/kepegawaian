@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.services.master.sanksi;
 
 import id.perumdamts.kepegawaian.dto.master.sanksi.SanksiIndexQuery;
+import id.perumdamts.kepegawaian.dto.master.sanksi.SanksiJenisSpList;
 import id.perumdamts.kepegawaian.dto.master.sanksi.SanksiQuery;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.master.jooq.SanksiQueryRepository;
@@ -28,7 +29,7 @@ public class SanksiQueryService {
         return queries.listQuery();
     }
 
-    public List<SanksiQuery> findByJenisSpId(Long jenisSpId) {
-        return queries.findByJenisSpId(jenisSpId);
+    public List<SanksiJenisSpList> findJenisSpList(Long jenisSpId) {
+        return queries.findJenisSpList(jenisSpId);
     }
 }

@@ -28,11 +28,11 @@ public final class CutiApprovalJooqMapper {
             res.setApprover(app);
         }
         if (record.get("jab_id") != null) {
-            JabatanMiniResponse jab = new JabatanMiniResponse();
-            jab.setId((Long) record.get("jab_id"));
-            jab.setKode((String) record.get("jab_kode"));
-            jab.setNama((String) record.get("jab_nama"));
-            res.setJabatan(jab);
+            res.setJabatan(new JabatanMiniResponse(
+                    (Long) record.get("jab_id"),
+                    (String) record.get("jab_kode"),
+                    null,
+                    (String) record.get("jab_nama")));
         }
         return res;
     }

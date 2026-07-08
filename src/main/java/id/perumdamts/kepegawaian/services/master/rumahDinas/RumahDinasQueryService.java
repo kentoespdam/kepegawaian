@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.services.master.rumahDinas;
 
 import id.perumdamts.kepegawaian.dto.master.rumahDinas.RumahDinasIndexQuery;
+import id.perumdamts.kepegawaian.dto.master.rumahDinas.RumahDinasListResponse;
 import id.perumdamts.kepegawaian.dto.master.rumahDinas.RumahDinasQuery;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.master.jooq.RumahDinasQueryRepository;
@@ -24,7 +25,7 @@ public class RumahDinasQueryService {
                 .orElseThrow(() -> new NotFoundException("RumahDinas not found"));
     }
 
-    public List<RumahDinasQuery> listQuery() {
+    public List<RumahDinasListResponse> listQuery() {
         return queries.listQuery();
     }
 }

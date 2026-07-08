@@ -25,13 +25,13 @@ public final class PendidikanJooqMapper implements RecordMapper<Record, Pendidik
         q.setJenjangId(selfJenjangId != null ? selfJenjangId : jenjangId);
 
         if (jenjangId != null) {
-            JenjangPendidikanResponse jp = new JenjangPendidikanResponse();
-            jp.setId(jenjangId);
-            jp.setNama(record.get("jenjang_nama", String.class));
-            jp.setShortName(record.get("jenjang_short_name", String.class));
-            jp.setSeq(record.get("jenjang_seq", Integer.class));
-            jp.setIsStatistik(record.get("jenjang_is_statistik", Boolean.class));
-            q.setJenjangPendidikan(jp);
+            q.setJenjangPendidikan(new JenjangPendidikanResponse(
+                    jenjangId,
+                    record.get("jenjang_nama", String.class),
+                    record.get("jenjang_short_name", String.class),
+                    record.get("jenjang_seq", Integer.class),
+                    record.get("jenjang_is_statistik", Boolean.class)
+            ));
         }
 
         q.setGelarDepan(record.get("gelar_depan", String.class));

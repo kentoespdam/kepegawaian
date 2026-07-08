@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.services.master.jenisSp;
 
 import id.perumdamts.kepegawaian.dto.master.jenisSp.JenisSpIndexQuery;
+import id.perumdamts.kepegawaian.dto.master.jenisSp.JenisSpListResponse;
 import id.perumdamts.kepegawaian.dto.master.jenisSp.JenisSpQuery;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.master.jooq.JenisSpQueryRepository;
@@ -24,7 +25,7 @@ public class JenisSpQueryService {
                 .orElseThrow(() -> new NotFoundException("Jenis SP not found"));
     }
 
-    public List<JenisSpQuery> listQuery() {
+    public List<JenisSpListResponse> listQuery() {
         return queries.listQuery();
     }
 }

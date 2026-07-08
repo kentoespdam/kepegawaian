@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.services.master.grade;
 
 import id.perumdamts.kepegawaian.dto.master.grade.GradeIndexQuery;
+import id.perumdamts.kepegawaian.dto.master.grade.GradeListResponse;
 import id.perumdamts.kepegawaian.dto.master.grade.GradeQuery;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.master.jooq.GradeQueryRepository;
@@ -24,7 +25,7 @@ public class GradeQueryService {
                 .orElseThrow(() -> new NotFoundException("Grade not found"));
     }
 
-    public List<GradeQuery> listQuery() {
+    public List<GradeListResponse> listQuery() {
         return queries.listQuery();
     }
 

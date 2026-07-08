@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.repositories.master.jooq;
 
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.master.jenisSp.JenisSpIndexQuery;
+import id.perumdamts.kepegawaian.dto.master.jenisSp.JenisSpListResponse;
 import id.perumdamts.kepegawaian.dto.master.jenisSp.JenisSpQuery;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
@@ -43,7 +44,7 @@ public class JenisSpQueryRepository {
                 .orderBy(sortOrder)
                 .limit(query.getSizeOrDefault())
                 .offset(query.offset())
-                .fetch(record -> toQuery(record.intoMap()));
+                .fetchInto(JenisSpQuery.class);
         return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
     }
 
@@ -62,25 +63,16 @@ public class JenisSpQueryRepository {
                 .from(JENIS_SP)
                 .where(JENIS_SP.ID.eq(id))
                 .and(JENIS_SP.IS_DELETED.eq(false))
-                .fetchOptional(record -> toQuery(record.intoMap()));
+                .fetchOptionalInto(JenisSpQuery.class);
     }
 
-    public List<JenisSpQuery> listQuery() {
+    public List<JenisSpListResponse> listQuery() {
         return dsl.select(
                         JENIS_SP.ID,
-                        JENIS_SP.KODE,
                         JENIS_SP.NAMA)
                 .from(JENIS_SP)
                 .where(JENIS_SP.IS_DELETED.eq(false))
                 .orderBy(JENIS_SP.NAMA.asc())
-                .fetch(record -> toQuery(record.intoMap()));
-    }
-
-    private JenisSpQuery toQuery(Map<String, Object> map) {
-        var query = new JenisSpQuery();
-        query.setId((Long) map.get("id"));
-        query.setKode((String) map.get("kode"));
-        query.setNama((String) map.get("nama"));
-        return query;
+                .fetchInto(JenisSpListResponse.class);
     }
 }

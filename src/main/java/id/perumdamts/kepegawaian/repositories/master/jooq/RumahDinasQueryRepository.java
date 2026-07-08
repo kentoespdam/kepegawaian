@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.repositories.master.jooq;
 
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.master.rumahDinas.RumahDinasIndexQuery;
+import id.perumdamts.kepegawaian.dto.master.rumahDinas.RumahDinasListResponse;
 import id.perumdamts.kepegawaian.dto.master.rumahDinas.RumahDinasQuery;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
@@ -41,7 +42,7 @@ public class RumahDinasQueryRepository {
                 .orderBy(sortOrder)
                 .limit(query.getSizeOrDefault())
                 .offset(query.offset())
-                .fetch(record -> toQuery(record.intoMap()));
+                .fetchInto(RumahDinasQuery.class);
         return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
     }
 
@@ -60,28 +61,16 @@ public class RumahDinasQueryRepository {
                 .from(RUMAH_DINAS)
                 .where(RUMAH_DINAS.ID.eq(id))
                 .and(RUMAH_DINAS.IS_DELETED.eq(false))
-                .fetchOptional(record -> toQuery(record.intoMap()));
+                .fetchOptionalInto(RumahDinasQuery.class);
     }
 
-    public List<RumahDinasQuery> listQuery() {
+    public List<RumahDinasListResponse> listQuery() {
         return dsl.select(
                         RUMAH_DINAS.ID,
-                        RUMAH_DINAS.NAMA,
-                        RUMAH_DINAS.NILAI)
+                        RUMAH_DINAS.NAMA)
                 .from(RUMAH_DINAS)
                 .where(RUMAH_DINAS.IS_DELETED.eq(false))
                 .orderBy(RUMAH_DINAS.NAMA.asc())
-                .fetch(record -> toQuery(record.intoMap()));
-    }
-
-    private RumahDinasQuery toQuery(Map<String, Object> map) {
-        var query = new RumahDinasQuery();
-        query.setId((Long) map.get("id"));
-        query.setNama((String) map.get("nama"));
-        Object nilai = map.get("nilai");
-        if (nilai instanceof Number) {
-            query.setNilai(((Number) nilai).doubleValue());
-        }
-        return query;
+                .fetchInto(RumahDinasListResponse.class);
     }
 }

@@ -36,18 +36,18 @@ public final class CutiPegawaiJooqMapper {
         res.setPangkatGolongan(record.get(CUTI_PEGAWAI.PANGKAT_GOLONGAN));
         
         if (record.get("org_id") != null) {
-            OrganisasiMiniResponse org = new OrganisasiMiniResponse();
-            org.setId((Long) record.get("org_id"));
-            org.setKode((String) record.get("org_kode"));
-            org.setNama((String) record.get("org_nama"));
-            res.setOrganisasi(org);
+            res.setOrganisasi(new OrganisasiMiniResponse(
+                    (Long) record.get("org_id"),
+                    (String) record.get("org_kode"),
+                    (String) record.get("org_nama"),
+                    null));
         }
         if (record.get("jab_id") != null) {
-            JabatanMiniResponse jab = new JabatanMiniResponse();
-            jab.setId((Long) record.get("jab_id"));
-            jab.setKode((String) record.get("jab_kode"));
-            jab.setNama((String) record.get("jab_nama"));
-            res.setJabatan(jab);
+            res.setJabatan(new JabatanMiniResponse(
+                    (Long) record.get("jab_id"),
+                    (String) record.get("jab_kode"),
+                    null,
+                    (String) record.get("jab_nama")));
         }
         
         var createdAt = record.get(CUTI_PEGAWAI.CREATED_AT);
@@ -79,11 +79,11 @@ public final class CutiPegawaiJooqMapper {
         res.setJumlahHariKerja(record.get(CUTI_PEGAWAI.JUMLAH_HARI_KERJA));
         
         if (record.get("pic_id") != null) {
-            JabatanMiniResponse picJab = new JabatanMiniResponse();
-            picJab.setId((Long) record.get("pic_id"));
-            picJab.setKode((String) record.get("pic_kode"));
-            picJab.setNama((String) record.get("pic_nama"));
-            res.setPicSaatIni(picJab);
+            res.setPicSaatIni(new JabatanMiniResponse(
+                    (Long) record.get("pic_id"),
+                    (String) record.get("pic_kode"),
+                    null,
+                    (String) record.get("pic_nama")));
         }
         
         Byte claimedByte = record.get(CUTI_PEGAWAI.IS_CLAIMED);

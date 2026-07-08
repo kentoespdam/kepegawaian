@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.repositories.master.jooq;
 
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.master.alasanBerhenti.AlasanBerhentiIndexQuery;
+import id.perumdamts.kepegawaian.dto.master.alasanBerhenti.AlasanBerhentiListResponse;
 import id.perumdamts.kepegawaian.dto.master.alasanBerhenti.AlasanBerhentiQuery;
 import id.perumdamts.kepegawaian.jooq.tables.AlasanBerhenti;
 import lombok.RequiredArgsConstructor;
@@ -26,14 +27,12 @@ public class AlasanBerhentiQueryRepository {
         var sortOrder = SortParam.resolve(query.getSortBy(), query.getSortDirection(),
                 allowedSorts(), AlasanBerhenti.ALASAN_BERHENTI.ID);
 
-        // Count query
         var count = dsl.selectCount()
                 .from(AlasanBerhenti.ALASAN_BERHENTI)
                 .where(AlasanBerhenti.ALASAN_BERHENTI.IS_DELETED.eq(false))
                 .and(query.getNama() != null ? AlasanBerhenti.ALASAN_BERHENTI.NAMA.likeIgnoreCase("%" + query.getNama() + "%") : DSL.noCondition())
                 .fetchOptional(0, Long.class).orElse(0L);
 
-        // Data query
         var data = dsl.select(AlasanBerhenti.ALASAN_BERHENTI.ID, AlasanBerhenti.ALASAN_BERHENTI.NAMA, AlasanBerhenti.ALASAN_BERHENTI.NOTES)
                 .from(AlasanBerhenti.ALASAN_BERHENTI)
                 .where(AlasanBerhenti.ALASAN_BERHENTI.IS_DELETED.eq(false))
@@ -54,12 +53,12 @@ public class AlasanBerhentiQueryRepository {
                 .fetchOptionalInto(AlasanBerhentiQuery.class);
     }
 
-    public List<AlasanBerhentiQuery> listQuery() {
-        return dsl.select(AlasanBerhenti.ALASAN_BERHENTI.ID, AlasanBerhenti.ALASAN_BERHENTI.NAMA, AlasanBerhenti.ALASAN_BERHENTI.NOTES)
+    public List<AlasanBerhentiListResponse> listQuery() {
+        return dsl.select(AlasanBerhenti.ALASAN_BERHENTI.ID, AlasanBerhenti.ALASAN_BERHENTI.NAMA)
                 .from(AlasanBerhenti.ALASAN_BERHENTI)
                 .where(AlasanBerhenti.ALASAN_BERHENTI.IS_DELETED.eq(false))
                 .orderBy(AlasanBerhenti.ALASAN_BERHENTI.NAMA.asc())
-                .fetchInto(AlasanBerhentiQuery.class);
+                .fetchInto(AlasanBerhentiListResponse.class);
     }
 
     private static Map<String, Field<?>> allowedSorts() {

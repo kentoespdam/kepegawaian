@@ -173,17 +173,19 @@ public class RiwayatTerminasiQueryRepository {
         }
 
         if (record.get("org_id") != null) {
-            OrganisasiMiniResponse org = new OrganisasiMiniResponse();
-            org.setId((Long) record.get("org_id"));
-            org.setNama((String) record.get("org_nama"));
-            query.setOrganisasi(org);
+            query.setOrganisasi(new OrganisasiMiniResponse(
+                    (Long) record.get("org_id"),
+                    null,
+                    (String) record.get("org_nama"),
+                    null));
         }
 
         if (record.get("jab_id") != null) {
-            JabatanMiniResponse jab = new JabatanMiniResponse();
-            jab.setId((Long) record.get("jab_id"));
-            jab.setNama((String) record.get("jab_nama"));
-            query.setJabatan(jab);
+            query.setJabatan(new JabatanMiniResponse(
+                    (Long) record.get("jab_id"),
+                    null,
+                    null,
+                    (String) record.get("jab_nama")));
         }
 
         if (record.get("gol_id") != null) {

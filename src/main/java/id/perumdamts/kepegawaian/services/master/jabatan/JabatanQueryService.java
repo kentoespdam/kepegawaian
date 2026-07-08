@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.services.master.jabatan;
 
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanIndexQuery;
+import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanListResponse;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanQuery;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.master.jooq.JabatanQueryRepository;
@@ -24,7 +25,7 @@ public class JabatanQueryService {
                 .orElseThrow(() -> new NotFoundException("Jabatan not found"));
     }
 
-    public List<JabatanQuery> listQuery() {
+    public List<JabatanListResponse> listQuery() {
         return queries.listQuery();
     }
 

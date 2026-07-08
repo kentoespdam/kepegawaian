@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.services.master.alasanBerhenti;
 
 import id.perumdamts.kepegawaian.dto.master.alasanBerhenti.AlasanBerhentiIndexQuery;
+import id.perumdamts.kepegawaian.dto.master.alasanBerhenti.AlasanBerhentiListResponse;
 import id.perumdamts.kepegawaian.dto.master.alasanBerhenti.AlasanBerhentiQuery;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.master.jooq.AlasanBerhentiQueryRepository;
@@ -24,7 +25,7 @@ public class AlasanBerhentiQueryService {
                 .orElseThrow(() -> new NotFoundException("AlasanBerhenti not found"));
     }
 
-    public List<AlasanBerhentiQuery> listQuery() {
+    public List<AlasanBerhentiListResponse> listQuery() {
         return queries.listQuery();
     }
 }

@@ -2,8 +2,9 @@ package id.perumdamts.kepegawaian.repositories.master.jooq;
 
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiIndexQuery;
-import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiMiniResponse;
+import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiListResponse;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiQuery;
+import id.perumdamts.kepegawaian.mapper.master.organisasi.OrganisasiJooqMapper;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -13,6 +14,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import id.perumdamts.kepegawaian.jooq.tables.Organisasi;
+
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -23,6 +28,13 @@ import static id.perumdamts.kepegawaian.jooq.tables.Organisasi.ORGANISASI;
 @RequiredArgsConstructor
 public class OrganisasiQueryRepository {
     private final DSLContext dsl;
+
+    private Field<?>[] queryColumns(Organisasi parentAlias) {
+        var fields = new ArrayList<Field<?>>();
+        Collections.addAll(fields, OrganisasiSelects.ORGANISASI_COLUMNS);
+        Collections.addAll(fields, OrganisasiSelects.parentColumns(parentAlias));
+        return fields.toArray(Field<?>[]::new);
+    }
 
     public Page<OrganisasiQuery> pageQuery(OrganisasiIndexQuery query) {
         var parent = ORGANISASI.as("parent");
@@ -37,18 +49,7 @@ public class OrganisasiQueryRepository {
                 .and(query.getLevelOrg() != null ? ORGANISASI.LEVEL_ORG.eq(query.getLevelOrg()) : DSL.noCondition())
                 .and(query.getCategory() != null ? ORGANISASI.CATEGORY.eq(query.getCategory()) : DSL.noCondition())
                 .fetchOptional(0, Long.class).orElse(0L);
-        var data = dsl.select(
-                        ORGANISASI.ID,
-                        ORGANISASI.KODE,
-                        ORGANISASI.PARENT_ID.as("self_parent_id"),
-                        ORGANISASI.LEVEL_ORG.as("levelOrganisasi"),
-                        ORGANISASI.NAMA,
-                        ORGANISASI.SHORT_NAME,
-                        ORGANISASI.CATEGORY,
-                        parent.ID.as("parent_id"),
-                        parent.KODE.as("parent_kode"),
-                        parent.NAMA.as("parent_nama"),
-                        parent.SHORT_NAME.as("parent_short_name"))
+        var data = dsl.select(queryColumns(parent))
                 .from(ORGANISASI)
                 .leftJoin(parent).on(ORGANISASI.PARENT_ID.eq(parent.ID))
                 .where(ORGANISASI.IS_DELETED.eq(false))
@@ -60,72 +61,37 @@ public class OrganisasiQueryRepository {
                 .orderBy(sortOrder)
                 .limit(query.getSizeOrDefault())
                 .offset(query.getPageNumber() * query.getSizeOrDefault())
-                .fetch(record -> toQuery(record.intoMap()));
+                .fetch(OrganisasiJooqMapper::toQuery);
         return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
     }
 
     public Optional<OrganisasiQuery> getById(Long id) {
         var parent = ORGANISASI.as("parent");
-        return dsl.select(
-                        ORGANISASI.ID,
-                        ORGANISASI.KODE,
-                        ORGANISASI.PARENT_ID.as("self_parent_id"),
-                        ORGANISASI.LEVEL_ORG.as("levelOrganisasi"),
-                        ORGANISASI.NAMA,
-                        ORGANISASI.SHORT_NAME,
-                        ORGANISASI.CATEGORY,
-                        parent.ID.as("parent_id"),
-                        parent.KODE.as("parent_kode"),
-                        parent.NAMA.as("parent_nama"),
-                        parent.SHORT_NAME.as("parent_short_name"))
+        return dsl.select(queryColumns(parent))
                 .from(ORGANISASI)
                 .leftJoin(parent).on(ORGANISASI.PARENT_ID.eq(parent.ID))
                 .where(ORGANISASI.ID.eq(id))
                 .and(ORGANISASI.IS_DELETED.eq(false))
-                .fetchOptional(record -> toQuery(record.intoMap()));
+                .fetchOptional(OrganisasiJooqMapper::toQuery);
     }
 
-    public List<OrganisasiQuery> listQuery() {
-        var parent = ORGANISASI.as("parent");
-        return dsl.select(
-                        ORGANISASI.ID,
-                        ORGANISASI.KODE,
-                        ORGANISASI.PARENT_ID.as("self_parent_id"),
-                        ORGANISASI.LEVEL_ORG.as("levelOrganisasi"),
-                        ORGANISASI.NAMA,
-                        ORGANISASI.SHORT_NAME,
-                        ORGANISASI.CATEGORY,
-                        parent.ID.as("parent_id"),
-                        parent.KODE.as("parent_kode"),
-                        parent.NAMA.as("parent_nama"),
-                        parent.SHORT_NAME.as("parent_short_name"))
+    public List<OrganisasiListResponse> listQuery() {
+        return dsl.select(OrganisasiSelects.ID, OrganisasiSelects.NAMA)
                 .from(ORGANISASI)
-                .leftJoin(parent).on(ORGANISASI.PARENT_ID.eq(parent.ID))
                 .where(ORGANISASI.IS_DELETED.eq(false))
                 .orderBy(ORGANISASI.NAMA.asc())
-                .fetch(record -> toQuery(record.intoMap()));
+                .fetchInto(OrganisasiListResponse.class);
     }
 
     public List<OrganisasiQuery> findByParentId(Long parentId) {
         var parent = ORGANISASI.as("parent");
-        return dsl.select(
-                        ORGANISASI.ID,
-                        ORGANISASI.KODE,
-                        ORGANISASI.PARENT_ID.as("self_parent_id"),
-                        ORGANISASI.LEVEL_ORG.as("levelOrganisasi"),
-                        ORGANISASI.NAMA,
-                        ORGANISASI.SHORT_NAME,
-                        ORGANISASI.CATEGORY,
-                        parent.ID.as("parent_id"),
-                        parent.KODE.as("parent_kode"),
-                        parent.NAMA.as("parent_nama"),
-                        parent.SHORT_NAME.as("parent_short_name"))
+        return dsl.select(queryColumns(parent))
                 .from(ORGANISASI)
                 .leftJoin(parent).on(ORGANISASI.PARENT_ID.eq(parent.ID))
                 .where(ORGANISASI.PARENT_ID.eq(parentId))
                 .and(ORGANISASI.IS_DELETED.eq(false))
                 .orderBy(ORGANISASI.NAMA.asc())
-                .fetch(record -> toQuery(record.intoMap()));
+                .fetch(OrganisasiJooqMapper::toQuery);
     }
 
     private static Map<String, Field<?>> allowedSorts() {
@@ -138,23 +104,5 @@ public class OrganisasiQueryRepository {
         );
     }
 
-    private OrganisasiQuery toQuery(java.util.Map<String, Object> map) {
-        var query = new OrganisasiQuery();
-        query.setId((Long) map.get("id"));
-        query.setKode((String) map.get("kode"));
-        query.setParentId((Long) map.get("self_parent_id"));
-        query.setLevelOrganisasi((Integer) map.get("levelOrganisasi"));
-        query.setNama((String) map.get("nama"));
-        query.setShortName((String) map.get("short_name"));
-        query.setCategory((String) map.get("category"));
-        if (map.get("parent_kode") != null || map.get("parent_nama") != null) {
-            var parent = new OrganisasiMiniResponse();
-            parent.setId((Long) map.get("parent_id"));
-            parent.setKode((String) map.get("parent_kode"));
-            parent.setNama((String) map.get("parent_nama"));
-            parent.setShortName((String) map.get("parent_short_name"));
-            query.setParent(parent);
-        }
-        return query;
-    }
+
 }

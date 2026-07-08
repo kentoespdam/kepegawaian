@@ -36,13 +36,13 @@ public final class BiodataJooqMapper implements RecordMapper<Record, BiodataQuer
         q.setPendidikanTerakhirId(Objects.requireNonNullElse(selfPtId, ptId));
 
         if (ptId != null) {
-            JenjangPendidikanResponse jp = new JenjangPendidikanResponse();
-            jp.setId(ptId);
-            jp.setNama(record.get("pendidikan_terakhir_nama", String.class));
-            jp.setShortName(record.get("pendidikan_terakhir_short_name", String.class));
-            jp.setSeq(record.get("pendidikan_terakhir_seq", Integer.class));
-            jp.setIsStatistik(record.get("pendidikan_terakhir_is_statistik", Boolean.class));
-            q.setPendidikanTerakhir(jp);
+            q.setPendidikanTerakhir(new JenjangPendidikanResponse(
+                    ptId,
+                    record.get("pendidikan_terakhir_nama", String.class),
+                    record.get("pendidikan_terakhir_short_name", String.class),
+                    record.get("pendidikan_terakhir_seq", Integer.class),
+                    record.get("pendidikan_terakhir_is_statistik", Boolean.class)
+            ));
         }
 
         BiodataGolonganDarah gd = record.get("golongan_darah", BiodataGolonganDarah.class);

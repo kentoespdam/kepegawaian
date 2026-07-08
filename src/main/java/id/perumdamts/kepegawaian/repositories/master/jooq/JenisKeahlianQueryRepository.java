@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.repositories.master.jooq;
 
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.master.jenisKeahlian.JenisKeahlianIndexQuery;
+import id.perumdamts.kepegawaian.dto.master.jenisKeahlian.JenisKeahlianListResponse;
 import id.perumdamts.kepegawaian.dto.master.jenisKeahlian.JenisKeahlianQuery;
 import id.perumdamts.kepegawaian.jooq.tables.JenisKeahlian;
 import lombok.RequiredArgsConstructor;
@@ -60,11 +61,11 @@ public class JenisKeahlianQueryRepository {
                 .fetchOptionalInto(JenisKeahlianQuery.class);
     }
 
-    public List<JenisKeahlianQuery> listQuery() {
+    public List<JenisKeahlianListResponse> listQuery() {
         return dsl.select(JenisKeahlian.JENIS_KEAHLIAN.ID, JenisKeahlian.JENIS_KEAHLIAN.NAMA)
                 .from(JenisKeahlian.JENIS_KEAHLIAN)
                 .where(JenisKeahlian.JENIS_KEAHLIAN.IS_DELETED.eq(false))
                 .orderBy(JenisKeahlian.JENIS_KEAHLIAN.NAMA.asc())
-                .fetchInto(JenisKeahlianQuery.class);
+                .fetchInto(JenisKeahlianListResponse.class);
     }
 }

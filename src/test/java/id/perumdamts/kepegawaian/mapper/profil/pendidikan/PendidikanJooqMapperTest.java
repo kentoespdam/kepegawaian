@@ -87,11 +87,11 @@ class PendidikanJooqMapperTest {
         PendidikanQuery q = mapper.map(row);
         assertEquals(7L, q.getJenjangId());
         assertNotNull(q.getJenjangPendidikan());
-        assertEquals(7L, q.getJenjangPendidikan().getId());
-        assertEquals("Sarjana", q.getJenjangPendidikan().getNama());
-        assertEquals("S1", q.getJenjangPendidikan().getShortName());
-        assertEquals(5, q.getJenjangPendidikan().getSeq());
-        assertEquals(Boolean.TRUE, q.getJenjangPendidikan().getIsStatistik());
+        assertEquals(7L, q.getJenjangPendidikan().id());
+        assertEquals("Sarjana", q.getJenjangPendidikan().nama());
+        assertEquals("S1", q.getJenjangPendidikan().shortName());
+        assertEquals(5, q.getJenjangPendidikan().seq());
+        assertEquals(Boolean.TRUE, q.getJenjangPendidikan().isStatistik());
         assertEquals(Boolean.FALSE, q.getIsLatest());
     }
 

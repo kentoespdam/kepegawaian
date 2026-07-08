@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.services.master.organisasi;
 
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiIndexQuery;
+import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiListResponse;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiQuery;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.master.jooq.OrganisasiQueryRepository;
@@ -24,7 +25,7 @@ public class OrganisasiQueryService {
                 .orElseThrow(() -> new NotFoundException("Organisasi not found"));
     }
 
-    public List<OrganisasiQuery> listQuery() {
+    public List<OrganisasiListResponse> listQuery() {
         return queries.listQuery();
     }
 

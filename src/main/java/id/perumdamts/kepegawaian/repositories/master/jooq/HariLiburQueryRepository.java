@@ -2,8 +2,10 @@ package id.perumdamts.kepegawaian.repositories.master.jooq;
 
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.master.hariLibur.HariLiburIndexQuery;
+import id.perumdamts.kepegawaian.dto.master.hariLibur.HariLiburListResponse;
 import id.perumdamts.kepegawaian.dto.master.hariLibur.HariLiburQuery;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLibur;
+import id.perumdamts.kepegawaian.mapper.master.hariLibur.HariLiburJooqMapper;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -13,7 +15,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -48,7 +49,7 @@ public class HariLiburQueryRepository {
                 .orderBy(sortOrder)
                 .limit(query.getSizeOrDefault())
                 .offset(query.offset())
-                .fetch(record -> toQuery(record.intoMap()));
+                .fetch(HariLiburJooqMapper::toQuery);
         return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
     }
 
@@ -68,19 +69,18 @@ public class HariLiburQueryRepository {
                 .from(HARI_LIBUR)
                 .where(HARI_LIBUR.ID.eq(id))
                 .and(HARI_LIBUR.IS_DELETED.eq(false))
-                .fetchOptional(record -> toQuery(record.intoMap()));
+                .fetchOptional(HariLiburJooqMapper::toQuery);
     }
 
-    public List<HariLiburQuery> listQuery() {
+    public List<HariLiburListResponse> listQuery() {
         return dsl.select(
                         HARI_LIBUR.ID,
                         HARI_LIBUR.TANGGAL,
-                        HARI_LIBUR.JENIS_LIBUR,
-                        HARI_LIBUR.NOTES)
+                        HARI_LIBUR.JENIS_LIBUR)
                 .from(HARI_LIBUR)
                 .where(HARI_LIBUR.IS_DELETED.eq(false))
                 .orderBy(HARI_LIBUR.TANGGAL.asc())
-                .fetch(record -> toQuery(record.intoMap()));
+                .fetch(HariLiburJooqMapper::toListResponse);
     }
 
     private static Byte findJenisLiburOrdinal(String displayName) {
@@ -89,23 +89,5 @@ public class HariLiburQueryRepository {
                 return (byte) e.ordinal();
         }
         return null;
-    }
-
-    private static String jenisLiburByteToString(Byte ordinal) {
-        if (ordinal == null) return null;
-        for (EJenisLibur e : EJenisLibur.values()) {
-            if (e.ordinal() == ordinal)
-                return e.getValue();
-        }
-        return null;
-    }
-
-    private HariLiburQuery toQuery(Map<String, Object> map) {
-        var query = new HariLiburQuery();
-        query.setId((Long) map.get("id"));
-        query.setTanggal((LocalDate) map.get("tanggal"));
-        query.setJenisLibur(jenisLiburByteToString((Byte) map.get("jenis_libur")));
-        query.setNotes((String) map.get("notes"));
-        return query;
     }
 }

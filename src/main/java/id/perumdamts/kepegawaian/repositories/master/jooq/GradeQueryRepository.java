@@ -2,8 +2,8 @@ package id.perumdamts.kepegawaian.repositories.master.jooq;
 
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.master.grade.GradeIndexQuery;
+import id.perumdamts.kepegawaian.dto.master.grade.GradeListResponse;
 import id.perumdamts.kepegawaian.dto.master.grade.GradeQuery;
-import id.perumdamts.kepegawaian.dto.master.level.LevelResponse;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -37,12 +37,11 @@ public class GradeQueryRepository {
                 .and(query.getGrade() != null ? GRADE.GRADE_.eq(query.getGrade()) : DSL.noCondition())
                 .fetchOptional(0, Long.class).orElse(0L);
         var data = dsl.select(
-                        GRADE.ID,
-                        GRADE.LEVEL_ID.as("self_level_id"),
-                        GRADE.GRADE_,
-                        GRADE.TUKIN,
-                        LEVEL.ID.as("level_id"),
-                        LEVEL.NAMA.as("level_nama"))
+                        GradeSelects.ID,
+                        GradeSelects.GRADE_,
+                        GradeSelects.TUKIN,
+                        GradeSelects.LEVEL_ID,
+                        GradeSelects.LEVEL_NAMA)
                 .from(GRADE)
                 .leftJoin(LEVEL).on(GRADE.LEVEL_ID.eq(LEVEL.ID))
                 .where(GRADE.IS_DELETED.eq(false))
@@ -51,7 +50,7 @@ public class GradeQueryRepository {
                 .orderBy(sortOrder)
                 .limit(query.getSizeOrDefault())
                 .offset(query.getPageNumber() * query.getSizeOrDefault())
-                .fetch(GradeJooqMapper::mapToQuery);
+                .fetch(GradeJooqMapper::toQuery);
         return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
     }
 
@@ -65,48 +64,39 @@ public class GradeQueryRepository {
 
     public Optional<GradeQuery> getById(Long id) {
         return dsl.select(
-                        GRADE.ID,
-                        GRADE.LEVEL_ID.as("self_level_id"),
-                        GRADE.GRADE_,
-                        GRADE.TUKIN,
-                        LEVEL.ID.as("level_id"),
-                        LEVEL.NAMA.as("level_nama"))
+                        GradeSelects.ID,
+                        GradeSelects.GRADE_,
+                        GradeSelects.TUKIN,
+                        GradeSelects.LEVEL_ID,
+                        GradeSelects.LEVEL_NAMA)
                 .from(GRADE)
                 .leftJoin(LEVEL).on(GRADE.LEVEL_ID.eq(LEVEL.ID))
                 .where(GRADE.ID.eq(id))
                 .and(GRADE.IS_DELETED.eq(false))
-                .fetchOptional(GradeJooqMapper::mapToQuery);
+                .fetchOptional(GradeJooqMapper::toQuery);
     }
 
-    public List<GradeQuery> listQuery() {
-        return dsl.select(
-                        GRADE.ID,
-                        GRADE.LEVEL_ID.as("self_level_id"),
-                        GRADE.GRADE_,
-                        GRADE.TUKIN,
-                        LEVEL.ID.as("level_id"),
-                        LEVEL.NAMA.as("level_nama"))
+    public List<GradeListResponse> listQuery() {
+        return dsl.select(GradeSelects.ID, GradeSelects.GRADE_)
                 .from(GRADE)
-                .leftJoin(LEVEL).on(GRADE.LEVEL_ID.eq(LEVEL.ID))
                 .where(GRADE.IS_DELETED.eq(false))
                 .orderBy(GRADE.GRADE_.asc())
-                .fetch(GradeJooqMapper::mapToQuery);
+                .fetchInto(GradeListResponse.class);
     }
 
     public List<GradeQuery> findByLevelId(Long levelId) {
         return dsl.select(
-                        GRADE.ID,
-                        GRADE.LEVEL_ID.as("self_level_id"),
-                        GRADE.GRADE_,
-                        GRADE.TUKIN,
-                        LEVEL.ID.as("level_id"),
-                        LEVEL.NAMA.as("level_nama"))
+                        GradeSelects.ID,
+                        GradeSelects.GRADE_,
+                        GradeSelects.TUKIN,
+                        GradeSelects.LEVEL_ID,
+                        GradeSelects.LEVEL_NAMA)
                 .from(GRADE)
                 .leftJoin(LEVEL).on(GRADE.LEVEL_ID.eq(LEVEL.ID))
                 .where(GRADE.LEVEL_ID.eq(levelId))
                 .and(GRADE.IS_DELETED.eq(false))
                 .orderBy(GRADE.GRADE_.asc())
-                .fetch(GradeJooqMapper::mapToQuery);
+                .fetch(GradeJooqMapper::toQuery);
     }
 
 }

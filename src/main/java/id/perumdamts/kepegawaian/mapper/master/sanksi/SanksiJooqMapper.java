@@ -1,39 +1,69 @@
 package id.perumdamts.kepegawaian.mapper.master.sanksi;
 
 import id.perumdamts.kepegawaian.dto.master.jenisSp.JenisSpMiniResponse;
+import id.perumdamts.kepegawaian.dto.master.jenisSp.JenisSpSimple;
+import id.perumdamts.kepegawaian.dto.master.sanksi.SanksiJenisSpList;
 import id.perumdamts.kepegawaian.dto.master.sanksi.SanksiQuery;
+import id.perumdamts.kepegawaian.repositories.master.jooq.SanksiSelects;
 import org.jooq.Record;
-
-import static id.perumdamts.kepegawaian.jooq.tables.JenisSp.JENIS_SP;
-import static id.perumdamts.kepegawaian.jooq.tables.SanksiSp.SANKSI_SP;
 
 public final class SanksiJooqMapper {
     private SanksiJooqMapper() {}
 
-    public static SanksiQuery mapToQuery(Record record) {
-        SanksiQuery query = new SanksiQuery();
-        query.setId(record.get(SANKSI_SP.ID));
-        query.setKode(record.get(SANKSI_SP.KODE));
-        query.setKeterangan(record.get(SANKSI_SP.KETERANGAN));
-        query.setJenisSpId(record.get(SANKSI_SP.JENIS_SP_ID));
-        query.setPotTkk(record.get(SANKSI_SP.POT_TKK));
-        query.setJmlPotTkk(record.get(SANKSI_SP.JML_POT_TKK));
-        query.setIsPendingPangkat(record.get(SANKSI_SP.IS_PENDING_PANGKAT));
-        query.setIsPendingGaji(record.get(SANKSI_SP.IS_PENDING_GAJI));
-        query.setIsTurunPangkat(record.get(SANKSI_SP.IS_TURUN_PANGKAT));
-        query.setIsTurunJabatan(record.get(SANKSI_SP.IS_TURUN_JABATAN));
-        query.setIsSuspension(record.get(SANKSI_SP.IS_SUSPENSION));
-        query.setIsTerminateDh(record.get(SANKSI_SP.IS_TERMINATE_DH));
-        query.setIsTerminateTh(record.get(SANKSI_SP.IS_TERMINATE_TH));
-
-        Long jenisSpId = record.get(JENIS_SP.ID.as("jenissp_id"));
+    public static SanksiQuery toQuery(Record record) {
+        JenisSpMiniResponse j = null;
+        Long jenisSpId = record.get(SanksiSelects.JENIS_SP_ID);
         if (jenisSpId != null) {
-            JenisSpMiniResponse j = new JenisSpMiniResponse();
-            j.setId(jenisSpId);
-            j.setKode(record.get(JENIS_SP.KODE.as("jenissp_kode")));
-            j.setNama(record.get(JENIS_SP.NAMA.as("jenissp_nama")));
-            query.setJenisSp(j);
+            j = new JenisSpMiniResponse(
+                    jenisSpId,
+                    record.get(SanksiSelects.JENIS_SP_KODE),
+                    record.get(SanksiSelects.JENIS_SP_NAMA),
+                    null);
         }
-        return query;
+        return new SanksiQuery(
+                record.get(SanksiSelects.ID),
+                record.get(SanksiSelects.KODE),
+                record.get(SanksiSelects.KETERANGAN),
+                j,
+                record.get(SanksiSelects.POT_TKK),
+                record.get(SanksiSelects.JML_POT_TKK),
+                record.get(SanksiSelects.IS_PENDING_PANGKAT),
+                record.get(SanksiSelects.IS_PENDING_GAJI),
+                record.get(SanksiSelects.IS_TURUN_PANGKAT),
+                record.get(SanksiSelects.IS_TURUN_JABATAN),
+                record.get(SanksiSelects.IS_SUSPENSION),
+                record.get(SanksiSelects.IS_TERMINATE_DH),
+                record.get(SanksiSelects.IS_TERMINATE_TH)
+        );
+    }
+
+    /**
+     * Mapping untuk endpoint /master/sanksi/jenis-sp/{id} — nested
+     * {@link JenisSpSimple} tanpa circular reference {@code sanksiSp}.
+     */
+    public static SanksiJenisSpList toJenisSpList(Record record) {
+        JenisSpSimple j = null;
+        Long jenisSpId = record.get(SanksiSelects.JENIS_SP_ID);
+        if (jenisSpId != null) {
+            j = new JenisSpSimple(
+                    jenisSpId,
+                    record.get(SanksiSelects.JENIS_SP_KODE),
+                    record.get(SanksiSelects.JENIS_SP_NAMA));
+        }
+        return new SanksiJenisSpList(
+                record.get(SanksiSelects.ID),
+                record.get(SanksiSelects.KODE),
+                record.get(SanksiSelects.KETERANGAN),
+                j,
+                record.get(SanksiSelects.POT_TKK),
+                record.get(SanksiSelects.JML_POT_TKK),
+                record.get(SanksiSelects.IS_PENDING_PANGKAT),
+                record.get(SanksiSelects.IS_PENDING_GAJI),
+                record.get(SanksiSelects.IS_TURUN_PANGKAT),
+                record.get(SanksiSelects.IS_TURUN_JABATAN),
+                record.get(SanksiSelects.IS_SUSPENSION),
+                record.get(SanksiSelects.IS_TERMINATE_DH),
+                record.get(SanksiSelects.IS_TERMINATE_TH)
+        );
     }
 }

@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.services.master.golongan;
 
 import id.perumdamts.kepegawaian.dto.master.golongan.GolonganIndexQuery;
+import id.perumdamts.kepegawaian.dto.master.golongan.GolonganListResponse;
 import id.perumdamts.kepegawaian.dto.master.golongan.GolonganQuery;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.master.jooq.GolonganQueryRepository;
@@ -24,7 +25,7 @@ public class GolonganQueryService {
                 .orElseThrow(() -> new NotFoundException("Golongan not found"));
     }
 
-    public List<GolonganQuery> listQuery() {
+    public List<GolonganListResponse> listQuery() {
         return queryRepository.listQuery();
     }
 }

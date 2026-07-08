@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.services.master.jenisKeahlian;
 
 import id.perumdamts.kepegawaian.dto.master.jenisKeahlian.JenisKeahlianIndexQuery;
+import id.perumdamts.kepegawaian.dto.master.jenisKeahlian.JenisKeahlianListResponse;
 import id.perumdamts.kepegawaian.dto.master.jenisKeahlian.JenisKeahlianQuery;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.master.jooq.JenisKeahlianQueryRepository;
@@ -24,7 +25,7 @@ public class JenisKeahlianQueryService {
                 .orElseThrow(() -> new NotFoundException("JenisKeahlian not found"));
     }
 
-    public List<JenisKeahlianQuery> listQuery() {
+    public List<JenisKeahlianListResponse> listQuery() {
         return queries.listQuery();
     }
 }

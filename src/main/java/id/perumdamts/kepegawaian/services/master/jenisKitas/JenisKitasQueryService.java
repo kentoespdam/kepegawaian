@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.services.master.jenisKitas;
 
 import id.perumdamts.kepegawaian.dto.master.jenisKitas.JenisKitasIndexQuery;
+import id.perumdamts.kepegawaian.dto.master.jenisKitas.JenisKitasListResponse;
 import id.perumdamts.kepegawaian.dto.master.jenisKitas.JenisKitasQuery;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.master.jooq.JenisKitasQueryRepository;
@@ -24,7 +25,7 @@ public class JenisKitasQueryService {
                 .orElseThrow(() -> new NotFoundException("JenisKitas not found"));
     }
 
-    public List<JenisKitasQuery> listQuery() {
+    public List<JenisKitasListResponse> listQuery() {
         return queries.listQuery();
     }
 }
