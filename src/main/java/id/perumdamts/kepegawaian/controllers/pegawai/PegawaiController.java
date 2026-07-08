@@ -2,21 +2,24 @@ package id.perumdamts.kepegawaian.controllers.pegawai;
 
 import id.perumdamts.kepegawaian.config.PegawaiProperties;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
-import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
+import id.perumdamts.kepegawaian.dto.commons.DeletedResult;
 import id.perumdamts.kepegawaian.dto.commons.ListResult;
 import id.perumdamts.kepegawaian.dto.commons.PageResult;
+import id.perumdamts.kepegawaian.dto.commons.SavedResult;
 import id.perumdamts.kepegawaian.dto.commons.SingleResult;
 import id.perumdamts.kepegawaian.dto.pegawai.pegawai.*;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.services.pegawai.pegawai.PegawaiCommandService;
 import id.perumdamts.kepegawaian.services.pegawai.pegawai.PegawaiQueryService;
-import jakarta.validation.*;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
+import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,8 +32,7 @@ public class PegawaiController {
     private final PegawaiQueryService queryService;
     private final PegawaiCommandService commandService;
     private final PegawaiProperties pegawaiProperties;
-    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-    Validator validator = factory.getValidator();
+    private final Validator validator;
 
     @GetMapping
     public ResponseEntity<PageResult<Page<PegawaiResponse>>> index(@ParameterObject @Valid PegawaiRequest request) {
@@ -59,55 +61,56 @@ public class PegawaiController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<?> save(@Valid @RequestBody PegawaiPostRequest request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
-
-        if (request.getStatusPegawai().equals(EStatusPegawai.PEGAWAI) && !pegawaiProperties.getExcludedJabatanIds().contains(request.getJabatanId())) {
-            Set<ConstraintViolation<PegawaiPostRequest>> validate = validator.validate(request, PegawaiTetap.class);
-            if (!validate.isEmpty()) return ErrorResult.build(validate);
+    public ResponseEntity<SavedResult<Long>> save(@Valid @RequestBody PegawaiPostRequest request) {
+        if (request.getStatusPegawai().equals(EStatusPegawai.PEGAWAI)
+                && !pegawaiProperties.getExcludedJabatanIds().contains(request.getJabatanId())) {
+            Set<ConstraintViolation<PegawaiPostRequest>> violations = validator.validate(request, PegawaiTetap.class);
+            if (!violations.isEmpty()) {
+                throw new ConstraintViolationException(violations);
+            }
         }
         return CustomResult.save(commandService.save(request));
     }
 
-    @SuppressWarnings("unchecked")
     @PostMapping("/batch-by-ids")
-    public ResponseEntity<ListResult<PegawaiListResponse>> batchByIds(@Valid @RequestBody PegawaiBatchIdsRequest request, Errors errors) {
-        if (errors.hasErrors()) return (ResponseEntity<ListResult<PegawaiListResponse>>) (ResponseEntity<?>) ErrorResult.build(errors);
+    public ResponseEntity<ListResult<PegawaiListResponse>> batchByIds(@Valid @RequestBody PegawaiBatchIdsRequest request) {
         return CustomResult.list(queryService.findByIds(request.getIds()));
     }
 
+    @SuppressWarnings("unchecked")
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/batch")
-    public ResponseEntity<?> saveBatch(@Valid @RequestBody List<PegawaiPostRequest> requests, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(commandService.saveBatch(requests));
+    public ResponseEntity<SavedResult<Object>> saveBatch(@Valid @RequestBody List<PegawaiPostRequest> requests) {
+        return (ResponseEntity<SavedResult<Object>>) (ResponseEntity<?>) CustomResult.save(commandService.saveBatch(requests));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody PegawaiPutRequest request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
+    public ResponseEntity<SavedResult<Long>> update(@PathVariable Long id,
+                                                     @Valid @RequestBody PegawaiPutRequest request) {
         return CustomResult.save(commandService.update(id, request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}/gaji")
-    public ResponseEntity<?> patchGaji(@PathVariable Long id, @Valid @RequestBody PegawaiPatchGaji request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
+    public ResponseEntity<SavedResult<Long>> patchGaji(@PathVariable Long id,
+                                                        @Valid @RequestBody PegawaiPatchGaji request) {
         return CustomResult.save(commandService.patchGaji(id, request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}/profil")
-    public ResponseEntity<?> patchProfil(@PathVariable Long id, @Valid @RequestBody PegawaiPatchProfil request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
-        if (!id.equals(request.getId())) return ErrorResult.build("Unknown Pegawai");
+    public ResponseEntity<SavedResult<Long>> patchProfil(@PathVariable Long id,
+                                                          @Valid @RequestBody PegawaiPatchProfil request) {
+        if (!id.equals(request.getId())) {
+            throw new IllegalArgumentException("Unknown Pegawai");
+        }
         return CustomResult.save(commandService.patchProfil(id, request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteById(@PathVariable Long id) {
+    public ResponseEntity<DeletedResult> deleteById(@PathVariable Long id) {
         return CustomResult.delete(commandService.deleteById(id));
     }
 }
