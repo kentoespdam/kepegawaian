@@ -3,7 +3,7 @@ package id.perumdamts.kepegawaian.services.kepegawaian.terminasi;
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiQuery;
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiRequest;
 import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiResponse;
-import id.perumdamts.kepegawaian.mapper.pegawai.pegawai.PegawaiMapper;
+import id.perumdamts.kepegawaian.mapper.pegawai.pegawai.PegawaiReadMapper;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.jooq.RiwayatTerminasiQueryRepository;
 import id.perumdamts.kepegawaian.repositories.pegawai.jooq.PegawaiQueryRepository;
@@ -37,7 +37,7 @@ public class RiwayatTerminasiQueryService {
         request.setSortDirection("ASC");
 
         return pegawaiRepository.findAll(request.getCalonPensiunSpecification(), request.getPageable())
-                .map(PegawaiMapper::toResponse);
+                .map(PegawaiReadMapper::toResponse);
     }
 
     public RiwayatTerminasiQuery findById(Long id) {

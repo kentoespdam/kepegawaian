@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;
 import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiMiniResponse;
-import id.perumdamts.kepegawaian.mapper.pegawai.pegawai.PegawaiMapper;
+import id.perumdamts.kepegawaian.mapper.pegawai.pegawai.PegawaiReadMapper;
 import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
 import id.perumdamts.kepegawaian.entities.cuti.CutiApproval;
 import lombok.Data;
@@ -27,7 +27,7 @@ public class CutiApprovalMiniResponse {
     public static CutiApprovalMiniResponse from(CutiApproval entity) {
         CutiApprovalMiniResponse response = new CutiApprovalMiniResponse();
         response.setId(entity.getId());
-        response.setApprover(PegawaiMapper.toMiniResponse(entity.getApprover()));
+        response.setApprover(PegawaiReadMapper.toMiniResponse(entity.getApprover()));
         response.setJabatan(JabatanMiniResponse.from(entity.getJabatan()));
         response.setApprovalLevel(entity.getApprovalLevel());
         response.setApprovalStatus(entity.getApprovalStatus());

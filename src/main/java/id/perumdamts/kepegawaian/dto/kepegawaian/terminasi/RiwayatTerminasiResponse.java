@@ -10,7 +10,7 @@ import id.perumdamts.kepegawaian.dto.master.golongan.GolonganResponse;
 import id.perumdamts.kepegawaian.dto.master.jabatan.JabatanMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiMiniResponse;
 import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiResponse;
-import id.perumdamts.kepegawaian.mapper.pegawai.pegawai.PegawaiMapper;
+import id.perumdamts.kepegawaian.mapper.pegawai.pegawai.PegawaiReadMapper;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatTerminasi;
 import lombok.Data;
 
@@ -44,7 +44,7 @@ public class RiwayatTerminasiResponse {
         RiwayatTerminasiResponse response = new RiwayatTerminasiResponse();
         response.setId(entity.getId());
         response.setAlasanTerminasi(AlasanBerhentiResponse.from(entity.getAlasanTerminasi()));
-        response.setPegawai(PegawaiMapper.toResponse(entity.getPegawai()));
+        response.setPegawai(PegawaiReadMapper.toResponse(entity.getPegawai()));
         response.setNipam(entity.getNipam());
         response.setNama(entity.getNama());
         response.setNomorSk(entity.getNomorSk());
