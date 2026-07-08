@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.services.profil.keluarga;
 
 import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaIndexQuery;
+import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaDetail;
 import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaQuery;
 import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilQuery;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
@@ -26,7 +27,7 @@ public class ProfilKeluargaQueryService {
         return queries.pageQuery(query);
     }
 
-    public ProfilKeluargaQuery getById(Long id) {
+    public ProfilKeluargaDetail getById(Long id) {
         return detail.getById(id)
                 .orElseThrow(() -> new NotFoundException("Profil Keluarga not found"));
     }

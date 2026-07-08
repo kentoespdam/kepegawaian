@@ -17,24 +17,24 @@ public final class PelatihanDetailJooqMapper implements RecordMapper<Record, Pel
     @SuppressWarnings("unchecked")
     @Override
     public PelatihanDetail map(Record record) {
-        PelatihanDetail d = new PelatihanDetail();
-        d.setId(record.get(PELATIHAN.ID));
-        d.setBiodataId(record.get(PELATIHAN.BIODATA_ID));
-        d.setBiodataNik(record.get("biodata_nik", String.class));
-        d.setBiodataNama(record.get("biodata_nama", String.class));
-        d.setJenisPelatihanId(record.get(PELATIHAN.JENIS_PELATIHAN_ID));
-        d.setJenisPelatihanNama(record.get("jenis_pelatihan_nama", String.class));
-        d.setNama(record.get(PELATIHAN.NAMA));
-        d.setLembaga(record.get(PELATIHAN.LEMBAGA));
-        d.setTanggalMulai(record.get(PELATIHAN.TANGGAL_MULAI));
-        d.setTanggalSelesai(record.get(PELATIHAN.TANGGAL_SELESAI));
-        d.setLulus(record.get(PELATIHAN.LULUS));
-        d.setNilai(record.get(PELATIHAN.NILAI));
-        d.setIkatanDinas(record.get(PELATIHAN.IKATAN_DINAS));
-        d.setTanggalAkhirIkatan(record.get(PELATIHAN.TANGGAL_AKHIR_IKATAN));
-        d.setNotes(record.get(PELATIHAN.NOTES));
-        d.setChangedStatus(record.get(PELATIHAN.CHANGED_STATUS));
-        d.setLampiran(record.get("lampiran", List.class));
-        return d;
+        return new PelatihanDetail(
+                record.get(PELATIHAN.ID),
+                record.get(PELATIHAN.BIODATA_ID),
+                record.get("biodata_nik", String.class),
+                record.get("biodata_nama", String.class),
+                record.get(PELATIHAN.JENIS_PELATIHAN_ID),
+                record.get("jenis_pelatihan_nama", String.class),
+                record.get(PELATIHAN.NAMA),
+                record.get(PELATIHAN.LEMBAGA),
+                record.get(PELATIHAN.TANGGAL_MULAI),
+                record.get(PELATIHAN.TANGGAL_SELESAI),
+                record.get(PELATIHAN.LULUS),
+                record.get(PELATIHAN.NILAI),
+                record.get(PELATIHAN.IKATAN_DINAS),
+                record.get(PELATIHAN.TANGGAL_AKHIR_IKATAN),
+                record.get(PELATIHAN.NOTES),
+                record.get(PELATIHAN.CHANGED_STATUS),
+                record.get("lampiran", List.class)
+        );
     }
 }

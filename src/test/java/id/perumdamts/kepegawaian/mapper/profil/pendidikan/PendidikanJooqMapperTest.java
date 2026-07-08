@@ -65,10 +65,10 @@ class PendidikanJooqMapperTest {
 
         PendidikanQuery q = assertDoesNotThrow(() -> mapper.map(row),
                 "map() must not throw when both jenjang ids are null");
-        assertNull(q.getJenjangId(), "jenjangId must be null when row has no jenjang");
-        assertNull(q.getJenjangPendidikan(), "nested jenjang must be null when row has no jenjang");
-        assertEquals(1L, q.getId());
-        assertEquals(Boolean.TRUE, q.getIsLatest());
+        assertNull(q.jenjangId(), "jenjangId must be null when row has no jenjang");
+        assertNull(q.jenjangPendidikan(), "nested jenjang must be null when row has no jenjang");
+        assertEquals(1L, q.id());
+        assertEquals(Boolean.TRUE, q.isLatest());
     }
 
     @Test
@@ -85,14 +85,14 @@ class PendidikanJooqMapperTest {
         row.set(IS_LATEST, (byte) 0);
 
         PendidikanQuery q = mapper.map(row);
-        assertEquals(7L, q.getJenjangId());
-        assertNotNull(q.getJenjangPendidikan());
-        assertEquals(7L, q.getJenjangPendidikan().id());
-        assertEquals("Sarjana", q.getJenjangPendidikan().nama());
-        assertEquals("S1", q.getJenjangPendidikan().shortName());
-        assertEquals(5, q.getJenjangPendidikan().seq());
-        assertEquals(Boolean.TRUE, q.getJenjangPendidikan().isStatistik());
-        assertEquals(Boolean.FALSE, q.getIsLatest());
+        assertEquals(7L, q.jenjangId());
+        assertNotNull(q.jenjangPendidikan());
+        assertEquals(7L, q.jenjangPendidikan().id());
+        assertEquals("Sarjana", q.jenjangPendidikan().nama());
+        assertEquals("S1", q.jenjangPendidikan().shortName());
+        assertEquals(5, q.jenjangPendidikan().seq());
+        assertEquals(Boolean.TRUE, q.jenjangPendidikan().isStatistik());
+        assertEquals(Boolean.FALSE, q.isLatest());
     }
 
     @Test
@@ -104,7 +104,7 @@ class PendidikanJooqMapperTest {
         row.set(JENJANG_NAMA, "Magister");
 
         PendidikanQuery q = mapper.map(row);
-        assertEquals(9L, q.getJenjangId(), "must fall back to joined jenjang_id when self is null");
-        assertNotNull(q.getJenjangPendidikan());
+        assertEquals(9L, q.jenjangId(), "must fall back to joined jenjang_id when self is null");
+        assertNotNull(q.jenjangPendidikan());
     }
 }

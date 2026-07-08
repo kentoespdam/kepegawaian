@@ -15,20 +15,19 @@ public final class KartuIdentitasDetailJooqMapper implements RecordMapper<Record
     @SuppressWarnings("unchecked")
     @Override
     public KartuIdentitasDetail map(Record record) {
-        KartuIdentitasDetail d = new KartuIdentitasDetail();
-        d.setId(record.get("id", Long.class));
-        d.setBiodataId(record.get("self_nik", String.class));
-        d.setBiodataNik(record.get("biodata_nik", String.class));
-        d.setBiodataNama(record.get("biodata_nama", String.class));
-        d.setJenisKartuId(record.get("jenis_kartu_id", Long.class));
-        d.setJenisKartuNama(record.get("jenis_kartu_nama", String.class));
-        d.setNomorKartu(record.get("nomor_kartu", String.class));
-        d.setTanggalExpired(record.get("tanggal_expired", java.time.LocalDate.class));
-        d.setTanggalTerima(record.get("tanggal_terima", java.time.LocalDate.class));
-        d.setNotes(record.get("notes", String.class));
-        d.setChangedStatus(record.get("changed_status", Byte.class));
-        List<LampiranRow> lampiran = record.get("lampiran", List.class);
-        d.setLampiran(lampiran != null ? lampiran : List.of());
-        return d;
+        return new KartuIdentitasDetail(
+                record.get("id", Long.class),
+                record.get("self_nik", String.class),
+                record.get("biodata_nik", String.class),
+                record.get("biodata_nama", String.class),
+                record.get("jenis_kartu_id", Long.class),
+                record.get("jenis_kartu_nama", String.class),
+                record.get("nomor_kartu", String.class),
+                record.get("tanggal_expired", java.time.LocalDate.class),
+                record.get("tanggal_terima", java.time.LocalDate.class),
+                record.get("notes", String.class),
+                record.get("changed_status", Byte.class),
+                record.get("lampiran", List.class)
+        );
     }
 }

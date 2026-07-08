@@ -1,26 +1,24 @@
 package id.perumdamts.kepegawaian.dto.profil.keahlian;
 
 import id.perumdamts.kepegawaian.dto.master.jenisKeahlian.JenisKeahlianResponse;
-import lombok.Data;
 
 import java.time.LocalDateTime;
 
-@Data
-public class KeahlianQuery {
-    private Long id;
-    private String biodataId;
-    private String biodataNik;
-    private String biodataNama;
-    private Long jenisKeahlianId;
-    private JenisKeahlianResponse jenisKeahlian;
-    private String kualifikasi;
-    private Boolean sertifikasi;
-    private String institusi;
-    private Integer tahun;
-    private String masaBerlaku;
-    private Boolean disetujui;
-    private LocalDateTime tanggalPengajuan;
-    private LocalDateTime tanggalDisetujui;
-    private String disetujuiOleh;
-    private Byte changedStatus;
-}
+public record KeahlianQuery(
+        Long id,
+        String biodataId,
+        String biodataNik,
+        String biodataNama,
+        Long jenisKeahlianId,
+        JenisKeahlianResponse jenisKeahlian,
+        String kualifikasi,
+        Boolean sertifikasi,
+        String institusi,
+        Integer tahun,
+        String masaBerlaku,
+        Boolean disetujui,
+        LocalDateTime tanggalPengajuan,
+        LocalDateTime tanggalDisetujui,
+        String disetujuiOleh,
+        Byte changedStatus
+) {}

@@ -13,32 +13,33 @@ public final class KeahlianJooqMapper implements RecordMapper<Record, KeahlianQu
 
     @Override
     public KeahlianQuery map(Record record) {
-        KeahlianQuery q = new KeahlianQuery();
-        q.setId(record.get("id", Long.class));
-        q.setBiodataId(record.get("biodata_id", String.class));
-        q.setBiodataNik(record.get("biodata_nik", String.class));
-        q.setBiodataNama(record.get("biodata_nama", String.class));
-        q.setJenisKeahlianId(record.get("self_jenis_keahlian_id", Long.class));
-
         Long jenisKeahlianId = record.get("jenis_keahlian_id", Long.class);
+        JenisKeahlianResponse jk = null;
         if (jenisKeahlianId != null) {
-            JenisKeahlianResponse jk = new JenisKeahlianResponse();
-            jk.setId(jenisKeahlianId);
-            jk.setNama(record.get("jenis_keahlian_nama", String.class));
-            q.setJenisKeahlian(jk);
+            jk = new JenisKeahlianResponse(
+                    jenisKeahlianId,
+                    record.get("jenis_keahlian_nama", String.class)
+            );
         }
 
-        q.setKualifikasi(mapKualifikasi(record.get("kualifikasi", Byte.class)));
-        q.setSertifikasi(record.get("sertifikasi", Boolean.class));
-        q.setInstitusi(record.get("institusi", String.class));
-        q.setTahun(record.get("tahun", Integer.class));
-        q.setMasaBerlaku(record.get("masa_berlaku", String.class));
-        q.setDisetujui(record.get("disetujui", Boolean.class));
-        q.setTanggalPengajuan(record.get("tanggal_pengajuan", java.time.LocalDateTime.class));
-        q.setTanggalDisetujui(record.get("tanggal_disetujui", java.time.LocalDateTime.class));
-        q.setDisetujuiOleh(record.get("disetujui_oleh", String.class));
-        q.setChangedStatus(record.get("changed_status", Byte.class));
-        return q;
+        return new KeahlianQuery(
+                record.get("id", Long.class),
+                record.get("biodata_id", String.class),
+                record.get("biodata_nik", String.class),
+                record.get("biodata_nama", String.class),
+                record.get("self_jenis_keahlian_id", Long.class),
+                jk,
+                mapKualifikasi(record.get("kualifikasi", Byte.class)),
+                record.get("sertifikasi", Boolean.class),
+                record.get("institusi", String.class),
+                record.get("tahun", Integer.class),
+                record.get("masa_berlaku", String.class),
+                record.get("disetujui", Boolean.class),
+                record.get("tanggal_pengajuan", java.time.LocalDateTime.class),
+                record.get("tanggal_disetujui", java.time.LocalDateTime.class),
+                record.get("disetujui_oleh", String.class),
+                record.get("changed_status", Byte.class)
+        );
     }
 
     private static String mapKualifikasi(Byte ordinal) {

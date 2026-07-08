@@ -15,18 +15,17 @@ public final class LampiranProfilJooqMapper implements RecordMapper<Record, Lamp
     @Override
     public LampiranProfilQuery map(Record record) {
         var r = record.into(LAMPIRAN_PROFIL);
-        LampiranProfilQuery q = new LampiranProfilQuery();
-        q.setId(r.getId());
-        if (r.getRef() != null) {
-            q.setRef(EJenisLampiranProfil.values()[r.getRef()]);
-        }
-        q.setRefId(r.getRefId());
-        q.setFileName(r.getFileName());
-        q.setMimeType(r.getMimeType());
-        q.setNotes(r.getNotes());
-        q.setDisetujui(r.getDisetujui());
-        q.setDisetujuiOleh(r.getDisetujuiOleh());
-        q.setTanggalDisetujui(r.getTanggalDisetujui());
-        return q;
+        EJenisLampiranProfil ref = r.getRef() != null ? EJenisLampiranProfil.values()[r.getRef()] : null;
+        return new LampiranProfilQuery(
+                r.getId(),
+                ref,
+                r.getRefId(),
+                r.getFileName(),
+                r.getMimeType(),
+                r.getNotes(),
+                r.getDisetujui(),
+                r.getDisetujuiOleh(),
+                r.getTanggalDisetujui()
+        );
     }
 }

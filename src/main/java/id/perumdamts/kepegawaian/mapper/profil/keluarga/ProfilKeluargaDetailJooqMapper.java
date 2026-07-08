@@ -16,29 +16,7 @@ public final class ProfilKeluargaDetailJooqMapper implements RecordMapper<Record
     @SuppressWarnings("unchecked")
     @Override
     public ProfilKeluargaDetail map(Record record) {
-        ProfilKeluargaDetail detail = new ProfilKeluargaDetail();
         ProfilKeluargaQuery base = ProfilKeluargaJooqMapper.INSTANCE.map(record);
-        detail.setId(base.getId());
-        detail.setBiodataId(base.getBiodataId());
-        detail.setBiodataNik(base.getBiodataNik());
-        detail.setBiodataNama(base.getBiodataNama());
-        detail.setNik(base.getNik());
-        detail.setNama(base.getNama());
-        detail.setJenisKelamin(base.getJenisKelamin());
-        detail.setAgama(base.getAgama());
-        detail.setHubunganKeluarga(base.getHubunganKeluarga());
-        detail.setTempatLahir(base.getTempatLahir());
-        detail.setTanggalLahir(base.getTanggalLahir());
-        detail.setTanggungan(base.getTanggungan());
-        detail.setPendidikanId(base.getPendidikanId());
-        detail.setJenjangPendidikan(base.getJenjangPendidikan());
-        detail.setStatusPendidikan(base.getStatusPendidikan());
-        detail.setStatusKawin(base.getStatusKawin());
-        detail.setNotes(base.getNotes());
-        detail.setVersion(base.getVersion());
-        detail.setIsDeleted(base.getIsDeleted());
-        detail.setChangedStatus(base.getChangedStatus());
-        detail.setLampiran(record.get("lampiran", List.class));
-        return detail;
+        return new ProfilKeluargaDetail(base, record.get("lampiran", List.class));
     }
 }

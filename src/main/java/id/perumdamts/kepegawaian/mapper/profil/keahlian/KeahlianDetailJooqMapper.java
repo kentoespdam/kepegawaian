@@ -16,25 +16,7 @@ public final class KeahlianDetailJooqMapper implements RecordMapper<Record, Keah
     @SuppressWarnings("unchecked")
     @Override
     public KeahlianDetail map(Record record) {
-        KeahlianDetail detail = new KeahlianDetail();
         KeahlianQuery base = KeahlianJooqMapper.INSTANCE.map(record);
-        detail.setId(base.getId());
-        detail.setBiodataId(base.getBiodataId());
-        detail.setBiodataNik(base.getBiodataNik());
-        detail.setBiodataNama(base.getBiodataNama());
-        detail.setJenisKeahlianId(base.getJenisKeahlianId());
-        detail.setJenisKeahlian(base.getJenisKeahlian());
-        detail.setKualifikasi(base.getKualifikasi());
-        detail.setSertifikasi(base.getSertifikasi());
-        detail.setInstitusi(base.getInstitusi());
-        detail.setTahun(base.getTahun());
-        detail.setMasaBerlaku(base.getMasaBerlaku());
-        detail.setDisetujui(base.getDisetujui());
-        detail.setTanggalPengajuan(base.getTanggalPengajuan());
-        detail.setTanggalDisetujui(base.getTanggalDisetujui());
-        detail.setDisetujuiOleh(base.getDisetujuiOleh());
-        detail.setChangedStatus(base.getChangedStatus());
-        detail.setLampiran(record.get("lampiran", List.class));
-        return detail;
+        return new KeahlianDetail(base, record.get("lampiran", List.class));
     }
 }

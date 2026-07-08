@@ -13,14 +13,18 @@ public final class KartuIdentitasMultisetJooqMapper implements RecordMapper<Reco
 
     @Override
     public KartuIdentitasQuery map(Record record) {
-        KartuIdentitasQuery q = new KartuIdentitasQuery();
-        q.setId(record.get("id", Long.class));
-        q.setBiodataId(record.get("self_nik", String.class));
-        q.setNomorKartu(record.get("nomor_kartu", String.class));
-        q.setTanggalExpired(record.get("tanggal_expired", LocalDate.class));
-        q.setTanggalTerima(record.get("tanggal_terima", LocalDate.class));
-        q.setNotes(record.get("notes", String.class));
-        q.setChangedStatus(record.get("changed_status", Byte.class));
-        return q;
+        return new KartuIdentitasQuery(
+                record.get("id", Long.class),
+                record.get("self_nik", String.class),
+                null,
+                null,
+                null,
+                null,
+                record.get("nomor_kartu", String.class),
+                record.get("tanggal_expired", LocalDate.class),
+                record.get("tanggal_terima", LocalDate.class),
+                record.get("notes", String.class),
+                record.get("changed_status", Byte.class)
+        );
     }
 }

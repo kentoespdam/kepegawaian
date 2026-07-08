@@ -12,42 +12,42 @@ public final class PendidikanJooqMapper implements RecordMapper<Record, Pendidik
 
     @Override
     public PendidikanQuery map(Record record) {
-        PendidikanQuery q = new PendidikanQuery();
-        q.setId(record.get("id", Long.class));
-        q.setBiodataId(record.get("biodata_id", String.class));
-        q.setBiodataNik(record.get("biodata_nik", String.class));
-        q.setBiodataNama(record.get("biodata_nama", String.class));
-
-        // self_jenjang_id is the authoritative FK on the pendidikan row; jenjang_id is the
-        // joined master id (present only when the FK resolves). Both null on rows without jenjang.
         Long selfJenjangId = record.get("self_jenjang_id", Long.class);
         Long jenjangId = record.get("jenjang_id", Long.class);
-        q.setJenjangId(selfJenjangId != null ? selfJenjangId : jenjangId);
+        Long resolvedJenjangId = selfJenjangId != null ? selfJenjangId : jenjangId;
 
+        JenjangPendidikanResponse jenjang = null;
         if (jenjangId != null) {
-            q.setJenjangPendidikan(new JenjangPendidikanResponse(
+            jenjang = new JenjangPendidikanResponse(
                     jenjangId,
                     record.get("jenjang_nama", String.class),
                     record.get("jenjang_short_name", String.class),
                     record.get("jenjang_seq", Integer.class),
                     record.get("jenjang_is_statistik", Boolean.class)
-            ));
+            );
         }
 
-        q.setGelarDepan(record.get("gelar_depan", String.class));
-        q.setGelarBelakang(record.get("gelar_belakang", String.class));
-        q.setJurusan(record.get("jurusan", String.class));
-        q.setInstitusi(record.get("institusi", String.class));
-        q.setKota(record.get("kota", String.class));
-        q.setTahunMasuk(record.get("tahun_masuk", Integer.class));
-        q.setIsLulus(record.get("is_lulus", Boolean.class));
-        q.setTahunLulus(record.get("tahun_lulus", Integer.class));
-        q.setGpa(record.get("gpa", Double.class));
+        Byte isLatestRaw = record.get("is_latest", Byte.class);
+        Boolean isLatest = isLatestRaw != null && isLatestRaw == 1;
 
-        Byte isLatest = record.get("is_latest", Byte.class);
-        q.setIsLatest(isLatest != null && isLatest == 1);
-
-        q.setChangedStatus(record.get("changed_status", Byte.class));
-        return q;
+        return new PendidikanQuery(
+                record.get("id", Long.class),
+                record.get("biodata_id", String.class),
+                record.get("biodata_nik", String.class),
+                record.get("biodata_nama", String.class),
+                resolvedJenjangId,
+                jenjang,
+                record.get("gelar_depan", String.class),
+                record.get("gelar_belakang", String.class),
+                record.get("jurusan", String.class),
+                record.get("institusi", String.class),
+                record.get("kota", String.class),
+                record.get("tahun_masuk", Integer.class),
+                record.get("is_lulus", Boolean.class),
+                record.get("tahun_lulus", Integer.class),
+                record.get("gpa", Double.class),
+                isLatest,
+                record.get("changed_status", Byte.class)
+        );
     }
 }

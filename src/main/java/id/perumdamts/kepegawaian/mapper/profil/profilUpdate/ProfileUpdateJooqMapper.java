@@ -16,33 +16,28 @@ public final class ProfileUpdateJooqMapper implements RecordMapper<Record, Profi
 
     @Override
     public ProfileUpdateQuery map(Record record) {
-        ProfileUpdateQuery dto = new ProfileUpdateQuery();
-        dto.setId(record.get(PROFIL_UPDATE.ID));
-        dto.setNipam(record.get(PROFIL_UPDATE.NIPAM));
-        dto.setNama(record.get(PROFIL_UPDATE.NAMA));
-        dto.setJabatan(record.get(PROFIL_UPDATE.JABATAN));
-        dto.setReqDate(record.get(PROFIL_UPDATE.REQ_DATE));
-
         Byte tableNameByte = record.get(PROFIL_UPDATE.TABLE_NAME);
-        if (tableNameByte != null) {
-            dto.setTableName(EProfileUpdateTable.values()[tableNameByte]);
-        }
+        EProfileUpdateTable tableName = tableNameByte != null ? EProfileUpdateTable.values()[tableNameByte] : null;
 
         Byte actionTypeByte = record.get(PROFIL_UPDATE.ACTION_TYPE);
-        if (actionTypeByte != null) {
-            dto.setActionType(RevisionMetadata.RevisionType.values()[actionTypeByte]);
-        }
-
-        dto.setDataDescription(record.get(PROFIL_UPDATE.DATA_DESCRIPTION));
-        dto.setRevId(record.get(PROFIL_UPDATE.REV_ID));
+        RevisionMetadata.RevisionType actionType = actionTypeByte != null ? RevisionMetadata.RevisionType.values()[actionTypeByte] : null;
 
         Byte approvalStatusByte = record.get(PROFIL_UPDATE.APPROVAL_STATUS);
-        if (approvalStatusByte != null) {
-            dto.setApprovalStatus(EProfileUpdateApproval.values()[approvalStatusByte]);
-        }
+        EProfileUpdateApproval approvalStatus = approvalStatusByte != null ? EProfileUpdateApproval.values()[approvalStatusByte] : null;
 
-        dto.setApprovalDate(record.get(PROFIL_UPDATE.APPROVAL_DATE));
-        dto.setApprovalPic(record.get(PROFIL_UPDATE.APPROVAL_PIC));
-        return dto;
+        return new ProfileUpdateQuery(
+                record.get(PROFIL_UPDATE.ID),
+                record.get(PROFIL_UPDATE.NIPAM),
+                record.get(PROFIL_UPDATE.NAMA),
+                record.get(PROFIL_UPDATE.JABATAN),
+                record.get(PROFIL_UPDATE.REQ_DATE),
+                tableName,
+                actionType,
+                record.get(PROFIL_UPDATE.DATA_DESCRIPTION),
+                record.get(PROFIL_UPDATE.REV_ID),
+                approvalStatus,
+                record.get(PROFIL_UPDATE.APPROVAL_DATE),
+                record.get(PROFIL_UPDATE.APPROVAL_PIC)
+        );
     }
 }
