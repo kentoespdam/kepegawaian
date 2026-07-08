@@ -32,7 +32,7 @@ public class BiodataCommandService {
     private final FileUploadUtil fileUploadUtil;
 
     @Transactional
-    public Biodata create(BiodataPostRequest request) {
+    public String create(BiodataPostRequest request) {
         JenjangPendidikan jenjang = null;
         if (request.getPendidikanTerakhirId() != null) {
             jenjang = jenjangPendidikanRepository.findById(request.getPendidikanTerakhirId())
@@ -50,11 +50,11 @@ public class BiodataCommandService {
         // Seed: 1 KartuIdentitas default (KTP, changedStatus=false)
         kartuIdentitasCommandService.seedFromBiodata(entity);
 
-        return entity;
+        return entity.getNik();
     }
 
     @Transactional
-    public Biodata update(String nik, BiodataPutRequest request) {
+    public String update(String nik, BiodataPutRequest request) {
         Biodata entity = repository.findById(nik)
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
 
@@ -65,16 +65,18 @@ public class BiodataCommandService {
         }
 
         BiodataMapper.updateEntity(entity, request, jenjang);
-        return repository.save(entity);
+        repository.save(entity);
+        return entity.getNik();
     }
 
     @Transactional
-    public Biodata patchBiodata(String nik, BiodataPatchRequest request) {
+    public String patchBiodata(String nik, BiodataPatchRequest request) {
         Biodata entity = repository.findById(nik)
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
 
         BiodataMapper.patchEntity(entity, request);
-        return repository.save(entity);
+        repository.save(entity);
+        return entity.getNik();
     }
 
     @Transactional
@@ -98,7 +100,7 @@ public class BiodataCommandService {
         return saved;
     }
 
-    public Biodata updateFotoProfil(String id, MultipartFile file) {
+    public String updateFotoProfil(String id, MultipartFile file) {
         Biodata biodata = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
 
@@ -111,6 +113,7 @@ public class BiodataCommandService {
         }
 
         biodata.setFotoProfil(result.getFileName());
-        return repository.save(biodata);
+        repository.save(biodata);
+        return biodata.getNik();
     }
 }

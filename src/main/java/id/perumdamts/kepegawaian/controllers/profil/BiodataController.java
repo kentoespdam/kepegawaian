@@ -43,25 +43,22 @@ public class BiodataController {
         return CustomResult.any(queryService.getById(id));
     }
 
-    @SuppressWarnings("unchecked")
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<SavedResult<Object>> save(@Valid @RequestBody BiodataPostRequest request) {
-        return (ResponseEntity<SavedResult<Object>>) (ResponseEntity<?>) CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.create(request)));
+    public ResponseEntity<SavedResult<String>> save(@Valid @RequestBody BiodataPostRequest request) {
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.create(request)));
     }
 
-    @SuppressWarnings("unchecked")
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<SavedResult<Object>> update(@PathVariable String id, @Valid @RequestBody BiodataPutRequest request) {
-        return (ResponseEntity<SavedResult<Object>>) (ResponseEntity<?>) CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.update(id, request)));
+    public ResponseEntity<SavedResult<String>> update(@PathVariable String id, @Valid @RequestBody BiodataPutRequest request) {
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.update(id, request)));
     }
 
-    @SuppressWarnings("unchecked")
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}")
-    public ResponseEntity<SavedResult<Object>> patchBiodata(@PathVariable String id, @Valid @RequestBody BiodataPatchRequest request) {
-        return (ResponseEntity<SavedResult<Object>>) (ResponseEntity<?>) CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.patchBiodata(id, request)));
+    public ResponseEntity<SavedResult<String>> patchBiodata(@PathVariable String id, @Valid @RequestBody BiodataPatchRequest request) {
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.patchBiodata(id, request)));
     }
 
     @GetMapping("/{id}/foto-profil")
@@ -69,14 +66,13 @@ public class BiodataController {
         return queryService.findFotoProfil(id);
     }
 
-    @SuppressWarnings("unchecked")
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}/foto-profil")
-    public ResponseEntity<SavedResult<Object>> updateFotoProfil(@PathVariable String id, @RequestParam("fotoProfil") MultipartFile fotoProfil) {
+    public ResponseEntity<SavedResult<String>> updateFotoProfil(@PathVariable String id, @RequestParam("fotoProfil") MultipartFile fotoProfil) {
         String extension = mimeTypesUtils.getExtension(fotoProfil.getContentType());
         if (!mimeTypesUtils.isImage(extension))
             throw new IllegalArgumentException("File must be an image");
-        return (ResponseEntity<SavedResult<Object>>) (ResponseEntity<?>) CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.updateFotoProfil(id, fotoProfil)));
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.updateFotoProfil(id, fotoProfil)));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
