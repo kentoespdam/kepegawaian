@@ -186,10 +186,10 @@ public static XxxDetail toDetail(Record record) {
 - ⚠️ API breaking: `{query: {...}, lampiran: [...]}` bukan flat object
 
 ### Checklist
-- [ ] Baca file
-- [ ] Konversi Query ke record
-- [ ] Konversi Detail ke record (komposisi) + update RowMapper
-- [ ] `./gradlew compileJava`
+- [x] Baca file
+- [x] Konversi Query ke record
+- [x] Konversi Detail ke record (komposisi) + update RowMapper
+- [x] `./gradlew compileJava`
 
 ---
 
@@ -247,10 +247,10 @@ public static XxxDetail toDetail(Record record) {
 - ⚠️ API breaking: nested JSON
 
 ### Checklist
-- [ ] Baca file
-- [ ] Konversi Query ke record
-- [ ] Konversi Detail ke record (komposisi) + update RowMapper
-- [ ] `./gradlew compileJava`
+- [x] Baca file
+- [x] Konversi Query ke record
+- [x] Konversi Detail ke record (komposisi) + update RowMapper
+- [x] `./gradlew compileJava`
 
 ---
 
@@ -260,9 +260,9 @@ public static XxxDetail toDetail(Record record) {
 - `dto/profil/biodata/BiodataQuery.java` — `@Data`
 
 ### Checklist
-- [ ] Baca file
-- [ ] Konversi Query ke record
-- [ ] `./gradlew compileJava`
+- [x] Baca file
+- [x] Konversi Query ke record
+- [x] `./gradlew compileJava`
 
 ---
 
@@ -277,9 +277,9 @@ public static XxxDetail toDetail(Record record) {
 - Hanya konversi `ProfileUpdateQuery` saja
 
 ### Checklist
-- [ ] Baca file
-- [ ] Konversi Query ke record + update RowMapper
-- [ ] `./gradlew compileJava`
+- [x] Baca file
+- [x] Konversi Query ke record + update RowMapper
+- [x] `./gradlew compileJava`
 
 ---
 
@@ -290,9 +290,9 @@ public static XxxDetail toDetail(Record record) {
 - ~~`LampiranRow.java`~~ — sudah record ✅
 
 ### Checklist
-- [ ] Baca file
-- [ ] Konversi Query ke record + update RowMapper
-- [ ] `./gradlew compileJava`
+- [x] Baca file
+- [x] Konversi Query ke record + update RowMapper
+- [x] `./gradlew compileJava`
 
 ---
 
@@ -301,5 +301,5 @@ public static XxxDetail toDetail(Record record) {
 - [x] `./gradlew clean compileJava` — BUILD SUCCESSFUL
 - [x] `./gradlew compileTestJava` — BUILD SUCCESSFUL
 - [x] `./gradlew test --tests "id.perumdamts.kepegawaian.ArchUnitTest"` — PASS
-- [ ] `bd close kepegawaian-wdo` — akan di-close
-- [ ] Commit & push — akan dilakukan
+- [x] `bd close kepegawaian-wdo` — ✅ Closed
+- [x] Commit & push — ✅ commit `2ee3357`, pushed to `origin/rewrite/master-cqrs`

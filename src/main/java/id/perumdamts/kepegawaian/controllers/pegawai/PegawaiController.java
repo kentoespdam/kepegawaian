@@ -3,6 +3,9 @@ package id.perumdamts.kepegawaian.controllers.pegawai;
 import id.perumdamts.kepegawaian.config.PegawaiProperties;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
+import id.perumdamts.kepegawaian.dto.commons.ListResult;
+import id.perumdamts.kepegawaian.dto.commons.PageResult;
+import id.perumdamts.kepegawaian.dto.commons.SingleResult;
 import id.perumdamts.kepegawaian.dto.pegawai.pegawai.*;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.services.pegawai.pegawai.PegawaiCommandService;
@@ -10,6 +13,7 @@ import id.perumdamts.kepegawaian.services.pegawai.pegawai.PegawaiQueryService;
 import jakarta.validation.*;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.Errors;
@@ -29,27 +33,27 @@ public class PegawaiController {
     Validator validator = factory.getValidator();
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject @Valid PegawaiRequest request) {
-        return CustomResult.any(queryService.findPage(request));
+    public ResponseEntity<PageResult<Page<PegawaiResponse>>> index(@ParameterObject @Valid PegawaiRequest request) {
+        return CustomResult.page(queryService.findPage(request));
     }
 
     @GetMapping("/list")
-    public ResponseEntity<?> list(@ParameterObject @Valid PegawaiRequest request) {
+    public ResponseEntity<ListResult<PegawaiListResponse>> list(@ParameterObject @Valid PegawaiRequest request) {
         return CustomResult.list(queryService.findAll(request));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
+    public ResponseEntity<SingleResult<PegawaiResponseDetail>> findById(@PathVariable Long id) {
         return CustomResult.any(queryService.findById(id));
     }
 
     @GetMapping("/{nipam}/nipam")
-    public ResponseEntity<?> findByNipam(@PathVariable String nipam) {
+    public ResponseEntity<SingleResult<PegawaiResponse>> findByNipam(@PathVariable String nipam) {
         return CustomResult.any(queryService.findByNipam(nipam));
     }
 
     @GetMapping("/{id}/ringkasan")
-    public ResponseEntity<?> findRingkasan(@PathVariable Long id) {
+    public ResponseEntity<SingleResult<PegawaiResponseRingkasan>> findRingkasan(@PathVariable Long id) {
         return CustomResult.any(queryService.findRingkasan(id));
     }
 
@@ -65,9 +69,10 @@ public class PegawaiController {
         return CustomResult.save(commandService.save(request));
     }
 
+    @SuppressWarnings("unchecked")
     @PostMapping("/batch-by-ids")
-    public ResponseEntity<?> batchByIds(@Valid @RequestBody PegawaiBatchIdsRequest request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
+    public ResponseEntity<ListResult<PegawaiListResponse>> batchByIds(@Valid @RequestBody PegawaiBatchIdsRequest request, Errors errors) {
+        if (errors.hasErrors()) return (ResponseEntity<ListResult<PegawaiListResponse>>) (ResponseEntity<?>) ErrorResult.build(errors);
         return CustomResult.list(queryService.findByIds(request.getIds()));
     }
 

@@ -21,17 +21,16 @@ public final class CutiKuotaJooqMapper {
         res.setExpired(record.get(CUTI_KUOTA.EXPIRED));
         
         if (record.get("pegawai_id") != null) {
-            PegawaiMiniResponse peg = new PegawaiMiniResponse();
-            peg.setId((Long) record.get("pegawai_id"));
-            peg.setNipam((String) record.get("pegawai_nipam"));
-            peg.setNama((String) record.get("pegawai_nama"));
-            
             Object statusObj = record.get("pegawai_status");
-            if (statusObj != null) {
-                peg.setStatusPegawai(statusObj.toString());
-            }
-            peg.setJabatan((String) record.get("pegawai_jabatan"));
-            peg.setOrganisasi((String) record.get("pegawai_organisasi"));
+            String statusPegawai = statusObj != null ? statusObj.toString() : null;
+            PegawaiMiniResponse peg = new PegawaiMiniResponse(
+                    (Long) record.get("pegawai_id"),
+                    (String) record.get("pegawai_nipam"),
+                    (String) record.get("pegawai_nama"),
+                    statusPegawai,
+                    (String) record.get("pegawai_jabatan"),
+                    (String) record.get("pegawai_organisasi")
+            );
             res.setPegawai(peg);
         }
         return res;

@@ -21,10 +21,12 @@ public final class CutiApprovalJooqMapper {
         res.setCreatedAt(record.get(CUTI_APPROVAL.CREATED_AT));
 
         if (record.get("approver_id") != null) {
-            PegawaiMiniResponse app = new PegawaiMiniResponse();
-            app.setId((Long) record.get("approver_id"));
-            app.setNipam((String) record.get("approver_nipam"));
-            app.setNama((String) record.get("approver_nama"));
+            PegawaiMiniResponse app = new PegawaiMiniResponse(
+                    (Long) record.get("approver_id"),
+                    (String) record.get("approver_nipam"),
+                    (String) record.get("approver_nama"),
+                    null, null, null
+            );
             res.setApprover(app);
         }
         if (record.get("jab_id") != null) {

@@ -70,7 +70,7 @@ public class CutiKuotaQueryRepository {
         Page<CutiKuotaResponse> page = new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
         if (page.isEmpty()) return null;
         
-        List<Long> pegawaiIdList = page.getContent().stream().map(c -> c.getPegawai().getId()).toList();
+        List<Long> pegawaiIdList = page.getContent().stream().map(c -> c.getPegawai().id()).toList();
         
         List<CutiKuotaResponse> additionalData = dsl.select(
                         CUTI_KUOTA.ID,
