@@ -1,8 +1,9 @@
 package id.perumdamts.kepegawaian.controllers.profil;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
+import id.perumdamts.kepegawaian.dto.commons.DeletedResult;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
-import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
+import id.perumdamts.kepegawaian.dto.commons.SavedResult;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasIndexQuery;
 import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasLampiranPostRequest;
@@ -15,7 +16,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -37,19 +37,17 @@ public class KartuIdentitasController {
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@Valid @RequestBody KartuIdentitasPostRequest request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
+    public ResponseEntity<SavedResult<Long>> save(@Valid @RequestBody KartuIdentitasPostRequest request) {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.create(request)));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody KartuIdentitasPutRequest request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
+    public ResponseEntity<SavedResult<Long>> update(@PathVariable Long id, @Valid @RequestBody KartuIdentitasPutRequest request) {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.update(id, request)));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    public ResponseEntity<DeletedResult> delete(@PathVariable Long id) {
         command.delete(id);
         return CustomResult.delete(true);
     }
@@ -70,13 +68,12 @@ public class KartuIdentitasController {
     }
 
     @PostMapping(value = "/lampiran", consumes = "multipart/form-data")
-    public ResponseEntity<?> saveLampiran(@Valid @ModelAttribute KartuIdentitasLampiranPostRequest request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
+    public ResponseEntity<SavedResult<Long>> saveLampiran(@Valid @ModelAttribute KartuIdentitasLampiranPostRequest request) {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, lampiranCommand.addLampiran(request)));
     }
 
     @DeleteMapping("/lampiran/{id}")
-    public ResponseEntity<?> deleteLampiran(@PathVariable Long id) {
+    public ResponseEntity<DeletedResult> deleteLampiran(@PathVariable Long id) {
         lampiranCommand.deleteLampiran(id);
         return CustomResult.delete(true);
     }

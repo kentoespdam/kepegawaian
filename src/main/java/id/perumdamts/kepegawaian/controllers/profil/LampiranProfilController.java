@@ -2,7 +2,8 @@ package id.perumdamts.kepegawaian.controllers.profil;
 
 import id.perumdamts.kepegawaian.dto.appwrite.AppwriteUser;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
-import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
+import id.perumdamts.kepegawaian.dto.commons.DeletedResult;
+import id.perumdamts.kepegawaian.dto.commons.SavedResult;
 import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilAcceptRequest;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilCommandService;
@@ -11,7 +12,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -26,16 +26,16 @@ public class LampiranProfilController {
         return queryService.getFileLampiranById(jenis, id);
     }
 
+    @SuppressWarnings("unchecked")
     @PostMapping("/accept")
-    public ResponseEntity<?> acceptLampiran(@Valid @RequestBody LampiranProfilAcceptRequest request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
+    public ResponseEntity<SavedResult<Object>> acceptLampiran(@Valid @RequestBody LampiranProfilAcceptRequest request) {
         AppwriteUser appwriteUser = (AppwriteUser) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();
-        return CustomResult.save(commandService.acceptLampiran(request, appwriteUser.getName()));
+        return (ResponseEntity<SavedResult<Object>>) (ResponseEntity<?>) CustomResult.save(commandService.acceptLampiran(request, appwriteUser.getName()));
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    public ResponseEntity<DeletedResult> delete(@PathVariable Long id) {
         return CustomResult.delete(commandService.deleteById(id));
     }
 }

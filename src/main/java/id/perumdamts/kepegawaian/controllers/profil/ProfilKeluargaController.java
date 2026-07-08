@@ -1,8 +1,9 @@
 package id.perumdamts.kepegawaian.controllers.profil;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
+import id.perumdamts.kepegawaian.dto.commons.DeletedResult;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
-import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
+import id.perumdamts.kepegawaian.dto.commons.SavedResult;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaIndexQuery;
 import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaLampiranPostRequest;
@@ -15,7 +16,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -36,20 +36,20 @@ public class ProfilKeluargaController {
         return CustomResult.any(query.getById(id));
     }
 
+    @SuppressWarnings("unchecked")
     @PostMapping
-    public ResponseEntity<?> save(@Valid @RequestBody ProfilKeluargaPostRequest request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.create(request)));
+    public ResponseEntity<SavedResult<Object>> save(@Valid @RequestBody ProfilKeluargaPostRequest request) {
+        return (ResponseEntity<SavedResult<Object>>) (ResponseEntity<?>) CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.create(request)));
     }
 
+    @SuppressWarnings("unchecked")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody ProfilKeluargaPutRequest request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
-        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.update(id, request)));
+    public ResponseEntity<SavedResult<Object>> update(@PathVariable Long id, @Valid @RequestBody ProfilKeluargaPutRequest request) {
+        return (ResponseEntity<SavedResult<Object>>) (ResponseEntity<?>) CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.update(id, request)));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    public ResponseEntity<DeletedResult> delete(@PathVariable Long id) {
         command.delete(id);
         return CustomResult.delete(true);
     }
@@ -70,13 +70,12 @@ public class ProfilKeluargaController {
     }
 
     @PostMapping(value = "/lampiran", consumes = "multipart/form-data")
-    public ResponseEntity<?> saveLampiran(@Valid @ModelAttribute ProfilKeluargaLampiranPostRequest request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
+    public ResponseEntity<SavedResult<Long>> saveLampiran(@Valid @ModelAttribute ProfilKeluargaLampiranPostRequest request) {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, lampiranCommand.addLampiran(request)));
     }
 
     @DeleteMapping("/lampiran/{id}")
-    public ResponseEntity<?> deleteLampiran(@PathVariable Long id) {
+    public ResponseEntity<DeletedResult> deleteLampiran(@PathVariable Long id) {
         lampiranCommand.deleteLampiran(id);
         return CustomResult.delete(true);
     }
