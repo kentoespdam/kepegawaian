@@ -8,28 +8,28 @@ import java.util.Optional;
 
 @Slf4j
 public class CustomResult {
-    public static <T> ResponseEntity<?> any(T data) {
+    public static <T> ResponseEntity<SingleResult<T>> any(T data) {
         if (data instanceof Optional<?> && ((Optional<?>) data).isEmpty())
             data = null;
         SingleResult<T> result = new SingleResult<>(data);
         return ResponseEntity.status(result.statusText).body(result);
     }
 
-    public static <T> ResponseEntity<?> list(List<T> data) {
+    public static <T> ResponseEntity<ListResult<T>> list(List<T> data) {
         ListResult<T> result = new ListResult<>(data);
         return ResponseEntity.status(result.statusText).body(result);
     }
 
-    public static <T> ResponseEntity<PageResult<?>> page(T data) {
+    public static <T> ResponseEntity<PageResult<T>> page(T data) {
         return ResponseEntity.ok(new PageResult<>(data));
     }
 
-    public static <T> ResponseEntity<?> save(SavedStatus<T> data) {
+    public static <T> ResponseEntity<SavedResult<T>> save(SavedStatus<T> data) {
         SavedResult<T> result = new SavedResult<>(data);
         return ResponseEntity.status(result.statusText).body(result);
     }
 
-    public static ResponseEntity<?> delete(boolean data) {
+    public static ResponseEntity<DeletedResult> delete(boolean data) {
         DeletedResult result = new DeletedResult(data);
         return ResponseEntity.status(result.statusText).body(result);
     }

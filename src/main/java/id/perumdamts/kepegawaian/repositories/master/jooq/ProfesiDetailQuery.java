@@ -26,7 +26,7 @@ public class ProfesiDetailQuery {
     private final DSLContext dsl;
 
     public Optional<ProfesiDetail> getById(Long id) {
-        return dsl.select(ProfesiSelects.PROFESI_COLUMNS)
+        return dsl.select(ProfesiSelects.PROFESI_DETAIL_COLUMNS)
                 .select(
                         multiset(dsl.select(APD.ID, APD.NAMA)
                                 .from(APD)
@@ -49,6 +49,6 @@ public class ProfesiDetailQuery {
                 .leftJoin(GRADE).on(PROFESI.GRADE_ID.eq(GRADE.ID))
                 .where(PROFESI.ID.eq(id))
                 .and(PROFESI.IS_DELETED.eq(false))
-                .fetchOptional(record -> ProfesiJooqMapper.toDetail(record.intoMap()));
+                .fetchOptional(ProfesiJooqMapper::toDetail);
     }
 }

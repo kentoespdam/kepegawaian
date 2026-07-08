@@ -2,6 +2,8 @@ package id.perumdamts.kepegawaian.repositories.master.jooq;
 
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiIndexQuery;
+import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiListResponse;
+import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiMiniResponse;
 import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiQuery;
 import id.perumdamts.kepegawaian.mapper.master.profesi.ProfesiJooqMapper;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +35,7 @@ public class ProfesiQueryRepository {
                 allowedSorts(), PROFESI.ID);
         Condition where = baseWhere(query);
         var count = dsl.selectCount().from(PROFESI).where(where).fetchOptional(0, Long.class).orElse(0L);
-        var data = dsl.select(ProfesiSelects.PROFESI_COLUMNS)
+        var data = dsl.select(ProfesiSelects.PROFESI_QUERY_COLUMNS)
                 .from(PROFESI)
                 .leftJoin(ORGANISASI).on(PROFESI.ORGANISASI_ID.eq(ORGANISASI.ID))
                 .leftJoin(JABATAN).on(PROFESI.JABATAN_ID.eq(JABATAN.ID))
@@ -43,7 +45,7 @@ public class ProfesiQueryRepository {
                 .orderBy(sortOrder)
                 .limit(query.getSizeOrDefault())
                 .offset(query.getPageNumber() * query.getSizeOrDefault())
-                .fetch(record -> ProfesiJooqMapper.toQuery(record.intoMap()));
+                .fetch(ProfesiJooqMapper::toQuery);
         return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
     }
 
@@ -56,16 +58,12 @@ public class ProfesiQueryRepository {
         );
     }
 
-    public List<ProfesiQuery> listQuery() {
-        return dsl.select(ProfesiSelects.PROFESI_COLUMNS)
+    public List<ProfesiListResponse> listQuery() {
+        return dsl.select(PROFESI.ID, PROFESI.NAMA)
                 .from(PROFESI)
-                .leftJoin(ORGANISASI).on(PROFESI.ORGANISASI_ID.eq(ORGANISASI.ID))
-                .leftJoin(JABATAN).on(PROFESI.JABATAN_ID.eq(JABATAN.ID))
-                .leftJoin(LEVEL).on(PROFESI.LEVEL_ID.eq(LEVEL.ID))
-                .leftJoin(GRADE).on(PROFESI.GRADE_ID.eq(GRADE.ID))
                 .where(PROFESI.IS_DELETED.eq(false))
                 .orderBy(PROFESI.NAMA.asc())
-                .fetch(record -> ProfesiJooqMapper.toQuery(record.intoMap()));
+                .fetchInto(ProfesiListResponse.class);
     }
 
     private Condition baseWhere(ProfesiIndexQuery q) {

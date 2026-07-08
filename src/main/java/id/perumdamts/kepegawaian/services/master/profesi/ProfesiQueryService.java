@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.services.master.profesi;
 
 import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiDetail;
 import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiIndexQuery;
+import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiListResponse;
 import id.perumdamts.kepegawaian.dto.master.profesi.ProfesiQuery;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.master.jooq.ProfesiDetailQuery;
@@ -22,7 +23,7 @@ public class ProfesiQueryService {
         return queries.pageQuery(query);
     }
 
-    public List<ProfesiQuery> listQuery() {
+    public List<ProfesiListResponse> listQuery() {
         return queries.listQuery();
     }
 
