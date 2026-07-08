@@ -20,6 +20,7 @@ import id.perumdamts.kepegawaian.dto.penggajian.gajiPendapatanNonPajak.GajiPenda
 import id.perumdamts.kepegawaian.dto.penggajian.gajiProfil.GajiProfilResponse;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataResponse;
 import id.perumdamts.kepegawaian.entities.commons.*;
+import id.perumdamts.kepegawaian.mapper.kepegawaian.RiwayatSkJooqMapper;
 import id.perumdamts.kepegawaian.mapper.pegawai.pegawai.PegawaiRecordMapper;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
@@ -621,6 +622,6 @@ public class PegawaiQueryRepository {
                 .leftJoin(GOLONGAN).on(RIWAYAT_SK.GOLONGAN_ID.eq(GOLONGAN.ID))
                 .where(RIWAYAT_SK.PEGAWAI_ID.eq(pegawaiId).and(RIWAYAT_SK.IS_DELETED.eq(false)))
                 .orderBy(RIWAYAT_SK.TMT_BERLAKU.desc())
-                .fetch(PegawaiRecordMapper::mapRiwayatSk);
+                .fetch(RiwayatSkJooqMapper::mapRiwayatSk);
     }
 }
