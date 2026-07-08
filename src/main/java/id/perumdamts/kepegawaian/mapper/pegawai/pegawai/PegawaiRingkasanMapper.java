@@ -20,87 +20,76 @@ public final class PegawaiRingkasanMapper {
             Record r,
             Result<? extends Record> kartuIdentitasResult
     ) {
-        PegawaiResponseRingkasan response = new PegawaiResponseRingkasan();
-        response.setId(r.get("id", Long.class));
-        response.setNipam(r.get("nipam", String.class));
-        response.setNama(r.get("nama", String.class));
+        Long id = r.get("id", Long.class);
+        String nipam = r.get("nipam", String.class);
+        String nama = r.get("nama", String.class);
 
         Byte jkByte = r.get("jenis_kelamin", Byte.class);
-        if (jkByte != null) {
-            response.setJenisKelamin(EJenisKelamin.values()[jkByte] == EJenisKelamin.LAKI_LAKI ? "Laki-Laki" : "Perempuan");
-        }
+        String jenisKelamin = jkByte != null
+                ? (EJenisKelamin.values()[jkByte] == EJenisKelamin.LAKI_LAKI ? "Laki-Laki" : "Perempuan")
+                : null;
 
-        response.setTempatLahir(r.get("tempat_lahir", String.class));
-        response.setTanggalLahir(r.get("tanggal_lahir", LocalDate.class));
+        String tempatLahir = r.get("tempat_lahir", String.class);
+        LocalDate tanggalLahir = r.get("tanggal_lahir", LocalDate.class);
 
         Byte skByte = r.get("status_kawin", Byte.class);
-        if (skByte != null) {
-            response.setStatusKawin(EStatusKawin.values()[skByte].toString());
-        }
+        String statusKawin = skByte != null ? EStatusKawin.values()[skByte].toString() : null;
 
-        response.setAlamat(r.get("alamat", String.class));
-        response.setNik(r.get("nik", String.class));
+        String alamat = r.get("alamat", String.class);
+        String nik = r.get("nik", String.class);
 
         Byte agByte = r.get("agama", Byte.class);
-        if (agByte != null) {
-            response.setAgama(EAgama.values()[agByte].toString());
-        }
+        String agama = agByte != null ? EAgama.values()[agByte].toString() : null;
 
-        response.setTelp(r.get("telp", String.class));
-        
+        String telp = r.get("telp", String.class);
+
         String emailVal = r.get("email", String.class);
-        response.setEmail(Objects.nonNull(emailVal) ? emailVal : "");
+        String email = Objects.nonNull(emailVal) ? emailVal : "";
 
-        response.setKodePajak(r.get("kode_pajak", String.class));
-        response.setIbuKandung(r.get("ibu_kandung", String.class));
-        response.setPendidikanTerakhir(r.get("pendidikan_terakhir", String.class));
-
-        response.setLembagaPendidikan(r.get("lembaga_pendidikan", String.class));
-        response.setTahunLulus(r.get("tahun_lulus", Integer.class));
+        String kodePajak = r.get("kode_pajak", String.class);
+        String ibuKandung = r.get("ibu_kandung", String.class);
+        String pendidikanTerakhir = r.get("pendidikan_terakhir", String.class);
+        String lembagaPendidikan = r.get("lembaga_pendidikan", String.class);
+        Integer tahunLulus = r.get("tahun_lulus", Integer.class);
 
         Byte spByte = r.get("status_pegawai", Byte.class);
-        if (spByte != null) {
-            response.setStatusPegawai(EStatusPegawai.values()[spByte].value);
-        }
+        String statusPegawai = spByte != null ? EStatusPegawai.values()[spByte].value : null;
 
         String pangkat = r.get("golongan_pangkat", String.class);
-        String golongan = r.get("golongan_nama", String.class);
-        if (Objects.nonNull(pangkat) && Objects.nonNull(golongan)) {
-            response.setPangkatGolongan(pangkat + "-" + golongan);
-        }
-        
-        response.setTmtGolongan(r.get("tmt_golongan", LocalDate.class));
+        String golonganNama = r.get("golongan_nama", String.class);
+        String pangkatGolongan = (Objects.nonNull(pangkat) && Objects.nonNull(golonganNama))
+                ? pangkat + "-" + golonganNama
+                : null;
+
+        LocalDate tmtGolongan = r.get("tmt_golongan", LocalDate.class);
 
         Integer mkgTahun = r.get("mkg_tahun", Integer.class);
         Integer mkgBulan = r.get("mkg_bulan", Integer.class);
-        if (Objects.nonNull(mkgTahun) && Objects.nonNull(mkgBulan)) {
-            response.setMkg(mkgTahun + " Tahun " + mkgBulan + " Bulan");
-        }
+        String mkg = (Objects.nonNull(mkgTahun) && Objects.nonNull(mkgBulan))
+                ? mkgTahun + " Tahun " + mkgBulan + " Bulan"
+                : null;
 
-        response.setUnitKerja(r.get("unit_kerja", String.class));
-        response.setJabatan(r.get("jabatan", String.class));
-        response.setProfesi(r.get("profesi", String.class));
+        String unitKerja = r.get("unit_kerja", String.class);
+        String jabatan = r.get("jabatan", String.class);
+        String profesi = r.get("profesi", String.class);
 
         Integer gradeVal = r.get("grade_val", Integer.class);
-        if (Objects.nonNull(gradeVal)) {
-            response.setGrade("Grade " + gradeVal);
-        }
+        String grade = Objects.nonNull(gradeVal) ? "Grade " + gradeVal : null;
 
-        response.setTmtKerja(r.get("tmt_kerja", LocalDate.class));
-        response.setTmtPegawai(r.get("tmt_pegawai", LocalDate.class));
-        response.setTmtPensiun(r.get("tmt_pensiun", LocalDate.class));
-        
+        LocalDate tmtKerja = r.get("tmt_kerja", LocalDate.class);
+        LocalDate tmtPegawai = r.get("tmt_pegawai", LocalDate.class);
+        LocalDate tmtPensiun = r.get("tmt_pensiun", LocalDate.class);
+
         Boolean askesVal = r.get("is_askes", Boolean.class);
-        response.setIsAskes(Objects.nonNull(askesVal) ? askesVal : false);
+        Boolean isAskes = Objects.nonNull(askesVal) ? askesVal : false;
 
         Long absensiVal = r.get("absensi_id", Long.class);
-        response.setAbsensiId(Objects.nonNull(absensiVal) ? absensiVal.intValue() : null);
+        Integer absensiId = Objects.nonNull(absensiVal) ? absensiVal.intValue() : null;
 
-        response.setNoKontrak("");
-        response.setNoNpwp("");
-        response.setNoJamsostek("");
-        response.setNoBpjs("");
-        response.setNoIdCard("");
+        String noNpwp = "";
+        String noJamsostek = "";
+        String noBpjs = "";
+        String noIdCard = "";
 
         if (kartuIdentitasResult != null) {
             for (Record card : kartuIdentitasResult) {
@@ -108,18 +97,25 @@ public final class PegawaiRingkasanMapper {
                 String nomorKartu = card.get("nomor_kartu", String.class);
                 if (Objects.nonNull(jenisKartu) && Objects.nonNull(nomorKartu)) {
                     if ("NPWP".equals(jenisKartu)) {
-                        response.setNoNpwp(nomorKartu);
+                        noNpwp = nomorKartu;
                     } else if ("JPn".equals(jenisKartu)) {
-                        response.setNoJamsostek(nomorKartu);
+                        noJamsostek = nomorKartu;
                     } else if ("BPJS".equals(jenisKartu)) {
-                        response.setNoBpjs(nomorKartu);
+                        noBpjs = nomorKartu;
                     } else if ("ID Card".equals(jenisKartu)) {
-                        response.setNoIdCard(nomorKartu);
+                        noIdCard = nomorKartu;
                     }
                 }
             }
         }
 
-        return response;
+        return new PegawaiResponseRingkasan(
+                id, nipam, nama, jenisKelamin, tempatLahir, tanggalLahir,
+                statusKawin, alamat, nik, agama, telp, email, kodePajak, ibuKandung,
+                pendidikanTerakhir, lembagaPendidikan, tahunLulus, statusPegawai,
+                pangkatGolongan, tmtGolongan, mkg, unitKerja, jabatan, profesi, grade,
+                tmtKerja, tmtPegawai, tmtPensiun, isAskes, absensiId,
+                "", noNpwp, noJamsostek, noBpjs, noIdCard
+        );
     }
 }

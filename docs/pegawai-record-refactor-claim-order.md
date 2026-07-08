@@ -17,9 +17,9 @@
 | G2 | `PegawaiListResponse` | 7 | `PegawaiRecordMapper.mapListResponse()` | — |
 | G3 | `PegawaiMiniResponse` | 6 | — (from Entity) | `CutiKuotaResponse`, `CutiApprovalMiniResponse` |
 
-**OUT OF SCOPE (batch berikutnya):**
-- `PegawaiResponseRingkasan` (G4) — `@NoArgsConstructor`, `@JsonFormat` kompleks, `PegawaiRingkasanMapper`
-- `PegawaiResponseDetail` (G5) — `@Slf4j`, 10 nested Response types dari modul lain
+**SCOPE BATCH INI (G4+G5):**
+- `PegawaiResponseRingkasan` (G4) — ✅ `@Data` → record, `@NoArgsConstructor` dihapus, mapper refactor
+- `PegawaiResponseDetail` (G5) — ✅ `@Data` → record, `@Slf4j`/`@Enumerated` dihapus, repository refactor
 
 **JANGAN DISENTOH (write-side):**
 - `PegawaiRequest`, `PegawaiPostRequest`, `PegawaiPutRequest`
@@ -244,7 +244,7 @@ public ResponseEntity<PageResult<Page<PegawaiResponse>>> index(
 - [x] `./gradlew clean compileJava` — ✅ BUILD SUCCESSFUL
 - [x] `./gradlew compileTestJava` — ✅ BUILD SUCCESSFUL
 - [x] `./gradlew test --tests "id.perumdamts.kepegawaian.ArchUnitTest"` — ✅ PASS
-- [x] Commit & push — ⏳ akan dilakukan
+- [x] Commit & push — ✅ done
 
 ---
 
@@ -255,7 +255,12 @@ public ResponseEntity<PageResult<Page<PegawaiResponse>>> index(
 | `dto/pegawai/pegawai/PegawaiResponse.java` | `@Data` → record, hapus `from()` |
 | `dto/pegawai/pegawai/PegawaiListResponse.java` | `@Data` → record, hapus `from()` |
 | `dto/pegawai/pegawai/PegawaiMiniResponse.java` | `@Data` → record, hapus `from()` |
+| `dto/pegawai/pegawai/PegawaiResponseRingkasan.java` | `@Data` → record (35 params), hapus `@NoArgsConstructor` + `from()` |
+| `dto/pegawai/pegawai/PegawaiResponseDetail.java` | `@Data` → record (33 params), hapus `@Slf4j` + `@Enumerated` + `from()` |
 | `mapper/pegawai/pegawai/PegawaiRecordMapper.java` | Refactor `mapResponse()` + `mapListResponse()` |
+| `mapper/pegawai/pegawai/PegawaiRingkasanMapper.java` | Refactor `map()` → pakai constructor record |
+| `mapper/pegawai/pegawai/PegawaiMapper.java` | Add `toRingkasan()` untuk entity→record |
+| `repositories/pegawai/jooq/PegawaiQueryRepository.java` | Refactor `findById()` → pakai constructor record |
 | `dto/kepegawaian/terminasi/RiwayatTerminasiResponse.java` | Update `from()` — panggil mapper |
 | `dto/cuti/kuota/CutiKuotaResponse.java` | Update `from()` — panggil mapper |
 | `dto/cuti/approval/CutiApprovalMiniResponse.java` | Update `from()` — panggil mapper |
