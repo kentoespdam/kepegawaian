@@ -4,7 +4,7 @@
 > Gold standard: `ProfesiController` (controller) + `PegawaiCommandService` (service)
 > ADR terkait: [0013](../adr/0013-symmetric-apiresponse-error-envelope.md) (envelope + buang `Errors`),
 > [0014](../adr/0014-get-by-id-missing-row-returns-404.md) (missing row → 404, bukan `FAILED`),
-> [0031](../adr/0031-batch-endpoint-returns-success-string.md) (batch/workflow → `"success"`).
+> [0031](../adr/0031-batch-endpoint-returns-success-string.md) (batch → `"{n} success"`, workflow → `"success"`).
 > **Kerja ini menegakkan ADR-ADR tsb, bukan keputusan baru.**
 
 Menegakkan pola typed result di **seluruh** controller. Empat kriteria digabung
@@ -29,8 +29,11 @@ anti-pattern `Errors` di kriteria c). Aturan:
 2. **`SUCCESS` + string pesan** ("PhDP Saved", "Data Saved!") pada create/update
    yang punya entity → ubah jadi `SavedStatus<Long>` bawa `getId()`.
    (Pesan sukses sudah di-set `SavedResult`; string di `data` redundan.)
-3. **Batch / workflow** (saveBatch, uploadPotonganTambahan, reprocess, verify1/2,
-   accept) → return `SavedStatus<String>` dengan value `"success"` (ADR-0031).
+3. **Batch / workflow** → return `SavedStatus<String>` (ADR-0031):
+   - **Batch save** (saveBatch, uploadPotonganTambahan) — punya jumlah row →
+     value `"{n} success"`, mis. `"5 success"`. `n` = `requests.size()` / jumlah row ditulis.
+   - **Workflow transition** (reprocess, verify1/2, accept) — tak ada row count natural →
+     value literal `"success"` (jangan mengarang angka).
 4. **`FAILED, "…not found"` / "Unknown …"** → hapus, ganti `throw new NotFoundException(...)`.
 5. **`DUPLICATE, "… sudah ada"`** → hapus, ganti `throw new ConflictException(...)`.
 6. **`try { } catch (Exception e) { return FAILED, e.getMessage() }`** (12 file) →
@@ -71,17 +74,17 @@ prioritas bila dikerjakan serial oleh satu orang.
 - [ ] `DetailDasarGajiController`
 - [ ] `GajiBatchMasterProsesController`
 - [ ] `DasarGajiController`
-- [ ] `GajiBatchMasterController` — batch → `SavedResult<String>` "success"
+- [ ] `GajiBatchMasterController` — batch → `SavedResult<String>` `"{n} success"`
 - [ ] `GajiProfilController`
 - [ ] `GajiTunjanganController`
 - [ ] `GajiKomponenController`
 
 **Services** — deep clean `SavedStatus<?>`:
-- [ ] `GajiBatchMasterCommandService` (`uploadPotonganTambahan` → `<String>` "success")
+- [ ] `GajiBatchMasterCommandService` (`uploadPotonganTambahan` → `<String>` `"{n} success"`)
 - [ ] `GajiBatchMasterProsesCommandService`
-- [ ] `DetailDasarGajiCommandService` (`saveBatch` → "success"; buang try/catch)
-- [ ] `GajiBatchRootCommandService` (`save` batch → "success")
-- [ ] `GajiBatchRootWorkflowCommandService` (reprocess/verify1/verify2/accept → "success")
+- [ ] `DetailDasarGajiCommandService` (`saveBatch` → `"{n} success"`; buang try/catch)
+- [ ] `GajiBatchRootCommandService` (`save` batch → `"{n} success"`)
+- [ ] `GajiBatchRootWorkflowCommandService` (reprocess/verify1/verify2/accept → workflow, tetap `"success"`)
 - [ ] `GajiPotonganTkkCommandService`
 - [ ] `GajiParameterSettingCommandService`
 - [ ] `GajiPendapatanNonPajakCommandService`
@@ -117,7 +120,7 @@ Controllers (a): `Pelatihan`, `PengalamanKerja`, `Pendidikan`, `ProfilKeluarga`,
 
 ### 6 · pegawai + auth + users + system (`kepegawaian-51j.6`)
 - [ ] `PegawaiController.saveBatch`: buang `SavedResult<Object>` cast → `SavedResult<String>`
-- [ ] `PegawaiCommandService.saveBatch`: `SavedStatus<?>` (null) → `SavedStatus<String>` "success"
+- [ ] `PegawaiCommandService.saveBatch`: `SavedStatus<?>` (null) → `SavedStatus<String>` `"{n} success"` (`n` = `requests.size()`)
 - [ ] `AuthController` (a) + `AuthService` (2 method deep clean)
 - [ ] `UsersController`, `PrefRoleController` (a) + `UserService` (deep clean)
 
