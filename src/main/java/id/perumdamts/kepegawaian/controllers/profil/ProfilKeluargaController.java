@@ -32,16 +32,14 @@ public class ProfilKeluargaController {
         return CustomResult.any(query.getById(id));
     }
 
-    @SuppressWarnings("unchecked")
     @PostMapping
     public ResponseEntity<SavedResult<Object>> save(@Valid @RequestBody ProfilKeluargaPostRequest request) {
-        return (ResponseEntity<?>) CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.create(request)));
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.create(request)));
     }
 
-    @SuppressWarnings("unchecked")
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<Object>> update(@PathVariable Long id, @Valid @RequestBody ProfilKeluargaPutRequest request) {
-        return (ResponseEntity<?>) CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.update(id, request)));
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.update(id, request)));
     }
 
     @DeleteMapping("/{id}")
