@@ -44,37 +44,7 @@ public class CutiPengajuanQueryRepository {
         var subJenisCuti = CUTI_JENIS.as("sjc");
         var pic = JABATAN.as("pic");
         
-        var data = dsl.select(
-                        CUTI_PEGAWAI.ID,
-                        CUTI_PEGAWAI.PEGAWAI_ID,
-                        CUTI_PEGAWAI.NIPAM,
-                        CUTI_PEGAWAI.NAMA,
-                        CUTI_PEGAWAI.PANGKAT_GOLONGAN,
-                        CUTI_PEGAWAI.CREATED_AT,
-                        CUTI_PEGAWAI.JENIS_PENGAJUAN_CUTI,
-                        CUTI_PEGAWAI.APPROVAL_CUTI_STATUS,
-                        CUTI_PEGAWAI.APPROVAL_LEVEL,
-                        CUTI_PEGAWAI.TANGGAL_MULAI,
-                        CUTI_PEGAWAI.TANGGAL_SELESAI,
-                        CUTI_PEGAWAI.ALASAN,
-                        CUTI_PEGAWAI.JUMLAH_HARI,
-                        CUTI_PEGAWAI.JUMLAH_HARI_KERJA,
-                        CUTI_PEGAWAI.IS_CLAIMED,
-                        ORGANISASI.ID.as("org_id"),
-                        ORGANISASI.KODE.as("org_kode"),
-                        ORGANISASI.NAMA.as("org_nama"),
-                        JABATAN.ID.as("jab_id"),
-                        JABATAN.KODE.as("jab_kode"),
-                        JABATAN.NAMA.as("jab_nama"),
-                        jenisCuti.ID.as("jc_id"),
-                        jenisCuti.NAMA.as("jc_nama"),
-                        subJenisCuti.ID.as("sjc_id"),
-                        subJenisCuti.NAMA.as("sjc_nama"),
-                        pic.ID.as("pic_id"),
-                        pic.KODE.as("pic_kode"),
-                        pic.NAMA.as("pic_nama"),
-                        CUTI_PEGAWAI.REF_CUTI_ID
-                )
+        var data = dsl.select(CutiPegawaiSelects.fullQueryFields(jenisCuti, subJenisCuti, pic))
                 .from(CUTI_PEGAWAI)
                 .leftJoin(PEGAWAI).on(CUTI_PEGAWAI.PEGAWAI_ID.eq(PEGAWAI.ID))
                 .leftJoin(BIODATA).on(PEGAWAI.NIK.eq(BIODATA.NIK))
@@ -87,13 +57,7 @@ public class CutiPengajuanQueryRepository {
                 .orderBy(sortOrder)
                 .limit(query.getSizeOrDefault())
                 .offset(query.offset())
-                .fetch(record -> {
-                    CutiPengajuanResponse res = CutiPegawaiJooqMapper.mapToResponse(record);
-                    if (record.get(CUTI_PEGAWAI.REF_CUTI_ID) != null) {
-                        res = setRefCuti(res, getMiniById(record.get(CUTI_PEGAWAI.REF_CUTI_ID)));
-                    }
-                    return res;
-                });
+                .fetch(record -> CutiPegawaiJooqMapper.mapToResponse(record));
                 
         return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
     }
@@ -103,37 +67,7 @@ public class CutiPengajuanQueryRepository {
         var subJenisCuti = CUTI_JENIS.as("sjc");
         var pic = JABATAN.as("pic");
         
-        var record = dsl.select(
-                        CUTI_PEGAWAI.ID,
-                        CUTI_PEGAWAI.PEGAWAI_ID,
-                        CUTI_PEGAWAI.NIPAM,
-                        CUTI_PEGAWAI.NAMA,
-                        CUTI_PEGAWAI.PANGKAT_GOLONGAN,
-                        CUTI_PEGAWAI.CREATED_AT,
-                        CUTI_PEGAWAI.JENIS_PENGAJUAN_CUTI,
-                        CUTI_PEGAWAI.APPROVAL_CUTI_STATUS,
-                        CUTI_PEGAWAI.APPROVAL_LEVEL,
-                        CUTI_PEGAWAI.TANGGAL_MULAI,
-                        CUTI_PEGAWAI.TANGGAL_SELESAI,
-                        CUTI_PEGAWAI.ALASAN,
-                        CUTI_PEGAWAI.JUMLAH_HARI,
-                        CUTI_PEGAWAI.JUMLAH_HARI_KERJA,
-                        CUTI_PEGAWAI.IS_CLAIMED,
-                        ORGANISASI.ID.as("org_id"),
-                        ORGANISASI.KODE.as("org_kode"),
-                        ORGANISASI.NAMA.as("org_nama"),
-                        JABATAN.ID.as("jab_id"),
-                        JABATAN.KODE.as("jab_kode"),
-                        JABATAN.NAMA.as("jab_nama"),
-                        jenisCuti.ID.as("jc_id"),
-                        jenisCuti.NAMA.as("jc_nama"),
-                        subJenisCuti.ID.as("sjc_id"),
-                        subJenisCuti.NAMA.as("sjc_nama"),
-                        pic.ID.as("pic_id"),
-                        pic.KODE.as("pic_kode"),
-                        pic.NAMA.as("pic_nama"),
-                        CUTI_PEGAWAI.REF_CUTI_ID
-                )
+        var record = dsl.select(CutiPegawaiSelects.fullQueryFields(jenisCuti, subJenisCuti, pic))
                 .from(CUTI_PEGAWAI)
                 .leftJoin(PEGAWAI).on(CUTI_PEGAWAI.PEGAWAI_ID.eq(PEGAWAI.ID))
                 .leftJoin(BIODATA).on(PEGAWAI.NIK.eq(BIODATA.NIK))
@@ -148,8 +82,8 @@ public class CutiPengajuanQueryRepository {
         if (record == null) return null;
         
         CutiPengajuanResponse res = CutiPegawaiJooqMapper.mapToResponse(record);
-        if (record.get(CUTI_PEGAWAI.REF_CUTI_ID) != null) {
-            res = setRefCuti(res, getMiniById(record.get(CUTI_PEGAWAI.REF_CUTI_ID)));
+        if (record.get(CutiPegawaiSelects.REF_CUTI_ID) != null) {
+            res = setRefCuti(res, getMiniById(record.get(CutiPegawaiSelects.REF_CUTI_ID)));
         }
         return res;
     }
@@ -173,36 +107,7 @@ public class CutiPengajuanQueryRepository {
         var subJenisCuti = CUTI_JENIS.as("sjc");
         var pic = JABATAN.as("pic");
         
-        return dsl.select(
-                        CUTI_PEGAWAI.ID,
-                        CUTI_PEGAWAI.PEGAWAI_ID,
-                        CUTI_PEGAWAI.NIPAM,
-                        CUTI_PEGAWAI.NAMA,
-                        CUTI_PEGAWAI.PANGKAT_GOLONGAN,
-                        CUTI_PEGAWAI.CREATED_AT,
-                        CUTI_PEGAWAI.JENIS_PENGAJUAN_CUTI,
-                        CUTI_PEGAWAI.APPROVAL_CUTI_STATUS,
-                        CUTI_PEGAWAI.APPROVAL_LEVEL,
-                        CUTI_PEGAWAI.TANGGAL_MULAI,
-                        CUTI_PEGAWAI.TANGGAL_SELESAI,
-                        CUTI_PEGAWAI.ALASAN,
-                        CUTI_PEGAWAI.JUMLAH_HARI,
-                        CUTI_PEGAWAI.JUMLAH_HARI_KERJA,
-                        CUTI_PEGAWAI.IS_CLAIMED,
-                        ORGANISASI.ID.as("org_id"),
-                        ORGANISASI.KODE.as("org_kode"),
-                        ORGANISASI.NAMA.as("org_nama"),
-                        JABATAN.ID.as("jab_id"),
-                        JABATAN.KODE.as("jab_kode"),
-                        JABATAN.NAMA.as("jab_nama"),
-                        jenisCuti.ID.as("jc_id"),
-                        jenisCuti.NAMA.as("jc_nama"),
-                        subJenisCuti.ID.as("sjc_id"),
-                        subJenisCuti.NAMA.as("sjc_nama"),
-                        pic.ID.as("pic_id"),
-                        pic.KODE.as("pic_kode"),
-                        pic.NAMA.as("pic_nama")
-                )
+        return dsl.select(CutiPegawaiSelects.miniQueryFields(jenisCuti, subJenisCuti, pic))
                 .from(CUTI_PEGAWAI)
                 .leftJoin(PEGAWAI).on(CUTI_PEGAWAI.PEGAWAI_ID.eq(PEGAWAI.ID))
                 .leftJoin(BIODATA).on(PEGAWAI.NIK.eq(BIODATA.NIK))
