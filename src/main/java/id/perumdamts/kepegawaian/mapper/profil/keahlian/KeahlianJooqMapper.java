@@ -27,7 +27,6 @@ public final class KeahlianJooqMapper implements RecordMapper<Record, KeahlianQu
                 record.get("biodata_id", String.class),
                 record.get("biodata_nik", String.class),
                 record.get("biodata_nama", String.class),
-                record.get("self_jenis_keahlian_id", Long.class),
                 jk,
                 mapKualifikasi(record.get("kualifikasi", Byte.class)),
                 record.get("sertifikasi", Boolean.class),

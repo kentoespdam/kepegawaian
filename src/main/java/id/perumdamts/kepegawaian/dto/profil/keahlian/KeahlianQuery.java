@@ -9,7 +9,6 @@ public record KeahlianQuery(
         String biodataId,
         String biodataNik,
         String biodataNama,
-        Long jenisKeahlianId,
         JenisKeahlianResponse jenisKeahlian,
         String kualifikasi,
         Boolean sertifikasi,
