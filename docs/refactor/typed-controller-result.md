@@ -2,6 +2,10 @@
 
 > Epic: **kepegawaian-51j** · Pattern: [`docs/master-query-optimization-pattern.md`](../master-query-optimization-pattern.md)
 > Gold standard: `ProfesiController` (controller) + `PegawaiCommandService` (service)
+> ADR terkait: [0013](../adr/0013-symmetric-apiresponse-error-envelope.md) (envelope + buang `Errors`),
+> [0014](../adr/0014-get-by-id-missing-row-returns-404.md) (missing row → 404, bukan `FAILED`),
+> [0031](../adr/0031-batch-endpoint-returns-success-string.md) (batch/workflow → `"success"`).
+> **Kerja ini menegakkan ADR-ADR tsb, bukan keputusan baru.**
 
 Menegakkan pola typed result di **seluruh** controller. Empat kriteria digabung
 per-domain supaya **1 file = 1 owner** — tak ada dua issue menyentuh file yang sama.
@@ -26,7 +30,7 @@ anti-pattern `Errors` di kriteria c). Aturan:
    yang punya entity → ubah jadi `SavedStatus<Long>` bawa `getId()`.
    (Pesan sukses sudah di-set `SavedResult`; string di `data` redundan.)
 3. **Batch / workflow** (saveBatch, uploadPotonganTambahan, reprocess, verify1/2,
-   accept) → return `SavedStatus<String>` dengan value `"success"`.
+   accept) → return `SavedStatus<String>` dengan value `"success"` (ADR-0031).
 4. **`FAILED, "…not found"` / "Unknown …"** → hapus, ganti `throw new NotFoundException(...)`.
 5. **`DUPLICATE, "… sudah ada"`** → hapus, ganti `throw new ConflictException(...)`.
 6. **`try { } catch (Exception e) { return FAILED, e.getMessage() }`** (12 file) →
