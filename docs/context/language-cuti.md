@@ -20,6 +20,9 @@ Jatah cuti per-pegawai per-**tahun**: `kuota`, `kuotaTerpakai`, `kuotaTambahan`,
 **Jenis Pengajuan** (EJenisPengajuanCuti):
 Dua alur permohonan: **Pengajuan Cuti** (PENGAJUAN_CUTI — rencana cuti ke depan) dan **Klaim Cuti** (KLAIM_CUTI — mencatat cuti yang sudah terjadi, mis. sakit). Disimpan enum ordinal.
 
+**Cuti Referensi** (`refCuti` / kolom `ref_cuti_id`):
+Self-reference pada **Cuti Pegawai**: satu baris **Klaim Cuti** menaut ke baris **Pengajuan Cuti** asal yang diklaim. Perannya **operasional** — dipakai alur klaim & approval untuk memverifikasi pengajuan asal sudah APPROVED sebelum klaim diproses — **bukan** primer untuk display. Karena itu di list (`pageQuery` pengajuan & inbox) field `refCuti` dibiarkan `null`; hanya terisi di detail (`getById`). Lihat [decisions-cuti.md](./decisions-cuti.md).
+
 **Status Approval** (EApprovalCutiStatus):
 Status keputusan atas Cuti Pegawai: PENDING, APPROVED, CONFIRMED, REJECTED, CANCELED, RETURNED — masing-masing berlabel Indonesia. Default PENDING saat dibuat.
 
