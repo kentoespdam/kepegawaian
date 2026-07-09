@@ -5,6 +5,7 @@ import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRoot.GajiBatchRootProcessRequest;
 import id.perumdamts.kepegawaian.entities.commons.EProsesGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchRoot;
+import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiBatchRootRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,61 +23,38 @@ public class GajiBatchRootWorkflowCommandService {
     private final GajiBatchRootEventPublisher eventPublisher;
 
     @Transactional
-    public SavedStatus<?> reprocess(GajiBatchRootProcessRequest request) {
-        try {
-            GajiBatchRoot entity = repository.findById(request.getId())
-                    .orElseThrow(() -> new RuntimeException("Unknown Batch Process"));
-
-            reprocessHandler(entity, request);
-            return SavedStatus.build(ESaveStatus.SUCCESS, "Reprocess Penggajian Executed");
-        } catch (RuntimeException e) {
-            if ("Unknown Batch Process".equals(e.getMessage())) {
-                return SavedStatus.build(ESaveStatus.FAILED, "Unknown Batch Process");
-            }
-            return logAndBuildFailure("reprocess", e);
-        }
+    public SavedStatus<String> reprocess(GajiBatchRootProcessRequest request) {
+        GajiBatchRoot entity = repository.findById(request.getId())
+                .orElseThrow(() -> new NotFoundException("Unknown Batch Process"));
+        reprocessHandler(entity, request);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "success");
     }
 
     @Transactional
-    public SavedStatus<?> verify1(String id, GajiBatchRootProcessRequest request) {
-        try {
-            Optional<GajiBatchRoot> byId = repository.findById(request.getId());
-            if (byId.isEmpty())
-                return SavedStatus.build(ESaveStatus.FAILED, "Unknown Batch Process");
-            GajiBatchRoot gajiBatchRoot = GajiBatchRootProcessRequest.verifyPhase1(byId.get(), request);
-            repository.save(gajiBatchRoot);
-            return SavedStatus.build(ESaveStatus.SUCCESS, "Verifikasi Tahap 1 Saved");
-        } catch (Exception e) {
-            return logAndBuildFailure("verify1", e);
-        }
+    public SavedStatus<String> verify1(String id, GajiBatchRootProcessRequest request) {
+        GajiBatchRoot gajiBatchRoot = repository.findById(request.getId())
+                .orElseThrow(() -> new NotFoundException("Unknown Batch Process"));
+        GajiBatchRoot verified = GajiBatchRootProcessRequest.verifyPhase1(gajiBatchRoot, request);
+        repository.save(verified);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "success");
     }
 
     @Transactional
-    public SavedStatus<?> verify2(String id, GajiBatchRootProcessRequest request) {
-        try {
-            Optional<GajiBatchRoot> byId = repository.findById(request.getId());
-            if (byId.isEmpty())
-                return SavedStatus.build(ESaveStatus.FAILED, "Unknown Batch Process");
-            GajiBatchRoot gajiBatchRoot = GajiBatchRootProcessRequest.verifyPhase2(byId.get(), request);
-            repository.save(gajiBatchRoot);
-            return SavedStatus.build(ESaveStatus.SUCCESS, "Verifikasi Tahap 2 Saved");
-        } catch (Exception e) {
-            return logAndBuildFailure("verify2", e);
-        }
+    public SavedStatus<String> verify2(String id, GajiBatchRootProcessRequest request) {
+        GajiBatchRoot gajiBatchRoot = repository.findById(request.getId())
+                .orElseThrow(() -> new NotFoundException("Unknown Batch Process"));
+        GajiBatchRoot verified = GajiBatchRootProcessRequest.verifyPhase2(gajiBatchRoot, request);
+        repository.save(verified);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "success");
     }
 
     @Transactional
-    public SavedStatus<?> accept(String id, GajiBatchRootProcessRequest request) {
-        try {
-            Optional<GajiBatchRoot> byId = repository.findById(request.getId());
-            if (byId.isEmpty())
-                return SavedStatus.build(ESaveStatus.FAILED, "Unknown Batch Process");
-            GajiBatchRoot gajiBatchRoot = GajiBatchRootProcessRequest.accept(byId.get(), request);
-            repository.save(gajiBatchRoot);
-            return SavedStatus.build(ESaveStatus.SUCCESS, "Batch Accepted");
-        } catch (Exception e) {
-            return logAndBuildFailure("accept", e);
-        }
+    public SavedStatus<String> accept(String id, GajiBatchRootProcessRequest request) {
+        GajiBatchRoot gajiBatchRoot = repository.findById(request.getId())
+                .orElseThrow(() -> new NotFoundException("Unknown Batch Process"));
+        GajiBatchRoot accepted = GajiBatchRootProcessRequest.accept(gajiBatchRoot, request);
+        repository.save(accepted);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "success");
     }
 
     private void reprocessHandler(GajiBatchRoot entity, GajiBatchRootProcessRequest request) {
@@ -92,10 +70,5 @@ public class GajiBatchRootWorkflowCommandService {
         if (save.getStatus() == EProsesGaji.PENDING) {
             eventPublisher.publishAfterCommit(save.getId());
         }
-    }
-
-    private SavedStatus<?> logAndBuildFailure(String operation, Exception e) {
-        log.error("GajiBatchRoot {} failed", operation, e);
-        return SavedStatus.build(ESaveStatus.FAILED, "Gaji Batch operation failed");
     }
 }

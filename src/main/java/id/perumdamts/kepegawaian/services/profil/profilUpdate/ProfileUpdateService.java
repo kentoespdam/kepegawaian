@@ -10,6 +10,7 @@ import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.ProfileUpdate;
+import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.ProfileUpdateRepository;
 import lombok.RequiredArgsConstructor;
@@ -62,25 +63,20 @@ public class ProfileUpdateService {
         repository.save(entity);
     }
 
-    public SavedStatus<?> approval(Long id, ProfilUpdateAcceptRequest request) {
-        try {
-            ProfileUpdate profileUpdate = repository.findByIdAndApprovalStatus(id, EProfileUpdateApproval.PENDING)
-                    .orElseThrow(() -> new RuntimeException("Unknown Profile Update"));
-            EProfileUpdateTable tableName = profileUpdate.getTableName();
-            switch (tableName) {
-                case KELUARGA:
-                    approvalKeluargaService.changeHandler(profileUpdate, request.getApproval());
-                    break;
-                case PENDIDIKAN:
-                    approvalPendidikanService.changeHandler(profileUpdate, request.getApproval());
-                    break;
-            }
-            handleApproval(profileUpdate, request);
-            return SavedStatus.build(ESaveStatus.SUCCESS, "Success saving approval profil update");
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+    public SavedStatus<String> approval(Long id, ProfilUpdateAcceptRequest request) {
+        ProfileUpdate profileUpdate = repository.findByIdAndApprovalStatus(id, EProfileUpdateApproval.PENDING)
+                .orElseThrow(() -> new NotFoundException("Unknown Profile Update"));
+        EProfileUpdateTable tableName = profileUpdate.getTableName();
+        switch (tableName) {
+            case KELUARGA:
+                approvalKeluargaService.changeHandler(profileUpdate, request.getApproval());
+                break;
+            case PENDIDIKAN:
+                approvalPendidikanService.changeHandler(profileUpdate, request.getApproval());
+                break;
         }
+        handleApproval(profileUpdate, request);
+        return SavedStatus.build(ESaveStatus.SUCCESS, "success");
     }
 
     private String generateDescription(RevisionMetadata.RevisionType type, EProfileUpdateTable table) {
@@ -105,7 +101,8 @@ public class ProfileUpdateService {
     }
 
     private void handleApproval(ProfileUpdate entity, ProfilUpdateAcceptRequest request) {
-        Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId()).orElseThrow(() -> new RuntimeException("Unknown Pic"));
+        Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId())
+                .orElseThrow(() -> new NotFoundException("Unknown Pic"));
         entity.setApprovalStatus(request.getApproval());
         entity.setApprovalDate(LocalDateTime.now());
         entity.setApprovalPic(pegawai.getBiodata().getNama());

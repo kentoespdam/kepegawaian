@@ -10,6 +10,7 @@ import id.perumdamts.kepegawaian.entities.cuti.CutiApprovalChain;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
+import id.perumdamts.kepegawaian.exceptions.ConflictException;
 import id.perumdamts.kepegawaian.helpers.RedisHelper;
 import id.perumdamts.kepegawaian.mapper.cuti.approval.CutiApprovalMapper;
 import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiApprovalChainRepository;
@@ -35,9 +36,9 @@ public class ApprovalCutiCommand {
     private final CutiKuotaUpdateByCutiService cutiKuotaUpdateByCutiService;
 
     @Transactional
-    public SavedStatus<?> savePengajuan(CutiApprovalPostRequest request) {
+    public SavedStatus<String> savePengajuan(CutiApprovalPostRequest request) {
         if (redisHelper.isTokenAlreadyUsed(request.getCsrfToken())) {
-            return SavedStatus.build(ESaveStatus.DUPLICATE, "Duplicate request detected");
+            throw new ConflictException("Duplicate request detected");
         }
 
         CutiPegawai leaveRequest = cutiPegawaiRepository
@@ -61,7 +62,7 @@ public class ApprovalCutiCommand {
             default -> throw new RuntimeException("Unknown Approval Status");
         }
 
-        return SavedStatus.build(ESaveStatus.SUCCESS, "Persetujuan Cuti Berhasil Disimpan");
+        return SavedStatus.build(ESaveStatus.SUCCESS, "success");
     }
 
     private void doSaveAcceptReject(CutiApproval cutiApproval, CutiPegawai cutiPegawai) {

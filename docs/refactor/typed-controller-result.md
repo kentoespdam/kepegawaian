@@ -64,73 +64,73 @@ prioritas bila dikerjakan serial oleh satu orang.
 
 ## Checklist per Domain
 
-### 1 · penggajian (`kepegawaian-51j.1`)
+### 1 · penggajian (`kepegawaian-51j.1`) ✅
 
 **Controllers** — buang `ResponseEntity<?>` (a) + param `Errors` (c):
-- [ ] `GajiParameterSettingController`
-- [ ] `GajiPendapatanNonPajakController`
-- [ ] `GajiPhdpController`
-- [ ] `GajiPotonganTkkController`
-- [ ] `DetailDasarGajiController`
-- [ ] `GajiBatchMasterProsesController`
-- [ ] `DasarGajiController`
-- [ ] `GajiBatchMasterController` — batch → `SavedResult<String>` `"{n} success"`
-- [ ] `GajiProfilController`
-- [ ] `GajiTunjanganController`
-- [ ] `GajiKomponenController`
+- [x] `GajiParameterSettingController`
+- [x] `GajiPendapatanNonPajakController`
+- [x] `GajiPhdpController`
+- [x] `GajiPotonganTkkController`
+- [x] `DetailDasarGajiController`
+- [x] `GajiBatchMasterProsesController`
+- [x] `DasarGajiController`
+- [x] `GajiBatchMasterController` — batch → `SavedResult<String>` `"{n} success"`
+- [x] `GajiProfilController`
+- [x] `GajiTunjanganController`
+- [x] `GajiKomponenController`
 
 **Services** — deep clean `SavedStatus<?>`:
-- [ ] `GajiBatchMasterCommandService` (`uploadPotonganTambahan` → `<String>` `"{n} success"`)
-- [ ] `GajiBatchMasterProsesCommandService`
-- [ ] `DetailDasarGajiCommandService` (`saveBatch` → `"{n} success"`; buang try/catch)
-- [ ] `GajiBatchRootCommandService` (`save` batch → `"{n} success"`)
-- [ ] `GajiBatchRootWorkflowCommandService` (reprocess/verify1/verify2/accept → workflow, tetap `"success"`)
-- [ ] `GajiPotonganTkkCommandService`
-- [ ] `GajiParameterSettingCommandService`
-- [ ] `GajiPendapatanNonPajakCommandService`
-- [ ] `GajiPhdpCommandService`
-- [ ] `GajiTunjanganCommandService`
-- [ ] `GajiKomponenCommandService`
-- [ ] `GajiProfilCommandService`
-- [ ] `DasarGajiCommandService` (`saveBatch` → "success"; buang try/catch)
+- [x] `GajiBatchMasterCommandService` (`uploadPotonganTambahan` → `<String>` `"{n} success"`)
+- [x] `GajiBatchMasterProsesCommandService`
+- [x] `DetailDasarGajiCommandService` (`saveBatch` → `"{n} success"`; buang try/catch)
+- [x] `GajiBatchRootCommandService` (`save` batch → `"{n} success"`)
+- [x] `GajiBatchRootWorkflowCommandService` (reprocess/verify1/verify2/accept → workflow, tetap `"success"`)
+- [x] `GajiPotonganTkkCommandService`
+- [x] `GajiParameterSettingCommandService`
+- [x] `GajiPendapatanNonPajakCommandService`
+- [x] `GajiPhdpCommandService`
+- [x] `GajiTunjanganCommandService`
+- [x] `GajiKomponenCommandService`
+- [x] `GajiProfilCommandService`
+- [x] `DasarGajiCommandService` (`saveBatch` → "{n} success"; buang try/catch)
 
-### 2 · master (`kepegawaian-51j.2`) — + bug 200→201
-- [ ] `ApdController` — typed (a) + `@Valid` (d) + `.save()` bukan `.any()`
-- [ ] `AlatKerjaController` — typed (a) + `@Valid` (d) + `.save()` bukan `.any()`
-- [ ] `ApdCommandService` — `create/update` → `SavedStatus<Long>`
-- [ ] `AlatKerjaCommandService` — `create/update` → `SavedStatus<Long>`
+### 2 · master (`kepegawaian-51j.2`) — + bug 200→201 ✅
+- [x] `ApdController` — typed (a) + `@Valid` (d) + `.save()` bukan `.any()`
+- [x] `AlatKerjaController` — typed (a) + `@Valid` (d) + `.save()` bukan `.any()`
+- [x] `ApdCommandService` — `create/update` → `SavedStatus<Long>`
+- [x] `AlatKerjaCommandService` — `create/update` → `SavedStatus<Long>`
 
-### 3 · profil (`kepegawaian-51j.3`)
+### 3 · profil (`kepegawaian-51j.3`) ✅
 Controllers (a): `Pelatihan`, `PengalamanKerja`, `Pendidikan`, `ProfilKeluarga`,
 `Biodata`, `KartuIdentitas`, `LampiranProfil`, `ProfilUpdate`, `Keahlian`.
-- [ ] Semua 9 controller: buang `ResponseEntity<?>`
-- [ ] `LampiranProfilController`, `ProfilKeluargaController`, `ProfilUpdateController`: buang `SavedResult<Object>` cast
-- [ ] `ProfileUpdateService`, `ProfilKeluargaCommandService`, `LampiranProfilCommandService`: deep clean → `SavedStatus<Long/String>`
+- [x] Semua 9 controller: buang `ResponseEntity<?>`
+- [x] `LampiranProfilController`, `ProfilKeluargaController`, `ProfilUpdateController`: buang `SavedResult<Object>` cast
+- [x] `ProfileUpdateService`, `ProfilKeluargaCommandService`, `LampiranProfilCommandService`: deep clean → `SavedStatus<Long/String>`
 
-### 4 · cuti (`kepegawaian-51j.4`)
-- [ ] Controllers (a): `CutiJenis`, `CutiApproval`, `CutiPengajuan`, `CutiKuota`
-- [ ] `CutiKuotaController`: `@Valid` (d)
-- [ ] Services deep clean: `KlaimCutiCommand`, `ApprovalCutiCommand`, `CutiKuotaCommandService`, `ProcessCutiKuotaService`, `PengajuanCutiCommand`, `CutiJenisCommandService`
+### 4 · cuti (`kepegawaian-51j.4`) ✅
+- [x] Controllers (a): `CutiJenis`, `CutiApproval`, `CutiPengajuan`, `CutiKuota`
+- [x] `CutiKuotaController`: `@Valid` (d)
+- [x] Services deep clean: `KlaimCutiCommand`, `ApprovalCutiCommand`, `CutiKuotaCommandService`, `ProcessCutiKuotaService`, `PengajuanCutiCommand`, `CutiJenisCommandService`
 
-### 5 · kepegawaian + laporan (`kepegawaian-51j.5`)
-- [ ] kepegawaian (a): `RiwayatSp`, `RiwayatKontrak`, `RiwayatMutasi`, `RiwayatSk`, `LampiranSk`, `RiwayatTerminasi`
-- [ ] `LampiranSkController`: buang param `Errors` (c)
-- [ ] laporan (a, read-only): `LaporanDnp`, `LaporanDuk`, `LaporanMutasi`, `LaporanKontrak`, `LaporanStatistik`, `LaporanLta`, `LaporanSo`, `LaporanKenaikanBerkala`
-- [ ] `LaporanKenaikanBerkalaController`: `@Valid` di 3 endpoint `@ParameterObject` (d)
+### 5 · kepegawaian + laporan (`kepegawaian-51j.5`) ✅
+- [x] kepegawaian (a): `RiwayatSp`, `RiwayatKontrak`, `RiwayatMutasi`, `RiwayatSk`, `LampiranSk`, `RiwayatTerminasi`
+- [x] `LampiranSkController`: buang param `Errors` (c)
+- [x] laporan (a, read-only): `LaporanDnp`, `LaporanDuk`, `LaporanMutasi`, `LaporanKontrak`, `LaporanStatistik`, `LaporanLta`, `LaporanSo`, `LaporanKenaikanBerkala`
+- [x] `LaporanKenaikanBerkalaController`: `@Valid` di 3 endpoint `@ParameterObject` (d)
 
-### 6 · pegawai + auth + users + system (`kepegawaian-51j.6`)
-- [ ] `PegawaiController.saveBatch`: buang `SavedResult<Object>` cast → `SavedResult<String>`
-- [ ] `PegawaiCommandService.saveBatch`: `SavedStatus<?>` (null) → `SavedStatus<String>` `"{n} success"` (`n` = `requests.size()`)
-- [ ] `AuthController` (a) + `AuthService` (2 method deep clean)
-- [ ] `UsersController`, `PrefRoleController` (a) + `UserService` (deep clean)
+### 6 · pegawai + auth + users + system (`kepegawaian-51j.6`) ✅
+- [x] `PegawaiController.saveBatch`: buang `SavedResult<Object>` cast → `SavedResult<String>`
+- [x] `PegawaiCommandService.saveBatch`: `SavedStatus<?>` (null) → `SavedStatus<String>` `"{n} success"` (`n` = `requests.size()`)
+- [x] `AuthController` (a) + `AuthService` (2 method deep clean)
+- [x] `UsersController`, `PrefRoleController` (a) + `UserService` (deep clean)
 
-## Definition of Done (tiap issue)
+## Definition of Done (tiap issue) ✅
 
-- [ ] Tidak ada `ResponseEntity<?>` tersisa di file domain
-- [ ] Tidak ada `SavedResult<Object>` / `@SuppressWarnings("unchecked")` cast
-- [ ] Tidak ada param `Errors` di controller
-- [ ] Tidak ada `try/catch` yang mengubah exception jadi `FAILED` di service
-- [ ] Endpoint create → 201, mutating → `@PreAuthorize("hasRole('ADMIN')")`, body/query → `@Valid`
-- [ ] `./gradlew build` hijau
-- [ ] File ≤ 120 baris (CODING_RULES §4)
-- [ ] `bd close <id>`
+- [x] Tidak ada `ResponseEntity<?>` tersisa di file domain
+- [x] Tidak ada `SavedResult<Object>` / `@SuppressWarnings("unchecked")` cast
+- [x] Tidak ada param `Errors` di controller
+- [x] Tidak ada `try/catch` yang mengubah exception jadi `FAILED` di service
+- [x] Endpoint create → 201, mutating → `@PreAuthorize("hasRole('ADMIN')")`, body/query → `@Valid`
+- [x] `./gradlew build` hijau — BUILD SUCCESSFUL in 30s
+- [x] File ≤ 120 baris (CODING_RULES §4)
+- [x] `bd close <id>` — kepegawaian-51j.1 s.d. kepegawaian-51j.6

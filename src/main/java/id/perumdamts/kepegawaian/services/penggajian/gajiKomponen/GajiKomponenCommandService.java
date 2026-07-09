@@ -7,6 +7,8 @@ import id.perumdamts.kepegawaian.dto.penggajian.gajiKomponen.GajiKomponenPutRequ
 import id.perumdamts.kepegawaian.entities.commons.EJenisGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiKomponen;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiProfil;
+import id.perumdamts.kepegawaian.exceptions.ConflictException;
+import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.mapper.penggajian.gajiKomponen.GajiKomponenMapper;
 import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiKomponenRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiProfilRepository;
@@ -23,33 +25,25 @@ public class GajiKomponenCommandService {
     private final GajiProfilRepository gajiProfilRepository;
 
     @Transactional
-    public SavedStatus<?> create(GajiKomponenPostRequest request) {
-        try {
-            boolean exists = repository.exists(request.getSpecification());
-            if (exists) return SavedStatus.build(ESaveStatus.DUPLICATE, "Gaji Komponen sudah ada");
-            GajiProfil gajiProfil = gajiProfilRepository.findById(request.getProfilGajiId())
-                    .orElseThrow(() -> new RuntimeException("Unknown Profil Gaji"));
-            GajiKomponen entity = GajiKomponenMapper.toEntity(request, gajiProfil);
-            repository.save(entity);
-            return SavedStatus.build(ESaveStatus.SUCCESS, "Komponen Gaji Saved");
-        } catch (Exception e) {
-            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
-        }
+    public SavedStatus<Long> create(GajiKomponenPostRequest request) {
+        boolean exists = repository.exists(request.getSpecification());
+        if (exists) throw new ConflictException("Gaji Komponen sudah ada");
+        GajiProfil gajiProfil = gajiProfilRepository.findById(request.getProfilGajiId())
+                .orElseThrow(() -> new NotFoundException("Profil Gaji not found"));
+        GajiKomponen entity = GajiKomponenMapper.toEntity(request, gajiProfil);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, entity.getId());
     }
 
     @Transactional
-    public SavedStatus<?> update(Long id, GajiKomponenPutRequest request) {
-        try {
-            GajiKomponen gajiKomponen = repository.findById(id)
-                    .orElseThrow(() -> new RuntimeException("Unknown Gaji Komponen"));
-            GajiProfil gajiProfil = gajiProfilRepository.findById(request.getProfilGajiId())
-                    .orElseThrow(() -> new RuntimeException("Unknown Profil Gaji"));
-            GajiKomponenMapper.updateEntity(gajiKomponen, request, gajiProfil);
-            repository.save(gajiKomponen);
-            return SavedStatus.build(ESaveStatus.SUCCESS, "Komponen Gaji Updated");
-        } catch (Exception e) {
-            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
-        }
+    public SavedStatus<Long> update(Long id, GajiKomponenPutRequest request) {
+        GajiKomponen gajiKomponen = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Gaji Komponen not found"));
+        GajiProfil gajiProfil = gajiProfilRepository.findById(request.getProfilGajiId())
+                .orElseThrow(() -> new NotFoundException("Profil Gaji not found"));
+        GajiKomponenMapper.updateEntity(gajiKomponen, request, gajiProfil);
+        repository.save(gajiKomponen);
+        return SavedStatus.build(ESaveStatus.SUCCESS, gajiKomponen.getId());
     }
 
     @Transactional

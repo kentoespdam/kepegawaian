@@ -5,6 +5,8 @@ import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiParameterSetting.GajiParameterSettingPostRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiParameterSetting.GajiParameterSettingPutRequest;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiParameterSetting;
+import id.perumdamts.kepegawaian.exceptions.ConflictException;
+import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.mapper.penggajian.gajiParameterSetting.GajiParameterSettingMapper;
 import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiParameterSettingRepository;
 import jakarta.transaction.Transactional;
@@ -19,24 +21,22 @@ public class GajiParameterSettingCommandService {
     private final GajiParameterSettingRepository repository;
 
     @Transactional
-    public SavedStatus<?> save(GajiParameterSettingPostRequest request) {
+    public SavedStatus<Long> save(GajiParameterSettingPostRequest request) {
         Optional<GajiParameterSetting> one = repository.findOne(request.getSpecification());
         if (one.isPresent())
-            return SavedStatus.build(ESaveStatus.DUPLICATE, "Setting Parameter Gaji sudah ada");
+            throw new ConflictException("Setting Parameter Gaji sudah ada");
         GajiParameterSetting entity = GajiParameterSettingMapper.toEntity(request);
         repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, "Setting Parameter Gaji Saved");
+        return SavedStatus.build(ESaveStatus.SUCCESS, entity.getId());
     }
 
     @Transactional
-    public SavedStatus<?> update(Long id, GajiParameterSettingPutRequest request) {
-        Optional<GajiParameterSetting> byId = repository.findById(id);
-        if (byId.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Setting Parameter Gaji");
-        GajiParameterSetting entity = byId.get();
+    public SavedStatus<Long> update(Long id, GajiParameterSettingPutRequest request) {
+        GajiParameterSetting entity = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Setting Parameter Gaji not found"));
         GajiParameterSettingMapper.updateEntity(entity, request);
         repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, "Setting Parameter Gaji Updated");
+        return SavedStatus.build(ESaveStatus.SUCCESS, entity.getId());
     }
 
     @Transactional

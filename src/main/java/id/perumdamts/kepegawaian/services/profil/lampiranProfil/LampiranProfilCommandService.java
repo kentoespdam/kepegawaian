@@ -6,6 +6,8 @@ import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilAcceptR
 import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilPostRequest;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.entities.profil.LampiranProfil;
+import id.perumdamts.kepegawaian.exceptions.ConflictException;
+import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.mapper.profil.lampiranProfil.LampiranProfilMapper;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.LampiranProfilRepository;
 import id.perumdamts.kepegawaian.utils.FileUploadUtil;
@@ -26,29 +28,25 @@ public class LampiranProfilCommandService {
     private final FileUploadUtil fileUploadUtil;
 
     @Transactional
-    public SavedStatus<?> addLampiran(LampiranProfilPostRequest request) {
-        try {
-            boolean exists = repository.exists(request.getSpecification());
-            if (exists)
-                return SavedStatus.build(ESaveStatus.DUPLICATE, "Lampiran Profil sudah ada");
+    public SavedStatus<Long> addLampiran(LampiranProfilPostRequest request) {
+        boolean exists = repository.exists(request.getSpecification());
+        if (exists)
+            throw new ConflictException("Lampiran Profil sudah ada");
 
-            UploadResultUtil uploadedFile = fileUploadUtil.uploadFileSp(
-                    request.getFileName(), request.getRef(),
-                    String.valueOf(request.getRefId()));
-            if (!uploadedFile.isSuccess())
-                return SavedStatus.build(ESaveStatus.FAILED, uploadedFile.getMessage());
+        UploadResultUtil uploadedFile = fileUploadUtil.uploadFileSp(
+                request.getFileName(), request.getRef(),
+                String.valueOf(request.getRefId()));
+        if (!uploadedFile.isSuccess())
+            throw new RuntimeException(uploadedFile.getMessage());
 
-            LampiranProfil entity = LampiranProfilMapper.toEntity(
-                    request,
-                    uploadedFile.getFileName(),
-                    uploadedFile.getHashedFileName(),
-                    uploadedFile.getMimeType()
-            );
-            repository.save(entity);
-            return SavedStatus.build(ESaveStatus.SUCCESS, entity.getId());
-        } catch (Exception e) {
-            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
-        }
+        LampiranProfil entity = LampiranProfilMapper.toEntity(
+                request,
+                uploadedFile.getFileName(),
+                uploadedFile.getHashedFileName(),
+                uploadedFile.getMimeType()
+        );
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, entity.getId());
     }
 
     @Transactional
@@ -62,16 +60,12 @@ public class LampiranProfilCommandService {
     }
 
     @Transactional
-    public SavedStatus<?> acceptLampiran(LampiranProfilAcceptRequest request, String oleh) {
-        try {
-            LampiranProfil lampiranProfil = repository.findOne(request.getSpecification())
-                    .orElseThrow(() -> new RuntimeException("Lampiran Profil accept not found!"));
-            LampiranProfil entity = LampiranProfilMapper.accept(lampiranProfil, oleh);
-            repository.save(entity);
-            return SavedStatus.build(ESaveStatus.SUCCESS, entity.getId());
-        } catch (Exception e) {
-            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
-        }
+    public SavedStatus<Long> acceptLampiran(LampiranProfilAcceptRequest request, String oleh) {
+        LampiranProfil lampiranProfil = repository.findOne(request.getSpecification())
+                .orElseThrow(() -> new NotFoundException("Lampiran Profil accept not found!"));
+        LampiranProfil entity = LampiranProfilMapper.accept(lampiranProfil, oleh);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, entity.getId());
     }
 
     @Transactional

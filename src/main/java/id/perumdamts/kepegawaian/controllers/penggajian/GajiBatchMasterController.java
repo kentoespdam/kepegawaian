@@ -55,14 +55,9 @@ public class GajiBatchMasterController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping(value = "upload/{rootBatchId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<SavedResult<Object>> uploadPotonganTambahan(
+    public ResponseEntity<SavedResult<String>> uploadPotonganTambahan(
             @PathVariable String rootBatchId,
             @Valid @ModelAttribute GajiBatchMasterPostRequest request) {
-        return saveResult(commandService.uploadPotonganTambahan(rootBatchId, request));
-    }
-
-    @SuppressWarnings("unchecked")
-    private static ResponseEntity<SavedResult<Object>> saveResult(SavedStatus<?> status) {
-        return CustomResult.save((SavedStatus<Object>) status);
+        return CustomResult.save(commandService.uploadPotonganTambahan(rootBatchId, request));
     }
 }

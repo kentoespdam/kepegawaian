@@ -31,7 +31,7 @@ public class ProfilKeluargaCommandService {
     private final ChangedStatusResolver resolver;
 
     @Transactional
-    public SavedStatus<?> create(ProfilKeluargaPostRequest request) {
+    public SavedStatus<Long> create(ProfilKeluargaPostRequest request) {
         Biodata biodata = biodataRepository.findById(request.getBiodataId()).orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
         repository.findActiveByBiodataIdAndNamaAndTanggalLahir(request.getBiodataId(), request.getNama(), request.getTanggalLahir())
                 .ifPresent(e -> { throw new ConflictException("Profil Keluarga aktif dengan nama dan tanggal lahir sama sudah ada"); });
@@ -40,14 +40,14 @@ public class ProfilKeluargaCommandService {
         ProfilKeluarga entity = ProfilKeluargaMapper.toEntity(request, biodata, jenjangPendidikan);
         entity.setChangedStatus(resolver.requiresApproval());
         repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, "Data Keluarga Berhasil disimpan");
+        return SavedStatus.build(ESaveStatus.SUCCESS, entity.getId());
     }
 
     @Transactional
-    public SavedStatus<?> update(Long id, ProfilKeluargaPutRequest request) {
+    public SavedStatus<Long> update(Long id, ProfilKeluargaPutRequest request) {
         ProfilKeluarga entity = repository.findById(id).orElseThrow(() -> new NotFoundException(UNKNOWN_KELUARGA));
         if (Boolean.TRUE.equals(entity.getChangedStatus())) {
-            return SavedStatus.build(ESaveStatus.FAILED, "Data Keluarga sedang dalam proses pengajuan");
+            throw new ConflictException("Data Keluarga sedang dalam proses pengajuan");
         }
 
         boolean biodataChanged = !entity.getBiodata().getNik().equals(request.getBiodataId());
@@ -68,14 +68,14 @@ public class ProfilKeluargaCommandService {
         updated.setBiodata(biodata);
         updated.setChangedStatus(resolver.requiresApproval());
         repository.save(updated);
-        return SavedStatus.build(ESaveStatus.SUCCESS, "Data Keluarga Berhasil diperbaharui");
+        return SavedStatus.build(ESaveStatus.SUCCESS, updated.getId());
     }
 
     @Transactional
-    public SavedStatus<?> delete(Long id) {
+    public boolean delete(Long id) {
         ProfilKeluarga entity = repository.findById(id).orElseThrow(() -> new NotFoundException(UNKNOWN_KELUARGA));
         repository.delete(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, "Data Keluarga Berhasil dihapus");
+        return true;
     }
 
     private JenjangPendidikan resolveJenjangPendidikan(Long pendidikanId) {

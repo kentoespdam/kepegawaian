@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.laporan.kepegawaian;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
+import id.perumdamts.kepegawaian.dto.commons.SingleResult;
 import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.EFilterLta;
 import id.perumdamts.kepegawaian.helpers.UrlBuilder;
 import id.perumdamts.kepegawaian.services.laporan.kepegawaian.LaporanKepegawaianService;
@@ -21,12 +22,12 @@ public class LaporanLtaController {
     private final LaporanKepegawaianService service;
 
     @GetMapping()
-    public ResponseEntity<?> lapLta(@RequestParam(required = false, defaultValue = "BULAN_INI") EFilterLta filter) {
+    public ResponseEntity<SingleResult<Object>> lapLta(@RequestParam(required = false, defaultValue = "BULAN_INI") EFilterLta filter) {
         return CustomResult.any(service.getObject(UrlBuilder.buildFilter(BASE_PATH, "/", filter)));
     }
 
     @GetMapping("/count")
-    public ResponseEntity<?> lapLtaCount(@RequestParam(required = false, defaultValue = "BULAN_INI") EFilterLta filter) {
+    public ResponseEntity<SingleResult<Object>> lapLtaCount(@RequestParam(required = false, defaultValue = "BULAN_INI") EFilterLta filter) {
         return CustomResult.any(service.getObject(UrlBuilder.buildFilter(BASE_PATH, "/count", filter)));
     }
 

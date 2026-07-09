@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.laporan.kepegawaian;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
+import id.perumdamts.kepegawaian.dto.commons.SingleResult;
 import id.perumdamts.kepegawaian.services.laporan.kepegawaian.LaporanKepegawaianService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ public class LaporanSoController {
     private final LaporanKepegawaianService service;
 
     @GetMapping()
-    public ResponseEntity<?> lapSo() {
+    public ResponseEntity<SingleResult<Object>> lapSo() {
         return CustomResult.any(
                 service.getObject("/so/"));
     }

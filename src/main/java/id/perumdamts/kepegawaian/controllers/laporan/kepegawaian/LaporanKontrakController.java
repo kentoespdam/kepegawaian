@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.laporan.kepegawaian;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
+import id.perumdamts.kepegawaian.dto.commons.SingleResult;
 import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.EFilterKontrak;
 import id.perumdamts.kepegawaian.helpers.UrlBuilder;
 import id.perumdamts.kepegawaian.services.laporan.kepegawaian.LaporanKepegawaianService;
@@ -19,7 +20,7 @@ public class LaporanKontrakController {
     private final LaporanKepegawaianService service;
 
     @GetMapping
-    public ResponseEntity<?> lapKontrak(@RequestParam(required = false, defaultValue = "AKTIF") EFilterKontrak filter) {
+    public ResponseEntity<SingleResult<Object>> lapKontrak(@RequestParam(required = false, defaultValue = "AKTIF") EFilterKontrak filter) {
         return CustomResult.any(
                 service.getObject(UrlBuilder.buildFilter(BASE_PATH, "/", filter)));
     }

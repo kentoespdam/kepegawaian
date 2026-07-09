@@ -32,7 +32,7 @@ public class UserService {
         return new PageImpl<>(list, pegawaiPage.getPageable(), pegawaiPage.getTotalElements());
     }
 
-    public SavedStatus<?> patchStatus(Long id, UserPatchStatusRequest request) {
+    public SavedStatus<AppwriteUser> patchStatus(Long id, UserPatchStatusRequest request) {
         return SavedStatus.build(ESaveStatus.SUCCESS, authService.updateStatus(id.toString(), request));
     }
 

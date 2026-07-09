@@ -8,6 +8,7 @@ import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.cuti.CutiKuota;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
+import id.perumdamts.kepegawaian.exceptions.ConflictException;
 import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiKuotaRepository;
 import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,21 +30,21 @@ public class ProcessCutiKuotaService {
     private final CutiKuotaRepository repository;
     private final PegawaiRepository pegawaiRepository;
 
-    public SavedStatus<?> processCutiKuota(CutiKuotaImportRequest request) {
+    public SavedStatus<String> processCutiKuota(CutiKuotaImportRequest request) {
         Integer tahun = request.getTahun();
         MultipartFile file = request.getFile();
 
         boolean existByTahun = repository.existsByTahun(tahun);
         if (existByTahun)
-            return SavedStatus.build(ESaveStatus.DUPLICATE, "Kuota Cuti Tahun " + tahun + " sudah ada");
+            throw new ConflictException("Kuota Cuti Tahun " + tahun + " sudah ada");
         Workbook workbook = getWorkbook(file);
         if (workbook == null)
-            return SavedStatus.build(ESaveStatus.FAILED, "Gagal membaca file");
+            throw new RuntimeException("Gagal membaca file");
         List<CutiKuota> cutiKuotaList = readSheetData(workbook.getSheetAt(0), tahun);
         if (cutiKuotaList.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Tidak ada data");
+            throw new RuntimeException("Tidak ada data");
         repository.saveAll(cutiKuotaList);
-        return SavedStatus.build(ESaveStatus.SUCCESS, "Kuota Cuti Tahun " + tahun + " berhasil disimpan");
+        return SavedStatus.build(ESaveStatus.SUCCESS, cutiKuotaList.size() + " success");
     }
 
     private Workbook getWorkbook(MultipartFile file) {

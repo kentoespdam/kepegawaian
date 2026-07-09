@@ -1,17 +1,17 @@
 package id.perumdamts.kepegawaian.controllers.penggajian;
 
-import id.perumdamts.kepegawaian.dto.commons.CustomResult;
-import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
+import id.perumdamts.kepegawaian.dto.commons.*;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiProfil.GajiProfilIndexQuery;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiProfil.GajiProfilPostRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiProfil.GajiProfilPutRequest;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiProfil.GajiProfilResponse;
 import id.perumdamts.kepegawaian.services.penggajian.gajiProfil.GajiProfilCommandService;
 import id.perumdamts.kepegawaian.services.penggajian.gajiProfil.GajiProfilQueryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,34 +22,32 @@ public class GajiProfilController {
     private final GajiProfilQueryService queryService;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject @Valid GajiProfilIndexQuery request) {
+    public ResponseEntity<PageResult<Page<GajiProfilResponse>>> index(@ParameterObject @Valid GajiProfilIndexQuery request) {
         return CustomResult.page(queryService.findAll(request));
     }
 
     @GetMapping("/list")
-    public ResponseEntity<?> list(@ParameterObject @Valid GajiProfilIndexQuery request) {
+    public ResponseEntity<ListResult<GajiProfilResponse>> list(@ParameterObject @Valid GajiProfilIndexQuery request) {
         return CustomResult.list(queryService.list(request));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> detail(@PathVariable Long id) {
+    public ResponseEntity<SingleResult<GajiProfilResponse>> detail(@PathVariable Long id) {
         return CustomResult.any(queryService.findById(id).orElse(null));
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody GajiProfilPostRequest request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
+    public ResponseEntity<SavedResult<Long>> create(@Valid @RequestBody GajiProfilPostRequest request) {
         return CustomResult.save(commandService.create(request));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody GajiProfilPutRequest request, Errors errors) {
-        if (errors.hasErrors()) return ErrorResult.build(errors);
+    public ResponseEntity<SavedResult<Long>> update(@PathVariable Long id, @Valid @RequestBody GajiProfilPutRequest request) {
         return CustomResult.save(commandService.update(id, request));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    public ResponseEntity<DeletedResult> delete(@PathVariable Long id) {
         return CustomResult.delete(commandService.delete(id));
     }
 }

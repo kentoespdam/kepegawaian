@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.services.master.alatKerja;
 
+import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
+import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.master.alatKerja.AlatKerjaPostRequest;
 import id.perumdamts.kepegawaian.entities.master.AlatKerja;
 import id.perumdamts.kepegawaian.entities.master.Profesi;
@@ -21,7 +23,7 @@ public class AlatKerjaCommandService {
     private final ProfesiRepository profesiRepository;
 
     @Transactional
-    public AlatKerja create(AlatKerjaPostRequest request) {
+    public SavedStatus<Long> create(AlatKerjaPostRequest request) {
         Long profesiId = request.getProfesiId();
         if (!profesiRepository.existsById(profesiId)) {
             throw new NotFoundException("Profesi not found");
@@ -33,18 +35,20 @@ public class AlatKerjaCommandService {
             if (existing.get().getIsDeleted()) {
                 AlatKerja revived = existing.get();
                 revived.setIsDeleted(false);
-                return repository.save(revived);
+                repository.save(revived);
+                return SavedStatus.build(ESaveStatus.SUCCESS, revived.getId());
             } else {
                 throw new ConflictException("AlatKerja already exists");
             }
         }
 
         AlatKerja entity = AlatKerjaMapper.toEntity(request, profesi);
-        return repository.save(entity);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, entity.getId());
     }
 
     @Transactional
-    public AlatKerja update(Long id, AlatKerjaPostRequest request) {
+    public SavedStatus<Long> update(Long id, AlatKerjaPostRequest request) {
         Long profesiId = request.getProfesiId();
         AlatKerja existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("AlatKerja not found"));
@@ -60,7 +64,8 @@ public class AlatKerjaCommandService {
         }
 
         AlatKerjaMapper.updateEntity(existing, request, profesi);
-        return repository.save(existing);
+        repository.save(existing);
+        return SavedStatus.build(ESaveStatus.SUCCESS, existing.getId());
     }
 
     @Transactional

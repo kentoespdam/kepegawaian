@@ -72,11 +72,10 @@ public class PegawaiController {
         return CustomResult.list(queryService.findByIds(request.getIds()));
     }
 
-    @SuppressWarnings("unchecked")
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/batch")
-    public ResponseEntity<SavedResult<Object>> saveBatch(@Valid @RequestBody List<PegawaiPostRequest> requests) {
-        return (ResponseEntity<SavedResult<Object>>) (ResponseEntity<?>) CustomResult.save(commandService.saveBatch(requests));
+    public ResponseEntity<SavedResult<String>> saveBatch(@Valid @RequestBody List<PegawaiPostRequest> requests) {
+        return CustomResult.save(commandService.saveBatch(requests));
     }
 
     @PreAuthorize("hasRole('ADMIN')")

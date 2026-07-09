@@ -5,16 +5,21 @@ import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataIndexQuery;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPatchRequest;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPutRequest;
+import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataQuery;
+import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataDetail;
 import id.perumdamts.kepegawaian.services.profil.biodata.BiodataCommandService;
 import id.perumdamts.kepegawaian.services.profil.biodata.BiodataQueryService;
 import id.perumdamts.kepegawaian.utils.MimeTypesUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,17 +30,17 @@ public class BiodataController {
     private final MimeTypesUtils mimeTypesUtils;
 
     @GetMapping
-    public ResponseEntity<?> index(@Valid @ParameterObject BiodataIndexQuery query) {
+    public ResponseEntity<PageResult<Page<BiodataQuery>>> index(@Valid @ParameterObject BiodataIndexQuery query) {
         return CustomResult.page(queryService.pageQuery(query));
     }
 
     @GetMapping("/list")
-    public ResponseEntity<?> list(@ParameterObject @Valid BiodataIndexQuery query) {
+    public ResponseEntity<ListResult<BiodataQuery>> list(@ParameterObject @Valid BiodataIndexQuery query) {
         return CustomResult.list(queryService.findAll(query));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> findById(@PathVariable String id) {
+    public ResponseEntity<SingleResult<BiodataDetail>> findById(@PathVariable String id) {
         return CustomResult.any(queryService.getById(id));
     }
 

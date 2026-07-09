@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.controllers.laporan.kepegawaian;
 
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
+import id.perumdamts.kepegawaian.dto.commons.SingleResult;
 import id.perumdamts.kepegawaian.entities.commons.EJenisMutasi;
 import id.perumdamts.kepegawaian.services.laporan.kepegawaian.LaporanKepegawaianService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,7 @@ public class LaporanMutasiController {
     private final LaporanKepegawaianService service;
 
     @GetMapping("/{from_date}/{to_date}")
-    public ResponseEntity<?> lapMutasi(@PathVariable String from_date, @PathVariable String to_date, @RequestParam(required = false) EJenisMutasi jenis_mutasi) {
+    public ResponseEntity<SingleResult<Object>> lapMutasi(@PathVariable String from_date, @PathVariable String to_date, @RequestParam(required = false) EJenisMutasi jenis_mutasi) {
         return CustomResult.any(service.getObject(urlBuilder("/", from_date, to_date, jenis_mutasi)));
     }
 

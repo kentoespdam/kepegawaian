@@ -7,6 +7,7 @@ import id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji.DetailDasarGajiP
 import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.penggajian.DasarGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.DetailDasarGaji;
+import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.mapper.penggajian.detailDasarGaji.DetailDasarGajiMapper;
 import id.perumdamts.kepegawaian.repositories.master.jpa.GolonganRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.jpa.DasarGajiRepository;
@@ -31,69 +32,53 @@ public class DetailDasarGajiCommandService {
     public DetailDasarGaji findDetailDasarGajiByGolonganAndMasaKerja(Long golonganId, Integer masaKerja) {
         Optional<Golongan> golongan = golonganRepository.findById(golonganId);
         if (golongan.isEmpty())
-            throw new RuntimeException("Golongan not found: " + golonganId);
+            throw new NotFoundException("Golongan not found: " + golonganId);
         Integer golonganKode = Integer.parseInt(golongan.get().getGolongan().split("\\.")[1]);
         Specification<DetailDasarGaji> specification = SpecificationBuilder.<DetailDasarGaji>of()
                 .addEqual(golonganKode, "golonganKode")
                 .addEqual(masaKerja, "mkg")
                 .build();
         return repository.findOne(specification)
-                .orElseThrow(() -> new RuntimeException("Detail Dasar Gaji not found"));
+                .orElseThrow(() -> new NotFoundException("Detail Dasar Gaji not found"));
     }
 
     @Transactional
-    public SavedStatus<?> save(DetailDasarGajiPostRequest request) {
-        try {
-            Optional<DasarGaji> dasarGaji = dasarGajiRepository.findById(request.getDasarGajiId());
-            if (dasarGaji.isEmpty())
-                return SavedStatus.build(ESaveStatus.FAILED, "Dasar Gaji not found");
-            Optional<Golongan> golongan = golonganRepository.findById(request.getGolonganId());
-            if (golongan.isEmpty())
-                return SavedStatus.build(ESaveStatus.FAILED, "Golongan not found");
-            DetailDasarGaji entity = DetailDasarGajiMapper.toEntity(request, dasarGaji.get(), golongan.get());
-            repository.save(entity);
-            return SavedStatus.build(ESaveStatus.SUCCESS, "Detail Dasar Gaji Saved");
-        } catch (Exception e) {
-            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
-        }
+    public SavedStatus<Long> save(DetailDasarGajiPostRequest request) {
+        DasarGaji dasarGaji = dasarGajiRepository.findById(request.getDasarGajiId())
+                .orElseThrow(() -> new NotFoundException("Dasar Gaji not found"));
+        Golongan golongan = golonganRepository.findById(request.getGolonganId())
+                .orElseThrow(() -> new NotFoundException("Golongan not found"));
+        DetailDasarGaji entity = DetailDasarGajiMapper.toEntity(request, dasarGaji, golongan);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, entity.getId());
     }
 
     @Transactional
-    public SavedStatus<?> saveBatch(List<DetailDasarGajiPostRequest> requests) {
-        try {
-            List<DetailDasarGaji> entities = new ArrayList<>();
-            for (DetailDasarGajiPostRequest request : requests) {
-                Optional<DasarGaji> dasarGaji = dasarGajiRepository.findById(request.getDasarGajiId());
-                if (dasarGaji.isEmpty())
-                    throw new RuntimeException("Dasar Gaji not found: " + request.getDasarGajiId());
-                Optional<Golongan> golongan = golonganRepository.findById(request.getGolonganId());
-                if (golongan.isEmpty())
-                    throw new RuntimeException("Golongan not found: " + request.getGolonganId());
-                DetailDasarGaji entity = DetailDasarGajiMapper.toEntity(request, dasarGaji.get(), golongan.get());
-                entities.add(entity);
-            }
-            repository.saveAll(entities);
-            return SavedStatus.build(ESaveStatus.SUCCESS, "Save Batch Detail Dasar Gaji Success");
-        } catch (Exception e) {
-            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
-        }
-    }
-
-    @Transactional
-    public SavedStatus<?> update(Long id, DetailDasarGajiPutRequest request) {
-        try {
+    public SavedStatus<String> saveBatch(List<DetailDasarGajiPostRequest> requests) {
+        List<DetailDasarGaji> entities = new ArrayList<>();
+        for (DetailDasarGajiPostRequest request : requests) {
             DasarGaji dasarGaji = dasarGajiRepository.findById(request.getDasarGajiId())
-                    .orElseThrow(() -> new RuntimeException("Dasar Gaji not found"));
+                    .orElseThrow(() -> new NotFoundException("Dasar Gaji not found: " + request.getDasarGajiId()));
             Golongan golongan = golonganRepository.findById(request.getGolonganId())
-                    .orElseThrow(() -> new RuntimeException("Golongan not found"));
-            DetailDasarGaji detailDasarGaji = repository.findById(id)
-                    .orElseThrow(() -> new RuntimeException("Detail Dasar Gaji not found"));
-            DetailDasarGajiMapper.updateEntity(detailDasarGaji, request, dasarGaji, golongan);
-            repository.save(detailDasarGaji);
-            return SavedStatus.build(ESaveStatus.SUCCESS, "Detail Dasar Gaji Updated");
-        } catch (Exception e) {
-            return SavedStatus.build(ESaveStatus.FAILED, e.getMessage());
+                    .orElseThrow(() -> new NotFoundException("Golongan not found: " + request.getGolonganId()));
+            DetailDasarGaji entity = DetailDasarGajiMapper.toEntity(request, dasarGaji, golongan);
+            entities.add(entity);
         }
+        repository.saveAll(entities);
+        return SavedStatus.build(ESaveStatus.SUCCESS, entities.size() + " success");
+    }
+
+    @Transactional
+    public SavedStatus<Long> update(Long id, DetailDasarGajiPutRequest request) {
+        DasarGaji dasarGaji = dasarGajiRepository.findById(request.getDasarGajiId())
+                .orElseThrow(() -> new NotFoundException("Dasar Gaji not found"));
+        Golongan golongan = golonganRepository.findById(request.getGolonganId())
+                .orElseThrow(() -> new NotFoundException("Golongan not found"));
+        DetailDasarGaji detailDasarGaji = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Detail Dasar Gaji not found"));
+        DetailDasarGajiMapper.updateEntity(detailDasarGaji, request, dasarGaji, golongan);
+        repository.save(detailDasarGaji);
+        return SavedStatus.build(ESaveStatus.SUCCESS, detailDasarGaji.getId());
     }
 
     @Transactional

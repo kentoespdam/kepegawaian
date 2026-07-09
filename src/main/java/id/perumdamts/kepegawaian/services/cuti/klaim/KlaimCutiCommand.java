@@ -13,6 +13,7 @@ import id.perumdamts.kepegawaian.entities.cuti.CutiKlaimDetail;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
+import id.perumdamts.kepegawaian.exceptions.ConflictException;
 import id.perumdamts.kepegawaian.helpers.DateHelper;
 import id.perumdamts.kepegawaian.helpers.RedisHelper;
 import id.perumdamts.kepegawaian.helpers.cuti.CutiPeriodClassifier;
@@ -50,7 +51,7 @@ public class KlaimCutiCommand {
     private Long supervisorSdm;
 
     @Transactional
-    public SavedStatus<?> save(CutiPengajuanKlaimPostRequest request) {
+    public SavedStatus<Long> save(CutiPengajuanKlaimPostRequest request) {
         CutiPegawai validCuti = cutiKlaimValidator.validateKlaim(request);
         CutiPegawai entity = CutiPegawaiMapper.toEntity(validCuti, request);
         entity.setPicSaatIni(new Jabatan(supervisorSdm));
@@ -60,11 +61,11 @@ public class KlaimCutiCommand {
         saveDetails(save, working);
 
         cutiApprovalChainGenerator.forKlaim(save);
-        return SavedStatus.build(ESaveStatus.SUCCESS, "Cuti Klaim berhasil disimpan");
+        return SavedStatus.build(ESaveStatus.SUCCESS, save.getId());
     }
 
     @Transactional
-    public SavedStatus<?> update(Long id, CutiPengajuanKlaimPostRequest request) {
+    public SavedStatus<Long> update(Long id, CutiPengajuanKlaimPostRequest request) {
         CutiPegawai cutiPegawai = cutiPegawaiRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Unknown Cuti Pegawai"));
 
@@ -75,13 +76,13 @@ public class KlaimCutiCommand {
         cutiKlaimDetailRepository.deleteAll(klaimDetails);
         saveDetails(save, working);
 
-        return SavedStatus.build(ESaveStatus.SUCCESS, "Cuti Klaim berhasil diupdate");
+        return SavedStatus.build(ESaveStatus.SUCCESS, save.getId());
     }
 
     @Transactional
-    public SavedStatus<?> saveKlaim(CutiApprovalPostRequest request) {
+    public SavedStatus<String> saveKlaim(CutiApprovalPostRequest request) {
         if (redisHelper.isTokenAlreadyUsed(request.getCsrfToken())) {
-            return SavedStatus.build(ESaveStatus.DUPLICATE, "Duplicate request detected");
+            throw new ConflictException("Duplicate request detected");
         }
 
         CutiPegawai cutiPegawai = cutiPegawaiRepository.findById(request.getCutiId())
@@ -116,7 +117,7 @@ public class KlaimCutiCommand {
                     cutiApprovalChainRepository.save(chain);
                 });
 
-        return SavedStatus.build(ESaveStatus.SUCCESS, "Cuti Pengajuan berhasil disetujui");
+        return SavedStatus.build(ESaveStatus.SUCCESS, "success");
     }
 
     private List<LocalDate> setWorkingDays(List<LocalDate> listHari, CutiPegawai entity) {

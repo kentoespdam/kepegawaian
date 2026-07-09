@@ -1,10 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.cuti;
 
-import id.perumdamts.kepegawaian.dto.commons.CustomResult;
-import id.perumdamts.kepegawaian.dto.cuti.kuota.CutiKuotaImportRequest;
-import id.perumdamts.kepegawaian.dto.cuti.kuota.CutiKuotaPostRequest;
-import id.perumdamts.kepegawaian.dto.cuti.kuota.CutiKuotaPutRequest;
-import id.perumdamts.kepegawaian.dto.cuti.kuota.CutiKuotaRequest;
+import id.perumdamts.kepegawaian.dto.commons.*;
+import id.perumdamts.kepegawaian.dto.cuti.kuota.*;
 import id.perumdamts.kepegawaian.services.cuti.kuota.CutiKuotaCommandService;
 import id.perumdamts.kepegawaian.services.cuti.kuota.CutiKuotaQueryService;
 import jakarta.validation.Valid;
@@ -21,17 +18,17 @@ public class CutiKuotaController {
     private final CutiKuotaCommandService commandService;
 
     @GetMapping
-    public ResponseEntity<?> index(@Valid @ParameterObject CutiKuotaRequest request) {
+    public ResponseEntity<SingleResult<CutiKuotaPegawaiResponse>> index(@Valid @ParameterObject CutiKuotaRequest request) {
         return CustomResult.any(queryService.findPage(request));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> show(@PathVariable Long id) {
+    public ResponseEntity<SingleResult<CutiKuotaResponse>> show(@PathVariable Long id) {
         return CustomResult.any(queryService.findById(id));
     }
 
     @GetMapping("/{pegawaiId}/{tahun}/sisa")
-    public ResponseEntity<?> showByPegawai(@PathVariable Long pegawaiId, @PathVariable Integer tahun) {
+    public ResponseEntity<SingleResult<CutiKuotaSisa>> showByPegawai(@PathVariable Long pegawaiId, @PathVariable Integer tahun) {
         return CustomResult.any(queryService.findByPegawai(pegawaiId, tahun));
     }
 
@@ -41,22 +38,22 @@ public class CutiKuotaController {
     }
 
     @PostMapping
-    public ResponseEntity<?> store(@RequestBody CutiKuotaPostRequest request) {
+    public ResponseEntity<SavedResult<Long>> store(@Valid @RequestBody CutiKuotaPostRequest request) {
         return CustomResult.save(commandService.save(request));
     }
 
     @PostMapping(value = "/import", consumes = "multipart/form-data")
-    public ResponseEntity<?> importData(@Valid @ModelAttribute CutiKuotaImportRequest request) {
+    public ResponseEntity<SavedResult<String>> importData(@Valid @ModelAttribute CutiKuotaImportRequest request) {
         return CustomResult.save(commandService.importData(request));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody CutiKuotaPutRequest request) {
+    public ResponseEntity<SavedResult<Long>> update(@PathVariable Long id, @Valid @RequestBody CutiKuotaPutRequest request) {
         return CustomResult.save(commandService.update(id, request));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    public ResponseEntity<DeletedResult> delete(@PathVariable Long id) {
         return CustomResult.delete(commandService.delete(id));
     }
 }

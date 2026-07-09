@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.services.master.apd;
 
+import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
+import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.master.apd.ApdPostRequest;
 import id.perumdamts.kepegawaian.entities.master.Apd;
 import id.perumdamts.kepegawaian.entities.master.Profesi;
@@ -21,7 +23,7 @@ public class ApdCommandService {
     private final ProfesiRepository profesiRepository;
 
     @Transactional
-    public Apd create(ApdPostRequest request) {
+    public SavedStatus<Long> create(ApdPostRequest request) {
         Long profesiId = request.getProfesiId();
         if (!profesiRepository.existsById(profesiId)) {
             throw new NotFoundException("Profesi not found");
@@ -33,18 +35,20 @@ public class ApdCommandService {
             if (existing.get().getIsDeleted()) {
                 Apd revived = existing.get();
                 revived.setIsDeleted(false);
-                return repository.save(revived);
+                repository.save(revived);
+                return SavedStatus.build(ESaveStatus.SUCCESS, revived.getId());
             } else {
                 throw new ConflictException("Apd already exists");
             }
         }
 
         Apd entity = ApdMapper.toEntity(request, profesi);
-        return repository.save(entity);
+        repository.save(entity);
+        return SavedStatus.build(ESaveStatus.SUCCESS, entity.getId());
     }
 
     @Transactional
-    public Apd update(Long id, ApdPostRequest request) {
+    public SavedStatus<Long> update(Long id, ApdPostRequest request) {
         Long profesiId = request.getProfesiId();
         Apd existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Apd not found"));
@@ -60,7 +64,8 @@ public class ApdCommandService {
         }
 
         ApdMapper.updateEntity(existing, request, profesi);
-        return repository.save(existing);
+        repository.save(existing);
+        return SavedStatus.build(ESaveStatus.SUCCESS, existing.getId());
     }
 
     @Transactional

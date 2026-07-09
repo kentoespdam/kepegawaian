@@ -6,6 +6,7 @@ import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRoot.GajiBatchRootPostR
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRoot.GajiBatchRootProcessRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRoot.GajiBatchRootResponse;
 import id.perumdamts.kepegawaian.entities.commons.EProsesGaji;
+import id.perumdamts.kepegawaian.exceptions.BadRequestException;
 import id.perumdamts.kepegawaian.services.penggajian.gajiBatchRoot.GajiBatchRootCommandService;
 import id.perumdamts.kepegawaian.services.penggajian.gajiBatchRoot.GajiBatchRootQueryService;
 import id.perumdamts.kepegawaian.services.penggajian.gajiBatchRoot.GajiBatchRootWorkflowCommandService;
@@ -44,54 +45,49 @@ public class GajiBatchRootController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<SavedResult<Object>> create(@Valid @ModelAttribute GajiBatchRootPostRequest request) {
-        return saveResult(commandService.save(request));
+    public ResponseEntity<SavedResult<String>> create(@Valid @ModelAttribute GajiBatchRootPostRequest request) {
+        return CustomResult.save(commandService.save(request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}/reprocess")
-    public ResponseEntity<SavedResult<Object>> reprocess(@PathVariable String id,
+    public ResponseEntity<SavedResult<String>> reprocess(@PathVariable String id,
                                           @Valid @RequestBody GajiBatchRootProcessRequest request) {
         if (!request.getId().equals(id))
-            return CustomResult.save(SavedStatus.build(ESaveStatus.FAILED, "Error Process"));
-        return saveResult(workflowCommandService.reprocess(request));
+            throw new BadRequestException("Path id does not match request body id");
+        return CustomResult.save(workflowCommandService.reprocess(request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}/verify1")
-    public ResponseEntity<SavedResult<Object>> verify1(@PathVariable String id,
+    public ResponseEntity<SavedResult<String>> verify1(@PathVariable String id,
                                         @Valid @RequestBody GajiBatchRootProcessRequest request) {
         if (!request.getId().equals(id))
-            return CustomResult.save(SavedStatus.build(ESaveStatus.FAILED, "Error Process"));
-        return saveResult(workflowCommandService.verify1(id, request));
+            throw new BadRequestException("Path id does not match request body id");
+        return CustomResult.save(workflowCommandService.verify1(id, request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}/verify2")
-    public ResponseEntity<SavedResult<Object>> verify2(@PathVariable String id,
+    public ResponseEntity<SavedResult<String>> verify2(@PathVariable String id,
                                         @Valid @RequestBody GajiBatchRootProcessRequest request) {
         if (!request.getId().equals(id))
-            return CustomResult.save(SavedStatus.build(ESaveStatus.FAILED, "Error Process"));
-        return saveResult(workflowCommandService.verify2(id, request));
+            throw new BadRequestException("Path id does not match request body id");
+        return CustomResult.save(workflowCommandService.verify2(id, request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}/accept")
-    public ResponseEntity<SavedResult<Object>> accept(@PathVariable String id,
+    public ResponseEntity<SavedResult<String>> accept(@PathVariable String id,
                                        @Valid @RequestBody GajiBatchRootProcessRequest request) {
         if (!request.getId().equals(id))
-            return CustomResult.save(SavedStatus.build(ESaveStatus.FAILED, "Error Process"));
-        return saveResult(workflowCommandService.accept(id, request));
+            throw new BadRequestException("Path id does not match request body id");
+        return CustomResult.save(workflowCommandService.accept(id, request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> delete(@PathVariable String id) {
         return CustomResult.delete(commandService.delete(id));
-    }
-
-    @SuppressWarnings("unchecked")
-    private static ResponseEntity<SavedResult<Object>> saveResult(SavedStatus<?> status) {
-        return CustomResult.save((SavedStatus<Object>) status);
     }
 }

@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.auth;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
+import id.perumdamts.kepegawaian.dto.commons.SingleResult;
 import id.perumdamts.kepegawaian.helpers.RedisHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,7 +27,7 @@ public class AuthController {
     private final String jwtHeader = "X-Appwrite-JWT";
 
     @GetMapping("/session")
-    public ResponseEntity<?> index(@RequestHeader(value = jwtHeader) String token) {
+    public ResponseEntity<String> index(@RequestHeader(value = jwtHeader) String token) {
         String result = restClient.get()
                 .uri(appwriteUrl + "/account/jwt")
                 .header("X-Appwrite-JWT", token)
@@ -38,7 +39,7 @@ public class AuthController {
     }
 
     @GetMapping("/csrf-token")
-    public ResponseEntity<?> csrfToken() {
+    public ResponseEntity<SingleResult<String>> csrfToken() {
         return CustomResult.any(redisHelper.generateToken());
     }
 }

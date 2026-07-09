@@ -6,6 +6,8 @@ import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMasterProses.GajiBatchM
 import id.perumdamts.kepegawaian.entities.commons.EJenisGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchMaster;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchMasterProses;
+import id.perumdamts.kepegawaian.exceptions.ConflictException;
+import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.mapper.penggajian.gajiBatchMasterProses.GajiBatchMasterProsesMapper;
 import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiBatchMasterProsesRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiBatchMasterRepository;
@@ -26,17 +28,17 @@ public class GajiBatchMasterProsesCommandService {
     private final GajiBatchMasterRepository gajiBatchMasterRepository;
 
     @Transactional
-    public SavedStatus<?> save(GajiBatchMasterProsesPostRequest request) {
+    public SavedStatus<Long> save(GajiBatchMasterProsesPostRequest request) {
         boolean exists = repository.exists(request.getSpecification());
-        if (exists) return SavedStatus.build(ESaveStatus.DUPLICATE, "Komponen Gaji sudah ada");
+        if (exists) throw new ConflictException("Komponen Gaji sudah ada");
 
         GajiBatchMaster gajiBatchMaster = gajiBatchMasterRepository.findById(request.getBatchMasterId())
-                .orElseThrow(() -> new RuntimeException("Unknown Gaji Batch Master"));
+                .orElseThrow(() -> new NotFoundException("Gaji Batch Master not found"));
         GajiBatchMasterProses entity = GajiBatchMasterProsesMapper.toEntity(request);
         repository.save(entity);
 
         recalculateAdditional(gajiBatchMaster);
-        return SavedStatus.build(ESaveStatus.SUCCESS, "Komponen Gaji Saved");
+        return SavedStatus.build(ESaveStatus.SUCCESS, entity.getId());
     }
 
     @Transactional

@@ -5,6 +5,8 @@ import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiPendapatanNonPajak.GajiPendapatanNonPajakPostRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiPendapatanNonPajak.GajiPendapatanNonPajakPutRequest;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiPendapatanNonPajak;
+import id.perumdamts.kepegawaian.exceptions.ConflictException;
+import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.mapper.penggajian.gajiPendapatanNonPajak.GajiPendapatanNonPajakMapper;
 import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiPendapatanNonPajakRepository;
 import jakarta.transaction.Transactional;
@@ -19,24 +21,22 @@ public class GajiPendapatanNonPajakCommandService {
     private final GajiPendapatanNonPajakRepository repository;
 
     @Transactional
-    public SavedStatus<?> save(GajiPendapatanNonPajakPostRequest request) {
+    public SavedStatus<Long> save(GajiPendapatanNonPajakPostRequest request) {
         Optional<GajiPendapatanNonPajak> one = repository.findOne(request.getSpecification());
         if (one.isPresent())
-            return SavedStatus.build(ESaveStatus.DUPLICATE, "Pendapatan Non Pajak sudah ada");
+            throw new ConflictException("Pendapatan Non Pajak sudah ada");
         GajiPendapatanNonPajak entity = GajiPendapatanNonPajakMapper.toEntity(request);
         repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, "Pendapatan Non Pajak Saved");
+        return SavedStatus.build(ESaveStatus.SUCCESS, entity.getId());
     }
 
     @Transactional
-    public SavedStatus<?> update(Long id, GajiPendapatanNonPajakPutRequest request) {
-        Optional<GajiPendapatanNonPajak> byId = repository.findById(id);
-        if (byId.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown Pendapatan Non Pajak");
-        GajiPendapatanNonPajak entity = byId.get();
+    public SavedStatus<Long> update(Long id, GajiPendapatanNonPajakPutRequest request) {
+        GajiPendapatanNonPajak entity = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Pendapatan Non Pajak not found"));
         GajiPendapatanNonPajakMapper.updateEntity(entity, request);
         repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, "Pendapatan Non Pajak Updated");
+        return SavedStatus.build(ESaveStatus.SUCCESS, entity.getId());
     }
 
     @Transactional

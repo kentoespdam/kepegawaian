@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.laporan.kepegawaian;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
+import id.perumdamts.kepegawaian.dto.commons.SingleResult;
 import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.KenaikanBerkalaRequest;
 import id.perumdamts.kepegawaian.helpers.UrlBuilder;
 import id.perumdamts.kepegawaian.services.laporan.kepegawaian.LaporanKepegawaianService;
@@ -21,12 +22,12 @@ public class LaporanKenaikanBerkalaController {
     private final LaporanKepegawaianService service;
 
     @GetMapping
-    public ResponseEntity<?> lapKenaikanBerkala(@ParameterObject KenaikanBerkalaRequest request) {
+    public ResponseEntity<SingleResult<Object>> lapKenaikanBerkala(@ParameterObject KenaikanBerkalaRequest request) {
         return CustomResult.any(service.getObject(UrlBuilder.build(BASE_PATH, "/", request)));
     }
 
     @GetMapping("/count")
-    public ResponseEntity<?> lapKenaikanBerkalaCount(@ParameterObject KenaikanBerkalaRequest request) {
+    public ResponseEntity<SingleResult<Object>> lapKenaikanBerkalaCount(@ParameterObject KenaikanBerkalaRequest request) {
         return CustomResult.any(service.getObject(UrlBuilder.build(BASE_PATH, "/count", request)));
     }
 

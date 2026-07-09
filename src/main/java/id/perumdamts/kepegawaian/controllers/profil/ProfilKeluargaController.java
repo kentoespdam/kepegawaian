@@ -5,14 +5,20 @@ import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaIndexQuery;
 import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaLampiranPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaPutRequest;
+import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaQuery;
+import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaDetail;
+import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilQuery;
 import id.perumdamts.kepegawaian.services.profil.keluarga.ProfilKeluargaCommandService;
 import id.perumdamts.kepegawaian.services.profil.keluarga.ProfilKeluargaLampiranCommandService;
 import id.perumdamts.kepegawaian.services.profil.keluarga.ProfilKeluargaQueryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,38 +29,37 @@ public class ProfilKeluargaController {
     private final ProfilKeluargaLampiranCommandService lampiranCommand;
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject @Valid ProfilKeluargaIndexQuery request) {
+    public ResponseEntity<PageResult<Page<ProfilKeluargaQuery>>> index(@ParameterObject @Valid ProfilKeluargaIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
+    public ResponseEntity<SingleResult<ProfilKeluargaDetail>> findById(@PathVariable Long id) {
         return CustomResult.any(query.getById(id));
     }
 
     @PostMapping
-    public ResponseEntity<SavedResult<Object>> save(@Valid @RequestBody ProfilKeluargaPostRequest request) {
-        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.create(request)));
+    public ResponseEntity<SavedResult<Long>> save(@Valid @RequestBody ProfilKeluargaPostRequest request) {
+        return CustomResult.save(command.create(request));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SavedResult<Object>> update(@PathVariable Long id, @Valid @RequestBody ProfilKeluargaPutRequest request) {
-        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.update(id, request)));
+    public ResponseEntity<SavedResult<Long>> update(@PathVariable Long id, @Valid @RequestBody ProfilKeluargaPutRequest request) {
+        return CustomResult.save(command.update(id, request));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> delete(@PathVariable Long id) {
-        command.delete(id);
-        return CustomResult.delete(true);
+        return CustomResult.delete(command.delete(id));
     }
 
     @GetMapping("/{id}/lampiran")
-    public ResponseEntity<?> getLampiran(@PathVariable Long id) {
+    public ResponseEntity<ListResult<LampiranProfilQuery>> getLampiran(@PathVariable Long id) {
         return CustomResult.list(query.getLampiran(id));
     }
 
     @GetMapping("/lampiran/{id}")
-    public ResponseEntity<?> getLampiranById(@PathVariable Long id) {
+    public ResponseEntity<SingleResult<LampiranProfilQuery>> getLampiranById(@PathVariable Long id) {
         return CustomResult.any(query.getLampiranById(id));
     }
 

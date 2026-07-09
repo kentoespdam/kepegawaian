@@ -1,9 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.profil;
 
 import id.perumdamts.kepegawaian.dto.appwrite.AppwriteUser;
-import id.perumdamts.kepegawaian.dto.commons.CustomResult;
-import id.perumdamts.kepegawaian.dto.commons.DeletedResult;
-import id.perumdamts.kepegawaian.dto.commons.SavedResult;
+import id.perumdamts.kepegawaian.dto.commons.*;
 import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilAcceptRequest;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilCommandService;
@@ -26,12 +24,11 @@ public class LampiranProfilController {
         return queryService.getFileLampiranById(jenis, id);
     }
 
-    @SuppressWarnings("unchecked")
     @PostMapping("/accept")
-    public ResponseEntity<SavedResult<Object>> acceptLampiran(@Valid @RequestBody LampiranProfilAcceptRequest request) {
+    public ResponseEntity<SavedResult<Long>> acceptLampiran(@Valid @RequestBody LampiranProfilAcceptRequest request) {
         AppwriteUser appwriteUser = (AppwriteUser) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();
-        return (ResponseEntity<SavedResult<Object>>) (ResponseEntity<?>) CustomResult.save(commandService.acceptLampiran(request, appwriteUser.getName()));
+        return CustomResult.save(commandService.acceptLampiran(request, appwriteUser.getName()));
     }
 
     @DeleteMapping("/delete/{id}")

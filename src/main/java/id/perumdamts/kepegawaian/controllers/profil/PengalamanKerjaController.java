@@ -4,14 +4,20 @@ import id.perumdamts.kepegawaian.dto.commons.*;
 import id.perumdamts.kepegawaian.dto.profil.pengalamanKerja.PengalamanKerjaIndexQuery;
 import id.perumdamts.kepegawaian.dto.profil.pengalamanKerja.PengalamanKerjaPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.pengalamanKerja.PengalamanKerjaPutRequest;
+import id.perumdamts.kepegawaian.dto.profil.pengalamanKerja.PengalamanKerjaQuery;
+import id.perumdamts.kepegawaian.dto.profil.pengalamanKerja.PengalamanKerjaDetail;
 import id.perumdamts.kepegawaian.dto.profil.pengalamanKerja.PengalamanLampiranPostRequest;
+import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilQuery;
 import id.perumdamts.kepegawaian.services.profil.pengalamanKerja.PengalamanKerjaCommandService;
 import id.perumdamts.kepegawaian.services.profil.pengalamanKerja.PengalamanKerjaQueryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,12 +29,12 @@ public class PengalamanKerjaController {
     // READ
 
     @GetMapping
-    public ResponseEntity<?> index(@ParameterObject @Valid PengalamanKerjaIndexQuery request) {
+    public ResponseEntity<PageResult<Page<PengalamanKerjaQuery>>> index(@ParameterObject @Valid PengalamanKerjaIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
+    public ResponseEntity<SingleResult<PengalamanKerjaDetail>> findById(@PathVariable Long id) {
         return CustomResult.any(query.getById(id));
     }
 
@@ -53,12 +59,12 @@ public class PengalamanKerjaController {
     // Lampiran
 
     @GetMapping("/lampiran/{id}/list")
-    public ResponseEntity<?> getLampiran(@PathVariable Long id) {
+    public ResponseEntity<ListResult<LampiranProfilQuery>> getLampiran(@PathVariable Long id) {
         return CustomResult.list(query.getLampiran(id));
     }
 
     @GetMapping("/lampiran/{id}/detail")
-    public ResponseEntity<?> getLampiranById(@PathVariable Long id) {
+    public ResponseEntity<SingleResult<LampiranProfilQuery>> getLampiranById(@PathVariable Long id) {
         return CustomResult.any(query.getLampiranById(id));
     }
 

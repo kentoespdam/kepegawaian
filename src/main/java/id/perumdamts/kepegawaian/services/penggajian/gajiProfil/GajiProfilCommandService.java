@@ -5,6 +5,8 @@ import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiProfil.GajiProfilPostRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiProfil.GajiProfilPutRequest;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiProfil;
+import id.perumdamts.kepegawaian.exceptions.ConflictException;
+import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.mapper.penggajian.gajiProfil.GajiProfilMapper;
 import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiProfilRepository;
 import id.perumdamts.kepegawaian.services.penggajian.gajiKomponen.GajiKomponenCommandService;
@@ -21,23 +23,22 @@ public class GajiProfilCommandService {
     private final GajiKomponenCommandService gajiKomponenService;
 
     @Transactional
-    public SavedStatus<?> create(GajiProfilPostRequest request) {
+    public SavedStatus<Long> create(GajiProfilPostRequest request) {
         boolean exists = repository.exists(request.getSpecification());
-        if (exists) return SavedStatus.build(ESaveStatus.DUPLICATE, "Gaji Profil sudah ada");
+        if (exists) throw new ConflictException("Gaji Profil sudah ada");
         GajiProfil entity = GajiProfilMapper.toEntity(request);
         GajiProfil save = repository.save(entity);
         gajiKomponenService.generateDefaultValue(save);
-        return SavedStatus.build(ESaveStatus.SUCCESS, "Gaji Profil Saved");
+        return SavedStatus.build(ESaveStatus.SUCCESS, save.getId());
     }
 
     @Transactional
-    public SavedStatus<?> update(Long id, GajiProfilPutRequest request) {
-        Optional<GajiProfil> byId = repository.findById(id);
-        if (byId.isEmpty()) return SavedStatus.build(ESaveStatus.FAILED, "Gaji Profil not found");
-        GajiProfil entity = byId.get();
+    public SavedStatus<Long> update(Long id, GajiProfilPutRequest request) {
+        GajiProfil entity = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Gaji Profil not found"));
         GajiProfilMapper.updateEntity(entity, request);
         repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, "Gaji Profil Updated");
+        return SavedStatus.build(ESaveStatus.SUCCESS, entity.getId());
     }
 
     @Transactional

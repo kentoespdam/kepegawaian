@@ -7,6 +7,8 @@ import id.perumdamts.kepegawaian.dto.penggajian.gajiPotonganTkk.GajiPotonganTkkP
 import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.master.Level;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiPotonganTkk;
+import id.perumdamts.kepegawaian.exceptions.ConflictException;
+import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.mapper.penggajian.gajiPotonganTkk.GajiPotonganTkkMapper;
 import id.perumdamts.kepegawaian.repositories.master.jpa.GolonganRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.LevelRepository;
@@ -25,26 +27,25 @@ public class GajiPotonganTkkCommandService {
     private final GolonganRepository golonganRepository;
 
     @Transactional
-    public SavedStatus<?> create(GajiPotonganTkkPostRequest request) {
+    public SavedStatus<Long> create(GajiPotonganTkkPostRequest request) {
         boolean exists = repository.exists(request.getSpecification());
-        if (exists) return SavedStatus.build(ESaveStatus.DUPLICATE, "Gaji Potongan Tkk sudah ada");
+        if (exists) throw new ConflictException("Gaji Potongan Tkk sudah ada");
         Level level = levelRepository.findById(request.getLevelId()).orElse(null);
         Golongan golongan = golonganRepository.findById(request.getGolonganId()).orElse(null);
         GajiPotonganTkk entity = GajiPotonganTkkMapper.toEntity(request, level, golongan);
         repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, "Gaji Potongan Tkk Saved");
+        return SavedStatus.build(ESaveStatus.SUCCESS, entity.getId());
     }
 
     @Transactional
-    public SavedStatus<?> update(Long id, GajiPotonganTkkPutRequest request) {
-        Optional<GajiPotonganTkk> byId = repository.findById(id);
-        if (byId.isEmpty()) return SavedStatus.build(ESaveStatus.FAILED, "Gaji Potongan Tkk not found");
+    public SavedStatus<Long> update(Long id, GajiPotonganTkkPutRequest request) {
+        GajiPotonganTkk entity = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Gaji Potongan Tkk not found"));
         Level level = levelRepository.findById(request.getLevelId()).orElse(null);
         Golongan golongan = golonganRepository.findById(request.getGolonganId()).orElse(null);
-        GajiPotonganTkk entity = byId.get();
         GajiPotonganTkkMapper.updateEntity(entity, request, level, golongan);
         repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, "Gaji Potongan Tkk Updated");
+        return SavedStatus.build(ESaveStatus.SUCCESS, entity.getId());
     }
 
     @Transactional

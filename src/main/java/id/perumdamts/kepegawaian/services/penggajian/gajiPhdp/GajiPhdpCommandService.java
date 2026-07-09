@@ -5,6 +5,8 @@ import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiPhdp.GajiPhdpPostRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiPhdp.GajiPhdpPutRequest;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiPhdp;
+import id.perumdamts.kepegawaian.exceptions.ConflictException;
+import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.mapper.penggajian.gajiPhdp.GajiPhdpMapper;
 import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiPhdpRepository;
 import jakarta.transaction.Transactional;
@@ -19,24 +21,22 @@ public class GajiPhdpCommandService {
     private final GajiPhdpRepository repository;
 
     @Transactional
-    public SavedStatus<?> save(GajiPhdpPostRequest request) {
+    public SavedStatus<Long> save(GajiPhdpPostRequest request) {
         Optional<GajiPhdp> one = repository.findOne(request.getSpecification());
         if (one.isPresent())
-            return SavedStatus.build(ESaveStatus.DUPLICATE, "PhDP sudah ada");
+            throw new ConflictException("PhDP sudah ada");
         GajiPhdp entity = GajiPhdpMapper.toEntity(request);
         repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, "PhDP Saved");
+        return SavedStatus.build(ESaveStatus.SUCCESS, entity.getId());
     }
 
     @Transactional
-    public SavedStatus<?> update(Long id, GajiPhdpPutRequest request) {
-        Optional<GajiPhdp> byId = repository.findById(id);
-        if (byId.isEmpty())
-            return SavedStatus.build(ESaveStatus.FAILED, "Unknown PhDP");
-        GajiPhdp entity = byId.get();
+    public SavedStatus<Long> update(Long id, GajiPhdpPutRequest request) {
+        GajiPhdp entity = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("PhDP not found"));
         GajiPhdpMapper.updateEntity(entity, request);
         repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, "PhDP Updated");
+        return SavedStatus.build(ESaveStatus.SUCCESS, entity.getId());
     }
 
     @Transactional

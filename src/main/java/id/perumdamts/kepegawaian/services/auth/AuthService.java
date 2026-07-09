@@ -25,7 +25,7 @@ public class AuthService {
         return appwriteClient.getUser(id);
     }
 
-    public SavedStatus<?> createUser(AuthPostRequest request) {
+    public SavedStatus<String> createUser(AuthPostRequest request) {
         AppwriteUserPostRequest user = AppwriteUserPostRequest.builder()
                 .userId(request.getId())
                 .email(request.getNipam() + "@perumdamts.com")
@@ -38,7 +38,7 @@ public class AuthService {
         if (!request.getRoles().isEmpty())
             appwriteClient.updatePrefs(request.getId(), request.getRoles());
 
-        return SavedStatus.build(ESaveStatus.SUCCESS, "User berhasil disimpan");
+        return SavedStatus.build(ESaveStatus.SUCCESS, "success");
     }
 
     public void createUser(Pegawai pegawai) {
@@ -54,8 +54,8 @@ public class AuthService {
         return appwriteClient.updateStatus(id, status);
     }
 
-    public SavedStatus<?> updatePref(String id, List<PrefRole> prefRoles) {
+    public SavedStatus<String> updatePref(String id, List<PrefRole> prefRoles) {
         appwriteClient.updatePrefs(id, prefRoles);
-        return SavedStatus.build(ESaveStatus.SUCCESS, "User berhasil disimpan");
+        return SavedStatus.build(ESaveStatus.SUCCESS, "success");
     }
 }

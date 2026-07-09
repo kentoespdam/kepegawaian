@@ -105,11 +105,11 @@ public class PegawaiCommandService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public SavedStatus<?> saveBatch(List<PegawaiPostRequest> requests) {
+    public SavedStatus<String> saveBatch(List<PegawaiPostRequest> requests) {
         for (PegawaiPostRequest request : requests) {
             save(request);
         }
-        return SavedStatus.build(ESaveStatus.SUCCESS, null);
+        return SavedStatus.build(ESaveStatus.SUCCESS, requests.size() + " success");
     }
 
     @Transactional(rollbackFor = Exception.class)

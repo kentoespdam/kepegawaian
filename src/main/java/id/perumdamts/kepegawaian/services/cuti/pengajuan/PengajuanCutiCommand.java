@@ -9,6 +9,7 @@ import id.perumdamts.kepegawaian.dto.master.hariLibur.TanggalHariLibur;
 import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
 import id.perumdamts.kepegawaian.entities.commons.ECutiPeriod;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
+import id.perumdamts.kepegawaian.exceptions.ConflictException;
 import id.perumdamts.kepegawaian.helpers.RedisHelper;
 import id.perumdamts.kepegawaian.helpers.cuti.CutiPeriodClassifier;
 import id.perumdamts.kepegawaian.helpers.cuti.WorkdayCalculator;
@@ -40,9 +41,9 @@ public class PengajuanCutiCommand {
     private final CutiPengajuanValidator cutiPengajuanValidator;
 
     @Transactional
-    public SavedStatus<?> save(CutiPengajuanPostRequest request) {
+    public SavedStatus<Long> save(CutiPengajuanPostRequest request) {
         if (redisHelper.isTokenAlreadyUsed(request.getCsrfToken())) {
-            return SavedStatus.build(ESaveStatus.DUPLICATE, "Duplicate request detected");
+            throw new ConflictException("Duplicate request detected");
         }
         cutiPengajuanValidator.validate(request);
 
@@ -72,13 +73,13 @@ public class PengajuanCutiCommand {
         } else {
             saveCutiService.saveCutiNonTahunan(request, entity);
         }
-        return SavedStatus.build(ESaveStatus.SUCCESS, "Cuti Pengajuan berhasil disimpan");
+        return SavedStatus.build(ESaveStatus.SUCCESS, entity.getId());
     }
 
     @Transactional
-    public SavedStatus<?> update(Long id, CutiPengajuanPutRequest request) {
+    public SavedStatus<Long> update(Long id, CutiPengajuanPutRequest request) {
         if (redisHelper.isTokenAlreadyUsed(request.getCsrfToken())) {
-            return SavedStatus.build(ESaveStatus.DUPLICATE, "Duplicate request detected");
+            throw new ConflictException("Duplicate request detected");
         }
         var cutiPegawai = repository.findById(id).orElseThrow(() -> new RuntimeException("Unknown Cuti Pengajuan"));
         var pegawai = pegawaiRepository.findById(request.getPegawaiId()).orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
@@ -106,15 +107,15 @@ public class PengajuanCutiCommand {
         } else {
             saveCutiService.saveCutiNonTahunan(request, entity);
         }
-        return SavedStatus.build(ESaveStatus.SUCCESS, "Cuti Pengajuan berhasil di update");
+        return SavedStatus.build(ESaveStatus.SUCCESS, entity.getId());
     }
 
     @Transactional
-    public SavedStatus<?> pembatalan(Long id) {
+    public SavedStatus<String> pembatalan(Long id) {
         var entity = repository.findByIdAndApprovalCutiStatus(id, EApprovalCutiStatus.PENDING)
                 .orElseThrow(() -> new RuntimeException("Unknown Cuti Pegawai"));
         entity.setApprovalCutiStatus(EApprovalCutiStatus.CANCELED);
         repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, "Cuti Pengajuan berhasil dibatalkan");
+        return SavedStatus.build(ESaveStatus.SUCCESS, "success");
     }
 }
