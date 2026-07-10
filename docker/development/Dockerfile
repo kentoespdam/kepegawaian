@@ -1,4 +1,4 @@
-FROM amazoncorretto:21.0.2 AS base
+FROM ghcr.io/graalvm/jdk-community:25 AS base
 WORKDIR /app
 
 #FROM base AS builder
