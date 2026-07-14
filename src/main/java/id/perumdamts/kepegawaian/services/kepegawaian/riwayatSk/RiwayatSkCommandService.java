@@ -72,12 +72,13 @@ public class RiwayatSkCommandService implements SkBootstrapPort {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         RiwayatSk byId = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Riwayat SK not found"));
         byId.setIsDeleted(true);
         repository.save(byId);
         lampiranSkCommandService.deleteByRefId(id);
+        return true;
     }
 
     @Override

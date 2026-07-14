@@ -39,15 +39,16 @@ public class LampiranSkCommandService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void deleteById(Long id) {
+    public boolean deleteById(Long id) {
         LampiranSk byId = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Lampiran SK not found"));
         byId.setIsDeleted(true);
         repository.save(byId);
+        return true;
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void deleteLampiran(EJenisSk ref, Long refId, Long id) {
+    public boolean deleteLampiran(EJenisSk ref, Long refId, Long id) {
         Specification<LampiranSk> specification = (root, query, cb) ->
                 cb.and(
                         cb.equal(root.get("ref"), ref),
@@ -58,6 +59,7 @@ public class LampiranSkCommandService {
                 .orElseThrow(() -> new NotFoundException("Lampiran SK not found"));
         one.setIsDeleted(true);
         repository.save(one);
+        return true;
     }
 
     @Transactional(rollbackFor = Exception.class)

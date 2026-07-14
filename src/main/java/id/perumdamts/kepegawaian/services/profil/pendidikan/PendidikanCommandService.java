@@ -80,7 +80,7 @@ public class PendidikanCommandService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         Pendidikan entity = repository.findById(id).orElseThrow(() -> new NotFoundException(UNKNOWN_PENDIDIKAN));
         entity.setIsDeleted(true);
         entity.setChangedStatus(resolver.requiresApproval());
@@ -88,6 +88,7 @@ public class PendidikanCommandService {
 
         handleRevisionUpdate(entity, RevisionMetadata.RevisionType.DELETE);
         lampiranProfilCommandService.deleteByRefId(EJenisLampiranProfil.PROFIL_PENDIDIKAN, id);
+        return true;
     }
 
     @Transactional

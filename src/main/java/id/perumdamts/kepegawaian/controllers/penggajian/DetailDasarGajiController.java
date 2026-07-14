@@ -6,12 +6,12 @@ import id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji.DetailDasarGajiP
 import id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji.DetailDasarGajiPutRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji.DetailDasarGajiResponse;
 import id.perumdamts.kepegawaian.entities.penggajian.DetailDasarGaji;
-import org.springframework.data.domain.Page;
 import id.perumdamts.kepegawaian.services.penggajian.detailDasarGaji.DetailDasarGajiCommandService;
 import id.perumdamts.kepegawaian.services.penggajian.detailDasarGaji.DetailDasarGajiQueryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;

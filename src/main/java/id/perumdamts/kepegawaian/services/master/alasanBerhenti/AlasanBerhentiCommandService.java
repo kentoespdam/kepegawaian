@@ -48,10 +48,11 @@ public class AlasanBerhentiCommandService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         AlasanBerhenti existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("AlasanBerhenti not found"));
         existing.setIsDeleted(true);
         repository.save(existing);
+        return true;
     }
 }

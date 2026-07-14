@@ -2,12 +2,10 @@ package id.perumdamts.kepegawaian.repositories.pegawai.jooq;
 
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkResponse;
-import id.perumdamts.kepegawaian.dto.master.golongan.GolonganResponse;
 import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiListResponse;
 import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiRequest;
 import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiResponse;
 import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiResponseDetail;
-import id.perumdamts.kepegawaian.entities.commons.*;
 import id.perumdamts.kepegawaian.mapper.kepegawaian.RiwayatSkJooqMapper;
 import id.perumdamts.kepegawaian.mapper.pegawai.pegawai.PegawaiDetailRecordMapper;
 import id.perumdamts.kepegawaian.mapper.pegawai.pegawai.PegawaiRecordMapper;
@@ -32,6 +30,7 @@ import static id.perumdamts.kepegawaian.jooq.tables.GajiProfil.GAJI_PROFIL;
 import static id.perumdamts.kepegawaian.jooq.tables.Golongan.GOLONGAN;
 import static id.perumdamts.kepegawaian.jooq.tables.Grade.GRADE;
 import static id.perumdamts.kepegawaian.jooq.tables.Jabatan.JABATAN;
+import static id.perumdamts.kepegawaian.jooq.tables.JenisKitas.JENIS_KITAS;
 import static id.perumdamts.kepegawaian.jooq.tables.JenjangPendidikan.JENJANG_PENDIDIKAN;
 import static id.perumdamts.kepegawaian.jooq.tables.KartuIdentitas.KARTU_IDENTITAS;
 import static id.perumdamts.kepegawaian.jooq.tables.Level.LEVEL;
@@ -41,7 +40,6 @@ import static id.perumdamts.kepegawaian.jooq.tables.Pendidikan.PENDIDIKAN;
 import static id.perumdamts.kepegawaian.jooq.tables.Profesi.PROFESI;
 import static id.perumdamts.kepegawaian.jooq.tables.RiwayatSk.RIWAYAT_SK;
 import static id.perumdamts.kepegawaian.jooq.tables.RumahDinas.RUMAH_DINAS;
-import static id.perumdamts.kepegawaian.jooq.tables.JenisKitas.JENIS_KITAS;
 import static org.jooq.impl.DSL.multiset;
 import static org.jooq.impl.DSL.select;
 

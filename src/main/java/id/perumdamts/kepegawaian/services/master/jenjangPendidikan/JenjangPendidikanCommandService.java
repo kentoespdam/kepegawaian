@@ -56,10 +56,11 @@ public class JenjangPendidikanCommandService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         JenjangPendidikan existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("JenjangPendidikan not found"));
         existing.setIsDeleted(true);
         repository.save(existing);
+        return true;
     }
 }

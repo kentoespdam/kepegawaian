@@ -59,7 +59,6 @@ public class GradeController {
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> deleteById(@PathVariable Long id) {
-        command.delete(id);
-        return CustomResult.delete(true);
+        return CustomResult.delete(command.delete(id));
     }
 }

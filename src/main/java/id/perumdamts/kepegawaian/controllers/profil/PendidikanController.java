@@ -1,12 +1,8 @@
 package id.perumdamts.kepegawaian.controllers.profil;
 
 import id.perumdamts.kepegawaian.dto.commons.*;
-import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanIndexQuery;
-import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanLampiranPostRequest;
-import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanPostRequest;
-import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanPutRequest;
-import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanQuery;
 import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilQuery;
+import id.perumdamts.kepegawaian.dto.profil.pendidikan.*;
 import id.perumdamts.kepegawaian.services.profil.pendidikan.PendidikanCommandService;
 import id.perumdamts.kepegawaian.services.profil.pendidikan.PendidikanLampiranCommandService;
 import id.perumdamts.kepegawaian.services.profil.pendidikan.PendidikanQueryService;
@@ -16,8 +12,6 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -53,8 +47,7 @@ public class PendidikanController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> delete(@PathVariable Long id) {
-        command.delete(id);
-        return CustomResult.delete(true);
+        return CustomResult.delete(command.delete(id));
     }
 
     // Lampiran
@@ -81,7 +74,6 @@ public class PendidikanController {
 
     @DeleteMapping("/lampiran/{id}")
     public ResponseEntity<DeletedResult> deleteLampiran(@PathVariable Long id) {
-        lampiranCommand.deleteLampiran(id);
-        return CustomResult.delete(true);
+        return CustomResult.delete(lampiranCommand.deleteLampiran(id));
     }
 }

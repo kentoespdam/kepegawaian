@@ -64,7 +64,7 @@ public class KeahlianCommandService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         Keahlian entity = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_KEAHLIAN));
         entity.setIsDeleted(true);
@@ -72,6 +72,7 @@ public class KeahlianCommandService {
         repository.save(entity);
         handleRevisionUpdate(entity, RevisionMetadata.RevisionType.DELETE);
         lampiranProfilCommandService.deleteByRefId(EJenisLampiranProfil.PROFIL_KEAHLIAN, id);
+        return true;
     }
 
 
@@ -86,8 +87,9 @@ public class KeahlianCommandService {
     }
 
     @Transactional
-    public void deleteLampiran(Long id) {
+    public boolean deleteLampiran(Long id) {
         lampiranProfilCommandService.deleteById(id);
+        return true;
     }
 
     private void handleRevisionUpdate(Keahlian save, RevisionMetadata.RevisionType type) {

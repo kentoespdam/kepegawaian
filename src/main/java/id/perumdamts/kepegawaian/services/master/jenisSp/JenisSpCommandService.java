@@ -45,10 +45,11 @@ public class JenisSpCommandService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         JenisSp existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Jenis SP not found"));
         existing.setIsDeleted(true);
         repository.save(existing);
+        return true;
     }
 }

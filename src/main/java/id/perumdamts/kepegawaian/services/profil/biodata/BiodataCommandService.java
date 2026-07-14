@@ -80,10 +80,11 @@ public class BiodataCommandService {
     }
 
     @Transactional
-    public void deleteById(String nik) {
+    public boolean deleteById(String nik) {
         Biodata entity = repository.findById(nik)
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
         repository.delete(entity);
+        return true;
     }
 
     // Used by PegawaiServiceImpl.save() when a new Pegawai references a NIK

@@ -69,10 +69,11 @@ public class ApdCommandService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         Apd existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Apd not found"));
         existing.setIsDeleted(true);
         repository.save(existing);
+        return true;
     }
 }

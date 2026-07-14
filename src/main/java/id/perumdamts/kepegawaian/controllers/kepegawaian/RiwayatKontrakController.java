@@ -48,7 +48,6 @@ public class RiwayatKontrakController {
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> delete(@PathVariable Long id) {
-        commandService.delete(id);
-        return CustomResult.delete(true);
+        return CustomResult.delete(commandService.delete(id));
     }
 }

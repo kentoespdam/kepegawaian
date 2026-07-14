@@ -56,7 +56,7 @@ public class PengalamanKerjaCommandService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         PengalamanKerja entity = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_PENGALAMAN_KERJA));
         entity.setIsDeleted(true);
@@ -64,6 +64,7 @@ public class PengalamanKerjaCommandService {
         repository.save(entity);
         profileUpdateService.create(entity.getId(), RevisionMetadata.RevisionType.DELETE, EProfileUpdateTable.PENGALAMAN_KERJA);
         lampiranProfilCommandService.deleteByRefId(EJenisLampiranProfil.PROFIL_PENGALAMAN_KERJA, id);
+        return true;
     }
 
 
@@ -77,7 +78,8 @@ public class PengalamanKerjaCommandService {
         return request.getRefId();
     }
 
-    public void deleteLampiran(Long id) {
+    public boolean deleteLampiran(Long id) {
         lampiranProfilCommandService.deleteById(id);
+        return true;
     }
 }

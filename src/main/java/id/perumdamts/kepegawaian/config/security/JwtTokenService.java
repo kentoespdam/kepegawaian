@@ -1,6 +1,5 @@
 package id.perumdamts.kepegawaian.config.security;
 
-import id.perumdamts.kepegawaian.config.AppwriteProperties;
 import id.perumdamts.kepegawaian.config.appwrite.AppwriteClient;
 import id.perumdamts.kepegawaian.dto.appwrite.AppwriteUser;
 import lombok.RequiredArgsConstructor;

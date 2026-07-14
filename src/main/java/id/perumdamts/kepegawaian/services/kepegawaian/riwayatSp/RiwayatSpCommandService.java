@@ -72,11 +72,12 @@ public class RiwayatSpCommandService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         RiwayatSp byId = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Riwayat SP not found"));
         byId.setIsDeleted(true);
         repository.save(byId);
+        return true;
     }
 
     private RiwayatSp saveFile(RiwayatSp entity, RiwayatSpPostRequest request) {

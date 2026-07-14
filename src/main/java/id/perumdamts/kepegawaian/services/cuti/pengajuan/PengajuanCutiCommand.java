@@ -111,11 +111,11 @@ public class PengajuanCutiCommand {
     }
 
     @Transactional
-    public SavedStatus<String> pembatalan(Long id) {
+    public boolean pembatalan(Long id) {
         var entity = repository.findByIdAndApprovalCutiStatus(id, EApprovalCutiStatus.PENDING)
                 .orElseThrow(() -> new RuntimeException("Unknown Cuti Pegawai"));
         entity.setApprovalCutiStatus(EApprovalCutiStatus.CANCELED);
         repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, "success");
+        return true;
     }
 }

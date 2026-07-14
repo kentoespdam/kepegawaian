@@ -53,10 +53,11 @@ public class GolonganCommandService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         Golongan existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Golongan not found"));
         existing.setIsDeleted(true);
         repository.save(existing);
+        return true;
     }
 }

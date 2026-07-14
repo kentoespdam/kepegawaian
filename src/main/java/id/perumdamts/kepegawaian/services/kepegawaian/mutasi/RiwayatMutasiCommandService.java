@@ -137,12 +137,13 @@ public class RiwayatMutasiCommandService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         RiwayatMutasi byId = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Riwayat Mutasi not found"));
         skCommandService.delete(byId.getRiwayatSk().getId());
         byId.setIsDeleted(true);
         repository.save(byId);
+        return true;
     }
 
     private EJenisSk resolveJenisSk(EJenisMutasi jenisMutasi) {

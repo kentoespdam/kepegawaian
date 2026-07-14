@@ -50,11 +50,12 @@ public class LevelCommandService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         Level existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Level not found"));
         existing.setIsDeleted(true);
         repository.save(existing);
+        return true;
     }
 
     @Transactional

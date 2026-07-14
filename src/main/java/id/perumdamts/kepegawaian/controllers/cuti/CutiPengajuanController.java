@@ -3,11 +3,7 @@ package id.perumdamts.kepegawaian.controllers.cuti;
 import id.perumdamts.kepegawaian.dto.commons.*;
 import id.perumdamts.kepegawaian.dto.cuti.approvalChain.CutiApprovalChainRequest;
 import id.perumdamts.kepegawaian.dto.cuti.approvalChain.CutiApprovalChainResponse;
-import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanKlaimPostRequest;
-import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPostRequest;
-import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPutRequest;
-import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanRequest;
-import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanResponse;
+import id.perumdamts.kepegawaian.dto.cuti.pengajuan.*;
 import id.perumdamts.kepegawaian.exceptions.BadRequestException;
 import id.perumdamts.kepegawaian.services.cuti.approvalChain.CutiInboxQueryService;
 import id.perumdamts.kepegawaian.services.cuti.klaim.KlaimCutiCommand;
@@ -91,7 +87,7 @@ public class CutiPengajuanController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<SavedResult<String>> pembatalan(@PathVariable Long id) {
-        return CustomResult.save(pengajuanCutiCommand.pembatalan(id));
+    public ResponseEntity<DeletedResult> pembatalan(@PathVariable Long id) {
+        return CustomResult.delete(pengajuanCutiCommand.pembatalan(id));
     }
 }

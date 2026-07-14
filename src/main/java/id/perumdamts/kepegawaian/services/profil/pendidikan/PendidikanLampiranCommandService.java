@@ -26,7 +26,8 @@ public class PendidikanLampiranCommandService {
     }
 
     @Transactional
-    public void deleteLampiran(Long id) {
+    public boolean deleteLampiran(Long id) {
         lampiranProfilCommandService.deleteById(id);
+        return true;
     }
 }

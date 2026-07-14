@@ -60,11 +60,12 @@ public class SanksiCommandService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         Sanksi existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Sanksi not found"));
         existing.setIsDeleted(true);
         repository.save(existing);
+        return true;
     }
 
     private JenisSp findJenisSp(Long id) {

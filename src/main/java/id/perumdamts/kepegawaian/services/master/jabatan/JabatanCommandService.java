@@ -58,11 +58,12 @@ public class JabatanCommandService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         Jabatan existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Jabatan not found"));
         existing.setIsDeleted(true);
         repository.save(existing);
+        return true;
     }
 
     private Jabatan findParent(Long parentId) {

@@ -1,6 +1,8 @@
 package id.perumdamts.kepegawaian.controllers.cuti;
 
-import id.perumdamts.kepegawaian.dto.commons.*;
+import id.perumdamts.kepegawaian.dto.commons.CustomResult;
+import id.perumdamts.kepegawaian.dto.commons.PageResult;
+import id.perumdamts.kepegawaian.dto.commons.SavedResult;
 import id.perumdamts.kepegawaian.dto.cuti.approval.CutiApprovalMiniResponse;
 import id.perumdamts.kepegawaian.dto.cuti.approval.CutiApprovalPostRequest;
 import id.perumdamts.kepegawaian.dto.cuti.approval.CutiApprovalRequest;

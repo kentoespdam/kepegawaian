@@ -69,10 +69,11 @@ public class AlatKerjaCommandService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         AlatKerja existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("AlatKerja not found"));
         existing.setIsDeleted(true);
         repository.save(existing);
+        return true;
     }
 }

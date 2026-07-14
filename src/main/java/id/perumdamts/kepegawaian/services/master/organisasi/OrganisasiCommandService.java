@@ -61,11 +61,12 @@ public class OrganisasiCommandService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         Organisasi existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Organisasi not found"));
         existing.setIsDeleted(true);
         repository.save(existing);
+        return true;
     }
 
     private Organisasi findParent(Long parentId) {

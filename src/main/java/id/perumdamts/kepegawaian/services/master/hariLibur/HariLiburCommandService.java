@@ -48,10 +48,11 @@ public class HariLiburCommandService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         HariLibur existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("HariLibur not found"));
         existing.setIsDeleted(true);
         repository.save(existing);
+        return true;
     }
 }

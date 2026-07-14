@@ -1,10 +1,13 @@
 package id.perumdamts.kepegawaian.controllers.profil;
 
-import id.perumdamts.kepegawaian.dto.commons.*;
+import id.perumdamts.kepegawaian.dto.commons.CustomResult;
+import id.perumdamts.kepegawaian.dto.commons.PageResult;
+import id.perumdamts.kepegawaian.dto.commons.SavedResult;
+import id.perumdamts.kepegawaian.dto.commons.SingleResult;
 import id.perumdamts.kepegawaian.dto.profil.profileUpdate.ProfilUpdateAcceptRequest;
-import id.perumdamts.kepegawaian.dto.profil.profileUpdate.ProfileUpdateRequest;
-import id.perumdamts.kepegawaian.dto.profil.profileUpdate.ProfileUpdateQuery;
 import id.perumdamts.kepegawaian.dto.profil.profileUpdate.ProfilUpdateDetail;
+import id.perumdamts.kepegawaian.dto.profil.profileUpdate.ProfileUpdateQuery;
+import id.perumdamts.kepegawaian.dto.profil.profileUpdate.ProfileUpdateRequest;
 import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateQueryService;
 import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
 import jakarta.validation.Valid;

@@ -1,6 +1,9 @@
 package id.perumdamts.kepegawaian.controllers.cuti;
 
-import id.perumdamts.kepegawaian.dto.commons.*;
+import id.perumdamts.kepegawaian.dto.commons.CustomResult;
+import id.perumdamts.kepegawaian.dto.commons.DeletedResult;
+import id.perumdamts.kepegawaian.dto.commons.SavedResult;
+import id.perumdamts.kepegawaian.dto.commons.SingleResult;
 import id.perumdamts.kepegawaian.dto.cuti.kuota.*;
 import id.perumdamts.kepegawaian.services.cuti.kuota.CutiKuotaCommandService;
 import id.perumdamts.kepegawaian.services.cuti.kuota.CutiKuotaQueryService;

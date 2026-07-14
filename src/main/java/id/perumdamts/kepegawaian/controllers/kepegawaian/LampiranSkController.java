@@ -15,8 +15,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/kepegawaian/lampiran")
@@ -51,7 +49,6 @@ public class LampiranSkController {
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{ref}/{refId}/{id}")
     public ResponseEntity<DeletedResult> delete(@PathVariable EJenisSk ref, @PathVariable Long refId, @PathVariable Long id) {
-        commandService.deleteLampiran(ref, refId, id);
-        return CustomResult.delete(true);
+        return CustomResult.delete(commandService.deleteLampiran(ref, refId, id));
     }
 }

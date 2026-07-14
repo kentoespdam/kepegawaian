@@ -13,7 +13,6 @@ import org.springframework.web.client.RestClient;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -31,15 +30,13 @@ public class AppwriteClient {
                 .body(AppwriteUser.class);
     }
 
-    public String createUser(AppwriteUserPostRequest request) {
-        String response = restClient.post()
+    public void createUser(AppwriteUserPostRequest request) {
+        restClient.post()
                 .uri(properties.getEndpoint() + "/users")
                 .headers(headers -> addDefaultHeaders(headers, properties))
                 .body(request)
                 .retrieve()
                 .body(String.class);
-        log.debug("Appwrite createUser response: {}", response);
-        return response;
     }
 
     public AppwriteUser updateStatus(String id, UserPatchStatusRequest status) {

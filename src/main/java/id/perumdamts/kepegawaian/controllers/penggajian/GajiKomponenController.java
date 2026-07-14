@@ -1,11 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.penggajian;
 
 import id.perumdamts.kepegawaian.dto.commons.*;
-import id.perumdamts.kepegawaian.dto.penggajian.gajiKomponen.GajiKomponenIndexQuery;
-import id.perumdamts.kepegawaian.dto.penggajian.gajiKomponen.GajiKomponenMiniProjection;
-import id.perumdamts.kepegawaian.dto.penggajian.gajiKomponen.GajiKomponenPostRequest;
-import id.perumdamts.kepegawaian.dto.penggajian.gajiKomponen.GajiKomponenPutRequest;
-import id.perumdamts.kepegawaian.dto.penggajian.gajiKomponen.GajiKomponenResponse;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiKomponen.*;
 import id.perumdamts.kepegawaian.services.penggajian.gajiKomponen.GajiKomponenCommandService;
 import id.perumdamts.kepegawaian.services.penggajian.gajiKomponen.GajiKomponenQueryService;
 import jakarta.validation.Valid;
@@ -14,8 +10,6 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("penggajian/komponen")

@@ -1,6 +1,9 @@
 package id.perumdamts.kepegawaian.controllers.master;
 
-import id.perumdamts.kepegawaian.dto.commons.*;
+import id.perumdamts.kepegawaian.dto.commons.CustomResult;
+import id.perumdamts.kepegawaian.dto.commons.DeletedResult;
+import id.perumdamts.kepegawaian.dto.commons.SavedResult;
+import id.perumdamts.kepegawaian.dto.commons.SingleResult;
 import id.perumdamts.kepegawaian.dto.master.apd.ApdPostRequest;
 import id.perumdamts.kepegawaian.dto.master.apd.ApdQuery;
 import id.perumdamts.kepegawaian.services.master.apd.ApdCommandService;
@@ -37,7 +40,6 @@ public class ApdController {
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/master/apd/{id}")
     public ResponseEntity<DeletedResult> delete(@PathVariable Long id) {
-        command.delete(id);
-        return CustomResult.delete(true);
+        return CustomResult.delete(command.delete(id));
     }
 }

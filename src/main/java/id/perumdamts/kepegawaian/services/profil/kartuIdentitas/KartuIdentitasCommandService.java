@@ -61,12 +61,13 @@ public class KartuIdentitasCommandService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         KartuIdentitas entity = repository.findById(id).orElseThrow(() -> new NotFoundException(UNKNOWN_KARTU_IDENTITAS));
         entity.setIsDeleted(true);
         entity.setChangedStatus(resolver.requiresApproval());
         repository.save(entity);
         lampiranProfilCommandService.deleteByRefId(EJenisLampiranProfil.KARTU_IDENTITAS, id);
+        return true;
     }
 
     @Transactional

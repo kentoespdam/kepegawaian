@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class DeletedResult extends ResultAbstract<Object> {
+public class DeletedResult extends ResultAbstract<String> {
     public DeletedResult(boolean data) {
         if (data) {
             this.setStatusText(HttpStatus.OK);

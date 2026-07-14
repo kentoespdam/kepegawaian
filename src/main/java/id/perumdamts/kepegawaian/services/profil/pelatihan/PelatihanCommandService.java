@@ -70,7 +70,7 @@ public class PelatihanCommandService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         Pelatihan entity = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_PELATIHAN));
         entity.setIsDeleted(true);
@@ -78,6 +78,7 @@ public class PelatihanCommandService {
         repository.save(entity);
         handleRevisionUpdate(entity, RevisionMetadata.RevisionType.DELETE);
         lampiranProfilCommandService.deleteByRefId(EJenisLampiranProfil.PROFIL_PELATIHAN, id);
+        return true;
     }
 
 
@@ -91,8 +92,9 @@ public class PelatihanCommandService {
     }
 
     @Transactional
-    public void deleteLampiran(Long id) {
+    public boolean deleteLampiran(Long id) {
         lampiranProfilCommandService.deleteById(id);
+        return true;
     }
 
     private void handleRevisionUpdate(Pelatihan saved, RevisionMetadata.RevisionType type) {

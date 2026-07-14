@@ -55,7 +55,6 @@ public class JenisKitasController {
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> deleteById(@PathVariable Long id) {
         if (id == 1L || id == 2L) return CustomResult.delete(false);
-        command.delete(id);
-        return CustomResult.delete(true);
+        return CustomResult.delete(command.delete(id));
     }
 }

@@ -10,6 +10,8 @@ Domain bahasa untuk sistem manajemen kepegawaian PERUMDAMTS.
 
 File ini hanya entry point. **Baca [`CONTEXT-MAP.md`](./CONTEXT-MAP.md)** untuk menemukan sub-context yang relevan dengan tugasmu, lalu baca hanya file tersebut.
 
+> **2026-07-14:** Semua `@DeleteMapping` endpoint modul `master/` diseragamkan ke pattern `return CustomResult.delete(command.delete(id))`. Service `delete()` method berubah `void`→`boolean`. Lihat beads `kepegawaian-2g4`.
+
 Domain context dipecah per modul/topik di `docs/context/`:
 
 | Sub-context | Topik |

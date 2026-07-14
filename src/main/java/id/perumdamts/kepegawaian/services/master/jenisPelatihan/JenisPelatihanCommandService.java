@@ -48,10 +48,11 @@ public class JenisPelatihanCommandService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         JenisPelatihan existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("JenisPelatihan not found"));
         existing.setIsDeleted(true);
         repository.save(existing);
+        return true;
     }
 }

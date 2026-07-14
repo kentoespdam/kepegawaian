@@ -48,10 +48,11 @@ public class JenisKitasCommandService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         JenisKitas existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("JenisKitas not found"));
         existing.setIsDeleted(true);
         repository.save(existing);
+        return true;
     }
 }

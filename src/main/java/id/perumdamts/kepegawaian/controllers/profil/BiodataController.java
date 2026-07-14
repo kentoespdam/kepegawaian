@@ -1,12 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.profil;
 
 import id.perumdamts.kepegawaian.dto.commons.*;
-import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataIndexQuery;
-import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPatchRequest;
-import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPostRequest;
-import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPutRequest;
-import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataQuery;
-import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataDetail;
+import id.perumdamts.kepegawaian.dto.profil.biodata.*;
 import id.perumdamts.kepegawaian.services.profil.biodata.BiodataCommandService;
 import id.perumdamts.kepegawaian.services.profil.biodata.BiodataQueryService;
 import id.perumdamts.kepegawaian.utils.MimeTypesUtils;
@@ -18,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -79,7 +72,6 @@ public class BiodataController {
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> deleteById(@PathVariable String id) {
-        commandService.deleteById(id);
-        return CustomResult.delete(Boolean.TRUE);
+        return CustomResult.delete(commandService.deleteById(id));
     }
 }

@@ -51,11 +51,12 @@ public class GradeCommandService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         Grade existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Grade not found"));
         existing.setIsDeleted(true);
         repository.save(existing);
+        return true;
     }
 
     private Level findLevel(Long id) {

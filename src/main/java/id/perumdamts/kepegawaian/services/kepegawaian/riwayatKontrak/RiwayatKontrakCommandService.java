@@ -165,7 +165,7 @@ public class RiwayatKontrakCommandService implements KontrakBootstrapPort {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         RiwayatKontrak byId = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Riwayat Kontrak not found"));
         byId.setIsDeleted(true);
@@ -179,6 +179,7 @@ public class RiwayatKontrakCommandService implements KontrakBootstrapPort {
             sk.setIsDeleted(true);
             skRepository.save(sk);
         });
+        return true;
     }
 
     private void updateLatest(RiwayatKontrak entity) {

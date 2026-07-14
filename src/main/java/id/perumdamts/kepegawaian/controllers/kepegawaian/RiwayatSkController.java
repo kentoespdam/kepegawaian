@@ -1,11 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.kepegawaian;
 
 import id.perumdamts.kepegawaian.dto.commons.*;
-import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.GajiSk;
-import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkPostRequest;
-import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkPutRequest;
-import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkQuery;
-import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkRequest;
+import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.*;
 import id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk.RiwayatSkCommandService;
 import id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk.RiwayatSkQueryService;
 import jakarta.validation.*;
@@ -16,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -77,7 +72,6 @@ public class RiwayatSkController {
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> delete(@PathVariable Long id) {
-        commandService.delete(id);
-        return CustomResult.delete(true);
+        return CustomResult.delete(commandService.delete(id));
     }
 }

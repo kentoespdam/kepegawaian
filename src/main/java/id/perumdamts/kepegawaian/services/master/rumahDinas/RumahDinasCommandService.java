@@ -49,10 +49,11 @@ public class RumahDinasCommandService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         RumahDinas existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("RumahDinas not found"));
         existing.setIsDeleted(true);
         repository.save(existing);
+        return true;
     }
 }

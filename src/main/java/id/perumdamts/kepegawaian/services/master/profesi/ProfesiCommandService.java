@@ -83,11 +83,12 @@ public class ProfesiCommandService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         Profesi existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Profesi not found"));
         existing.setIsDeleted(true);
         repository.save(existing);
+        return true;
     }
 
     private void applyFields(Profesi entity, ProfesiPostRequest request, Jabatan jabatan) {
