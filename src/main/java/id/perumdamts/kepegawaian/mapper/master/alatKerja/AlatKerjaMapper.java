@@ -8,11 +8,11 @@ public final class AlatKerjaMapper {
     private AlatKerjaMapper() {}
 
     public static AlatKerja toEntity(AlatKerjaPostRequest request, Profesi profesi) {
-        return new AlatKerja(profesi, request.getNama());
+        return new AlatKerja(profesi, request.nama());
     }
 
     public static void updateEntity(AlatKerja entity, AlatKerjaPostRequest request, Profesi profesi) {
         entity.setProfesi(profesi);
-        entity.setNama(request.getNama());
+        entity.setNama(request.nama());
     }
 }

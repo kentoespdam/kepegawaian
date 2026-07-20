@@ -8,11 +8,11 @@ public final class ApdMapper {
     private ApdMapper() {}
 
     public static Apd toEntity(ApdPostRequest request, Profesi profesi) {
-        return new Apd(profesi, request.getNama());
+        return new Apd(profesi, request.nama());
     }
 
     public static void updateEntity(Apd entity, ApdPostRequest request, Profesi profesi) {
         entity.setProfesi(profesi);
-        entity.setNama(request.getNama());
+        entity.setNama(request.nama());
     }
 }
