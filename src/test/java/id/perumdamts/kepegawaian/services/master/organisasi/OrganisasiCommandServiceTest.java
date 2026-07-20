@@ -10,23 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Integration test for OrganisasiCommandService — locks revive/conflict/update
  * behaviour before {@code kepegawaian-33s} touches the revive seam.
- *
  * Anti-masking: must run against a real MariaDB so {@code @SQLRestriction}
  * (from {@code MasterBaseEntity}) is exercised — a mocked repository would
  * hide the live bug. Kode prefix {@code IT-9TF-} keeps rows isolated from
@@ -43,14 +35,19 @@ class OrganisasiCommandServiceTest {
     private JdbcTemplate jdbc;
 
     private final List<Long> createdIds = new java.util.ArrayList<>();
+    private final List<Long> childIds = new java.util.ArrayList<>();
 
     @AfterEach
     void cleanup() {
-        // Hard-delete any test rows we created (bypassing @SQLDelete to be thorough).
+        // Hard-delete children first to avoid FK constraint issues.
+        for (Long id : childIds) {
+            jdbc.update("DELETE FROM organisasi WHERE id = ?", id);
+        }
         for (Long id : createdIds) {
             jdbc.update("DELETE FROM organisasi WHERE id = ?", id);
         }
         createdIds.clear();
+        childIds.clear();
     }
 
     private static String uniqueKode() {
@@ -113,7 +110,6 @@ class OrganisasiCommandServiceTest {
 
     /**
      * (c) create saat ada record TERHAPUS (carcass) cocok-spec → REVIVE.
-     *
      * Fixed by kepegawaian-33s (2026-06-18): native carcass-finder on
      * {@code OrganisasiRepository.findAnyByUniqueKey(nama, parentId)} bypasses
      * {@code @SQLRestriction} so the revive branch in
@@ -228,6 +224,56 @@ class OrganisasiCommandServiceTest {
         Integer rowCount = jdbc.queryForObject(
                 "SELECT COUNT(*) FROM organisasi WHERE id = ?", Integer.class, id);
         assertEquals(1, rowCount, "row must still exist (soft delete, not hard delete)");
+    }
+
+    /**
+     * (i) delete with active child (sub-organisasi) → ConflictException.
+     * Parent organisasi cannot be deleted while it has active children.
+     */
+    @Test
+    void delete_withChildSubOrganisasi_throwsConflict() {
+        String kodeParent = uniqueKode();
+        String nama = "IT-9TF-i-" + UUID.randomUUID().toString().substring(0, 8);
+        Long parentId = createAndRemember(req(kodeParent, nama));
+
+        // Create child with parentId = parentId.
+        String kodeChild = uniqueKode();
+        OrganisasiPostRequest childReq = req(kodeChild, "IT-9TF-i-child");
+        childReq.setParentId(parentId);
+        Organisasi child = service.create(childReq);
+        childIds.add(child.getId());
+
+        ConflictException ex = assertThrows(ConflictException.class,
+                () -> service.delete(parentId));
+        assertTrue(ex.getMessage().contains("sub-organisasi"),
+                "message should mention sub-organisasi, got: " + ex.getMessage());
+    }
+
+    /**
+     * (j) delete without children → sukses (sudah diuji di (g), tapi double-check
+     * bahwa parent dengan child_soft_deleted juga bisa dihapus).
+     */
+    @Test
+    void delete_withSoftDeletedChild_succeeds() {
+        String kodeParent = uniqueKode();
+        String nama = "IT-9TF-j-" + UUID.randomUUID().toString().substring(0, 8);
+        Long parentId = createAndRemember(req(kodeParent, nama));
+
+        // Create child then soft-delete it.
+        String kodeChild = uniqueKode();
+        OrganisasiPostRequest childReq = req(kodeChild, "IT-9TF-j-child");
+        childReq.setParentId(parentId);
+        Organisasi child = service.create(childReq);
+        childIds.add(child.getId());
+        service.delete(child.getId());
+
+        // Parent should be deletable since child is soft-deleted.
+        boolean result = service.delete(parentId);
+        assertTrue(result);
+
+        Integer isDeleted = jdbc.queryForObject(
+                "SELECT is_deleted FROM organisasi WHERE id = ?", Integer.class, parentId);
+        assertEquals(1, isDeleted, "parent must be soft-deleted");
     }
 
     /**
