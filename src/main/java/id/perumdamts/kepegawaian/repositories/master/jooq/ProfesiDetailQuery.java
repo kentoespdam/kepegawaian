@@ -26,7 +26,7 @@ public class ProfesiDetailQuery {
     private final DSLContext dsl;
 
     public Optional<ProfesiDetail> getById(Long id) {
-        return dsl.select(ProfesiSelects.PROFESI_DETAIL_COLUMNS)
+        return dsl.select(ProfesiSelects.PROFESI_COLUMNS)
                 .select(
                         multiset(dsl.select(APD.ID, APD.NAMA)
                                 .from(APD)
