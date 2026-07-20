@@ -131,7 +131,7 @@ tasks.register<JooqCodegenTask>("jooqCodegen") {
     group = "codegen"
     jdbcUrl.set(
         "jdbc:mariadb://${flyEnv("DB_HOST", "localhost")}:" +
-        "${flyEnv("DB_PORT", "3307")}/${flyEnv("DB_SCHEMA", "kepegawaian")}"
+        "${flyEnv("DB_PORT", "3307")}/${flyEnv("DB_SCHEMA", "kepegawaian_dev_new")}"
     )
     dbUser.set(flyEnv("DB_USER", "test"))
     dbPassword.set(flyEnv("DB_PASSWORD", "test"))

@@ -86,6 +86,7 @@ logging:
           descriptor:
             sql:
               BasicBinder: TRACE
+#      jooq: TRACE
 
 appwrite:
   endpoint: ${APPWRITE_ENDPOINT:http://192.168.230.254:82/v1}
