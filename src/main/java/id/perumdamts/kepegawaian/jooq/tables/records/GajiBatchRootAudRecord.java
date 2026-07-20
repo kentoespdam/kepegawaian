@@ -19,70 +19,70 @@ public class GajiBatchRootAudRecord extends UpdatableRecordImpl<GajiBatchRootAud
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>kepegawaian.gaji_batch_root_aud.id</code>.
+     * Setter for <code>gaji_batch_root_aud.id</code>.
      */
     public void setId(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_batch_root_aud.id</code>.
+     * Getter for <code>gaji_batch_root_aud.id</code>.
      */
     public String getId() {
         return (String) get(0);
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_batch_root_aud.rev</code>.
+     * Setter for <code>gaji_batch_root_aud.rev</code>.
      */
     public void setRev(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_batch_root_aud.rev</code>.
+     * Getter for <code>gaji_batch_root_aud.rev</code>.
      */
     public Integer getRev() {
         return (Integer) get(1);
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_batch_root_aud.revtype</code>.
+     * Setter for <code>gaji_batch_root_aud.revtype</code>.
      */
     public void setRevtype(Byte value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_batch_root_aud.revtype</code>.
+     * Getter for <code>gaji_batch_root_aud.revtype</code>.
      */
     public Byte getRevtype() {
         return (Byte) get(2);
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_batch_root_aud.is_deleted</code>.
+     * Setter for <code>gaji_batch_root_aud.is_deleted</code>.
      */
     public void setIsDeleted(Boolean value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_batch_root_aud.is_deleted</code>.
+     * Getter for <code>gaji_batch_root_aud.is_deleted</code>.
      */
     public Boolean getIsDeleted() {
         return (Boolean) get(3);
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_batch_root_aud.updated_by</code>.
+     * Setter for <code>gaji_batch_root_aud.updated_by</code>.
      */
     public void setUpdatedBy(String value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_batch_root_aud.updated_by</code>.
+     * Getter for <code>gaji_batch_root_aud.updated_by</code>.
      */
     public String getUpdatedBy() {
         return (String) get(4);

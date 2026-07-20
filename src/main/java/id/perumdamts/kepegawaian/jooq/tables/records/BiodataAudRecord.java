@@ -6,11 +6,12 @@ package id.perumdamts.kepegawaian.jooq.tables.records;
 
 import id.perumdamts.kepegawaian.jooq.enums.BiodataAudGolonganDarah;
 import id.perumdamts.kepegawaian.jooq.tables.BiodataAud;
-import org.jooq.Record2;
-import org.jooq.impl.UpdatableRecordImpl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import org.jooq.Record2;
+import org.jooq.impl.UpdatableRecordImpl;
 
 
 /**
@@ -22,308 +23,308 @@ public class BiodataAudRecord extends UpdatableRecordImpl<BiodataAudRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>kepegawaian.biodata_aud.nik</code>.
+     * Setter for <code>biodata_aud.nik</code>.
      */
     public void setNik(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.biodata_aud.nik</code>.
+     * Getter for <code>biodata_aud.nik</code>.
      */
     public String getNik() {
         return (String) get(0);
     }
 
     /**
-     * Setter for <code>kepegawaian.biodata_aud.rev</code>.
+     * Setter for <code>biodata_aud.rev</code>.
      */
     public void setRev(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.biodata_aud.rev</code>.
+     * Getter for <code>biodata_aud.rev</code>.
      */
     public Integer getRev() {
         return (Integer) get(1);
     }
 
     /**
-     * Setter for <code>kepegawaian.biodata_aud.revtype</code>.
+     * Setter for <code>biodata_aud.revtype</code>.
      */
     public void setRevtype(Byte value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.biodata_aud.revtype</code>.
+     * Getter for <code>biodata_aud.revtype</code>.
      */
     public Byte getRevtype() {
         return (Byte) get(2);
     }
 
     /**
-     * Setter for <code>kepegawaian.biodata_aud.agama</code>.
+     * Setter for <code>biodata_aud.agama</code>.
      */
     public void setAgama(Byte value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.biodata_aud.agama</code>.
+     * Getter for <code>biodata_aud.agama</code>.
      */
     public Byte getAgama() {
         return (Byte) get(3);
     }
 
     /**
-     * Setter for <code>kepegawaian.biodata_aud.alamat</code>.
+     * Setter for <code>biodata_aud.alamat</code>.
      */
     public void setAlamat(String value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.biodata_aud.alamat</code>.
+     * Getter for <code>biodata_aud.alamat</code>.
      */
     public String getAlamat() {
         return (String) get(4);
     }
 
     /**
-     * Setter for <code>kepegawaian.biodata_aud.created_at</code>.
+     * Setter for <code>biodata_aud.created_at</code>.
      */
     public void setCreatedAt(LocalDateTime value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.biodata_aud.created_at</code>.
+     * Getter for <code>biodata_aud.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
         return (LocalDateTime) get(5);
     }
 
     /**
-     * Setter for <code>kepegawaian.biodata_aud.created_by</code>.
+     * Setter for <code>biodata_aud.created_by</code>.
      */
     public void setCreatedBy(String value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.biodata_aud.created_by</code>.
+     * Getter for <code>biodata_aud.created_by</code>.
      */
     public String getCreatedBy() {
         return (String) get(6);
     }
 
     /**
-     * Setter for <code>kepegawaian.biodata_aud.foto_profil</code>.
+     * Setter for <code>biodata_aud.foto_profil</code>.
      */
     public void setFotoProfil(String value) {
         set(7, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.biodata_aud.foto_profil</code>.
+     * Getter for <code>biodata_aud.foto_profil</code>.
      */
     public String getFotoProfil() {
         return (String) get(7);
     }
 
     /**
-     * Setter for <code>kepegawaian.biodata_aud.golongan_darah</code>.
+     * Setter for <code>biodata_aud.golongan_darah</code>.
      */
     public void setGolonganDarah(BiodataAudGolonganDarah value) {
         set(8, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.biodata_aud.golongan_darah</code>.
+     * Getter for <code>biodata_aud.golongan_darah</code>.
      */
     public BiodataAudGolonganDarah getGolonganDarah() {
         return (BiodataAudGolonganDarah) get(8);
     }
 
     /**
-     * Setter for <code>kepegawaian.biodata_aud.ibu_kandung</code>.
+     * Setter for <code>biodata_aud.ibu_kandung</code>.
      */
     public void setIbuKandung(String value) {
         set(9, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.biodata_aud.ibu_kandung</code>.
+     * Getter for <code>biodata_aud.ibu_kandung</code>.
      */
     public String getIbuKandung() {
         return (String) get(9);
     }
 
     /**
-     * Setter for <code>kepegawaian.biodata_aud.is_deleted</code>.
+     * Setter for <code>biodata_aud.is_deleted</code>.
      */
     public void setIsDeleted(Boolean value) {
         set(10, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.biodata_aud.is_deleted</code>.
+     * Getter for <code>biodata_aud.is_deleted</code>.
      */
     public Boolean getIsDeleted() {
         return (Boolean) get(10);
     }
 
     /**
-     * Setter for <code>kepegawaian.biodata_aud.is_pegawai</code>.
+     * Setter for <code>biodata_aud.is_pegawai</code>.
      */
     public void setIsPegawai(Boolean value) {
         set(11, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.biodata_aud.is_pegawai</code>.
+     * Getter for <code>biodata_aud.is_pegawai</code>.
      */
     public Boolean getIsPegawai() {
         return (Boolean) get(11);
     }
 
     /**
-     * Setter for <code>kepegawaian.biodata_aud.jenis_kelamin</code>.
+     * Setter for <code>biodata_aud.jenis_kelamin</code>.
      */
     public void setJenisKelamin(Byte value) {
         set(12, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.biodata_aud.jenis_kelamin</code>.
+     * Getter for <code>biodata_aud.jenis_kelamin</code>.
      */
     public Byte getJenisKelamin() {
         return (Byte) get(12);
     }
 
     /**
-     * Setter for <code>kepegawaian.biodata_aud.nama</code>.
+     * Setter for <code>biodata_aud.nama</code>.
      */
     public void setNama(String value) {
         set(13, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.biodata_aud.nama</code>.
+     * Getter for <code>biodata_aud.nama</code>.
      */
     public String getNama() {
         return (String) get(13);
     }
 
     /**
-     * Setter for <code>kepegawaian.biodata_aud.notes</code>.
+     * Setter for <code>biodata_aud.notes</code>.
      */
     public void setNotes(String value) {
         set(14, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.biodata_aud.notes</code>.
+     * Getter for <code>biodata_aud.notes</code>.
      */
     public String getNotes() {
         return (String) get(14);
     }
 
     /**
-     * Setter for <code>kepegawaian.biodata_aud.status_kawin</code>.
+     * Setter for <code>biodata_aud.status_kawin</code>.
      */
     public void setStatusKawin(Byte value) {
         set(15, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.biodata_aud.status_kawin</code>.
+     * Getter for <code>biodata_aud.status_kawin</code>.
      */
     public Byte getStatusKawin() {
         return (Byte) get(15);
     }
 
     /**
-     * Setter for <code>kepegawaian.biodata_aud.tanggal_lahir</code>.
+     * Setter for <code>biodata_aud.tanggal_lahir</code>.
      */
     public void setTanggalLahir(LocalDate value) {
         set(16, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.biodata_aud.tanggal_lahir</code>.
+     * Getter for <code>biodata_aud.tanggal_lahir</code>.
      */
     public LocalDate getTanggalLahir() {
         return (LocalDate) get(16);
     }
 
     /**
-     * Setter for <code>kepegawaian.biodata_aud.telp</code>.
+     * Setter for <code>biodata_aud.telp</code>.
      */
     public void setTelp(String value) {
         set(17, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.biodata_aud.telp</code>.
+     * Getter for <code>biodata_aud.telp</code>.
      */
     public String getTelp() {
         return (String) get(17);
     }
 
     /**
-     * Setter for <code>kepegawaian.biodata_aud.tempat_lahir</code>.
+     * Setter for <code>biodata_aud.tempat_lahir</code>.
      */
     public void setTempatLahir(String value) {
         set(18, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.biodata_aud.tempat_lahir</code>.
+     * Getter for <code>biodata_aud.tempat_lahir</code>.
      */
     public String getTempatLahir() {
         return (String) get(18);
     }
 
     /**
-     * Setter for <code>kepegawaian.biodata_aud.updated_at</code>.
+     * Setter for <code>biodata_aud.updated_at</code>.
      */
     public void setUpdatedAt(LocalDateTime value) {
         set(19, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.biodata_aud.updated_at</code>.
+     * Getter for <code>biodata_aud.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
         return (LocalDateTime) get(19);
     }
 
     /**
-     * Setter for <code>kepegawaian.biodata_aud.updated_by</code>.
+     * Setter for <code>biodata_aud.updated_by</code>.
      */
     public void setUpdatedBy(String value) {
         set(20, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.biodata_aud.updated_by</code>.
+     * Getter for <code>biodata_aud.updated_by</code>.
      */
     public String getUpdatedBy() {
         return (String) get(20);
     }
 
     /**
-     * Setter for <code>kepegawaian.biodata_aud.pendidikan_id</code>.
+     * Setter for <code>biodata_aud.pendidikan_id</code>.
      */
     public void setPendidikanId(Long value) {
         set(21, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.biodata_aud.pendidikan_id</code>.
+     * Getter for <code>biodata_aud.pendidikan_id</code>.
      */
     public Long getPendidikanId() {
         return (Long) get(21);

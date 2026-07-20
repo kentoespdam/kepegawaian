@@ -4,21 +4,37 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.Revinfo.RevinfoPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.RiwayatKontrakAudRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -30,7 +46,7 @@ public class RiwayatKontrakAud extends TableImpl<RiwayatKontrakAudRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.riwayat_kontrak_aud</code>
+     * The reference instance of <code>riwayat_kontrak_aud</code>
      */
     public static final RiwayatKontrakAud RIWAYAT_KONTRAK_AUD = new RiwayatKontrakAud();
 
@@ -43,107 +59,107 @@ public class RiwayatKontrakAud extends TableImpl<RiwayatKontrakAudRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.riwayat_kontrak_aud.id</code>.
+     * The column <code>riwayat_kontrak_aud.id</code>.
      */
     public final TableField<RiwayatKontrakAudRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_kontrak_aud.rev</code>.
+     * The column <code>riwayat_kontrak_aud.rev</code>.
      */
     public final TableField<RiwayatKontrakAudRecord, Integer> REV = createField(DSL.name("rev"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_kontrak_aud.revtype</code>.
+     * The column <code>riwayat_kontrak_aud.revtype</code>.
      */
     public final TableField<RiwayatKontrakAudRecord, Byte> REVTYPE = createField(DSL.name("revtype"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_kontrak_aud.changed_status</code>.
+     * The column <code>riwayat_kontrak_aud.changed_status</code>.
      */
     public final TableField<RiwayatKontrakAudRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_kontrak_aud.created_at</code>.
+     * The column <code>riwayat_kontrak_aud.created_at</code>.
      */
     public final TableField<RiwayatKontrakAudRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_kontrak_aud.created_by</code>.
+     * The column <code>riwayat_kontrak_aud.created_by</code>.
      */
     public final TableField<RiwayatKontrakAudRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_kontrak_aud.is_deleted</code>.
+     * The column <code>riwayat_kontrak_aud.is_deleted</code>.
      */
     public final TableField<RiwayatKontrakAudRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_kontrak_aud.updated_at</code>.
+     * The column <code>riwayat_kontrak_aud.updated_at</code>.
      */
     public final TableField<RiwayatKontrakAudRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_kontrak_aud.updated_by</code>.
+     * The column <code>riwayat_kontrak_aud.updated_by</code>.
      */
     public final TableField<RiwayatKontrakAudRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_kontrak_aud.is_latest</code>.
+     * The column <code>riwayat_kontrak_aud.is_latest</code>.
      */
     public final TableField<RiwayatKontrakAudRecord, Boolean> IS_LATEST = createField(DSL.name("is_latest"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_kontrak_aud.jenis_kontrak</code>.
+     * The column <code>riwayat_kontrak_aud.jenis_kontrak</code>.
      */
     public final TableField<RiwayatKontrakAudRecord, Byte> JENIS_KONTRAK = createField(DSL.name("jenis_kontrak"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_kontrak_aud.nama</code>.
+     * The column <code>riwayat_kontrak_aud.nama</code>.
      */
     public final TableField<RiwayatKontrakAudRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_kontrak_aud.nipam</code>.
+     * The column <code>riwayat_kontrak_aud.nipam</code>.
      */
     public final TableField<RiwayatKontrakAudRecord, String> NIPAM = createField(DSL.name("nipam"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_kontrak_aud.nomor_kontrak</code>.
+     * The column <code>riwayat_kontrak_aud.nomor_kontrak</code>.
      */
     public final TableField<RiwayatKontrakAudRecord, String> NOMOR_KONTRAK = createField(DSL.name("nomor_kontrak"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_kontrak_aud.notes</code>.
+     * The column <code>riwayat_kontrak_aud.notes</code>.
      */
     public final TableField<RiwayatKontrakAudRecord, String> NOTES = createField(DSL.name("notes"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_kontrak_aud.tanggal_mulai</code>.
+     * The column <code>riwayat_kontrak_aud.tanggal_mulai</code>.
      */
     public final TableField<RiwayatKontrakAudRecord, LocalDate> TANGGAL_MULAI = createField(DSL.name("tanggal_mulai"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_kontrak_aud.tanggal_selesai</code>.
+     * The column <code>riwayat_kontrak_aud.tanggal_selesai</code>.
      */
     public final TableField<RiwayatKontrakAudRecord, LocalDate> TANGGAL_SELESAI = createField(DSL.name("tanggal_selesai"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_kontrak_aud.tanggal_sk</code>.
+     * The column <code>riwayat_kontrak_aud.tanggal_sk</code>.
      */
     public final TableField<RiwayatKontrakAudRecord, LocalDate> TANGGAL_SK = createField(DSL.name("tanggal_sk"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_kontrak_aud.jabatan_id</code>.
+     * The column <code>riwayat_kontrak_aud.jabatan_id</code>.
      */
     public final TableField<RiwayatKontrakAudRecord, Long> JABATAN_ID = createField(DSL.name("jabatan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_kontrak_aud.organisasi_id</code>.
+     * The column <code>riwayat_kontrak_aud.organisasi_id</code>.
      */
     public final TableField<RiwayatKontrakAudRecord, Long> ORGANISASI_ID = createField(DSL.name("organisasi_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_kontrak_aud.pegawai_id</code>.
+     * The column <code>riwayat_kontrak_aud.pegawai_id</code>.
      */
     public final TableField<RiwayatKontrakAudRecord, Long> PEGAWAI_ID = createField(DSL.name("pegawai_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
@@ -156,23 +172,21 @@ public class RiwayatKontrakAud extends TableImpl<RiwayatKontrakAudRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.riwayat_kontrak_aud</code> table
-     * reference
+     * Create an aliased <code>riwayat_kontrak_aud</code> table reference
      */
     public RiwayatKontrakAud(String alias) {
         this(DSL.name(alias), RIWAYAT_KONTRAK_AUD);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.riwayat_kontrak_aud</code> table
-     * reference
+     * Create an aliased <code>riwayat_kontrak_aud</code> table reference
      */
     public RiwayatKontrakAud(Name alias) {
         this(alias, RIWAYAT_KONTRAK_AUD);
     }
 
     /**
-     * Create a <code>kepegawaian.riwayat_kontrak_aud</code> table reference
+     * Create a <code>riwayat_kontrak_aud</code> table reference
      */
     public RiwayatKontrakAud() {
         this(DSL.name("riwayat_kontrak_aud"), null);
@@ -213,7 +227,7 @@ public class RiwayatKontrakAud extends TableImpl<RiwayatKontrakAudRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -229,7 +243,7 @@ public class RiwayatKontrakAud extends TableImpl<RiwayatKontrakAudRecord> {
     private transient RevinfoPath _revinfo;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.revinfo</code> table.
+     * Get the implicit join path to the <code>revinfo</code> table.
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)

@@ -4,19 +4,34 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Indexes;
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.records.GajiPhdpRecord;
-import org.jooq.*;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.Identity;
+import org.jooq.Index;
+import org.jooq.Name;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -28,7 +43,7 @@ public class GajiPhdp extends TableImpl<GajiPhdpRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.gaji_phdp</code>
+     * The reference instance of <code>gaji_phdp</code>
      */
     public static final GajiPhdp GAJI_PHDP = new GajiPhdp();
 
@@ -41,57 +56,57 @@ public class GajiPhdp extends TableImpl<GajiPhdpRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.gaji_phdp.id</code>.
+     * The column <code>gaji_phdp.id</code>.
      */
     public final TableField<GajiPhdpRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_phdp.changed_status</code>.
+     * The column <code>gaji_phdp.changed_status</code>.
      */
     public final TableField<GajiPhdpRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_phdp.created_at</code>.
+     * The column <code>gaji_phdp.created_at</code>.
      */
     public final TableField<GajiPhdpRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_phdp.created_by</code>.
+     * The column <code>gaji_phdp.created_by</code>.
      */
     public final TableField<GajiPhdpRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_phdp.is_deleted</code>.
+     * The column <code>gaji_phdp.is_deleted</code>.
      */
     public final TableField<GajiPhdpRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_phdp.updated_at</code>.
+     * The column <code>gaji_phdp.updated_at</code>.
      */
     public final TableField<GajiPhdpRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_phdp.updated_by</code>.
+     * The column <code>gaji_phdp.updated_by</code>.
      */
     public final TableField<GajiPhdpRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_phdp.version</code>.
+     * The column <code>gaji_phdp.version</code>.
      */
     public final TableField<GajiPhdpRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_phdp.formula</code>.
+     * The column <code>gaji_phdp.formula</code>.
      */
     public final TableField<GajiPhdpRecord, String> FORMULA = createField(DSL.name("formula"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_phdp.kondisi</code>.
+     * The column <code>gaji_phdp.kondisi</code>.
      */
     public final TableField<GajiPhdpRecord, String> KONDISI = createField(DSL.name("kondisi"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_phdp.urut</code>.
+     * The column <code>gaji_phdp.urut</code>.
      */
     public final TableField<GajiPhdpRecord, Integer> URUT = createField(DSL.name("urut"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
@@ -104,21 +119,21 @@ public class GajiPhdp extends TableImpl<GajiPhdpRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.gaji_phdp</code> table reference
+     * Create an aliased <code>gaji_phdp</code> table reference
      */
     public GajiPhdp(String alias) {
         this(DSL.name(alias), GAJI_PHDP);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.gaji_phdp</code> table reference
+     * Create an aliased <code>gaji_phdp</code> table reference
      */
     public GajiPhdp(Name alias) {
         this(alias, GAJI_PHDP);
     }
 
     /**
-     * Create a <code>kepegawaian.gaji_phdp</code> table reference
+     * Create a <code>gaji_phdp</code> table reference
      */
     public GajiPhdp() {
         this(DSL.name("gaji_phdp"), null);
@@ -126,7 +141,7 @@ public class GajiPhdp extends TableImpl<GajiPhdpRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override

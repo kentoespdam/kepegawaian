@@ -4,19 +4,36 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.GajiBatchRoot.GajiBatchRootPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.GajiBatchRootLampiranRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.Identity;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -28,8 +45,7 @@ public class GajiBatchRootLampiran extends TableImpl<GajiBatchRootLampiranRecord
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of
-     * <code>kepegawaian.gaji_batch_root_lampiran</code>
+     * The reference instance of <code>gaji_batch_root_lampiran</code>
      */
     public static final GajiBatchRootLampiran GAJI_BATCH_ROOT_LAMPIRAN = new GajiBatchRootLampiran();
 
@@ -42,35 +58,32 @@ public class GajiBatchRootLampiran extends TableImpl<GajiBatchRootLampiranRecord
     }
 
     /**
-     * The column <code>kepegawaian.gaji_batch_root_lampiran.id</code>.
+     * The column <code>gaji_batch_root_lampiran.id</code>.
      */
     public final TableField<GajiBatchRootLampiranRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_root_lampiran.file_name</code>.
+     * The column <code>gaji_batch_root_lampiran.file_name</code>.
      */
     public final TableField<GajiBatchRootLampiranRecord, String> FILE_NAME = createField(DSL.name("file_name"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.gaji_batch_root_lampiran.hashed_file_name</code>.
+     * The column <code>gaji_batch_root_lampiran.hashed_file_name</code>.
      */
     public final TableField<GajiBatchRootLampiranRecord, String> HASHED_FILE_NAME = createField(DSL.name("hashed_file_name"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.gaji_batch_root_lampiran.jenis_lampiran_gaji</code>.
+     * The column <code>gaji_batch_root_lampiran.jenis_lampiran_gaji</code>.
      */
     public final TableField<GajiBatchRootLampiranRecord, Byte> JENIS_LAMPIRAN_GAJI = createField(DSL.name("jenis_lampiran_gaji"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_root_lampiran.mime_type</code>.
+     * The column <code>gaji_batch_root_lampiran.mime_type</code>.
      */
     public final TableField<GajiBatchRootLampiranRecord, String> MIME_TYPE = createField(DSL.name("mime_type"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.gaji_batch_root_lampiran.root_batch_id</code>.
+     * The column <code>gaji_batch_root_lampiran.root_batch_id</code>.
      */
     public final TableField<GajiBatchRootLampiranRecord, String> ROOT_BATCH_ID = createField(DSL.name("root_batch_id"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
@@ -83,24 +96,21 @@ public class GajiBatchRootLampiran extends TableImpl<GajiBatchRootLampiranRecord
     }
 
     /**
-     * Create an aliased <code>kepegawaian.gaji_batch_root_lampiran</code> table
-     * reference
+     * Create an aliased <code>gaji_batch_root_lampiran</code> table reference
      */
     public GajiBatchRootLampiran(String alias) {
         this(DSL.name(alias), GAJI_BATCH_ROOT_LAMPIRAN);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.gaji_batch_root_lampiran</code> table
-     * reference
+     * Create an aliased <code>gaji_batch_root_lampiran</code> table reference
      */
     public GajiBatchRootLampiran(Name alias) {
         this(alias, GAJI_BATCH_ROOT_LAMPIRAN);
     }
 
     /**
-     * Create a <code>kepegawaian.gaji_batch_root_lampiran</code> table
-     * reference
+     * Create a <code>gaji_batch_root_lampiran</code> table reference
      */
     public GajiBatchRootLampiran() {
         this(DSL.name("gaji_batch_root_lampiran"), null);
@@ -141,7 +151,7 @@ public class GajiBatchRootLampiran extends TableImpl<GajiBatchRootLampiranRecord
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -162,8 +172,7 @@ public class GajiBatchRootLampiran extends TableImpl<GajiBatchRootLampiranRecord
     private transient GajiBatchRootPath _gajiBatchRoot;
 
     /**
-     * Get the implicit join path to the
-     * <code>kepegawaian.gaji_batch_root</code> table.
+     * Get the implicit join path to the <code>gaji_batch_root</code> table.
      */
     public GajiBatchRootPath gajiBatchRoot() {
         if (_gajiBatchRoot == null)

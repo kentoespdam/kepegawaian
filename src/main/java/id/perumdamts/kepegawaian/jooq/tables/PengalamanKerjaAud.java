@@ -4,20 +4,36 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.Revinfo.RevinfoPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.PengalamanKerjaAudRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -29,7 +45,7 @@ public class PengalamanKerjaAud extends TableImpl<PengalamanKerjaAudRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.pengalaman_kerja_aud</code>
+     * The reference instance of <code>pengalaman_kerja_aud</code>
      */
     public static final PengalamanKerjaAud PENGALAMAN_KERJA_AUD = new PengalamanKerjaAud();
 
@@ -42,109 +58,107 @@ public class PengalamanKerjaAud extends TableImpl<PengalamanKerjaAudRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.pengalaman_kerja_aud.id</code>.
+     * The column <code>pengalaman_kerja_aud.id</code>.
      */
     public final TableField<PengalamanKerjaAudRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>kepegawaian.pengalaman_kerja_aud.rev</code>.
+     * The column <code>pengalaman_kerja_aud.rev</code>.
      */
     public final TableField<PengalamanKerjaAudRecord, Integer> REV = createField(DSL.name("rev"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>kepegawaian.pengalaman_kerja_aud.revtype</code>.
+     * The column <code>pengalaman_kerja_aud.revtype</code>.
      */
     public final TableField<PengalamanKerjaAudRecord, Byte> REVTYPE = createField(DSL.name("revtype"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pengalaman_kerja_aud.changed_status</code>.
+     * The column <code>pengalaman_kerja_aud.changed_status</code>.
      */
     public final TableField<PengalamanKerjaAudRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pengalaman_kerja_aud.created_at</code>.
+     * The column <code>pengalaman_kerja_aud.created_at</code>.
      */
     public final TableField<PengalamanKerjaAudRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.pengalaman_kerja_aud.created_by</code>.
+     * The column <code>pengalaman_kerja_aud.created_by</code>.
      */
     public final TableField<PengalamanKerjaAudRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.pengalaman_kerja_aud.is_deleted</code>.
+     * The column <code>pengalaman_kerja_aud.is_deleted</code>.
      */
     public final TableField<PengalamanKerjaAudRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>kepegawaian.pengalaman_kerja_aud.updated_at</code>.
+     * The column <code>pengalaman_kerja_aud.updated_at</code>.
      */
     public final TableField<PengalamanKerjaAudRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.pengalaman_kerja_aud.updated_by</code>.
+     * The column <code>pengalaman_kerja_aud.updated_by</code>.
      */
     public final TableField<PengalamanKerjaAudRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.pengalaman_kerja_aud.disetujui</code>.
+     * The column <code>pengalaman_kerja_aud.disetujui</code>.
      */
     public final TableField<PengalamanKerjaAudRecord, Byte> DISETUJUI = createField(DSL.name("disetujui"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pengalaman_kerja_aud.disetujui_oleh</code>.
+     * The column <code>pengalaman_kerja_aud.disetujui_oleh</code>.
      */
     public final TableField<PengalamanKerjaAudRecord, String> DISETUJUI_OLEH = createField(DSL.name("disetujui_oleh"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.pengalaman_kerja_aud.jabatan</code>.
+     * The column <code>pengalaman_kerja_aud.jabatan</code>.
      */
     public final TableField<PengalamanKerjaAudRecord, String> JABATAN = createField(DSL.name("jabatan"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.pengalaman_kerja_aud.lokasi</code>.
+     * The column <code>pengalaman_kerja_aud.lokasi</code>.
      */
     public final TableField<PengalamanKerjaAudRecord, String> LOKASI = createField(DSL.name("lokasi"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.pengalaman_kerja_aud.nama_perusahaan</code>.
+     * The column <code>pengalaman_kerja_aud.nama_perusahaan</code>.
      */
     public final TableField<PengalamanKerjaAudRecord, String> NAMA_PERUSAHAAN = createField(DSL.name("nama_perusahaan"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.pengalaman_kerja_aud.notes</code>.
+     * The column <code>pengalaman_kerja_aud.notes</code>.
      */
     public final TableField<PengalamanKerjaAudRecord, String> NOTES = createField(DSL.name("notes"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.pengalaman_kerja_aud.tahun_keluar</code>.
+     * The column <code>pengalaman_kerja_aud.tahun_keluar</code>.
      */
     public final TableField<PengalamanKerjaAudRecord, Integer> TAHUN_KELUAR = createField(DSL.name("tahun_keluar"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.pengalaman_kerja_aud.tahun_masuk</code>.
+     * The column <code>pengalaman_kerja_aud.tahun_masuk</code>.
      */
     public final TableField<PengalamanKerjaAudRecord, Integer> TAHUN_MASUK = createField(DSL.name("tahun_masuk"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.pengalaman_kerja_aud.tanggal_disetujui</code>.
+     * The column <code>pengalaman_kerja_aud.tanggal_disetujui</code>.
      */
     public final TableField<PengalamanKerjaAudRecord, LocalDateTime> TANGGAL_DISETUJUI = createField(DSL.name("tanggal_disetujui"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.pengalaman_kerja_aud.tanggal_pengajuan</code>.
+     * The column <code>pengalaman_kerja_aud.tanggal_pengajuan</code>.
      */
     public final TableField<PengalamanKerjaAudRecord, LocalDateTime> TANGGAL_PENGAJUAN = createField(DSL.name("tanggal_pengajuan"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.pengalaman_kerja_aud.type_perusahaan</code>.
+     * The column <code>pengalaman_kerja_aud.type_perusahaan</code>.
      */
     public final TableField<PengalamanKerjaAudRecord, String> TYPE_PERUSAHAAN = createField(DSL.name("type_perusahaan"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.pengalaman_kerja_aud.biodata_id</code>.
+     * The column <code>pengalaman_kerja_aud.biodata_id</code>.
      */
     public final TableField<PengalamanKerjaAudRecord, String> BIODATA_ID = createField(DSL.name("biodata_id"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
@@ -157,23 +171,21 @@ public class PengalamanKerjaAud extends TableImpl<PengalamanKerjaAudRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.pengalaman_kerja_aud</code> table
-     * reference
+     * Create an aliased <code>pengalaman_kerja_aud</code> table reference
      */
     public PengalamanKerjaAud(String alias) {
         this(DSL.name(alias), PENGALAMAN_KERJA_AUD);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.pengalaman_kerja_aud</code> table
-     * reference
+     * Create an aliased <code>pengalaman_kerja_aud</code> table reference
      */
     public PengalamanKerjaAud(Name alias) {
         this(alias, PENGALAMAN_KERJA_AUD);
     }
 
     /**
-     * Create a <code>kepegawaian.pengalaman_kerja_aud</code> table reference
+     * Create a <code>pengalaman_kerja_aud</code> table reference
      */
     public PengalamanKerjaAud() {
         this(DSL.name("pengalaman_kerja_aud"), null);
@@ -214,7 +226,7 @@ public class PengalamanKerjaAud extends TableImpl<PengalamanKerjaAudRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -230,7 +242,7 @@ public class PengalamanKerjaAud extends TableImpl<PengalamanKerjaAudRecord> {
     private transient RevinfoPath _revinfo;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.revinfo</code> table.
+     * Get the implicit join path to the <code>revinfo</code> table.
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)

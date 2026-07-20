@@ -4,15 +4,27 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.tables.records.VPegawaiRecord;
-import org.jooq.*;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDate;
 import java.util.Collection;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.Name;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -24,7 +36,7 @@ public class VPegawai extends TableImpl<VPegawaiRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.v_pegawai</code>
+     * The reference instance of <code>v_pegawai</code>
      */
     public static final VPegawai V_PEGAWAI = new VPegawai();
 
@@ -37,87 +49,87 @@ public class VPegawai extends TableImpl<VPegawaiRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.v_pegawai.id</code>.
+     * The column <code>v_pegawai.id</code>.
      */
     public final TableField<VPegawaiRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.v_pegawai.nipam</code>.
+     * The column <code>v_pegawai.nipam</code>.
      */
     public final TableField<VPegawaiRecord, String> NIPAM = createField(DSL.name("nipam"), SQLDataType.VARCHAR(32).nullable(false), this, "");
 
     /**
-     * The column <code>kepegawaian.v_pegawai.nik</code>.
+     * The column <code>v_pegawai.nik</code>.
      */
     public final TableField<VPegawaiRecord, String> NIK = createField(DSL.name("nik"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
-     * The column <code>kepegawaian.v_pegawai.nama</code>.
+     * The column <code>v_pegawai.nama</code>.
      */
     public final TableField<VPegawaiRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.v_pegawai.jenis_kelamin</code>.
+     * The column <code>v_pegawai.jenis_kelamin</code>.
      */
     public final TableField<VPegawaiRecord, Byte> JENIS_KELAMIN = createField(DSL.name("jenis_kelamin"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.v_pegawai.status_kawin</code>.
+     * The column <code>v_pegawai.status_kawin</code>.
      */
     public final TableField<VPegawaiRecord, Byte> STATUS_KAWIN = createField(DSL.name("status_kawin"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.v_pegawai.tempat_lahir</code>.
+     * The column <code>v_pegawai.tempat_lahir</code>.
      */
     public final TableField<VPegawaiRecord, String> TEMPAT_LAHIR = createField(DSL.name("tempat_lahir"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.v_pegawai.tanggal_lahir</code>.
+     * The column <code>v_pegawai.tanggal_lahir</code>.
      */
     public final TableField<VPegawaiRecord, LocalDate> TANGGAL_LAHIR = createField(DSL.name("tanggal_lahir"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.v_pegawai.organisasi_id</code>.
+     * The column <code>v_pegawai.organisasi_id</code>.
      */
     public final TableField<VPegawaiRecord, Long> ORGANISASI_ID = createField(DSL.name("organisasi_id"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.v_pegawai.nama_organisasi</code>.
+     * The column <code>v_pegawai.nama_organisasi</code>.
      */
     public final TableField<VPegawaiRecord, String> NAMA_ORGANISASI = createField(DSL.name("nama_organisasi"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.v_pegawai.jabatan_id</code>.
+     * The column <code>v_pegawai.jabatan_id</code>.
      */
     public final TableField<VPegawaiRecord, Long> JABATAN_ID = createField(DSL.name("jabatan_id"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.v_pegawai.nama_jabatan</code>.
+     * The column <code>v_pegawai.nama_jabatan</code>.
      */
     public final TableField<VPegawaiRecord, String> NAMA_JABATAN = createField(DSL.name("nama_jabatan"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.v_pegawai.golongan_id</code>.
+     * The column <code>v_pegawai.golongan_id</code>.
      */
     public final TableField<VPegawaiRecord, Long> GOLONGAN_ID = createField(DSL.name("golongan_id"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.v_pegawai.golongan</code>.
+     * The column <code>v_pegawai.golongan</code>.
      */
     public final TableField<VPegawaiRecord, String> GOLONGAN = createField(DSL.name("golongan"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.v_pegawai.pangkat</code>.
+     * The column <code>v_pegawai.pangkat</code>.
      */
     public final TableField<VPegawaiRecord, String> PANGKAT = createField(DSL.name("pangkat"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.v_pegawai.status_kerja</code>.
+     * The column <code>v_pegawai.status_kerja</code>.
      */
     public final TableField<VPegawaiRecord, Byte> STATUS_KERJA = createField(DSL.name("status_kerja"), SQLDataType.TINYINT.nullable(false), this, "");
 
     /**
-     * The column <code>kepegawaian.v_pegawai.status_pegawai</code>.
+     * The column <code>v_pegawai.status_pegawai</code>.
      */
     public final TableField<VPegawaiRecord, Byte> STATUS_PEGAWAI = createField(DSL.name("status_pegawai"), SQLDataType.TINYINT.nullable(false), this, "");
 
@@ -130,21 +142,21 @@ public class VPegawai extends TableImpl<VPegawaiRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.v_pegawai</code> table reference
+     * Create an aliased <code>v_pegawai</code> table reference
      */
     public VPegawai(String alias) {
         this(DSL.name(alias), V_PEGAWAI);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.v_pegawai</code> table reference
+     * Create an aliased <code>v_pegawai</code> table reference
      */
     public VPegawai(Name alias) {
         this(alias, V_PEGAWAI);
     }
 
     /**
-     * Create a <code>kepegawaian.v_pegawai</code> table reference
+     * Create a <code>v_pegawai</code> table reference
      */
     public VPegawai() {
         this(DSL.name("v_pegawai"), null);
@@ -152,7 +164,7 @@ public class VPegawai extends TableImpl<VPegawaiRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override

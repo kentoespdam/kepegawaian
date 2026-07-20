@@ -5,10 +5,11 @@ package id.perumdamts.kepegawaian.jooq.tables.records;
 
 
 import id.perumdamts.kepegawaian.jooq.tables.DetailDasarGaji;
-import org.jooq.Record1;
-import org.jooq.impl.UpdatableRecordImpl;
 
 import java.time.LocalDateTime;
+
+import org.jooq.Record1;
+import org.jooq.impl.UpdatableRecordImpl;
 
 
 /**
@@ -20,168 +21,168 @@ public class DetailDasarGajiRecord extends UpdatableRecordImpl<DetailDasarGajiRe
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>kepegawaian.detail_dasar_gaji.id</code>.
+     * Setter for <code>detail_dasar_gaji.id</code>.
      */
     public void setId(Long value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.detail_dasar_gaji.id</code>.
+     * Getter for <code>detail_dasar_gaji.id</code>.
      */
     public Long getId() {
         return (Long) get(0);
     }
 
     /**
-     * Setter for <code>kepegawaian.detail_dasar_gaji.changed_status</code>.
+     * Setter for <code>detail_dasar_gaji.changed_status</code>.
      */
     public void setChangedStatus(Byte value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.detail_dasar_gaji.changed_status</code>.
+     * Getter for <code>detail_dasar_gaji.changed_status</code>.
      */
     public Byte getChangedStatus() {
         return (Byte) get(1);
     }
 
     /**
-     * Setter for <code>kepegawaian.detail_dasar_gaji.created_at</code>.
+     * Setter for <code>detail_dasar_gaji.created_at</code>.
      */
     public void setCreatedAt(LocalDateTime value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.detail_dasar_gaji.created_at</code>.
+     * Getter for <code>detail_dasar_gaji.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
         return (LocalDateTime) get(2);
     }
 
     /**
-     * Setter for <code>kepegawaian.detail_dasar_gaji.created_by</code>.
+     * Setter for <code>detail_dasar_gaji.created_by</code>.
      */
     public void setCreatedBy(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.detail_dasar_gaji.created_by</code>.
+     * Getter for <code>detail_dasar_gaji.created_by</code>.
      */
     public String getCreatedBy() {
         return (String) get(3);
     }
 
     /**
-     * Setter for <code>kepegawaian.detail_dasar_gaji.is_deleted</code>.
+     * Setter for <code>detail_dasar_gaji.is_deleted</code>.
      */
     public void setIsDeleted(Boolean value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.detail_dasar_gaji.is_deleted</code>.
+     * Getter for <code>detail_dasar_gaji.is_deleted</code>.
      */
     public Boolean getIsDeleted() {
         return (Boolean) get(4);
     }
 
     /**
-     * Setter for <code>kepegawaian.detail_dasar_gaji.updated_at</code>.
+     * Setter for <code>detail_dasar_gaji.updated_at</code>.
      */
     public void setUpdatedAt(LocalDateTime value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.detail_dasar_gaji.updated_at</code>.
+     * Getter for <code>detail_dasar_gaji.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
         return (LocalDateTime) get(5);
     }
 
     /**
-     * Setter for <code>kepegawaian.detail_dasar_gaji.updated_by</code>.
+     * Setter for <code>detail_dasar_gaji.updated_by</code>.
      */
     public void setUpdatedBy(String value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.detail_dasar_gaji.updated_by</code>.
+     * Getter for <code>detail_dasar_gaji.updated_by</code>.
      */
     public String getUpdatedBy() {
         return (String) get(6);
     }
 
     /**
-     * Setter for <code>kepegawaian.detail_dasar_gaji.version</code>.
+     * Setter for <code>detail_dasar_gaji.version</code>.
      */
     public void setVersion(Integer value) {
         set(7, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.detail_dasar_gaji.version</code>.
+     * Getter for <code>detail_dasar_gaji.version</code>.
      */
     public Integer getVersion() {
         return (Integer) get(7);
     }
 
     /**
-     * Setter for <code>kepegawaian.detail_dasar_gaji.golongan_kode</code>.
+     * Setter for <code>detail_dasar_gaji.golongan_kode</code>.
      */
     public void setGolonganKode(Integer value) {
         set(8, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.detail_dasar_gaji.golongan_kode</code>.
+     * Getter for <code>detail_dasar_gaji.golongan_kode</code>.
      */
     public Integer getGolonganKode() {
         return (Integer) get(8);
     }
 
     /**
-     * Setter for <code>kepegawaian.detail_dasar_gaji.mkg</code>.
+     * Setter for <code>detail_dasar_gaji.mkg</code>.
      */
     public void setMkg(Integer value) {
         set(9, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.detail_dasar_gaji.mkg</code>.
+     * Getter for <code>detail_dasar_gaji.mkg</code>.
      */
     public Integer getMkg() {
         return (Integer) get(9);
     }
 
     /**
-     * Setter for <code>kepegawaian.detail_dasar_gaji.nominal</code>.
+     * Setter for <code>detail_dasar_gaji.nominal</code>.
      */
     public void setNominal(Double value) {
         set(10, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.detail_dasar_gaji.nominal</code>.
+     * Getter for <code>detail_dasar_gaji.nominal</code>.
      */
     public Double getNominal() {
         return (Double) get(10);
     }
 
     /**
-     * Setter for <code>kepegawaian.detail_dasar_gaji.dasar_gaji_id</code>.
+     * Setter for <code>detail_dasar_gaji.dasar_gaji_id</code>.
      */
     public void setDasarGajiId(Long value) {
         set(11, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.detail_dasar_gaji.dasar_gaji_id</code>.
+     * Getter for <code>detail_dasar_gaji.dasar_gaji_id</code>.
      */
     public Long getDasarGajiId() {
         return (Long) get(11);

@@ -4,19 +4,34 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Indexes;
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.records.ProfilUpdateRecord;
-import org.jooq.*;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.Identity;
+import org.jooq.Index;
+import org.jooq.Name;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -28,7 +43,7 @@ public class ProfilUpdate extends TableImpl<ProfilUpdateRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.profil_update</code>
+     * The reference instance of <code>profil_update</code>
      */
     public static final ProfilUpdate PROFIL_UPDATE = new ProfilUpdate();
 
@@ -41,62 +56,62 @@ public class ProfilUpdate extends TableImpl<ProfilUpdateRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.profil_update.id</code>.
+     * The column <code>profil_update.id</code>.
      */
     public final TableField<ProfilUpdateRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.profil_update.action_type</code>.
+     * The column <code>profil_update.action_type</code>.
      */
     public final TableField<ProfilUpdateRecord, Byte> ACTION_TYPE = createField(DSL.name("action_type"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.profil_update.approval_date</code>.
+     * The column <code>profil_update.approval_date</code>.
      */
     public final TableField<ProfilUpdateRecord, LocalDateTime> APPROVAL_DATE = createField(DSL.name("approval_date"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.profil_update.approval_pic</code>.
+     * The column <code>profil_update.approval_pic</code>.
      */
     public final TableField<ProfilUpdateRecord, String> APPROVAL_PIC = createField(DSL.name("approval_pic"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.profil_update.approval_status</code>.
+     * The column <code>profil_update.approval_status</code>.
      */
     public final TableField<ProfilUpdateRecord, Byte> APPROVAL_STATUS = createField(DSL.name("approval_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.profil_update.data_description</code>.
+     * The column <code>profil_update.data_description</code>.
      */
     public final TableField<ProfilUpdateRecord, String> DATA_DESCRIPTION = createField(DSL.name("data_description"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.profil_update.jabatan</code>.
+     * The column <code>profil_update.jabatan</code>.
      */
     public final TableField<ProfilUpdateRecord, String> JABATAN = createField(DSL.name("jabatan"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.profil_update.nama</code>.
+     * The column <code>profil_update.nama</code>.
      */
     public final TableField<ProfilUpdateRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.profil_update.nipam</code>.
+     * The column <code>profil_update.nipam</code>.
      */
     public final TableField<ProfilUpdateRecord, String> NIPAM = createField(DSL.name("nipam"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.profil_update.req_date</code>.
+     * The column <code>profil_update.req_date</code>.
      */
     public final TableField<ProfilUpdateRecord, LocalDateTime> REQ_DATE = createField(DSL.name("req_date"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.profil_update.rev_id</code>.
+     * The column <code>profil_update.rev_id</code>.
      */
     public final TableField<ProfilUpdateRecord, Long> REV_ID = createField(DSL.name("rev_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.profil_update.table_name</code>.
+     * The column <code>profil_update.table_name</code>.
      */
     public final TableField<ProfilUpdateRecord, Byte> TABLE_NAME = createField(DSL.name("table_name"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
@@ -109,21 +124,21 @@ public class ProfilUpdate extends TableImpl<ProfilUpdateRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.profil_update</code> table reference
+     * Create an aliased <code>profil_update</code> table reference
      */
     public ProfilUpdate(String alias) {
         this(DSL.name(alias), PROFIL_UPDATE);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.profil_update</code> table reference
+     * Create an aliased <code>profil_update</code> table reference
      */
     public ProfilUpdate(Name alias) {
         this(alias, PROFIL_UPDATE);
     }
 
     /**
-     * Create a <code>kepegawaian.profil_update</code> table reference
+     * Create a <code>profil_update</code> table reference
      */
     public ProfilUpdate() {
         this(DSL.name("profil_update"), null);
@@ -131,7 +146,7 @@ public class ProfilUpdate extends TableImpl<ProfilUpdateRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override

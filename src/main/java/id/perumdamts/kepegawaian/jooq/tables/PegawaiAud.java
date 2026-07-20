@@ -4,21 +4,37 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.Revinfo.RevinfoPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.PegawaiAudRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -30,7 +46,7 @@ public class PegawaiAud extends TableImpl<PegawaiAudRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.pegawai_aud</code>
+     * The reference instance of <code>pegawai_aud</code>
      */
     public static final PegawaiAud PEGAWAI_AUD = new PegawaiAud();
 
@@ -43,223 +59,222 @@ public class PegawaiAud extends TableImpl<PegawaiAudRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.id</code>.
+     * The column <code>pegawai_aud.id</code>.
      */
     public final TableField<PegawaiAudRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.rev</code>.
+     * The column <code>pegawai_aud.rev</code>.
      */
     public final TableField<PegawaiAudRecord, Integer> REV = createField(DSL.name("rev"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.revtype</code>.
+     * The column <code>pegawai_aud.revtype</code>.
      */
     public final TableField<PegawaiAudRecord, Byte> REVTYPE = createField(DSL.name("revtype"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.changed_status</code>.
+     * The column <code>pegawai_aud.changed_status</code>.
      */
     public final TableField<PegawaiAudRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.created_at</code>.
+     * The column <code>pegawai_aud.created_at</code>.
      */
     public final TableField<PegawaiAudRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.created_by</code>.
+     * The column <code>pegawai_aud.created_by</code>.
      */
     public final TableField<PegawaiAudRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.is_deleted</code>.
+     * The column <code>pegawai_aud.is_deleted</code>.
      */
     public final TableField<PegawaiAudRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.updated_at</code>.
+     * The column <code>pegawai_aud.updated_at</code>.
      */
     public final TableField<PegawaiAudRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.updated_by</code>.
+     * The column <code>pegawai_aud.updated_by</code>.
      */
     public final TableField<PegawaiAudRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.absensi_id</code>.
+     * The column <code>pegawai_aud.absensi_id</code>.
      */
     public final TableField<PegawaiAudRecord, Long> ABSENSI_ID = createField(DSL.name("absensi_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.email</code>.
+     * The column <code>pegawai_aud.email</code>.
      */
     public final TableField<PegawaiAudRecord, String> EMAIL = createField(DSL.name("email"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.gaji_pokok</code>.
+     * The column <code>pegawai_aud.gaji_pokok</code>.
      */
     public final TableField<PegawaiAudRecord, Double> GAJI_POKOK = createField(DSL.name("gaji_pokok"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.is_askes</code>.
+     * The column <code>pegawai_aud.is_askes</code>.
      */
     public final TableField<PegawaiAudRecord, Boolean> IS_ASKES = createField(DSL.name("is_askes"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.jml_tanggungan</code>.
+     * The column <code>pegawai_aud.jml_tanggungan</code>.
      */
     public final TableField<PegawaiAudRecord, Integer> JML_TANGGUNGAN = createField(DSL.name("jml_tanggungan"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.mkg_bulan</code>.
+     * The column <code>pegawai_aud.mkg_bulan</code>.
      */
     public final TableField<PegawaiAudRecord, Integer> MKG_BULAN = createField(DSL.name("mkg_bulan"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.mkg_tahun</code>.
+     * The column <code>pegawai_aud.mkg_tahun</code>.
      */
     public final TableField<PegawaiAudRecord, Integer> MKG_TAHUN = createField(DSL.name("mkg_tahun"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.nipam</code>.
+     * The column <code>pegawai_aud.nipam</code>.
      */
     public final TableField<PegawaiAudRecord, String> NIPAM = createField(DSL.name("nipam"), SQLDataType.VARCHAR(32).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.notes</code>.
+     * The column <code>pegawai_aud.notes</code>.
      */
     public final TableField<PegawaiAudRecord, String> NOTES = createField(DSL.name("notes"), SQLDataType.CLOB(65535).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.phdp</code>.
+     * The column <code>pegawai_aud.phdp</code>.
      */
     public final TableField<PegawaiAudRecord, Double> PHDP = createField(DSL.name("phdp"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.ref_sk_capeg_id</code>.
+     * The column <code>pegawai_aud.ref_sk_capeg_id</code>.
      */
     public final TableField<PegawaiAudRecord, Long> REF_SK_CAPEG_ID = createField(DSL.name("ref_sk_capeg_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.ref_sk_gaji_berkala_id</code>.
+     * The column <code>pegawai_aud.ref_sk_gaji_berkala_id</code>.
      */
     public final TableField<PegawaiAudRecord, Long> REF_SK_GAJI_BERKALA_ID = createField(DSL.name("ref_sk_gaji_berkala_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.ref_sk_gol_id</code>.
+     * The column <code>pegawai_aud.ref_sk_gol_id</code>.
      */
     public final TableField<PegawaiAudRecord, Long> REF_SK_GOL_ID = createField(DSL.name("ref_sk_gol_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.ref_sk_jabatan_id</code>.
+     * The column <code>pegawai_aud.ref_sk_jabatan_id</code>.
      */
     public final TableField<PegawaiAudRecord, Long> REF_SK_JABATAN_ID = createField(DSL.name("ref_sk_jabatan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.ref_sk_mutasi_id</code>.
+     * The column <code>pegawai_aud.ref_sk_mutasi_id</code>.
      */
     public final TableField<PegawaiAudRecord, Long> REF_SK_MUTASI_ID = createField(DSL.name("ref_sk_mutasi_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.ref_sk_pegawai_id</code>.
+     * The column <code>pegawai_aud.ref_sk_pegawai_id</code>.
      */
     public final TableField<PegawaiAudRecord, Long> REF_SK_PEGAWAI_ID = createField(DSL.name("ref_sk_pegawai_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.status_kerja</code>.
+     * The column <code>pegawai_aud.status_kerja</code>.
      */
     public final TableField<PegawaiAudRecord, Byte> STATUS_KERJA = createField(DSL.name("status_kerja"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.status_pegawai</code>.
+     * The column <code>pegawai_aud.status_pegawai</code>.
      */
     public final TableField<PegawaiAudRecord, Byte> STATUS_PEGAWAI = createField(DSL.name("status_pegawai"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.tanggal_pengangkatan</code>.
+     * The column <code>pegawai_aud.tanggal_pengangkatan</code>.
      */
     public final TableField<PegawaiAudRecord, LocalDate> TANGGAL_PENGANGKATAN = createField(DSL.name("tanggal_pengangkatan"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.tmt_gaji_berkala</code>.
+     * The column <code>pegawai_aud.tmt_gaji_berkala</code>.
      */
     public final TableField<PegawaiAudRecord, LocalDate> TMT_GAJI_BERKALA = createField(DSL.name("tmt_gaji_berkala"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.tmt_golongan</code>.
+     * The column <code>pegawai_aud.tmt_golongan</code>.
      */
     public final TableField<PegawaiAudRecord, LocalDate> TMT_GOLONGAN = createField(DSL.name("tmt_golongan"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.tmt_jabatan</code>.
+     * The column <code>pegawai_aud.tmt_jabatan</code>.
      */
     public final TableField<PegawaiAudRecord, LocalDate> TMT_JABATAN = createField(DSL.name("tmt_jabatan"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.tmt_kerja</code>.
+     * The column <code>pegawai_aud.tmt_kerja</code>.
      */
     public final TableField<PegawaiAudRecord, LocalDate> TMT_KERJA = createField(DSL.name("tmt_kerja"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.tmt_mutasi</code>.
+     * The column <code>pegawai_aud.tmt_mutasi</code>.
      */
     public final TableField<PegawaiAudRecord, LocalDate> TMT_MUTASI = createField(DSL.name("tmt_mutasi"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.tmt_pegawai</code>.
+     * The column <code>pegawai_aud.tmt_pegawai</code>.
      */
     public final TableField<PegawaiAudRecord, LocalDate> TMT_PEGAWAI = createField(DSL.name("tmt_pegawai"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.tmt_pensiun</code>.
+     * The column <code>pegawai_aud.tmt_pensiun</code>.
      */
     public final TableField<PegawaiAudRecord, LocalDate> TMT_PENSIUN = createField(DSL.name("tmt_pensiun"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.nik</code>.
+     * The column <code>pegawai_aud.nik</code>.
      */
     public final TableField<PegawaiAudRecord, String> NIK = createField(DSL.name("nik"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.gaji_profil_id</code>.
+     * The column <code>pegawai_aud.gaji_profil_id</code>.
      */
     public final TableField<PegawaiAudRecord, Long> GAJI_PROFIL_ID = createField(DSL.name("gaji_profil_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.golongan_id</code>.
+     * The column <code>pegawai_aud.golongan_id</code>.
      */
     public final TableField<PegawaiAudRecord, Long> GOLONGAN_ID = createField(DSL.name("golongan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.grade_id</code>.
+     * The column <code>pegawai_aud.grade_id</code>.
      */
     public final TableField<PegawaiAudRecord, Long> GRADE_ID = createField(DSL.name("grade_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.jabatan_id</code>.
+     * The column <code>pegawai_aud.jabatan_id</code>.
      */
     public final TableField<PegawaiAudRecord, Long> JABATAN_ID = createField(DSL.name("jabatan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.pegawai_aud.gaji_pendapatan_non_pajak_id</code>.
+     * The column <code>pegawai_aud.gaji_pendapatan_non_pajak_id</code>.
      */
     public final TableField<PegawaiAudRecord, Long> GAJI_PENDAPATAN_NON_PAJAK_ID = createField(DSL.name("gaji_pendapatan_non_pajak_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.organisasi_id</code>.
+     * The column <code>pegawai_aud.organisasi_id</code>.
      */
     public final TableField<PegawaiAudRecord, Long> ORGANISASI_ID = createField(DSL.name("organisasi_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.profesi_id</code>.
+     * The column <code>pegawai_aud.profesi_id</code>.
      */
     public final TableField<PegawaiAudRecord, Long> PROFESI_ID = createField(DSL.name("profesi_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai_aud.rumah_dinas_id</code>.
+     * The column <code>pegawai_aud.rumah_dinas_id</code>.
      */
     public final TableField<PegawaiAudRecord, Long> RUMAH_DINAS_ID = createField(DSL.name("rumah_dinas_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
@@ -272,21 +287,21 @@ public class PegawaiAud extends TableImpl<PegawaiAudRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.pegawai_aud</code> table reference
+     * Create an aliased <code>pegawai_aud</code> table reference
      */
     public PegawaiAud(String alias) {
         this(DSL.name(alias), PEGAWAI_AUD);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.pegawai_aud</code> table reference
+     * Create an aliased <code>pegawai_aud</code> table reference
      */
     public PegawaiAud(Name alias) {
         this(alias, PEGAWAI_AUD);
     }
 
     /**
-     * Create a <code>kepegawaian.pegawai_aud</code> table reference
+     * Create a <code>pegawai_aud</code> table reference
      */
     public PegawaiAud() {
         this(DSL.name("pegawai_aud"), null);
@@ -327,7 +342,7 @@ public class PegawaiAud extends TableImpl<PegawaiAudRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -343,7 +358,7 @@ public class PegawaiAud extends TableImpl<PegawaiAudRecord> {
     private transient RevinfoPath _revinfo;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.revinfo</code> table.
+     * Get the implicit join path to the <code>revinfo</code> table.
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)

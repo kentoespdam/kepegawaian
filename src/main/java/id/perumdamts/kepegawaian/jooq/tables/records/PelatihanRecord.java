@@ -5,11 +5,12 @@ package id.perumdamts.kepegawaian.jooq.tables.records;
 
 
 import id.perumdamts.kepegawaian.jooq.tables.Pelatihan;
-import org.jooq.Record1;
-import org.jooq.impl.UpdatableRecordImpl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import org.jooq.Record1;
+import org.jooq.impl.UpdatableRecordImpl;
 
 
 /**
@@ -21,322 +22,322 @@ public class PelatihanRecord extends UpdatableRecordImpl<PelatihanRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>kepegawaian.pelatihan.id</code>.
+     * Setter for <code>pelatihan.id</code>.
      */
     public void setId(Long value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pelatihan.id</code>.
+     * Getter for <code>pelatihan.id</code>.
      */
     public Long getId() {
         return (Long) get(0);
     }
 
     /**
-     * Setter for <code>kepegawaian.pelatihan.changed_status</code>.
+     * Setter for <code>pelatihan.changed_status</code>.
      */
     public void setChangedStatus(Byte value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pelatihan.changed_status</code>.
+     * Getter for <code>pelatihan.changed_status</code>.
      */
     public Byte getChangedStatus() {
         return (Byte) get(1);
     }
 
     /**
-     * Setter for <code>kepegawaian.pelatihan.created_at</code>.
+     * Setter for <code>pelatihan.created_at</code>.
      */
     public void setCreatedAt(LocalDateTime value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pelatihan.created_at</code>.
+     * Getter for <code>pelatihan.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
         return (LocalDateTime) get(2);
     }
 
     /**
-     * Setter for <code>kepegawaian.pelatihan.created_by</code>.
+     * Setter for <code>pelatihan.created_by</code>.
      */
     public void setCreatedBy(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pelatihan.created_by</code>.
+     * Getter for <code>pelatihan.created_by</code>.
      */
     public String getCreatedBy() {
         return (String) get(3);
     }
 
     /**
-     * Setter for <code>kepegawaian.pelatihan.is_deleted</code>.
+     * Setter for <code>pelatihan.is_deleted</code>.
      */
     public void setIsDeleted(Boolean value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pelatihan.is_deleted</code>.
+     * Getter for <code>pelatihan.is_deleted</code>.
      */
     public Boolean getIsDeleted() {
         return (Boolean) get(4);
     }
 
     /**
-     * Setter for <code>kepegawaian.pelatihan.updated_at</code>.
+     * Setter for <code>pelatihan.updated_at</code>.
      */
     public void setUpdatedAt(LocalDateTime value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pelatihan.updated_at</code>.
+     * Getter for <code>pelatihan.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
         return (LocalDateTime) get(5);
     }
 
     /**
-     * Setter for <code>kepegawaian.pelatihan.updated_by</code>.
+     * Setter for <code>pelatihan.updated_by</code>.
      */
     public void setUpdatedBy(String value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pelatihan.updated_by</code>.
+     * Getter for <code>pelatihan.updated_by</code>.
      */
     public String getUpdatedBy() {
         return (String) get(6);
     }
 
     /**
-     * Setter for <code>kepegawaian.pelatihan.version</code>.
+     * Setter for <code>pelatihan.version</code>.
      */
     public void setVersion(Integer value) {
         set(7, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pelatihan.version</code>.
+     * Getter for <code>pelatihan.version</code>.
      */
     public Integer getVersion() {
         return (Integer) get(7);
     }
 
     /**
-     * Setter for <code>kepegawaian.pelatihan.disetujui</code>.
+     * Setter for <code>pelatihan.disetujui</code>.
      */
     public void setDisetujui(Boolean value) {
         set(8, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pelatihan.disetujui</code>.
+     * Getter for <code>pelatihan.disetujui</code>.
      */
     public Boolean getDisetujui() {
         return (Boolean) get(8);
     }
 
     /**
-     * Setter for <code>kepegawaian.pelatihan.disetujui_oleh</code>.
+     * Setter for <code>pelatihan.disetujui_oleh</code>.
      */
     public void setDisetujuiOleh(String value) {
         set(9, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pelatihan.disetujui_oleh</code>.
+     * Getter for <code>pelatihan.disetujui_oleh</code>.
      */
     public String getDisetujuiOleh() {
         return (String) get(9);
     }
 
     /**
-     * Setter for <code>kepegawaian.pelatihan.ikatan_dinas</code>.
+     * Setter for <code>pelatihan.ikatan_dinas</code>.
      */
     public void setIkatanDinas(Boolean value) {
         set(10, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pelatihan.ikatan_dinas</code>.
+     * Getter for <code>pelatihan.ikatan_dinas</code>.
      */
     public Boolean getIkatanDinas() {
         return (Boolean) get(10);
     }
 
     /**
-     * Setter for <code>kepegawaian.pelatihan.lembaga</code>.
+     * Setter for <code>pelatihan.lembaga</code>.
      */
     public void setLembaga(String value) {
         set(11, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pelatihan.lembaga</code>.
+     * Getter for <code>pelatihan.lembaga</code>.
      */
     public String getLembaga() {
         return (String) get(11);
     }
 
     /**
-     * Setter for <code>kepegawaian.pelatihan.lulus</code>.
+     * Setter for <code>pelatihan.lulus</code>.
      */
     public void setLulus(Boolean value) {
         set(12, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pelatihan.lulus</code>.
+     * Getter for <code>pelatihan.lulus</code>.
      */
     public Boolean getLulus() {
         return (Boolean) get(12);
     }
 
     /**
-     * Setter for <code>kepegawaian.pelatihan.nama</code>.
+     * Setter for <code>pelatihan.nama</code>.
      */
     public void setNama(String value) {
         set(13, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pelatihan.nama</code>.
+     * Getter for <code>pelatihan.nama</code>.
      */
     public String getNama() {
         return (String) get(13);
     }
 
     /**
-     * Setter for <code>kepegawaian.pelatihan.nilai</code>.
+     * Setter for <code>pelatihan.nilai</code>.
      */
     public void setNilai(String value) {
         set(14, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pelatihan.nilai</code>.
+     * Getter for <code>pelatihan.nilai</code>.
      */
     public String getNilai() {
         return (String) get(14);
     }
 
     /**
-     * Setter for <code>kepegawaian.pelatihan.notes</code>.
+     * Setter for <code>pelatihan.notes</code>.
      */
     public void setNotes(String value) {
         set(15, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pelatihan.notes</code>.
+     * Getter for <code>pelatihan.notes</code>.
      */
     public String getNotes() {
         return (String) get(15);
     }
 
     /**
-     * Setter for <code>kepegawaian.pelatihan.tanggal_akhir_ikatan</code>.
+     * Setter for <code>pelatihan.tanggal_akhir_ikatan</code>.
      */
     public void setTanggalAkhirIkatan(LocalDate value) {
         set(16, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pelatihan.tanggal_akhir_ikatan</code>.
+     * Getter for <code>pelatihan.tanggal_akhir_ikatan</code>.
      */
     public LocalDate getTanggalAkhirIkatan() {
         return (LocalDate) get(16);
     }
 
     /**
-     * Setter for <code>kepegawaian.pelatihan.tanggal_disetujui</code>.
+     * Setter for <code>pelatihan.tanggal_disetujui</code>.
      */
     public void setTanggalDisetujui(LocalDateTime value) {
         set(17, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pelatihan.tanggal_disetujui</code>.
+     * Getter for <code>pelatihan.tanggal_disetujui</code>.
      */
     public LocalDateTime getTanggalDisetujui() {
         return (LocalDateTime) get(17);
     }
 
     /**
-     * Setter for <code>kepegawaian.pelatihan.tanggal_mulai</code>.
+     * Setter for <code>pelatihan.tanggal_mulai</code>.
      */
     public void setTanggalMulai(LocalDate value) {
         set(18, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pelatihan.tanggal_mulai</code>.
+     * Getter for <code>pelatihan.tanggal_mulai</code>.
      */
     public LocalDate getTanggalMulai() {
         return (LocalDate) get(18);
     }
 
     /**
-     * Setter for <code>kepegawaian.pelatihan.tanggal_pengajuan</code>.
+     * Setter for <code>pelatihan.tanggal_pengajuan</code>.
      */
     public void setTanggalPengajuan(LocalDateTime value) {
         set(19, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pelatihan.tanggal_pengajuan</code>.
+     * Getter for <code>pelatihan.tanggal_pengajuan</code>.
      */
     public LocalDateTime getTanggalPengajuan() {
         return (LocalDateTime) get(19);
     }
 
     /**
-     * Setter for <code>kepegawaian.pelatihan.tanggal_selesai</code>.
+     * Setter for <code>pelatihan.tanggal_selesai</code>.
      */
     public void setTanggalSelesai(LocalDate value) {
         set(20, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pelatihan.tanggal_selesai</code>.
+     * Getter for <code>pelatihan.tanggal_selesai</code>.
      */
     public LocalDate getTanggalSelesai() {
         return (LocalDate) get(20);
     }
 
     /**
-     * Setter for <code>kepegawaian.pelatihan.biodata_id</code>.
+     * Setter for <code>pelatihan.biodata_id</code>.
      */
     public void setBiodataId(String value) {
         set(21, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pelatihan.biodata_id</code>.
+     * Getter for <code>pelatihan.biodata_id</code>.
      */
     public String getBiodataId() {
         return (String) get(21);
     }
 
     /**
-     * Setter for <code>kepegawaian.pelatihan.jenis_pelatihan_id</code>.
+     * Setter for <code>pelatihan.jenis_pelatihan_id</code>.
      */
     public void setJenisPelatihanId(Long value) {
         set(22, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pelatihan.jenis_pelatihan_id</code>.
+     * Getter for <code>pelatihan.jenis_pelatihan_id</code>.
      */
     public Long getJenisPelatihanId() {
         return (Long) get(22);

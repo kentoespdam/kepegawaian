@@ -5,11 +5,12 @@ package id.perumdamts.kepegawaian.jooq.tables.records;
 
 
 import id.perumdamts.kepegawaian.jooq.tables.RiwayatSkAud;
-import org.jooq.Record2;
-import org.jooq.impl.UpdatableRecordImpl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import org.jooq.Record2;
+import org.jooq.impl.UpdatableRecordImpl;
 
 
 /**
@@ -21,350 +22,350 @@ public class RiwayatSkAudRecord extends UpdatableRecordImpl<RiwayatSkAudRecord> 
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>kepegawaian.riwayat_sk_aud.id</code>.
+     * Setter for <code>riwayat_sk_aud.id</code>.
      */
     public void setId(Long value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_sk_aud.id</code>.
+     * Getter for <code>riwayat_sk_aud.id</code>.
      */
     public Long getId() {
         return (Long) get(0);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_sk_aud.rev</code>.
+     * Setter for <code>riwayat_sk_aud.rev</code>.
      */
     public void setRev(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_sk_aud.rev</code>.
+     * Getter for <code>riwayat_sk_aud.rev</code>.
      */
     public Integer getRev() {
         return (Integer) get(1);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_sk_aud.revtype</code>.
+     * Setter for <code>riwayat_sk_aud.revtype</code>.
      */
     public void setRevtype(Byte value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_sk_aud.revtype</code>.
+     * Getter for <code>riwayat_sk_aud.revtype</code>.
      */
     public Byte getRevtype() {
         return (Byte) get(2);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_sk_aud.changed_status</code>.
+     * Setter for <code>riwayat_sk_aud.changed_status</code>.
      */
     public void setChangedStatus(Byte value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_sk_aud.changed_status</code>.
+     * Getter for <code>riwayat_sk_aud.changed_status</code>.
      */
     public Byte getChangedStatus() {
         return (Byte) get(3);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_sk_aud.created_at</code>.
+     * Setter for <code>riwayat_sk_aud.created_at</code>.
      */
     public void setCreatedAt(LocalDateTime value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_sk_aud.created_at</code>.
+     * Getter for <code>riwayat_sk_aud.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
         return (LocalDateTime) get(4);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_sk_aud.created_by</code>.
+     * Setter for <code>riwayat_sk_aud.created_by</code>.
      */
     public void setCreatedBy(String value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_sk_aud.created_by</code>.
+     * Getter for <code>riwayat_sk_aud.created_by</code>.
      */
     public String getCreatedBy() {
         return (String) get(5);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_sk_aud.is_deleted</code>.
+     * Setter for <code>riwayat_sk_aud.is_deleted</code>.
      */
     public void setIsDeleted(Boolean value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_sk_aud.is_deleted</code>.
+     * Getter for <code>riwayat_sk_aud.is_deleted</code>.
      */
     public Boolean getIsDeleted() {
         return (Boolean) get(6);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_sk_aud.updated_at</code>.
+     * Setter for <code>riwayat_sk_aud.updated_at</code>.
      */
     public void setUpdatedAt(LocalDateTime value) {
         set(7, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_sk_aud.updated_at</code>.
+     * Getter for <code>riwayat_sk_aud.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
         return (LocalDateTime) get(7);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_sk_aud.updated_by</code>.
+     * Setter for <code>riwayat_sk_aud.updated_by</code>.
      */
     public void setUpdatedBy(String value) {
         set(8, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_sk_aud.updated_by</code>.
+     * Getter for <code>riwayat_sk_aud.updated_by</code>.
      */
     public String getUpdatedBy() {
         return (String) get(8);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_sk_aud.gaji_pokok</code>.
+     * Setter for <code>riwayat_sk_aud.gaji_pokok</code>.
      */
     public void setGajiPokok(Double value) {
         set(9, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_sk_aud.gaji_pokok</code>.
+     * Getter for <code>riwayat_sk_aud.gaji_pokok</code>.
      */
     public Double getGajiPokok() {
         return (Double) get(9);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_sk_aud.jenis_sk</code>.
+     * Setter for <code>riwayat_sk_aud.jenis_sk</code>.
      */
     public void setJenisSk(Byte value) {
         set(10, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_sk_aud.jenis_sk</code>.
+     * Getter for <code>riwayat_sk_aud.jenis_sk</code>.
      */
     public Byte getJenisSk() {
         return (Byte) get(10);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_sk_aud.kenaikan_berikutnya</code>.
+     * Setter for <code>riwayat_sk_aud.kenaikan_berikutnya</code>.
      */
     public void setKenaikanBerikutnya(LocalDate value) {
         set(11, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_sk_aud.kenaikan_berikutnya</code>.
+     * Getter for <code>riwayat_sk_aud.kenaikan_berikutnya</code>.
      */
     public LocalDate getKenaikanBerikutnya() {
         return (LocalDate) get(11);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_sk_aud.mkg_bulan</code>.
+     * Setter for <code>riwayat_sk_aud.mkg_bulan</code>.
      */
     public void setMkgBulan(Integer value) {
         set(12, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_sk_aud.mkg_bulan</code>.
+     * Getter for <code>riwayat_sk_aud.mkg_bulan</code>.
      */
     public Integer getMkgBulan() {
         return (Integer) get(12);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_sk_aud.mkg_tahun</code>.
+     * Setter for <code>riwayat_sk_aud.mkg_tahun</code>.
      */
     public void setMkgTahun(Integer value) {
         set(13, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_sk_aud.mkg_tahun</code>.
+     * Getter for <code>riwayat_sk_aud.mkg_tahun</code>.
      */
     public Integer getMkgTahun() {
         return (Integer) get(13);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_sk_aud.mkgb_bulan</code>.
+     * Setter for <code>riwayat_sk_aud.mkgb_bulan</code>.
      */
     public void setMkgbBulan(Integer value) {
         set(14, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_sk_aud.mkgb_bulan</code>.
+     * Getter for <code>riwayat_sk_aud.mkgb_bulan</code>.
      */
     public Integer getMkgbBulan() {
         return (Integer) get(14);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_sk_aud.mkgb_tahun</code>.
+     * Setter for <code>riwayat_sk_aud.mkgb_tahun</code>.
      */
     public void setMkgbTahun(Integer value) {
         set(15, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_sk_aud.mkgb_tahun</code>.
+     * Getter for <code>riwayat_sk_aud.mkgb_tahun</code>.
      */
     public Integer getMkgbTahun() {
         return (Integer) get(15);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_sk_aud.nama</code>.
+     * Setter for <code>riwayat_sk_aud.nama</code>.
      */
     public void setNama(String value) {
         set(16, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_sk_aud.nama</code>.
+     * Getter for <code>riwayat_sk_aud.nama</code>.
      */
     public String getNama() {
         return (String) get(16);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_sk_aud.nipam</code>.
+     * Setter for <code>riwayat_sk_aud.nipam</code>.
      */
     public void setNipam(String value) {
         set(17, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_sk_aud.nipam</code>.
+     * Getter for <code>riwayat_sk_aud.nipam</code>.
      */
     public String getNipam() {
         return (String) get(17);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_sk_aud.nomor_sk</code>.
+     * Setter for <code>riwayat_sk_aud.nomor_sk</code>.
      */
     public void setNomorSk(String value) {
         set(18, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_sk_aud.nomor_sk</code>.
+     * Getter for <code>riwayat_sk_aud.nomor_sk</code>.
      */
     public String getNomorSk() {
         return (String) get(18);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_sk_aud.notes</code>.
+     * Setter for <code>riwayat_sk_aud.notes</code>.
      */
     public void setNotes(String value) {
         set(19, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_sk_aud.notes</code>.
+     * Getter for <code>riwayat_sk_aud.notes</code>.
      */
     public String getNotes() {
         return (String) get(19);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_sk_aud.tanggal_sk</code>.
+     * Setter for <code>riwayat_sk_aud.tanggal_sk</code>.
      */
     public void setTanggalSk(LocalDate value) {
         set(20, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_sk_aud.tanggal_sk</code>.
+     * Getter for <code>riwayat_sk_aud.tanggal_sk</code>.
      */
     public LocalDate getTanggalSk() {
         return (LocalDate) get(20);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_sk_aud.tmt_berlaku</code>.
+     * Setter for <code>riwayat_sk_aud.tmt_berlaku</code>.
      */
     public void setTmtBerlaku(LocalDate value) {
         set(21, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_sk_aud.tmt_berlaku</code>.
+     * Getter for <code>riwayat_sk_aud.tmt_berlaku</code>.
      */
     public LocalDate getTmtBerlaku() {
         return (LocalDate) get(21);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_sk_aud.update_master</code>.
+     * Setter for <code>riwayat_sk_aud.update_master</code>.
      */
     public void setUpdateMaster(Boolean value) {
         set(22, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_sk_aud.update_master</code>.
+     * Getter for <code>riwayat_sk_aud.update_master</code>.
      */
     public Boolean getUpdateMaster() {
         return (Boolean) get(22);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_sk_aud.golongan_id</code>.
+     * Setter for <code>riwayat_sk_aud.golongan_id</code>.
      */
     public void setGolonganId(Long value) {
         set(23, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_sk_aud.golongan_id</code>.
+     * Getter for <code>riwayat_sk_aud.golongan_id</code>.
      */
     public Long getGolonganId() {
         return (Long) get(23);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_sk_aud.pegawai_id</code>.
+     * Setter for <code>riwayat_sk_aud.pegawai_id</code>.
      */
     public void setPegawaiId(Long value) {
         set(24, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_sk_aud.pegawai_id</code>.
+     * Getter for <code>riwayat_sk_aud.pegawai_id</code>.
      */
     public Long getPegawaiId() {
         return (Long) get(24);

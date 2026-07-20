@@ -4,21 +4,37 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.Revinfo.RevinfoPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.CutiPegawaiAudRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -30,7 +46,7 @@ public class CutiPegawaiAud extends TableImpl<CutiPegawaiAudRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.cuti_pegawai_aud</code>
+     * The reference instance of <code>cuti_pegawai_aud</code>
      */
     public static final CutiPegawaiAud CUTI_PEGAWAI_AUD = new CutiPegawaiAud();
 
@@ -43,184 +59,182 @@ public class CutiPegawaiAud extends TableImpl<CutiPegawaiAudRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.id</code>.
+     * The column <code>cuti_pegawai_aud.id</code>.
      */
     public final TableField<CutiPegawaiAudRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.rev</code>.
+     * The column <code>cuti_pegawai_aud.rev</code>.
      */
     public final TableField<CutiPegawaiAudRecord, Integer> REV = createField(DSL.name("rev"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.revtype</code>.
+     * The column <code>cuti_pegawai_aud.revtype</code>.
      */
     public final TableField<CutiPegawaiAudRecord, Byte> REVTYPE = createField(DSL.name("revtype"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.changed_status</code>.
+     * The column <code>cuti_pegawai_aud.changed_status</code>.
      */
     public final TableField<CutiPegawaiAudRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.created_at</code>.
+     * The column <code>cuti_pegawai_aud.created_at</code>.
      */
     public final TableField<CutiPegawaiAudRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.created_by</code>.
+     * The column <code>cuti_pegawai_aud.created_by</code>.
      */
     public final TableField<CutiPegawaiAudRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.is_deleted</code>.
+     * The column <code>cuti_pegawai_aud.is_deleted</code>.
      */
     public final TableField<CutiPegawaiAudRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.updated_at</code>.
+     * The column <code>cuti_pegawai_aud.updated_at</code>.
      */
     public final TableField<CutiPegawaiAudRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.updated_by</code>.
+     * The column <code>cuti_pegawai_aud.updated_by</code>.
      */
     public final TableField<CutiPegawaiAudRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.alasan</code>.
+     * The column <code>cuti_pegawai_aud.alasan</code>.
      */
     public final TableField<CutiPegawaiAudRecord, String> ALASAN = createField(DSL.name("alasan"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.cuti_pegawai_aud.approval_cuti_status</code>.
+     * The column <code>cuti_pegawai_aud.approval_cuti_status</code>.
      */
     public final TableField<CutiPegawaiAudRecord, Byte> APPROVAL_CUTI_STATUS = createField(DSL.name("approval_cuti_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.approval_level</code>.
+     * The column <code>cuti_pegawai_aud.approval_level</code>.
      */
     public final TableField<CutiPegawaiAudRecord, Integer> APPROVAL_LEVEL = createField(DSL.name("approval_level"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.is_claimed</code>.
+     * The column <code>cuti_pegawai_aud.is_claimed</code>.
      */
     public final TableField<CutiPegawaiAudRecord, Byte> IS_CLAIMED = createField(DSL.name("is_claimed"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.cuti_pegawai_aud.jenis_pengajuan_cuti</code>.
+     * The column <code>cuti_pegawai_aud.jenis_pengajuan_cuti</code>.
      */
     public final TableField<CutiPegawaiAudRecord, Byte> JENIS_PENGAJUAN_CUTI = createField(DSL.name("jenis_pengajuan_cuti"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.jumlah_hari</code>.
+     * The column <code>cuti_pegawai_aud.jumlah_hari</code>.
      */
     public final TableField<CutiPegawaiAudRecord, Integer> JUMLAH_HARI = createField(DSL.name("jumlah_hari"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.jumlah_hari_kerja</code>.
+     * The column <code>cuti_pegawai_aud.jumlah_hari_kerja</code>.
      */
     public final TableField<CutiPegawaiAudRecord, Integer> JUMLAH_HARI_KERJA = createField(DSL.name("jumlah_hari_kerja"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.kuota_akhir</code>.
+     * The column <code>cuti_pegawai_aud.kuota_akhir</code>.
      */
     public final TableField<CutiPegawaiAudRecord, Integer> KUOTA_AKHIR = createField(DSL.name("kuota_akhir"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.kuota_awal</code>.
+     * The column <code>cuti_pegawai_aud.kuota_awal</code>.
      */
     public final TableField<CutiPegawaiAudRecord, Integer> KUOTA_AWAL = createField(DSL.name("kuota_awal"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.nama</code>.
+     * The column <code>cuti_pegawai_aud.nama</code>.
      */
     public final TableField<CutiPegawaiAudRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.nipam</code>.
+     * The column <code>cuti_pegawai_aud.nipam</code>.
      */
     public final TableField<CutiPegawaiAudRecord, String> NIPAM = createField(DSL.name("nipam"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.pangkat_golongan</code>.
+     * The column <code>cuti_pegawai_aud.pangkat_golongan</code>.
      */
     public final TableField<CutiPegawaiAudRecord, String> PANGKAT_GOLONGAN = createField(DSL.name("pangkat_golongan"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.riwayat_kuota0</code>.
+     * The column <code>cuti_pegawai_aud.riwayat_kuota0</code>.
      */
     public final TableField<CutiPegawaiAudRecord, Integer> RIWAYAT_KUOTA0 = createField(DSL.name("riwayat_kuota0"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.riwayat_kuota1</code>.
+     * The column <code>cuti_pegawai_aud.riwayat_kuota1</code>.
      */
     public final TableField<CutiPegawaiAudRecord, Integer> RIWAYAT_KUOTA1 = createField(DSL.name("riwayat_kuota1"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.riwayat_pakai0</code>.
+     * The column <code>cuti_pegawai_aud.riwayat_pakai0</code>.
      */
     public final TableField<CutiPegawaiAudRecord, Integer> RIWAYAT_PAKAI0 = createField(DSL.name("riwayat_pakai0"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.riwayat_pakai1</code>.
+     * The column <code>cuti_pegawai_aud.riwayat_pakai1</code>.
      */
     public final TableField<CutiPegawaiAudRecord, Integer> RIWAYAT_PAKAI1 = createField(DSL.name("riwayat_pakai1"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.riwayat_sisa0</code>.
+     * The column <code>cuti_pegawai_aud.riwayat_sisa0</code>.
      */
     public final TableField<CutiPegawaiAudRecord, Integer> RIWAYAT_SISA0 = createField(DSL.name("riwayat_sisa0"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.riwayat_sisa1</code>.
+     * The column <code>cuti_pegawai_aud.riwayat_sisa1</code>.
      */
     public final TableField<CutiPegawaiAudRecord, Integer> RIWAYAT_SISA1 = createField(DSL.name("riwayat_sisa1"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.tanggal_mulai</code>.
+     * The column <code>cuti_pegawai_aud.tanggal_mulai</code>.
      */
     public final TableField<CutiPegawaiAudRecord, LocalDate> TANGGAL_MULAI = createField(DSL.name("tanggal_mulai"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.tanggal_selesai</code>.
+     * The column <code>cuti_pegawai_aud.tanggal_selesai</code>.
      */
     public final TableField<CutiPegawaiAudRecord, LocalDate> TANGGAL_SELESAI = createField(DSL.name("tanggal_selesai"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.jabatan_id</code>.
+     * The column <code>cuti_pegawai_aud.jabatan_id</code>.
      */
     public final TableField<CutiPegawaiAudRecord, Long> JABATAN_ID = createField(DSL.name("jabatan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.jenis_cuti_id</code>.
+     * The column <code>cuti_pegawai_aud.jenis_cuti_id</code>.
      */
     public final TableField<CutiPegawaiAudRecord, Long> JENIS_CUTI_ID = createField(DSL.name("jenis_cuti_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.organisasi_id</code>.
+     * The column <code>cuti_pegawai_aud.organisasi_id</code>.
      */
     public final TableField<CutiPegawaiAudRecord, Long> ORGANISASI_ID = createField(DSL.name("organisasi_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.pegawai_id</code>.
+     * The column <code>cuti_pegawai_aud.pegawai_id</code>.
      */
     public final TableField<CutiPegawaiAudRecord, Long> PEGAWAI_ID = createField(DSL.name("pegawai_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.pic_saat_ini_id</code>.
+     * The column <code>cuti_pegawai_aud.pic_saat_ini_id</code>.
      */
     public final TableField<CutiPegawaiAudRecord, Long> PIC_SAAT_INI_ID = createField(DSL.name("pic_saat_ini_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.ref_cuti_id</code>.
+     * The column <code>cuti_pegawai_aud.ref_cuti_id</code>.
      */
     public final TableField<CutiPegawaiAudRecord, Long> REF_CUTI_ID = createField(DSL.name("ref_cuti_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_pegawai_aud.sub_jenis_cuti_id</code>.
+     * The column <code>cuti_pegawai_aud.sub_jenis_cuti_id</code>.
      */
     public final TableField<CutiPegawaiAudRecord, Long> SUB_JENIS_CUTI_ID = createField(DSL.name("sub_jenis_cuti_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
@@ -233,23 +247,21 @@ public class CutiPegawaiAud extends TableImpl<CutiPegawaiAudRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.cuti_pegawai_aud</code> table
-     * reference
+     * Create an aliased <code>cuti_pegawai_aud</code> table reference
      */
     public CutiPegawaiAud(String alias) {
         this(DSL.name(alias), CUTI_PEGAWAI_AUD);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.cuti_pegawai_aud</code> table
-     * reference
+     * Create an aliased <code>cuti_pegawai_aud</code> table reference
      */
     public CutiPegawaiAud(Name alias) {
         this(alias, CUTI_PEGAWAI_AUD);
     }
 
     /**
-     * Create a <code>kepegawaian.cuti_pegawai_aud</code> table reference
+     * Create a <code>cuti_pegawai_aud</code> table reference
      */
     public CutiPegawaiAud() {
         this(DSL.name("cuti_pegawai_aud"), null);
@@ -290,7 +302,7 @@ public class CutiPegawaiAud extends TableImpl<CutiPegawaiAudRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -306,7 +318,7 @@ public class CutiPegawaiAud extends TableImpl<CutiPegawaiAudRecord> {
     private transient RevinfoPath _revinfo;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.revinfo</code> table.
+     * Get the implicit join path to the <code>revinfo</code> table.
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)

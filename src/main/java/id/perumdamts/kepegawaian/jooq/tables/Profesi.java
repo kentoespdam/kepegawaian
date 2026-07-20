@@ -4,8 +4,8 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Indexes;
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.AlatKerja.AlatKerjaPath;
 import id.perumdamts.kepegawaian.jooq.tables.Apd.ApdPath;
@@ -15,16 +15,34 @@ import id.perumdamts.kepegawaian.jooq.tables.Level.LevelPath;
 import id.perumdamts.kepegawaian.jooq.tables.Organisasi.OrganisasiPath;
 import id.perumdamts.kepegawaian.jooq.tables.Pegawai.PegawaiPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.ProfesiRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.Identity;
+import org.jooq.Index;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -36,7 +54,7 @@ public class Profesi extends TableImpl<ProfesiRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.profesi</code>
+     * The reference instance of <code>profesi</code>
      */
     public static final Profesi PROFESI = new Profesi();
 
@@ -49,77 +67,77 @@ public class Profesi extends TableImpl<ProfesiRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.profesi.id</code>.
+     * The column <code>profesi.id</code>.
      */
     public final TableField<ProfesiRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.profesi.changed_status</code>.
+     * The column <code>profesi.changed_status</code>.
      */
     public final TableField<ProfesiRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.profesi.created_at</code>.
+     * The column <code>profesi.created_at</code>.
      */
     public final TableField<ProfesiRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.profesi.created_by</code>.
+     * The column <code>profesi.created_by</code>.
      */
     public final TableField<ProfesiRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.profesi.is_deleted</code>.
+     * The column <code>profesi.is_deleted</code>.
      */
     public final TableField<ProfesiRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>kepegawaian.profesi.updated_at</code>.
+     * The column <code>profesi.updated_at</code>.
      */
     public final TableField<ProfesiRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.profesi.updated_by</code>.
+     * The column <code>profesi.updated_by</code>.
      */
     public final TableField<ProfesiRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.profesi.version</code>.
+     * The column <code>profesi.version</code>.
      */
     public final TableField<ProfesiRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.profesi.detail</code>.
+     * The column <code>profesi.detail</code>.
      */
     public final TableField<ProfesiRecord, String> DETAIL = createField(DSL.name("detail"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.profesi.nama</code>.
+     * The column <code>profesi.nama</code>.
      */
     public final TableField<ProfesiRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.profesi.resiko</code>.
+     * The column <code>profesi.resiko</code>.
      */
     public final TableField<ProfesiRecord, String> RESIKO = createField(DSL.name("resiko"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.profesi.grade_id</code>.
+     * The column <code>profesi.grade_id</code>.
      */
     public final TableField<ProfesiRecord, Long> GRADE_ID = createField(DSL.name("grade_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.profesi.jabatan_id</code>.
+     * The column <code>profesi.jabatan_id</code>.
      */
     public final TableField<ProfesiRecord, Long> JABATAN_ID = createField(DSL.name("jabatan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.profesi.level_id</code>.
+     * The column <code>profesi.level_id</code>.
      */
     public final TableField<ProfesiRecord, Long> LEVEL_ID = createField(DSL.name("level_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.profesi.organisasi_id</code>.
+     * The column <code>profesi.organisasi_id</code>.
      */
     public final TableField<ProfesiRecord, Long> ORGANISASI_ID = createField(DSL.name("organisasi_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
@@ -132,21 +150,21 @@ public class Profesi extends TableImpl<ProfesiRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.profesi</code> table reference
+     * Create an aliased <code>profesi</code> table reference
      */
     public Profesi(String alias) {
         this(DSL.name(alias), PROFESI);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.profesi</code> table reference
+     * Create an aliased <code>profesi</code> table reference
      */
     public Profesi(Name alias) {
         this(alias, PROFESI);
     }
 
     /**
-     * Create a <code>kepegawaian.profesi</code> table reference
+     * Create a <code>profesi</code> table reference
      */
     public Profesi() {
         this(DSL.name("profesi"), null);
@@ -187,7 +205,7 @@ public class Profesi extends TableImpl<ProfesiRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -213,7 +231,7 @@ public class Profesi extends TableImpl<ProfesiRecord> {
     private transient JabatanPath _jabatan;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.jabatan</code> table.
+     * Get the implicit join path to the <code>jabatan</code> table.
      */
     public JabatanPath jabatan() {
         if (_jabatan == null)
@@ -225,7 +243,7 @@ public class Profesi extends TableImpl<ProfesiRecord> {
     private transient GradePath _grade;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.grade</code> table.
+     * Get the implicit join path to the <code>grade</code> table.
      */
     public GradePath grade() {
         if (_grade == null)
@@ -237,7 +255,7 @@ public class Profesi extends TableImpl<ProfesiRecord> {
     private transient LevelPath _level;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.level</code> table.
+     * Get the implicit join path to the <code>level</code> table.
      */
     public LevelPath level() {
         if (_level == null)
@@ -249,8 +267,7 @@ public class Profesi extends TableImpl<ProfesiRecord> {
     private transient OrganisasiPath _organisasi;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.organisasi</code>
-     * table.
+     * Get the implicit join path to the <code>organisasi</code> table.
      */
     public OrganisasiPath organisasi() {
         if (_organisasi == null)
@@ -262,8 +279,7 @@ public class Profesi extends TableImpl<ProfesiRecord> {
     private transient PegawaiPath _pegawai;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.pegawai</code> table
+     * Get the implicit to-many join path to the <code>pegawai</code> table
      */
     public PegawaiPath pegawai() {
         if (_pegawai == null)
@@ -275,8 +291,7 @@ public class Profesi extends TableImpl<ProfesiRecord> {
     private transient AlatKerjaPath _alatKerja;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.alat_kerja</code> table
+     * Get the implicit to-many join path to the <code>alat_kerja</code> table
      */
     public AlatKerjaPath alatKerja() {
         if (_alatKerja == null)
@@ -288,8 +303,7 @@ public class Profesi extends TableImpl<ProfesiRecord> {
     private transient ApdPath _apd;
 
     /**
-     * Get the implicit to-many join path to the <code>kepegawaian.apd</code>
-     * table
+     * Get the implicit to-many join path to the <code>apd</code> table
      */
     public ApdPath apd() {
         if (_apd == null)

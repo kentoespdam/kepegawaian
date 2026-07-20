@@ -5,11 +5,12 @@ package id.perumdamts.kepegawaian.jooq.tables.records;
 
 
 import id.perumdamts.kepegawaian.jooq.tables.KartuIdentitas;
-import org.jooq.Record1;
-import org.jooq.impl.UpdatableRecordImpl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import org.jooq.Record1;
+import org.jooq.impl.UpdatableRecordImpl;
 
 
 /**
@@ -21,196 +22,196 @@ public class KartuIdentitasRecord extends UpdatableRecordImpl<KartuIdentitasReco
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>kepegawaian.kartu_identitas.id</code>.
+     * Setter for <code>kartu_identitas.id</code>.
      */
     public void setId(Long value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.kartu_identitas.id</code>.
+     * Getter for <code>kartu_identitas.id</code>.
      */
     public Long getId() {
         return (Long) get(0);
     }
 
     /**
-     * Setter for <code>kepegawaian.kartu_identitas.changed_status</code>.
+     * Setter for <code>kartu_identitas.changed_status</code>.
      */
     public void setChangedStatus(Byte value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.kartu_identitas.changed_status</code>.
+     * Getter for <code>kartu_identitas.changed_status</code>.
      */
     public Byte getChangedStatus() {
         return (Byte) get(1);
     }
 
     /**
-     * Setter for <code>kepegawaian.kartu_identitas.created_at</code>.
+     * Setter for <code>kartu_identitas.created_at</code>.
      */
     public void setCreatedAt(LocalDateTime value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.kartu_identitas.created_at</code>.
+     * Getter for <code>kartu_identitas.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
         return (LocalDateTime) get(2);
     }
 
     /**
-     * Setter for <code>kepegawaian.kartu_identitas.created_by</code>.
+     * Setter for <code>kartu_identitas.created_by</code>.
      */
     public void setCreatedBy(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.kartu_identitas.created_by</code>.
+     * Getter for <code>kartu_identitas.created_by</code>.
      */
     public String getCreatedBy() {
         return (String) get(3);
     }
 
     /**
-     * Setter for <code>kepegawaian.kartu_identitas.is_deleted</code>.
+     * Setter for <code>kartu_identitas.is_deleted</code>.
      */
     public void setIsDeleted(Boolean value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.kartu_identitas.is_deleted</code>.
+     * Getter for <code>kartu_identitas.is_deleted</code>.
      */
     public Boolean getIsDeleted() {
         return (Boolean) get(4);
     }
 
     /**
-     * Setter for <code>kepegawaian.kartu_identitas.updated_at</code>.
+     * Setter for <code>kartu_identitas.updated_at</code>.
      */
     public void setUpdatedAt(LocalDateTime value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.kartu_identitas.updated_at</code>.
+     * Getter for <code>kartu_identitas.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
         return (LocalDateTime) get(5);
     }
 
     /**
-     * Setter for <code>kepegawaian.kartu_identitas.updated_by</code>.
+     * Setter for <code>kartu_identitas.updated_by</code>.
      */
     public void setUpdatedBy(String value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.kartu_identitas.updated_by</code>.
+     * Getter for <code>kartu_identitas.updated_by</code>.
      */
     public String getUpdatedBy() {
         return (String) get(6);
     }
 
     /**
-     * Setter for <code>kepegawaian.kartu_identitas.version</code>.
+     * Setter for <code>kartu_identitas.version</code>.
      */
     public void setVersion(Integer value) {
         set(7, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.kartu_identitas.version</code>.
+     * Getter for <code>kartu_identitas.version</code>.
      */
     public Integer getVersion() {
         return (Integer) get(7);
     }
 
     /**
-     * Setter for <code>kepegawaian.kartu_identitas.nomor_kartu</code>.
+     * Setter for <code>kartu_identitas.nomor_kartu</code>.
      */
     public void setNomorKartu(String value) {
         set(8, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.kartu_identitas.nomor_kartu</code>.
+     * Getter for <code>kartu_identitas.nomor_kartu</code>.
      */
     public String getNomorKartu() {
         return (String) get(8);
     }
 
     /**
-     * Setter for <code>kepegawaian.kartu_identitas.notes</code>.
+     * Setter for <code>kartu_identitas.notes</code>.
      */
     public void setNotes(String value) {
         set(9, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.kartu_identitas.notes</code>.
+     * Getter for <code>kartu_identitas.notes</code>.
      */
     public String getNotes() {
         return (String) get(9);
     }
 
     /**
-     * Setter for <code>kepegawaian.kartu_identitas.tanggal_expired</code>.
+     * Setter for <code>kartu_identitas.tanggal_expired</code>.
      */
     public void setTanggalExpired(LocalDate value) {
         set(10, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.kartu_identitas.tanggal_expired</code>.
+     * Getter for <code>kartu_identitas.tanggal_expired</code>.
      */
     public LocalDate getTanggalExpired() {
         return (LocalDate) get(10);
     }
 
     /**
-     * Setter for <code>kepegawaian.kartu_identitas.tanggal_terima</code>.
+     * Setter for <code>kartu_identitas.tanggal_terima</code>.
      */
     public void setTanggalTerima(LocalDate value) {
         set(11, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.kartu_identitas.tanggal_terima</code>.
+     * Getter for <code>kartu_identitas.tanggal_terima</code>.
      */
     public LocalDate getTanggalTerima() {
         return (LocalDate) get(11);
     }
 
     /**
-     * Setter for <code>kepegawaian.kartu_identitas.nik</code>.
+     * Setter for <code>kartu_identitas.nik</code>.
      */
     public void setNik(String value) {
         set(12, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.kartu_identitas.nik</code>.
+     * Getter for <code>kartu_identitas.nik</code>.
      */
     public String getNik() {
         return (String) get(12);
     }
 
     /**
-     * Setter for <code>kepegawaian.kartu_identitas.jenis_kitas_id</code>.
+     * Setter for <code>kartu_identitas.jenis_kitas_id</code>.
      */
     public void setJenisKitasId(Long value) {
         set(13, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.kartu_identitas.jenis_kitas_id</code>.
+     * Getter for <code>kartu_identitas.jenis_kitas_id</code>.
      */
     public Long getJenisKitasId() {
         return (Long) get(13);

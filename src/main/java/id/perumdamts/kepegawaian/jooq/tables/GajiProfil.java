@@ -4,22 +4,40 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Indexes;
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.GajiKomponen.GajiKomponenPath;
 import id.perumdamts.kepegawaian.jooq.tables.Pegawai.PegawaiPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.GajiProfilRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.Identity;
+import org.jooq.Index;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -31,7 +49,7 @@ public class GajiProfil extends TableImpl<GajiProfilRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.gaji_profil</code>
+     * The reference instance of <code>gaji_profil</code>
      */
     public static final GajiProfil GAJI_PROFIL = new GajiProfil();
 
@@ -44,47 +62,47 @@ public class GajiProfil extends TableImpl<GajiProfilRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.gaji_profil.id</code>.
+     * The column <code>gaji_profil.id</code>.
      */
     public final TableField<GajiProfilRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_profil.changed_status</code>.
+     * The column <code>gaji_profil.changed_status</code>.
      */
     public final TableField<GajiProfilRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_profil.created_at</code>.
+     * The column <code>gaji_profil.created_at</code>.
      */
     public final TableField<GajiProfilRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_profil.created_by</code>.
+     * The column <code>gaji_profil.created_by</code>.
      */
     public final TableField<GajiProfilRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_profil.is_deleted</code>.
+     * The column <code>gaji_profil.is_deleted</code>.
      */
     public final TableField<GajiProfilRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_profil.updated_at</code>.
+     * The column <code>gaji_profil.updated_at</code>.
      */
     public final TableField<GajiProfilRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_profil.updated_by</code>.
+     * The column <code>gaji_profil.updated_by</code>.
      */
     public final TableField<GajiProfilRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_profil.version</code>.
+     * The column <code>gaji_profil.version</code>.
      */
     public final TableField<GajiProfilRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_profil.nama</code>.
+     * The column <code>gaji_profil.nama</code>.
      */
     public final TableField<GajiProfilRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
@@ -97,21 +115,21 @@ public class GajiProfil extends TableImpl<GajiProfilRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.gaji_profil</code> table reference
+     * Create an aliased <code>gaji_profil</code> table reference
      */
     public GajiProfil(String alias) {
         this(DSL.name(alias), GAJI_PROFIL);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.gaji_profil</code> table reference
+     * Create an aliased <code>gaji_profil</code> table reference
      */
     public GajiProfil(Name alias) {
         this(alias, GAJI_PROFIL);
     }
 
     /**
-     * Create a <code>kepegawaian.gaji_profil</code> table reference
+     * Create a <code>gaji_profil</code> table reference
      */
     public GajiProfil() {
         this(DSL.name("gaji_profil"), null);
@@ -152,7 +170,7 @@ public class GajiProfil extends TableImpl<GajiProfilRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -173,8 +191,8 @@ public class GajiProfil extends TableImpl<GajiProfilRecord> {
     private transient GajiKomponenPath _gajiKomponen;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.gaji_komponen</code> table
+     * Get the implicit to-many join path to the <code>gaji_komponen</code>
+     * table
      */
     public GajiKomponenPath gajiKomponen() {
         if (_gajiKomponen == null)
@@ -186,8 +204,7 @@ public class GajiProfil extends TableImpl<GajiProfilRecord> {
     private transient PegawaiPath _pegawai;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.pegawai</code> table
+     * Get the implicit to-many join path to the <code>pegawai</code> table
      */
     public PegawaiPath pegawai() {
         if (_pegawai == null)

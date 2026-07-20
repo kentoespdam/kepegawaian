@@ -5,10 +5,11 @@ package id.perumdamts.kepegawaian.jooq.tables.records;
 
 
 import id.perumdamts.kepegawaian.jooq.tables.CutiKlaimDetail;
-import org.jooq.Record1;
-import org.jooq.impl.UpdatableRecordImpl;
 
 import java.time.LocalDate;
+
+import org.jooq.Record1;
+import org.jooq.impl.UpdatableRecordImpl;
 
 
 /**
@@ -20,42 +21,42 @@ public class CutiKlaimDetailRecord extends UpdatableRecordImpl<CutiKlaimDetailRe
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>kepegawaian.cuti_klaim_detail.id</code>.
+     * Setter for <code>cuti_klaim_detail.id</code>.
      */
     public void setId(Long value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_klaim_detail.id</code>.
+     * Getter for <code>cuti_klaim_detail.id</code>.
      */
     public Long getId() {
         return (Long) get(0);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_klaim_detail.tanggal</code>.
+     * Setter for <code>cuti_klaim_detail.tanggal</code>.
      */
     public void setTanggal(LocalDate value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_klaim_detail.tanggal</code>.
+     * Getter for <code>cuti_klaim_detail.tanggal</code>.
      */
     public LocalDate getTanggal() {
         return (LocalDate) get(1);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_klaim_detail.ref_cuti_id</code>.
+     * Setter for <code>cuti_klaim_detail.ref_cuti_id</code>.
      */
     public void setRefCutiId(Long value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_klaim_detail.ref_cuti_id</code>.
+     * Getter for <code>cuti_klaim_detail.ref_cuti_id</code>.
      */
     public Long getRefCutiId() {
         return (Long) get(2);

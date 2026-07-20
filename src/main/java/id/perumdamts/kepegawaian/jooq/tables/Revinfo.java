@@ -4,7 +4,7 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.AlasanBerhentiAud.AlasanBerhentiAudPath;
 import id.perumdamts.kepegawaian.jooq.tables.BiodataAud.BiodataAudPath;
@@ -49,13 +49,30 @@ import id.perumdamts.kepegawaian.jooq.tables.RiwayatTerminasiAud.RiwayatTerminas
 import id.perumdamts.kepegawaian.jooq.tables.RumahDinasAud.RumahDinasAudPath;
 import id.perumdamts.kepegawaian.jooq.tables.SanksiSpAud.SanksiSpAudPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.RevinfoRecord;
-import org.jooq.*;
+
+import java.util.Collection;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.Identity;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
 import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
-
-import java.util.Collection;
 
 
 /**
@@ -67,7 +84,7 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.revinfo</code>
+     * The reference instance of <code>revinfo</code>
      */
     public static final Revinfo REVINFO = new Revinfo();
 
@@ -80,12 +97,12 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.revinfo.rev</code>.
+     * The column <code>revinfo.rev</code>.
      */
     public final TableField<RevinfoRecord, Integer> REV = createField(DSL.name("rev"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.revinfo.revtstmp</code>.
+     * The column <code>revinfo.revtstmp</code>.
      */
     public final TableField<RevinfoRecord, Long> REVTSTMP = createField(DSL.name("revtstmp"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
@@ -98,21 +115,21 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.revinfo</code> table reference
+     * Create an aliased <code>revinfo</code> table reference
      */
     public Revinfo(String alias) {
         this(DSL.name(alias), REVINFO);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.revinfo</code> table reference
+     * Create an aliased <code>revinfo</code> table reference
      */
     public Revinfo(Name alias) {
         this(alias, REVINFO);
     }
 
     /**
-     * Create a <code>kepegawaian.revinfo</code> table reference
+     * Create a <code>revinfo</code> table reference
      */
     public Revinfo() {
         this(DSL.name("revinfo"), null);
@@ -153,7 +170,7 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -170,7 +187,7 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
 
     /**
      * Get the implicit to-many join path to the
-     * <code>kepegawaian.alasan_berhenti_aud</code> table
+     * <code>alasan_berhenti_aud</code> table
      */
     public AlasanBerhentiAudPath alasanBerhentiAud() {
         if (_alasanBerhentiAud == null)
@@ -182,8 +199,8 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     private transient LampiranSkAudPath _lampiranSkAud;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.lampiran_sk_aud</code> table
+     * Get the implicit to-many join path to the <code>lampiran_sk_aud</code>
+     * table
      */
     public LampiranSkAudPath lampiranSkAud() {
         if (_lampiranSkAud == null)
@@ -195,8 +212,8 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     private transient CutiApprovalAudPath _cutiApprovalAud;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.cuti_approval_aud</code> table
+     * Get the implicit to-many join path to the <code>cuti_approval_aud</code>
+     * table
      */
     public CutiApprovalAudPath cutiApprovalAud() {
         if (_cutiApprovalAud == null)
@@ -208,8 +225,7 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     private transient JabatanAudPath _jabatanAud;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.jabatan_aud</code> table
+     * Get the implicit to-many join path to the <code>jabatan_aud</code> table
      */
     public JabatanAudPath jabatanAud() {
         if (_jabatanAud == null)
@@ -221,8 +237,8 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     private transient JenisKitasAudPath _jenisKitasAud;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.jenis_kitas_aud</code> table
+     * Get the implicit to-many join path to the <code>jenis_kitas_aud</code>
+     * table
      */
     public JenisKitasAudPath jenisKitasAud() {
         if (_jenisKitasAud == null)
@@ -235,7 +251,7 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
 
     /**
      * Get the implicit to-many join path to the
-     * <code>kepegawaian.riwayat_kontrak_aud</code> table
+     * <code>riwayat_kontrak_aud</code> table
      */
     public RiwayatKontrakAudPath riwayatKontrakAud() {
         if (_riwayatKontrakAud == null)
@@ -247,8 +263,8 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     private transient CutiKuotaAudPath _cutiKuotaAud;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.cuti_kuota_aud</code> table
+     * Get the implicit to-many join path to the <code>cuti_kuota_aud</code>
+     * table
      */
     public CutiKuotaAudPath cutiKuotaAud() {
         if (_cutiKuotaAud == null)
@@ -260,8 +276,7 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     private transient GradeAudPath _gradeAud;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.grade_aud</code> table
+     * Get the implicit to-many join path to the <code>grade_aud</code> table
      */
     public GradeAudPath gradeAud() {
         if (_gradeAud == null)
@@ -273,8 +288,8 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     private transient RiwayatSpAudPath _riwayatSpAud;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.riwayat_sp_aud</code> table
+     * Get the implicit to-many join path to the <code>riwayat_sp_aud</code>
+     * table
      */
     public RiwayatSpAudPath riwayatSpAud() {
         if (_riwayatSpAud == null)
@@ -286,8 +301,8 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     private transient GajiKomponenAudPath _gajiKomponenAud;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.gaji_komponen_aud</code> table
+     * Get the implicit to-many join path to the <code>gaji_komponen_aud</code>
+     * table
      */
     public GajiKomponenAudPath gajiKomponenAud() {
         if (_gajiKomponenAud == null)
@@ -300,7 +315,7 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
 
     /**
      * Get the implicit to-many join path to the
-     * <code>kepegawaian.gaji_parameter_setting_aud</code> table
+     * <code>gaji_parameter_setting_aud</code> table
      */
     public GajiParameterSettingAudPath gajiParameterSettingAud() {
         if (_gajiParameterSettingAud == null)
@@ -312,8 +327,8 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     private transient SanksiSpAudPath _sanksiSpAud;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.sanksi_sp_aud</code> table
+     * Get the implicit to-many join path to the <code>sanksi_sp_aud</code>
+     * table
      */
     public SanksiSpAudPath sanksiSpAud() {
         if (_sanksiSpAud == null)
@@ -325,8 +340,8 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     private transient CutiJenisAudPath _cutiJenisAud;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.cuti_jenis_aud</code> table
+     * Get the implicit to-many join path to the <code>cuti_jenis_aud</code>
+     * table
      */
     public CutiJenisAudPath cutiJenisAud() {
         if (_cutiJenisAud == null)
@@ -338,8 +353,7 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     private transient KeahlianAudPath _keahlianAud;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.keahlian_aud</code> table
+     * Get the implicit to-many join path to the <code>keahlian_aud</code> table
      */
     public KeahlianAudPath keahlianAud() {
         if (_keahlianAud == null)
@@ -352,7 +366,7 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
 
     /**
      * Get the implicit to-many join path to the
-     * <code>kepegawaian.gaji_potongan_tkk_aud</code> table
+     * <code>gaji_potongan_tkk_aud</code> table
      */
     public GajiPotonganTkkAudPath gajiPotonganTkkAud() {
         if (_gajiPotonganTkkAud == null)
@@ -364,8 +378,8 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     private transient DasarGajiAudPath _dasarGajiAud;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.dasar_gaji_aud</code> table
+     * Get the implicit to-many join path to the <code>dasar_gaji_aud</code>
+     * table
      */
     public DasarGajiAudPath dasarGajiAud() {
         if (_dasarGajiAud == null)
@@ -377,8 +391,8 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     private transient PendidikanAudPath _pendidikanAud;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.pendidikan_aud</code> table
+     * Get the implicit to-many join path to the <code>pendidikan_aud</code>
+     * table
      */
     public PendidikanAudPath pendidikanAud() {
         if (_pendidikanAud == null)
@@ -391,7 +405,7 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
 
     /**
      * Get the implicit to-many join path to the
-     * <code>kepegawaian.profil_keluarga_aud</code> table
+     * <code>profil_keluarga_aud</code> table
      */
     public ProfilKeluargaAudPath profilKeluargaAud() {
         if (_profilKeluargaAud == null)
@@ -403,8 +417,8 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     private transient RiwayatMutasiAudPath _riwayatMutasiAud;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.riwayat_mutasi_aud</code> table
+     * Get the implicit to-many join path to the <code>riwayat_mutasi_aud</code>
+     * table
      */
     public RiwayatMutasiAudPath riwayatMutasiAud() {
         if (_riwayatMutasiAud == null)
@@ -417,7 +431,7 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
 
     /**
      * Get the implicit to-many join path to the
-     * <code>kepegawaian.gaji_batch_root_aud</code> table
+     * <code>gaji_batch_root_aud</code> table
      */
     public GajiBatchRootAudPath gajiBatchRootAud() {
         if (_gajiBatchRootAud == null)
@@ -429,8 +443,8 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     private transient PelatihanAudPath _pelatihanAud;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.pelatihan_aud</code> table
+     * Get the implicit to-many join path to the <code>pelatihan_aud</code>
+     * table
      */
     public PelatihanAudPath pelatihanAud() {
         if (_pelatihanAud == null)
@@ -442,8 +456,8 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     private transient GajiTunjanganAudPath _gajiTunjanganAud;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.gaji_tunjangan_aud</code> table
+     * Get the implicit to-many join path to the <code>gaji_tunjangan_aud</code>
+     * table
      */
     public GajiTunjanganAudPath gajiTunjanganAud() {
         if (_gajiTunjanganAud == null)
@@ -455,8 +469,8 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     private transient GajiPhdpAudPath _gajiPhdpAud;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.gaji_phdp_aud</code> table
+     * Get the implicit to-many join path to the <code>gaji_phdp_aud</code>
+     * table
      */
     public GajiPhdpAudPath gajiPhdpAud() {
         if (_gajiPhdpAud == null)
@@ -469,7 +483,7 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
 
     /**
      * Get the implicit to-many join path to the
-     * <code>kepegawaian.kartu_identitas_aud</code> table
+     * <code>kartu_identitas_aud</code> table
      */
     public KartuIdentitasAudPath kartuIdentitasAud() {
         if (_kartuIdentitasAud == null)
@@ -481,8 +495,7 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     private transient GolonganAudPath _golonganAud;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.golongan_aud</code> table
+     * Get the implicit to-many join path to the <code>golongan_aud</code> table
      */
     public GolonganAudPath golonganAud() {
         if (_golonganAud == null)
@@ -494,8 +507,7 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     private transient LevelAudPath _levelAud;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.level_aud</code> table
+     * Get the implicit to-many join path to the <code>level_aud</code> table
      */
     public LevelAudPath levelAud() {
         if (_levelAud == null)
@@ -507,8 +519,7 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     private transient PegawaiAudPath _pegawaiAud;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.pegawai_aud</code> table
+     * Get the implicit to-many join path to the <code>pegawai_aud</code> table
      */
     public PegawaiAudPath pegawaiAud() {
         if (_pegawaiAud == null)
@@ -520,8 +531,8 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     private transient RiwayatCutiAudPath _riwayatCutiAud;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.riwayat_cuti_aud</code> table
+     * Get the implicit to-many join path to the <code>riwayat_cuti_aud</code>
+     * table
      */
     public RiwayatCutiAudPath riwayatCutiAud() {
         if (_riwayatCutiAud == null)
@@ -533,8 +544,8 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     private transient RumahDinasAudPath _rumahDinasAud;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.rumah_dinas_aud</code> table
+     * Get the implicit to-many join path to the <code>rumah_dinas_aud</code>
+     * table
      */
     public RumahDinasAudPath rumahDinasAud() {
         if (_rumahDinasAud == null)
@@ -547,7 +558,7 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
 
     /**
      * Get the implicit to-many join path to the
-     * <code>kepegawaian.gaji_pendapatan_non_pajak_aud</code> table
+     * <code>gaji_pendapatan_non_pajak_aud</code> table
      */
     public GajiPendapatanNonPajakAudPath gajiPendapatanNonPajakAud() {
         if (_gajiPendapatanNonPajakAud == null)
@@ -560,7 +571,7 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
 
     /**
      * Get the implicit to-many join path to the
-     * <code>kepegawaian.detail_dasar_gaji_aud</code> table
+     * <code>detail_dasar_gaji_aud</code> table
      */
     public DetailDasarGajiAudPath detailDasarGajiAud() {
         if (_detailDasarGajiAud == null)
@@ -572,8 +583,7 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     private transient BiodataAudPath _biodataAud;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.biodata_aud</code> table
+     * Get the implicit to-many join path to the <code>biodata_aud</code> table
      */
     public BiodataAudPath biodataAud() {
         if (_biodataAud == null)
@@ -586,7 +596,7 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
 
     /**
      * Get the implicit to-many join path to the
-     * <code>kepegawaian.pengalaman_kerja_aud</code> table
+     * <code>pengalaman_kerja_aud</code> table
      */
     public PengalamanKerjaAudPath pengalamanKerjaAud() {
         if (_pengalamanKerjaAud == null)
@@ -598,8 +608,8 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     private transient RiwayatSkAudPath _riwayatSkAud;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.riwayat_sk_aud</code> table
+     * Get the implicit to-many join path to the <code>riwayat_sk_aud</code>
+     * table
      */
     public RiwayatSkAudPath riwayatSkAud() {
         if (_riwayatSkAud == null)
@@ -612,7 +622,7 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
 
     /**
      * Get the implicit to-many join path to the
-     * <code>kepegawaian.riwayat_terminasi_aud</code> table
+     * <code>riwayat_terminasi_aud</code> table
      */
     public RiwayatTerminasiAudPath riwayatTerminasiAud() {
         if (_riwayatTerminasiAud == null)
@@ -625,7 +635,7 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
 
     /**
      * Get the implicit to-many join path to the
-     * <code>kepegawaian.lampiran_profil_aud</code> table
+     * <code>lampiran_profil_aud</code> table
      */
     public LampiranProfilAudPath lampiranProfilAud() {
         if (_lampiranProfilAud == null)
@@ -637,8 +647,8 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     private transient HariLiburAudPath _hariLiburAud;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.hari_libur_aud</code> table
+     * Get the implicit to-many join path to the <code>hari_libur_aud</code>
+     * table
      */
     public HariLiburAudPath hariLiburAud() {
         if (_hariLiburAud == null)
@@ -650,8 +660,7 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     private transient JenisSpAudPath _jenisSpAud;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.jenis_sp_aud</code> table
+     * Get the implicit to-many join path to the <code>jenis_sp_aud</code> table
      */
     public JenisSpAudPath jenisSpAud() {
         if (_jenisSpAud == null)
@@ -663,8 +672,7 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     private transient ProfesiAudPath _profesiAud;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.profesi_aud</code> table
+     * Get the implicit to-many join path to the <code>profesi_aud</code> table
      */
     public ProfesiAudPath profesiAud() {
         if (_profesiAud == null)
@@ -676,8 +684,8 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     private transient GajiProfilAudPath _gajiProfilAud;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.gaji_profil_aud</code> table
+     * Get the implicit to-many join path to the <code>gaji_profil_aud</code>
+     * table
      */
     public GajiProfilAudPath gajiProfilAud() {
         if (_gajiProfilAud == null)
@@ -689,8 +697,8 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     private transient OrganisasiAudPath _organisasiAud;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.organisasi_aud</code> table
+     * Get the implicit to-many join path to the <code>organisasi_aud</code>
+     * table
      */
     public OrganisasiAudPath organisasiAud() {
         if (_organisasiAud == null)
@@ -702,8 +710,8 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
     private transient CutiPegawaiAudPath _cutiPegawaiAud;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.cuti_pegawai_aud</code> table
+     * Get the implicit to-many join path to the <code>cuti_pegawai_aud</code>
+     * table
      */
     public CutiPegawaiAudPath cutiPegawaiAud() {
         if (_cutiPegawaiAud == null)

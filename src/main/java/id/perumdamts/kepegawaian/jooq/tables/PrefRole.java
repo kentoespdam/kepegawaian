@@ -4,15 +4,28 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.records.PrefRoleRecord;
-import org.jooq.*;
+
+import java.util.Collection;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.Name;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
-
-import java.util.Collection;
 
 
 /**
@@ -24,7 +37,7 @@ public class PrefRole extends TableImpl<PrefRoleRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.pref_role</code>
+     * The reference instance of <code>pref_role</code>
      */
     public static final PrefRole PREF_ROLE = new PrefRole();
 
@@ -37,7 +50,7 @@ public class PrefRole extends TableImpl<PrefRoleRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.pref_role.id</code>.
+     * The column <code>pref_role.id</code>.
      */
     public final TableField<PrefRoleRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
@@ -50,21 +63,21 @@ public class PrefRole extends TableImpl<PrefRoleRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.pref_role</code> table reference
+     * Create an aliased <code>pref_role</code> table reference
      */
     public PrefRole(String alias) {
         this(DSL.name(alias), PREF_ROLE);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.pref_role</code> table reference
+     * Create an aliased <code>pref_role</code> table reference
      */
     public PrefRole(Name alias) {
         this(alias, PREF_ROLE);
     }
 
     /**
-     * Create a <code>kepegawaian.pref_role</code> table reference
+     * Create a <code>pref_role</code> table reference
      */
     public PrefRole() {
         this(DSL.name("pref_role"), null);
@@ -72,7 +85,7 @@ public class PrefRole extends TableImpl<PrefRoleRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override

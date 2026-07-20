@@ -4,21 +4,39 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Indexes;
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.Pegawai.PegawaiPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.RumahDinasRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.Identity;
+import org.jooq.Index;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -30,7 +48,7 @@ public class RumahDinas extends TableImpl<RumahDinasRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.rumah_dinas</code>
+     * The reference instance of <code>rumah_dinas</code>
      */
     public static final RumahDinas RUMAH_DINAS = new RumahDinas();
 
@@ -43,52 +61,52 @@ public class RumahDinas extends TableImpl<RumahDinasRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.rumah_dinas.id</code>.
+     * The column <code>rumah_dinas.id</code>.
      */
     public final TableField<RumahDinasRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.rumah_dinas.changed_status</code>.
+     * The column <code>rumah_dinas.changed_status</code>.
      */
     public final TableField<RumahDinasRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.rumah_dinas.created_at</code>.
+     * The column <code>rumah_dinas.created_at</code>.
      */
     public final TableField<RumahDinasRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.rumah_dinas.created_by</code>.
+     * The column <code>rumah_dinas.created_by</code>.
      */
     public final TableField<RumahDinasRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.rumah_dinas.is_deleted</code>.
+     * The column <code>rumah_dinas.is_deleted</code>.
      */
     public final TableField<RumahDinasRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>kepegawaian.rumah_dinas.updated_at</code>.
+     * The column <code>rumah_dinas.updated_at</code>.
      */
     public final TableField<RumahDinasRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.rumah_dinas.updated_by</code>.
+     * The column <code>rumah_dinas.updated_by</code>.
      */
     public final TableField<RumahDinasRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.rumah_dinas.version</code>.
+     * The column <code>rumah_dinas.version</code>.
      */
     public final TableField<RumahDinasRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.rumah_dinas.nama</code>.
+     * The column <code>rumah_dinas.nama</code>.
      */
     public final TableField<RumahDinasRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.rumah_dinas.nilai</code>.
+     * The column <code>rumah_dinas.nilai</code>.
      */
     public final TableField<RumahDinasRecord, Double> NILAI = createField(DSL.name("nilai"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
 
@@ -101,21 +119,21 @@ public class RumahDinas extends TableImpl<RumahDinasRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.rumah_dinas</code> table reference
+     * Create an aliased <code>rumah_dinas</code> table reference
      */
     public RumahDinas(String alias) {
         this(DSL.name(alias), RUMAH_DINAS);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.rumah_dinas</code> table reference
+     * Create an aliased <code>rumah_dinas</code> table reference
      */
     public RumahDinas(Name alias) {
         this(alias, RUMAH_DINAS);
     }
 
     /**
-     * Create a <code>kepegawaian.rumah_dinas</code> table reference
+     * Create a <code>rumah_dinas</code> table reference
      */
     public RumahDinas() {
         this(DSL.name("rumah_dinas"), null);
@@ -156,7 +174,7 @@ public class RumahDinas extends TableImpl<RumahDinasRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -177,8 +195,7 @@ public class RumahDinas extends TableImpl<RumahDinasRecord> {
     private transient PegawaiPath _pegawai;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.pegawai</code> table
+     * Get the implicit to-many join path to the <code>pegawai</code> table
      */
     public PegawaiPath pegawai() {
         if (_pegawai == null)

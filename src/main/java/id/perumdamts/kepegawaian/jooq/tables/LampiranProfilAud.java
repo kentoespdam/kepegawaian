@@ -4,20 +4,36 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.Revinfo.RevinfoPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.LampiranProfilAudRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -29,7 +45,7 @@ public class LampiranProfilAud extends TableImpl<LampiranProfilAudRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.lampiran_profil_aud</code>
+     * The reference instance of <code>lampiran_profil_aud</code>
      */
     public static final LampiranProfilAud LAMPIRAN_PROFIL_AUD = new LampiranProfilAud();
 
@@ -42,99 +58,97 @@ public class LampiranProfilAud extends TableImpl<LampiranProfilAudRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.lampiran_profil_aud.id</code>.
+     * The column <code>lampiran_profil_aud.id</code>.
      */
     public final TableField<LampiranProfilAudRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_profil_aud.rev</code>.
+     * The column <code>lampiran_profil_aud.rev</code>.
      */
     public final TableField<LampiranProfilAudRecord, Integer> REV = createField(DSL.name("rev"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_profil_aud.revtype</code>.
+     * The column <code>lampiran_profil_aud.revtype</code>.
      */
     public final TableField<LampiranProfilAudRecord, Byte> REVTYPE = createField(DSL.name("revtype"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_profil_aud.changed_status</code>.
+     * The column <code>lampiran_profil_aud.changed_status</code>.
      */
     public final TableField<LampiranProfilAudRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_profil_aud.created_at</code>.
+     * The column <code>lampiran_profil_aud.created_at</code>.
      */
     public final TableField<LampiranProfilAudRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_profil_aud.created_by</code>.
+     * The column <code>lampiran_profil_aud.created_by</code>.
      */
     public final TableField<LampiranProfilAudRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_profil_aud.is_deleted</code>.
+     * The column <code>lampiran_profil_aud.is_deleted</code>.
      */
     public final TableField<LampiranProfilAudRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_profil_aud.updated_at</code>.
+     * The column <code>lampiran_profil_aud.updated_at</code>.
      */
     public final TableField<LampiranProfilAudRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_profil_aud.updated_by</code>.
+     * The column <code>lampiran_profil_aud.updated_by</code>.
      */
     public final TableField<LampiranProfilAudRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_profil_aud.disetujui</code>.
+     * The column <code>lampiran_profil_aud.disetujui</code>.
      */
     public final TableField<LampiranProfilAudRecord, Boolean> DISETUJUI = createField(DSL.name("disetujui"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_profil_aud.disetujui_oleh</code>.
+     * The column <code>lampiran_profil_aud.disetujui_oleh</code>.
      */
     public final TableField<LampiranProfilAudRecord, String> DISETUJUI_OLEH = createField(DSL.name("disetujui_oleh"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_profil_aud.file_name</code>.
+     * The column <code>lampiran_profil_aud.file_name</code>.
      */
     public final TableField<LampiranProfilAudRecord, String> FILE_NAME = createField(DSL.name("file_name"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_profil_aud.hashed_file_name</code>.
+     * The column <code>lampiran_profil_aud.hashed_file_name</code>.
      */
     public final TableField<LampiranProfilAudRecord, String> HASHED_FILE_NAME = createField(DSL.name("hashed_file_name"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_profil_aud.mime_type</code>.
+     * The column <code>lampiran_profil_aud.mime_type</code>.
      */
     public final TableField<LampiranProfilAudRecord, String> MIME_TYPE = createField(DSL.name("mime_type"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_profil_aud.notes</code>.
+     * The column <code>lampiran_profil_aud.notes</code>.
      */
     public final TableField<LampiranProfilAudRecord, String> NOTES = createField(DSL.name("notes"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_profil_aud.ref</code>.
+     * The column <code>lampiran_profil_aud.ref</code>.
      */
     public final TableField<LampiranProfilAudRecord, Byte> REF = createField(DSL.name("ref"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_profil_aud.ref_id</code>.
+     * The column <code>lampiran_profil_aud.ref_id</code>.
      */
     public final TableField<LampiranProfilAudRecord, Long> REF_ID = createField(DSL.name("ref_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.lampiran_profil_aud.tanggal_disetujui</code>.
+     * The column <code>lampiran_profil_aud.tanggal_disetujui</code>.
      */
     public final TableField<LampiranProfilAudRecord, LocalDateTime> TANGGAL_DISETUJUI = createField(DSL.name("tanggal_disetujui"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.lampiran_profil_aud.tanggal_pengajuan</code>.
+     * The column <code>lampiran_profil_aud.tanggal_pengajuan</code>.
      */
     public final TableField<LampiranProfilAudRecord, LocalDateTime> TANGGAL_PENGAJUAN = createField(DSL.name("tanggal_pengajuan"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
 
@@ -147,23 +161,21 @@ public class LampiranProfilAud extends TableImpl<LampiranProfilAudRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.lampiran_profil_aud</code> table
-     * reference
+     * Create an aliased <code>lampiran_profil_aud</code> table reference
      */
     public LampiranProfilAud(String alias) {
         this(DSL.name(alias), LAMPIRAN_PROFIL_AUD);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.lampiran_profil_aud</code> table
-     * reference
+     * Create an aliased <code>lampiran_profil_aud</code> table reference
      */
     public LampiranProfilAud(Name alias) {
         this(alias, LAMPIRAN_PROFIL_AUD);
     }
 
     /**
-     * Create a <code>kepegawaian.lampiran_profil_aud</code> table reference
+     * Create a <code>lampiran_profil_aud</code> table reference
      */
     public LampiranProfilAud() {
         this(DSL.name("lampiran_profil_aud"), null);
@@ -204,7 +216,7 @@ public class LampiranProfilAud extends TableImpl<LampiranProfilAudRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -220,7 +232,7 @@ public class LampiranProfilAud extends TableImpl<LampiranProfilAudRecord> {
     private transient RevinfoPath _revinfo;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.revinfo</code> table.
+     * Get the implicit join path to the <code>revinfo</code> table.
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)

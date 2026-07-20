@@ -5,10 +5,11 @@ package id.perumdamts.kepegawaian.jooq.tables.records;
 
 
 import id.perumdamts.kepegawaian.jooq.tables.Grade;
-import org.jooq.Record1;
-import org.jooq.impl.UpdatableRecordImpl;
 
 import java.time.LocalDateTime;
+
+import org.jooq.Record1;
+import org.jooq.impl.UpdatableRecordImpl;
 
 
 /**
@@ -20,154 +21,154 @@ public class GradeRecord extends UpdatableRecordImpl<GradeRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>kepegawaian.grade.id</code>.
+     * Setter for <code>grade.id</code>.
      */
     public void setId(Long value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.grade.id</code>.
+     * Getter for <code>grade.id</code>.
      */
     public Long getId() {
         return (Long) get(0);
     }
 
     /**
-     * Setter for <code>kepegawaian.grade.changed_status</code>.
+     * Setter for <code>grade.changed_status</code>.
      */
     public void setChangedStatus(Byte value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.grade.changed_status</code>.
+     * Getter for <code>grade.changed_status</code>.
      */
     public Byte getChangedStatus() {
         return (Byte) get(1);
     }
 
     /**
-     * Setter for <code>kepegawaian.grade.created_at</code>.
+     * Setter for <code>grade.created_at</code>.
      */
     public void setCreatedAt(LocalDateTime value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.grade.created_at</code>.
+     * Getter for <code>grade.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
         return (LocalDateTime) get(2);
     }
 
     /**
-     * Setter for <code>kepegawaian.grade.created_by</code>.
+     * Setter for <code>grade.created_by</code>.
      */
     public void setCreatedBy(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.grade.created_by</code>.
+     * Getter for <code>grade.created_by</code>.
      */
     public String getCreatedBy() {
         return (String) get(3);
     }
 
     /**
-     * Setter for <code>kepegawaian.grade.is_deleted</code>.
+     * Setter for <code>grade.is_deleted</code>.
      */
     public void setIsDeleted(Boolean value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.grade.is_deleted</code>.
+     * Getter for <code>grade.is_deleted</code>.
      */
     public Boolean getIsDeleted() {
         return (Boolean) get(4);
     }
 
     /**
-     * Setter for <code>kepegawaian.grade.updated_at</code>.
+     * Setter for <code>grade.updated_at</code>.
      */
     public void setUpdatedAt(LocalDateTime value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.grade.updated_at</code>.
+     * Getter for <code>grade.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
         return (LocalDateTime) get(5);
     }
 
     /**
-     * Setter for <code>kepegawaian.grade.updated_by</code>.
+     * Setter for <code>grade.updated_by</code>.
      */
     public void setUpdatedBy(String value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.grade.updated_by</code>.
+     * Getter for <code>grade.updated_by</code>.
      */
     public String getUpdatedBy() {
         return (String) get(6);
     }
 
     /**
-     * Setter for <code>kepegawaian.grade.version</code>.
+     * Setter for <code>grade.version</code>.
      */
     public void setVersion(Integer value) {
         set(7, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.grade.version</code>.
+     * Getter for <code>grade.version</code>.
      */
     public Integer getVersion() {
         return (Integer) get(7);
     }
 
     /**
-     * Setter for <code>kepegawaian.grade.grade</code>.
+     * Setter for <code>grade.grade</code>.
      */
     public void setGrade(Integer value) {
         set(8, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.grade.grade</code>.
+     * Getter for <code>grade.grade</code>.
      */
     public Integer getGrade() {
         return (Integer) get(8);
     }
 
     /**
-     * Setter for <code>kepegawaian.grade.tukin</code>.
+     * Setter for <code>grade.tukin</code>.
      */
     public void setTukin(Double value) {
         set(9, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.grade.tukin</code>.
+     * Getter for <code>grade.tukin</code>.
      */
     public Double getTukin() {
         return (Double) get(9);
     }
 
     /**
-     * Setter for <code>kepegawaian.grade.level_id</code>.
+     * Setter for <code>grade.level_id</code>.
      */
     public void setLevelId(Long value) {
         set(10, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.grade.level_id</code>.
+     * Getter for <code>grade.level_id</code>.
      */
     public Long getLevelId() {
         return (Long) get(10);

@@ -19,72 +19,70 @@ public class GajiBatchRootErrorLogsRecord extends UpdatableRecordImpl<GajiBatchR
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>kepegawaian.gaji_batch_root_error_logs.id</code>.
+     * Setter for <code>gaji_batch_root_error_logs.id</code>.
      */
     public void setId(Long value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_batch_root_error_logs.id</code>.
+     * Getter for <code>gaji_batch_root_error_logs.id</code>.
      */
     public Long getId() {
         return (Long) get(0);
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_batch_root_error_logs.nama</code>.
+     * Setter for <code>gaji_batch_root_error_logs.nama</code>.
      */
     public void setNama(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_batch_root_error_logs.nama</code>.
+     * Getter for <code>gaji_batch_root_error_logs.nama</code>.
      */
     public String getNama() {
         return (String) get(1);
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_batch_root_error_logs.nipam</code>.
+     * Setter for <code>gaji_batch_root_error_logs.nipam</code>.
      */
     public void setNipam(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_batch_root_error_logs.nipam</code>.
+     * Getter for <code>gaji_batch_root_error_logs.nipam</code>.
      */
     public String getNipam() {
         return (String) get(2);
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_batch_root_error_logs.notes</code>.
+     * Setter for <code>gaji_batch_root_error_logs.notes</code>.
      */
     public void setNotes(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_batch_root_error_logs.notes</code>.
+     * Getter for <code>gaji_batch_root_error_logs.notes</code>.
      */
     public String getNotes() {
         return (String) get(3);
     }
 
     /**
-     * Setter for
-     * <code>kepegawaian.gaji_batch_root_error_logs.root_batch_id</code>.
+     * Setter for <code>gaji_batch_root_error_logs.root_batch_id</code>.
      */
     public void setRootBatchId(String value) {
         set(4, value);
     }
 
     /**
-     * Getter for
-     * <code>kepegawaian.gaji_batch_root_error_logs.root_batch_id</code>.
+     * Getter for <code>gaji_batch_root_error_logs.root_batch_id</code>.
      */
     public String getRootBatchId() {
         return (String) get(4);

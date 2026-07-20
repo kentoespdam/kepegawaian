@@ -20,130 +20,126 @@ public class GajiBatchMasterProsesRecord extends UpdatableRecordImpl<GajiBatchMa
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>kepegawaian.gaji_batch_master_proses.id</code>.
+     * Setter for <code>gaji_batch_master_proses.id</code>.
      */
     public void setId(Long value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_batch_master_proses.id</code>.
+     * Getter for <code>gaji_batch_master_proses.id</code>.
      */
     public Long getId() {
         return (Long) get(0);
     }
 
     /**
-     * Setter for
-     * <code>kepegawaian.gaji_batch_master_proses.batch_master_id</code>.
+     * Setter for <code>gaji_batch_master_proses.batch_master_id</code>.
      */
     public void setBatchMasterId(Long value) {
         set(1, value);
     }
 
     /**
-     * Getter for
-     * <code>kepegawaian.gaji_batch_master_proses.batch_master_id</code>.
+     * Getter for <code>gaji_batch_master_proses.batch_master_id</code>.
      */
     public Long getBatchMasterId() {
         return (Long) get(1);
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_batch_master_proses.formula</code>.
+     * Setter for <code>gaji_batch_master_proses.formula</code>.
      */
     public void setFormula(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_batch_master_proses.formula</code>.
+     * Getter for <code>gaji_batch_master_proses.formula</code>.
      */
     public String getFormula() {
         return (String) get(2);
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_batch_master_proses.jenis_gaji</code>.
+     * Setter for <code>gaji_batch_master_proses.jenis_gaji</code>.
      */
     public void setJenisGaji(GajiBatchMasterProsesJenisGaji value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_batch_master_proses.jenis_gaji</code>.
+     * Getter for <code>gaji_batch_master_proses.jenis_gaji</code>.
      */
     public GajiBatchMasterProsesJenisGaji getJenisGaji() {
         return (GajiBatchMasterProsesJenisGaji) get(3);
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_batch_master_proses.kode</code>.
+     * Setter for <code>gaji_batch_master_proses.kode</code>.
      */
     public void setKode(String value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_batch_master_proses.kode</code>.
+     * Getter for <code>gaji_batch_master_proses.kode</code>.
      */
     public String getKode() {
         return (String) get(4);
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_batch_master_proses.nama</code>.
+     * Setter for <code>gaji_batch_master_proses.nama</code>.
      */
     public void setNama(String value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_batch_master_proses.nama</code>.
+     * Getter for <code>gaji_batch_master_proses.nama</code>.
      */
     public String getNama() {
         return (String) get(5);
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_batch_master_proses.nilai</code>.
+     * Setter for <code>gaji_batch_master_proses.nilai</code>.
      */
     public void setNilai(Double value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_batch_master_proses.nilai</code>.
+     * Getter for <code>gaji_batch_master_proses.nilai</code>.
      */
     public Double getNilai() {
         return (Double) get(6);
     }
 
     /**
-     * Setter for
-     * <code>kepegawaian.gaji_batch_master_proses.nilai_formula</code>.
+     * Setter for <code>gaji_batch_master_proses.nilai_formula</code>.
      */
     public void setNilaiFormula(String value) {
         set(7, value);
     }
 
     /**
-     * Getter for
-     * <code>kepegawaian.gaji_batch_master_proses.nilai_formula</code>.
+     * Getter for <code>gaji_batch_master_proses.nilai_formula</code>.
      */
     public String getNilaiFormula() {
         return (String) get(7);
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_batch_master_proses.urut</code>.
+     * Setter for <code>gaji_batch_master_proses.urut</code>.
      */
     public void setUrut(Integer value) {
         set(8, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_batch_master_proses.urut</code>.
+     * Getter for <code>gaji_batch_master_proses.urut</code>.
      */
     public Integer getUrut() {
         return (Integer) get(8);

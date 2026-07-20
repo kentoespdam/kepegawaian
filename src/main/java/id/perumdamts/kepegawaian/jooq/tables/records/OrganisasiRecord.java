@@ -5,10 +5,11 @@ package id.perumdamts.kepegawaian.jooq.tables.records;
 
 
 import id.perumdamts.kepegawaian.jooq.tables.Organisasi;
-import org.jooq.Record1;
-import org.jooq.impl.UpdatableRecordImpl;
 
 import java.time.LocalDateTime;
+
+import org.jooq.Record1;
+import org.jooq.impl.UpdatableRecordImpl;
 
 
 /**
@@ -20,196 +21,196 @@ public class OrganisasiRecord extends UpdatableRecordImpl<OrganisasiRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>kepegawaian.organisasi.id</code>.
+     * Setter for <code>organisasi.id</code>.
      */
     public void setId(Long value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.organisasi.id</code>.
+     * Getter for <code>organisasi.id</code>.
      */
     public Long getId() {
         return (Long) get(0);
     }
 
     /**
-     * Setter for <code>kepegawaian.organisasi.changed_status</code>.
+     * Setter for <code>organisasi.changed_status</code>.
      */
     public void setChangedStatus(Byte value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.organisasi.changed_status</code>.
+     * Getter for <code>organisasi.changed_status</code>.
      */
     public Byte getChangedStatus() {
         return (Byte) get(1);
     }
 
     /**
-     * Setter for <code>kepegawaian.organisasi.created_at</code>.
+     * Setter for <code>organisasi.created_at</code>.
      */
     public void setCreatedAt(LocalDateTime value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.organisasi.created_at</code>.
+     * Getter for <code>organisasi.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
         return (LocalDateTime) get(2);
     }
 
     /**
-     * Setter for <code>kepegawaian.organisasi.created_by</code>.
+     * Setter for <code>organisasi.created_by</code>.
      */
     public void setCreatedBy(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.organisasi.created_by</code>.
+     * Getter for <code>organisasi.created_by</code>.
      */
     public String getCreatedBy() {
         return (String) get(3);
     }
 
     /**
-     * Setter for <code>kepegawaian.organisasi.is_deleted</code>.
+     * Setter for <code>organisasi.is_deleted</code>.
      */
     public void setIsDeleted(Boolean value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.organisasi.is_deleted</code>.
+     * Getter for <code>organisasi.is_deleted</code>.
      */
     public Boolean getIsDeleted() {
         return (Boolean) get(4);
     }
 
     /**
-     * Setter for <code>kepegawaian.organisasi.updated_at</code>.
+     * Setter for <code>organisasi.updated_at</code>.
      */
     public void setUpdatedAt(LocalDateTime value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.organisasi.updated_at</code>.
+     * Getter for <code>organisasi.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
         return (LocalDateTime) get(5);
     }
 
     /**
-     * Setter for <code>kepegawaian.organisasi.updated_by</code>.
+     * Setter for <code>organisasi.updated_by</code>.
      */
     public void setUpdatedBy(String value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.organisasi.updated_by</code>.
+     * Getter for <code>organisasi.updated_by</code>.
      */
     public String getUpdatedBy() {
         return (String) get(6);
     }
 
     /**
-     * Setter for <code>kepegawaian.organisasi.version</code>.
+     * Setter for <code>organisasi.version</code>.
      */
     public void setVersion(Integer value) {
         set(7, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.organisasi.version</code>.
+     * Getter for <code>organisasi.version</code>.
      */
     public Integer getVersion() {
         return (Integer) get(7);
     }
 
     /**
-     * Setter for <code>kepegawaian.organisasi.category</code>.
+     * Setter for <code>organisasi.category</code>.
      */
     public void setCategory(String value) {
         set(8, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.organisasi.category</code>.
+     * Getter for <code>organisasi.category</code>.
      */
     public String getCategory() {
         return (String) get(8);
     }
 
     /**
-     * Setter for <code>kepegawaian.organisasi.kode</code>.
+     * Setter for <code>organisasi.kode</code>.
      */
     public void setKode(String value) {
         set(9, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.organisasi.kode</code>.
+     * Getter for <code>organisasi.kode</code>.
      */
     public String getKode() {
         return (String) get(9);
     }
 
     /**
-     * Setter for <code>kepegawaian.organisasi.level_org</code>.
+     * Setter for <code>organisasi.level_org</code>.
      */
     public void setLevelOrg(Integer value) {
         set(10, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.organisasi.level_org</code>.
+     * Getter for <code>organisasi.level_org</code>.
      */
     public Integer getLevelOrg() {
         return (Integer) get(10);
     }
 
     /**
-     * Setter for <code>kepegawaian.organisasi.nama</code>.
+     * Setter for <code>organisasi.nama</code>.
      */
     public void setNama(String value) {
         set(11, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.organisasi.nama</code>.
+     * Getter for <code>organisasi.nama</code>.
      */
     public String getNama() {
         return (String) get(11);
     }
 
     /**
-     * Setter for <code>kepegawaian.organisasi.short_name</code>.
+     * Setter for <code>organisasi.short_name</code>.
      */
     public void setShortName(String value) {
         set(12, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.organisasi.short_name</code>.
+     * Getter for <code>organisasi.short_name</code>.
      */
     public String getShortName() {
         return (String) get(12);
     }
 
     /**
-     * Setter for <code>kepegawaian.organisasi.parent_id</code>.
+     * Setter for <code>organisasi.parent_id</code>.
      */
     public void setParentId(Long value) {
         set(13, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.organisasi.parent_id</code>.
+     * Getter for <code>organisasi.parent_id</code>.
      */
     public Long getParentId() {
         return (Long) get(13);

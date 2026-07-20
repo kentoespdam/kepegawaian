@@ -55,6 +55,7 @@ abstract class JooqCodegenTask : DefaultTask() {
                             .withIncludes(".*")
                             .withExcludes("flyway_schema_history")
                             .withInputSchema("kepegawaian")
+                            .withOutputSchemaToDefault(true) // ponytail: schema-agnostic generated code, runtime reads from connection default (kepegawaian_dev_new)
                             .withForcedTypes(
                                 ForcedType()
                                     .withName("BOOLEAN")

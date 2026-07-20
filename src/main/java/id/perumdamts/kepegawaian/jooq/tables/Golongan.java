@@ -4,8 +4,8 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Indexes;
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.GajiPotonganTkk.GajiPotonganTkkPath;
 import id.perumdamts.kepegawaian.jooq.tables.GajiTunjangan.GajiTunjanganPath;
@@ -13,16 +13,34 @@ import id.perumdamts.kepegawaian.jooq.tables.Pegawai.PegawaiPath;
 import id.perumdamts.kepegawaian.jooq.tables.RiwayatSk.RiwayatSkPath;
 import id.perumdamts.kepegawaian.jooq.tables.RiwayatTerminasi.RiwayatTerminasiPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.GolonganRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.Identity;
+import org.jooq.Index;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -34,7 +52,7 @@ public class Golongan extends TableImpl<GolonganRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.golongan</code>
+     * The reference instance of <code>golongan</code>
      */
     public static final Golongan GOLONGAN = new Golongan();
 
@@ -47,52 +65,52 @@ public class Golongan extends TableImpl<GolonganRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.golongan.id</code>.
+     * The column <code>golongan.id</code>.
      */
     public final TableField<GolonganRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.golongan.changed_status</code>.
+     * The column <code>golongan.changed_status</code>.
      */
     public final TableField<GolonganRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.golongan.created_at</code>.
+     * The column <code>golongan.created_at</code>.
      */
     public final TableField<GolonganRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.golongan.created_by</code>.
+     * The column <code>golongan.created_by</code>.
      */
     public final TableField<GolonganRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.golongan.is_deleted</code>.
+     * The column <code>golongan.is_deleted</code>.
      */
     public final TableField<GolonganRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>kepegawaian.golongan.updated_at</code>.
+     * The column <code>golongan.updated_at</code>.
      */
     public final TableField<GolonganRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.golongan.updated_by</code>.
+     * The column <code>golongan.updated_by</code>.
      */
     public final TableField<GolonganRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.golongan.version</code>.
+     * The column <code>golongan.version</code>.
      */
     public final TableField<GolonganRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.golongan.golongan</code>.
+     * The column <code>golongan.golongan</code>.
      */
     public final TableField<GolonganRecord, String> GOLONGAN_ = createField(DSL.name("golongan"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.golongan.pangkat</code>.
+     * The column <code>golongan.pangkat</code>.
      */
     public final TableField<GolonganRecord, String> PANGKAT = createField(DSL.name("pangkat"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
@@ -105,21 +123,21 @@ public class Golongan extends TableImpl<GolonganRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.golongan</code> table reference
+     * Create an aliased <code>golongan</code> table reference
      */
     public Golongan(String alias) {
         this(DSL.name(alias), GOLONGAN);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.golongan</code> table reference
+     * Create an aliased <code>golongan</code> table reference
      */
     public Golongan(Name alias) {
         this(alias, GOLONGAN);
     }
 
     /**
-     * Create a <code>kepegawaian.golongan</code> table reference
+     * Create a <code>golongan</code> table reference
      */
     public Golongan() {
         this(DSL.name("golongan"), null);
@@ -160,7 +178,7 @@ public class Golongan extends TableImpl<GolonganRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -181,8 +199,7 @@ public class Golongan extends TableImpl<GolonganRecord> {
     private transient PegawaiPath _pegawai;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.pegawai</code> table
+     * Get the implicit to-many join path to the <code>pegawai</code> table
      */
     public PegawaiPath pegawai() {
         if (_pegawai == null)
@@ -194,8 +211,8 @@ public class Golongan extends TableImpl<GolonganRecord> {
     private transient GajiPotonganTkkPath _gajiPotonganTkk;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.gaji_potongan_tkk</code> table
+     * Get the implicit to-many join path to the <code>gaji_potongan_tkk</code>
+     * table
      */
     public GajiPotonganTkkPath gajiPotonganTkk() {
         if (_gajiPotonganTkk == null)
@@ -207,8 +224,8 @@ public class Golongan extends TableImpl<GolonganRecord> {
     private transient GajiTunjanganPath _gajiTunjangan;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.gaji_tunjangan</code> table
+     * Get the implicit to-many join path to the <code>gaji_tunjangan</code>
+     * table
      */
     public GajiTunjanganPath gajiTunjangan() {
         if (_gajiTunjangan == null)
@@ -220,8 +237,8 @@ public class Golongan extends TableImpl<GolonganRecord> {
     private transient RiwayatTerminasiPath _riwayatTerminasi;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.riwayat_terminasi</code> table
+     * Get the implicit to-many join path to the <code>riwayat_terminasi</code>
+     * table
      */
     public RiwayatTerminasiPath riwayatTerminasi() {
         if (_riwayatTerminasi == null)
@@ -233,8 +250,7 @@ public class Golongan extends TableImpl<GolonganRecord> {
     private transient RiwayatSkPath _riwayatSk;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.riwayat_sk</code> table
+     * Get the implicit to-many join path to the <code>riwayat_sk</code> table
      */
     public RiwayatSkPath riwayatSk() {
         if (_riwayatSk == null)

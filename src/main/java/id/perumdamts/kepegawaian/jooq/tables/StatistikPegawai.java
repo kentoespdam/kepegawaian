@@ -4,18 +4,33 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Indexes;
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.records.StatistikPegawaiRecord;
-import org.jooq.*;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.Identity;
+import org.jooq.Index;
+import org.jooq.Name;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -27,7 +42,7 @@ public class StatistikPegawai extends TableImpl<StatistikPegawaiRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.statistik_pegawai</code>
+     * The reference instance of <code>statistik_pegawai</code>
      */
     public static final StatistikPegawai STATISTIK_PEGAWAI = new StatistikPegawai();
 
@@ -40,97 +55,97 @@ public class StatistikPegawai extends TableImpl<StatistikPegawaiRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.statistik_pegawai.id</code>.
+     * The column <code>statistik_pegawai.id</code>.
      */
     public final TableField<StatistikPegawaiRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.statistik_pegawai.adm</code>.
+     * The column <code>statistik_pegawai.adm</code>.
      */
     public final TableField<StatistikPegawaiRecord, Integer> ADM = createField(DSL.name("adm"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.statistik_pegawai.bulan</code>.
+     * The column <code>statistik_pegawai.bulan</code>.
      */
     public final TableField<StatistikPegawaiRecord, Integer> BULAN = createField(DSL.name("bulan"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.statistik_pegawai.capeg</code>.
+     * The column <code>statistik_pegawai.capeg</code>.
      */
     public final TableField<StatistikPegawaiRecord, Integer> CAPEG = createField(DSL.name("capeg"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.statistik_pegawai.golongan_a</code>.
+     * The column <code>statistik_pegawai.golongan_a</code>.
      */
     public final TableField<StatistikPegawaiRecord, Integer> GOLONGAN_A = createField(DSL.name("golongan_a"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.statistik_pegawai.golongan_b</code>.
+     * The column <code>statistik_pegawai.golongan_b</code>.
      */
     public final TableField<StatistikPegawaiRecord, Integer> GOLONGAN_B = createField(DSL.name("golongan_b"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.statistik_pegawai.golongan_c</code>.
+     * The column <code>statistik_pegawai.golongan_c</code>.
      */
     public final TableField<StatistikPegawaiRecord, Integer> GOLONGAN_C = createField(DSL.name("golongan_c"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.statistik_pegawai.golongan_d</code>.
+     * The column <code>statistik_pegawai.golongan_d</code>.
      */
     public final TableField<StatistikPegawaiRecord, Integer> GOLONGAN_D = createField(DSL.name("golongan_d"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.statistik_pegawai.honorer</code>.
+     * The column <code>statistik_pegawai.honorer</code>.
      */
     public final TableField<StatistikPegawaiRecord, Integer> HONORER = createField(DSL.name("honorer"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.statistik_pegawai.kontrak</code>.
+     * The column <code>statistik_pegawai.kontrak</code>.
      */
     public final TableField<StatistikPegawaiRecord, Integer> KONTRAK = createField(DSL.name("kontrak"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.statistik_pegawai.non_golongan</code>.
+     * The column <code>statistik_pegawai.non_golongan</code>.
      */
     public final TableField<StatistikPegawaiRecord, Integer> NON_GOLONGAN = createField(DSL.name("non_golongan"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.statistik_pegawai.pelayanan</code>.
+     * The column <code>statistik_pegawai.pelayanan</code>.
      */
     public final TableField<StatistikPegawaiRecord, Integer> PELAYANAN = createField(DSL.name("pelayanan"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.statistik_pegawai.pendidikan</code>.
+     * The column <code>statistik_pegawai.pendidikan</code>.
      */
     public final TableField<StatistikPegawaiRecord, String> PENDIDIKAN = createField(DSL.name("pendidikan"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.statistik_pegawai.pria</code>.
+     * The column <code>statistik_pegawai.pria</code>.
      */
     public final TableField<StatistikPegawaiRecord, Integer> PRIA = createField(DSL.name("pria"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.statistik_pegawai.seq</code>.
+     * The column <code>statistik_pegawai.seq</code>.
      */
     public final TableField<StatistikPegawaiRecord, Integer> SEQ = createField(DSL.name("seq"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.statistik_pegawai.tahun</code>.
+     * The column <code>statistik_pegawai.tahun</code>.
      */
     public final TableField<StatistikPegawaiRecord, Integer> TAHUN = createField(DSL.name("tahun"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.statistik_pegawai.teknik</code>.
+     * The column <code>statistik_pegawai.teknik</code>.
      */
     public final TableField<StatistikPegawaiRecord, Integer> TEKNIK = createField(DSL.name("teknik"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.statistik_pegawai.tetap</code>.
+     * The column <code>statistik_pegawai.tetap</code>.
      */
     public final TableField<StatistikPegawaiRecord, Integer> TETAP = createField(DSL.name("tetap"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.statistik_pegawai.wanita</code>.
+     * The column <code>statistik_pegawai.wanita</code>.
      */
     public final TableField<StatistikPegawaiRecord, Integer> WANITA = createField(DSL.name("wanita"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
@@ -143,23 +158,21 @@ public class StatistikPegawai extends TableImpl<StatistikPegawaiRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.statistik_pegawai</code> table
-     * reference
+     * Create an aliased <code>statistik_pegawai</code> table reference
      */
     public StatistikPegawai(String alias) {
         this(DSL.name(alias), STATISTIK_PEGAWAI);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.statistik_pegawai</code> table
-     * reference
+     * Create an aliased <code>statistik_pegawai</code> table reference
      */
     public StatistikPegawai(Name alias) {
         this(alias, STATISTIK_PEGAWAI);
     }
 
     /**
-     * Create a <code>kepegawaian.statistik_pegawai</code> table reference
+     * Create a <code>statistik_pegawai</code> table reference
      */
     public StatistikPegawai() {
         this(DSL.name("statistik_pegawai"), null);
@@ -167,7 +180,7 @@ public class StatistikPegawai extends TableImpl<StatistikPegawaiRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override

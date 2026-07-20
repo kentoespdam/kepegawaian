@@ -4,23 +4,41 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Indexes;
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.CutiPegawai.CutiPegawaiPath;
 import id.perumdamts.kepegawaian.jooq.tables.Jabatan.JabatanPath;
 import id.perumdamts.kepegawaian.jooq.tables.Pegawai.PegawaiPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.CutiApprovalRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.Identity;
+import org.jooq.Index;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -32,7 +50,7 @@ public class CutiApproval extends TableImpl<CutiApprovalRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.cuti_approval</code>
+     * The reference instance of <code>cuti_approval</code>
      */
     public static final CutiApproval CUTI_APPROVAL = new CutiApproval();
 
@@ -45,72 +63,72 @@ public class CutiApproval extends TableImpl<CutiApprovalRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.cuti_approval.id</code>.
+     * The column <code>cuti_approval.id</code>.
      */
     public final TableField<CutiApprovalRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_approval.changed_status</code>.
+     * The column <code>cuti_approval.changed_status</code>.
      */
     public final TableField<CutiApprovalRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_approval.created_at</code>.
+     * The column <code>cuti_approval.created_at</code>.
      */
     public final TableField<CutiApprovalRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_approval.created_by</code>.
+     * The column <code>cuti_approval.created_by</code>.
      */
     public final TableField<CutiApprovalRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_approval.is_deleted</code>.
+     * The column <code>cuti_approval.is_deleted</code>.
      */
     public final TableField<CutiApprovalRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_approval.updated_at</code>.
+     * The column <code>cuti_approval.updated_at</code>.
      */
     public final TableField<CutiApprovalRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_approval.updated_by</code>.
+     * The column <code>cuti_approval.updated_by</code>.
      */
     public final TableField<CutiApprovalRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_approval.version</code>.
+     * The column <code>cuti_approval.version</code>.
      */
     public final TableField<CutiApprovalRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_approval.approval_level</code>.
+     * The column <code>cuti_approval.approval_level</code>.
      */
     public final TableField<CutiApprovalRecord, Integer> APPROVAL_LEVEL = createField(DSL.name("approval_level"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_approval.approval_status</code>.
+     * The column <code>cuti_approval.approval_status</code>.
      */
     public final TableField<CutiApprovalRecord, Byte> APPROVAL_STATUS = createField(DSL.name("approval_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_approval.notes</code>.
+     * The column <code>cuti_approval.notes</code>.
      */
     public final TableField<CutiApprovalRecord, String> NOTES = createField(DSL.name("notes"), SQLDataType.CLOB(65535).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_approval.approver_id</code>.
+     * The column <code>cuti_approval.approver_id</code>.
      */
     public final TableField<CutiApprovalRecord, Long> APPROVER_ID = createField(DSL.name("approver_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_approval.cuti_pegawai_id</code>.
+     * The column <code>cuti_approval.cuti_pegawai_id</code>.
      */
     public final TableField<CutiApprovalRecord, Long> CUTI_PEGAWAI_ID = createField(DSL.name("cuti_pegawai_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_approval.jabatan_id</code>.
+     * The column <code>cuti_approval.jabatan_id</code>.
      */
     public final TableField<CutiApprovalRecord, Long> JABATAN_ID = createField(DSL.name("jabatan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
@@ -123,21 +141,21 @@ public class CutiApproval extends TableImpl<CutiApprovalRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.cuti_approval</code> table reference
+     * Create an aliased <code>cuti_approval</code> table reference
      */
     public CutiApproval(String alias) {
         this(DSL.name(alias), CUTI_APPROVAL);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.cuti_approval</code> table reference
+     * Create an aliased <code>cuti_approval</code> table reference
      */
     public CutiApproval(Name alias) {
         this(alias, CUTI_APPROVAL);
     }
 
     /**
-     * Create a <code>kepegawaian.cuti_approval</code> table reference
+     * Create a <code>cuti_approval</code> table reference
      */
     public CutiApproval() {
         this(DSL.name("cuti_approval"), null);
@@ -178,7 +196,7 @@ public class CutiApproval extends TableImpl<CutiApprovalRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -204,8 +222,7 @@ public class CutiApproval extends TableImpl<CutiApprovalRecord> {
     private transient CutiPegawaiPath _cutiPegawai;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.cuti_pegawai</code>
-     * table.
+     * Get the implicit join path to the <code>cuti_pegawai</code> table.
      */
     public CutiPegawaiPath cutiPegawai() {
         if (_cutiPegawai == null)
@@ -217,7 +234,7 @@ public class CutiApproval extends TableImpl<CutiApprovalRecord> {
     private transient PegawaiPath _pegawai;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.pegawai</code> table.
+     * Get the implicit join path to the <code>pegawai</code> table.
      */
     public PegawaiPath pegawai() {
         if (_pegawai == null)
@@ -229,7 +246,7 @@ public class CutiApproval extends TableImpl<CutiApprovalRecord> {
     private transient JabatanPath _jabatan;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.jabatan</code> table.
+     * Get the implicit join path to the <code>jabatan</code> table.
      */
     public JabatanPath jabatan() {
         if (_jabatan == null)

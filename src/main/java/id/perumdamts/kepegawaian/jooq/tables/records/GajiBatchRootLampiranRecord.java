@@ -19,90 +19,84 @@ public class GajiBatchRootLampiranRecord extends UpdatableRecordImpl<GajiBatchRo
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>kepegawaian.gaji_batch_root_lampiran.id</code>.
+     * Setter for <code>gaji_batch_root_lampiran.id</code>.
      */
     public void setId(Long value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_batch_root_lampiran.id</code>.
+     * Getter for <code>gaji_batch_root_lampiran.id</code>.
      */
     public Long getId() {
         return (Long) get(0);
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_batch_root_lampiran.file_name</code>.
+     * Setter for <code>gaji_batch_root_lampiran.file_name</code>.
      */
     public void setFileName(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_batch_root_lampiran.file_name</code>.
+     * Getter for <code>gaji_batch_root_lampiran.file_name</code>.
      */
     public String getFileName() {
         return (String) get(1);
     }
 
     /**
-     * Setter for
-     * <code>kepegawaian.gaji_batch_root_lampiran.hashed_file_name</code>.
+     * Setter for <code>gaji_batch_root_lampiran.hashed_file_name</code>.
      */
     public void setHashedFileName(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for
-     * <code>kepegawaian.gaji_batch_root_lampiran.hashed_file_name</code>.
+     * Getter for <code>gaji_batch_root_lampiran.hashed_file_name</code>.
      */
     public String getHashedFileName() {
         return (String) get(2);
     }
 
     /**
-     * Setter for
-     * <code>kepegawaian.gaji_batch_root_lampiran.jenis_lampiran_gaji</code>.
+     * Setter for <code>gaji_batch_root_lampiran.jenis_lampiran_gaji</code>.
      */
     public void setJenisLampiranGaji(Byte value) {
         set(3, value);
     }
 
     /**
-     * Getter for
-     * <code>kepegawaian.gaji_batch_root_lampiran.jenis_lampiran_gaji</code>.
+     * Getter for <code>gaji_batch_root_lampiran.jenis_lampiran_gaji</code>.
      */
     public Byte getJenisLampiranGaji() {
         return (Byte) get(3);
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_batch_root_lampiran.mime_type</code>.
+     * Setter for <code>gaji_batch_root_lampiran.mime_type</code>.
      */
     public void setMimeType(String value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_batch_root_lampiran.mime_type</code>.
+     * Getter for <code>gaji_batch_root_lampiran.mime_type</code>.
      */
     public String getMimeType() {
         return (String) get(4);
     }
 
     /**
-     * Setter for
-     * <code>kepegawaian.gaji_batch_root_lampiran.root_batch_id</code>.
+     * Setter for <code>gaji_batch_root_lampiran.root_batch_id</code>.
      */
     public void setRootBatchId(String value) {
         set(5, value);
     }
 
     /**
-     * Getter for
-     * <code>kepegawaian.gaji_batch_root_lampiran.root_batch_id</code>.
+     * Getter for <code>gaji_batch_root_lampiran.root_batch_id</code>.
      */
     public String getRootBatchId() {
         return (String) get(5);

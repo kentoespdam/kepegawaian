@@ -4,20 +4,37 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.CutiPegawai.CutiPegawaiPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.CutiKlaimDetailRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.Identity;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -29,7 +46,7 @@ public class CutiKlaimDetail extends TableImpl<CutiKlaimDetailRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.cuti_klaim_detail</code>
+     * The reference instance of <code>cuti_klaim_detail</code>
      */
     public static final CutiKlaimDetail CUTI_KLAIM_DETAIL = new CutiKlaimDetail();
 
@@ -42,17 +59,17 @@ public class CutiKlaimDetail extends TableImpl<CutiKlaimDetailRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.cuti_klaim_detail.id</code>.
+     * The column <code>cuti_klaim_detail.id</code>.
      */
     public final TableField<CutiKlaimDetailRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_klaim_detail.tanggal</code>.
+     * The column <code>cuti_klaim_detail.tanggal</code>.
      */
     public final TableField<CutiKlaimDetailRecord, LocalDate> TANGGAL = createField(DSL.name("tanggal"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_klaim_detail.ref_cuti_id</code>.
+     * The column <code>cuti_klaim_detail.ref_cuti_id</code>.
      */
     public final TableField<CutiKlaimDetailRecord, Long> REF_CUTI_ID = createField(DSL.name("ref_cuti_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
@@ -65,23 +82,21 @@ public class CutiKlaimDetail extends TableImpl<CutiKlaimDetailRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.cuti_klaim_detail</code> table
-     * reference
+     * Create an aliased <code>cuti_klaim_detail</code> table reference
      */
     public CutiKlaimDetail(String alias) {
         this(DSL.name(alias), CUTI_KLAIM_DETAIL);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.cuti_klaim_detail</code> table
-     * reference
+     * Create an aliased <code>cuti_klaim_detail</code> table reference
      */
     public CutiKlaimDetail(Name alias) {
         this(alias, CUTI_KLAIM_DETAIL);
     }
 
     /**
-     * Create a <code>kepegawaian.cuti_klaim_detail</code> table reference
+     * Create a <code>cuti_klaim_detail</code> table reference
      */
     public CutiKlaimDetail() {
         this(DSL.name("cuti_klaim_detail"), null);
@@ -122,7 +137,7 @@ public class CutiKlaimDetail extends TableImpl<CutiKlaimDetailRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -143,8 +158,7 @@ public class CutiKlaimDetail extends TableImpl<CutiKlaimDetailRecord> {
     private transient CutiPegawaiPath _cutiPegawai;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.cuti_pegawai</code>
-     * table.
+     * Get the implicit join path to the <code>cuti_pegawai</code> table.
      */
     public CutiPegawaiPath cutiPegawai() {
         if (_cutiPegawai == null)

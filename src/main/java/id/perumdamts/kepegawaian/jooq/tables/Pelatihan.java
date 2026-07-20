@@ -4,23 +4,41 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Indexes;
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.Biodata.BiodataPath;
 import id.perumdamts.kepegawaian.jooq.tables.JenisPelatihan.JenisPelatihanPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.PelatihanRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.Identity;
+import org.jooq.Index;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -32,7 +50,7 @@ public class Pelatihan extends TableImpl<PelatihanRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.pelatihan</code>
+     * The reference instance of <code>pelatihan</code>
      */
     public static final Pelatihan PELATIHAN = new Pelatihan();
 
@@ -45,117 +63,117 @@ public class Pelatihan extends TableImpl<PelatihanRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.pelatihan.id</code>.
+     * The column <code>pelatihan.id</code>.
      */
     public final TableField<PelatihanRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.pelatihan.changed_status</code>.
+     * The column <code>pelatihan.changed_status</code>.
      */
     public final TableField<PelatihanRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pelatihan.created_at</code>.
+     * The column <code>pelatihan.created_at</code>.
      */
     public final TableField<PelatihanRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.pelatihan.created_by</code>.
+     * The column <code>pelatihan.created_by</code>.
      */
     public final TableField<PelatihanRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.pelatihan.is_deleted</code>.
+     * The column <code>pelatihan.is_deleted</code>.
      */
     public final TableField<PelatihanRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>kepegawaian.pelatihan.updated_at</code>.
+     * The column <code>pelatihan.updated_at</code>.
      */
     public final TableField<PelatihanRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.pelatihan.updated_by</code>.
+     * The column <code>pelatihan.updated_by</code>.
      */
     public final TableField<PelatihanRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.pelatihan.version</code>.
+     * The column <code>pelatihan.version</code>.
      */
     public final TableField<PelatihanRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.pelatihan.disetujui</code>.
+     * The column <code>pelatihan.disetujui</code>.
      */
     public final TableField<PelatihanRecord, Boolean> DISETUJUI = createField(DSL.name("disetujui"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pelatihan.disetujui_oleh</code>.
+     * The column <code>pelatihan.disetujui_oleh</code>.
      */
     public final TableField<PelatihanRecord, String> DISETUJUI_OLEH = createField(DSL.name("disetujui_oleh"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.pelatihan.ikatan_dinas</code>.
+     * The column <code>pelatihan.ikatan_dinas</code>.
      */
     public final TableField<PelatihanRecord, Boolean> IKATAN_DINAS = createField(DSL.name("ikatan_dinas"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pelatihan.lembaga</code>.
+     * The column <code>pelatihan.lembaga</code>.
      */
     public final TableField<PelatihanRecord, String> LEMBAGA = createField(DSL.name("lembaga"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.pelatihan.lulus</code>.
+     * The column <code>pelatihan.lulus</code>.
      */
     public final TableField<PelatihanRecord, Boolean> LULUS = createField(DSL.name("lulus"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pelatihan.nama</code>.
+     * The column <code>pelatihan.nama</code>.
      */
     public final TableField<PelatihanRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.pelatihan.nilai</code>.
+     * The column <code>pelatihan.nilai</code>.
      */
     public final TableField<PelatihanRecord, String> NILAI = createField(DSL.name("nilai"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.pelatihan.notes</code>.
+     * The column <code>pelatihan.notes</code>.
      */
     public final TableField<PelatihanRecord, String> NOTES = createField(DSL.name("notes"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.pelatihan.tanggal_akhir_ikatan</code>.
+     * The column <code>pelatihan.tanggal_akhir_ikatan</code>.
      */
     public final TableField<PelatihanRecord, LocalDate> TANGGAL_AKHIR_IKATAN = createField(DSL.name("tanggal_akhir_ikatan"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.pelatihan.tanggal_disetujui</code>.
+     * The column <code>pelatihan.tanggal_disetujui</code>.
      */
     public final TableField<PelatihanRecord, LocalDateTime> TANGGAL_DISETUJUI = createField(DSL.name("tanggal_disetujui"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.pelatihan.tanggal_mulai</code>.
+     * The column <code>pelatihan.tanggal_mulai</code>.
      */
     public final TableField<PelatihanRecord, LocalDate> TANGGAL_MULAI = createField(DSL.name("tanggal_mulai"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.pelatihan.tanggal_pengajuan</code>.
+     * The column <code>pelatihan.tanggal_pengajuan</code>.
      */
     public final TableField<PelatihanRecord, LocalDateTime> TANGGAL_PENGAJUAN = createField(DSL.name("tanggal_pengajuan"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.pelatihan.tanggal_selesai</code>.
+     * The column <code>pelatihan.tanggal_selesai</code>.
      */
     public final TableField<PelatihanRecord, LocalDate> TANGGAL_SELESAI = createField(DSL.name("tanggal_selesai"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.pelatihan.biodata_id</code>.
+     * The column <code>pelatihan.biodata_id</code>.
      */
     public final TableField<PelatihanRecord, String> BIODATA_ID = createField(DSL.name("biodata_id"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.pelatihan.jenis_pelatihan_id</code>.
+     * The column <code>pelatihan.jenis_pelatihan_id</code>.
      */
     public final TableField<PelatihanRecord, Long> JENIS_PELATIHAN_ID = createField(DSL.name("jenis_pelatihan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
@@ -168,21 +186,21 @@ public class Pelatihan extends TableImpl<PelatihanRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.pelatihan</code> table reference
+     * Create an aliased <code>pelatihan</code> table reference
      */
     public Pelatihan(String alias) {
         this(DSL.name(alias), PELATIHAN);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.pelatihan</code> table reference
+     * Create an aliased <code>pelatihan</code> table reference
      */
     public Pelatihan(Name alias) {
         this(alias, PELATIHAN);
     }
 
     /**
-     * Create a <code>kepegawaian.pelatihan</code> table reference
+     * Create a <code>pelatihan</code> table reference
      */
     public Pelatihan() {
         this(DSL.name("pelatihan"), null);
@@ -223,7 +241,7 @@ public class Pelatihan extends TableImpl<PelatihanRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -249,7 +267,7 @@ public class Pelatihan extends TableImpl<PelatihanRecord> {
     private transient BiodataPath _biodata;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.biodata</code> table.
+     * Get the implicit join path to the <code>biodata</code> table.
      */
     public BiodataPath biodata() {
         if (_biodata == null)
@@ -261,8 +279,7 @@ public class Pelatihan extends TableImpl<PelatihanRecord> {
     private transient JenisPelatihanPath _jenisPelatihan;
 
     /**
-     * Get the implicit join path to the
-     * <code>kepegawaian.jenis_pelatihan</code> table.
+     * Get the implicit join path to the <code>jenis_pelatihan</code> table.
      */
     public JenisPelatihanPath jenisPelatihan() {
         if (_jenisPelatihan == null)

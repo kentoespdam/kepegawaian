@@ -4,23 +4,41 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Indexes;
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.Level.LevelPath;
 import id.perumdamts.kepegawaian.jooq.tables.Pegawai.PegawaiPath;
 import id.perumdamts.kepegawaian.jooq.tables.Profesi.ProfesiPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.GradeRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.Identity;
+import org.jooq.Index;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -32,7 +50,7 @@ public class Grade extends TableImpl<GradeRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.grade</code>
+     * The reference instance of <code>grade</code>
      */
     public static final Grade GRADE = new Grade();
 
@@ -45,57 +63,57 @@ public class Grade extends TableImpl<GradeRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.grade.id</code>.
+     * The column <code>grade.id</code>.
      */
     public final TableField<GradeRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.grade.changed_status</code>.
+     * The column <code>grade.changed_status</code>.
      */
     public final TableField<GradeRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.grade.created_at</code>.
+     * The column <code>grade.created_at</code>.
      */
     public final TableField<GradeRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.grade.created_by</code>.
+     * The column <code>grade.created_by</code>.
      */
     public final TableField<GradeRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.grade.is_deleted</code>.
+     * The column <code>grade.is_deleted</code>.
      */
     public final TableField<GradeRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>kepegawaian.grade.updated_at</code>.
+     * The column <code>grade.updated_at</code>.
      */
     public final TableField<GradeRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.grade.updated_by</code>.
+     * The column <code>grade.updated_by</code>.
      */
     public final TableField<GradeRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.grade.version</code>.
+     * The column <code>grade.version</code>.
      */
     public final TableField<GradeRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.grade.grade</code>.
+     * The column <code>grade.grade</code>.
      */
     public final TableField<GradeRecord, Integer> GRADE_ = createField(DSL.name("grade"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.grade.tukin</code>.
+     * The column <code>grade.tukin</code>.
      */
     public final TableField<GradeRecord, Double> TUKIN = createField(DSL.name("tukin"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
 
     /**
-     * The column <code>kepegawaian.grade.level_id</code>.
+     * The column <code>grade.level_id</code>.
      */
     public final TableField<GradeRecord, Long> LEVEL_ID = createField(DSL.name("level_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
@@ -108,21 +126,21 @@ public class Grade extends TableImpl<GradeRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.grade</code> table reference
+     * Create an aliased <code>grade</code> table reference
      */
     public Grade(String alias) {
         this(DSL.name(alias), GRADE);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.grade</code> table reference
+     * Create an aliased <code>grade</code> table reference
      */
     public Grade(Name alias) {
         this(alias, GRADE);
     }
 
     /**
-     * Create a <code>kepegawaian.grade</code> table reference
+     * Create a <code>grade</code> table reference
      */
     public Grade() {
         this(DSL.name("grade"), null);
@@ -163,7 +181,7 @@ public class Grade extends TableImpl<GradeRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -189,7 +207,7 @@ public class Grade extends TableImpl<GradeRecord> {
     private transient LevelPath _level;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.level</code> table.
+     * Get the implicit join path to the <code>level</code> table.
      */
     public LevelPath level() {
         if (_level == null)
@@ -201,8 +219,7 @@ public class Grade extends TableImpl<GradeRecord> {
     private transient ProfesiPath _profesi;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.profesi</code> table
+     * Get the implicit to-many join path to the <code>profesi</code> table
      */
     public ProfesiPath profesi() {
         if (_profesi == null)
@@ -214,8 +231,7 @@ public class Grade extends TableImpl<GradeRecord> {
     private transient PegawaiPath _pegawai;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.pegawai</code> table
+     * Get the implicit to-many join path to the <code>pegawai</code> table
      */
     public PegawaiPath pegawai() {
         if (_pegawai == null)

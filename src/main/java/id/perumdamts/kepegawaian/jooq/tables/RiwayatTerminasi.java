@@ -4,8 +4,8 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Indexes;
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.AlasanBerhenti.AlasanBerhentiPath;
 import id.perumdamts.kepegawaian.jooq.tables.Golongan.GolonganPath;
@@ -14,17 +14,35 @@ import id.perumdamts.kepegawaian.jooq.tables.Organisasi.OrganisasiPath;
 import id.perumdamts.kepegawaian.jooq.tables.Pegawai.PegawaiPath;
 import id.perumdamts.kepegawaian.jooq.tables.RiwayatSk.RiwayatSkPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.RiwayatTerminasiRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.Identity;
+import org.jooq.Index;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -36,7 +54,7 @@ public class RiwayatTerminasi extends TableImpl<RiwayatTerminasiRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.riwayat_terminasi</code>
+     * The reference instance of <code>riwayat_terminasi</code>
      */
     public static final RiwayatTerminasi RIWAYAT_TERMINASI = new RiwayatTerminasi();
 
@@ -49,123 +67,122 @@ public class RiwayatTerminasi extends TableImpl<RiwayatTerminasiRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.riwayat_terminasi.id</code>.
+     * The column <code>riwayat_terminasi.id</code>.
      */
     public final TableField<RiwayatTerminasiRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_terminasi.changed_status</code>.
+     * The column <code>riwayat_terminasi.changed_status</code>.
      */
     public final TableField<RiwayatTerminasiRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_terminasi.created_at</code>.
+     * The column <code>riwayat_terminasi.created_at</code>.
      */
     public final TableField<RiwayatTerminasiRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_terminasi.created_by</code>.
+     * The column <code>riwayat_terminasi.created_by</code>.
      */
     public final TableField<RiwayatTerminasiRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_terminasi.is_deleted</code>.
+     * The column <code>riwayat_terminasi.is_deleted</code>.
      */
     public final TableField<RiwayatTerminasiRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_terminasi.updated_at</code>.
+     * The column <code>riwayat_terminasi.updated_at</code>.
      */
     public final TableField<RiwayatTerminasiRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_terminasi.updated_by</code>.
+     * The column <code>riwayat_terminasi.updated_by</code>.
      */
     public final TableField<RiwayatTerminasiRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_terminasi.version</code>.
+     * The column <code>riwayat_terminasi.version</code>.
      */
     public final TableField<RiwayatTerminasiRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_terminasi.masa_kerja</code>.
+     * The column <code>riwayat_terminasi.masa_kerja</code>.
      */
     public final TableField<RiwayatTerminasiRecord, Integer> MASA_KERJA = createField(DSL.name("masa_kerja"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_terminasi.nama</code>.
+     * The column <code>riwayat_terminasi.nama</code>.
      */
     public final TableField<RiwayatTerminasiRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_terminasi.nama_golongan</code>.
+     * The column <code>riwayat_terminasi.nama_golongan</code>.
      */
     public final TableField<RiwayatTerminasiRecord, String> NAMA_GOLONGAN = createField(DSL.name("nama_golongan"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_terminasi.nama_jabatan</code>.
+     * The column <code>riwayat_terminasi.nama_jabatan</code>.
      */
     public final TableField<RiwayatTerminasiRecord, String> NAMA_JABATAN = createField(DSL.name("nama_jabatan"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_terminasi.nama_organisasi</code>.
+     * The column <code>riwayat_terminasi.nama_organisasi</code>.
      */
     public final TableField<RiwayatTerminasiRecord, String> NAMA_ORGANISASI = createField(DSL.name("nama_organisasi"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_terminasi.nipam</code>.
+     * The column <code>riwayat_terminasi.nipam</code>.
      */
     public final TableField<RiwayatTerminasiRecord, String> NIPAM = createField(DSL.name("nipam"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_terminasi.nomor_sk</code>.
+     * The column <code>riwayat_terminasi.nomor_sk</code>.
      */
     public final TableField<RiwayatTerminasiRecord, String> NOMOR_SK = createField(DSL.name("nomor_sk"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_terminasi.notes</code>.
+     * The column <code>riwayat_terminasi.notes</code>.
      */
     public final TableField<RiwayatTerminasiRecord, String> NOTES = createField(DSL.name("notes"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_terminasi.tahun_terminasi</code>.
+     * The column <code>riwayat_terminasi.tahun_terminasi</code>.
      */
     public final TableField<RiwayatTerminasiRecord, Integer> TAHUN_TERMINASI = createField(DSL.name("tahun_terminasi"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_terminasi.tanggal_terminasi</code>.
+     * The column <code>riwayat_terminasi.tanggal_terminasi</code>.
      */
     public final TableField<RiwayatTerminasiRecord, LocalDate> TANGGAL_TERMINASI = createField(DSL.name("tanggal_terminasi"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.riwayat_terminasi.alasan_terminasi_id</code>.
+     * The column <code>riwayat_terminasi.alasan_terminasi_id</code>.
      */
     public final TableField<RiwayatTerminasiRecord, Long> ALASAN_TERMINASI_ID = createField(DSL.name("alasan_terminasi_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_terminasi.golongan_id</code>.
+     * The column <code>riwayat_terminasi.golongan_id</code>.
      */
     public final TableField<RiwayatTerminasiRecord, Long> GOLONGAN_ID = createField(DSL.name("golongan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_terminasi.jabatan_id</code>.
+     * The column <code>riwayat_terminasi.jabatan_id</code>.
      */
     public final TableField<RiwayatTerminasiRecord, Long> JABATAN_ID = createField(DSL.name("jabatan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_terminasi.organisasi_id</code>.
+     * The column <code>riwayat_terminasi.organisasi_id</code>.
      */
     public final TableField<RiwayatTerminasiRecord, Long> ORGANISASI_ID = createField(DSL.name("organisasi_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_terminasi.pegawai_id</code>.
+     * The column <code>riwayat_terminasi.pegawai_id</code>.
      */
     public final TableField<RiwayatTerminasiRecord, Long> PEGAWAI_ID = createField(DSL.name("pegawai_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_terminasi.riwayat_sk_id</code>.
+     * The column <code>riwayat_terminasi.riwayat_sk_id</code>.
      */
     public final TableField<RiwayatTerminasiRecord, Long> RIWAYAT_SK_ID = createField(DSL.name("riwayat_sk_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
@@ -178,23 +195,21 @@ public class RiwayatTerminasi extends TableImpl<RiwayatTerminasiRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.riwayat_terminasi</code> table
-     * reference
+     * Create an aliased <code>riwayat_terminasi</code> table reference
      */
     public RiwayatTerminasi(String alias) {
         this(DSL.name(alias), RIWAYAT_TERMINASI);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.riwayat_terminasi</code> table
-     * reference
+     * Create an aliased <code>riwayat_terminasi</code> table reference
      */
     public RiwayatTerminasi(Name alias) {
         this(alias, RIWAYAT_TERMINASI);
     }
 
     /**
-     * Create a <code>kepegawaian.riwayat_terminasi</code> table reference
+     * Create a <code>riwayat_terminasi</code> table reference
      */
     public RiwayatTerminasi() {
         this(DSL.name("riwayat_terminasi"), null);
@@ -235,7 +250,7 @@ public class RiwayatTerminasi extends TableImpl<RiwayatTerminasiRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -266,8 +281,7 @@ public class RiwayatTerminasi extends TableImpl<RiwayatTerminasiRecord> {
     private transient RiwayatSkPath _riwayatSk;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.riwayat_sk</code>
-     * table.
+     * Get the implicit join path to the <code>riwayat_sk</code> table.
      */
     public RiwayatSkPath riwayatSk() {
         if (_riwayatSk == null)
@@ -279,8 +293,7 @@ public class RiwayatTerminasi extends TableImpl<RiwayatTerminasiRecord> {
     private transient OrganisasiPath _organisasi;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.organisasi</code>
-     * table.
+     * Get the implicit join path to the <code>organisasi</code> table.
      */
     public OrganisasiPath organisasi() {
         if (_organisasi == null)
@@ -292,7 +305,7 @@ public class RiwayatTerminasi extends TableImpl<RiwayatTerminasiRecord> {
     private transient PegawaiPath _pegawai;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.pegawai</code> table.
+     * Get the implicit join path to the <code>pegawai</code> table.
      */
     public PegawaiPath pegawai() {
         if (_pegawai == null)
@@ -304,8 +317,7 @@ public class RiwayatTerminasi extends TableImpl<RiwayatTerminasiRecord> {
     private transient AlasanBerhentiPath _alasanBerhenti;
 
     /**
-     * Get the implicit join path to the
-     * <code>kepegawaian.alasan_berhenti</code> table.
+     * Get the implicit join path to the <code>alasan_berhenti</code> table.
      */
     public AlasanBerhentiPath alasanBerhenti() {
         if (_alasanBerhenti == null)
@@ -317,7 +329,7 @@ public class RiwayatTerminasi extends TableImpl<RiwayatTerminasiRecord> {
     private transient JabatanPath _jabatan;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.jabatan</code> table.
+     * Get the implicit join path to the <code>jabatan</code> table.
      */
     public JabatanPath jabatan() {
         if (_jabatan == null)
@@ -329,8 +341,7 @@ public class RiwayatTerminasi extends TableImpl<RiwayatTerminasiRecord> {
     private transient GolonganPath _golongan;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.golongan</code>
-     * table.
+     * Get the implicit join path to the <code>golongan</code> table.
      */
     public GolonganPath golongan() {
         if (_golongan == null)

@@ -4,23 +4,40 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Indexes;
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.GajiBatchMaster.GajiBatchMasterPath;
 import id.perumdamts.kepegawaian.jooq.tables.GajiBatchRootErrorLogs.GajiBatchRootErrorLogsPath;
 import id.perumdamts.kepegawaian.jooq.tables.GajiBatchRootLampiran.GajiBatchRootLampiranPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.GajiBatchRootRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.Index;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -32,7 +49,7 @@ public class GajiBatchRoot extends TableImpl<GajiBatchRootRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.gaji_batch_root</code>
+     * The reference instance of <code>gaji_batch_root</code>
      */
     public static final GajiBatchRoot GAJI_BATCH_ROOT = new GajiBatchRoot();
 
@@ -45,118 +62,112 @@ public class GajiBatchRoot extends TableImpl<GajiBatchRootRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.gaji_batch_root.id</code>.
+     * The column <code>gaji_batch_root.id</code>.
      */
     public final TableField<GajiBatchRootRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_root.created_at</code>.
+     * The column <code>gaji_batch_root.created_at</code>.
      */
     public final TableField<GajiBatchRootRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_root.created_by</code>.
+     * The column <code>gaji_batch_root.created_by</code>.
      */
     public final TableField<GajiBatchRootRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_root.di_proses_oleh</code>.
+     * The column <code>gaji_batch_root.di_proses_oleh</code>.
      */
     public final TableField<GajiBatchRootRecord, String> DI_PROSES_OLEH = createField(DSL.name("di_proses_oleh"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_root.di_setujui_oleh</code>.
+     * The column <code>gaji_batch_root.di_setujui_oleh</code>.
      */
     public final TableField<GajiBatchRootRecord, String> DI_SETUJUI_OLEH = createField(DSL.name("di_setujui_oleh"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.gaji_batch_root.di_verifikasi_oleh_tahap1</code>.
+     * The column <code>gaji_batch_root.di_verifikasi_oleh_tahap1</code>.
      */
     public final TableField<GajiBatchRootRecord, String> DI_VERIFIKASI_OLEH_TAHAP1 = createField(DSL.name("di_verifikasi_oleh_tahap1"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.gaji_batch_root.di_verifikasi_oleh_tahap2</code>.
+     * The column <code>gaji_batch_root.di_verifikasi_oleh_tahap2</code>.
      */
     public final TableField<GajiBatchRootRecord, String> DI_VERIFIKASI_OLEH_TAHAP2 = createField(DSL.name("di_verifikasi_oleh_tahap2"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_root.is_deleted</code>.
+     * The column <code>gaji_batch_root.is_deleted</code>.
      */
     public final TableField<GajiBatchRootRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_root.jabatan_pemroses</code>.
+     * The column <code>gaji_batch_root.jabatan_pemroses</code>.
      */
     public final TableField<GajiBatchRootRecord, String> JABATAN_PEMROSES = createField(DSL.name("jabatan_pemroses"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_root.jabatan_penyetuju</code>.
+     * The column <code>gaji_batch_root.jabatan_penyetuju</code>.
      */
     public final TableField<GajiBatchRootRecord, String> JABATAN_PENYETUJU = createField(DSL.name("jabatan_penyetuju"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.gaji_batch_root.jabatan_verifikasi_tahap1</code>.
+     * The column <code>gaji_batch_root.jabatan_verifikasi_tahap1</code>.
      */
     public final TableField<GajiBatchRootRecord, String> JABATAN_VERIFIKASI_TAHAP1 = createField(DSL.name("jabatan_verifikasi_tahap1"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.gaji_batch_root.jabatan_verifikasi_tahap2</code>.
+     * The column <code>gaji_batch_root.jabatan_verifikasi_tahap2</code>.
      */
     public final TableField<GajiBatchRootRecord, String> JABATAN_VERIFIKASI_TAHAP2 = createField(DSL.name("jabatan_verifikasi_tahap2"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_root.notes</code>.
+     * The column <code>gaji_batch_root.notes</code>.
      */
     public final TableField<GajiBatchRootRecord, String> NOTES = createField(DSL.name("notes"), SQLDataType.CLOB(65535).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_root.periode</code>.
+     * The column <code>gaji_batch_root.periode</code>.
      */
     public final TableField<GajiBatchRootRecord, String> PERIODE = createField(DSL.name("periode"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_root.status</code>.
+     * The column <code>gaji_batch_root.status</code>.
      */
     public final TableField<GajiBatchRootRecord, Integer> STATUS = createField(DSL.name("status"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_root.tanggal_persetujuan</code>.
+     * The column <code>gaji_batch_root.tanggal_persetujuan</code>.
      */
     public final TableField<GajiBatchRootRecord, LocalDateTime> TANGGAL_PERSETUJUAN = createField(DSL.name("tanggal_persetujuan"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_root.tanggal_proses</code>.
+     * The column <code>gaji_batch_root.tanggal_proses</code>.
      */
     public final TableField<GajiBatchRootRecord, LocalDateTime> TANGGAL_PROSES = createField(DSL.name("tanggal_proses"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.gaji_batch_root.tanggal_verifikasi_tahap1</code>.
+     * The column <code>gaji_batch_root.tanggal_verifikasi_tahap1</code>.
      */
     public final TableField<GajiBatchRootRecord, LocalDateTime> TANGGAL_VERIFIKASI_TAHAP1 = createField(DSL.name("tanggal_verifikasi_tahap1"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.gaji_batch_root.tanggal_verifikasi_tahap2</code>.
+     * The column <code>gaji_batch_root.tanggal_verifikasi_tahap2</code>.
      */
     public final TableField<GajiBatchRootRecord, LocalDateTime> TANGGAL_VERIFIKASI_TAHAP2 = createField(DSL.name("tanggal_verifikasi_tahap2"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_root.total_pegawai</code>.
+     * The column <code>gaji_batch_root.total_pegawai</code>.
      */
     public final TableField<GajiBatchRootRecord, Integer> TOTAL_PEGAWAI = createField(DSL.name("total_pegawai"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_root.updated_at</code>.
+     * The column <code>gaji_batch_root.updated_at</code>.
      */
     public final TableField<GajiBatchRootRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_root.updated_by</code>.
+     * The column <code>gaji_batch_root.updated_by</code>.
      */
     public final TableField<GajiBatchRootRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
@@ -169,23 +180,21 @@ public class GajiBatchRoot extends TableImpl<GajiBatchRootRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.gaji_batch_root</code> table
-     * reference
+     * Create an aliased <code>gaji_batch_root</code> table reference
      */
     public GajiBatchRoot(String alias) {
         this(DSL.name(alias), GAJI_BATCH_ROOT);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.gaji_batch_root</code> table
-     * reference
+     * Create an aliased <code>gaji_batch_root</code> table reference
      */
     public GajiBatchRoot(Name alias) {
         this(alias, GAJI_BATCH_ROOT);
     }
 
     /**
-     * Create a <code>kepegawaian.gaji_batch_root</code> table reference
+     * Create a <code>gaji_batch_root</code> table reference
      */
     public GajiBatchRoot() {
         this(DSL.name("gaji_batch_root"), null);
@@ -226,7 +235,7 @@ public class GajiBatchRoot extends TableImpl<GajiBatchRootRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -243,7 +252,7 @@ public class GajiBatchRoot extends TableImpl<GajiBatchRootRecord> {
 
     /**
      * Get the implicit to-many join path to the
-     * <code>kepegawaian.gaji_batch_root_error_logs</code> table
+     * <code>gaji_batch_root_error_logs</code> table
      */
     public GajiBatchRootErrorLogsPath gajiBatchRootErrorLogs() {
         if (_gajiBatchRootErrorLogs == null)
@@ -255,8 +264,8 @@ public class GajiBatchRoot extends TableImpl<GajiBatchRootRecord> {
     private transient GajiBatchMasterPath _gajiBatchMaster;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.gaji_batch_master</code> table
+     * Get the implicit to-many join path to the <code>gaji_batch_master</code>
+     * table
      */
     public GajiBatchMasterPath gajiBatchMaster() {
         if (_gajiBatchMaster == null)
@@ -269,7 +278,7 @@ public class GajiBatchRoot extends TableImpl<GajiBatchRootRecord> {
 
     /**
      * Get the implicit to-many join path to the
-     * <code>kepegawaian.gaji_batch_root_lampiran</code> table
+     * <code>gaji_batch_root_lampiran</code> table
      */
     public GajiBatchRootLampiranPath gajiBatchRootLampiran() {
         if (_gajiBatchRootLampiran == null)

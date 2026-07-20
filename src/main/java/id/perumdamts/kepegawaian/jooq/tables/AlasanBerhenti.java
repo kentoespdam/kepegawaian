@@ -4,21 +4,39 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Indexes;
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.RiwayatTerminasi.RiwayatTerminasiPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.AlasanBerhentiRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.Identity;
+import org.jooq.Index;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -30,7 +48,7 @@ public class AlasanBerhenti extends TableImpl<AlasanBerhentiRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.alasan_berhenti</code>
+     * The reference instance of <code>alasan_berhenti</code>
      */
     public static final AlasanBerhenti ALASAN_BERHENTI = new AlasanBerhenti();
 
@@ -43,52 +61,52 @@ public class AlasanBerhenti extends TableImpl<AlasanBerhentiRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.alasan_berhenti.id</code>.
+     * The column <code>alasan_berhenti.id</code>.
      */
     public final TableField<AlasanBerhentiRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.alasan_berhenti.changed_status</code>.
+     * The column <code>alasan_berhenti.changed_status</code>.
      */
     public final TableField<AlasanBerhentiRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.alasan_berhenti.created_at</code>.
+     * The column <code>alasan_berhenti.created_at</code>.
      */
     public final TableField<AlasanBerhentiRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.alasan_berhenti.created_by</code>.
+     * The column <code>alasan_berhenti.created_by</code>.
      */
     public final TableField<AlasanBerhentiRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.alasan_berhenti.is_deleted</code>.
+     * The column <code>alasan_berhenti.is_deleted</code>.
      */
     public final TableField<AlasanBerhentiRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>kepegawaian.alasan_berhenti.updated_at</code>.
+     * The column <code>alasan_berhenti.updated_at</code>.
      */
     public final TableField<AlasanBerhentiRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.alasan_berhenti.updated_by</code>.
+     * The column <code>alasan_berhenti.updated_by</code>.
      */
     public final TableField<AlasanBerhentiRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.alasan_berhenti.version</code>.
+     * The column <code>alasan_berhenti.version</code>.
      */
     public final TableField<AlasanBerhentiRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.alasan_berhenti.nama</code>.
+     * The column <code>alasan_berhenti.nama</code>.
      */
     public final TableField<AlasanBerhentiRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.alasan_berhenti.notes</code>.
+     * The column <code>alasan_berhenti.notes</code>.
      */
     public final TableField<AlasanBerhentiRecord, String> NOTES = createField(DSL.name("notes"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
@@ -101,23 +119,21 @@ public class AlasanBerhenti extends TableImpl<AlasanBerhentiRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.alasan_berhenti</code> table
-     * reference
+     * Create an aliased <code>alasan_berhenti</code> table reference
      */
     public AlasanBerhenti(String alias) {
         this(DSL.name(alias), ALASAN_BERHENTI);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.alasan_berhenti</code> table
-     * reference
+     * Create an aliased <code>alasan_berhenti</code> table reference
      */
     public AlasanBerhenti(Name alias) {
         this(alias, ALASAN_BERHENTI);
     }
 
     /**
-     * Create a <code>kepegawaian.alasan_berhenti</code> table reference
+     * Create a <code>alasan_berhenti</code> table reference
      */
     public AlasanBerhenti() {
         this(DSL.name("alasan_berhenti"), null);
@@ -158,7 +174,7 @@ public class AlasanBerhenti extends TableImpl<AlasanBerhentiRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -179,8 +195,8 @@ public class AlasanBerhenti extends TableImpl<AlasanBerhentiRecord> {
     private transient RiwayatTerminasiPath _riwayatTerminasi;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.riwayat_terminasi</code> table
+     * Get the implicit to-many join path to the <code>riwayat_terminasi</code>
+     * table
      */
     public RiwayatTerminasiPath riwayatTerminasi() {
         if (_riwayatTerminasi == null)

@@ -4,12 +4,12 @@
 package id.perumdamts.kepegawaian.jooq;
 
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.jooq.Constants;
 import org.jooq.Schema;
 import org.jooq.impl.CatalogImpl;
-
-import java.util.Arrays;
-import java.util.List;
 
 
 /**
@@ -26,9 +26,9 @@ public class DefaultCatalog extends CatalogImpl {
     public static final DefaultCatalog DEFAULT_CATALOG = new DefaultCatalog();
 
     /**
-     * The schema <code>kepegawaian</code>.
+     * The schema <code>DEFAULT_SCHEMA</code>.
      */
-    public final Kepegawaian KEPEGAWAIAN = Kepegawaian.KEPEGAWAIAN;
+    public final DefaultSchema DEFAULT_SCHEMA = DefaultSchema.DEFAULT_SCHEMA;
 
     /**
      * No further instances allowed
@@ -40,7 +40,7 @@ public class DefaultCatalog extends CatalogImpl {
     @Override
     public final List<Schema> getSchemas() {
         return Arrays.asList(
-            Kepegawaian.KEPEGAWAIAN
+            DefaultSchema.DEFAULT_SCHEMA
         );
     }
 

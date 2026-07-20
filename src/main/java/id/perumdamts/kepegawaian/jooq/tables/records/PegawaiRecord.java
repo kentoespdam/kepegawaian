@@ -5,11 +5,12 @@ package id.perumdamts.kepegawaian.jooq.tables.records;
 
 
 import id.perumdamts.kepegawaian.jooq.tables.Pegawai;
-import org.jooq.Record1;
-import org.jooq.impl.UpdatableRecordImpl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import org.jooq.Record1;
+import org.jooq.impl.UpdatableRecordImpl;
 
 
 /**
@@ -21,602 +22,602 @@ public class PegawaiRecord extends UpdatableRecordImpl<PegawaiRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>kepegawaian.pegawai.id</code>.
+     * Setter for <code>pegawai.id</code>.
      */
     public void setId(Long value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.id</code>.
+     * Getter for <code>pegawai.id</code>.
      */
     public Long getId() {
         return (Long) get(0);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.changed_status</code>.
+     * Setter for <code>pegawai.changed_status</code>.
      */
     public void setChangedStatus(Byte value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.changed_status</code>.
+     * Getter for <code>pegawai.changed_status</code>.
      */
     public Byte getChangedStatus() {
         return (Byte) get(1);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.created_at</code>.
+     * Setter for <code>pegawai.created_at</code>.
      */
     public void setCreatedAt(LocalDateTime value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.created_at</code>.
+     * Getter for <code>pegawai.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
         return (LocalDateTime) get(2);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.created_by</code>.
+     * Setter for <code>pegawai.created_by</code>.
      */
     public void setCreatedBy(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.created_by</code>.
+     * Getter for <code>pegawai.created_by</code>.
      */
     public String getCreatedBy() {
         return (String) get(3);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.is_deleted</code>.
+     * Setter for <code>pegawai.is_deleted</code>.
      */
     public void setIsDeleted(Boolean value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.is_deleted</code>.
+     * Getter for <code>pegawai.is_deleted</code>.
      */
     public Boolean getIsDeleted() {
         return (Boolean) get(4);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.updated_at</code>.
+     * Setter for <code>pegawai.updated_at</code>.
      */
     public void setUpdatedAt(LocalDateTime value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.updated_at</code>.
+     * Getter for <code>pegawai.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
         return (LocalDateTime) get(5);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.updated_by</code>.
+     * Setter for <code>pegawai.updated_by</code>.
      */
     public void setUpdatedBy(String value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.updated_by</code>.
+     * Getter for <code>pegawai.updated_by</code>.
      */
     public String getUpdatedBy() {
         return (String) get(6);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.version</code>.
+     * Setter for <code>pegawai.version</code>.
      */
     public void setVersion(Integer value) {
         set(7, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.version</code>.
+     * Getter for <code>pegawai.version</code>.
      */
     public Integer getVersion() {
         return (Integer) get(7);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.absensi_id</code>.
+     * Setter for <code>pegawai.absensi_id</code>.
      */
     public void setAbsensiId(Long value) {
         set(8, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.absensi_id</code>.
+     * Getter for <code>pegawai.absensi_id</code>.
      */
     public Long getAbsensiId() {
         return (Long) get(8);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.email</code>.
+     * Setter for <code>pegawai.email</code>.
      */
     public void setEmail(String value) {
         set(9, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.email</code>.
+     * Getter for <code>pegawai.email</code>.
      */
     public String getEmail() {
         return (String) get(9);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.gaji_pokok</code>.
+     * Setter for <code>pegawai.gaji_pokok</code>.
      */
     public void setGajiPokok(Double value) {
         set(10, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.gaji_pokok</code>.
+     * Getter for <code>pegawai.gaji_pokok</code>.
      */
     public Double getGajiPokok() {
         return (Double) get(10);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.is_askes</code>.
+     * Setter for <code>pegawai.is_askes</code>.
      */
     public void setIsAskes(Boolean value) {
         set(11, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.is_askes</code>.
+     * Getter for <code>pegawai.is_askes</code>.
      */
     public Boolean getIsAskes() {
         return (Boolean) get(11);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.jml_tanggungan</code>.
+     * Setter for <code>pegawai.jml_tanggungan</code>.
      */
     public void setJmlTanggungan(Integer value) {
         set(12, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.jml_tanggungan</code>.
+     * Getter for <code>pegawai.jml_tanggungan</code>.
      */
     public Integer getJmlTanggungan() {
         return (Integer) get(12);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.mkg_bulan</code>.
+     * Setter for <code>pegawai.mkg_bulan</code>.
      */
     public void setMkgBulan(Integer value) {
         set(13, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.mkg_bulan</code>.
+     * Getter for <code>pegawai.mkg_bulan</code>.
      */
     public Integer getMkgBulan() {
         return (Integer) get(13);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.mkg_tahun</code>.
+     * Setter for <code>pegawai.mkg_tahun</code>.
      */
     public void setMkgTahun(Integer value) {
         set(14, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.mkg_tahun</code>.
+     * Getter for <code>pegawai.mkg_tahun</code>.
      */
     public Integer getMkgTahun() {
         return (Integer) get(14);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.nipam</code>.
+     * Setter for <code>pegawai.nipam</code>.
      */
     public void setNipam(String value) {
         set(15, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.nipam</code>.
+     * Getter for <code>pegawai.nipam</code>.
      */
     public String getNipam() {
         return (String) get(15);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.notes</code>.
+     * Setter for <code>pegawai.notes</code>.
      */
     public void setNotes(String value) {
         set(16, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.notes</code>.
+     * Getter for <code>pegawai.notes</code>.
      */
     public String getNotes() {
         return (String) get(16);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.phdp</code>.
+     * Setter for <code>pegawai.phdp</code>.
      */
     public void setPhdp(Double value) {
         set(17, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.phdp</code>.
+     * Getter for <code>pegawai.phdp</code>.
      */
     public Double getPhdp() {
         return (Double) get(17);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.ref_sk_capeg_id</code>.
+     * Setter for <code>pegawai.ref_sk_capeg_id</code>.
      */
     public void setRefSkCapegId(Long value) {
         set(18, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.ref_sk_capeg_id</code>.
+     * Getter for <code>pegawai.ref_sk_capeg_id</code>.
      */
     public Long getRefSkCapegId() {
         return (Long) get(18);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.ref_sk_gaji_berkala_id</code>.
+     * Setter for <code>pegawai.ref_sk_gaji_berkala_id</code>.
      */
     public void setRefSkGajiBerkalaId(Long value) {
         set(19, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.ref_sk_gaji_berkala_id</code>.
+     * Getter for <code>pegawai.ref_sk_gaji_berkala_id</code>.
      */
     public Long getRefSkGajiBerkalaId() {
         return (Long) get(19);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.ref_sk_gol_id</code>.
+     * Setter for <code>pegawai.ref_sk_gol_id</code>.
      */
     public void setRefSkGolId(Long value) {
         set(20, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.ref_sk_gol_id</code>.
+     * Getter for <code>pegawai.ref_sk_gol_id</code>.
      */
     public Long getRefSkGolId() {
         return (Long) get(20);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.ref_sk_jabatan_id</code>.
+     * Setter for <code>pegawai.ref_sk_jabatan_id</code>.
      */
     public void setRefSkJabatanId(Long value) {
         set(21, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.ref_sk_jabatan_id</code>.
+     * Getter for <code>pegawai.ref_sk_jabatan_id</code>.
      */
     public Long getRefSkJabatanId() {
         return (Long) get(21);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.ref_sk_mutasi_id</code>.
+     * Setter for <code>pegawai.ref_sk_mutasi_id</code>.
      */
     public void setRefSkMutasiId(Long value) {
         set(22, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.ref_sk_mutasi_id</code>.
+     * Getter for <code>pegawai.ref_sk_mutasi_id</code>.
      */
     public Long getRefSkMutasiId() {
         return (Long) get(22);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.ref_sk_pegawai_id</code>.
+     * Setter for <code>pegawai.ref_sk_pegawai_id</code>.
      */
     public void setRefSkPegawaiId(Long value) {
         set(23, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.ref_sk_pegawai_id</code>.
+     * Getter for <code>pegawai.ref_sk_pegawai_id</code>.
      */
     public Long getRefSkPegawaiId() {
         return (Long) get(23);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.status_kerja</code>.
+     * Setter for <code>pegawai.status_kerja</code>.
      */
     public void setStatusKerja(Byte value) {
         set(24, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.status_kerja</code>.
+     * Getter for <code>pegawai.status_kerja</code>.
      */
     public Byte getStatusKerja() {
         return (Byte) get(24);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.status_pegawai</code>.
+     * Setter for <code>pegawai.status_pegawai</code>.
      */
     public void setStatusPegawai(Byte value) {
         set(25, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.status_pegawai</code>.
+     * Getter for <code>pegawai.status_pegawai</code>.
      */
     public Byte getStatusPegawai() {
         return (Byte) get(25);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.tanggal_pengangkatan</code>.
+     * Setter for <code>pegawai.tanggal_pengangkatan</code>.
      */
     public void setTanggalPengangkatan(LocalDate value) {
         set(26, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.tanggal_pengangkatan</code>.
+     * Getter for <code>pegawai.tanggal_pengangkatan</code>.
      */
     public LocalDate getTanggalPengangkatan() {
         return (LocalDate) get(26);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.tmt_gaji_berkala</code>.
+     * Setter for <code>pegawai.tmt_gaji_berkala</code>.
      */
     public void setTmtGajiBerkala(LocalDate value) {
         set(27, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.tmt_gaji_berkala</code>.
+     * Getter for <code>pegawai.tmt_gaji_berkala</code>.
      */
     public LocalDate getTmtGajiBerkala() {
         return (LocalDate) get(27);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.tmt_golongan</code>.
+     * Setter for <code>pegawai.tmt_golongan</code>.
      */
     public void setTmtGolongan(LocalDate value) {
         set(28, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.tmt_golongan</code>.
+     * Getter for <code>pegawai.tmt_golongan</code>.
      */
     public LocalDate getTmtGolongan() {
         return (LocalDate) get(28);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.tmt_jabatan</code>.
+     * Setter for <code>pegawai.tmt_jabatan</code>.
      */
     public void setTmtJabatan(LocalDate value) {
         set(29, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.tmt_jabatan</code>.
+     * Getter for <code>pegawai.tmt_jabatan</code>.
      */
     public LocalDate getTmtJabatan() {
         return (LocalDate) get(29);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.tmt_kerja</code>.
+     * Setter for <code>pegawai.tmt_kerja</code>.
      */
     public void setTmtKerja(LocalDate value) {
         set(30, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.tmt_kerja</code>.
+     * Getter for <code>pegawai.tmt_kerja</code>.
      */
     public LocalDate getTmtKerja() {
         return (LocalDate) get(30);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.tmt_mutasi</code>.
+     * Setter for <code>pegawai.tmt_mutasi</code>.
      */
     public void setTmtMutasi(LocalDate value) {
         set(31, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.tmt_mutasi</code>.
+     * Getter for <code>pegawai.tmt_mutasi</code>.
      */
     public LocalDate getTmtMutasi() {
         return (LocalDate) get(31);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.tmt_pegawai</code>.
+     * Setter for <code>pegawai.tmt_pegawai</code>.
      */
     public void setTmtPegawai(LocalDate value) {
         set(32, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.tmt_pegawai</code>.
+     * Getter for <code>pegawai.tmt_pegawai</code>.
      */
     public LocalDate getTmtPegawai() {
         return (LocalDate) get(32);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.tmt_pensiun</code>.
+     * Setter for <code>pegawai.tmt_pensiun</code>.
      */
     public void setTmtPensiun(LocalDate value) {
         set(33, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.tmt_pensiun</code>.
+     * Getter for <code>pegawai.tmt_pensiun</code>.
      */
     public LocalDate getTmtPensiun() {
         return (LocalDate) get(33);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.nik</code>.
+     * Setter for <code>pegawai.nik</code>.
      */
     public void setNik(String value) {
         set(34, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.nik</code>.
+     * Getter for <code>pegawai.nik</code>.
      */
     public String getNik() {
         return (String) get(34);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.gaji_profil_id</code>.
+     * Setter for <code>pegawai.gaji_profil_id</code>.
      */
     public void setGajiProfilId(Long value) {
         set(35, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.gaji_profil_id</code>.
+     * Getter for <code>pegawai.gaji_profil_id</code>.
      */
     public Long getGajiProfilId() {
         return (Long) get(35);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.golongan_id</code>.
+     * Setter for <code>pegawai.golongan_id</code>.
      */
     public void setGolonganId(Long value) {
         set(36, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.golongan_id</code>.
+     * Getter for <code>pegawai.golongan_id</code>.
      */
     public Long getGolonganId() {
         return (Long) get(36);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.grade_id</code>.
+     * Setter for <code>pegawai.grade_id</code>.
      */
     public void setGradeId(Long value) {
         set(37, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.grade_id</code>.
+     * Getter for <code>pegawai.grade_id</code>.
      */
     public Long getGradeId() {
         return (Long) get(37);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.jabatan_id</code>.
+     * Setter for <code>pegawai.jabatan_id</code>.
      */
     public void setJabatanId(Long value) {
         set(38, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.jabatan_id</code>.
+     * Getter for <code>pegawai.jabatan_id</code>.
      */
     public Long getJabatanId() {
         return (Long) get(38);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.gaji_pendapatan_non_pajak_id</code>.
+     * Setter for <code>pegawai.gaji_pendapatan_non_pajak_id</code>.
      */
     public void setGajiPendapatanNonPajakId(Long value) {
         set(39, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.gaji_pendapatan_non_pajak_id</code>.
+     * Getter for <code>pegawai.gaji_pendapatan_non_pajak_id</code>.
      */
     public Long getGajiPendapatanNonPajakId() {
         return (Long) get(39);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.organisasi_id</code>.
+     * Setter for <code>pegawai.organisasi_id</code>.
      */
     public void setOrganisasiId(Long value) {
         set(40, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.organisasi_id</code>.
+     * Getter for <code>pegawai.organisasi_id</code>.
      */
     public Long getOrganisasiId() {
         return (Long) get(40);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.profesi_id</code>.
+     * Setter for <code>pegawai.profesi_id</code>.
      */
     public void setProfesiId(Long value) {
         set(41, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.profesi_id</code>.
+     * Getter for <code>pegawai.profesi_id</code>.
      */
     public Long getProfesiId() {
         return (Long) get(41);
     }
 
     /**
-     * Setter for <code>kepegawaian.pegawai.rumah_dinas_id</code>.
+     * Setter for <code>pegawai.rumah_dinas_id</code>.
      */
     public void setRumahDinasId(Long value) {
         set(42, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pegawai.rumah_dinas_id</code>.
+     * Getter for <code>pegawai.rumah_dinas_id</code>.
      */
     public Long getRumahDinasId() {
         return (Long) get(42);

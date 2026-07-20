@@ -19,100 +19,98 @@ public class CutiApprovalChainRecord extends UpdatableRecordImpl<CutiApprovalCha
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>kepegawaian.cuti_approval_chain.id</code>.
+     * Setter for <code>cuti_approval_chain.id</code>.
      */
     public void setId(Long value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_approval_chain.id</code>.
+     * Getter for <code>cuti_approval_chain.id</code>.
      */
     public Long getId() {
         return (Long) get(0);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_approval_chain.approval_level</code>.
+     * Setter for <code>cuti_approval_chain.approval_level</code>.
      */
     public void setApprovalLevel(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_approval_chain.approval_level</code>.
+     * Getter for <code>cuti_approval_chain.approval_level</code>.
      */
     public Integer getApprovalLevel() {
         return (Integer) get(1);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_approval_chain.approval_status</code>.
+     * Setter for <code>cuti_approval_chain.approval_status</code>.
      */
     public void setApprovalStatus(Byte value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_approval_chain.approval_status</code>.
+     * Getter for <code>cuti_approval_chain.approval_status</code>.
      */
     public Byte getApprovalStatus() {
         return (Byte) get(2);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_approval_chain.jabatan_id</code>.
+     * Setter for <code>cuti_approval_chain.jabatan_id</code>.
      */
     public void setJabatanId(Long value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_approval_chain.jabatan_id</code>.
+     * Getter for <code>cuti_approval_chain.jabatan_id</code>.
      */
     public Long getJabatanId() {
         return (Long) get(3);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_approval_chain.jabatan_nama</code>.
+     * Setter for <code>cuti_approval_chain.jabatan_nama</code>.
      */
     public void setJabatanNama(String value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_approval_chain.jabatan_nama</code>.
+     * Getter for <code>cuti_approval_chain.jabatan_nama</code>.
      */
     public String getJabatanNama() {
         return (String) get(4);
     }
 
     /**
-     * Setter for
-     * <code>kepegawaian.cuti_approval_chain.read_write_status</code>.
+     * Setter for <code>cuti_approval_chain.read_write_status</code>.
      */
     public void setReadWriteStatus(Byte value) {
         set(5, value);
     }
 
     /**
-     * Getter for
-     * <code>kepegawaian.cuti_approval_chain.read_write_status</code>.
+     * Getter for <code>cuti_approval_chain.read_write_status</code>.
      */
     public Byte getReadWriteStatus() {
         return (Byte) get(5);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_approval_chain.ref_cuti_id</code>.
+     * Setter for <code>cuti_approval_chain.ref_cuti_id</code>.
      */
     public void setRefCutiId(Long value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_approval_chain.ref_cuti_id</code>.
+     * Getter for <code>cuti_approval_chain.ref_cuti_id</code>.
      */
     public Long getRefCutiId() {
         return (Long) get(6);

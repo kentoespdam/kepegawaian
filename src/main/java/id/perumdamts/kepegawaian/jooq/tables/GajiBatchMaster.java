@@ -4,22 +4,40 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Indexes;
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.GajiBatchRoot.GajiBatchRootPath;
 import id.perumdamts.kepegawaian.jooq.tables.GajiPendapatanNonPajak.GajiPendapatanNonPajakPath;
 import id.perumdamts.kepegawaian.jooq.tables.Organisasi.OrganisasiPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.GajiBatchMasterRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.Identity;
+import org.jooq.Index;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -31,7 +49,7 @@ public class GajiBatchMaster extends TableImpl<GajiBatchMasterRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.gaji_batch_master</code>
+     * The reference instance of <code>gaji_batch_master</code>
      */
     public static final GajiBatchMaster GAJI_BATCH_MASTER = new GajiBatchMaster();
 
@@ -44,181 +62,177 @@ public class GajiBatchMaster extends TableImpl<GajiBatchMasterRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master.id</code>.
+     * The column <code>gaji_batch_master.id</code>.
      */
     public final TableField<GajiBatchMasterRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master.gaji_pokok</code>.
+     * The column <code>gaji_batch_master.gaji_pokok</code>.
      */
     public final TableField<GajiBatchMasterRecord, Double> GAJI_POKOK = createField(DSL.name("gaji_pokok"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master.gaji_profil_id</code>.
+     * The column <code>gaji_batch_master.gaji_profil_id</code>.
      */
     public final TableField<GajiBatchMasterRecord, Long> GAJI_PROFIL_ID = createField(DSL.name("gaji_profil_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master.golongan</code>.
+     * The column <code>gaji_batch_master.golongan</code>.
      */
     public final TableField<GajiBatchMasterRecord, String> GOLONGAN = createField(DSL.name("golongan"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master.golongan_id</code>.
+     * The column <code>gaji_batch_master.golongan_id</code>.
      */
     public final TableField<GajiBatchMasterRecord, Long> GOLONGAN_ID = createField(DSL.name("golongan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master.is_different</code>.
+     * The column <code>gaji_batch_master.is_different</code>.
      */
     public final TableField<GajiBatchMasterRecord, Boolean> IS_DIFFERENT = createField(DSL.name("is_different"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master.jabatan_id</code>.
+     * The column <code>gaji_batch_master.jabatan_id</code>.
      */
     public final TableField<GajiBatchMasterRecord, Long> JABATAN_ID = createField(DSL.name("jabatan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master.jml_jiwa</code>.
+     * The column <code>gaji_batch_master.jml_jiwa</code>.
      */
     public final TableField<GajiBatchMasterRecord, Integer> JML_JIWA = createField(DSL.name("jml_jiwa"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master.jml_tanggungan</code>.
+     * The column <code>gaji_batch_master.jml_tanggungan</code>.
      */
     public final TableField<GajiBatchMasterRecord, Integer> JML_TANGGUNGAN = createField(DSL.name("jml_tanggungan"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master.kode_pajak</code>.
+     * The column <code>gaji_batch_master.kode_pajak</code>.
      */
     public final TableField<GajiBatchMasterRecord, String> KODE_PAJAK = createField(DSL.name("kode_pajak"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master.level_id</code>.
+     * The column <code>gaji_batch_master.level_id</code>.
      */
     public final TableField<GajiBatchMasterRecord, Long> LEVEL_ID = createField(DSL.name("level_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master.nama</code>.
+     * The column <code>gaji_batch_master.nama</code>.
      */
     public final TableField<GajiBatchMasterRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master.nama_jabatan</code>.
+     * The column <code>gaji_batch_master.nama_jabatan</code>.
      */
     public final TableField<GajiBatchMasterRecord, String> NAMA_JABATAN = createField(DSL.name("nama_jabatan"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master.nama_organisasi</code>.
+     * The column <code>gaji_batch_master.nama_organisasi</code>.
      */
     public final TableField<GajiBatchMasterRecord, String> NAMA_ORGANISASI = createField(DSL.name("nama_organisasi"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master.nipam</code>.
+     * The column <code>gaji_batch_master.nipam</code>.
      */
     public final TableField<GajiBatchMasterRecord, String> NIPAM = createField(DSL.name("nipam"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master.pajak</code>.
+     * The column <code>gaji_batch_master.pajak</code>.
      */
     public final TableField<GajiBatchMasterRecord, Double> PAJAK = createField(DSL.name("pajak"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master.pangkat</code>.
+     * The column <code>gaji_batch_master.pangkat</code>.
      */
     public final TableField<GajiBatchMasterRecord, String> PANGKAT = createField(DSL.name("pangkat"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master.pegawai_id</code>.
+     * The column <code>gaji_batch_master.pegawai_id</code>.
      */
     public final TableField<GajiBatchMasterRecord, Long> PEGAWAI_ID = createField(DSL.name("pegawai_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master.pembulatan</code>.
+     * The column <code>gaji_batch_master.pembulatan</code>.
      */
     public final TableField<GajiBatchMasterRecord, Double> PEMBULATAN = createField(DSL.name("pembulatan"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master.pembulatan2</code>.
+     * The column <code>gaji_batch_master.pembulatan2</code>.
      */
     public final TableField<GajiBatchMasterRecord, Double> PEMBULATAN2 = createField(DSL.name("pembulatan2"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master.penghasilan_bersih</code>.
+     * The column <code>gaji_batch_master.penghasilan_bersih</code>.
      */
     public final TableField<GajiBatchMasterRecord, Double> PENGHASILAN_BERSIH = createField(DSL.name("penghasilan_bersih"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.gaji_batch_master.penghasilan_bersih2</code>.
+     * The column <code>gaji_batch_master.penghasilan_bersih2</code>.
      */
     public final TableField<GajiBatchMasterRecord, Double> PENGHASILAN_BERSIH2 = createField(DSL.name("penghasilan_bersih2"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.gaji_batch_master.penghasilan_bersih_final</code>.
+     * The column <code>gaji_batch_master.penghasilan_bersih_final</code>.
      */
     public final TableField<GajiBatchMasterRecord, Double> PENGHASILAN_BERSIH_FINAL = createField(DSL.name("penghasilan_bersih_final"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.gaji_batch_master.penghasilan_bersih_final2</code>.
+     * The column <code>gaji_batch_master.penghasilan_bersih_final2</code>.
      */
     public final TableField<GajiBatchMasterRecord, Double> PENGHASILAN_BERSIH_FINAL2 = createField(DSL.name("penghasilan_bersih_final2"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master.penghasilan_kotor</code>.
+     * The column <code>gaji_batch_master.penghasilan_kotor</code>.
      */
     public final TableField<GajiBatchMasterRecord, Double> PENGHASILAN_KOTOR = createField(DSL.name("penghasilan_kotor"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master.periode</code>.
+     * The column <code>gaji_batch_master.periode</code>.
      */
     public final TableField<GajiBatchMasterRecord, String> PERIODE = createField(DSL.name("periode"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master.phdp</code>.
+     * The column <code>gaji_batch_master.phdp</code>.
      */
     public final TableField<GajiBatchMasterRecord, Double> PHDP = createField(DSL.name("phdp"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master.status_kawin</code>.
+     * The column <code>gaji_batch_master.status_kawin</code>.
      */
     public final TableField<GajiBatchMasterRecord, Byte> STATUS_KAWIN = createField(DSL.name("status_kawin"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master.status_pegawai</code>.
+     * The column <code>gaji_batch_master.status_pegawai</code>.
      */
     public final TableField<GajiBatchMasterRecord, Byte> STATUS_PEGAWAI = createField(DSL.name("status_pegawai"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master.total_add_potongan</code>.
+     * The column <code>gaji_batch_master.total_add_potongan</code>.
      */
     public final TableField<GajiBatchMasterRecord, Double> TOTAL_ADD_POTONGAN = createField(DSL.name("total_add_potongan"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master.total_add_tambahan</code>.
+     * The column <code>gaji_batch_master.total_add_tambahan</code>.
      */
     public final TableField<GajiBatchMasterRecord, Double> TOTAL_ADD_TAMBAHAN = createField(DSL.name("total_add_tambahan"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master.total_potongan</code>.
+     * The column <code>gaji_batch_master.total_potongan</code>.
      */
     public final TableField<GajiBatchMasterRecord, Double> TOTAL_POTONGAN = createField(DSL.name("total_potongan"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master.batch_root_id</code>.
+     * The column <code>gaji_batch_master.batch_root_id</code>.
      */
     public final TableField<GajiBatchMasterRecord, String> BATCH_ROOT_ID = createField(DSL.name("batch_root_id"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.gaji_batch_master.gaji_pendapatan_non_pajak_id</code>.
+     * The column <code>gaji_batch_master.gaji_pendapatan_non_pajak_id</code>.
      */
     public final TableField<GajiBatchMasterRecord, Long> GAJI_PENDAPATAN_NON_PAJAK_ID = createField(DSL.name("gaji_pendapatan_non_pajak_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master.organisasi_id</code>.
+     * The column <code>gaji_batch_master.organisasi_id</code>.
      */
     public final TableField<GajiBatchMasterRecord, Long> ORGANISASI_ID = createField(DSL.name("organisasi_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
@@ -231,23 +245,21 @@ public class GajiBatchMaster extends TableImpl<GajiBatchMasterRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.gaji_batch_master</code> table
-     * reference
+     * Create an aliased <code>gaji_batch_master</code> table reference
      */
     public GajiBatchMaster(String alias) {
         this(DSL.name(alias), GAJI_BATCH_MASTER);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.gaji_batch_master</code> table
-     * reference
+     * Create an aliased <code>gaji_batch_master</code> table reference
      */
     public GajiBatchMaster(Name alias) {
         this(alias, GAJI_BATCH_MASTER);
     }
 
     /**
-     * Create a <code>kepegawaian.gaji_batch_master</code> table reference
+     * Create a <code>gaji_batch_master</code> table reference
      */
     public GajiBatchMaster() {
         this(DSL.name("gaji_batch_master"), null);
@@ -288,7 +300,7 @@ public class GajiBatchMaster extends TableImpl<GajiBatchMasterRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -314,8 +326,7 @@ public class GajiBatchMaster extends TableImpl<GajiBatchMasterRecord> {
     private transient GajiBatchRootPath _gajiBatchRoot;
 
     /**
-     * Get the implicit join path to the
-     * <code>kepegawaian.gaji_batch_root</code> table.
+     * Get the implicit join path to the <code>gaji_batch_root</code> table.
      */
     public GajiBatchRootPath gajiBatchRoot() {
         if (_gajiBatchRoot == null)
@@ -327,8 +338,7 @@ public class GajiBatchMaster extends TableImpl<GajiBatchMasterRecord> {
     private transient OrganisasiPath _organisasi;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.organisasi</code>
-     * table.
+     * Get the implicit join path to the <code>organisasi</code> table.
      */
     public OrganisasiPath organisasi() {
         if (_organisasi == null)
@@ -340,8 +350,8 @@ public class GajiBatchMaster extends TableImpl<GajiBatchMasterRecord> {
     private transient GajiPendapatanNonPajakPath _gajiPendapatanNonPajak;
 
     /**
-     * Get the implicit join path to the
-     * <code>kepegawaian.gaji_pendapatan_non_pajak</code> table.
+     * Get the implicit join path to the <code>gaji_pendapatan_non_pajak</code>
+     * table.
      */
     public GajiPendapatanNonPajakPath gajiPendapatanNonPajak() {
         if (_gajiPendapatanNonPajak == null)

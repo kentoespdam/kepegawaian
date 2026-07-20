@@ -4,22 +4,40 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Indexes;
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.GajiBatchMaster.GajiBatchMasterPath;
 import id.perumdamts.kepegawaian.jooq.tables.Pegawai.PegawaiPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.GajiPendapatanNonPajakRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.Identity;
+import org.jooq.Index;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -31,8 +49,7 @@ public class GajiPendapatanNonPajak extends TableImpl<GajiPendapatanNonPajakReco
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of
-     * <code>kepegawaian.gaji_pendapatan_non_pajak</code>
+     * The reference instance of <code>gaji_pendapatan_non_pajak</code>
      */
     public static final GajiPendapatanNonPajak GAJI_PENDAPATAN_NON_PAJAK = new GajiPendapatanNonPajak();
 
@@ -45,58 +62,57 @@ public class GajiPendapatanNonPajak extends TableImpl<GajiPendapatanNonPajakReco
     }
 
     /**
-     * The column <code>kepegawaian.gaji_pendapatan_non_pajak.id</code>.
+     * The column <code>gaji_pendapatan_non_pajak.id</code>.
      */
     public final TableField<GajiPendapatanNonPajakRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.gaji_pendapatan_non_pajak.changed_status</code>.
+     * The column <code>gaji_pendapatan_non_pajak.changed_status</code>.
      */
     public final TableField<GajiPendapatanNonPajakRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_pendapatan_non_pajak.created_at</code>.
+     * The column <code>gaji_pendapatan_non_pajak.created_at</code>.
      */
     public final TableField<GajiPendapatanNonPajakRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_pendapatan_non_pajak.created_by</code>.
+     * The column <code>gaji_pendapatan_non_pajak.created_by</code>.
      */
     public final TableField<GajiPendapatanNonPajakRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_pendapatan_non_pajak.is_deleted</code>.
+     * The column <code>gaji_pendapatan_non_pajak.is_deleted</code>.
      */
     public final TableField<GajiPendapatanNonPajakRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_pendapatan_non_pajak.updated_at</code>.
+     * The column <code>gaji_pendapatan_non_pajak.updated_at</code>.
      */
     public final TableField<GajiPendapatanNonPajakRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_pendapatan_non_pajak.updated_by</code>.
+     * The column <code>gaji_pendapatan_non_pajak.updated_by</code>.
      */
     public final TableField<GajiPendapatanNonPajakRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_pendapatan_non_pajak.version</code>.
+     * The column <code>gaji_pendapatan_non_pajak.version</code>.
      */
     public final TableField<GajiPendapatanNonPajakRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_pendapatan_non_pajak.kode</code>.
+     * The column <code>gaji_pendapatan_non_pajak.kode</code>.
      */
     public final TableField<GajiPendapatanNonPajakRecord, String> KODE = createField(DSL.name("kode"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_pendapatan_non_pajak.nominal</code>.
+     * The column <code>gaji_pendapatan_non_pajak.nominal</code>.
      */
     public final TableField<GajiPendapatanNonPajakRecord, Double> NOMINAL = createField(DSL.name("nominal"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_pendapatan_non_pajak.notes</code>.
+     * The column <code>gaji_pendapatan_non_pajak.notes</code>.
      */
     public final TableField<GajiPendapatanNonPajakRecord, String> NOTES = createField(DSL.name("notes"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
@@ -109,24 +125,21 @@ public class GajiPendapatanNonPajak extends TableImpl<GajiPendapatanNonPajakReco
     }
 
     /**
-     * Create an aliased <code>kepegawaian.gaji_pendapatan_non_pajak</code>
-     * table reference
+     * Create an aliased <code>gaji_pendapatan_non_pajak</code> table reference
      */
     public GajiPendapatanNonPajak(String alias) {
         this(DSL.name(alias), GAJI_PENDAPATAN_NON_PAJAK);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.gaji_pendapatan_non_pajak</code>
-     * table reference
+     * Create an aliased <code>gaji_pendapatan_non_pajak</code> table reference
      */
     public GajiPendapatanNonPajak(Name alias) {
         this(alias, GAJI_PENDAPATAN_NON_PAJAK);
     }
 
     /**
-     * Create a <code>kepegawaian.gaji_pendapatan_non_pajak</code> table
-     * reference
+     * Create a <code>gaji_pendapatan_non_pajak</code> table reference
      */
     public GajiPendapatanNonPajak() {
         this(DSL.name("gaji_pendapatan_non_pajak"), null);
@@ -167,7 +180,7 @@ public class GajiPendapatanNonPajak extends TableImpl<GajiPendapatanNonPajakReco
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -188,8 +201,7 @@ public class GajiPendapatanNonPajak extends TableImpl<GajiPendapatanNonPajakReco
     private transient PegawaiPath _pegawai;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.pegawai</code> table
+     * Get the implicit to-many join path to the <code>pegawai</code> table
      */
     public PegawaiPath pegawai() {
         if (_pegawai == null)
@@ -201,8 +213,8 @@ public class GajiPendapatanNonPajak extends TableImpl<GajiPendapatanNonPajakReco
     private transient GajiBatchMasterPath _gajiBatchMaster;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.gaji_batch_master</code> table
+     * Get the implicit to-many join path to the <code>gaji_batch_master</code>
+     * table
      */
     public GajiBatchMasterPath gajiBatchMaster() {
         if (_gajiBatchMaster == null)

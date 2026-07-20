@@ -5,11 +5,12 @@ package id.perumdamts.kepegawaian.jooq.tables.records;
 
 
 import id.perumdamts.kepegawaian.jooq.tables.CutiPegawaiAud;
-import org.jooq.Record2;
-import org.jooq.impl.UpdatableRecordImpl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import org.jooq.Record2;
+import org.jooq.impl.UpdatableRecordImpl;
 
 
 /**
@@ -21,508 +22,504 @@ public class CutiPegawaiAudRecord extends UpdatableRecordImpl<CutiPegawaiAudReco
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.id</code>.
+     * Setter for <code>cuti_pegawai_aud.id</code>.
      */
     public void setId(Long value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.id</code>.
+     * Getter for <code>cuti_pegawai_aud.id</code>.
      */
     public Long getId() {
         return (Long) get(0);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.rev</code>.
+     * Setter for <code>cuti_pegawai_aud.rev</code>.
      */
     public void setRev(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.rev</code>.
+     * Getter for <code>cuti_pegawai_aud.rev</code>.
      */
     public Integer getRev() {
         return (Integer) get(1);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.revtype</code>.
+     * Setter for <code>cuti_pegawai_aud.revtype</code>.
      */
     public void setRevtype(Byte value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.revtype</code>.
+     * Getter for <code>cuti_pegawai_aud.revtype</code>.
      */
     public Byte getRevtype() {
         return (Byte) get(2);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.changed_status</code>.
+     * Setter for <code>cuti_pegawai_aud.changed_status</code>.
      */
     public void setChangedStatus(Byte value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.changed_status</code>.
+     * Getter for <code>cuti_pegawai_aud.changed_status</code>.
      */
     public Byte getChangedStatus() {
         return (Byte) get(3);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.created_at</code>.
+     * Setter for <code>cuti_pegawai_aud.created_at</code>.
      */
     public void setCreatedAt(LocalDateTime value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.created_at</code>.
+     * Getter for <code>cuti_pegawai_aud.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
         return (LocalDateTime) get(4);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.created_by</code>.
+     * Setter for <code>cuti_pegawai_aud.created_by</code>.
      */
     public void setCreatedBy(String value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.created_by</code>.
+     * Getter for <code>cuti_pegawai_aud.created_by</code>.
      */
     public String getCreatedBy() {
         return (String) get(5);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.is_deleted</code>.
+     * Setter for <code>cuti_pegawai_aud.is_deleted</code>.
      */
     public void setIsDeleted(Boolean value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.is_deleted</code>.
+     * Getter for <code>cuti_pegawai_aud.is_deleted</code>.
      */
     public Boolean getIsDeleted() {
         return (Boolean) get(6);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.updated_at</code>.
+     * Setter for <code>cuti_pegawai_aud.updated_at</code>.
      */
     public void setUpdatedAt(LocalDateTime value) {
         set(7, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.updated_at</code>.
+     * Getter for <code>cuti_pegawai_aud.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
         return (LocalDateTime) get(7);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.updated_by</code>.
+     * Setter for <code>cuti_pegawai_aud.updated_by</code>.
      */
     public void setUpdatedBy(String value) {
         set(8, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.updated_by</code>.
+     * Getter for <code>cuti_pegawai_aud.updated_by</code>.
      */
     public String getUpdatedBy() {
         return (String) get(8);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.alasan</code>.
+     * Setter for <code>cuti_pegawai_aud.alasan</code>.
      */
     public void setAlasan(String value) {
         set(9, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.alasan</code>.
+     * Getter for <code>cuti_pegawai_aud.alasan</code>.
      */
     public String getAlasan() {
         return (String) get(9);
     }
 
     /**
-     * Setter for
-     * <code>kepegawaian.cuti_pegawai_aud.approval_cuti_status</code>.
+     * Setter for <code>cuti_pegawai_aud.approval_cuti_status</code>.
      */
     public void setApprovalCutiStatus(Byte value) {
         set(10, value);
     }
 
     /**
-     * Getter for
-     * <code>kepegawaian.cuti_pegawai_aud.approval_cuti_status</code>.
+     * Getter for <code>cuti_pegawai_aud.approval_cuti_status</code>.
      */
     public Byte getApprovalCutiStatus() {
         return (Byte) get(10);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.approval_level</code>.
+     * Setter for <code>cuti_pegawai_aud.approval_level</code>.
      */
     public void setApprovalLevel(Integer value) {
         set(11, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.approval_level</code>.
+     * Getter for <code>cuti_pegawai_aud.approval_level</code>.
      */
     public Integer getApprovalLevel() {
         return (Integer) get(11);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.is_claimed</code>.
+     * Setter for <code>cuti_pegawai_aud.is_claimed</code>.
      */
     public void setIsClaimed(Byte value) {
         set(12, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.is_claimed</code>.
+     * Getter for <code>cuti_pegawai_aud.is_claimed</code>.
      */
     public Byte getIsClaimed() {
         return (Byte) get(12);
     }
 
     /**
-     * Setter for
-     * <code>kepegawaian.cuti_pegawai_aud.jenis_pengajuan_cuti</code>.
+     * Setter for <code>cuti_pegawai_aud.jenis_pengajuan_cuti</code>.
      */
     public void setJenisPengajuanCuti(Byte value) {
         set(13, value);
     }
 
     /**
-     * Getter for
-     * <code>kepegawaian.cuti_pegawai_aud.jenis_pengajuan_cuti</code>.
+     * Getter for <code>cuti_pegawai_aud.jenis_pengajuan_cuti</code>.
      */
     public Byte getJenisPengajuanCuti() {
         return (Byte) get(13);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.jumlah_hari</code>.
+     * Setter for <code>cuti_pegawai_aud.jumlah_hari</code>.
      */
     public void setJumlahHari(Integer value) {
         set(14, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.jumlah_hari</code>.
+     * Getter for <code>cuti_pegawai_aud.jumlah_hari</code>.
      */
     public Integer getJumlahHari() {
         return (Integer) get(14);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.jumlah_hari_kerja</code>.
+     * Setter for <code>cuti_pegawai_aud.jumlah_hari_kerja</code>.
      */
     public void setJumlahHariKerja(Integer value) {
         set(15, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.jumlah_hari_kerja</code>.
+     * Getter for <code>cuti_pegawai_aud.jumlah_hari_kerja</code>.
      */
     public Integer getJumlahHariKerja() {
         return (Integer) get(15);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.kuota_akhir</code>.
+     * Setter for <code>cuti_pegawai_aud.kuota_akhir</code>.
      */
     public void setKuotaAkhir(Integer value) {
         set(16, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.kuota_akhir</code>.
+     * Getter for <code>cuti_pegawai_aud.kuota_akhir</code>.
      */
     public Integer getKuotaAkhir() {
         return (Integer) get(16);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.kuota_awal</code>.
+     * Setter for <code>cuti_pegawai_aud.kuota_awal</code>.
      */
     public void setKuotaAwal(Integer value) {
         set(17, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.kuota_awal</code>.
+     * Getter for <code>cuti_pegawai_aud.kuota_awal</code>.
      */
     public Integer getKuotaAwal() {
         return (Integer) get(17);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.nama</code>.
+     * Setter for <code>cuti_pegawai_aud.nama</code>.
      */
     public void setNama(String value) {
         set(18, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.nama</code>.
+     * Getter for <code>cuti_pegawai_aud.nama</code>.
      */
     public String getNama() {
         return (String) get(18);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.nipam</code>.
+     * Setter for <code>cuti_pegawai_aud.nipam</code>.
      */
     public void setNipam(String value) {
         set(19, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.nipam</code>.
+     * Getter for <code>cuti_pegawai_aud.nipam</code>.
      */
     public String getNipam() {
         return (String) get(19);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.pangkat_golongan</code>.
+     * Setter for <code>cuti_pegawai_aud.pangkat_golongan</code>.
      */
     public void setPangkatGolongan(String value) {
         set(20, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.pangkat_golongan</code>.
+     * Getter for <code>cuti_pegawai_aud.pangkat_golongan</code>.
      */
     public String getPangkatGolongan() {
         return (String) get(20);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.riwayat_kuota0</code>.
+     * Setter for <code>cuti_pegawai_aud.riwayat_kuota0</code>.
      */
     public void setRiwayatKuota0(Integer value) {
         set(21, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.riwayat_kuota0</code>.
+     * Getter for <code>cuti_pegawai_aud.riwayat_kuota0</code>.
      */
     public Integer getRiwayatKuota0() {
         return (Integer) get(21);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.riwayat_kuota1</code>.
+     * Setter for <code>cuti_pegawai_aud.riwayat_kuota1</code>.
      */
     public void setRiwayatKuota1(Integer value) {
         set(22, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.riwayat_kuota1</code>.
+     * Getter for <code>cuti_pegawai_aud.riwayat_kuota1</code>.
      */
     public Integer getRiwayatKuota1() {
         return (Integer) get(22);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.riwayat_pakai0</code>.
+     * Setter for <code>cuti_pegawai_aud.riwayat_pakai0</code>.
      */
     public void setRiwayatPakai0(Integer value) {
         set(23, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.riwayat_pakai0</code>.
+     * Getter for <code>cuti_pegawai_aud.riwayat_pakai0</code>.
      */
     public Integer getRiwayatPakai0() {
         return (Integer) get(23);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.riwayat_pakai1</code>.
+     * Setter for <code>cuti_pegawai_aud.riwayat_pakai1</code>.
      */
     public void setRiwayatPakai1(Integer value) {
         set(24, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.riwayat_pakai1</code>.
+     * Getter for <code>cuti_pegawai_aud.riwayat_pakai1</code>.
      */
     public Integer getRiwayatPakai1() {
         return (Integer) get(24);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.riwayat_sisa0</code>.
+     * Setter for <code>cuti_pegawai_aud.riwayat_sisa0</code>.
      */
     public void setRiwayatSisa0(Integer value) {
         set(25, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.riwayat_sisa0</code>.
+     * Getter for <code>cuti_pegawai_aud.riwayat_sisa0</code>.
      */
     public Integer getRiwayatSisa0() {
         return (Integer) get(25);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.riwayat_sisa1</code>.
+     * Setter for <code>cuti_pegawai_aud.riwayat_sisa1</code>.
      */
     public void setRiwayatSisa1(Integer value) {
         set(26, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.riwayat_sisa1</code>.
+     * Getter for <code>cuti_pegawai_aud.riwayat_sisa1</code>.
      */
     public Integer getRiwayatSisa1() {
         return (Integer) get(26);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.tanggal_mulai</code>.
+     * Setter for <code>cuti_pegawai_aud.tanggal_mulai</code>.
      */
     public void setTanggalMulai(LocalDate value) {
         set(27, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.tanggal_mulai</code>.
+     * Getter for <code>cuti_pegawai_aud.tanggal_mulai</code>.
      */
     public LocalDate getTanggalMulai() {
         return (LocalDate) get(27);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.tanggal_selesai</code>.
+     * Setter for <code>cuti_pegawai_aud.tanggal_selesai</code>.
      */
     public void setTanggalSelesai(LocalDate value) {
         set(28, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.tanggal_selesai</code>.
+     * Getter for <code>cuti_pegawai_aud.tanggal_selesai</code>.
      */
     public LocalDate getTanggalSelesai() {
         return (LocalDate) get(28);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.jabatan_id</code>.
+     * Setter for <code>cuti_pegawai_aud.jabatan_id</code>.
      */
     public void setJabatanId(Long value) {
         set(29, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.jabatan_id</code>.
+     * Getter for <code>cuti_pegawai_aud.jabatan_id</code>.
      */
     public Long getJabatanId() {
         return (Long) get(29);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.jenis_cuti_id</code>.
+     * Setter for <code>cuti_pegawai_aud.jenis_cuti_id</code>.
      */
     public void setJenisCutiId(Long value) {
         set(30, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.jenis_cuti_id</code>.
+     * Getter for <code>cuti_pegawai_aud.jenis_cuti_id</code>.
      */
     public Long getJenisCutiId() {
         return (Long) get(30);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.organisasi_id</code>.
+     * Setter for <code>cuti_pegawai_aud.organisasi_id</code>.
      */
     public void setOrganisasiId(Long value) {
         set(31, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.organisasi_id</code>.
+     * Getter for <code>cuti_pegawai_aud.organisasi_id</code>.
      */
     public Long getOrganisasiId() {
         return (Long) get(31);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.pegawai_id</code>.
+     * Setter for <code>cuti_pegawai_aud.pegawai_id</code>.
      */
     public void setPegawaiId(Long value) {
         set(32, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.pegawai_id</code>.
+     * Getter for <code>cuti_pegawai_aud.pegawai_id</code>.
      */
     public Long getPegawaiId() {
         return (Long) get(32);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.pic_saat_ini_id</code>.
+     * Setter for <code>cuti_pegawai_aud.pic_saat_ini_id</code>.
      */
     public void setPicSaatIniId(Long value) {
         set(33, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.pic_saat_ini_id</code>.
+     * Getter for <code>cuti_pegawai_aud.pic_saat_ini_id</code>.
      */
     public Long getPicSaatIniId() {
         return (Long) get(33);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.ref_cuti_id</code>.
+     * Setter for <code>cuti_pegawai_aud.ref_cuti_id</code>.
      */
     public void setRefCutiId(Long value) {
         set(34, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.ref_cuti_id</code>.
+     * Getter for <code>cuti_pegawai_aud.ref_cuti_id</code>.
      */
     public Long getRefCutiId() {
         return (Long) get(34);
     }
 
     /**
-     * Setter for <code>kepegawaian.cuti_pegawai_aud.sub_jenis_cuti_id</code>.
+     * Setter for <code>cuti_pegawai_aud.sub_jenis_cuti_id</code>.
      */
     public void setSubJenisCutiId(Long value) {
         set(35, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.cuti_pegawai_aud.sub_jenis_cuti_id</code>.
+     * Getter for <code>cuti_pegawai_aud.sub_jenis_cuti_id</code>.
      */
     public Long getSubJenisCutiId() {
         return (Long) get(35);

@@ -4,19 +4,34 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Indexes;
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.records.LampiranSkRecord;
-import org.jooq.*;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.Identity;
+import org.jooq.Index;
+import org.jooq.Name;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -28,7 +43,7 @@ public class LampiranSk extends TableImpl<LampiranSkRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.lampiran_sk</code>
+     * The reference instance of <code>lampiran_sk</code>
      */
     public static final LampiranSk LAMPIRAN_SK = new LampiranSk();
 
@@ -41,92 +56,92 @@ public class LampiranSk extends TableImpl<LampiranSkRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.lampiran_sk.id</code>.
+     * The column <code>lampiran_sk.id</code>.
      */
     public final TableField<LampiranSkRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_sk.changed_status</code>.
+     * The column <code>lampiran_sk.changed_status</code>.
      */
     public final TableField<LampiranSkRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_sk.created_at</code>.
+     * The column <code>lampiran_sk.created_at</code>.
      */
     public final TableField<LampiranSkRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_sk.created_by</code>.
+     * The column <code>lampiran_sk.created_by</code>.
      */
     public final TableField<LampiranSkRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_sk.is_deleted</code>.
+     * The column <code>lampiran_sk.is_deleted</code>.
      */
     public final TableField<LampiranSkRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_sk.updated_at</code>.
+     * The column <code>lampiran_sk.updated_at</code>.
      */
     public final TableField<LampiranSkRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_sk.updated_by</code>.
+     * The column <code>lampiran_sk.updated_by</code>.
      */
     public final TableField<LampiranSkRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_sk.version</code>.
+     * The column <code>lampiran_sk.version</code>.
      */
     public final TableField<LampiranSkRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_sk.disetujui</code>.
+     * The column <code>lampiran_sk.disetujui</code>.
      */
     public final TableField<LampiranSkRecord, Boolean> DISETUJUI = createField(DSL.name("disetujui"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_sk.disetujui_oleh</code>.
+     * The column <code>lampiran_sk.disetujui_oleh</code>.
      */
     public final TableField<LampiranSkRecord, String> DISETUJUI_OLEH = createField(DSL.name("disetujui_oleh"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_sk.file_name</code>.
+     * The column <code>lampiran_sk.file_name</code>.
      */
     public final TableField<LampiranSkRecord, String> FILE_NAME = createField(DSL.name("file_name"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_sk.hashed_file_name</code>.
+     * The column <code>lampiran_sk.hashed_file_name</code>.
      */
     public final TableField<LampiranSkRecord, String> HASHED_FILE_NAME = createField(DSL.name("hashed_file_name"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_sk.mime_type</code>.
+     * The column <code>lampiran_sk.mime_type</code>.
      */
     public final TableField<LampiranSkRecord, String> MIME_TYPE = createField(DSL.name("mime_type"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_sk.notes</code>.
+     * The column <code>lampiran_sk.notes</code>.
      */
     public final TableField<LampiranSkRecord, String> NOTES = createField(DSL.name("notes"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_sk.ref</code>.
+     * The column <code>lampiran_sk.ref</code>.
      */
     public final TableField<LampiranSkRecord, Byte> REF = createField(DSL.name("ref"), SQLDataType.TINYINT.nullable(false), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_sk.ref_id</code>.
+     * The column <code>lampiran_sk.ref_id</code>.
      */
     public final TableField<LampiranSkRecord, Long> REF_ID = createField(DSL.name("ref_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_sk.tanggal_disetujui</code>.
+     * The column <code>lampiran_sk.tanggal_disetujui</code>.
      */
     public final TableField<LampiranSkRecord, LocalDateTime> TANGGAL_DISETUJUI = createField(DSL.name("tanggal_disetujui"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.lampiran_sk.tanggal_pengajuan</code>.
+     * The column <code>lampiran_sk.tanggal_pengajuan</code>.
      */
     public final TableField<LampiranSkRecord, LocalDateTime> TANGGAL_PENGAJUAN = createField(DSL.name("tanggal_pengajuan"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
 
@@ -139,21 +154,21 @@ public class LampiranSk extends TableImpl<LampiranSkRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.lampiran_sk</code> table reference
+     * Create an aliased <code>lampiran_sk</code> table reference
      */
     public LampiranSk(String alias) {
         this(DSL.name(alias), LAMPIRAN_SK);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.lampiran_sk</code> table reference
+     * Create an aliased <code>lampiran_sk</code> table reference
      */
     public LampiranSk(Name alias) {
         this(alias, LAMPIRAN_SK);
     }
 
     /**
-     * Create a <code>kepegawaian.lampiran_sk</code> table reference
+     * Create a <code>lampiran_sk</code> table reference
      */
     public LampiranSk() {
         this(DSL.name("lampiran_sk"), null);
@@ -161,7 +176,7 @@ public class LampiranSk extends TableImpl<LampiranSkRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override

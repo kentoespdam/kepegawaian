@@ -4,8 +4,8 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Indexes;
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.Biodata.BiodataPath;
 import id.perumdamts.kepegawaian.jooq.tables.CutiApproval.CutiApprovalPath;
@@ -27,17 +27,35 @@ import id.perumdamts.kepegawaian.jooq.tables.RiwayatSp.RiwayatSpPath;
 import id.perumdamts.kepegawaian.jooq.tables.RiwayatTerminasi.RiwayatTerminasiPath;
 import id.perumdamts.kepegawaian.jooq.tables.RumahDinas.RumahDinasPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.PegawaiRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.Identity;
+import org.jooq.Index;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -49,7 +67,7 @@ public class Pegawai extends TableImpl<PegawaiRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.pegawai</code>
+     * The reference instance of <code>pegawai</code>
      */
     public static final Pegawai PEGAWAI = new Pegawai();
 
@@ -62,217 +80,217 @@ public class Pegawai extends TableImpl<PegawaiRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.pegawai.id</code>.
+     * The column <code>pegawai.id</code>.
      */
     public final TableField<PegawaiRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.changed_status</code>.
+     * The column <code>pegawai.changed_status</code>.
      */
     public final TableField<PegawaiRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.created_at</code>.
+     * The column <code>pegawai.created_at</code>.
      */
     public final TableField<PegawaiRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.created_by</code>.
+     * The column <code>pegawai.created_by</code>.
      */
     public final TableField<PegawaiRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.is_deleted</code>.
+     * The column <code>pegawai.is_deleted</code>.
      */
     public final TableField<PegawaiRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.updated_at</code>.
+     * The column <code>pegawai.updated_at</code>.
      */
     public final TableField<PegawaiRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.updated_by</code>.
+     * The column <code>pegawai.updated_by</code>.
      */
     public final TableField<PegawaiRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.version</code>.
+     * The column <code>pegawai.version</code>.
      */
     public final TableField<PegawaiRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.absensi_id</code>.
+     * The column <code>pegawai.absensi_id</code>.
      */
     public final TableField<PegawaiRecord, Long> ABSENSI_ID = createField(DSL.name("absensi_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.email</code>.
+     * The column <code>pegawai.email</code>.
      */
     public final TableField<PegawaiRecord, String> EMAIL = createField(DSL.name("email"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.gaji_pokok</code>.
+     * The column <code>pegawai.gaji_pokok</code>.
      */
     public final TableField<PegawaiRecord, Double> GAJI_POKOK = createField(DSL.name("gaji_pokok"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.is_askes</code>.
+     * The column <code>pegawai.is_askes</code>.
      */
     public final TableField<PegawaiRecord, Boolean> IS_ASKES = createField(DSL.name("is_askes"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.jml_tanggungan</code>.
+     * The column <code>pegawai.jml_tanggungan</code>.
      */
     public final TableField<PegawaiRecord, Integer> JML_TANGGUNGAN = createField(DSL.name("jml_tanggungan"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.mkg_bulan</code>.
+     * The column <code>pegawai.mkg_bulan</code>.
      */
     public final TableField<PegawaiRecord, Integer> MKG_BULAN = createField(DSL.name("mkg_bulan"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.mkg_tahun</code>.
+     * The column <code>pegawai.mkg_tahun</code>.
      */
     public final TableField<PegawaiRecord, Integer> MKG_TAHUN = createField(DSL.name("mkg_tahun"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.nipam</code>.
+     * The column <code>pegawai.nipam</code>.
      */
     public final TableField<PegawaiRecord, String> NIPAM = createField(DSL.name("nipam"), SQLDataType.VARCHAR(32).nullable(false), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.notes</code>.
+     * The column <code>pegawai.notes</code>.
      */
     public final TableField<PegawaiRecord, String> NOTES = createField(DSL.name("notes"), SQLDataType.CLOB(65535).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.phdp</code>.
+     * The column <code>pegawai.phdp</code>.
      */
     public final TableField<PegawaiRecord, Double> PHDP = createField(DSL.name("phdp"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.ref_sk_capeg_id</code>.
+     * The column <code>pegawai.ref_sk_capeg_id</code>.
      */
     public final TableField<PegawaiRecord, Long> REF_SK_CAPEG_ID = createField(DSL.name("ref_sk_capeg_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.ref_sk_gaji_berkala_id</code>.
+     * The column <code>pegawai.ref_sk_gaji_berkala_id</code>.
      */
     public final TableField<PegawaiRecord, Long> REF_SK_GAJI_BERKALA_ID = createField(DSL.name("ref_sk_gaji_berkala_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.ref_sk_gol_id</code>.
+     * The column <code>pegawai.ref_sk_gol_id</code>.
      */
     public final TableField<PegawaiRecord, Long> REF_SK_GOL_ID = createField(DSL.name("ref_sk_gol_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.ref_sk_jabatan_id</code>.
+     * The column <code>pegawai.ref_sk_jabatan_id</code>.
      */
     public final TableField<PegawaiRecord, Long> REF_SK_JABATAN_ID = createField(DSL.name("ref_sk_jabatan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.ref_sk_mutasi_id</code>.
+     * The column <code>pegawai.ref_sk_mutasi_id</code>.
      */
     public final TableField<PegawaiRecord, Long> REF_SK_MUTASI_ID = createField(DSL.name("ref_sk_mutasi_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.ref_sk_pegawai_id</code>.
+     * The column <code>pegawai.ref_sk_pegawai_id</code>.
      */
     public final TableField<PegawaiRecord, Long> REF_SK_PEGAWAI_ID = createField(DSL.name("ref_sk_pegawai_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.status_kerja</code>.
+     * The column <code>pegawai.status_kerja</code>.
      */
     public final TableField<PegawaiRecord, Byte> STATUS_KERJA = createField(DSL.name("status_kerja"), SQLDataType.TINYINT.nullable(false), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.status_pegawai</code>.
+     * The column <code>pegawai.status_pegawai</code>.
      */
     public final TableField<PegawaiRecord, Byte> STATUS_PEGAWAI = createField(DSL.name("status_pegawai"), SQLDataType.TINYINT.nullable(false), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.tanggal_pengangkatan</code>.
+     * The column <code>pegawai.tanggal_pengangkatan</code>.
      */
     public final TableField<PegawaiRecord, LocalDate> TANGGAL_PENGANGKATAN = createField(DSL.name("tanggal_pengangkatan"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.tmt_gaji_berkala</code>.
+     * The column <code>pegawai.tmt_gaji_berkala</code>.
      */
     public final TableField<PegawaiRecord, LocalDate> TMT_GAJI_BERKALA = createField(DSL.name("tmt_gaji_berkala"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.tmt_golongan</code>.
+     * The column <code>pegawai.tmt_golongan</code>.
      */
     public final TableField<PegawaiRecord, LocalDate> TMT_GOLONGAN = createField(DSL.name("tmt_golongan"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.tmt_jabatan</code>.
+     * The column <code>pegawai.tmt_jabatan</code>.
      */
     public final TableField<PegawaiRecord, LocalDate> TMT_JABATAN = createField(DSL.name("tmt_jabatan"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.tmt_kerja</code>.
+     * The column <code>pegawai.tmt_kerja</code>.
      */
     public final TableField<PegawaiRecord, LocalDate> TMT_KERJA = createField(DSL.name("tmt_kerja"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.tmt_mutasi</code>.
+     * The column <code>pegawai.tmt_mutasi</code>.
      */
     public final TableField<PegawaiRecord, LocalDate> TMT_MUTASI = createField(DSL.name("tmt_mutasi"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.tmt_pegawai</code>.
+     * The column <code>pegawai.tmt_pegawai</code>.
      */
     public final TableField<PegawaiRecord, LocalDate> TMT_PEGAWAI = createField(DSL.name("tmt_pegawai"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.tmt_pensiun</code>.
+     * The column <code>pegawai.tmt_pensiun</code>.
      */
     public final TableField<PegawaiRecord, LocalDate> TMT_PENSIUN = createField(DSL.name("tmt_pensiun"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.nik</code>.
+     * The column <code>pegawai.nik</code>.
      */
     public final TableField<PegawaiRecord, String> NIK = createField(DSL.name("nik"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.gaji_profil_id</code>.
+     * The column <code>pegawai.gaji_profil_id</code>.
      */
     public final TableField<PegawaiRecord, Long> GAJI_PROFIL_ID = createField(DSL.name("gaji_profil_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.golongan_id</code>.
+     * The column <code>pegawai.golongan_id</code>.
      */
     public final TableField<PegawaiRecord, Long> GOLONGAN_ID = createField(DSL.name("golongan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.grade_id</code>.
+     * The column <code>pegawai.grade_id</code>.
      */
     public final TableField<PegawaiRecord, Long> GRADE_ID = createField(DSL.name("grade_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.jabatan_id</code>.
+     * The column <code>pegawai.jabatan_id</code>.
      */
     public final TableField<PegawaiRecord, Long> JABATAN_ID = createField(DSL.name("jabatan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.gaji_pendapatan_non_pajak_id</code>.
+     * The column <code>pegawai.gaji_pendapatan_non_pajak_id</code>.
      */
     public final TableField<PegawaiRecord, Long> GAJI_PENDAPATAN_NON_PAJAK_ID = createField(DSL.name("gaji_pendapatan_non_pajak_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.organisasi_id</code>.
+     * The column <code>pegawai.organisasi_id</code>.
      */
     public final TableField<PegawaiRecord, Long> ORGANISASI_ID = createField(DSL.name("organisasi_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.profesi_id</code>.
+     * The column <code>pegawai.profesi_id</code>.
      */
     public final TableField<PegawaiRecord, Long> PROFESI_ID = createField(DSL.name("profesi_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.pegawai.rumah_dinas_id</code>.
+     * The column <code>pegawai.rumah_dinas_id</code>.
      */
     public final TableField<PegawaiRecord, Long> RUMAH_DINAS_ID = createField(DSL.name("rumah_dinas_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
@@ -285,21 +303,21 @@ public class Pegawai extends TableImpl<PegawaiRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.pegawai</code> table reference
+     * Create an aliased <code>pegawai</code> table reference
      */
     public Pegawai(String alias) {
         this(DSL.name(alias), PEGAWAI);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.pegawai</code> table reference
+     * Create an aliased <code>pegawai</code> table reference
      */
     public Pegawai(Name alias) {
         this(alias, PEGAWAI);
     }
 
     /**
-     * Create a <code>kepegawaian.pegawai</code> table reference
+     * Create a <code>pegawai</code> table reference
      */
     public Pegawai() {
         this(DSL.name("pegawai"), null);
@@ -340,7 +358,7 @@ public class Pegawai extends TableImpl<PegawaiRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -371,7 +389,7 @@ public class Pegawai extends TableImpl<PegawaiRecord> {
     private transient ProfesiPath _profesi;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.profesi</code> table.
+     * Get the implicit join path to the <code>profesi</code> table.
      */
     public ProfesiPath profesi() {
         if (_profesi == null)
@@ -383,8 +401,7 @@ public class Pegawai extends TableImpl<PegawaiRecord> {
     private transient GolonganPath _golongan;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.golongan</code>
-     * table.
+     * Get the implicit join path to the <code>golongan</code> table.
      */
     public GolonganPath golongan() {
         if (_golongan == null)
@@ -396,8 +413,8 @@ public class Pegawai extends TableImpl<PegawaiRecord> {
     private transient GajiPendapatanNonPajakPath _gajiPendapatanNonPajak;
 
     /**
-     * Get the implicit join path to the
-     * <code>kepegawaian.gaji_pendapatan_non_pajak</code> table.
+     * Get the implicit join path to the <code>gaji_pendapatan_non_pajak</code>
+     * table.
      */
     public GajiPendapatanNonPajakPath gajiPendapatanNonPajak() {
         if (_gajiPendapatanNonPajak == null)
@@ -409,8 +426,7 @@ public class Pegawai extends TableImpl<PegawaiRecord> {
     private transient OrganisasiPath _organisasi;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.organisasi</code>
-     * table.
+     * Get the implicit join path to the <code>organisasi</code> table.
      */
     public OrganisasiPath organisasi() {
         if (_organisasi == null)
@@ -422,8 +438,7 @@ public class Pegawai extends TableImpl<PegawaiRecord> {
     private transient GajiProfilPath _gajiProfil;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.gaji_profil</code>
-     * table.
+     * Get the implicit join path to the <code>gaji_profil</code> table.
      */
     public GajiProfilPath gajiProfil() {
         if (_gajiProfil == null)
@@ -435,7 +450,7 @@ public class Pegawai extends TableImpl<PegawaiRecord> {
     private transient JabatanPath _jabatan;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.jabatan</code> table.
+     * Get the implicit join path to the <code>jabatan</code> table.
      */
     public JabatanPath jabatan() {
         if (_jabatan == null)
@@ -447,8 +462,7 @@ public class Pegawai extends TableImpl<PegawaiRecord> {
     private transient RumahDinasPath _rumahDinas;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.rumah_dinas</code>
-     * table.
+     * Get the implicit join path to the <code>rumah_dinas</code> table.
      */
     public RumahDinasPath rumahDinas() {
         if (_rumahDinas == null)
@@ -460,7 +474,7 @@ public class Pegawai extends TableImpl<PegawaiRecord> {
     private transient BiodataPath _biodata;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.biodata</code> table.
+     * Get the implicit join path to the <code>biodata</code> table.
      */
     public BiodataPath biodata() {
         if (_biodata == null)
@@ -472,7 +486,7 @@ public class Pegawai extends TableImpl<PegawaiRecord> {
     private transient GradePath _grade;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.grade</code> table.
+     * Get the implicit join path to the <code>grade</code> table.
      */
     public GradePath grade() {
         if (_grade == null)
@@ -484,9 +498,8 @@ public class Pegawai extends TableImpl<PegawaiRecord> {
     private transient RiwayatKeluarPath _fk57u6wudd5sq037fe4l894iqf1;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.riwayat_keluar</code> table, via the
-     * <code>FK57u6wudd5sq037fe4l894iqf1</code> key
+     * Get the implicit to-many join path to the <code>riwayat_keluar</code>
+     * table, via the <code>FK57u6wudd5sq037fe4l894iqf1</code> key
      */
     public RiwayatKeluarPath fk57u6wudd5sq037fe4l894iqf1() {
         if (_fk57u6wudd5sq037fe4l894iqf1 == null)
@@ -498,8 +511,7 @@ public class Pegawai extends TableImpl<PegawaiRecord> {
     private transient CutiKuotaPath _cutiKuota;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.cuti_kuota</code> table
+     * Get the implicit to-many join path to the <code>cuti_kuota</code> table
      */
     public CutiKuotaPath cutiKuota() {
         if (_cutiKuota == null)
@@ -511,8 +523,8 @@ public class Pegawai extends TableImpl<PegawaiRecord> {
     private transient CutiApprovalPath _cutiApproval;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.cuti_approval</code> table
+     * Get the implicit to-many join path to the <code>cuti_approval</code>
+     * table
      */
     public CutiApprovalPath cutiApproval() {
         if (_cutiApproval == null)
@@ -524,8 +536,8 @@ public class Pegawai extends TableImpl<PegawaiRecord> {
     private transient RiwayatTerminasiPath _riwayatTerminasi;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.riwayat_terminasi</code> table
+     * Get the implicit to-many join path to the <code>riwayat_terminasi</code>
+     * table
      */
     public RiwayatTerminasiPath riwayatTerminasi() {
         if (_riwayatTerminasi == null)
@@ -537,8 +549,8 @@ public class Pegawai extends TableImpl<PegawaiRecord> {
     private transient RiwayatKontrakPath _riwayatKontrak;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.riwayat_kontrak</code> table
+     * Get the implicit to-many join path to the <code>riwayat_kontrak</code>
+     * table
      */
     public RiwayatKontrakPath riwayatKontrak() {
         if (_riwayatKontrak == null)
@@ -550,8 +562,8 @@ public class Pegawai extends TableImpl<PegawaiRecord> {
     private transient RiwayatMutasiPath _riwayatMutasi;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.riwayat_mutasi</code> table
+     * Get the implicit to-many join path to the <code>riwayat_mutasi</code>
+     * table
      */
     public RiwayatMutasiPath riwayatMutasi() {
         if (_riwayatMutasi == null)
@@ -563,9 +575,8 @@ public class Pegawai extends TableImpl<PegawaiRecord> {
     private transient RiwayatKeluarPath _fkl69jx9od4ll637wkc99n2tm6m;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.riwayat_keluar</code> table, via the
-     * <code>FKl69jx9od4ll637wkc99n2tm6m</code> key
+     * Get the implicit to-many join path to the <code>riwayat_keluar</code>
+     * table, via the <code>FKl69jx9od4ll637wkc99n2tm6m</code> key
      */
     public RiwayatKeluarPath fkl69jx9od4ll637wkc99n2tm6m() {
         if (_fkl69jx9od4ll637wkc99n2tm6m == null)
@@ -577,8 +588,7 @@ public class Pegawai extends TableImpl<PegawaiRecord> {
     private transient RiwayatSpPath _riwayatSp;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.riwayat_sp</code> table
+     * Get the implicit to-many join path to the <code>riwayat_sp</code> table
      */
     public RiwayatSpPath riwayatSp() {
         if (_riwayatSp == null)
@@ -590,8 +600,7 @@ public class Pegawai extends TableImpl<PegawaiRecord> {
     private transient RiwayatCutiPath _riwayatCuti;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.riwayat_cuti</code> table
+     * Get the implicit to-many join path to the <code>riwayat_cuti</code> table
      */
     public RiwayatCutiPath riwayatCuti() {
         if (_riwayatCuti == null)
@@ -603,8 +612,7 @@ public class Pegawai extends TableImpl<PegawaiRecord> {
     private transient CutiPegawaiPath _cutiPegawai;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.cuti_pegawai</code> table
+     * Get the implicit to-many join path to the <code>cuti_pegawai</code> table
      */
     public CutiPegawaiPath cutiPegawai() {
         if (_cutiPegawai == null)
@@ -616,8 +624,7 @@ public class Pegawai extends TableImpl<PegawaiRecord> {
     private transient RiwayatSkPath _riwayatSk;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.riwayat_sk</code> table
+     * Get the implicit to-many join path to the <code>riwayat_sk</code> table
      */
     public RiwayatSkPath riwayatSk() {
         if (_riwayatSk == null)

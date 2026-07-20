@@ -5,10 +5,11 @@ package id.perumdamts.kepegawaian.jooq.tables.records;
 
 
 import id.perumdamts.kepegawaian.jooq.tables.SanksiSpAud;
-import org.jooq.Record2;
-import org.jooq.impl.UpdatableRecordImpl;
 
 import java.time.LocalDateTime;
+
+import org.jooq.Record2;
+import org.jooq.impl.UpdatableRecordImpl;
 
 
 /**
@@ -20,294 +21,294 @@ public class SanksiSpAudRecord extends UpdatableRecordImpl<SanksiSpAudRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>kepegawaian.sanksi_sp_aud.id</code>.
+     * Setter for <code>sanksi_sp_aud.id</code>.
      */
     public void setId(Long value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.sanksi_sp_aud.id</code>.
+     * Getter for <code>sanksi_sp_aud.id</code>.
      */
     public Long getId() {
         return (Long) get(0);
     }
 
     /**
-     * Setter for <code>kepegawaian.sanksi_sp_aud.rev</code>.
+     * Setter for <code>sanksi_sp_aud.rev</code>.
      */
     public void setRev(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.sanksi_sp_aud.rev</code>.
+     * Getter for <code>sanksi_sp_aud.rev</code>.
      */
     public Integer getRev() {
         return (Integer) get(1);
     }
 
     /**
-     * Setter for <code>kepegawaian.sanksi_sp_aud.revtype</code>.
+     * Setter for <code>sanksi_sp_aud.revtype</code>.
      */
     public void setRevtype(Byte value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.sanksi_sp_aud.revtype</code>.
+     * Getter for <code>sanksi_sp_aud.revtype</code>.
      */
     public Byte getRevtype() {
         return (Byte) get(2);
     }
 
     /**
-     * Setter for <code>kepegawaian.sanksi_sp_aud.changed_status</code>.
+     * Setter for <code>sanksi_sp_aud.changed_status</code>.
      */
     public void setChangedStatus(Byte value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.sanksi_sp_aud.changed_status</code>.
+     * Getter for <code>sanksi_sp_aud.changed_status</code>.
      */
     public Byte getChangedStatus() {
         return (Byte) get(3);
     }
 
     /**
-     * Setter for <code>kepegawaian.sanksi_sp_aud.created_at</code>.
+     * Setter for <code>sanksi_sp_aud.created_at</code>.
      */
     public void setCreatedAt(LocalDateTime value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.sanksi_sp_aud.created_at</code>.
+     * Getter for <code>sanksi_sp_aud.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
         return (LocalDateTime) get(4);
     }
 
     /**
-     * Setter for <code>kepegawaian.sanksi_sp_aud.created_by</code>.
+     * Setter for <code>sanksi_sp_aud.created_by</code>.
      */
     public void setCreatedBy(String value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.sanksi_sp_aud.created_by</code>.
+     * Getter for <code>sanksi_sp_aud.created_by</code>.
      */
     public String getCreatedBy() {
         return (String) get(5);
     }
 
     /**
-     * Setter for <code>kepegawaian.sanksi_sp_aud.is_deleted</code>.
+     * Setter for <code>sanksi_sp_aud.is_deleted</code>.
      */
     public void setIsDeleted(Boolean value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.sanksi_sp_aud.is_deleted</code>.
+     * Getter for <code>sanksi_sp_aud.is_deleted</code>.
      */
     public Boolean getIsDeleted() {
         return (Boolean) get(6);
     }
 
     /**
-     * Setter for <code>kepegawaian.sanksi_sp_aud.updated_at</code>.
+     * Setter for <code>sanksi_sp_aud.updated_at</code>.
      */
     public void setUpdatedAt(LocalDateTime value) {
         set(7, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.sanksi_sp_aud.updated_at</code>.
+     * Getter for <code>sanksi_sp_aud.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
         return (LocalDateTime) get(7);
     }
 
     /**
-     * Setter for <code>kepegawaian.sanksi_sp_aud.updated_by</code>.
+     * Setter for <code>sanksi_sp_aud.updated_by</code>.
      */
     public void setUpdatedBy(String value) {
         set(8, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.sanksi_sp_aud.updated_by</code>.
+     * Getter for <code>sanksi_sp_aud.updated_by</code>.
      */
     public String getUpdatedBy() {
         return (String) get(8);
     }
 
     /**
-     * Setter for <code>kepegawaian.sanksi_sp_aud.is_pending_gaji</code>.
+     * Setter for <code>sanksi_sp_aud.is_pending_gaji</code>.
      */
     public void setIsPendingGaji(Boolean value) {
         set(9, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.sanksi_sp_aud.is_pending_gaji</code>.
+     * Getter for <code>sanksi_sp_aud.is_pending_gaji</code>.
      */
     public Boolean getIsPendingGaji() {
         return (Boolean) get(9);
     }
 
     /**
-     * Setter for <code>kepegawaian.sanksi_sp_aud.is_pending_pangkat</code>.
+     * Setter for <code>sanksi_sp_aud.is_pending_pangkat</code>.
      */
     public void setIsPendingPangkat(Boolean value) {
         set(10, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.sanksi_sp_aud.is_pending_pangkat</code>.
+     * Getter for <code>sanksi_sp_aud.is_pending_pangkat</code>.
      */
     public Boolean getIsPendingPangkat() {
         return (Boolean) get(10);
     }
 
     /**
-     * Setter for <code>kepegawaian.sanksi_sp_aud.is_suspension</code>.
+     * Setter for <code>sanksi_sp_aud.is_suspension</code>.
      */
     public void setIsSuspension(Boolean value) {
         set(11, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.sanksi_sp_aud.is_suspension</code>.
+     * Getter for <code>sanksi_sp_aud.is_suspension</code>.
      */
     public Boolean getIsSuspension() {
         return (Boolean) get(11);
     }
 
     /**
-     * Setter for <code>kepegawaian.sanksi_sp_aud.is_terminate_dh</code>.
+     * Setter for <code>sanksi_sp_aud.is_terminate_dh</code>.
      */
     public void setIsTerminateDh(Boolean value) {
         set(12, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.sanksi_sp_aud.is_terminate_dh</code>.
+     * Getter for <code>sanksi_sp_aud.is_terminate_dh</code>.
      */
     public Boolean getIsTerminateDh() {
         return (Boolean) get(12);
     }
 
     /**
-     * Setter for <code>kepegawaian.sanksi_sp_aud.is_terminate_th</code>.
+     * Setter for <code>sanksi_sp_aud.is_terminate_th</code>.
      */
     public void setIsTerminateTh(Boolean value) {
         set(13, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.sanksi_sp_aud.is_terminate_th</code>.
+     * Getter for <code>sanksi_sp_aud.is_terminate_th</code>.
      */
     public Boolean getIsTerminateTh() {
         return (Boolean) get(13);
     }
 
     /**
-     * Setter for <code>kepegawaian.sanksi_sp_aud.is_turun_jabatan</code>.
+     * Setter for <code>sanksi_sp_aud.is_turun_jabatan</code>.
      */
     public void setIsTurunJabatan(Boolean value) {
         set(14, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.sanksi_sp_aud.is_turun_jabatan</code>.
+     * Getter for <code>sanksi_sp_aud.is_turun_jabatan</code>.
      */
     public Boolean getIsTurunJabatan() {
         return (Boolean) get(14);
     }
 
     /**
-     * Setter for <code>kepegawaian.sanksi_sp_aud.is_turun_pangkat</code>.
+     * Setter for <code>sanksi_sp_aud.is_turun_pangkat</code>.
      */
     public void setIsTurunPangkat(Boolean value) {
         set(15, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.sanksi_sp_aud.is_turun_pangkat</code>.
+     * Getter for <code>sanksi_sp_aud.is_turun_pangkat</code>.
      */
     public Boolean getIsTurunPangkat() {
         return (Boolean) get(15);
     }
 
     /**
-     * Setter for <code>kepegawaian.sanksi_sp_aud.jml_pot_tkk</code>.
+     * Setter for <code>sanksi_sp_aud.jml_pot_tkk</code>.
      */
     public void setJmlPotTkk(Integer value) {
         set(16, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.sanksi_sp_aud.jml_pot_tkk</code>.
+     * Getter for <code>sanksi_sp_aud.jml_pot_tkk</code>.
      */
     public Integer getJmlPotTkk() {
         return (Integer) get(16);
     }
 
     /**
-     * Setter for <code>kepegawaian.sanksi_sp_aud.keterangan</code>.
+     * Setter for <code>sanksi_sp_aud.keterangan</code>.
      */
     public void setKeterangan(String value) {
         set(17, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.sanksi_sp_aud.keterangan</code>.
+     * Getter for <code>sanksi_sp_aud.keterangan</code>.
      */
     public String getKeterangan() {
         return (String) get(17);
     }
 
     /**
-     * Setter for <code>kepegawaian.sanksi_sp_aud.kode</code>.
+     * Setter for <code>sanksi_sp_aud.kode</code>.
      */
     public void setKode(String value) {
         set(18, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.sanksi_sp_aud.kode</code>.
+     * Getter for <code>sanksi_sp_aud.kode</code>.
      */
     public String getKode() {
         return (String) get(18);
     }
 
     /**
-     * Setter for <code>kepegawaian.sanksi_sp_aud.pot_tkk</code>.
+     * Setter for <code>sanksi_sp_aud.pot_tkk</code>.
      */
     public void setPotTkk(Boolean value) {
         set(19, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.sanksi_sp_aud.pot_tkk</code>.
+     * Getter for <code>sanksi_sp_aud.pot_tkk</code>.
      */
     public Boolean getPotTkk() {
         return (Boolean) get(19);
     }
 
     /**
-     * Setter for <code>kepegawaian.sanksi_sp_aud.jenis_sp_id</code>.
+     * Setter for <code>sanksi_sp_aud.jenis_sp_id</code>.
      */
     public void setJenisSpId(Long value) {
         set(20, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.sanksi_sp_aud.jenis_sp_id</code>.
+     * Getter for <code>sanksi_sp_aud.jenis_sp_id</code>.
      */
     public Long getJenisSpId() {
         return (Long) get(20);

@@ -4,23 +4,41 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Indexes;
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.Pegawai.PegawaiPath;
 import id.perumdamts.kepegawaian.jooq.tables.RiwayatSk.RiwayatSkPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.RiwayatMutasiRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.Identity;
+import org.jooq.Index;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -32,7 +50,7 @@ public class RiwayatMutasi extends TableImpl<RiwayatMutasiRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.riwayat_mutasi</code>
+     * The reference instance of <code>riwayat_mutasi</code>
      */
     public static final RiwayatMutasi RIWAYAT_MUTASI = new RiwayatMutasi();
 
@@ -45,162 +63,162 @@ public class RiwayatMutasi extends TableImpl<RiwayatMutasiRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.riwayat_mutasi.id</code>.
+     * The column <code>riwayat_mutasi.id</code>.
      */
     public final TableField<RiwayatMutasiRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_mutasi.changed_status</code>.
+     * The column <code>riwayat_mutasi.changed_status</code>.
      */
     public final TableField<RiwayatMutasiRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_mutasi.created_at</code>.
+     * The column <code>riwayat_mutasi.created_at</code>.
      */
     public final TableField<RiwayatMutasiRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_mutasi.created_by</code>.
+     * The column <code>riwayat_mutasi.created_by</code>.
      */
     public final TableField<RiwayatMutasiRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_mutasi.is_deleted</code>.
+     * The column <code>riwayat_mutasi.is_deleted</code>.
      */
     public final TableField<RiwayatMutasiRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_mutasi.updated_at</code>.
+     * The column <code>riwayat_mutasi.updated_at</code>.
      */
     public final TableField<RiwayatMutasiRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_mutasi.updated_by</code>.
+     * The column <code>riwayat_mutasi.updated_by</code>.
      */
     public final TableField<RiwayatMutasiRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_mutasi.version</code>.
+     * The column <code>riwayat_mutasi.version</code>.
      */
     public final TableField<RiwayatMutasiRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_mutasi.jenis_mutasi</code>.
+     * The column <code>riwayat_mutasi.jenis_mutasi</code>.
      */
     public final TableField<RiwayatMutasiRecord, Byte> JENIS_MUTASI = createField(DSL.name("jenis_mutasi"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_mutasi.nama</code>.
+     * The column <code>riwayat_mutasi.nama</code>.
      */
     public final TableField<RiwayatMutasiRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_mutasi.nama_golongan</code>.
+     * The column <code>riwayat_mutasi.nama_golongan</code>.
      */
     public final TableField<RiwayatMutasiRecord, String> NAMA_GOLONGAN = createField(DSL.name("nama_golongan"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_mutasi.nama_golongan_lama</code>.
+     * The column <code>riwayat_mutasi.nama_golongan_lama</code>.
      */
     public final TableField<RiwayatMutasiRecord, String> NAMA_GOLONGAN_LAMA = createField(DSL.name("nama_golongan_lama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_mutasi.nama_jabatan</code>.
+     * The column <code>riwayat_mutasi.nama_jabatan</code>.
      */
     public final TableField<RiwayatMutasiRecord, String> NAMA_JABATAN = createField(DSL.name("nama_jabatan"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_mutasi.nama_jabatan_lama</code>.
+     * The column <code>riwayat_mutasi.nama_jabatan_lama</code>.
      */
     public final TableField<RiwayatMutasiRecord, String> NAMA_JABATAN_LAMA = createField(DSL.name("nama_jabatan_lama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_mutasi.nama_organisasi</code>.
+     * The column <code>riwayat_mutasi.nama_organisasi</code>.
      */
     public final TableField<RiwayatMutasiRecord, String> NAMA_ORGANISASI = createField(DSL.name("nama_organisasi"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_mutasi.nama_organisasi_lama</code>.
+     * The column <code>riwayat_mutasi.nama_organisasi_lama</code>.
      */
     public final TableField<RiwayatMutasiRecord, String> NAMA_ORGANISASI_LAMA = createField(DSL.name("nama_organisasi_lama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_mutasi.nama_profesi</code>.
+     * The column <code>riwayat_mutasi.nama_profesi</code>.
      */
     public final TableField<RiwayatMutasiRecord, String> NAMA_PROFESI = createField(DSL.name("nama_profesi"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_mutasi.nama_profesi_lama</code>.
+     * The column <code>riwayat_mutasi.nama_profesi_lama</code>.
      */
     public final TableField<RiwayatMutasiRecord, String> NAMA_PROFESI_LAMA = createField(DSL.name("nama_profesi_lama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_mutasi.nipam</code>.
+     * The column <code>riwayat_mutasi.nipam</code>.
      */
     public final TableField<RiwayatMutasiRecord, String> NIPAM = createField(DSL.name("nipam"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_mutasi.notes</code>.
+     * The column <code>riwayat_mutasi.notes</code>.
      */
     public final TableField<RiwayatMutasiRecord, String> NOTES = createField(DSL.name("notes"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_mutasi.tanggal_berakhir</code>.
+     * The column <code>riwayat_mutasi.tanggal_berakhir</code>.
      */
     public final TableField<RiwayatMutasiRecord, LocalDate> TANGGAL_BERAKHIR = createField(DSL.name("tanggal_berakhir"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_mutasi.tmt_berlaku</code>.
+     * The column <code>riwayat_mutasi.tmt_berlaku</code>.
      */
     public final TableField<RiwayatMutasiRecord, LocalDate> TMT_BERLAKU = createField(DSL.name("tmt_berlaku"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_mutasi.golongan_id</code>.
+     * The column <code>riwayat_mutasi.golongan_id</code>.
      */
     public final TableField<RiwayatMutasiRecord, Long> GOLONGAN_ID = createField(DSL.name("golongan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_mutasi.golongan_lama_id</code>.
+     * The column <code>riwayat_mutasi.golongan_lama_id</code>.
      */
     public final TableField<RiwayatMutasiRecord, Long> GOLONGAN_LAMA_ID = createField(DSL.name("golongan_lama_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_mutasi.jabatan_id</code>.
+     * The column <code>riwayat_mutasi.jabatan_id</code>.
      */
     public final TableField<RiwayatMutasiRecord, Long> JABATAN_ID = createField(DSL.name("jabatan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_mutasi.jabatan_lama_id</code>.
+     * The column <code>riwayat_mutasi.jabatan_lama_id</code>.
      */
     public final TableField<RiwayatMutasiRecord, Long> JABATAN_LAMA_ID = createField(DSL.name("jabatan_lama_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_mutasi.organisasi_id</code>.
+     * The column <code>riwayat_mutasi.organisasi_id</code>.
      */
     public final TableField<RiwayatMutasiRecord, Long> ORGANISASI_ID = createField(DSL.name("organisasi_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_mutasi.organisasi_lama_id</code>.
+     * The column <code>riwayat_mutasi.organisasi_lama_id</code>.
      */
     public final TableField<RiwayatMutasiRecord, Long> ORGANISASI_LAMA_ID = createField(DSL.name("organisasi_lama_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_mutasi.pegawai_id</code>.
+     * The column <code>riwayat_mutasi.pegawai_id</code>.
      */
     public final TableField<RiwayatMutasiRecord, Long> PEGAWAI_ID = createField(DSL.name("pegawai_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_mutasi.profesi_id</code>.
+     * The column <code>riwayat_mutasi.profesi_id</code>.
      */
     public final TableField<RiwayatMutasiRecord, Long> PROFESI_ID = createField(DSL.name("profesi_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_mutasi.profesi_lama_id</code>.
+     * The column <code>riwayat_mutasi.profesi_lama_id</code>.
      */
     public final TableField<RiwayatMutasiRecord, Long> PROFESI_LAMA_ID = createField(DSL.name("profesi_lama_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.riwayat_mutasi.riwayat_sk_id</code>.
+     * The column <code>riwayat_mutasi.riwayat_sk_id</code>.
      */
     public final TableField<RiwayatMutasiRecord, Long> RIWAYAT_SK_ID = createField(DSL.name("riwayat_sk_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
@@ -213,21 +231,21 @@ public class RiwayatMutasi extends TableImpl<RiwayatMutasiRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.riwayat_mutasi</code> table reference
+     * Create an aliased <code>riwayat_mutasi</code> table reference
      */
     public RiwayatMutasi(String alias) {
         this(DSL.name(alias), RIWAYAT_MUTASI);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.riwayat_mutasi</code> table reference
+     * Create an aliased <code>riwayat_mutasi</code> table reference
      */
     public RiwayatMutasi(Name alias) {
         this(alias, RIWAYAT_MUTASI);
     }
 
     /**
-     * Create a <code>kepegawaian.riwayat_mutasi</code> table reference
+     * Create a <code>riwayat_mutasi</code> table reference
      */
     public RiwayatMutasi() {
         this(DSL.name("riwayat_mutasi"), null);
@@ -268,7 +286,7 @@ public class RiwayatMutasi extends TableImpl<RiwayatMutasiRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -299,8 +317,7 @@ public class RiwayatMutasi extends TableImpl<RiwayatMutasiRecord> {
     private transient RiwayatSkPath _riwayatSk;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.riwayat_sk</code>
-     * table.
+     * Get the implicit join path to the <code>riwayat_sk</code> table.
      */
     public RiwayatSkPath riwayatSk() {
         if (_riwayatSk == null)
@@ -312,7 +329,7 @@ public class RiwayatMutasi extends TableImpl<RiwayatMutasiRecord> {
     private transient PegawaiPath _pegawai;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.pegawai</code> table.
+     * Get the implicit join path to the <code>pegawai</code> table.
      */
     public PegawaiPath pegawai() {
         if (_pegawai == null)

@@ -5,9 +5,10 @@ package id.perumdamts.kepegawaian.jooq.tables.records;
 
 
 import id.perumdamts.kepegawaian.jooq.tables.VPegawai;
-import org.jooq.impl.TableRecordImpl;
 
 import java.time.LocalDate;
+
+import org.jooq.impl.TableRecordImpl;
 
 
 /**
@@ -19,238 +20,238 @@ public class VPegawaiRecord extends TableRecordImpl<VPegawaiRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>kepegawaian.v_pegawai.id</code>.
+     * Setter for <code>v_pegawai.id</code>.
      */
     public void setId(Long value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.v_pegawai.id</code>.
+     * Getter for <code>v_pegawai.id</code>.
      */
     public Long getId() {
         return (Long) get(0);
     }
 
     /**
-     * Setter for <code>kepegawaian.v_pegawai.nipam</code>.
+     * Setter for <code>v_pegawai.nipam</code>.
      */
     public void setNipam(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.v_pegawai.nipam</code>.
+     * Getter for <code>v_pegawai.nipam</code>.
      */
     public String getNipam() {
         return (String) get(1);
     }
 
     /**
-     * Setter for <code>kepegawaian.v_pegawai.nik</code>.
+     * Setter for <code>v_pegawai.nik</code>.
      */
     public void setNik(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.v_pegawai.nik</code>.
+     * Getter for <code>v_pegawai.nik</code>.
      */
     public String getNik() {
         return (String) get(2);
     }
 
     /**
-     * Setter for <code>kepegawaian.v_pegawai.nama</code>.
+     * Setter for <code>v_pegawai.nama</code>.
      */
     public void setNama(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.v_pegawai.nama</code>.
+     * Getter for <code>v_pegawai.nama</code>.
      */
     public String getNama() {
         return (String) get(3);
     }
 
     /**
-     * Setter for <code>kepegawaian.v_pegawai.jenis_kelamin</code>.
+     * Setter for <code>v_pegawai.jenis_kelamin</code>.
      */
     public void setJenisKelamin(Byte value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.v_pegawai.jenis_kelamin</code>.
+     * Getter for <code>v_pegawai.jenis_kelamin</code>.
      */
     public Byte getJenisKelamin() {
         return (Byte) get(4);
     }
 
     /**
-     * Setter for <code>kepegawaian.v_pegawai.status_kawin</code>.
+     * Setter for <code>v_pegawai.status_kawin</code>.
      */
     public void setStatusKawin(Byte value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.v_pegawai.status_kawin</code>.
+     * Getter for <code>v_pegawai.status_kawin</code>.
      */
     public Byte getStatusKawin() {
         return (Byte) get(5);
     }
 
     /**
-     * Setter for <code>kepegawaian.v_pegawai.tempat_lahir</code>.
+     * Setter for <code>v_pegawai.tempat_lahir</code>.
      */
     public void setTempatLahir(String value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.v_pegawai.tempat_lahir</code>.
+     * Getter for <code>v_pegawai.tempat_lahir</code>.
      */
     public String getTempatLahir() {
         return (String) get(6);
     }
 
     /**
-     * Setter for <code>kepegawaian.v_pegawai.tanggal_lahir</code>.
+     * Setter for <code>v_pegawai.tanggal_lahir</code>.
      */
     public void setTanggalLahir(LocalDate value) {
         set(7, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.v_pegawai.tanggal_lahir</code>.
+     * Getter for <code>v_pegawai.tanggal_lahir</code>.
      */
     public LocalDate getTanggalLahir() {
         return (LocalDate) get(7);
     }
 
     /**
-     * Setter for <code>kepegawaian.v_pegawai.organisasi_id</code>.
+     * Setter for <code>v_pegawai.organisasi_id</code>.
      */
     public void setOrganisasiId(Long value) {
         set(8, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.v_pegawai.organisasi_id</code>.
+     * Getter for <code>v_pegawai.organisasi_id</code>.
      */
     public Long getOrganisasiId() {
         return (Long) get(8);
     }
 
     /**
-     * Setter for <code>kepegawaian.v_pegawai.nama_organisasi</code>.
+     * Setter for <code>v_pegawai.nama_organisasi</code>.
      */
     public void setNamaOrganisasi(String value) {
         set(9, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.v_pegawai.nama_organisasi</code>.
+     * Getter for <code>v_pegawai.nama_organisasi</code>.
      */
     public String getNamaOrganisasi() {
         return (String) get(9);
     }
 
     /**
-     * Setter for <code>kepegawaian.v_pegawai.jabatan_id</code>.
+     * Setter for <code>v_pegawai.jabatan_id</code>.
      */
     public void setJabatanId(Long value) {
         set(10, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.v_pegawai.jabatan_id</code>.
+     * Getter for <code>v_pegawai.jabatan_id</code>.
      */
     public Long getJabatanId() {
         return (Long) get(10);
     }
 
     /**
-     * Setter for <code>kepegawaian.v_pegawai.nama_jabatan</code>.
+     * Setter for <code>v_pegawai.nama_jabatan</code>.
      */
     public void setNamaJabatan(String value) {
         set(11, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.v_pegawai.nama_jabatan</code>.
+     * Getter for <code>v_pegawai.nama_jabatan</code>.
      */
     public String getNamaJabatan() {
         return (String) get(11);
     }
 
     /**
-     * Setter for <code>kepegawaian.v_pegawai.golongan_id</code>.
+     * Setter for <code>v_pegawai.golongan_id</code>.
      */
     public void setGolonganId(Long value) {
         set(12, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.v_pegawai.golongan_id</code>.
+     * Getter for <code>v_pegawai.golongan_id</code>.
      */
     public Long getGolonganId() {
         return (Long) get(12);
     }
 
     /**
-     * Setter for <code>kepegawaian.v_pegawai.golongan</code>.
+     * Setter for <code>v_pegawai.golongan</code>.
      */
     public void setGolongan(String value) {
         set(13, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.v_pegawai.golongan</code>.
+     * Getter for <code>v_pegawai.golongan</code>.
      */
     public String getGolongan() {
         return (String) get(13);
     }
 
     /**
-     * Setter for <code>kepegawaian.v_pegawai.pangkat</code>.
+     * Setter for <code>v_pegawai.pangkat</code>.
      */
     public void setPangkat(String value) {
         set(14, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.v_pegawai.pangkat</code>.
+     * Getter for <code>v_pegawai.pangkat</code>.
      */
     public String getPangkat() {
         return (String) get(14);
     }
 
     /**
-     * Setter for <code>kepegawaian.v_pegawai.status_kerja</code>.
+     * Setter for <code>v_pegawai.status_kerja</code>.
      */
     public void setStatusKerja(Byte value) {
         set(15, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.v_pegawai.status_kerja</code>.
+     * Getter for <code>v_pegawai.status_kerja</code>.
      */
     public Byte getStatusKerja() {
         return (Byte) get(15);
     }
 
     /**
-     * Setter for <code>kepegawaian.v_pegawai.status_pegawai</code>.
+     * Setter for <code>v_pegawai.status_pegawai</code>.
      */
     public void setStatusPegawai(Byte value) {
         set(16, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.v_pegawai.status_pegawai</code>.
+     * Getter for <code>v_pegawai.status_pegawai</code>.
      */
     public Byte getStatusPegawai() {
         return (Byte) get(16);

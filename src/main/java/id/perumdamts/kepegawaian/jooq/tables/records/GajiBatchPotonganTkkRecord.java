@@ -19,56 +19,56 @@ public class GajiBatchPotonganTkkRecord extends UpdatableRecordImpl<GajiBatchPot
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>kepegawaian.gaji_batch_potongan_tkk.id</code>.
+     * Setter for <code>gaji_batch_potongan_tkk.id</code>.
      */
     public void setId(Long value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_batch_potongan_tkk.id</code>.
+     * Getter for <code>gaji_batch_potongan_tkk.id</code>.
      */
     public Long getId() {
         return (Long) get(0);
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_batch_potongan_tkk.batch_id</code>.
+     * Setter for <code>gaji_batch_potongan_tkk.batch_id</code>.
      */
     public void setBatchId(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_batch_potongan_tkk.batch_id</code>.
+     * Getter for <code>gaji_batch_potongan_tkk.batch_id</code>.
      */
     public String getBatchId() {
         return (String) get(1);
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_batch_potongan_tkk.nipam</code>.
+     * Setter for <code>gaji_batch_potongan_tkk.nipam</code>.
      */
     public void setNipam(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_batch_potongan_tkk.nipam</code>.
+     * Getter for <code>gaji_batch_potongan_tkk.nipam</code>.
      */
     public String getNipam() {
         return (String) get(2);
     }
 
     /**
-     * Setter for <code>kepegawaian.gaji_batch_potongan_tkk.potongan</code>.
+     * Setter for <code>gaji_batch_potongan_tkk.potongan</code>.
      */
     public void setPotongan(Integer value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.gaji_batch_potongan_tkk.potongan</code>.
+     * Getter for <code>gaji_batch_potongan_tkk.potongan</code>.
      */
     public Integer getPotongan() {
         return (Integer) get(3);

@@ -5,10 +5,11 @@ package id.perumdamts.kepegawaian.jooq.tables.records;
 
 
 import id.perumdamts.kepegawaian.jooq.tables.ProfilUpdate;
-import org.jooq.Record1;
-import org.jooq.impl.UpdatableRecordImpl;
 
 import java.time.LocalDateTime;
+
+import org.jooq.Record1;
+import org.jooq.impl.UpdatableRecordImpl;
 
 
 /**
@@ -20,168 +21,168 @@ public class ProfilUpdateRecord extends UpdatableRecordImpl<ProfilUpdateRecord> 
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>kepegawaian.profil_update.id</code>.
+     * Setter for <code>profil_update.id</code>.
      */
     public void setId(Long value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.profil_update.id</code>.
+     * Getter for <code>profil_update.id</code>.
      */
     public Long getId() {
         return (Long) get(0);
     }
 
     /**
-     * Setter for <code>kepegawaian.profil_update.action_type</code>.
+     * Setter for <code>profil_update.action_type</code>.
      */
     public void setActionType(Byte value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.profil_update.action_type</code>.
+     * Getter for <code>profil_update.action_type</code>.
      */
     public Byte getActionType() {
         return (Byte) get(1);
     }
 
     /**
-     * Setter for <code>kepegawaian.profil_update.approval_date</code>.
+     * Setter for <code>profil_update.approval_date</code>.
      */
     public void setApprovalDate(LocalDateTime value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.profil_update.approval_date</code>.
+     * Getter for <code>profil_update.approval_date</code>.
      */
     public LocalDateTime getApprovalDate() {
         return (LocalDateTime) get(2);
     }
 
     /**
-     * Setter for <code>kepegawaian.profil_update.approval_pic</code>.
+     * Setter for <code>profil_update.approval_pic</code>.
      */
     public void setApprovalPic(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.profil_update.approval_pic</code>.
+     * Getter for <code>profil_update.approval_pic</code>.
      */
     public String getApprovalPic() {
         return (String) get(3);
     }
 
     /**
-     * Setter for <code>kepegawaian.profil_update.approval_status</code>.
+     * Setter for <code>profil_update.approval_status</code>.
      */
     public void setApprovalStatus(Byte value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.profil_update.approval_status</code>.
+     * Getter for <code>profil_update.approval_status</code>.
      */
     public Byte getApprovalStatus() {
         return (Byte) get(4);
     }
 
     /**
-     * Setter for <code>kepegawaian.profil_update.data_description</code>.
+     * Setter for <code>profil_update.data_description</code>.
      */
     public void setDataDescription(String value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.profil_update.data_description</code>.
+     * Getter for <code>profil_update.data_description</code>.
      */
     public String getDataDescription() {
         return (String) get(5);
     }
 
     /**
-     * Setter for <code>kepegawaian.profil_update.jabatan</code>.
+     * Setter for <code>profil_update.jabatan</code>.
      */
     public void setJabatan(String value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.profil_update.jabatan</code>.
+     * Getter for <code>profil_update.jabatan</code>.
      */
     public String getJabatan() {
         return (String) get(6);
     }
 
     /**
-     * Setter for <code>kepegawaian.profil_update.nama</code>.
+     * Setter for <code>profil_update.nama</code>.
      */
     public void setNama(String value) {
         set(7, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.profil_update.nama</code>.
+     * Getter for <code>profil_update.nama</code>.
      */
     public String getNama() {
         return (String) get(7);
     }
 
     /**
-     * Setter for <code>kepegawaian.profil_update.nipam</code>.
+     * Setter for <code>profil_update.nipam</code>.
      */
     public void setNipam(String value) {
         set(8, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.profil_update.nipam</code>.
+     * Getter for <code>profil_update.nipam</code>.
      */
     public String getNipam() {
         return (String) get(8);
     }
 
     /**
-     * Setter for <code>kepegawaian.profil_update.req_date</code>.
+     * Setter for <code>profil_update.req_date</code>.
      */
     public void setReqDate(LocalDateTime value) {
         set(9, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.profil_update.req_date</code>.
+     * Getter for <code>profil_update.req_date</code>.
      */
     public LocalDateTime getReqDate() {
         return (LocalDateTime) get(9);
     }
 
     /**
-     * Setter for <code>kepegawaian.profil_update.rev_id</code>.
+     * Setter for <code>profil_update.rev_id</code>.
      */
     public void setRevId(Long value) {
         set(10, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.profil_update.rev_id</code>.
+     * Getter for <code>profil_update.rev_id</code>.
      */
     public Long getRevId() {
         return (Long) get(10);
     }
 
     /**
-     * Setter for <code>kepegawaian.profil_update.table_name</code>.
+     * Setter for <code>profil_update.table_name</code>.
      */
     public void setTableName(Byte value) {
         set(11, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.profil_update.table_name</code>.
+     * Getter for <code>profil_update.table_name</code>.
      */
     public Byte getTableName() {
         return (Byte) get(11);

@@ -19,266 +19,266 @@ public class StatistikPegawaiRecord extends UpdatableRecordImpl<StatistikPegawai
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>kepegawaian.statistik_pegawai.id</code>.
+     * Setter for <code>statistik_pegawai.id</code>.
      */
     public void setId(Long value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.statistik_pegawai.id</code>.
+     * Getter for <code>statistik_pegawai.id</code>.
      */
     public Long getId() {
         return (Long) get(0);
     }
 
     /**
-     * Setter for <code>kepegawaian.statistik_pegawai.adm</code>.
+     * Setter for <code>statistik_pegawai.adm</code>.
      */
     public void setAdm(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.statistik_pegawai.adm</code>.
+     * Getter for <code>statistik_pegawai.adm</code>.
      */
     public Integer getAdm() {
         return (Integer) get(1);
     }
 
     /**
-     * Setter for <code>kepegawaian.statistik_pegawai.bulan</code>.
+     * Setter for <code>statistik_pegawai.bulan</code>.
      */
     public void setBulan(Integer value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.statistik_pegawai.bulan</code>.
+     * Getter for <code>statistik_pegawai.bulan</code>.
      */
     public Integer getBulan() {
         return (Integer) get(2);
     }
 
     /**
-     * Setter for <code>kepegawaian.statistik_pegawai.capeg</code>.
+     * Setter for <code>statistik_pegawai.capeg</code>.
      */
     public void setCapeg(Integer value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.statistik_pegawai.capeg</code>.
+     * Getter for <code>statistik_pegawai.capeg</code>.
      */
     public Integer getCapeg() {
         return (Integer) get(3);
     }
 
     /**
-     * Setter for <code>kepegawaian.statistik_pegawai.golongan_a</code>.
+     * Setter for <code>statistik_pegawai.golongan_a</code>.
      */
     public void setGolonganA(Integer value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.statistik_pegawai.golongan_a</code>.
+     * Getter for <code>statistik_pegawai.golongan_a</code>.
      */
     public Integer getGolonganA() {
         return (Integer) get(4);
     }
 
     /**
-     * Setter for <code>kepegawaian.statistik_pegawai.golongan_b</code>.
+     * Setter for <code>statistik_pegawai.golongan_b</code>.
      */
     public void setGolonganB(Integer value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.statistik_pegawai.golongan_b</code>.
+     * Getter for <code>statistik_pegawai.golongan_b</code>.
      */
     public Integer getGolonganB() {
         return (Integer) get(5);
     }
 
     /**
-     * Setter for <code>kepegawaian.statistik_pegawai.golongan_c</code>.
+     * Setter for <code>statistik_pegawai.golongan_c</code>.
      */
     public void setGolonganC(Integer value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.statistik_pegawai.golongan_c</code>.
+     * Getter for <code>statistik_pegawai.golongan_c</code>.
      */
     public Integer getGolonganC() {
         return (Integer) get(6);
     }
 
     /**
-     * Setter for <code>kepegawaian.statistik_pegawai.golongan_d</code>.
+     * Setter for <code>statistik_pegawai.golongan_d</code>.
      */
     public void setGolonganD(Integer value) {
         set(7, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.statistik_pegawai.golongan_d</code>.
+     * Getter for <code>statistik_pegawai.golongan_d</code>.
      */
     public Integer getGolonganD() {
         return (Integer) get(7);
     }
 
     /**
-     * Setter for <code>kepegawaian.statistik_pegawai.honorer</code>.
+     * Setter for <code>statistik_pegawai.honorer</code>.
      */
     public void setHonorer(Integer value) {
         set(8, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.statistik_pegawai.honorer</code>.
+     * Getter for <code>statistik_pegawai.honorer</code>.
      */
     public Integer getHonorer() {
         return (Integer) get(8);
     }
 
     /**
-     * Setter for <code>kepegawaian.statistik_pegawai.kontrak</code>.
+     * Setter for <code>statistik_pegawai.kontrak</code>.
      */
     public void setKontrak(Integer value) {
         set(9, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.statistik_pegawai.kontrak</code>.
+     * Getter for <code>statistik_pegawai.kontrak</code>.
      */
     public Integer getKontrak() {
         return (Integer) get(9);
     }
 
     /**
-     * Setter for <code>kepegawaian.statistik_pegawai.non_golongan</code>.
+     * Setter for <code>statistik_pegawai.non_golongan</code>.
      */
     public void setNonGolongan(Integer value) {
         set(10, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.statistik_pegawai.non_golongan</code>.
+     * Getter for <code>statistik_pegawai.non_golongan</code>.
      */
     public Integer getNonGolongan() {
         return (Integer) get(10);
     }
 
     /**
-     * Setter for <code>kepegawaian.statistik_pegawai.pelayanan</code>.
+     * Setter for <code>statistik_pegawai.pelayanan</code>.
      */
     public void setPelayanan(Integer value) {
         set(11, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.statistik_pegawai.pelayanan</code>.
+     * Getter for <code>statistik_pegawai.pelayanan</code>.
      */
     public Integer getPelayanan() {
         return (Integer) get(11);
     }
 
     /**
-     * Setter for <code>kepegawaian.statistik_pegawai.pendidikan</code>.
+     * Setter for <code>statistik_pegawai.pendidikan</code>.
      */
     public void setPendidikan(String value) {
         set(12, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.statistik_pegawai.pendidikan</code>.
+     * Getter for <code>statistik_pegawai.pendidikan</code>.
      */
     public String getPendidikan() {
         return (String) get(12);
     }
 
     /**
-     * Setter for <code>kepegawaian.statistik_pegawai.pria</code>.
+     * Setter for <code>statistik_pegawai.pria</code>.
      */
     public void setPria(Integer value) {
         set(13, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.statistik_pegawai.pria</code>.
+     * Getter for <code>statistik_pegawai.pria</code>.
      */
     public Integer getPria() {
         return (Integer) get(13);
     }
 
     /**
-     * Setter for <code>kepegawaian.statistik_pegawai.seq</code>.
+     * Setter for <code>statistik_pegawai.seq</code>.
      */
     public void setSeq(Integer value) {
         set(14, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.statistik_pegawai.seq</code>.
+     * Getter for <code>statistik_pegawai.seq</code>.
      */
     public Integer getSeq() {
         return (Integer) get(14);
     }
 
     /**
-     * Setter for <code>kepegawaian.statistik_pegawai.tahun</code>.
+     * Setter for <code>statistik_pegawai.tahun</code>.
      */
     public void setTahun(Integer value) {
         set(15, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.statistik_pegawai.tahun</code>.
+     * Getter for <code>statistik_pegawai.tahun</code>.
      */
     public Integer getTahun() {
         return (Integer) get(15);
     }
 
     /**
-     * Setter for <code>kepegawaian.statistik_pegawai.teknik</code>.
+     * Setter for <code>statistik_pegawai.teknik</code>.
      */
     public void setTeknik(Integer value) {
         set(16, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.statistik_pegawai.teknik</code>.
+     * Getter for <code>statistik_pegawai.teknik</code>.
      */
     public Integer getTeknik() {
         return (Integer) get(16);
     }
 
     /**
-     * Setter for <code>kepegawaian.statistik_pegawai.tetap</code>.
+     * Setter for <code>statistik_pegawai.tetap</code>.
      */
     public void setTetap(Integer value) {
         set(17, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.statistik_pegawai.tetap</code>.
+     * Getter for <code>statistik_pegawai.tetap</code>.
      */
     public Integer getTetap() {
         return (Integer) get(17);
     }
 
     /**
-     * Setter for <code>kepegawaian.statistik_pegawai.wanita</code>.
+     * Setter for <code>statistik_pegawai.wanita</code>.
      */
     public void setWanita(Integer value) {
         set(18, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.statistik_pegawai.wanita</code>.
+     * Getter for <code>statistik_pegawai.wanita</code>.
      */
     public Integer getWanita() {
         return (Integer) get(18);

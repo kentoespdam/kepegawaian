@@ -19,28 +19,28 @@ public class RevinfoRecord extends UpdatableRecordImpl<RevinfoRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>kepegawaian.revinfo.rev</code>.
+     * Setter for <code>revinfo.rev</code>.
      */
     public void setRev(Integer value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.revinfo.rev</code>.
+     * Getter for <code>revinfo.rev</code>.
      */
     public Integer getRev() {
         return (Integer) get(0);
     }
 
     /**
-     * Setter for <code>kepegawaian.revinfo.revtstmp</code>.
+     * Setter for <code>revinfo.revtstmp</code>.
      */
     public void setRevtstmp(Long value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.revinfo.revtstmp</code>.
+     * Getter for <code>revinfo.revtstmp</code>.
      */
     public Long getRevtstmp() {
         return (Long) get(1);

@@ -4,22 +4,40 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Indexes;
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.Pegawai.PegawaiPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.CutiKuotaRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.Identity;
+import org.jooq.Index;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -31,7 +49,7 @@ public class CutiKuota extends TableImpl<CutiKuotaRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.cuti_kuota</code>
+     * The reference instance of <code>cuti_kuota</code>
      */
     public static final CutiKuota CUTI_KUOTA = new CutiKuota();
 
@@ -44,77 +62,77 @@ public class CutiKuota extends TableImpl<CutiKuotaRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.cuti_kuota.id</code>.
+     * The column <code>cuti_kuota.id</code>.
      */
     public final TableField<CutiKuotaRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_kuota.changed_status</code>.
+     * The column <code>cuti_kuota.changed_status</code>.
      */
     public final TableField<CutiKuotaRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_kuota.created_at</code>.
+     * The column <code>cuti_kuota.created_at</code>.
      */
     public final TableField<CutiKuotaRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_kuota.created_by</code>.
+     * The column <code>cuti_kuota.created_by</code>.
      */
     public final TableField<CutiKuotaRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_kuota.is_deleted</code>.
+     * The column <code>cuti_kuota.is_deleted</code>.
      */
     public final TableField<CutiKuotaRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_kuota.updated_at</code>.
+     * The column <code>cuti_kuota.updated_at</code>.
      */
     public final TableField<CutiKuotaRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_kuota.updated_by</code>.
+     * The column <code>cuti_kuota.updated_by</code>.
      */
     public final TableField<CutiKuotaRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_kuota.version</code>.
+     * The column <code>cuti_kuota.version</code>.
      */
     public final TableField<CutiKuotaRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_kuota.expired</code>.
+     * The column <code>cuti_kuota.expired</code>.
      */
     public final TableField<CutiKuotaRecord, LocalDate> EXPIRED = createField(DSL.name("expired"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_kuota.kuota</code>.
+     * The column <code>cuti_kuota.kuota</code>.
      */
     public final TableField<CutiKuotaRecord, Integer> KUOTA = createField(DSL.name("kuota"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_kuota.kuota_tambahan</code>.
+     * The column <code>cuti_kuota.kuota_tambahan</code>.
      */
     public final TableField<CutiKuotaRecord, Integer> KUOTA_TAMBAHAN = createField(DSL.name("kuota_tambahan"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_kuota.kuota_terpakai</code>.
+     * The column <code>cuti_kuota.kuota_terpakai</code>.
      */
     public final TableField<CutiKuotaRecord, Integer> KUOTA_TERPAKAI = createField(DSL.name("kuota_terpakai"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_kuota.sisa_kuota</code>.
+     * The column <code>cuti_kuota.sisa_kuota</code>.
      */
     public final TableField<CutiKuotaRecord, Integer> SISA_KUOTA = createField(DSL.name("sisa_kuota"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_kuota.tahun</code>.
+     * The column <code>cuti_kuota.tahun</code>.
      */
     public final TableField<CutiKuotaRecord, Integer> TAHUN = createField(DSL.name("tahun"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_kuota.pegawai_id</code>.
+     * The column <code>cuti_kuota.pegawai_id</code>.
      */
     public final TableField<CutiKuotaRecord, Long> PEGAWAI_ID = createField(DSL.name("pegawai_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
@@ -127,21 +145,21 @@ public class CutiKuota extends TableImpl<CutiKuotaRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.cuti_kuota</code> table reference
+     * Create an aliased <code>cuti_kuota</code> table reference
      */
     public CutiKuota(String alias) {
         this(DSL.name(alias), CUTI_KUOTA);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.cuti_kuota</code> table reference
+     * Create an aliased <code>cuti_kuota</code> table reference
      */
     public CutiKuota(Name alias) {
         this(alias, CUTI_KUOTA);
     }
 
     /**
-     * Create a <code>kepegawaian.cuti_kuota</code> table reference
+     * Create a <code>cuti_kuota</code> table reference
      */
     public CutiKuota() {
         this(DSL.name("cuti_kuota"), null);
@@ -182,7 +200,7 @@ public class CutiKuota extends TableImpl<CutiKuotaRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -208,7 +226,7 @@ public class CutiKuota extends TableImpl<CutiKuotaRecord> {
     private transient PegawaiPath _pegawai;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.pegawai</code> table.
+     * Get the implicit join path to the <code>pegawai</code> table.
      */
     public PegawaiPath pegawai() {
         if (_pegawai == null)

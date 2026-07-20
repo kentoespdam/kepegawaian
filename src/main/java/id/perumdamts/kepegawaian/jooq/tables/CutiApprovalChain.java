@@ -4,20 +4,38 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Indexes;
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.CutiPegawai.CutiPegawaiPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.CutiApprovalChainRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.Identity;
+import org.jooq.Index;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -29,7 +47,7 @@ public class CutiApprovalChain extends TableImpl<CutiApprovalChainRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.cuti_approval_chain</code>
+     * The reference instance of <code>cuti_approval_chain</code>
      */
     public static final CutiApprovalChain CUTI_APPROVAL_CHAIN = new CutiApprovalChain();
 
@@ -42,38 +60,37 @@ public class CutiApprovalChain extends TableImpl<CutiApprovalChainRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.cuti_approval_chain.id</code>.
+     * The column <code>cuti_approval_chain.id</code>.
      */
     public final TableField<CutiApprovalChainRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_approval_chain.approval_level</code>.
+     * The column <code>cuti_approval_chain.approval_level</code>.
      */
     public final TableField<CutiApprovalChainRecord, Integer> APPROVAL_LEVEL = createField(DSL.name("approval_level"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_approval_chain.approval_status</code>.
+     * The column <code>cuti_approval_chain.approval_status</code>.
      */
     public final TableField<CutiApprovalChainRecord, Byte> APPROVAL_STATUS = createField(DSL.name("approval_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_approval_chain.jabatan_id</code>.
+     * The column <code>cuti_approval_chain.jabatan_id</code>.
      */
     public final TableField<CutiApprovalChainRecord, Long> JABATAN_ID = createField(DSL.name("jabatan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_approval_chain.jabatan_nama</code>.
+     * The column <code>cuti_approval_chain.jabatan_nama</code>.
      */
     public final TableField<CutiApprovalChainRecord, String> JABATAN_NAMA = createField(DSL.name("jabatan_nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.cuti_approval_chain.read_write_status</code>.
+     * The column <code>cuti_approval_chain.read_write_status</code>.
      */
     public final TableField<CutiApprovalChainRecord, Byte> READ_WRITE_STATUS = createField(DSL.name("read_write_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.cuti_approval_chain.ref_cuti_id</code>.
+     * The column <code>cuti_approval_chain.ref_cuti_id</code>.
      */
     public final TableField<CutiApprovalChainRecord, Long> REF_CUTI_ID = createField(DSL.name("ref_cuti_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
@@ -86,23 +103,21 @@ public class CutiApprovalChain extends TableImpl<CutiApprovalChainRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.cuti_approval_chain</code> table
-     * reference
+     * Create an aliased <code>cuti_approval_chain</code> table reference
      */
     public CutiApprovalChain(String alias) {
         this(DSL.name(alias), CUTI_APPROVAL_CHAIN);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.cuti_approval_chain</code> table
-     * reference
+     * Create an aliased <code>cuti_approval_chain</code> table reference
      */
     public CutiApprovalChain(Name alias) {
         this(alias, CUTI_APPROVAL_CHAIN);
     }
 
     /**
-     * Create a <code>kepegawaian.cuti_approval_chain</code> table reference
+     * Create a <code>cuti_approval_chain</code> table reference
      */
     public CutiApprovalChain() {
         this(DSL.name("cuti_approval_chain"), null);
@@ -143,7 +158,7 @@ public class CutiApprovalChain extends TableImpl<CutiApprovalChainRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -169,8 +184,7 @@ public class CutiApprovalChain extends TableImpl<CutiApprovalChainRecord> {
     private transient CutiPegawaiPath _cutiPegawai;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.cuti_pegawai</code>
-     * table.
+     * Get the implicit join path to the <code>cuti_pegawai</code> table.
      */
     public CutiPegawaiPath cutiPegawai() {
         if (_cutiPegawai == null)

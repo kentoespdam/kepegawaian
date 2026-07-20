@@ -5,10 +5,11 @@ package id.perumdamts.kepegawaian.jooq.tables.records;
 
 
 import id.perumdamts.kepegawaian.jooq.tables.JenisSpAud;
-import org.jooq.Record2;
-import org.jooq.impl.UpdatableRecordImpl;
 
 import java.time.LocalDateTime;
+
+import org.jooq.Record2;
+import org.jooq.impl.UpdatableRecordImpl;
 
 
 /**
@@ -20,154 +21,154 @@ public class JenisSpAudRecord extends UpdatableRecordImpl<JenisSpAudRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>kepegawaian.jenis_sp_aud.id</code>.
+     * Setter for <code>jenis_sp_aud.id</code>.
      */
     public void setId(Long value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.jenis_sp_aud.id</code>.
+     * Getter for <code>jenis_sp_aud.id</code>.
      */
     public Long getId() {
         return (Long) get(0);
     }
 
     /**
-     * Setter for <code>kepegawaian.jenis_sp_aud.rev</code>.
+     * Setter for <code>jenis_sp_aud.rev</code>.
      */
     public void setRev(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.jenis_sp_aud.rev</code>.
+     * Getter for <code>jenis_sp_aud.rev</code>.
      */
     public Integer getRev() {
         return (Integer) get(1);
     }
 
     /**
-     * Setter for <code>kepegawaian.jenis_sp_aud.revtype</code>.
+     * Setter for <code>jenis_sp_aud.revtype</code>.
      */
     public void setRevtype(Byte value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.jenis_sp_aud.revtype</code>.
+     * Getter for <code>jenis_sp_aud.revtype</code>.
      */
     public Byte getRevtype() {
         return (Byte) get(2);
     }
 
     /**
-     * Setter for <code>kepegawaian.jenis_sp_aud.changed_status</code>.
+     * Setter for <code>jenis_sp_aud.changed_status</code>.
      */
     public void setChangedStatus(Byte value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.jenis_sp_aud.changed_status</code>.
+     * Getter for <code>jenis_sp_aud.changed_status</code>.
      */
     public Byte getChangedStatus() {
         return (Byte) get(3);
     }
 
     /**
-     * Setter for <code>kepegawaian.jenis_sp_aud.created_at</code>.
+     * Setter for <code>jenis_sp_aud.created_at</code>.
      */
     public void setCreatedAt(LocalDateTime value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.jenis_sp_aud.created_at</code>.
+     * Getter for <code>jenis_sp_aud.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
         return (LocalDateTime) get(4);
     }
 
     /**
-     * Setter for <code>kepegawaian.jenis_sp_aud.created_by</code>.
+     * Setter for <code>jenis_sp_aud.created_by</code>.
      */
     public void setCreatedBy(String value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.jenis_sp_aud.created_by</code>.
+     * Getter for <code>jenis_sp_aud.created_by</code>.
      */
     public String getCreatedBy() {
         return (String) get(5);
     }
 
     /**
-     * Setter for <code>kepegawaian.jenis_sp_aud.is_deleted</code>.
+     * Setter for <code>jenis_sp_aud.is_deleted</code>.
      */
     public void setIsDeleted(Boolean value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.jenis_sp_aud.is_deleted</code>.
+     * Getter for <code>jenis_sp_aud.is_deleted</code>.
      */
     public Boolean getIsDeleted() {
         return (Boolean) get(6);
     }
 
     /**
-     * Setter for <code>kepegawaian.jenis_sp_aud.updated_at</code>.
+     * Setter for <code>jenis_sp_aud.updated_at</code>.
      */
     public void setUpdatedAt(LocalDateTime value) {
         set(7, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.jenis_sp_aud.updated_at</code>.
+     * Getter for <code>jenis_sp_aud.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
         return (LocalDateTime) get(7);
     }
 
     /**
-     * Setter for <code>kepegawaian.jenis_sp_aud.updated_by</code>.
+     * Setter for <code>jenis_sp_aud.updated_by</code>.
      */
     public void setUpdatedBy(String value) {
         set(8, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.jenis_sp_aud.updated_by</code>.
+     * Getter for <code>jenis_sp_aud.updated_by</code>.
      */
     public String getUpdatedBy() {
         return (String) get(8);
     }
 
     /**
-     * Setter for <code>kepegawaian.jenis_sp_aud.kode</code>.
+     * Setter for <code>jenis_sp_aud.kode</code>.
      */
     public void setKode(String value) {
         set(9, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.jenis_sp_aud.kode</code>.
+     * Getter for <code>jenis_sp_aud.kode</code>.
      */
     public String getKode() {
         return (String) get(9);
     }
 
     /**
-     * Setter for <code>kepegawaian.jenis_sp_aud.nama</code>.
+     * Setter for <code>jenis_sp_aud.nama</code>.
      */
     public void setNama(String value) {
         set(10, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.jenis_sp_aud.nama</code>.
+     * Getter for <code>jenis_sp_aud.nama</code>.
      */
     public String getNama() {
         return (String) get(10);

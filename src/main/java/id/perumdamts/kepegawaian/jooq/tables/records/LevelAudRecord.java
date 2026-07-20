@@ -5,10 +5,11 @@ package id.perumdamts.kepegawaian.jooq.tables.records;
 
 
 import id.perumdamts.kepegawaian.jooq.tables.LevelAud;
-import org.jooq.Record2;
-import org.jooq.impl.UpdatableRecordImpl;
 
 import java.time.LocalDateTime;
+
+import org.jooq.Record2;
+import org.jooq.impl.UpdatableRecordImpl;
 
 
 /**
@@ -20,126 +21,126 @@ public class LevelAudRecord extends UpdatableRecordImpl<LevelAudRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>kepegawaian.level_aud.id</code>.
+     * Setter for <code>level_aud.id</code>.
      */
     public void setId(Long value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.level_aud.id</code>.
+     * Getter for <code>level_aud.id</code>.
      */
     public Long getId() {
         return (Long) get(0);
     }
 
     /**
-     * Setter for <code>kepegawaian.level_aud.rev</code>.
+     * Setter for <code>level_aud.rev</code>.
      */
     public void setRev(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.level_aud.rev</code>.
+     * Getter for <code>level_aud.rev</code>.
      */
     public Integer getRev() {
         return (Integer) get(1);
     }
 
     /**
-     * Setter for <code>kepegawaian.level_aud.revtype</code>.
+     * Setter for <code>level_aud.revtype</code>.
      */
     public void setRevtype(Byte value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.level_aud.revtype</code>.
+     * Getter for <code>level_aud.revtype</code>.
      */
     public Byte getRevtype() {
         return (Byte) get(2);
     }
 
     /**
-     * Setter for <code>kepegawaian.level_aud.created_at</code>.
+     * Setter for <code>level_aud.created_at</code>.
      */
     public void setCreatedAt(LocalDateTime value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.level_aud.created_at</code>.
+     * Getter for <code>level_aud.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
         return (LocalDateTime) get(3);
     }
 
     /**
-     * Setter for <code>kepegawaian.level_aud.created_by</code>.
+     * Setter for <code>level_aud.created_by</code>.
      */
     public void setCreatedBy(String value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.level_aud.created_by</code>.
+     * Getter for <code>level_aud.created_by</code>.
      */
     public String getCreatedBy() {
         return (String) get(4);
     }
 
     /**
-     * Setter for <code>kepegawaian.level_aud.is_deleted</code>.
+     * Setter for <code>level_aud.is_deleted</code>.
      */
     public void setIsDeleted(Boolean value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.level_aud.is_deleted</code>.
+     * Getter for <code>level_aud.is_deleted</code>.
      */
     public Boolean getIsDeleted() {
         return (Boolean) get(5);
     }
 
     /**
-     * Setter for <code>kepegawaian.level_aud.updated_at</code>.
+     * Setter for <code>level_aud.updated_at</code>.
      */
     public void setUpdatedAt(LocalDateTime value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.level_aud.updated_at</code>.
+     * Getter for <code>level_aud.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
         return (LocalDateTime) get(6);
     }
 
     /**
-     * Setter for <code>kepegawaian.level_aud.updated_by</code>.
+     * Setter for <code>level_aud.updated_by</code>.
      */
     public void setUpdatedBy(String value) {
         set(7, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.level_aud.updated_by</code>.
+     * Getter for <code>level_aud.updated_by</code>.
      */
     public String getUpdatedBy() {
         return (String) get(7);
     }
 
     /**
-     * Setter for <code>kepegawaian.level_aud.nama</code>.
+     * Setter for <code>level_aud.nama</code>.
      */
     public void setNama(String value) {
         set(8, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.level_aud.nama</code>.
+     * Getter for <code>level_aud.nama</code>.
      */
     public String getNama() {
         return (String) get(8);

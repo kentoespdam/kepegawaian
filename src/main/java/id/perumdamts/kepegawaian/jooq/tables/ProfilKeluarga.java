@@ -4,23 +4,41 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Indexes;
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.Biodata.BiodataPath;
 import id.perumdamts.kepegawaian.jooq.tables.JenjangPendidikan.JenjangPendidikanPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.ProfilKeluargaRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.Identity;
+import org.jooq.Index;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -32,7 +50,7 @@ public class ProfilKeluarga extends TableImpl<ProfilKeluargaRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.profil_keluarga</code>
+     * The reference instance of <code>profil_keluarga</code>
      */
     public static final ProfilKeluarga PROFIL_KELUARGA = new ProfilKeluarga();
 
@@ -45,107 +63,107 @@ public class ProfilKeluarga extends TableImpl<ProfilKeluargaRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.profil_keluarga.id</code>.
+     * The column <code>profil_keluarga.id</code>.
      */
     public final TableField<ProfilKeluargaRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.profil_keluarga.changed_status</code>.
+     * The column <code>profil_keluarga.changed_status</code>.
      */
     public final TableField<ProfilKeluargaRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.profil_keluarga.created_at</code>.
+     * The column <code>profil_keluarga.created_at</code>.
      */
     public final TableField<ProfilKeluargaRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.profil_keluarga.created_by</code>.
+     * The column <code>profil_keluarga.created_by</code>.
      */
     public final TableField<ProfilKeluargaRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.profil_keluarga.is_deleted</code>.
+     * The column <code>profil_keluarga.is_deleted</code>.
      */
     public final TableField<ProfilKeluargaRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>kepegawaian.profil_keluarga.updated_at</code>.
+     * The column <code>profil_keluarga.updated_at</code>.
      */
     public final TableField<ProfilKeluargaRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.profil_keluarga.updated_by</code>.
+     * The column <code>profil_keluarga.updated_by</code>.
      */
     public final TableField<ProfilKeluargaRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.profil_keluarga.version</code>.
+     * The column <code>profil_keluarga.version</code>.
      */
     public final TableField<ProfilKeluargaRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.profil_keluarga.agama</code>.
+     * The column <code>profil_keluarga.agama</code>.
      */
     public final TableField<ProfilKeluargaRecord, Byte> AGAMA = createField(DSL.name("agama"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.profil_keluarga.hubungan_keluarga</code>.
+     * The column <code>profil_keluarga.hubungan_keluarga</code>.
      */
     public final TableField<ProfilKeluargaRecord, Byte> HUBUNGAN_KELUARGA = createField(DSL.name("hubungan_keluarga"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.profil_keluarga.jenis_kelamin</code>.
+     * The column <code>profil_keluarga.jenis_kelamin</code>.
      */
     public final TableField<ProfilKeluargaRecord, Byte> JENIS_KELAMIN = createField(DSL.name("jenis_kelamin"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.profil_keluarga.nama</code>.
+     * The column <code>profil_keluarga.nama</code>.
      */
     public final TableField<ProfilKeluargaRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.profil_keluarga.nik</code>.
+     * The column <code>profil_keluarga.nik</code>.
      */
     public final TableField<ProfilKeluargaRecord, String> NIK = createField(DSL.name("nik"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.profil_keluarga.notes</code>.
+     * The column <code>profil_keluarga.notes</code>.
      */
     public final TableField<ProfilKeluargaRecord, String> NOTES = createField(DSL.name("notes"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.profil_keluarga.status_kawin</code>.
+     * The column <code>profil_keluarga.status_kawin</code>.
      */
     public final TableField<ProfilKeluargaRecord, Boolean> STATUS_KAWIN = createField(DSL.name("status_kawin"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
 
     /**
-     * The column <code>kepegawaian.profil_keluarga.status_pendidikan</code>.
+     * The column <code>profil_keluarga.status_pendidikan</code>.
      */
     public final TableField<ProfilKeluargaRecord, Byte> STATUS_PENDIDIKAN = createField(DSL.name("status_pendidikan"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.profil_keluarga.tanggal_lahir</code>.
+     * The column <code>profil_keluarga.tanggal_lahir</code>.
      */
     public final TableField<ProfilKeluargaRecord, LocalDate> TANGGAL_LAHIR = createField(DSL.name("tanggal_lahir"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.profil_keluarga.tanggungan</code>.
+     * The column <code>profil_keluarga.tanggungan</code>.
      */
     public final TableField<ProfilKeluargaRecord, Byte> TANGGUNGAN = createField(DSL.name("tanggungan"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.profil_keluarga.tempat_lahir</code>.
+     * The column <code>profil_keluarga.tempat_lahir</code>.
      */
     public final TableField<ProfilKeluargaRecord, String> TEMPAT_LAHIR = createField(DSL.name("tempat_lahir"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.profil_keluarga.biodata_id</code>.
+     * The column <code>profil_keluarga.biodata_id</code>.
      */
     public final TableField<ProfilKeluargaRecord, String> BIODATA_ID = createField(DSL.name("biodata_id"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.profil_keluarga.pendidikan_id</code>.
+     * The column <code>profil_keluarga.pendidikan_id</code>.
      */
     public final TableField<ProfilKeluargaRecord, Long> PENDIDIKAN_ID = createField(DSL.name("pendidikan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
@@ -158,23 +176,21 @@ public class ProfilKeluarga extends TableImpl<ProfilKeluargaRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.profil_keluarga</code> table
-     * reference
+     * Create an aliased <code>profil_keluarga</code> table reference
      */
     public ProfilKeluarga(String alias) {
         this(DSL.name(alias), PROFIL_KELUARGA);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.profil_keluarga</code> table
-     * reference
+     * Create an aliased <code>profil_keluarga</code> table reference
      */
     public ProfilKeluarga(Name alias) {
         this(alias, PROFIL_KELUARGA);
     }
 
     /**
-     * Create a <code>kepegawaian.profil_keluarga</code> table reference
+     * Create a <code>profil_keluarga</code> table reference
      */
     public ProfilKeluarga() {
         this(DSL.name("profil_keluarga"), null);
@@ -215,7 +231,7 @@ public class ProfilKeluarga extends TableImpl<ProfilKeluargaRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -246,8 +262,7 @@ public class ProfilKeluarga extends TableImpl<ProfilKeluargaRecord> {
     private transient JenjangPendidikanPath _jenjangPendidikan;
 
     /**
-     * Get the implicit join path to the
-     * <code>kepegawaian.jenjang_pendidikan</code> table.
+     * Get the implicit join path to the <code>jenjang_pendidikan</code> table.
      */
     public JenjangPendidikanPath jenjangPendidikan() {
         if (_jenjangPendidikan == null)
@@ -259,7 +274,7 @@ public class ProfilKeluarga extends TableImpl<ProfilKeluargaRecord> {
     private transient BiodataPath _biodata;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.biodata</code> table.
+     * Get the implicit join path to the <code>biodata</code> table.
      */
     public BiodataPath biodata() {
         if (_biodata == null)

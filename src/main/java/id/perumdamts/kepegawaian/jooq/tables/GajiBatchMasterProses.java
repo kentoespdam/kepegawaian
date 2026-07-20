@@ -4,19 +4,34 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Indexes;
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.enums.GajiBatchMasterProsesJenisGaji;
 import id.perumdamts.kepegawaian.jooq.tables.records.GajiBatchMasterProsesRecord;
-import org.jooq.*;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.Identity;
+import org.jooq.Index;
+import org.jooq.Name;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -28,8 +43,7 @@ public class GajiBatchMasterProses extends TableImpl<GajiBatchMasterProsesRecord
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of
-     * <code>kepegawaian.gaji_batch_master_proses</code>
+     * The reference instance of <code>gaji_batch_master_proses</code>
      */
     public static final GajiBatchMasterProses GAJI_BATCH_MASTER_PROSES = new GajiBatchMasterProses();
 
@@ -42,49 +56,47 @@ public class GajiBatchMasterProses extends TableImpl<GajiBatchMasterProsesRecord
     }
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master_proses.id</code>.
+     * The column <code>gaji_batch_master_proses.id</code>.
      */
     public final TableField<GajiBatchMasterProsesRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.gaji_batch_master_proses.batch_master_id</code>.
+     * The column <code>gaji_batch_master_proses.batch_master_id</code>.
      */
     public final TableField<GajiBatchMasterProsesRecord, Long> BATCH_MASTER_ID = createField(DSL.name("batch_master_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master_proses.formula</code>.
+     * The column <code>gaji_batch_master_proses.formula</code>.
      */
     public final TableField<GajiBatchMasterProsesRecord, String> FORMULA = createField(DSL.name("formula"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master_proses.jenis_gaji</code>.
+     * The column <code>gaji_batch_master_proses.jenis_gaji</code>.
      */
     public final TableField<GajiBatchMasterProsesRecord, GajiBatchMasterProsesJenisGaji> JENIS_GAJI = createField(DSL.name("jenis_gaji"), SQLDataType.VARCHAR(9).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)).asEnumDataType(GajiBatchMasterProsesJenisGaji.class), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master_proses.kode</code>.
+     * The column <code>gaji_batch_master_proses.kode</code>.
      */
     public final TableField<GajiBatchMasterProsesRecord, String> KODE = createField(DSL.name("kode"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master_proses.nama</code>.
+     * The column <code>gaji_batch_master_proses.nama</code>.
      */
     public final TableField<GajiBatchMasterProsesRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master_proses.nilai</code>.
+     * The column <code>gaji_batch_master_proses.nilai</code>.
      */
     public final TableField<GajiBatchMasterProsesRecord, Double> NILAI = createField(DSL.name("nilai"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.gaji_batch_master_proses.nilai_formula</code>.
+     * The column <code>gaji_batch_master_proses.nilai_formula</code>.
      */
     public final TableField<GajiBatchMasterProsesRecord, String> NILAI_FORMULA = createField(DSL.name("nilai_formula"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_master_proses.urut</code>.
+     * The column <code>gaji_batch_master_proses.urut</code>.
      */
     public final TableField<GajiBatchMasterProsesRecord, Integer> URUT = createField(DSL.name("urut"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
@@ -97,24 +109,21 @@ public class GajiBatchMasterProses extends TableImpl<GajiBatchMasterProsesRecord
     }
 
     /**
-     * Create an aliased <code>kepegawaian.gaji_batch_master_proses</code> table
-     * reference
+     * Create an aliased <code>gaji_batch_master_proses</code> table reference
      */
     public GajiBatchMasterProses(String alias) {
         this(DSL.name(alias), GAJI_BATCH_MASTER_PROSES);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.gaji_batch_master_proses</code> table
-     * reference
+     * Create an aliased <code>gaji_batch_master_proses</code> table reference
      */
     public GajiBatchMasterProses(Name alias) {
         this(alias, GAJI_BATCH_MASTER_PROSES);
     }
 
     /**
-     * Create a <code>kepegawaian.gaji_batch_master_proses</code> table
-     * reference
+     * Create a <code>gaji_batch_master_proses</code> table reference
      */
     public GajiBatchMasterProses() {
         this(DSL.name("gaji_batch_master_proses"), null);
@@ -122,7 +131,7 @@ public class GajiBatchMasterProses extends TableImpl<GajiBatchMasterProsesRecord
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override

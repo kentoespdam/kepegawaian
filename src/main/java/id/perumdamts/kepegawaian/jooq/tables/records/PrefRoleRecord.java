@@ -19,14 +19,14 @@ public class PrefRoleRecord extends UpdatableRecordImpl<PrefRoleRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>kepegawaian.pref_role.id</code>.
+     * Setter for <code>pref_role.id</code>.
      */
     public void setId(String value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pref_role.id</code>.
+     * Getter for <code>pref_role.id</code>.
      */
     public String getId() {
         return (String) get(0);

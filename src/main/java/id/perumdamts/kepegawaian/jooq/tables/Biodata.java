@@ -4,8 +4,8 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Indexes;
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.enums.BiodataGolonganDarah;
 import id.perumdamts.kepegawaian.jooq.tables.JenisKitas.JenisKitasPath;
@@ -18,17 +18,34 @@ import id.perumdamts.kepegawaian.jooq.tables.Pendidikan.PendidikanPath;
 import id.perumdamts.kepegawaian.jooq.tables.PengalamanKerja.PengalamanKerjaPath;
 import id.perumdamts.kepegawaian.jooq.tables.ProfilKeluarga.ProfilKeluargaPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.BiodataRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.Index;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -40,7 +57,7 @@ public class Biodata extends TableImpl<BiodataRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.biodata</code>
+     * The reference instance of <code>biodata</code>
      */
     public static final Biodata BIODATA = new Biodata();
 
@@ -53,107 +70,107 @@ public class Biodata extends TableImpl<BiodataRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.biodata.nik</code>.
+     * The column <code>biodata.nik</code>.
      */
     public final TableField<BiodataRecord, String> NIK = createField(DSL.name("nik"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata.agama</code>.
+     * The column <code>biodata.agama</code>.
      */
     public final TableField<BiodataRecord, Byte> AGAMA = createField(DSL.name("agama"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata.alamat</code>.
+     * The column <code>biodata.alamat</code>.
      */
     public final TableField<BiodataRecord, String> ALAMAT = createField(DSL.name("alamat"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata.created_at</code>.
+     * The column <code>biodata.created_at</code>.
      */
     public final TableField<BiodataRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata.created_by</code>.
+     * The column <code>biodata.created_by</code>.
      */
     public final TableField<BiodataRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata.foto_profil</code>.
+     * The column <code>biodata.foto_profil</code>.
      */
     public final TableField<BiodataRecord, String> FOTO_PROFIL = createField(DSL.name("foto_profil"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata.golongan_darah</code>.
+     * The column <code>biodata.golongan_darah</code>.
      */
     public final TableField<BiodataRecord, BiodataGolonganDarah> GOLONGAN_DARAH = createField(DSL.name("golongan_darah"), SQLDataType.VARCHAR(2).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)).asEnumDataType(BiodataGolonganDarah.class), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata.ibu_kandung</code>.
+     * The column <code>biodata.ibu_kandung</code>.
      */
     public final TableField<BiodataRecord, String> IBU_KANDUNG = createField(DSL.name("ibu_kandung"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata.is_deleted</code>.
+     * The column <code>biodata.is_deleted</code>.
      */
     public final TableField<BiodataRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata.is_pegawai</code>.
+     * The column <code>biodata.is_pegawai</code>.
      */
     public final TableField<BiodataRecord, Boolean> IS_PEGAWAI = createField(DSL.name("is_pegawai"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata.jenis_kelamin</code>.
+     * The column <code>biodata.jenis_kelamin</code>.
      */
     public final TableField<BiodataRecord, Byte> JENIS_KELAMIN = createField(DSL.name("jenis_kelamin"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata.nama</code>.
+     * The column <code>biodata.nama</code>.
      */
     public final TableField<BiodataRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata.notes</code>.
+     * The column <code>biodata.notes</code>.
      */
     public final TableField<BiodataRecord, String> NOTES = createField(DSL.name("notes"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata.status_kawin</code>.
+     * The column <code>biodata.status_kawin</code>.
      */
     public final TableField<BiodataRecord, Byte> STATUS_KAWIN = createField(DSL.name("status_kawin"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata.tanggal_lahir</code>.
+     * The column <code>biodata.tanggal_lahir</code>.
      */
     public final TableField<BiodataRecord, LocalDate> TANGGAL_LAHIR = createField(DSL.name("tanggal_lahir"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata.telp</code>.
+     * The column <code>biodata.telp</code>.
      */
     public final TableField<BiodataRecord, String> TELP = createField(DSL.name("telp"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata.tempat_lahir</code>.
+     * The column <code>biodata.tempat_lahir</code>.
      */
     public final TableField<BiodataRecord, String> TEMPAT_LAHIR = createField(DSL.name("tempat_lahir"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata.updated_at</code>.
+     * The column <code>biodata.updated_at</code>.
      */
     public final TableField<BiodataRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata.updated_by</code>.
+     * The column <code>biodata.updated_by</code>.
      */
     public final TableField<BiodataRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata.version</code>.
+     * The column <code>biodata.version</code>.
      */
     public final TableField<BiodataRecord, Long> VERSION = createField(DSL.name("version"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata.pendidikan_id</code>.
+     * The column <code>biodata.pendidikan_id</code>.
      */
     public final TableField<BiodataRecord, Long> PENDIDIKAN_ID = createField(DSL.name("pendidikan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
@@ -166,21 +183,21 @@ public class Biodata extends TableImpl<BiodataRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.biodata</code> table reference
+     * Create an aliased <code>biodata</code> table reference
      */
     public Biodata(String alias) {
         this(DSL.name(alias), BIODATA);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.biodata</code> table reference
+     * Create an aliased <code>biodata</code> table reference
      */
     public Biodata(Name alias) {
         this(alias, BIODATA);
     }
 
     /**
-     * Create a <code>kepegawaian.biodata</code> table reference
+     * Create a <code>biodata</code> table reference
      */
     public Biodata() {
         this(DSL.name("biodata"), null);
@@ -221,7 +238,7 @@ public class Biodata extends TableImpl<BiodataRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -242,8 +259,7 @@ public class Biodata extends TableImpl<BiodataRecord> {
     private transient JenjangPendidikanPath _jenjangPendidikan;
 
     /**
-     * Get the implicit join path to the
-     * <code>kepegawaian.jenjang_pendidikan</code> table.
+     * Get the implicit join path to the <code>jenjang_pendidikan</code> table.
      */
     public JenjangPendidikanPath jenjangPendidikan() {
         if (_jenjangPendidikan == null)
@@ -255,8 +271,7 @@ public class Biodata extends TableImpl<BiodataRecord> {
     private transient KeahlianPath _keahlian;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.keahlian</code> table
+     * Get the implicit to-many join path to the <code>keahlian</code> table
      */
     public KeahlianPath keahlian() {
         if (_keahlian == null)
@@ -268,8 +283,7 @@ public class Biodata extends TableImpl<BiodataRecord> {
     private transient PelatihanPath _pelatihan;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.pelatihan</code> table
+     * Get the implicit to-many join path to the <code>pelatihan</code> table
      */
     public PelatihanPath pelatihan() {
         if (_pelatihan == null)
@@ -281,8 +295,7 @@ public class Biodata extends TableImpl<BiodataRecord> {
     private transient PendidikanPath _pendidikan;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.pendidikan</code> table
+     * Get the implicit to-many join path to the <code>pendidikan</code> table
      */
     public PendidikanPath pendidikan() {
         if (_pendidikan == null)
@@ -294,8 +307,8 @@ public class Biodata extends TableImpl<BiodataRecord> {
     private transient KartuIdentitasPath _kartuIdentitas;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.kartu_identitas</code> table
+     * Get the implicit to-many join path to the <code>kartu_identitas</code>
+     * table
      */
     public KartuIdentitasPath kartuIdentitas() {
         if (_kartuIdentitas == null)
@@ -307,8 +320,7 @@ public class Biodata extends TableImpl<BiodataRecord> {
     private transient PegawaiPath _pegawai;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.pegawai</code> table
+     * Get the implicit to-many join path to the <code>pegawai</code> table
      */
     public PegawaiPath pegawai() {
         if (_pegawai == null)
@@ -320,8 +332,8 @@ public class Biodata extends TableImpl<BiodataRecord> {
     private transient ProfilKeluargaPath _profilKeluarga;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.profil_keluarga</code> table
+     * Get the implicit to-many join path to the <code>profil_keluarga</code>
+     * table
      */
     public ProfilKeluargaPath profilKeluarga() {
         if (_profilKeluarga == null)
@@ -333,8 +345,8 @@ public class Biodata extends TableImpl<BiodataRecord> {
     private transient PengalamanKerjaPath _pengalamanKerja;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.pengalaman_kerja</code> table
+     * Get the implicit to-many join path to the <code>pengalaman_kerja</code>
+     * table
      */
     public PengalamanKerjaPath pengalamanKerja() {
         if (_pengalamanKerja == null)
@@ -344,8 +356,8 @@ public class Biodata extends TableImpl<BiodataRecord> {
     }
 
     /**
-     * Get the implicit many-to-many join path to the
-     * <code>kepegawaian.jenis_kitas</code> table
+     * Get the implicit many-to-many join path to the <code>jenis_kitas</code>
+     * table
      */
     public JenisKitasPath jenisKitas() {
         return kartuIdentitas().jenisKitas();

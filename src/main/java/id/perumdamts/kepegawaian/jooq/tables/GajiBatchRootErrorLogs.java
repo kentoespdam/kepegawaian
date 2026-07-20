@@ -4,20 +4,38 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Indexes;
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.GajiBatchRoot.GajiBatchRootPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.GajiBatchRootErrorLogsRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.Identity;
+import org.jooq.Index;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -29,8 +47,7 @@ public class GajiBatchRootErrorLogs extends TableImpl<GajiBatchRootErrorLogsReco
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of
-     * <code>kepegawaian.gaji_batch_root_error_logs</code>
+     * The reference instance of <code>gaji_batch_root_error_logs</code>
      */
     public static final GajiBatchRootErrorLogs GAJI_BATCH_ROOT_ERROR_LOGS = new GajiBatchRootErrorLogs();
 
@@ -43,28 +60,27 @@ public class GajiBatchRootErrorLogs extends TableImpl<GajiBatchRootErrorLogsReco
     }
 
     /**
-     * The column <code>kepegawaian.gaji_batch_root_error_logs.id</code>.
+     * The column <code>gaji_batch_root_error_logs.id</code>.
      */
     public final TableField<GajiBatchRootErrorLogsRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_root_error_logs.nama</code>.
+     * The column <code>gaji_batch_root_error_logs.nama</code>.
      */
     public final TableField<GajiBatchRootErrorLogsRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_root_error_logs.nipam</code>.
+     * The column <code>gaji_batch_root_error_logs.nipam</code>.
      */
     public final TableField<GajiBatchRootErrorLogsRecord, String> NIPAM = createField(DSL.name("nipam"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_root_error_logs.notes</code>.
+     * The column <code>gaji_batch_root_error_logs.notes</code>.
      */
     public final TableField<GajiBatchRootErrorLogsRecord, String> NOTES = createField(DSL.name("notes"), SQLDataType.CLOB(65535).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.gaji_batch_root_error_logs.root_batch_id</code>.
+     * The column <code>gaji_batch_root_error_logs.root_batch_id</code>.
      */
     public final TableField<GajiBatchRootErrorLogsRecord, String> ROOT_BATCH_ID = createField(DSL.name("root_batch_id"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
@@ -77,24 +93,21 @@ public class GajiBatchRootErrorLogs extends TableImpl<GajiBatchRootErrorLogsReco
     }
 
     /**
-     * Create an aliased <code>kepegawaian.gaji_batch_root_error_logs</code>
-     * table reference
+     * Create an aliased <code>gaji_batch_root_error_logs</code> table reference
      */
     public GajiBatchRootErrorLogs(String alias) {
         this(DSL.name(alias), GAJI_BATCH_ROOT_ERROR_LOGS);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.gaji_batch_root_error_logs</code>
-     * table reference
+     * Create an aliased <code>gaji_batch_root_error_logs</code> table reference
      */
     public GajiBatchRootErrorLogs(Name alias) {
         this(alias, GAJI_BATCH_ROOT_ERROR_LOGS);
     }
 
     /**
-     * Create a <code>kepegawaian.gaji_batch_root_error_logs</code> table
-     * reference
+     * Create a <code>gaji_batch_root_error_logs</code> table reference
      */
     public GajiBatchRootErrorLogs() {
         this(DSL.name("gaji_batch_root_error_logs"), null);
@@ -135,7 +148,7 @@ public class GajiBatchRootErrorLogs extends TableImpl<GajiBatchRootErrorLogsReco
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -161,8 +174,7 @@ public class GajiBatchRootErrorLogs extends TableImpl<GajiBatchRootErrorLogsReco
     private transient GajiBatchRootPath _gajiBatchRoot;
 
     /**
-     * Get the implicit join path to the
-     * <code>kepegawaian.gaji_batch_root</code> table.
+     * Get the implicit join path to the <code>gaji_batch_root</code> table.
      */
     public GajiBatchRootPath gajiBatchRoot() {
         if (_gajiBatchRoot == null)

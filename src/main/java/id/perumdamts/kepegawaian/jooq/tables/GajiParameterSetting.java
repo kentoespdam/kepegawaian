@@ -4,19 +4,34 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Indexes;
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.records.GajiParameterSettingRecord;
-import org.jooq.*;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.Identity;
+import org.jooq.Index;
+import org.jooq.Name;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -28,7 +43,7 @@ public class GajiParameterSetting extends TableImpl<GajiParameterSettingRecord> 
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.gaji_parameter_setting</code>
+     * The reference instance of <code>gaji_parameter_setting</code>
      */
     public static final GajiParameterSetting GAJI_PARAMETER_SETTING = new GajiParameterSetting();
 
@@ -41,53 +56,52 @@ public class GajiParameterSetting extends TableImpl<GajiParameterSettingRecord> 
     }
 
     /**
-     * The column <code>kepegawaian.gaji_parameter_setting.id</code>.
+     * The column <code>gaji_parameter_setting.id</code>.
      */
     public final TableField<GajiParameterSettingRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.gaji_parameter_setting.changed_status</code>.
+     * The column <code>gaji_parameter_setting.changed_status</code>.
      */
     public final TableField<GajiParameterSettingRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_parameter_setting.created_at</code>.
+     * The column <code>gaji_parameter_setting.created_at</code>.
      */
     public final TableField<GajiParameterSettingRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_parameter_setting.created_by</code>.
+     * The column <code>gaji_parameter_setting.created_by</code>.
      */
     public final TableField<GajiParameterSettingRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_parameter_setting.is_deleted</code>.
+     * The column <code>gaji_parameter_setting.is_deleted</code>.
      */
     public final TableField<GajiParameterSettingRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_parameter_setting.updated_at</code>.
+     * The column <code>gaji_parameter_setting.updated_at</code>.
      */
     public final TableField<GajiParameterSettingRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_parameter_setting.updated_by</code>.
+     * The column <code>gaji_parameter_setting.updated_by</code>.
      */
     public final TableField<GajiParameterSettingRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_parameter_setting.version</code>.
+     * The column <code>gaji_parameter_setting.version</code>.
      */
     public final TableField<GajiParameterSettingRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_parameter_setting.kode</code>.
+     * The column <code>gaji_parameter_setting.kode</code>.
      */
     public final TableField<GajiParameterSettingRecord, String> KODE = createField(DSL.name("kode"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_parameter_setting.nominal</code>.
+     * The column <code>gaji_parameter_setting.nominal</code>.
      */
     public final TableField<GajiParameterSettingRecord, Double> NOMINAL = createField(DSL.name("nominal"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
 
@@ -100,23 +114,21 @@ public class GajiParameterSetting extends TableImpl<GajiParameterSettingRecord> 
     }
 
     /**
-     * Create an aliased <code>kepegawaian.gaji_parameter_setting</code> table
-     * reference
+     * Create an aliased <code>gaji_parameter_setting</code> table reference
      */
     public GajiParameterSetting(String alias) {
         this(DSL.name(alias), GAJI_PARAMETER_SETTING);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.gaji_parameter_setting</code> table
-     * reference
+     * Create an aliased <code>gaji_parameter_setting</code> table reference
      */
     public GajiParameterSetting(Name alias) {
         this(alias, GAJI_PARAMETER_SETTING);
     }
 
     /**
-     * Create a <code>kepegawaian.gaji_parameter_setting</code> table reference
+     * Create a <code>gaji_parameter_setting</code> table reference
      */
     public GajiParameterSetting() {
         this(DSL.name("gaji_parameter_setting"), null);
@@ -124,7 +136,7 @@ public class GajiParameterSetting extends TableImpl<GajiParameterSettingRecord> 
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override

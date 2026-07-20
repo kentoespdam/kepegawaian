@@ -4,22 +4,38 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.enums.BiodataAudGolonganDarah;
 import id.perumdamts.kepegawaian.jooq.tables.Revinfo.RevinfoPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.BiodataAudRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -31,7 +47,7 @@ public class BiodataAud extends TableImpl<BiodataAudRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.biodata_aud</code>
+     * The reference instance of <code>biodata_aud</code>
      */
     public static final BiodataAud BIODATA_AUD = new BiodataAud();
 
@@ -44,112 +60,112 @@ public class BiodataAud extends TableImpl<BiodataAudRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.biodata_aud.nik</code>.
+     * The column <code>biodata_aud.nik</code>.
      */
     public final TableField<BiodataAudRecord, String> NIK = createField(DSL.name("nik"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata_aud.rev</code>.
+     * The column <code>biodata_aud.rev</code>.
      */
     public final TableField<BiodataAudRecord, Integer> REV = createField(DSL.name("rev"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata_aud.revtype</code>.
+     * The column <code>biodata_aud.revtype</code>.
      */
     public final TableField<BiodataAudRecord, Byte> REVTYPE = createField(DSL.name("revtype"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata_aud.agama</code>.
+     * The column <code>biodata_aud.agama</code>.
      */
     public final TableField<BiodataAudRecord, Byte> AGAMA = createField(DSL.name("agama"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata_aud.alamat</code>.
+     * The column <code>biodata_aud.alamat</code>.
      */
     public final TableField<BiodataAudRecord, String> ALAMAT = createField(DSL.name("alamat"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata_aud.created_at</code>.
+     * The column <code>biodata_aud.created_at</code>.
      */
     public final TableField<BiodataAudRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata_aud.created_by</code>.
+     * The column <code>biodata_aud.created_by</code>.
      */
     public final TableField<BiodataAudRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata_aud.foto_profil</code>.
+     * The column <code>biodata_aud.foto_profil</code>.
      */
     public final TableField<BiodataAudRecord, String> FOTO_PROFIL = createField(DSL.name("foto_profil"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata_aud.golongan_darah</code>.
+     * The column <code>biodata_aud.golongan_darah</code>.
      */
     public final TableField<BiodataAudRecord, BiodataAudGolonganDarah> GOLONGAN_DARAH = createField(DSL.name("golongan_darah"), SQLDataType.VARCHAR(2).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)).asEnumDataType(BiodataAudGolonganDarah.class), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata_aud.ibu_kandung</code>.
+     * The column <code>biodata_aud.ibu_kandung</code>.
      */
     public final TableField<BiodataAudRecord, String> IBU_KANDUNG = createField(DSL.name("ibu_kandung"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata_aud.is_deleted</code>.
+     * The column <code>biodata_aud.is_deleted</code>.
      */
     public final TableField<BiodataAudRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata_aud.is_pegawai</code>.
+     * The column <code>biodata_aud.is_pegawai</code>.
      */
     public final TableField<BiodataAudRecord, Boolean> IS_PEGAWAI = createField(DSL.name("is_pegawai"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata_aud.jenis_kelamin</code>.
+     * The column <code>biodata_aud.jenis_kelamin</code>.
      */
     public final TableField<BiodataAudRecord, Byte> JENIS_KELAMIN = createField(DSL.name("jenis_kelamin"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata_aud.nama</code>.
+     * The column <code>biodata_aud.nama</code>.
      */
     public final TableField<BiodataAudRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata_aud.notes</code>.
+     * The column <code>biodata_aud.notes</code>.
      */
     public final TableField<BiodataAudRecord, String> NOTES = createField(DSL.name("notes"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata_aud.status_kawin</code>.
+     * The column <code>biodata_aud.status_kawin</code>.
      */
     public final TableField<BiodataAudRecord, Byte> STATUS_KAWIN = createField(DSL.name("status_kawin"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata_aud.tanggal_lahir</code>.
+     * The column <code>biodata_aud.tanggal_lahir</code>.
      */
     public final TableField<BiodataAudRecord, LocalDate> TANGGAL_LAHIR = createField(DSL.name("tanggal_lahir"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata_aud.telp</code>.
+     * The column <code>biodata_aud.telp</code>.
      */
     public final TableField<BiodataAudRecord, String> TELP = createField(DSL.name("telp"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata_aud.tempat_lahir</code>.
+     * The column <code>biodata_aud.tempat_lahir</code>.
      */
     public final TableField<BiodataAudRecord, String> TEMPAT_LAHIR = createField(DSL.name("tempat_lahir"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata_aud.updated_at</code>.
+     * The column <code>biodata_aud.updated_at</code>.
      */
     public final TableField<BiodataAudRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata_aud.updated_by</code>.
+     * The column <code>biodata_aud.updated_by</code>.
      */
     public final TableField<BiodataAudRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.biodata_aud.pendidikan_id</code>.
+     * The column <code>biodata_aud.pendidikan_id</code>.
      */
     public final TableField<BiodataAudRecord, Long> PENDIDIKAN_ID = createField(DSL.name("pendidikan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
@@ -162,21 +178,21 @@ public class BiodataAud extends TableImpl<BiodataAudRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.biodata_aud</code> table reference
+     * Create an aliased <code>biodata_aud</code> table reference
      */
     public BiodataAud(String alias) {
         this(DSL.name(alias), BIODATA_AUD);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.biodata_aud</code> table reference
+     * Create an aliased <code>biodata_aud</code> table reference
      */
     public BiodataAud(Name alias) {
         this(alias, BIODATA_AUD);
     }
 
     /**
-     * Create a <code>kepegawaian.biodata_aud</code> table reference
+     * Create a <code>biodata_aud</code> table reference
      */
     public BiodataAud() {
         this(DSL.name("biodata_aud"), null);
@@ -217,7 +233,7 @@ public class BiodataAud extends TableImpl<BiodataAudRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -233,7 +249,7 @@ public class BiodataAud extends TableImpl<BiodataAudRecord> {
     private transient RevinfoPath _revinfo;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.revinfo</code> table.
+     * Get the implicit join path to the <code>revinfo</code> table.
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)

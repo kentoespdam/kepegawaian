@@ -5,10 +5,11 @@ package id.perumdamts.kepegawaian.jooq.tables.records;
 
 
 import id.perumdamts.kepegawaian.jooq.tables.LampiranSk;
-import org.jooq.Record1;
-import org.jooq.impl.UpdatableRecordImpl;
 
 import java.time.LocalDateTime;
+
+import org.jooq.Record1;
+import org.jooq.impl.UpdatableRecordImpl;
 
 
 /**
@@ -20,252 +21,252 @@ public class LampiranSkRecord extends UpdatableRecordImpl<LampiranSkRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>kepegawaian.lampiran_sk.id</code>.
+     * Setter for <code>lampiran_sk.id</code>.
      */
     public void setId(Long value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.lampiran_sk.id</code>.
+     * Getter for <code>lampiran_sk.id</code>.
      */
     public Long getId() {
         return (Long) get(0);
     }
 
     /**
-     * Setter for <code>kepegawaian.lampiran_sk.changed_status</code>.
+     * Setter for <code>lampiran_sk.changed_status</code>.
      */
     public void setChangedStatus(Byte value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.lampiran_sk.changed_status</code>.
+     * Getter for <code>lampiran_sk.changed_status</code>.
      */
     public Byte getChangedStatus() {
         return (Byte) get(1);
     }
 
     /**
-     * Setter for <code>kepegawaian.lampiran_sk.created_at</code>.
+     * Setter for <code>lampiran_sk.created_at</code>.
      */
     public void setCreatedAt(LocalDateTime value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.lampiran_sk.created_at</code>.
+     * Getter for <code>lampiran_sk.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
         return (LocalDateTime) get(2);
     }
 
     /**
-     * Setter for <code>kepegawaian.lampiran_sk.created_by</code>.
+     * Setter for <code>lampiran_sk.created_by</code>.
      */
     public void setCreatedBy(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.lampiran_sk.created_by</code>.
+     * Getter for <code>lampiran_sk.created_by</code>.
      */
     public String getCreatedBy() {
         return (String) get(3);
     }
 
     /**
-     * Setter for <code>kepegawaian.lampiran_sk.is_deleted</code>.
+     * Setter for <code>lampiran_sk.is_deleted</code>.
      */
     public void setIsDeleted(Boolean value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.lampiran_sk.is_deleted</code>.
+     * Getter for <code>lampiran_sk.is_deleted</code>.
      */
     public Boolean getIsDeleted() {
         return (Boolean) get(4);
     }
 
     /**
-     * Setter for <code>kepegawaian.lampiran_sk.updated_at</code>.
+     * Setter for <code>lampiran_sk.updated_at</code>.
      */
     public void setUpdatedAt(LocalDateTime value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.lampiran_sk.updated_at</code>.
+     * Getter for <code>lampiran_sk.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
         return (LocalDateTime) get(5);
     }
 
     /**
-     * Setter for <code>kepegawaian.lampiran_sk.updated_by</code>.
+     * Setter for <code>lampiran_sk.updated_by</code>.
      */
     public void setUpdatedBy(String value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.lampiran_sk.updated_by</code>.
+     * Getter for <code>lampiran_sk.updated_by</code>.
      */
     public String getUpdatedBy() {
         return (String) get(6);
     }
 
     /**
-     * Setter for <code>kepegawaian.lampiran_sk.version</code>.
+     * Setter for <code>lampiran_sk.version</code>.
      */
     public void setVersion(Integer value) {
         set(7, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.lampiran_sk.version</code>.
+     * Getter for <code>lampiran_sk.version</code>.
      */
     public Integer getVersion() {
         return (Integer) get(7);
     }
 
     /**
-     * Setter for <code>kepegawaian.lampiran_sk.disetujui</code>.
+     * Setter for <code>lampiran_sk.disetujui</code>.
      */
     public void setDisetujui(Boolean value) {
         set(8, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.lampiran_sk.disetujui</code>.
+     * Getter for <code>lampiran_sk.disetujui</code>.
      */
     public Boolean getDisetujui() {
         return (Boolean) get(8);
     }
 
     /**
-     * Setter for <code>kepegawaian.lampiran_sk.disetujui_oleh</code>.
+     * Setter for <code>lampiran_sk.disetujui_oleh</code>.
      */
     public void setDisetujuiOleh(String value) {
         set(9, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.lampiran_sk.disetujui_oleh</code>.
+     * Getter for <code>lampiran_sk.disetujui_oleh</code>.
      */
     public String getDisetujuiOleh() {
         return (String) get(9);
     }
 
     /**
-     * Setter for <code>kepegawaian.lampiran_sk.file_name</code>.
+     * Setter for <code>lampiran_sk.file_name</code>.
      */
     public void setFileName(String value) {
         set(10, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.lampiran_sk.file_name</code>.
+     * Getter for <code>lampiran_sk.file_name</code>.
      */
     public String getFileName() {
         return (String) get(10);
     }
 
     /**
-     * Setter for <code>kepegawaian.lampiran_sk.hashed_file_name</code>.
+     * Setter for <code>lampiran_sk.hashed_file_name</code>.
      */
     public void setHashedFileName(String value) {
         set(11, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.lampiran_sk.hashed_file_name</code>.
+     * Getter for <code>lampiran_sk.hashed_file_name</code>.
      */
     public String getHashedFileName() {
         return (String) get(11);
     }
 
     /**
-     * Setter for <code>kepegawaian.lampiran_sk.mime_type</code>.
+     * Setter for <code>lampiran_sk.mime_type</code>.
      */
     public void setMimeType(String value) {
         set(12, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.lampiran_sk.mime_type</code>.
+     * Getter for <code>lampiran_sk.mime_type</code>.
      */
     public String getMimeType() {
         return (String) get(12);
     }
 
     /**
-     * Setter for <code>kepegawaian.lampiran_sk.notes</code>.
+     * Setter for <code>lampiran_sk.notes</code>.
      */
     public void setNotes(String value) {
         set(13, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.lampiran_sk.notes</code>.
+     * Getter for <code>lampiran_sk.notes</code>.
      */
     public String getNotes() {
         return (String) get(13);
     }
 
     /**
-     * Setter for <code>kepegawaian.lampiran_sk.ref</code>.
+     * Setter for <code>lampiran_sk.ref</code>.
      */
     public void setRef(Byte value) {
         set(14, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.lampiran_sk.ref</code>.
+     * Getter for <code>lampiran_sk.ref</code>.
      */
     public Byte getRef() {
         return (Byte) get(14);
     }
 
     /**
-     * Setter for <code>kepegawaian.lampiran_sk.ref_id</code>.
+     * Setter for <code>lampiran_sk.ref_id</code>.
      */
     public void setRefId(Long value) {
         set(15, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.lampiran_sk.ref_id</code>.
+     * Getter for <code>lampiran_sk.ref_id</code>.
      */
     public Long getRefId() {
         return (Long) get(15);
     }
 
     /**
-     * Setter for <code>kepegawaian.lampiran_sk.tanggal_disetujui</code>.
+     * Setter for <code>lampiran_sk.tanggal_disetujui</code>.
      */
     public void setTanggalDisetujui(LocalDateTime value) {
         set(16, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.lampiran_sk.tanggal_disetujui</code>.
+     * Getter for <code>lampiran_sk.tanggal_disetujui</code>.
      */
     public LocalDateTime getTanggalDisetujui() {
         return (LocalDateTime) get(16);
     }
 
     /**
-     * Setter for <code>kepegawaian.lampiran_sk.tanggal_pengajuan</code>.
+     * Setter for <code>lampiran_sk.tanggal_pengajuan</code>.
      */
     public void setTanggalPengajuan(LocalDateTime value) {
         set(17, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.lampiran_sk.tanggal_pengajuan</code>.
+     * Getter for <code>lampiran_sk.tanggal_pengajuan</code>.
      */
     public LocalDateTime getTanggalPengajuan() {
         return (LocalDateTime) get(17);

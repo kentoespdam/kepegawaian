@@ -4,20 +4,36 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.Revinfo.RevinfoPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.ProfesiAudRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -29,7 +45,7 @@ public class ProfesiAud extends TableImpl<ProfesiAudRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.profesi_aud</code>
+     * The reference instance of <code>profesi_aud</code>
      */
     public static final ProfesiAud PROFESI_AUD = new ProfesiAud();
 
@@ -42,82 +58,82 @@ public class ProfesiAud extends TableImpl<ProfesiAudRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.profesi_aud.id</code>.
+     * The column <code>profesi_aud.id</code>.
      */
     public final TableField<ProfesiAudRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>kepegawaian.profesi_aud.rev</code>.
+     * The column <code>profesi_aud.rev</code>.
      */
     public final TableField<ProfesiAudRecord, Integer> REV = createField(DSL.name("rev"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>kepegawaian.profesi_aud.revtype</code>.
+     * The column <code>profesi_aud.revtype</code>.
      */
     public final TableField<ProfesiAudRecord, Byte> REVTYPE = createField(DSL.name("revtype"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.profesi_aud.changed_status</code>.
+     * The column <code>profesi_aud.changed_status</code>.
      */
     public final TableField<ProfesiAudRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.profesi_aud.created_at</code>.
+     * The column <code>profesi_aud.created_at</code>.
      */
     public final TableField<ProfesiAudRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.profesi_aud.created_by</code>.
+     * The column <code>profesi_aud.created_by</code>.
      */
     public final TableField<ProfesiAudRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.profesi_aud.is_deleted</code>.
+     * The column <code>profesi_aud.is_deleted</code>.
      */
     public final TableField<ProfesiAudRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>kepegawaian.profesi_aud.updated_at</code>.
+     * The column <code>profesi_aud.updated_at</code>.
      */
     public final TableField<ProfesiAudRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.profesi_aud.updated_by</code>.
+     * The column <code>profesi_aud.updated_by</code>.
      */
     public final TableField<ProfesiAudRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.profesi_aud.detail</code>.
+     * The column <code>profesi_aud.detail</code>.
      */
     public final TableField<ProfesiAudRecord, String> DETAIL = createField(DSL.name("detail"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.profesi_aud.nama</code>.
+     * The column <code>profesi_aud.nama</code>.
      */
     public final TableField<ProfesiAudRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.profesi_aud.resiko</code>.
+     * The column <code>profesi_aud.resiko</code>.
      */
     public final TableField<ProfesiAudRecord, String> RESIKO = createField(DSL.name("resiko"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.profesi_aud.grade_id</code>.
+     * The column <code>profesi_aud.grade_id</code>.
      */
     public final TableField<ProfesiAudRecord, Long> GRADE_ID = createField(DSL.name("grade_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.profesi_aud.jabatan_id</code>.
+     * The column <code>profesi_aud.jabatan_id</code>.
      */
     public final TableField<ProfesiAudRecord, Long> JABATAN_ID = createField(DSL.name("jabatan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.profesi_aud.level_id</code>.
+     * The column <code>profesi_aud.level_id</code>.
      */
     public final TableField<ProfesiAudRecord, Long> LEVEL_ID = createField(DSL.name("level_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.profesi_aud.organisasi_id</code>.
+     * The column <code>profesi_aud.organisasi_id</code>.
      */
     public final TableField<ProfesiAudRecord, Long> ORGANISASI_ID = createField(DSL.name("organisasi_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
@@ -130,21 +146,21 @@ public class ProfesiAud extends TableImpl<ProfesiAudRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.profesi_aud</code> table reference
+     * Create an aliased <code>profesi_aud</code> table reference
      */
     public ProfesiAud(String alias) {
         this(DSL.name(alias), PROFESI_AUD);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.profesi_aud</code> table reference
+     * Create an aliased <code>profesi_aud</code> table reference
      */
     public ProfesiAud(Name alias) {
         this(alias, PROFESI_AUD);
     }
 
     /**
-     * Create a <code>kepegawaian.profesi_aud</code> table reference
+     * Create a <code>profesi_aud</code> table reference
      */
     public ProfesiAud() {
         this(DSL.name("profesi_aud"), null);
@@ -185,7 +201,7 @@ public class ProfesiAud extends TableImpl<ProfesiAudRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -201,7 +217,7 @@ public class ProfesiAud extends TableImpl<ProfesiAudRecord> {
     private transient RevinfoPath _revinfo;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.revinfo</code> table.
+     * Get the implicit join path to the <code>revinfo</code> table.
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)

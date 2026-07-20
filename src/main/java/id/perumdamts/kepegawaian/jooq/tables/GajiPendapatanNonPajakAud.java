@@ -4,20 +4,36 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.Revinfo.RevinfoPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.GajiPendapatanNonPajakAudRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -29,8 +45,7 @@ public class GajiPendapatanNonPajakAud extends TableImpl<GajiPendapatanNonPajakA
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of
-     * <code>kepegawaian.gaji_pendapatan_non_pajak_aud</code>
+     * The reference instance of <code>gaji_pendapatan_non_pajak_aud</code>
      */
     public static final GajiPendapatanNonPajakAud GAJI_PENDAPATAN_NON_PAJAK_AUD = new GajiPendapatanNonPajakAud();
 
@@ -43,70 +58,62 @@ public class GajiPendapatanNonPajakAud extends TableImpl<GajiPendapatanNonPajakA
     }
 
     /**
-     * The column <code>kepegawaian.gaji_pendapatan_non_pajak_aud.id</code>.
+     * The column <code>gaji_pendapatan_non_pajak_aud.id</code>.
      */
     public final TableField<GajiPendapatanNonPajakAudRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_pendapatan_non_pajak_aud.rev</code>.
+     * The column <code>gaji_pendapatan_non_pajak_aud.rev</code>.
      */
     public final TableField<GajiPendapatanNonPajakAudRecord, Integer> REV = createField(DSL.name("rev"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.gaji_pendapatan_non_pajak_aud.revtype</code>.
+     * The column <code>gaji_pendapatan_non_pajak_aud.revtype</code>.
      */
     public final TableField<GajiPendapatanNonPajakAudRecord, Byte> REVTYPE = createField(DSL.name("revtype"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.gaji_pendapatan_non_pajak_aud.changed_status</code>.
+     * The column <code>gaji_pendapatan_non_pajak_aud.changed_status</code>.
      */
     public final TableField<GajiPendapatanNonPajakAudRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.gaji_pendapatan_non_pajak_aud.created_at</code>.
+     * The column <code>gaji_pendapatan_non_pajak_aud.created_at</code>.
      */
     public final TableField<GajiPendapatanNonPajakAudRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.gaji_pendapatan_non_pajak_aud.created_by</code>.
+     * The column <code>gaji_pendapatan_non_pajak_aud.created_by</code>.
      */
     public final TableField<GajiPendapatanNonPajakAudRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.gaji_pendapatan_non_pajak_aud.is_deleted</code>.
+     * The column <code>gaji_pendapatan_non_pajak_aud.is_deleted</code>.
      */
     public final TableField<GajiPendapatanNonPajakAudRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.gaji_pendapatan_non_pajak_aud.updated_at</code>.
+     * The column <code>gaji_pendapatan_non_pajak_aud.updated_at</code>.
      */
     public final TableField<GajiPendapatanNonPajakAudRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.gaji_pendapatan_non_pajak_aud.updated_by</code>.
+     * The column <code>gaji_pendapatan_non_pajak_aud.updated_by</code>.
      */
     public final TableField<GajiPendapatanNonPajakAudRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_pendapatan_non_pajak_aud.kode</code>.
+     * The column <code>gaji_pendapatan_non_pajak_aud.kode</code>.
      */
     public final TableField<GajiPendapatanNonPajakAudRecord, String> KODE = createField(DSL.name("kode"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column
-     * <code>kepegawaian.gaji_pendapatan_non_pajak_aud.nominal</code>.
+     * The column <code>gaji_pendapatan_non_pajak_aud.nominal</code>.
      */
     public final TableField<GajiPendapatanNonPajakAudRecord, Double> NOMINAL = createField(DSL.name("nominal"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_pendapatan_non_pajak_aud.notes</code>.
+     * The column <code>gaji_pendapatan_non_pajak_aud.notes</code>.
      */
     public final TableField<GajiPendapatanNonPajakAudRecord, String> NOTES = createField(DSL.name("notes"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
@@ -119,24 +126,23 @@ public class GajiPendapatanNonPajakAud extends TableImpl<GajiPendapatanNonPajakA
     }
 
     /**
-     * Create an aliased <code>kepegawaian.gaji_pendapatan_non_pajak_aud</code>
-     * table reference
+     * Create an aliased <code>gaji_pendapatan_non_pajak_aud</code> table
+     * reference
      */
     public GajiPendapatanNonPajakAud(String alias) {
         this(DSL.name(alias), GAJI_PENDAPATAN_NON_PAJAK_AUD);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.gaji_pendapatan_non_pajak_aud</code>
-     * table reference
+     * Create an aliased <code>gaji_pendapatan_non_pajak_aud</code> table
+     * reference
      */
     public GajiPendapatanNonPajakAud(Name alias) {
         this(alias, GAJI_PENDAPATAN_NON_PAJAK_AUD);
     }
 
     /**
-     * Create a <code>kepegawaian.gaji_pendapatan_non_pajak_aud</code> table
-     * reference
+     * Create a <code>gaji_pendapatan_non_pajak_aud</code> table reference
      */
     public GajiPendapatanNonPajakAud() {
         this(DSL.name("gaji_pendapatan_non_pajak_aud"), null);
@@ -177,7 +183,7 @@ public class GajiPendapatanNonPajakAud extends TableImpl<GajiPendapatanNonPajakA
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -193,7 +199,7 @@ public class GajiPendapatanNonPajakAud extends TableImpl<GajiPendapatanNonPajakA
     private transient RevinfoPath _revinfo;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.revinfo</code> table.
+     * Get the implicit join path to the <code>revinfo</code> table.
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)

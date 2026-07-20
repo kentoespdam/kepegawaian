@@ -4,23 +4,41 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Indexes;
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.Biodata.BiodataPath;
 import id.perumdamts.kepegawaian.jooq.tables.JenisKitas.JenisKitasPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.KartuIdentitasRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.Identity;
+import org.jooq.Index;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -32,7 +50,7 @@ public class KartuIdentitas extends TableImpl<KartuIdentitasRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.kartu_identitas</code>
+     * The reference instance of <code>kartu_identitas</code>
      */
     public static final KartuIdentitas KARTU_IDENTITAS = new KartuIdentitas();
 
@@ -45,72 +63,72 @@ public class KartuIdentitas extends TableImpl<KartuIdentitasRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.kartu_identitas.id</code>.
+     * The column <code>kartu_identitas.id</code>.
      */
     public final TableField<KartuIdentitasRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.kartu_identitas.changed_status</code>.
+     * The column <code>kartu_identitas.changed_status</code>.
      */
     public final TableField<KartuIdentitasRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.kartu_identitas.created_at</code>.
+     * The column <code>kartu_identitas.created_at</code>.
      */
     public final TableField<KartuIdentitasRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.kartu_identitas.created_by</code>.
+     * The column <code>kartu_identitas.created_by</code>.
      */
     public final TableField<KartuIdentitasRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.kartu_identitas.is_deleted</code>.
+     * The column <code>kartu_identitas.is_deleted</code>.
      */
     public final TableField<KartuIdentitasRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>kepegawaian.kartu_identitas.updated_at</code>.
+     * The column <code>kartu_identitas.updated_at</code>.
      */
     public final TableField<KartuIdentitasRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.kartu_identitas.updated_by</code>.
+     * The column <code>kartu_identitas.updated_by</code>.
      */
     public final TableField<KartuIdentitasRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.kartu_identitas.version</code>.
+     * The column <code>kartu_identitas.version</code>.
      */
     public final TableField<KartuIdentitasRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.kartu_identitas.nomor_kartu</code>.
+     * The column <code>kartu_identitas.nomor_kartu</code>.
      */
     public final TableField<KartuIdentitasRecord, String> NOMOR_KARTU = createField(DSL.name("nomor_kartu"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.kartu_identitas.notes</code>.
+     * The column <code>kartu_identitas.notes</code>.
      */
     public final TableField<KartuIdentitasRecord, String> NOTES = createField(DSL.name("notes"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.kartu_identitas.tanggal_expired</code>.
+     * The column <code>kartu_identitas.tanggal_expired</code>.
      */
     public final TableField<KartuIdentitasRecord, LocalDate> TANGGAL_EXPIRED = createField(DSL.name("tanggal_expired"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.kartu_identitas.tanggal_terima</code>.
+     * The column <code>kartu_identitas.tanggal_terima</code>.
      */
     public final TableField<KartuIdentitasRecord, LocalDate> TANGGAL_TERIMA = createField(DSL.name("tanggal_terima"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
-     * The column <code>kepegawaian.kartu_identitas.nik</code>.
+     * The column <code>kartu_identitas.nik</code>.
      */
     public final TableField<KartuIdentitasRecord, String> NIK = createField(DSL.name("nik"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.kartu_identitas.jenis_kitas_id</code>.
+     * The column <code>kartu_identitas.jenis_kitas_id</code>.
      */
     public final TableField<KartuIdentitasRecord, Long> JENIS_KITAS_ID = createField(DSL.name("jenis_kitas_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
@@ -123,23 +141,21 @@ public class KartuIdentitas extends TableImpl<KartuIdentitasRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.kartu_identitas</code> table
-     * reference
+     * Create an aliased <code>kartu_identitas</code> table reference
      */
     public KartuIdentitas(String alias) {
         this(DSL.name(alias), KARTU_IDENTITAS);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.kartu_identitas</code> table
-     * reference
+     * Create an aliased <code>kartu_identitas</code> table reference
      */
     public KartuIdentitas(Name alias) {
         this(alias, KARTU_IDENTITAS);
     }
 
     /**
-     * Create a <code>kepegawaian.kartu_identitas</code> table reference
+     * Create a <code>kartu_identitas</code> table reference
      */
     public KartuIdentitas() {
         this(DSL.name("kartu_identitas"), null);
@@ -180,7 +196,7 @@ public class KartuIdentitas extends TableImpl<KartuIdentitasRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -211,7 +227,7 @@ public class KartuIdentitas extends TableImpl<KartuIdentitasRecord> {
     private transient BiodataPath _biodata;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.biodata</code> table.
+     * Get the implicit join path to the <code>biodata</code> table.
      */
     public BiodataPath biodata() {
         if (_biodata == null)
@@ -223,8 +239,7 @@ public class KartuIdentitas extends TableImpl<KartuIdentitasRecord> {
     private transient JenisKitasPath _jenisKitas;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.jenis_kitas</code>
-     * table.
+     * Get the implicit join path to the <code>jenis_kitas</code> table.
      */
     public JenisKitasPath jenisKitas() {
         if (_jenisKitas == null)

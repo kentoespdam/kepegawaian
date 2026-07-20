@@ -4,22 +4,40 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Indexes;
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.Golongan.GolonganPath;
 import id.perumdamts.kepegawaian.jooq.tables.Level.LevelPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.GajiTunjanganRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.Identity;
+import org.jooq.Index;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -31,7 +49,7 @@ public class GajiTunjangan extends TableImpl<GajiTunjanganRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.gaji_tunjangan</code>
+     * The reference instance of <code>gaji_tunjangan</code>
      */
     public static final GajiTunjangan GAJI_TUNJANGAN = new GajiTunjangan();
 
@@ -44,62 +62,62 @@ public class GajiTunjangan extends TableImpl<GajiTunjanganRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.gaji_tunjangan.id</code>.
+     * The column <code>gaji_tunjangan.id</code>.
      */
     public final TableField<GajiTunjanganRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_tunjangan.changed_status</code>.
+     * The column <code>gaji_tunjangan.changed_status</code>.
      */
     public final TableField<GajiTunjanganRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_tunjangan.created_at</code>.
+     * The column <code>gaji_tunjangan.created_at</code>.
      */
     public final TableField<GajiTunjanganRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_tunjangan.created_by</code>.
+     * The column <code>gaji_tunjangan.created_by</code>.
      */
     public final TableField<GajiTunjanganRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_tunjangan.is_deleted</code>.
+     * The column <code>gaji_tunjangan.is_deleted</code>.
      */
     public final TableField<GajiTunjanganRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_tunjangan.updated_at</code>.
+     * The column <code>gaji_tunjangan.updated_at</code>.
      */
     public final TableField<GajiTunjanganRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_tunjangan.updated_by</code>.
+     * The column <code>gaji_tunjangan.updated_by</code>.
      */
     public final TableField<GajiTunjanganRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_tunjangan.version</code>.
+     * The column <code>gaji_tunjangan.version</code>.
      */
     public final TableField<GajiTunjanganRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_tunjangan.jenis_tunjangan</code>.
+     * The column <code>gaji_tunjangan.jenis_tunjangan</code>.
      */
     public final TableField<GajiTunjanganRecord, Byte> JENIS_TUNJANGAN = createField(DSL.name("jenis_tunjangan"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_tunjangan.nominal</code>.
+     * The column <code>gaji_tunjangan.nominal</code>.
      */
     public final TableField<GajiTunjanganRecord, Double> NOMINAL = createField(DSL.name("nominal"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_tunjangan.golongan_id</code>.
+     * The column <code>gaji_tunjangan.golongan_id</code>.
      */
     public final TableField<GajiTunjanganRecord, Long> GOLONGAN_ID = createField(DSL.name("golongan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_tunjangan.level_id</code>.
+     * The column <code>gaji_tunjangan.level_id</code>.
      */
     public final TableField<GajiTunjanganRecord, Long> LEVEL_ID = createField(DSL.name("level_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
@@ -112,21 +130,21 @@ public class GajiTunjangan extends TableImpl<GajiTunjanganRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.gaji_tunjangan</code> table reference
+     * Create an aliased <code>gaji_tunjangan</code> table reference
      */
     public GajiTunjangan(String alias) {
         this(DSL.name(alias), GAJI_TUNJANGAN);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.gaji_tunjangan</code> table reference
+     * Create an aliased <code>gaji_tunjangan</code> table reference
      */
     public GajiTunjangan(Name alias) {
         this(alias, GAJI_TUNJANGAN);
     }
 
     /**
-     * Create a <code>kepegawaian.gaji_tunjangan</code> table reference
+     * Create a <code>gaji_tunjangan</code> table reference
      */
     public GajiTunjangan() {
         this(DSL.name("gaji_tunjangan"), null);
@@ -167,7 +185,7 @@ public class GajiTunjangan extends TableImpl<GajiTunjanganRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -193,7 +211,7 @@ public class GajiTunjangan extends TableImpl<GajiTunjanganRecord> {
     private transient LevelPath _level;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.level</code> table.
+     * Get the implicit join path to the <code>level</code> table.
      */
     public LevelPath level() {
         if (_level == null)
@@ -205,8 +223,7 @@ public class GajiTunjangan extends TableImpl<GajiTunjanganRecord> {
     private transient GolonganPath _golongan;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.golongan</code>
-     * table.
+     * Get the implicit join path to the <code>golongan</code> table.
      */
     public GolonganPath golongan() {
         if (_golongan == null)

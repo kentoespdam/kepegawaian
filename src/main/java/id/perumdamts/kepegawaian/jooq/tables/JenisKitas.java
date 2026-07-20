@@ -4,22 +4,40 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Indexes;
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.Biodata.BiodataPath;
 import id.perumdamts.kepegawaian.jooq.tables.KartuIdentitas.KartuIdentitasPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.JenisKitasRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.Identity;
+import org.jooq.Index;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -31,7 +49,7 @@ public class JenisKitas extends TableImpl<JenisKitasRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.jenis_kitas</code>
+     * The reference instance of <code>jenis_kitas</code>
      */
     public static final JenisKitas JENIS_KITAS = new JenisKitas();
 
@@ -44,47 +62,47 @@ public class JenisKitas extends TableImpl<JenisKitasRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.jenis_kitas.id</code>.
+     * The column <code>jenis_kitas.id</code>.
      */
     public final TableField<JenisKitasRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.jenis_kitas.changed_status</code>.
+     * The column <code>jenis_kitas.changed_status</code>.
      */
     public final TableField<JenisKitasRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.jenis_kitas.created_at</code>.
+     * The column <code>jenis_kitas.created_at</code>.
      */
     public final TableField<JenisKitasRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.jenis_kitas.created_by</code>.
+     * The column <code>jenis_kitas.created_by</code>.
      */
     public final TableField<JenisKitasRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.jenis_kitas.is_deleted</code>.
+     * The column <code>jenis_kitas.is_deleted</code>.
      */
     public final TableField<JenisKitasRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>kepegawaian.jenis_kitas.updated_at</code>.
+     * The column <code>jenis_kitas.updated_at</code>.
      */
     public final TableField<JenisKitasRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.jenis_kitas.updated_by</code>.
+     * The column <code>jenis_kitas.updated_by</code>.
      */
     public final TableField<JenisKitasRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.jenis_kitas.version</code>.
+     * The column <code>jenis_kitas.version</code>.
      */
     public final TableField<JenisKitasRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.jenis_kitas.nama</code>.
+     * The column <code>jenis_kitas.nama</code>.
      */
     public final TableField<JenisKitasRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
@@ -97,21 +115,21 @@ public class JenisKitas extends TableImpl<JenisKitasRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.jenis_kitas</code> table reference
+     * Create an aliased <code>jenis_kitas</code> table reference
      */
     public JenisKitas(String alias) {
         this(DSL.name(alias), JENIS_KITAS);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.jenis_kitas</code> table reference
+     * Create an aliased <code>jenis_kitas</code> table reference
      */
     public JenisKitas(Name alias) {
         this(alias, JENIS_KITAS);
     }
 
     /**
-     * Create a <code>kepegawaian.jenis_kitas</code> table reference
+     * Create a <code>jenis_kitas</code> table reference
      */
     public JenisKitas() {
         this(DSL.name("jenis_kitas"), null);
@@ -152,7 +170,7 @@ public class JenisKitas extends TableImpl<JenisKitasRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -173,8 +191,8 @@ public class JenisKitas extends TableImpl<JenisKitasRecord> {
     private transient KartuIdentitasPath _kartuIdentitas;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>kepegawaian.kartu_identitas</code> table
+     * Get the implicit to-many join path to the <code>kartu_identitas</code>
+     * table
      */
     public KartuIdentitasPath kartuIdentitas() {
         if (_kartuIdentitas == null)
@@ -184,8 +202,7 @@ public class JenisKitas extends TableImpl<JenisKitasRecord> {
     }
 
     /**
-     * Get the implicit many-to-many join path to the
-     * <code>kepegawaian.biodata</code> table
+     * Get the implicit many-to-many join path to the <code>biodata</code> table
      */
     public BiodataPath biodata() {
         return kartuIdentitas().biodata();

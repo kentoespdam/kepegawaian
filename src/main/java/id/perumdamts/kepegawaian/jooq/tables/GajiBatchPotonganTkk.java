@@ -4,18 +4,33 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Indexes;
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.records.GajiBatchPotonganTkkRecord;
-import org.jooq.*;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.Identity;
+import org.jooq.Index;
+import org.jooq.Name;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -27,8 +42,7 @@ public class GajiBatchPotonganTkk extends TableImpl<GajiBatchPotonganTkkRecord> 
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of
-     * <code>kepegawaian.gaji_batch_potongan_tkk</code>
+     * The reference instance of <code>gaji_batch_potongan_tkk</code>
      */
     public static final GajiBatchPotonganTkk GAJI_BATCH_POTONGAN_TKK = new GajiBatchPotonganTkk();
 
@@ -41,22 +55,22 @@ public class GajiBatchPotonganTkk extends TableImpl<GajiBatchPotonganTkkRecord> 
     }
 
     /**
-     * The column <code>kepegawaian.gaji_batch_potongan_tkk.id</code>.
+     * The column <code>gaji_batch_potongan_tkk.id</code>.
      */
     public final TableField<GajiBatchPotonganTkkRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_potongan_tkk.batch_id</code>.
+     * The column <code>gaji_batch_potongan_tkk.batch_id</code>.
      */
     public final TableField<GajiBatchPotonganTkkRecord, String> BATCH_ID = createField(DSL.name("batch_id"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_potongan_tkk.nipam</code>.
+     * The column <code>gaji_batch_potongan_tkk.nipam</code>.
      */
     public final TableField<GajiBatchPotonganTkkRecord, String> NIPAM = createField(DSL.name("nipam"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_potongan_tkk.potongan</code>.
+     * The column <code>gaji_batch_potongan_tkk.potongan</code>.
      */
     public final TableField<GajiBatchPotonganTkkRecord, Integer> POTONGAN = createField(DSL.name("potongan"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
@@ -69,23 +83,21 @@ public class GajiBatchPotonganTkk extends TableImpl<GajiBatchPotonganTkkRecord> 
     }
 
     /**
-     * Create an aliased <code>kepegawaian.gaji_batch_potongan_tkk</code> table
-     * reference
+     * Create an aliased <code>gaji_batch_potongan_tkk</code> table reference
      */
     public GajiBatchPotonganTkk(String alias) {
         this(DSL.name(alias), GAJI_BATCH_POTONGAN_TKK);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.gaji_batch_potongan_tkk</code> table
-     * reference
+     * Create an aliased <code>gaji_batch_potongan_tkk</code> table reference
      */
     public GajiBatchPotonganTkk(Name alias) {
         this(alias, GAJI_BATCH_POTONGAN_TKK);
     }
 
     /**
-     * Create a <code>kepegawaian.gaji_batch_potongan_tkk</code> table reference
+     * Create a <code>gaji_batch_potongan_tkk</code> table reference
      */
     public GajiBatchPotonganTkk() {
         this(DSL.name("gaji_batch_potongan_tkk"), null);
@@ -93,7 +105,7 @@ public class GajiBatchPotonganTkk extends TableImpl<GajiBatchPotonganTkkRecord> 
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override

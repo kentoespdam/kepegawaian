@@ -4,19 +4,35 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.Revinfo.RevinfoPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.GajiBatchRootAudRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -28,7 +44,7 @@ public class GajiBatchRootAud extends TableImpl<GajiBatchRootAudRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.gaji_batch_root_aud</code>
+     * The reference instance of <code>gaji_batch_root_aud</code>
      */
     public static final GajiBatchRootAud GAJI_BATCH_ROOT_AUD = new GajiBatchRootAud();
 
@@ -41,27 +57,27 @@ public class GajiBatchRootAud extends TableImpl<GajiBatchRootAudRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.gaji_batch_root_aud.id</code>.
+     * The column <code>gaji_batch_root_aud.id</code>.
      */
     public final TableField<GajiBatchRootAudRecord, String> ID = createField(DSL.name("id"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_root_aud.rev</code>.
+     * The column <code>gaji_batch_root_aud.rev</code>.
      */
     public final TableField<GajiBatchRootAudRecord, Integer> REV = createField(DSL.name("rev"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_root_aud.revtype</code>.
+     * The column <code>gaji_batch_root_aud.revtype</code>.
      */
     public final TableField<GajiBatchRootAudRecord, Byte> REVTYPE = createField(DSL.name("revtype"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_root_aud.is_deleted</code>.
+     * The column <code>gaji_batch_root_aud.is_deleted</code>.
      */
     public final TableField<GajiBatchRootAudRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>kepegawaian.gaji_batch_root_aud.updated_by</code>.
+     * The column <code>gaji_batch_root_aud.updated_by</code>.
      */
     public final TableField<GajiBatchRootAudRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
@@ -74,23 +90,21 @@ public class GajiBatchRootAud extends TableImpl<GajiBatchRootAudRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.gaji_batch_root_aud</code> table
-     * reference
+     * Create an aliased <code>gaji_batch_root_aud</code> table reference
      */
     public GajiBatchRootAud(String alias) {
         this(DSL.name(alias), GAJI_BATCH_ROOT_AUD);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.gaji_batch_root_aud</code> table
-     * reference
+     * Create an aliased <code>gaji_batch_root_aud</code> table reference
      */
     public GajiBatchRootAud(Name alias) {
         this(alias, GAJI_BATCH_ROOT_AUD);
     }
 
     /**
-     * Create a <code>kepegawaian.gaji_batch_root_aud</code> table reference
+     * Create a <code>gaji_batch_root_aud</code> table reference
      */
     public GajiBatchRootAud() {
         this(DSL.name("gaji_batch_root_aud"), null);
@@ -131,7 +145,7 @@ public class GajiBatchRootAud extends TableImpl<GajiBatchRootAudRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -147,7 +161,7 @@ public class GajiBatchRootAud extends TableImpl<GajiBatchRootAudRecord> {
     private transient RevinfoPath _revinfo;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.revinfo</code> table.
+     * Get the implicit join path to the <code>revinfo</code> table.
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)

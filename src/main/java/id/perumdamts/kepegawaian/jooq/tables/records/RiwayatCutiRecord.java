@@ -5,10 +5,11 @@ package id.perumdamts.kepegawaian.jooq.tables.records;
 
 
 import id.perumdamts.kepegawaian.jooq.tables.RiwayatCuti;
-import org.jooq.Record1;
-import org.jooq.impl.UpdatableRecordImpl;
 
 import java.time.LocalDateTime;
+
+import org.jooq.Record1;
+import org.jooq.impl.UpdatableRecordImpl;
 
 
 /**
@@ -20,154 +21,154 @@ public class RiwayatCutiRecord extends UpdatableRecordImpl<RiwayatCutiRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>kepegawaian.riwayat_cuti.id</code>.
+     * Setter for <code>riwayat_cuti.id</code>.
      */
     public void setId(Long value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_cuti.id</code>.
+     * Getter for <code>riwayat_cuti.id</code>.
      */
     public Long getId() {
         return (Long) get(0);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_cuti.changed_status</code>.
+     * Setter for <code>riwayat_cuti.changed_status</code>.
      */
     public void setChangedStatus(Byte value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_cuti.changed_status</code>.
+     * Getter for <code>riwayat_cuti.changed_status</code>.
      */
     public Byte getChangedStatus() {
         return (Byte) get(1);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_cuti.created_at</code>.
+     * Setter for <code>riwayat_cuti.created_at</code>.
      */
     public void setCreatedAt(LocalDateTime value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_cuti.created_at</code>.
+     * Getter for <code>riwayat_cuti.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
         return (LocalDateTime) get(2);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_cuti.created_by</code>.
+     * Setter for <code>riwayat_cuti.created_by</code>.
      */
     public void setCreatedBy(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_cuti.created_by</code>.
+     * Getter for <code>riwayat_cuti.created_by</code>.
      */
     public String getCreatedBy() {
         return (String) get(3);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_cuti.is_deleted</code>.
+     * Setter for <code>riwayat_cuti.is_deleted</code>.
      */
     public void setIsDeleted(Boolean value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_cuti.is_deleted</code>.
+     * Getter for <code>riwayat_cuti.is_deleted</code>.
      */
     public Boolean getIsDeleted() {
         return (Boolean) get(4);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_cuti.updated_at</code>.
+     * Setter for <code>riwayat_cuti.updated_at</code>.
      */
     public void setUpdatedAt(LocalDateTime value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_cuti.updated_at</code>.
+     * Getter for <code>riwayat_cuti.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
         return (LocalDateTime) get(5);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_cuti.updated_by</code>.
+     * Setter for <code>riwayat_cuti.updated_by</code>.
      */
     public void setUpdatedBy(String value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_cuti.updated_by</code>.
+     * Getter for <code>riwayat_cuti.updated_by</code>.
      */
     public String getUpdatedBy() {
         return (String) get(6);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_cuti.version</code>.
+     * Setter for <code>riwayat_cuti.version</code>.
      */
     public void setVersion(Integer value) {
         set(7, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_cuti.version</code>.
+     * Getter for <code>riwayat_cuti.version</code>.
      */
     public Integer getVersion() {
         return (Integer) get(7);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_cuti.nama</code>.
+     * Setter for <code>riwayat_cuti.nama</code>.
      */
     public void setNama(String value) {
         set(8, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_cuti.nama</code>.
+     * Getter for <code>riwayat_cuti.nama</code>.
      */
     public String getNama() {
         return (String) get(8);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_cuti.nipam</code>.
+     * Setter for <code>riwayat_cuti.nipam</code>.
      */
     public void setNipam(String value) {
         set(9, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_cuti.nipam</code>.
+     * Getter for <code>riwayat_cuti.nipam</code>.
      */
     public String getNipam() {
         return (String) get(9);
     }
 
     /**
-     * Setter for <code>kepegawaian.riwayat_cuti.pegawai_id</code>.
+     * Setter for <code>riwayat_cuti.pegawai_id</code>.
      */
     public void setPegawaiId(Long value) {
         set(10, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.riwayat_cuti.pegawai_id</code>.
+     * Getter for <code>riwayat_cuti.pegawai_id</code>.
      */
     public Long getPegawaiId() {
         return (Long) get(10);

@@ -5,10 +5,11 @@ package id.perumdamts.kepegawaian.jooq.tables.records;
 
 
 import id.perumdamts.kepegawaian.jooq.tables.GolonganAud;
-import org.jooq.Record2;
-import org.jooq.impl.UpdatableRecordImpl;
 
 import java.time.LocalDateTime;
+
+import org.jooq.Record2;
+import org.jooq.impl.UpdatableRecordImpl;
 
 
 /**
@@ -20,154 +21,154 @@ public class GolonganAudRecord extends UpdatableRecordImpl<GolonganAudRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>kepegawaian.golongan_aud.id</code>.
+     * Setter for <code>golongan_aud.id</code>.
      */
     public void setId(Long value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.golongan_aud.id</code>.
+     * Getter for <code>golongan_aud.id</code>.
      */
     public Long getId() {
         return (Long) get(0);
     }
 
     /**
-     * Setter for <code>kepegawaian.golongan_aud.rev</code>.
+     * Setter for <code>golongan_aud.rev</code>.
      */
     public void setRev(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.golongan_aud.rev</code>.
+     * Getter for <code>golongan_aud.rev</code>.
      */
     public Integer getRev() {
         return (Integer) get(1);
     }
 
     /**
-     * Setter for <code>kepegawaian.golongan_aud.revtype</code>.
+     * Setter for <code>golongan_aud.revtype</code>.
      */
     public void setRevtype(Byte value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.golongan_aud.revtype</code>.
+     * Getter for <code>golongan_aud.revtype</code>.
      */
     public Byte getRevtype() {
         return (Byte) get(2);
     }
 
     /**
-     * Setter for <code>kepegawaian.golongan_aud.changed_status</code>.
+     * Setter for <code>golongan_aud.changed_status</code>.
      */
     public void setChangedStatus(Byte value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.golongan_aud.changed_status</code>.
+     * Getter for <code>golongan_aud.changed_status</code>.
      */
     public Byte getChangedStatus() {
         return (Byte) get(3);
     }
 
     /**
-     * Setter for <code>kepegawaian.golongan_aud.created_at</code>.
+     * Setter for <code>golongan_aud.created_at</code>.
      */
     public void setCreatedAt(LocalDateTime value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.golongan_aud.created_at</code>.
+     * Getter for <code>golongan_aud.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
         return (LocalDateTime) get(4);
     }
 
     /**
-     * Setter for <code>kepegawaian.golongan_aud.created_by</code>.
+     * Setter for <code>golongan_aud.created_by</code>.
      */
     public void setCreatedBy(String value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.golongan_aud.created_by</code>.
+     * Getter for <code>golongan_aud.created_by</code>.
      */
     public String getCreatedBy() {
         return (String) get(5);
     }
 
     /**
-     * Setter for <code>kepegawaian.golongan_aud.is_deleted</code>.
+     * Setter for <code>golongan_aud.is_deleted</code>.
      */
     public void setIsDeleted(Boolean value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.golongan_aud.is_deleted</code>.
+     * Getter for <code>golongan_aud.is_deleted</code>.
      */
     public Boolean getIsDeleted() {
         return (Boolean) get(6);
     }
 
     /**
-     * Setter for <code>kepegawaian.golongan_aud.updated_at</code>.
+     * Setter for <code>golongan_aud.updated_at</code>.
      */
     public void setUpdatedAt(LocalDateTime value) {
         set(7, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.golongan_aud.updated_at</code>.
+     * Getter for <code>golongan_aud.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
         return (LocalDateTime) get(7);
     }
 
     /**
-     * Setter for <code>kepegawaian.golongan_aud.updated_by</code>.
+     * Setter for <code>golongan_aud.updated_by</code>.
      */
     public void setUpdatedBy(String value) {
         set(8, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.golongan_aud.updated_by</code>.
+     * Getter for <code>golongan_aud.updated_by</code>.
      */
     public String getUpdatedBy() {
         return (String) get(8);
     }
 
     /**
-     * Setter for <code>kepegawaian.golongan_aud.golongan</code>.
+     * Setter for <code>golongan_aud.golongan</code>.
      */
     public void setGolongan(String value) {
         set(9, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.golongan_aud.golongan</code>.
+     * Getter for <code>golongan_aud.golongan</code>.
      */
     public String getGolongan() {
         return (String) get(9);
     }
 
     /**
-     * Setter for <code>kepegawaian.golongan_aud.pangkat</code>.
+     * Setter for <code>golongan_aud.pangkat</code>.
      */
     public void setPangkat(String value) {
         set(10, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.golongan_aud.pangkat</code>.
+     * Getter for <code>golongan_aud.pangkat</code>.
      */
     public String getPangkat() {
         return (String) get(10);

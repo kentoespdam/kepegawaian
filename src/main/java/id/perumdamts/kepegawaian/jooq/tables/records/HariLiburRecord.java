@@ -5,11 +5,12 @@ package id.perumdamts.kepegawaian.jooq.tables.records;
 
 
 import id.perumdamts.kepegawaian.jooq.tables.HariLibur;
-import org.jooq.Record1;
-import org.jooq.impl.UpdatableRecordImpl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import org.jooq.Record1;
+import org.jooq.impl.UpdatableRecordImpl;
 
 
 /**
@@ -21,154 +22,154 @@ public class HariLiburRecord extends UpdatableRecordImpl<HariLiburRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>kepegawaian.hari_libur.id</code>.
+     * Setter for <code>hari_libur.id</code>.
      */
     public void setId(Long value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.hari_libur.id</code>.
+     * Getter for <code>hari_libur.id</code>.
      */
     public Long getId() {
         return (Long) get(0);
     }
 
     /**
-     * Setter for <code>kepegawaian.hari_libur.changed_status</code>.
+     * Setter for <code>hari_libur.changed_status</code>.
      */
     public void setChangedStatus(Byte value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.hari_libur.changed_status</code>.
+     * Getter for <code>hari_libur.changed_status</code>.
      */
     public Byte getChangedStatus() {
         return (Byte) get(1);
     }
 
     /**
-     * Setter for <code>kepegawaian.hari_libur.created_at</code>.
+     * Setter for <code>hari_libur.created_at</code>.
      */
     public void setCreatedAt(LocalDateTime value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.hari_libur.created_at</code>.
+     * Getter for <code>hari_libur.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
         return (LocalDateTime) get(2);
     }
 
     /**
-     * Setter for <code>kepegawaian.hari_libur.created_by</code>.
+     * Setter for <code>hari_libur.created_by</code>.
      */
     public void setCreatedBy(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.hari_libur.created_by</code>.
+     * Getter for <code>hari_libur.created_by</code>.
      */
     public String getCreatedBy() {
         return (String) get(3);
     }
 
     /**
-     * Setter for <code>kepegawaian.hari_libur.is_deleted</code>.
+     * Setter for <code>hari_libur.is_deleted</code>.
      */
     public void setIsDeleted(Boolean value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.hari_libur.is_deleted</code>.
+     * Getter for <code>hari_libur.is_deleted</code>.
      */
     public Boolean getIsDeleted() {
         return (Boolean) get(4);
     }
 
     /**
-     * Setter for <code>kepegawaian.hari_libur.updated_at</code>.
+     * Setter for <code>hari_libur.updated_at</code>.
      */
     public void setUpdatedAt(LocalDateTime value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.hari_libur.updated_at</code>.
+     * Getter for <code>hari_libur.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
         return (LocalDateTime) get(5);
     }
 
     /**
-     * Setter for <code>kepegawaian.hari_libur.updated_by</code>.
+     * Setter for <code>hari_libur.updated_by</code>.
      */
     public void setUpdatedBy(String value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.hari_libur.updated_by</code>.
+     * Getter for <code>hari_libur.updated_by</code>.
      */
     public String getUpdatedBy() {
         return (String) get(6);
     }
 
     /**
-     * Setter for <code>kepegawaian.hari_libur.version</code>.
+     * Setter for <code>hari_libur.version</code>.
      */
     public void setVersion(Integer value) {
         set(7, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.hari_libur.version</code>.
+     * Getter for <code>hari_libur.version</code>.
      */
     public Integer getVersion() {
         return (Integer) get(7);
     }
 
     /**
-     * Setter for <code>kepegawaian.hari_libur.jenis_libur</code>.
+     * Setter for <code>hari_libur.jenis_libur</code>.
      */
     public void setJenisLibur(Byte value) {
         set(8, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.hari_libur.jenis_libur</code>.
+     * Getter for <code>hari_libur.jenis_libur</code>.
      */
     public Byte getJenisLibur() {
         return (Byte) get(8);
     }
 
     /**
-     * Setter for <code>kepegawaian.hari_libur.notes</code>.
+     * Setter for <code>hari_libur.notes</code>.
      */
     public void setNotes(String value) {
         set(9, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.hari_libur.notes</code>.
+     * Getter for <code>hari_libur.notes</code>.
      */
     public String getNotes() {
         return (String) get(9);
     }
 
     /**
-     * Setter for <code>kepegawaian.hari_libur.tanggal</code>.
+     * Setter for <code>hari_libur.tanggal</code>.
      */
     public void setTanggal(LocalDate value) {
         set(10, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.hari_libur.tanggal</code>.
+     * Getter for <code>hari_libur.tanggal</code>.
      */
     public LocalDate getTanggal() {
         return (LocalDate) get(10);

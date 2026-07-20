@@ -4,20 +4,36 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.Revinfo.RevinfoPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.JenisKitasAudRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -29,7 +45,7 @@ public class JenisKitasAud extends TableImpl<JenisKitasAudRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.jenis_kitas_aud</code>
+     * The reference instance of <code>jenis_kitas_aud</code>
      */
     public static final JenisKitasAud JENIS_KITAS_AUD = new JenisKitasAud();
 
@@ -42,52 +58,52 @@ public class JenisKitasAud extends TableImpl<JenisKitasAudRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.jenis_kitas_aud.id</code>.
+     * The column <code>jenis_kitas_aud.id</code>.
      */
     public final TableField<JenisKitasAudRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>kepegawaian.jenis_kitas_aud.rev</code>.
+     * The column <code>jenis_kitas_aud.rev</code>.
      */
     public final TableField<JenisKitasAudRecord, Integer> REV = createField(DSL.name("rev"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>kepegawaian.jenis_kitas_aud.revtype</code>.
+     * The column <code>jenis_kitas_aud.revtype</code>.
      */
     public final TableField<JenisKitasAudRecord, Byte> REVTYPE = createField(DSL.name("revtype"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.jenis_kitas_aud.changed_status</code>.
+     * The column <code>jenis_kitas_aud.changed_status</code>.
      */
     public final TableField<JenisKitasAudRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.jenis_kitas_aud.created_at</code>.
+     * The column <code>jenis_kitas_aud.created_at</code>.
      */
     public final TableField<JenisKitasAudRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.jenis_kitas_aud.created_by</code>.
+     * The column <code>jenis_kitas_aud.created_by</code>.
      */
     public final TableField<JenisKitasAudRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.jenis_kitas_aud.is_deleted</code>.
+     * The column <code>jenis_kitas_aud.is_deleted</code>.
      */
     public final TableField<JenisKitasAudRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>kepegawaian.jenis_kitas_aud.updated_at</code>.
+     * The column <code>jenis_kitas_aud.updated_at</code>.
      */
     public final TableField<JenisKitasAudRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.jenis_kitas_aud.updated_by</code>.
+     * The column <code>jenis_kitas_aud.updated_by</code>.
      */
     public final TableField<JenisKitasAudRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.jenis_kitas_aud.nama</code>.
+     * The column <code>jenis_kitas_aud.nama</code>.
      */
     public final TableField<JenisKitasAudRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
@@ -100,23 +116,21 @@ public class JenisKitasAud extends TableImpl<JenisKitasAudRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.jenis_kitas_aud</code> table
-     * reference
+     * Create an aliased <code>jenis_kitas_aud</code> table reference
      */
     public JenisKitasAud(String alias) {
         this(DSL.name(alias), JENIS_KITAS_AUD);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.jenis_kitas_aud</code> table
-     * reference
+     * Create an aliased <code>jenis_kitas_aud</code> table reference
      */
     public JenisKitasAud(Name alias) {
         this(alias, JENIS_KITAS_AUD);
     }
 
     /**
-     * Create a <code>kepegawaian.jenis_kitas_aud</code> table reference
+     * Create a <code>jenis_kitas_aud</code> table reference
      */
     public JenisKitasAud() {
         this(DSL.name("jenis_kitas_aud"), null);
@@ -157,7 +171,7 @@ public class JenisKitasAud extends TableImpl<JenisKitasAudRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -173,7 +187,7 @@ public class JenisKitasAud extends TableImpl<JenisKitasAudRecord> {
     private transient RevinfoPath _revinfo;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.revinfo</code> table.
+     * Get the implicit join path to the <code>revinfo</code> table.
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)

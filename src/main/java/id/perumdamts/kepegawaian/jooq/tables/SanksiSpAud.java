@@ -4,20 +4,36 @@
 package id.perumdamts.kepegawaian.jooq.tables;
 
 
-import id.perumdamts.kepegawaian.jooq.Kepegawaian;
+import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.Revinfo.RevinfoPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.SanksiSpAudRecord;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.InverseForeignKey;
+import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.Record;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -29,7 +45,7 @@ public class SanksiSpAud extends TableImpl<SanksiSpAudRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>kepegawaian.sanksi_sp_aud</code>
+     * The reference instance of <code>sanksi_sp_aud</code>
      */
     public static final SanksiSpAud SANKSI_SP_AUD = new SanksiSpAud();
 
@@ -42,107 +58,107 @@ public class SanksiSpAud extends TableImpl<SanksiSpAudRecord> {
     }
 
     /**
-     * The column <code>kepegawaian.sanksi_sp_aud.id</code>.
+     * The column <code>sanksi_sp_aud.id</code>.
      */
     public final TableField<SanksiSpAudRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>kepegawaian.sanksi_sp_aud.rev</code>.
+     * The column <code>sanksi_sp_aud.rev</code>.
      */
     public final TableField<SanksiSpAudRecord, Integer> REV = createField(DSL.name("rev"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>kepegawaian.sanksi_sp_aud.revtype</code>.
+     * The column <code>sanksi_sp_aud.revtype</code>.
      */
     public final TableField<SanksiSpAudRecord, Byte> REVTYPE = createField(DSL.name("revtype"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.sanksi_sp_aud.changed_status</code>.
+     * The column <code>sanksi_sp_aud.changed_status</code>.
      */
     public final TableField<SanksiSpAudRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>kepegawaian.sanksi_sp_aud.created_at</code>.
+     * The column <code>sanksi_sp_aud.created_at</code>.
      */
     public final TableField<SanksiSpAudRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.sanksi_sp_aud.created_by</code>.
+     * The column <code>sanksi_sp_aud.created_by</code>.
      */
     public final TableField<SanksiSpAudRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.sanksi_sp_aud.is_deleted</code>.
+     * The column <code>sanksi_sp_aud.is_deleted</code>.
      */
     public final TableField<SanksiSpAudRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
 
     /**
-     * The column <code>kepegawaian.sanksi_sp_aud.updated_at</code>.
+     * The column <code>sanksi_sp_aud.updated_at</code>.
      */
     public final TableField<SanksiSpAudRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>kepegawaian.sanksi_sp_aud.updated_by</code>.
+     * The column <code>sanksi_sp_aud.updated_by</code>.
      */
     public final TableField<SanksiSpAudRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.sanksi_sp_aud.is_pending_gaji</code>.
+     * The column <code>sanksi_sp_aud.is_pending_gaji</code>.
      */
     public final TableField<SanksiSpAudRecord, Boolean> IS_PENDING_GAJI = createField(DSL.name("is_pending_gaji"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
 
     /**
-     * The column <code>kepegawaian.sanksi_sp_aud.is_pending_pangkat</code>.
+     * The column <code>sanksi_sp_aud.is_pending_pangkat</code>.
      */
     public final TableField<SanksiSpAudRecord, Boolean> IS_PENDING_PANGKAT = createField(DSL.name("is_pending_pangkat"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
 
     /**
-     * The column <code>kepegawaian.sanksi_sp_aud.is_suspension</code>.
+     * The column <code>sanksi_sp_aud.is_suspension</code>.
      */
     public final TableField<SanksiSpAudRecord, Boolean> IS_SUSPENSION = createField(DSL.name("is_suspension"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
 
     /**
-     * The column <code>kepegawaian.sanksi_sp_aud.is_terminate_dh</code>.
+     * The column <code>sanksi_sp_aud.is_terminate_dh</code>.
      */
     public final TableField<SanksiSpAudRecord, Boolean> IS_TERMINATE_DH = createField(DSL.name("is_terminate_dh"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
 
     /**
-     * The column <code>kepegawaian.sanksi_sp_aud.is_terminate_th</code>.
+     * The column <code>sanksi_sp_aud.is_terminate_th</code>.
      */
     public final TableField<SanksiSpAudRecord, Boolean> IS_TERMINATE_TH = createField(DSL.name("is_terminate_th"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
 
     /**
-     * The column <code>kepegawaian.sanksi_sp_aud.is_turun_jabatan</code>.
+     * The column <code>sanksi_sp_aud.is_turun_jabatan</code>.
      */
     public final TableField<SanksiSpAudRecord, Boolean> IS_TURUN_JABATAN = createField(DSL.name("is_turun_jabatan"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
 
     /**
-     * The column <code>kepegawaian.sanksi_sp_aud.is_turun_pangkat</code>.
+     * The column <code>sanksi_sp_aud.is_turun_pangkat</code>.
      */
     public final TableField<SanksiSpAudRecord, Boolean> IS_TURUN_PANGKAT = createField(DSL.name("is_turun_pangkat"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
 
     /**
-     * The column <code>kepegawaian.sanksi_sp_aud.jml_pot_tkk</code>.
+     * The column <code>sanksi_sp_aud.jml_pot_tkk</code>.
      */
     public final TableField<SanksiSpAudRecord, Integer> JML_POT_TKK = createField(DSL.name("jml_pot_tkk"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>kepegawaian.sanksi_sp_aud.keterangan</code>.
+     * The column <code>sanksi_sp_aud.keterangan</code>.
      */
     public final TableField<SanksiSpAudRecord, String> KETERANGAN = createField(DSL.name("keterangan"), SQLDataType.CLOB(65535).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)), this, "");
 
     /**
-     * The column <code>kepegawaian.sanksi_sp_aud.kode</code>.
+     * The column <code>sanksi_sp_aud.kode</code>.
      */
     public final TableField<SanksiSpAudRecord, String> KODE = createField(DSL.name("kode"), SQLDataType.VARCHAR(10).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>kepegawaian.sanksi_sp_aud.pot_tkk</code>.
+     * The column <code>sanksi_sp_aud.pot_tkk</code>.
      */
     public final TableField<SanksiSpAudRecord, Boolean> POT_TKK = createField(DSL.name("pot_tkk"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
 
     /**
-     * The column <code>kepegawaian.sanksi_sp_aud.jenis_sp_id</code>.
+     * The column <code>sanksi_sp_aud.jenis_sp_id</code>.
      */
     public final TableField<SanksiSpAudRecord, Long> JENIS_SP_ID = createField(DSL.name("jenis_sp_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
@@ -155,21 +171,21 @@ public class SanksiSpAud extends TableImpl<SanksiSpAudRecord> {
     }
 
     /**
-     * Create an aliased <code>kepegawaian.sanksi_sp_aud</code> table reference
+     * Create an aliased <code>sanksi_sp_aud</code> table reference
      */
     public SanksiSpAud(String alias) {
         this(DSL.name(alias), SANKSI_SP_AUD);
     }
 
     /**
-     * Create an aliased <code>kepegawaian.sanksi_sp_aud</code> table reference
+     * Create an aliased <code>sanksi_sp_aud</code> table reference
      */
     public SanksiSpAud(Name alias) {
         this(alias, SANKSI_SP_AUD);
     }
 
     /**
-     * Create a <code>kepegawaian.sanksi_sp_aud</code> table reference
+     * Create a <code>sanksi_sp_aud</code> table reference
      */
     public SanksiSpAud() {
         this(DSL.name("sanksi_sp_aud"), null);
@@ -210,7 +226,7 @@ public class SanksiSpAud extends TableImpl<SanksiSpAudRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Kepegawaian.KEPEGAWAIAN;
+        return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
@@ -226,7 +242,7 @@ public class SanksiSpAud extends TableImpl<SanksiSpAudRecord> {
     private transient RevinfoPath _revinfo;
 
     /**
-     * Get the implicit join path to the <code>kepegawaian.revinfo</code> table.
+     * Get the implicit join path to the <code>revinfo</code> table.
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)

@@ -5,10 +5,11 @@ package id.perumdamts.kepegawaian.jooq.tables.records;
 
 
 import id.perumdamts.kepegawaian.jooq.tables.Pendidikan;
-import org.jooq.Record1;
-import org.jooq.impl.UpdatableRecordImpl;
 
 import java.time.LocalDateTime;
+
+import org.jooq.Record1;
+import org.jooq.impl.UpdatableRecordImpl;
 
 
 /**
@@ -20,336 +21,336 @@ public class PendidikanRecord extends UpdatableRecordImpl<PendidikanRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>kepegawaian.pendidikan.id</code>.
+     * Setter for <code>pendidikan.id</code>.
      */
     public void setId(Long value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pendidikan.id</code>.
+     * Getter for <code>pendidikan.id</code>.
      */
     public Long getId() {
         return (Long) get(0);
     }
 
     /**
-     * Setter for <code>kepegawaian.pendidikan.changed_status</code>.
+     * Setter for <code>pendidikan.changed_status</code>.
      */
     public void setChangedStatus(Byte value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pendidikan.changed_status</code>.
+     * Getter for <code>pendidikan.changed_status</code>.
      */
     public Byte getChangedStatus() {
         return (Byte) get(1);
     }
 
     /**
-     * Setter for <code>kepegawaian.pendidikan.created_at</code>.
+     * Setter for <code>pendidikan.created_at</code>.
      */
     public void setCreatedAt(LocalDateTime value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pendidikan.created_at</code>.
+     * Getter for <code>pendidikan.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
         return (LocalDateTime) get(2);
     }
 
     /**
-     * Setter for <code>kepegawaian.pendidikan.created_by</code>.
+     * Setter for <code>pendidikan.created_by</code>.
      */
     public void setCreatedBy(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pendidikan.created_by</code>.
+     * Getter for <code>pendidikan.created_by</code>.
      */
     public String getCreatedBy() {
         return (String) get(3);
     }
 
     /**
-     * Setter for <code>kepegawaian.pendidikan.is_deleted</code>.
+     * Setter for <code>pendidikan.is_deleted</code>.
      */
     public void setIsDeleted(Boolean value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pendidikan.is_deleted</code>.
+     * Getter for <code>pendidikan.is_deleted</code>.
      */
     public Boolean getIsDeleted() {
         return (Boolean) get(4);
     }
 
     /**
-     * Setter for <code>kepegawaian.pendidikan.updated_at</code>.
+     * Setter for <code>pendidikan.updated_at</code>.
      */
     public void setUpdatedAt(LocalDateTime value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pendidikan.updated_at</code>.
+     * Getter for <code>pendidikan.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
         return (LocalDateTime) get(5);
     }
 
     /**
-     * Setter for <code>kepegawaian.pendidikan.updated_by</code>.
+     * Setter for <code>pendidikan.updated_by</code>.
      */
     public void setUpdatedBy(String value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pendidikan.updated_by</code>.
+     * Getter for <code>pendidikan.updated_by</code>.
      */
     public String getUpdatedBy() {
         return (String) get(6);
     }
 
     /**
-     * Setter for <code>kepegawaian.pendidikan.version</code>.
+     * Setter for <code>pendidikan.version</code>.
      */
     public void setVersion(Integer value) {
         set(7, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pendidikan.version</code>.
+     * Getter for <code>pendidikan.version</code>.
      */
     public Integer getVersion() {
         return (Integer) get(7);
     }
 
     /**
-     * Setter for <code>kepegawaian.pendidikan.disetujui</code>.
+     * Setter for <code>pendidikan.disetujui</code>.
      */
     public void setDisetujui(Byte value) {
         set(8, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pendidikan.disetujui</code>.
+     * Getter for <code>pendidikan.disetujui</code>.
      */
     public Byte getDisetujui() {
         return (Byte) get(8);
     }
 
     /**
-     * Setter for <code>kepegawaian.pendidikan.disetujui_oleh</code>.
+     * Setter for <code>pendidikan.disetujui_oleh</code>.
      */
     public void setDisetujuiOleh(String value) {
         set(9, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pendidikan.disetujui_oleh</code>.
+     * Getter for <code>pendidikan.disetujui_oleh</code>.
      */
     public String getDisetujuiOleh() {
         return (String) get(9);
     }
 
     /**
-     * Setter for <code>kepegawaian.pendidikan.gelar_belakang</code>.
+     * Setter for <code>pendidikan.gelar_belakang</code>.
      */
     public void setGelarBelakang(String value) {
         set(10, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pendidikan.gelar_belakang</code>.
+     * Getter for <code>pendidikan.gelar_belakang</code>.
      */
     public String getGelarBelakang() {
         return (String) get(10);
     }
 
     /**
-     * Setter for <code>kepegawaian.pendidikan.gelar_depan</code>.
+     * Setter for <code>pendidikan.gelar_depan</code>.
      */
     public void setGelarDepan(String value) {
         set(11, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pendidikan.gelar_depan</code>.
+     * Getter for <code>pendidikan.gelar_depan</code>.
      */
     public String getGelarDepan() {
         return (String) get(11);
     }
 
     /**
-     * Setter for <code>kepegawaian.pendidikan.gpa</code>.
+     * Setter for <code>pendidikan.gpa</code>.
      */
     public void setGpa(Double value) {
         set(12, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pendidikan.gpa</code>.
+     * Getter for <code>pendidikan.gpa</code>.
      */
     public Double getGpa() {
         return (Double) get(12);
     }
 
     /**
-     * Setter for <code>kepegawaian.pendidikan.institusi</code>.
+     * Setter for <code>pendidikan.institusi</code>.
      */
     public void setInstitusi(String value) {
         set(13, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pendidikan.institusi</code>.
+     * Getter for <code>pendidikan.institusi</code>.
      */
     public String getInstitusi() {
         return (String) get(13);
     }
 
     /**
-     * Setter for <code>kepegawaian.pendidikan.is_latest</code>.
+     * Setter for <code>pendidikan.is_latest</code>.
      */
     public void setIsLatest(Byte value) {
         set(14, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pendidikan.is_latest</code>.
+     * Getter for <code>pendidikan.is_latest</code>.
      */
     public Byte getIsLatest() {
         return (Byte) get(14);
     }
 
     /**
-     * Setter for <code>kepegawaian.pendidikan.is_lulus</code>.
+     * Setter for <code>pendidikan.is_lulus</code>.
      */
     public void setIsLulus(Boolean value) {
         set(15, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pendidikan.is_lulus</code>.
+     * Getter for <code>pendidikan.is_lulus</code>.
      */
     public Boolean getIsLulus() {
         return (Boolean) get(15);
     }
 
     /**
-     * Setter for <code>kepegawaian.pendidikan.jurusan</code>.
+     * Setter for <code>pendidikan.jurusan</code>.
      */
     public void setJurusan(String value) {
         set(16, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pendidikan.jurusan</code>.
+     * Getter for <code>pendidikan.jurusan</code>.
      */
     public String getJurusan() {
         return (String) get(16);
     }
 
     /**
-     * Setter for <code>kepegawaian.pendidikan.kota</code>.
+     * Setter for <code>pendidikan.kota</code>.
      */
     public void setKota(String value) {
         set(17, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pendidikan.kota</code>.
+     * Getter for <code>pendidikan.kota</code>.
      */
     public String getKota() {
         return (String) get(17);
     }
 
     /**
-     * Setter for <code>kepegawaian.pendidikan.tahun_lulus</code>.
+     * Setter for <code>pendidikan.tahun_lulus</code>.
      */
     public void setTahunLulus(Integer value) {
         set(18, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pendidikan.tahun_lulus</code>.
+     * Getter for <code>pendidikan.tahun_lulus</code>.
      */
     public Integer getTahunLulus() {
         return (Integer) get(18);
     }
 
     /**
-     * Setter for <code>kepegawaian.pendidikan.tahun_masuk</code>.
+     * Setter for <code>pendidikan.tahun_masuk</code>.
      */
     public void setTahunMasuk(Integer value) {
         set(19, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pendidikan.tahun_masuk</code>.
+     * Getter for <code>pendidikan.tahun_masuk</code>.
      */
     public Integer getTahunMasuk() {
         return (Integer) get(19);
     }
 
     /**
-     * Setter for <code>kepegawaian.pendidikan.tanggal_disetujui</code>.
+     * Setter for <code>pendidikan.tanggal_disetujui</code>.
      */
     public void setTanggalDisetujui(LocalDateTime value) {
         set(20, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pendidikan.tanggal_disetujui</code>.
+     * Getter for <code>pendidikan.tanggal_disetujui</code>.
      */
     public LocalDateTime getTanggalDisetujui() {
         return (LocalDateTime) get(20);
     }
 
     /**
-     * Setter for <code>kepegawaian.pendidikan.tanggal_pengajuan</code>.
+     * Setter for <code>pendidikan.tanggal_pengajuan</code>.
      */
     public void setTanggalPengajuan(LocalDateTime value) {
         set(21, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pendidikan.tanggal_pengajuan</code>.
+     * Getter for <code>pendidikan.tanggal_pengajuan</code>.
      */
     public LocalDateTime getTanggalPengajuan() {
         return (LocalDateTime) get(21);
     }
 
     /**
-     * Setter for <code>kepegawaian.pendidikan.biodata_id</code>.
+     * Setter for <code>pendidikan.biodata_id</code>.
      */
     public void setBiodataId(String value) {
         set(22, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pendidikan.biodata_id</code>.
+     * Getter for <code>pendidikan.biodata_id</code>.
      */
     public String getBiodataId() {
         return (String) get(22);
     }
 
     /**
-     * Setter for <code>kepegawaian.pendidikan.jenjang_id</code>.
+     * Setter for <code>pendidikan.jenjang_id</code>.
      */
     public void setJenjangId(Long value) {
         set(23, value);
     }
 
     /**
-     * Getter for <code>kepegawaian.pendidikan.jenjang_id</code>.
+     * Getter for <code>pendidikan.jenjang_id</code>.
      */
     public Long getJenjangId() {
         return (Long) get(23);
