@@ -64,6 +64,9 @@ public class OrganisasiCommandService {
     public boolean delete(Long id) {
         Organisasi existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Organisasi not found"));
+        if (repository.existsByParentIdAndIsDeletedFalse(id)) {
+            throw new ConflictException("Organisasi masih memiliki sub-organisasi");
+        }
         existing.setIsDeleted(true);
         repository.save(existing);
         return true;

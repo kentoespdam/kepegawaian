@@ -6,6 +6,7 @@ import id.perumdamts.kepegawaian.exceptions.ConflictException;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.mapper.master.jenisSp.JenisSpMapper;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JenisSpRepository;
+import id.perumdamts.kepegawaian.repositories.master.jpa.SanksiRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class JenisSpCommandService {
     private final JenisSpRepository repository;
+    private final SanksiRepository sanksiRepository;
 
     @Transactional
     public JenisSp create(JenisSpPostRequest request) {
@@ -48,6 +50,9 @@ public class JenisSpCommandService {
     public boolean delete(Long id) {
         JenisSp existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Jenis SP not found"));
+        if (sanksiRepository.existsByJenisSpIdAndIsDeletedFalse(id)) {
+            throw new ConflictException("JenisSp masih memiliki sanksi");
+        }
         existing.setIsDeleted(true);
         repository.save(existing);
         return true;

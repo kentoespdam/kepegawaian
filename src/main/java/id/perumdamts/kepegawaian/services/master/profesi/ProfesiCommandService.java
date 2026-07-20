@@ -24,6 +24,7 @@ public class ProfesiCommandService {
     private final OrganisasiRepository organisasiRepository;
     private final JabatanRepository jabatanRepository;
     private final GradeRepository gradeRepository;
+    private final ProfesiDeleteGuardHelper deleteGuardHelper;
 
     @Transactional
     public Profesi create(ProfesiPostRequest request) {
@@ -86,6 +87,7 @@ public class ProfesiCommandService {
     public boolean delete(Long id) {
         Profesi existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Profesi not found"));
+        deleteGuardHelper.verifyNoActiveChildren(id);
         existing.setIsDeleted(true);
         repository.save(existing);
         return true;

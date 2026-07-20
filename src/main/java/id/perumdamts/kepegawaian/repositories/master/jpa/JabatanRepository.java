@@ -8,4 +8,6 @@ import org.springframework.data.repository.history.RevisionRepository;
 public interface JabatanRepository extends JpaRepository<Jabatan, Long>,
         JpaSpecificationExecutor<Jabatan>,
         RevisionRepository<Jabatan, Long, Integer> {
+
+    boolean existsByParentIdAndIsDeletedFalse(Long parentId);
 }

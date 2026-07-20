@@ -65,3 +65,28 @@ _Avoid_: `new Level(id)` (detached entity), `findById` untuk FK yang hanya perlu
 JOOQ QueryRepository selalu filter `IS_DELETED.eq(false)` secara eksplisit di `baseWhere` atau `where` clause.
 
 Aggregate dengan logika revive kompleks (Profesi: cek kombinasi nama+jabatan+grade) memakai native query terpisah — lihat ADR-0005.
+
+---
+
+## §8 — Delete parent: guard owned-child, JANGAN cascade (issue `kepegawaian-15u`)
+
+**Keputusan**: Child **tidak** ikut terhapus saat parent dihapus. Sebaliknya, delete parent **ditolak** (`ConflictException` → HTTP 409) selama masih ada **owned-child** aktif (`is_deleted=false`).
+
+**Definisi "owned-child" (yang memblokir)**: hanya relasi yang parent-nya benar-benar *memiliki* child — hierarki self-ref (`parent`) atau child yang eksistensinya bergantung pada parent. **BUKAN** lookup-referrer, yaitu entity lain yang sekadar punya FK ke parent sebagai referensi (mis. `Profesi.organisasi`, `Pegawai.organisasi`, data transaksional/riwayat, `Grade.profesiList`, `Jabatan.profesiList`). Lookup-referrer TIDAK memblokir delete — kalau ikut memblokir, master yang banyak dipakai (Organisasi) praktis tak akan pernah bisa dihapus.
+
+**Parent yang kena guard** (hasil audit seluruh 17 master entity):
+
+| Parent | Owned-child pemblokir | Repo cek | Method (Spring Data derived) |
+|--------|----------------------|----------|------------------------------|
+| Organisasi | sub-Organisasi (self-ref `parent`) | OrganisasiRepository | `existsByParentIdAndIsDeletedFalse` |
+| Jabatan | sub-Jabatan (self-ref `parent`) | JabatanRepository | `existsByParentIdAndIsDeletedFalse` |
+| Profesi | `apd`, `alatKerja` | ApdRepository, AlatKerjaRepository | `existsByProfesiIdAndIsDeletedFalse` |
+| JenisSp | `sanksi` (Sanksi ada berdasarkan JenisSp) | SanksiRepository | `existsByJenisSpIdAndIsDeletedFalse` |
+
+**13 master lainnya tanpa guard** (delete = soft-delete langsung, seperti sekarang): AlasanBerhenti, Golongan, Grade, HariLibur, JenisKeahlian, JenisKitas, JenisPelatihan, JenjangPendidikan, Level, RumahDinas, Sanksi, Apd, AlatKerja. Alasan: tak punya owned-child; referrer ke mereka (mis. Profesi→Grade/Jabatan, Sanksi→JenisSp sebagai kategori terbalik) adalah lookup, bukan kepemilikan.
+
+**Kondisi saat ini (temuan)**: semua `*CommandService.delete` master hanya `findById → setIsDeleted(true) → save`. `@OneToMany` di parent **tanpa** `cascade`/`orphanRemoval`, dan path delete pakai `save` (bukan `repository.delete`, jadi `@SQLDelete` child tak terpicu). Akibatnya owned-child tetap aktif menggantung ke parent non-aktif = **orphan logis**.
+
+**Spec guard (mekanis)**: sebelum `setIsDeleted(true)`, cek `existsBy...AndIsDeletedFalse` per owned-child secara berurutan (short-circuit); jika `true` → `throw new ConflictException("<Parent> masih memiliki <Child>")`. Pakai `existsBy` (SELECT 1/LIMIT 1), **bukan** `countBy` (tak perlu angka), **bukan** JOOQ (jangan tarik DSLContext ke command path). Untuk Profesi, cek `apd` lalu `alatKerja`.
+
+_Avoid_: `cascade = CascadeType.ALL` / `orphanRemoval = true` pada relasi master; loop menghapus child otomatis; memblokir delete karena lookup-referrer.

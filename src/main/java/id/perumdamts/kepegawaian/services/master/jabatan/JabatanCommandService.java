@@ -61,6 +61,9 @@ public class JabatanCommandService {
     public boolean delete(Long id) {
         Jabatan existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Jabatan not found"));
+        if (repository.existsByParentIdAndIsDeletedFalse(id)) {
+            throw new ConflictException("Jabatan masih memiliki sub-jabatan");
+        }
         existing.setIsDeleted(true);
         repository.save(existing);
         return true;

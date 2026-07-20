@@ -12,6 +12,10 @@ public interface OrganisasiRepository extends JpaRepository<Organisasi, Long>,
         JpaSpecificationExecutor<Organisasi>,
         RevisionRepository<Organisasi, Long, Integer> {
 
+    boolean existsByParentIdAndIsDeletedFalse(Long parentId);
+
+    /**
+
     /**
      * Native carcass-finder — bypasses {@code @SQLRestriction("is_deleted = FALSE")}
      * on {@code MasterBaseEntity} so the create-seam can see soft-deleted rows and
