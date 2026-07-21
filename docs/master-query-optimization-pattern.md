@@ -75,9 +75,9 @@ HTTP Request → Controller → Service → Repository
 
 ### 3a. List / Dropdown (`GET /list`)
 
-**Tujuan:** Dropdown filter untuk FE — cukup `id` + `nama`, tanpa JOIN.
+**Tujuan:** Dropdown filter untuk FE — umumnya `id` + `nama`, tanpa JOIN.
 
-**DTO:**
+**Default DTO:**
 ```java
 public record XxxListResponse(
         Long id,
@@ -85,7 +85,7 @@ public record XxxListResponse(
 ) {}
 ```
 
-**Repository:**
+**Default Repository:**
 ```java
 public List<XxxListResponse> listQuery() {
     return dsl.select(TABLE.ID, TABLE.NAMA)
@@ -97,6 +97,22 @@ public List<XxxListResponse> listQuery() {
 ```
 
 > Gunakan `fetchInto(RecordClass.class)` — JOOQ DefaultRecordMapper cocokkan nama kolom ke parameter constructor record.
+
+**⚠ Pengecualian — tambahan field untuk FE filtering:**
+
+Bila FE membutuhkan field tambahan untuk **cascading dropdown** atau filter lanjutan (mis. `levelId` pada dropdown Grade, untuk memfilter Grade berdasarkan Level yang sudah dipilih user), field tersebut **boleh ditambahkan** di `XxxListResponse` meski melanggar prinsip "cukup id+nama".
+
+Contoh kasus: form **Profesi** memilih Jabatan → Level ditentukan dari Jabatan → Grade difilter berdasarkan Level. Agar FE bisa mem-filter Grade tanpa round-trip tambahan, `GradeListResponse` dan `JabatanListResponse` menyertakan `levelId`.
+
+```java
+// grade
+public record GradeListResponse(Long id, Integer grade, Long levelId) {}
+
+// jabatan
+public record JabatanListResponse(Long id, String nama, Long levelId) {}
+```
+
+**Keputusan tetap case-by-case.** Jangan tambah field sembarangan — hanya saat ada evidence FE benar-benar butuh (cascading filter yang umum).
 
 ### 3b. Index / Page (`GET /`)
 

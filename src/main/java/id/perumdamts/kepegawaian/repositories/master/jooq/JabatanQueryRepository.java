@@ -85,7 +85,7 @@ public class JabatanQueryRepository {
     }
 
     public List<JabatanListResponse> listQuery() {
-        return dsl.select(JABATAN.ID, JABATAN.NAMA)
+        return dsl.select(JABATAN.ID, JABATAN.NAMA, JABATAN.LEVEL_ID.as("levelId"))
                 .from(JABATAN)
                 .where(JABATAN.IS_DELETED.eq(false))
                 .orderBy(JABATAN.NAMA.asc())

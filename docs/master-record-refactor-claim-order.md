@@ -240,12 +240,14 @@ Tidak ada pekerjaan tersisa dari `docs/master-record-refactor-claim-order.md`.
 
 ```
 XxxQuery          → record(id, field1, field2)
-XxxListResponse   → record(id, nama)              // untuk dropdown
+XxxListResponse   → record(id, nama)              // untuk dropdown (default)
 Repository        → fetchInto(XxxQuery.class)     // page
                   → fetchInto(XxxListResponse.class) // list
 Mapper            → tidak perlu (fetchInto langsung)
 Controller        → ResponseEntity<PageResult<Page<XxxQuery>>>
 ```
+
+> **Pengecualian:** Bila FE butuh field tambahan untuk cascading filter (mis. `levelId` pada Grade/Jabatan untuk filter Grade by Level di form Profesi), field tsb ditambahkan ke `XxxListResponse`. Jangan tambah sembarangan — hanya dengan evidence FE benar-benar pakai. Contoh: `GradeListResponse(Long id, Integer grade, Long levelId)`, `JabatanListResponse(Long id, String nama, Long levelId)`. Lihat docs/master-query-optimization-pattern.md §3a untuk detail.
 
 ### Moderate (1 JOIN)
 

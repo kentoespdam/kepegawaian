@@ -76,7 +76,7 @@ public class GradeQueryRepository {
     }
 
     public List<GradeListResponse> listQuery() {
-        return dsl.select(GradeSelects.ID, GradeSelects.GRADE_)
+        return dsl.select(GradeSelects.ID, GradeSelects.GRADE_, GRADE.LEVEL_ID.as("levelId"))
                 .from(GRADE)
                 .where(GRADE.IS_DELETED.eq(false))
                 .orderBy(GRADE.GRADE_.asc())
