@@ -12,4 +12,5 @@ public record SanksiMiniResponse(
         Long jenisSpId = sanksi.getJenisSp() != null ? sanksi.getJenisSp().getId() : null;
         return new SanksiMiniResponse(sanksi.getId(), sanksi.getKode(), sanksi.getKeterangan(), jenisSpId);
     }
+
 }

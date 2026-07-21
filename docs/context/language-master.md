@@ -4,6 +4,12 @@ Bagian dari [CONTEXT-MAP.md](../../CONTEXT-MAP.md). Baca file ini saat mengerjak
 
 ## Glossary
 
+**Jenis SP** (Jenis Surat Peringatan):
+Kategori sanksi berupa Surat Peringatan (SP), mis. "SP-1", "SP-2". Setiap Jenis SP bisa memiliki banyak **Sanksi**.
+
+**Sanksi**:
+Hukuman/akibat yang melekat pada sebuah **Jenis SP** (mis. potongan TKK, penundaan kenaikan pangkat). Daftar sanksi muncul sebagai nested list di response `/index` Jenis SP.
+
 **Profesi**:
 Peran/pekerjaan yang melekat pada seorang pegawai (mis. "Operator IPA"), terikat ke satu Organisasi, satu Jabatan, dan satu Grade.
 _Avoid_: Posisi, role

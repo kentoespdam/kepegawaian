@@ -28,13 +28,18 @@ _Avoid_: `@Component` mapper, mapper yang inject repository, toEntity di dalam D
 
 ---
 
-## §4 — JOOQ mapping: `fetchInto` flat, `*JooqMapper` join-nested
+## §4 — JOOQ mapping: `fetchInto` flat, `*JooqMapper` join-nested, `multiset` one-to-many
 
 **Keputusan** (ADR-0025): Hybrid berdasarkan kompleksitas projeksi:
 - **Flat** (tanpa join ke nested object) → `fetchInto(XxxQuery.class)`. Zero boilerplate.
 - **Join → nested object** dalam DTO → `fetch(XxxJooqMapper::mapToQuery)`. Mapper di `mapper/master/<agg>/`.
+- **`multiset` → nested list** (one-to-many, mis. Profesi→APD/AlatKerja, JenisSp→Sanksi) → `select(multiset(...).convertFrom(...))` + `*JooqMapper`. Gunakan `Records.mapping(RowRecord::new)` sebagai converter.
 
-Aggregate yang saat ini punya nested object: **Grade** (`level: LevelResponse`), **Sanksi** (`jenisSp: JenisSpMiniResponse`).
+Aggregate yang saat ini punya nested object / nested list:
+- **Grade** (`level: LevelResponse`) → join → `GradeJooqMapper`
+- **Sanksi** (`jenisSp: JenisSpMiniResponse`) → join → `SanksiJooqMapper`
+- **Profesi** (`apdList: List<ApdRow>`, `alatKerjaList: List<AlatKerjaRow>`) → multiset → `ProfesiJooqMapper`
+- **JenisSp** (`sanksiList: List<SanksiRow>`) → multiset → `JenisSpJooqMapper`
 
 _Avoid_: embed `private toQuery(Map<>)` di dalam `@Repository` — pisahkan ke `*JooqMapper`.
 

@@ -4,6 +4,8 @@ import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.master.jenisSp.JenisSpIndexQuery;
 import id.perumdamts.kepegawaian.dto.master.jenisSp.JenisSpListResponse;
 import id.perumdamts.kepegawaian.dto.master.jenisSp.JenisSpQuery;
+import id.perumdamts.kepegawaian.dto.master.sanksi.SanksiRow;
+import id.perumdamts.kepegawaian.mapper.master.jenisSp.JenisSpJooqMapper;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -18,6 +20,9 @@ import java.util.Map;
 import java.util.Optional;
 
 import static id.perumdamts.kepegawaian.jooq.tables.JenisSp.JENIS_SP;
+import static id.perumdamts.kepegawaian.jooq.tables.SanksiSp.SANKSI_SP;
+import static org.jooq.Records.mapping;
+import static org.jooq.impl.DSL.multiset;
 
 @Repository
 @RequiredArgsConstructor
@@ -37,6 +42,14 @@ public class JenisSpQueryRepository {
                         JENIS_SP.ID,
                         JENIS_SP.KODE,
                         JENIS_SP.NAMA)
+                .select(
+                        multiset(dsl.select(SANKSI_SP.ID, SANKSI_SP.KODE, SANKSI_SP.KETERANGAN)
+                                .from(SANKSI_SP)
+                                .where(SANKSI_SP.JENIS_SP_ID.eq(JENIS_SP.ID))
+                                .and(SANKSI_SP.IS_DELETED.eq(false))
+                                .orderBy(SANKSI_SP.KODE.asc()))
+                                .as("sanksi_list")
+                                .convertFrom(r -> r.map(mapping(SanksiRow::new))))
                 .from(JENIS_SP)
                 .where(JENIS_SP.IS_DELETED.eq(false))
                 .and(query.getKode() != null ? JENIS_SP.KODE.likeIgnoreCase("%" + query.getKode() + "%") : DSL.noCondition())
@@ -44,7 +57,7 @@ public class JenisSpQueryRepository {
                 .orderBy(sortOrder)
                 .limit(query.getSizeOrDefault())
                 .offset(query.offset())
-                .fetchInto(JenisSpQuery.class);
+                .fetch(JenisSpJooqMapper::toQuery);
         return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
     }
 
@@ -60,15 +73,24 @@ public class JenisSpQueryRepository {
                         JENIS_SP.ID,
                         JENIS_SP.KODE,
                         JENIS_SP.NAMA)
+                .select(
+                        multiset(dsl.select(SANKSI_SP.ID, SANKSI_SP.KODE, SANKSI_SP.KETERANGAN)
+                                .from(SANKSI_SP)
+                                .where(SANKSI_SP.JENIS_SP_ID.eq(JENIS_SP.ID))
+                                .and(SANKSI_SP.IS_DELETED.eq(false))
+                                .orderBy(SANKSI_SP.KODE.asc()))
+                                .as("sanksi_list")
+                                .convertFrom(r -> r.map(mapping(SanksiRow::new))))
                 .from(JENIS_SP)
                 .where(JENIS_SP.ID.eq(id))
                 .and(JENIS_SP.IS_DELETED.eq(false))
-                .fetchOptionalInto(JenisSpQuery.class);
+                .fetchOptional(JenisSpJooqMapper::toQuery);
     }
 
     public List<JenisSpListResponse> listQuery() {
         return dsl.select(
                         JENIS_SP.ID,
+                        JENIS_SP.KODE,
                         JENIS_SP.NAMA)
                 .from(JENIS_SP)
                 .where(JENIS_SP.IS_DELETED.eq(false))
