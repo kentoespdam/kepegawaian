@@ -33,9 +33,16 @@
 
 **penggajian (15):** dasar_gaji, detail_dasar_gaji, gaji_batch_master, gaji_batch_master_proses, gaji_batch_potongan_tkk, gaji_batch_root, gaji_batch_root_error_logs, gaji_batch_root_lampiran, gaji_komponen, gaji_parameter_setting, gaji_pendapatan_non_pajak, gaji_phdp, gaji_potongan_tkk, gaji_profil, gaji_tunjangan
 
-## `_AUD` Tables (42)
+## `_AUD` Tables (42 → 30 setelah odb.2)
 
-### Legitimate (per ADR-0003: penggajian + kepegawaian domain)
+### Orphan (dropped in odb.2 — master domain, no `@Audited`)
+
+12 orphan master `_AUD` tables removed per ADR-0003.
+Daftar: `alasan_berhenti_aud`, `golongan_aud`, `grade_aud`, `hari_libur_aud`, `jabatan_aud`, `jenis_kitas_aud`, `jenis_sp_aud`, `level_aud`, `organisasi_aud`, `profesi_aud`, `rumah_dinas_aud`, `sanksi_sp_aud`
+
+Lihat `docs/draft/002-drop-orphan-master-aud.sql`.
+
+### Tetap (30 `_AUD` — legitimate, ada entity `@Audited`)
 
 **penggajian (10):** dasar_gaji_aud, detail_dasar_gaji_aud, gaji_batch_root_aud, gaji_komponen_aud, gaji_parameter_setting_aud, gaji_pendapatan_non_pajak_aud, gaji_phdp_aud, gaji_potongan_tkk_aud, gaji_profil_aud, gaji_tunjangan_aud
 
@@ -46,25 +53,6 @@
 **profil (8):** biodata_aud, kartu_identitas_aud, keahlian_aud, lampiran_profil_aud, pelatihan_aud, pendidikan_aud, pengalaman_kerja_aud, profil_keluarga_aud
 
 **pegawai (1):** pegawai_aud
-
-### Orphan (to be dropped in odb.2 — master domain, no `@Audited`)
-
-| # | `_AUD` Table | Domain |
-|---|-------------|--------|
-| 1 | alasan_berhenti_aud | master |
-| 2 | golongan_aud | master |
-| 3 | grade_aud | master |
-| 4 | hari_libur_aud | master |
-| 5 | jabatan_aud | master |
-| 6 | jenis_kitas_aud | master |
-| 7 | jenis_sp_aud | master |
-| 8 | level_aud | master |
-| 9 | organisasi_aud | master |
-| 10 | profesi_aud | master |
-| 11 | rumah_dinas_aud | master |
-| 12 | sanksi_sp_aud | master |
-
-**Total orphan: 12** (ADR-0032 claims 13; current DB `kepegawaian` has 12 — verify during odb.2. Note: `cuti_approval_chain_aud` tidak ada di DB `kepegawaian` legacy, sehingga total `_AUD` = 42 vs 43 di `kepegawaian_dev_new`.)
 
 ## Perbedaan dari Dump Sebelumnya (Salah)
 
