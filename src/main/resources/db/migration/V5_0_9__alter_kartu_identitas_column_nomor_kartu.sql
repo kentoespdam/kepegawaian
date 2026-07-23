@@ -1,5 +1,5 @@
--- V5_0_8__alter_pegawai_column_jml_tanggungan.sql
--- Rename jmlTanggungan → jml_tanggungan in pegawai and pegawai_AUD tables
+-- V5_0_9__alter_kartu_identitas_column_nomor_kartu.sql
+-- Rename nomor → nomor_kartu in kartu_identitas and kartu_identitas_AUD tables
 -- for consistency with all other snake_case column names.
 
 ALTER TABLE kartu_identitas     CHANGE COLUMN nomor nomor_kartu varchar(50) DEFAULT NULL;

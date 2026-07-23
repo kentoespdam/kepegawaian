@@ -25,7 +25,7 @@
 |:---:|---|---|:---:|---|
 | 1 | `kepegawaian-odb.1` | Dump schema-only DB existing → draft | — | dump tersimpan, tabel ter-inventaris |
 | 2 | `kepegawaian-odb.2` | Drop 13 `_AUD` master (ADR-0003) | .1 | `_AUD` penggajian+kepegawaian & REVINFO tetap |
-| 3 | `kepegawaian-odb.3` | Fix 2 kolom camelCase → snake_case | .2 | tak ada camelCase tersisa |
+| 3 | ~~`kepegawaian-odb.3`~~ | ~~Fix 2 kolom camelCase → snake_case~~ | .2 | ✅ **SELESAI** — V5_0_8 fix `jmlTanggungan`, V5_0_9 fix `nomor→nomor_kartu` |
 | 4 | `kepegawaian-odb.4` | Reconcile 3 ENUM native + urutan enum | .3 | ENUM native benar & urut konsisten |
 | 5 | `kepegawaian-odb.5` | Preserve 23 seed `V3_*` + view `v_pegawai` | .4 | seed & view jadi migration terpisah, urut FK aman |
 | 6 | `kepegawaian-odb.6` | Squash → baseline bersih (V1 + seed + view) | .5 | flyway clean+migrate DB kosong SUKSES |
@@ -36,7 +36,7 @@
 
 - [x] **odb.1** — Dump schema-only (`--no-data`), inventaris tabel & daftar `_AUD` ter-dump
 - [x] **odb.2** — 12 orphan master `_AUD` di-drop · `_AUD` penggajian+kepegawaian tetap · cuti_jenis_aud tetap (entity @Audited) · REVINFO akan ditambahkan di odb.6
-- [ ] **odb.3** — `jml_tanggungan` & `nomor_kartu` snake_case · grep `[a-z][A-Z]` bersih
+- [x] **odb.3** ✅ — `jml_tanggungan` (V5_0_8) & `nomor_kartu` (V5_0_9) snake_case · grep `[a-z][A-Z]` bersih · komentar V5_0_9 diperbaiki (copy-paste)
 - [ ] **odb.4** — 3 ENUM native ada · urutan konsisten `EGolonganDarah`/`EJenisGaji` · cek 29 field ORDINAL tak terlewat
 - [ ] **odb.5** — 23 seed `V3_*` teridentifikasi · `v_pegawai` ter-ekstrak · urut FK aman
 - [ ] **odb.6** — baseline tunggal gantikan `V1..V5_1_0` · `V5_0_8`/`V5_0_9` dihapus · clean+migrate sukses

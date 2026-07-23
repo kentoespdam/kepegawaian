@@ -1,5 +1,7 @@
-# TODO - Flyway upgrade & config fix
+# ~~Flyway upgrade & config fix~~ ✅
 
-- [ ] Update `build.gradle.kts` to align Flyway Gradle plugin + Flyway artifacts to the latest version (single source of truth via `flywayVersion`).
-- [ ] Fix Flyway configuration in `build.gradle.kts` (migration `locations` and driver/URL handling) for newer Flyway expectations.
-- [ ] Verify by running `./gradlew flywayInfo` (and optionally `./gradlew flywayMigrate` if appropriate).
+Semua item selesai:
+
+1. ✅ Flyway Gradle plugin + artifact versi `12.8.1` seragam via `flywayVersion`.
+2. ✅ Konfigurasi `locations`, `driver`, `url` sesuai ekspektasi Flyway terbaru.
+3. ✅ `./gradlew flywayInfo` — BUILD SUCCESSFUL. 36 migration sukses, schema versi 5.1.0, tanpa pending migration. (Minor warning `WSREP_ON` dari MariaDB — non-fatal.)
