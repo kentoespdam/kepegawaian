@@ -20,8 +20,8 @@ public class PegawaiQueryService {
     private final PegawaiRingkasanQueryRepository ringkasanRepository;
     private final PegawaiSessionQueryRepository sessionRepository;
 
-    public Page<PegawaiResponse> findPage(PegawaiRequest request) {
-        return repository.findPage(request);
+    public Page<PegawaiTableResponse> findTablePage(PegawaiRequest request) {
+        return repository.findTablePage(request);
     }
 
     public List<PegawaiListResponse> findAll(PegawaiRequest request) {

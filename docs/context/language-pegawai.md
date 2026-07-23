@@ -26,16 +26,24 @@ Detail pegawai mengekspos tepat 7 slot SK, tiap slot = baris **Riwayat SK** terb
 **Riwayat SK**:
 Histori Surat Keputusan milik pegawai (entity `RiwayatSk`, domain `kepegawaian` — **modul terpisah** dari Pegawai). Tiap baris: nomor SK, tanggal, tmt berlaku, Jenis SK, golongan, gaji pokok, masa kerja golongan. Detail pegawai membacanya langsung dari **tabel** `riwayat_sk` (bukan via modul kepegawaian) supaya rewrite modul itu kelak tak membatalkan baca pegawai.
 
-**Session** vs **Ringkasan** vs **Detail**:
-Tiga tingkat baca pegawai, dari paling ringan ke paling berat. **Session** (`/{id}/session`) = payload **paling minim** untuk di-cache FE **sesaat setelah login** + jadi kunci shortcut-fetch ke page (dashboard, data-pegawai, terminasi): `id (Long)`, `nipam`, `nik`, `nama`, `jabatan{id,nama}`, `organisasi{id,nama}`. **Ringkasan** (`/{id}/ringkasan`) = bentuk pipih siap-tampil untuk halaman profil, banyak field string hasil format Java (mis. `pangkatGolongan` = pangkat+"-"+golongan, `mkg` = "X Tahun Y Bulan") plus nomor kartu identitas (NPWP/JPn/BPJS/ID Card) yang difilter dari Kartu Identitas pegawai. **Detail** (`/{id}`) = agregat penuh + 7 slot SK terkini.
+**Session** vs **Tabel** vs **Ringkasan** vs **Detail**:
+Empat tingkat baca pegawai, dari paling ringan ke paling berat. **Session** (`/{id}/session`) = payload **paling minim** untuk di-cache FE **sesaat setelah login** + jadi kunci shortcut-fetch ke page (dashboard, data-pegawai, terminasi): `id (Long)`, `nipam`, `nik`, `nama`, `jabatan{id,nama}`, `organisasi{id,nama}`. **Tabel** (`GET /pegawai` — root) = DTO **PegawaiTableResponse** khusus render tabel FE: 14 kolom flat + nested organisasi/jabatan/profesi `{id,nama}` via `RefMiniResponse`. **Ringkasan** (`/{id}/ringkasan`) = bentuk pipih siap-tampil untuk halaman profil, banyak field string hasil format Java (mis. `pangkatGolongan` = pangkat+"-"+golongan, `mkg` = "X Tahun Y Bulan") plus nomor kartu identitas (NPWP/JPn/BPJS/ID Card) yang difilter dari Kartu Identitas pegawai. **Detail** (`/{id}`) = agregat penuh + 7 slot SK terkini.
 _Keputusan baca Session_: query JOOQ paling ramping — hanya JOIN `biodata` (nama+nik), `organisasi`, `jabatan`. **Tanpa** multiset, **tanpa** JOIN LEVEL, tanpa field gaji/SK. Objek bersarang pakai record generik `RefMiniResponse(id, nama)`. Prinsip tetap: pangkas ke `id`+label; tambah field hanya kalau FE nyata butuh (YAGNI).
+_Keputusan baca Tabel (PegawaiTableResponse)_: query JOOQ ramping — JOIN `biodata`, `organisasi`, `jabatan`, `profesi`, `golongan`, `gaji_pendapatan_non_pajak`. **DROP** `pendidikan` & `grade` (tidak dipakai render). Kolom: `id, nipam, nama, jenisKelamin, tanggalLahir, tmtPensiun, statusKawin, kodePajak, isBpjs=PEGAWAI.IS_ASKES, pangkatGolongan=pangkat+"-"+golongan, statusPegawai, organisasi{id,nama}, jabatan{id,nama}, profesi{id,nama}`.
+  - `isBpjs` = mapping dari `PEGAWAI.IS_ASKES` (Askes=nama lama BPJS Kesehatan).
+  - `jenisKelamin` label: `EJenisKelamin.values()[b]==LAKI_LAKI?"Laki-Laki":"Perempuan"`.
+  - `statusKawin` label: `EStatusKawin.values()[b].toString()` (enum name).
+  - `statusPegawai` label: `EStatusPegawai.values()[b].value`.
+  - Nested mini pakai `RefMiniResponse(id, nama)`.
+  - Mapper: `PegawaiTableRecordMapper.mapTableResponse()`.
 _Keputusan baca Ringkasan_: satu query JOOQ proyeksi field mentah, dengan **baca tabel lintas modul langsung** — `pendidikan` (baris `is_latest=true`) dan `kartu_identitas` (difilter per **nama jenis kartu**). Semua perakitan string tetap **di Java** pada layer mapper, bukan di SQL.
 
 **Masa Kerja Golongan** (mkg: mkgTahun + mkgBulan):
 Lama pegawai berada pada golongan saat ini, dalam tahun + bulan. Di Ringkasan diformat jadi string "X Tahun Y Bulan".
 
 **Bentuk JSON baca (nested mini)**:
-`PegawaiResponse` (list/page & `/{nipam}/nipam`) **tetap bersarang** karena FE sudah membaca `.organisasi.nama` dsb. — TIDAK dipipihkan. Tapi tiap objek bersarang adalah **mini response** (proyeksi JOOQ `row(...)` ramping), bukan DTO penuh: biodata=`nik,nama,gelarDepan,gelarBelakang`; organisasi=`id,nama`; jabatan=`id,nama`; profesi=`id,nama`; golongan=`id,golongan,pangkat`; grade=`id,grade`; kodePajak=`id,nama`. Plus field skalar denormalisasi pegawai. Prinsip: pangkas ke `id`+label; tambah lagi kalau FE benar-benar butuh.
+`PegawaiResponse` (`/{nipam}/nipam`) **tetap bersarang** karena FE sudah membaca `.organisasi.nama` dsb. — TIDAK dipipihkan. Tapi tiap objek bersarang adalah **mini response** (proyeksi JOOQ `row(...)` ramping), bukan DTO penuh: biodata=`nik,nama,gelarDepan,gelarBelakang`; organisasi=`id,nama`; jabatan=`id,nama`; profesi=`id,nama`; golongan=`id,golongan,pangkat`; grade=`id,grade`; kodePajak=`id,nama`. Plus field skalar denormalisasi pegawai. Prinsip: pangkas ke `id`+label; tambah lagi kalau FE benar-benar butuh.
+`PegawaiTableResponse` (`GET /pegawai` root) memakai `RefMiniResponse(id,nama)` untuk nested organisasi/jabatan/profesi — sengaja lebih ramping dari `PegawaiResponse` karena tabel FE cuma butuh id+nama.
 
 **Pejabat non-pegawai-biasa**:
 **Dewan Pengawas** (jabatan id `1`) + **Direksi** (jabatan id `2`, `3`, `25`). Dikecualikan dari validasi ketat PegawaiTetap saat dibuat sebagai status PEGAWAI, dan tidak diberi **Golongan** (golongan dipaksa null). Id ini **harus dipindah ke konfigurasi/env**, tidak di-hardcode.

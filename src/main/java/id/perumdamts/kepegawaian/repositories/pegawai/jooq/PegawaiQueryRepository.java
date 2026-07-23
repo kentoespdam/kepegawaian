@@ -6,9 +6,11 @@ import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiListResponse;
 import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiRequest;
 import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiResponse;
 import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiResponseDetail;
+import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiTableResponse;
 import id.perumdamts.kepegawaian.mapper.kepegawaian.RiwayatSkJooqMapper;
 import id.perumdamts.kepegawaian.mapper.pegawai.pegawai.PegawaiDetailRecordMapper;
 import id.perumdamts.kepegawaian.mapper.pegawai.pegawai.PegawaiRecordMapper;
+import id.perumdamts.kepegawaian.mapper.pegawai.pegawai.PegawaiTableRecordMapper;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -170,6 +172,29 @@ public class PegawaiQueryRepository {
         };
     }
 
+    private SelectField<?>[] pegawaiTableFields() {
+        return new SelectField<?>[]{
+                PEGAWAI.ID,
+                PEGAWAI.NIPAM,
+                PEGAWAI.STATUS_PEGAWAI,
+                PEGAWAI.TMT_PENSIUN,
+                PEGAWAI.IS_ASKES,
+                BIODATA.NAMA.as("biodata_nama"),
+                BIODATA.JENIS_KELAMIN.as("biodata_jenis_kelamin"),
+                BIODATA.TANGGAL_LAHIR.as("biodata_tanggal_lahir"),
+                BIODATA.STATUS_KAWIN.as("biodata_status_kawin"),
+                ORGANISASI.ID.as("organisasi_id"),
+                ORGANISASI.NAMA.as("organisasi_nama"),
+                JABATAN.ID.as("jabatan_id"),
+                JABATAN.NAMA.as("jabatan_nama"),
+                PROFESI.ID.as("profesi_id"),
+                PROFESI.NAMA.as("profesi_nama"),
+                GOLONGAN.PANGKAT.as("golongan_pangkat"),
+                GOLONGAN.GOLONGAN_.as("golongan_golongan"),
+                GAJI_PENDAPATAN_NON_PAJAK.KODE.as("kode_pajak")
+        };
+    }
+
     private SelectField<?>[] pegawaiListResponseFields() {
         return new SelectField<?>[]{
                 PEGAWAI.ID,
@@ -191,7 +216,7 @@ public class PegawaiQueryRepository {
         };
     }
 
-    public Page<PegawaiResponse> findPage(PegawaiRequest request) {
+    public Page<PegawaiTableResponse> findTablePage(PegawaiRequest request) {
         var conditions = buildConditions(request);
         var sortOrder = SortParam.resolve(request.getSortBy(), request.getSortDirection(), ALLOWED_SORTS, PEGAWAI.ID);
 
@@ -201,23 +226,19 @@ public class PegawaiQueryRepository {
                 .where(conditions)
                 .fetchOneInto(Long.class);
 
-        var rows = dsl.select(pegawaiResponseFields())
+        var rows = dsl.select(pegawaiTableFields())
                 .from(PEGAWAI)
                 .leftJoin(BIODATA).on(PEGAWAI.BIODATA_ID.eq(BIODATA.NIK))
-                .leftJoin(PENDIDIKAN).on(PENDIDIKAN.BIODATA_ID.eq(BIODATA.NIK)
-                        .and(PENDIDIKAN.IS_LATEST.eq((byte) 1))
-                        .and(PENDIDIKAN.IS_DELETED.eq(false)))
                 .leftJoin(ORGANISASI).on(PEGAWAI.ORGANISASI_ID.eq(ORGANISASI.ID))
                 .leftJoin(JABATAN).on(PEGAWAI.JABATAN_ID.eq(JABATAN.ID))
                 .leftJoin(PROFESI).on(PEGAWAI.PROFESI_ID.eq(PROFESI.ID))
                 .leftJoin(GOLONGAN).on(PEGAWAI.GOLONGAN_ID.eq(GOLONGAN.ID))
-                .leftJoin(GRADE).on(PEGAWAI.GRADE_ID.eq(GRADE.ID))
                 .leftJoin(GAJI_PENDAPATAN_NON_PAJAK).on(PEGAWAI.GAJI_PENDAPATAN_NON_PAJAK_ID.eq(GAJI_PENDAPATAN_NON_PAJAK.ID))
                 .where(conditions)
                 .orderBy(sortOrder)
                 .limit(request.getSizeOrDefault())
                 .offset(request.offset())
-                .fetch(PegawaiRecordMapper::mapResponse);
+                .fetch(PegawaiTableRecordMapper::mapTableResponse);
 
         return new PageImpl<>(rows, PageRequest.of(request.getPageNumber(), request.getSizeOrDefault()), total != null ? total : 0L);
     }

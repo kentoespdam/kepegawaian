@@ -30,8 +30,8 @@ public class PegawaiController {
     private final Validator validator;
 
     @GetMapping
-    public ResponseEntity<PageResult<Page<PegawaiResponse>>> index(@ParameterObject @Valid PegawaiRequest request) {
-        return CustomResult.page(queryService.findPage(request));
+    public ResponseEntity<PageResult<Page<PegawaiTableResponse>>> index(@ParameterObject @Valid PegawaiRequest request) {
+        return CustomResult.page(queryService.findTablePage(request));
     }
 
     @GetMapping("/list")
