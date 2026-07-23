@@ -185,7 +185,7 @@ public class StatistikPegawai extends TableImpl<StatistikPegawaiRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.STATISTIK_PEGAWAI_BULAN_IDX, Indexes.STATISTIK_PEGAWAI_PENDIDIKAN_IDX, Indexes.STATISTIK_PEGAWAI_TAHUN_IDX);
+        return Arrays.asList(Indexes.STATISTIK_PEGAWAI_IDX_STT_PGW_BULAN, Indexes.STATISTIK_PEGAWAI_IDX_STT_PGW_DDK, Indexes.STATISTIK_PEGAWAI_IDX_STT_PGW_TAHUN);
     }
 
     @Override
@@ -200,7 +200,7 @@ public class StatistikPegawai extends TableImpl<StatistikPegawaiRecord> {
 
     @Override
     public List<UniqueKey<StatistikPegawaiRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.KEY_STATISTIK_PEGAWAI_UKAVURXO7A986MTUGGLRFRO8MB8);
+        return Arrays.asList(Keys.KEY_STATISTIK_PEGAWAI_UK_STT_PGW_BULAN_TAHUN_DDK);
     }
 
     @Override

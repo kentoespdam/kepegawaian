@@ -226,7 +226,7 @@ public class LampiranSkAud extends TableImpl<LampiranSkAudRecord> {
 
     @Override
     public List<ForeignKey<LampiranSkAudRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK1E6LXYSHGK533YRWUKJN6HQFS);
+        return Arrays.asList(Keys.FK_LMP_SK_AUD_REV_REV);
     }
 
     private transient RevinfoPath _revinfo;
@@ -236,7 +236,7 @@ public class LampiranSkAud extends TableImpl<LampiranSkAudRecord> {
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)
-            _revinfo = new RevinfoPath(this, Keys.FK1E6LXYSHGK533YRWUKJN6HQFS, null);
+            _revinfo = new RevinfoPath(this, Keys.FK_LMP_SK_AUD_REV_REV, null);
 
         return _revinfo;
     }

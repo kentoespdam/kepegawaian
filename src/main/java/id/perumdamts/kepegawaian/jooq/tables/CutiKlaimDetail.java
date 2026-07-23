@@ -5,6 +5,7 @@ package id.perumdamts.kepegawaian.jooq.tables;
 
 
 import id.perumdamts.kepegawaian.jooq.DefaultSchema;
+import id.perumdamts.kepegawaian.jooq.Indexes;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.CutiPegawai.CutiPegawaiPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.CutiKlaimDetailRecord;
@@ -18,6 +19,7 @@ import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
+import org.jooq.Index;
 import org.jooq.InverseForeignKey;
 import org.jooq.Name;
 import org.jooq.Path;
@@ -141,6 +143,11 @@ public class CutiKlaimDetail extends TableImpl<CutiKlaimDetailRecord> {
     }
 
     @Override
+    public List<Index> getIndexes() {
+        return Arrays.asList(Indexes.CUTI_KLAIM_DETAIL_IDX_CT_KLM_DTL_REF_CT_ID);
+    }
+
+    @Override
     public Identity<CutiKlaimDetailRecord, Long> getIdentity() {
         return (Identity<CutiKlaimDetailRecord, Long>) super.getIdentity();
     }
@@ -152,7 +159,7 @@ public class CutiKlaimDetail extends TableImpl<CutiKlaimDetailRecord> {
 
     @Override
     public List<ForeignKey<CutiKlaimDetailRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK793V6RC4HKWWX6PXTRO6HLM22);
+        return Arrays.asList(Keys.FK_CT_KLM_DTL_CT_PGW_REF_CT_ID);
     }
 
     private transient CutiPegawaiPath _cutiPegawai;
@@ -162,7 +169,7 @@ public class CutiKlaimDetail extends TableImpl<CutiKlaimDetailRecord> {
      */
     public CutiPegawaiPath cutiPegawai() {
         if (_cutiPegawai == null)
-            _cutiPegawai = new CutiPegawaiPath(this, Keys.FK793V6RC4HKWWX6PXTRO6HLM22, null);
+            _cutiPegawai = new CutiPegawaiPath(this, Keys.FK_CT_KLM_DTL_CT_PGW_REF_CT_ID, null);
 
         return _cutiPegawai;
     }

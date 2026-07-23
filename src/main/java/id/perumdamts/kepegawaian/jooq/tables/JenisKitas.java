@@ -175,7 +175,7 @@ public class JenisKitas extends TableImpl<JenisKitasRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.JENIS_KITAS_IDXL28C2IOD6P6SUG9O5B62022TM, Indexes.JENIS_KITAS_IDXQY4M36OVHLQBDIKWQPNIDEIP4);
+        return Arrays.asList(Indexes.JENIS_KITAS_IDX_JNS_KITAS_IS_DELETED, Indexes.JENIS_KITAS_IDX_JNS_KITAS_NAMA);
     }
 
     @Override
@@ -196,7 +196,7 @@ public class JenisKitas extends TableImpl<JenisKitasRecord> {
      */
     public KartuIdentitasPath kartuIdentitas() {
         if (_kartuIdentitas == null)
-            _kartuIdentitas = new KartuIdentitasPath(this, null, Keys.FKOGVQ6IJ2NU8JW7CS5JEHJ4NLX.getInverseKey());
+            _kartuIdentitas = new KartuIdentitasPath(this, null, Keys.FK_KARTU_IDN_JNS_KITAS_JNS_KITAS_ID.getInverseKey());
 
         return _kartuIdentitas;
     }

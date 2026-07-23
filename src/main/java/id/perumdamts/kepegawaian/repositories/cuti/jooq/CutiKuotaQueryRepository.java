@@ -38,7 +38,7 @@ public class CutiKuotaQueryRepository {
                 
         var count = dsl.selectCount().from(CUTI_KUOTA)
                  .leftJoin(PEGAWAI).on(CUTI_KUOTA.PEGAWAI_ID.eq(PEGAWAI.ID))
-                 .leftJoin(BIODATA).on(PEGAWAI.NIK.eq(BIODATA.NIK))
+                 .leftJoin(BIODATA).on(PEGAWAI.BIODATA_ID.eq(BIODATA.NIK))
                  .where(where).fetchOptional(0, Long.class).orElse(0L);
 
         var data = dsl.select(
@@ -58,7 +58,7 @@ public class CutiKuotaQueryRepository {
                 )
                 .from(CUTI_KUOTA)
                 .leftJoin(PEGAWAI).on(CUTI_KUOTA.PEGAWAI_ID.eq(PEGAWAI.ID))
-                .leftJoin(BIODATA).on(PEGAWAI.NIK.eq(BIODATA.NIK))
+                .leftJoin(BIODATA).on(PEGAWAI.BIODATA_ID.eq(BIODATA.NIK))
                 .leftJoin(JABATAN).on(PEGAWAI.JABATAN_ID.eq(JABATAN.ID))
                 .leftJoin(ORGANISASI).on(PEGAWAI.ORGANISASI_ID.eq(ORGANISASI.ID))
                 .where(where)
@@ -89,7 +89,7 @@ public class CutiKuotaQueryRepository {
                 )
                 .from(CUTI_KUOTA)
                 .leftJoin(PEGAWAI).on(CUTI_KUOTA.PEGAWAI_ID.eq(PEGAWAI.ID))
-                .leftJoin(BIODATA).on(PEGAWAI.NIK.eq(BIODATA.NIK))
+                .leftJoin(BIODATA).on(PEGAWAI.BIODATA_ID.eq(BIODATA.NIK))
                 .leftJoin(JABATAN).on(PEGAWAI.JABATAN_ID.eq(JABATAN.ID))
                 .leftJoin(ORGANISASI).on(PEGAWAI.ORGANISASI_ID.eq(ORGANISASI.ID))
                 .where(CUTI_KUOTA.PEGAWAI_ID.in(pegawaiIdList)
@@ -118,7 +118,7 @@ public class CutiKuotaQueryRepository {
                 )
                 .from(CUTI_KUOTA)
                 .leftJoin(PEGAWAI).on(CUTI_KUOTA.PEGAWAI_ID.eq(PEGAWAI.ID))
-                .leftJoin(BIODATA).on(PEGAWAI.NIK.eq(BIODATA.NIK))
+                .leftJoin(BIODATA).on(PEGAWAI.BIODATA_ID.eq(BIODATA.NIK))
                 .leftJoin(JABATAN).on(PEGAWAI.JABATAN_ID.eq(JABATAN.ID))
                 .leftJoin(ORGANISASI).on(PEGAWAI.ORGANISASI_ID.eq(ORGANISASI.ID))
                 .where(CUTI_KUOTA.ID.eq(id).and(CUTI_KUOTA.IS_DELETED.eq(false)))

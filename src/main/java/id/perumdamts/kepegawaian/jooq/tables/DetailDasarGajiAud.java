@@ -196,7 +196,7 @@ public class DetailDasarGajiAud extends TableImpl<DetailDasarGajiAudRecord> {
 
     @Override
     public List<ForeignKey<DetailDasarGajiAudRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FKNRPC9LDTUJCFGT86M216D4RNE);
+        return Arrays.asList(Keys.FK_DTL_DSR_GJ_AUD_REV_REV);
     }
 
     private transient RevinfoPath _revinfo;
@@ -206,7 +206,7 @@ public class DetailDasarGajiAud extends TableImpl<DetailDasarGajiAudRecord> {
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)
-            _revinfo = new RevinfoPath(this, Keys.FKNRPC9LDTUJCFGT86M216D4RNE, null);
+            _revinfo = new RevinfoPath(this, Keys.FK_DTL_DSR_GJ_AUD_REV_REV, null);
 
         return _revinfo;
     }

@@ -180,7 +180,7 @@ public class JenisSp extends TableImpl<JenisSpRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.JENIS_SP_IDX4YMIWEI39JOL3PPAMBI7NCBHF);
+        return Arrays.asList(Indexes.JENIS_SP_IDX_JNS_SP_IS_DELETED);
     }
 
     @Override
@@ -195,7 +195,7 @@ public class JenisSp extends TableImpl<JenisSpRecord> {
 
     @Override
     public List<UniqueKey<JenisSpRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.KEY_JENIS_SP_UK3RHFEMKL2DGF47IJ6HXM7H3UY);
+        return Arrays.asList(Keys.KEY_JENIS_SP_UK_JNS_SP_KODE);
     }
 
     private transient RiwayatSpPath _riwayatSp;
@@ -205,7 +205,7 @@ public class JenisSp extends TableImpl<JenisSpRecord> {
      */
     public RiwayatSpPath riwayatSp() {
         if (_riwayatSp == null)
-            _riwayatSp = new RiwayatSpPath(this, null, Keys.FKBIG7GAK8CSIF6HU1096NXTU04.getInverseKey());
+            _riwayatSp = new RiwayatSpPath(this, null, Keys.FK_RWT_SP_JNS_SP_JNS_SP_ID.getInverseKey());
 
         return _riwayatSp;
     }
@@ -217,7 +217,7 @@ public class JenisSp extends TableImpl<JenisSpRecord> {
      */
     public SanksiSpPath sanksiSp() {
         if (_sanksiSp == null)
-            _sanksiSp = new SanksiSpPath(this, null, Keys.FKG0OH1PKAYJN4GJCFE0HR9CELT.getInverseKey());
+            _sanksiSp = new SanksiSpPath(this, null, Keys.FK_SNK_SP_JNS_SP_JNS_SP_ID.getInverseKey());
 
         return _sanksiSp;
     }

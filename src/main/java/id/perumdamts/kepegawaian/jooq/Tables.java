@@ -5,7 +5,6 @@ package id.perumdamts.kepegawaian.jooq;
 
 
 import id.perumdamts.kepegawaian.jooq.tables.AlasanBerhenti;
-import id.perumdamts.kepegawaian.jooq.tables.AlasanBerhentiAud;
 import id.perumdamts.kepegawaian.jooq.tables.AlatKerja;
 import id.perumdamts.kepegawaian.jooq.tables.Apd;
 import id.perumdamts.kepegawaian.jooq.tables.Biodata;
@@ -46,19 +45,13 @@ import id.perumdamts.kepegawaian.jooq.tables.GajiProfilAud;
 import id.perumdamts.kepegawaian.jooq.tables.GajiTunjangan;
 import id.perumdamts.kepegawaian.jooq.tables.GajiTunjanganAud;
 import id.perumdamts.kepegawaian.jooq.tables.Golongan;
-import id.perumdamts.kepegawaian.jooq.tables.GolonganAud;
 import id.perumdamts.kepegawaian.jooq.tables.Grade;
-import id.perumdamts.kepegawaian.jooq.tables.GradeAud;
 import id.perumdamts.kepegawaian.jooq.tables.HariLibur;
-import id.perumdamts.kepegawaian.jooq.tables.HariLiburAud;
 import id.perumdamts.kepegawaian.jooq.tables.Jabatan;
-import id.perumdamts.kepegawaian.jooq.tables.JabatanAud;
 import id.perumdamts.kepegawaian.jooq.tables.JenisKeahlian;
 import id.perumdamts.kepegawaian.jooq.tables.JenisKitas;
-import id.perumdamts.kepegawaian.jooq.tables.JenisKitasAud;
 import id.perumdamts.kepegawaian.jooq.tables.JenisPelatihan;
 import id.perumdamts.kepegawaian.jooq.tables.JenisSp;
-import id.perumdamts.kepegawaian.jooq.tables.JenisSpAud;
 import id.perumdamts.kepegawaian.jooq.tables.JenjangPendidikan;
 import id.perumdamts.kepegawaian.jooq.tables.KartuIdentitas;
 import id.perumdamts.kepegawaian.jooq.tables.KartuIdentitasAud;
@@ -69,9 +62,7 @@ import id.perumdamts.kepegawaian.jooq.tables.LampiranProfilAud;
 import id.perumdamts.kepegawaian.jooq.tables.LampiranSk;
 import id.perumdamts.kepegawaian.jooq.tables.LampiranSkAud;
 import id.perumdamts.kepegawaian.jooq.tables.Level;
-import id.perumdamts.kepegawaian.jooq.tables.LevelAud;
 import id.perumdamts.kepegawaian.jooq.tables.Organisasi;
-import id.perumdamts.kepegawaian.jooq.tables.OrganisasiAud;
 import id.perumdamts.kepegawaian.jooq.tables.Pegawai;
 import id.perumdamts.kepegawaian.jooq.tables.PegawaiAud;
 import id.perumdamts.kepegawaian.jooq.tables.Pelatihan;
@@ -82,7 +73,6 @@ import id.perumdamts.kepegawaian.jooq.tables.PengalamanKerja;
 import id.perumdamts.kepegawaian.jooq.tables.PengalamanKerjaAud;
 import id.perumdamts.kepegawaian.jooq.tables.PrefRole;
 import id.perumdamts.kepegawaian.jooq.tables.Profesi;
-import id.perumdamts.kepegawaian.jooq.tables.ProfesiAud;
 import id.perumdamts.kepegawaian.jooq.tables.ProfilKeluarga;
 import id.perumdamts.kepegawaian.jooq.tables.ProfilKeluargaAud;
 import id.perumdamts.kepegawaian.jooq.tables.ProfilUpdate;
@@ -101,9 +91,7 @@ import id.perumdamts.kepegawaian.jooq.tables.RiwayatSpAud;
 import id.perumdamts.kepegawaian.jooq.tables.RiwayatTerminasi;
 import id.perumdamts.kepegawaian.jooq.tables.RiwayatTerminasiAud;
 import id.perumdamts.kepegawaian.jooq.tables.RumahDinas;
-import id.perumdamts.kepegawaian.jooq.tables.RumahDinasAud;
 import id.perumdamts.kepegawaian.jooq.tables.SanksiSp;
-import id.perumdamts.kepegawaian.jooq.tables.SanksiSpAud;
 import id.perumdamts.kepegawaian.jooq.tables.StatistikPegawai;
 import id.perumdamts.kepegawaian.jooq.tables.VPegawai;
 
@@ -118,11 +106,6 @@ public class Tables {
      * The table <code>alasan_berhenti</code>.
      */
     public static final AlasanBerhenti ALASAN_BERHENTI = AlasanBerhenti.ALASAN_BERHENTI;
-
-    /**
-     * The table <code>alasan_berhenti_aud</code>.
-     */
-    public static final AlasanBerhentiAud ALASAN_BERHENTI_AUD = AlasanBerhentiAud.ALASAN_BERHENTI_AUD;
 
     /**
      * The table <code>alat_kerja</code>.
@@ -325,19 +308,9 @@ public class Tables {
     public static final Golongan GOLONGAN = Golongan.GOLONGAN;
 
     /**
-     * The table <code>golongan_aud</code>.
-     */
-    public static final GolonganAud GOLONGAN_AUD = GolonganAud.GOLONGAN_AUD;
-
-    /**
      * The table <code>grade</code>.
      */
     public static final Grade GRADE = Grade.GRADE;
-
-    /**
-     * The table <code>grade_aud</code>.
-     */
-    public static final GradeAud GRADE_AUD = GradeAud.GRADE_AUD;
 
     /**
      * The table <code>hari_libur</code>.
@@ -345,19 +318,9 @@ public class Tables {
     public static final HariLibur HARI_LIBUR = HariLibur.HARI_LIBUR;
 
     /**
-     * The table <code>hari_libur_aud</code>.
-     */
-    public static final HariLiburAud HARI_LIBUR_AUD = HariLiburAud.HARI_LIBUR_AUD;
-
-    /**
      * The table <code>jabatan</code>.
      */
     public static final Jabatan JABATAN = Jabatan.JABATAN;
-
-    /**
-     * The table <code>jabatan_aud</code>.
-     */
-    public static final JabatanAud JABATAN_AUD = JabatanAud.JABATAN_AUD;
 
     /**
      * The table <code>jenis_keahlian</code>.
@@ -370,11 +333,6 @@ public class Tables {
     public static final JenisKitas JENIS_KITAS = JenisKitas.JENIS_KITAS;
 
     /**
-     * The table <code>jenis_kitas_aud</code>.
-     */
-    public static final JenisKitasAud JENIS_KITAS_AUD = JenisKitasAud.JENIS_KITAS_AUD;
-
-    /**
      * The table <code>jenis_pelatihan</code>.
      */
     public static final JenisPelatihan JENIS_PELATIHAN = JenisPelatihan.JENIS_PELATIHAN;
@@ -383,11 +341,6 @@ public class Tables {
      * The table <code>jenis_sp</code>.
      */
     public static final JenisSp JENIS_SP = JenisSp.JENIS_SP;
-
-    /**
-     * The table <code>jenis_sp_aud</code>.
-     */
-    public static final JenisSpAud JENIS_SP_AUD = JenisSpAud.JENIS_SP_AUD;
 
     /**
      * The table <code>jenjang_pendidikan</code>.
@@ -440,19 +393,9 @@ public class Tables {
     public static final Level LEVEL = Level.LEVEL;
 
     /**
-     * The table <code>level_aud</code>.
-     */
-    public static final LevelAud LEVEL_AUD = LevelAud.LEVEL_AUD;
-
-    /**
      * The table <code>organisasi</code>.
      */
     public static final Organisasi ORGANISASI = Organisasi.ORGANISASI;
-
-    /**
-     * The table <code>organisasi_aud</code>.
-     */
-    public static final OrganisasiAud ORGANISASI_AUD = OrganisasiAud.ORGANISASI_AUD;
 
     /**
      * The table <code>pegawai</code>.
@@ -503,11 +446,6 @@ public class Tables {
      * The table <code>profesi</code>.
      */
     public static final Profesi PROFESI = Profesi.PROFESI;
-
-    /**
-     * The table <code>profesi_aud</code>.
-     */
-    public static final ProfesiAud PROFESI_AUD = ProfesiAud.PROFESI_AUD;
 
     /**
      * The table <code>profil_keluarga</code>.
@@ -600,19 +538,9 @@ public class Tables {
     public static final RumahDinas RUMAH_DINAS = RumahDinas.RUMAH_DINAS;
 
     /**
-     * The table <code>rumah_dinas_aud</code>.
-     */
-    public static final RumahDinasAud RUMAH_DINAS_AUD = RumahDinasAud.RUMAH_DINAS_AUD;
-
-    /**
      * The table <code>sanksi_sp</code>.
      */
     public static final SanksiSp SANKSI_SP = SanksiSp.SANKSI_SP;
-
-    /**
-     * The table <code>sanksi_sp_aud</code>.
-     */
-    public static final SanksiSpAud SANKSI_SP_AUD = SanksiSpAud.SANKSI_SP_AUD;
 
     /**
      * The table <code>statistik_pegawai</code>.

@@ -6,7 +6,6 @@ package id.perumdamts.kepegawaian.jooq.tables;
 
 import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Keys;
-import id.perumdamts.kepegawaian.jooq.tables.AlasanBerhentiAud.AlasanBerhentiAudPath;
 import id.perumdamts.kepegawaian.jooq.tables.BiodataAud.BiodataAudPath;
 import id.perumdamts.kepegawaian.jooq.tables.CutiApprovalAud.CutiApprovalAudPath;
 import id.perumdamts.kepegawaian.jooq.tables.CutiJenisAud.CutiJenisAudPath;
@@ -22,23 +21,14 @@ import id.perumdamts.kepegawaian.jooq.tables.GajiPhdpAud.GajiPhdpAudPath;
 import id.perumdamts.kepegawaian.jooq.tables.GajiPotonganTkkAud.GajiPotonganTkkAudPath;
 import id.perumdamts.kepegawaian.jooq.tables.GajiProfilAud.GajiProfilAudPath;
 import id.perumdamts.kepegawaian.jooq.tables.GajiTunjanganAud.GajiTunjanganAudPath;
-import id.perumdamts.kepegawaian.jooq.tables.GolonganAud.GolonganAudPath;
-import id.perumdamts.kepegawaian.jooq.tables.GradeAud.GradeAudPath;
-import id.perumdamts.kepegawaian.jooq.tables.HariLiburAud.HariLiburAudPath;
-import id.perumdamts.kepegawaian.jooq.tables.JabatanAud.JabatanAudPath;
-import id.perumdamts.kepegawaian.jooq.tables.JenisKitasAud.JenisKitasAudPath;
-import id.perumdamts.kepegawaian.jooq.tables.JenisSpAud.JenisSpAudPath;
 import id.perumdamts.kepegawaian.jooq.tables.KartuIdentitasAud.KartuIdentitasAudPath;
 import id.perumdamts.kepegawaian.jooq.tables.KeahlianAud.KeahlianAudPath;
 import id.perumdamts.kepegawaian.jooq.tables.LampiranProfilAud.LampiranProfilAudPath;
 import id.perumdamts.kepegawaian.jooq.tables.LampiranSkAud.LampiranSkAudPath;
-import id.perumdamts.kepegawaian.jooq.tables.LevelAud.LevelAudPath;
-import id.perumdamts.kepegawaian.jooq.tables.OrganisasiAud.OrganisasiAudPath;
 import id.perumdamts.kepegawaian.jooq.tables.PegawaiAud.PegawaiAudPath;
 import id.perumdamts.kepegawaian.jooq.tables.PelatihanAud.PelatihanAudPath;
 import id.perumdamts.kepegawaian.jooq.tables.PendidikanAud.PendidikanAudPath;
 import id.perumdamts.kepegawaian.jooq.tables.PengalamanKerjaAud.PengalamanKerjaAudPath;
-import id.perumdamts.kepegawaian.jooq.tables.ProfesiAud.ProfesiAudPath;
 import id.perumdamts.kepegawaian.jooq.tables.ProfilKeluargaAud.ProfilKeluargaAudPath;
 import id.perumdamts.kepegawaian.jooq.tables.RiwayatCutiAud.RiwayatCutiAudPath;
 import id.perumdamts.kepegawaian.jooq.tables.RiwayatKontrakAud.RiwayatKontrakAudPath;
@@ -46,8 +36,6 @@ import id.perumdamts.kepegawaian.jooq.tables.RiwayatMutasiAud.RiwayatMutasiAudPa
 import id.perumdamts.kepegawaian.jooq.tables.RiwayatSkAud.RiwayatSkAudPath;
 import id.perumdamts.kepegawaian.jooq.tables.RiwayatSpAud.RiwayatSpAudPath;
 import id.perumdamts.kepegawaian.jooq.tables.RiwayatTerminasiAud.RiwayatTerminasiAudPath;
-import id.perumdamts.kepegawaian.jooq.tables.RumahDinasAud.RumahDinasAudPath;
-import id.perumdamts.kepegawaian.jooq.tables.SanksiSpAud.SanksiSpAudPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.RevinfoRecord;
 
 import java.util.Collection;
@@ -183,30 +171,28 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
         return Keys.KEY_REVINFO_PRIMARY;
     }
 
-    private transient AlasanBerhentiAudPath _alasanBerhentiAud;
+    private transient KeahlianAudPath _keahlianAud;
 
     /**
-     * Get the implicit to-many join path to the
-     * <code>alasan_berhenti_aud</code> table
+     * Get the implicit to-many join path to the <code>keahlian_aud</code> table
      */
-    public AlasanBerhentiAudPath alasanBerhentiAud() {
-        if (_alasanBerhentiAud == null)
-            _alasanBerhentiAud = new AlasanBerhentiAudPath(this, null, Keys.FK1868IY9OSLSJRVVINWY7FASPG.getInverseKey());
+    public KeahlianAudPath keahlianAud() {
+        if (_keahlianAud == null)
+            _keahlianAud = new KeahlianAudPath(this, null, Keys.FK_AHL_AUD_REV_REV.getInverseKey());
 
-        return _alasanBerhentiAud;
+        return _keahlianAud;
     }
 
-    private transient LampiranSkAudPath _lampiranSkAud;
+    private transient BiodataAudPath _biodataAud;
 
     /**
-     * Get the implicit to-many join path to the <code>lampiran_sk_aud</code>
-     * table
+     * Get the implicit to-many join path to the <code>biodata_aud</code> table
      */
-    public LampiranSkAudPath lampiranSkAud() {
-        if (_lampiranSkAud == null)
-            _lampiranSkAud = new LampiranSkAudPath(this, null, Keys.FK1E6LXYSHGK533YRWUKJN6HQFS.getInverseKey());
+    public BiodataAudPath biodataAud() {
+        if (_biodataAud == null)
+            _biodataAud = new BiodataAudPath(this, null, Keys.FK_BIO_AUD_REV_REV.getInverseKey());
 
-        return _lampiranSkAud;
+        return _biodataAud;
     }
 
     private transient CutiApprovalAudPath _cutiApprovalAud;
@@ -217,124 +203,9 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
      */
     public CutiApprovalAudPath cutiApprovalAud() {
         if (_cutiApprovalAud == null)
-            _cutiApprovalAud = new CutiApprovalAudPath(this, null, Keys.FK20COYHPWFQDUFHCGCIMB525T7.getInverseKey());
+            _cutiApprovalAud = new CutiApprovalAudPath(this, null, Keys.FK_CT_APV_AUD_REV_REV.getInverseKey());
 
         return _cutiApprovalAud;
-    }
-
-    private transient JabatanAudPath _jabatanAud;
-
-    /**
-     * Get the implicit to-many join path to the <code>jabatan_aud</code> table
-     */
-    public JabatanAudPath jabatanAud() {
-        if (_jabatanAud == null)
-            _jabatanAud = new JabatanAudPath(this, null, Keys.FK3FH3M0KA6UUKH0EVN4KO7IDIO.getInverseKey());
-
-        return _jabatanAud;
-    }
-
-    private transient JenisKitasAudPath _jenisKitasAud;
-
-    /**
-     * Get the implicit to-many join path to the <code>jenis_kitas_aud</code>
-     * table
-     */
-    public JenisKitasAudPath jenisKitasAud() {
-        if (_jenisKitasAud == null)
-            _jenisKitasAud = new JenisKitasAudPath(this, null, Keys.FK3Q5TFXOBMPFWA7U538CSW362R.getInverseKey());
-
-        return _jenisKitasAud;
-    }
-
-    private transient RiwayatKontrakAudPath _riwayatKontrakAud;
-
-    /**
-     * Get the implicit to-many join path to the
-     * <code>riwayat_kontrak_aud</code> table
-     */
-    public RiwayatKontrakAudPath riwayatKontrakAud() {
-        if (_riwayatKontrakAud == null)
-            _riwayatKontrakAud = new RiwayatKontrakAudPath(this, null, Keys.FK4ARE3YLGFJ39XA7MP1U7OVCN4.getInverseKey());
-
-        return _riwayatKontrakAud;
-    }
-
-    private transient CutiKuotaAudPath _cutiKuotaAud;
-
-    /**
-     * Get the implicit to-many join path to the <code>cuti_kuota_aud</code>
-     * table
-     */
-    public CutiKuotaAudPath cutiKuotaAud() {
-        if (_cutiKuotaAud == null)
-            _cutiKuotaAud = new CutiKuotaAudPath(this, null, Keys.FK6CKY1Q18UEYDC77MK56STCA8S.getInverseKey());
-
-        return _cutiKuotaAud;
-    }
-
-    private transient GradeAudPath _gradeAud;
-
-    /**
-     * Get the implicit to-many join path to the <code>grade_aud</code> table
-     */
-    public GradeAudPath gradeAud() {
-        if (_gradeAud == null)
-            _gradeAud = new GradeAudPath(this, null, Keys.FK6LRX2MK3O3YLT0LIOI1817MX0.getInverseKey());
-
-        return _gradeAud;
-    }
-
-    private transient RiwayatSpAudPath _riwayatSpAud;
-
-    /**
-     * Get the implicit to-many join path to the <code>riwayat_sp_aud</code>
-     * table
-     */
-    public RiwayatSpAudPath riwayatSpAud() {
-        if (_riwayatSpAud == null)
-            _riwayatSpAud = new RiwayatSpAudPath(this, null, Keys.FK7IAH35IHQR5736OMEREMETHN4.getInverseKey());
-
-        return _riwayatSpAud;
-    }
-
-    private transient GajiKomponenAudPath _gajiKomponenAud;
-
-    /**
-     * Get the implicit to-many join path to the <code>gaji_komponen_aud</code>
-     * table
-     */
-    public GajiKomponenAudPath gajiKomponenAud() {
-        if (_gajiKomponenAud == null)
-            _gajiKomponenAud = new GajiKomponenAudPath(this, null, Keys.FK8S9WAI8150MSBQI0MNTM1O06Y.getInverseKey());
-
-        return _gajiKomponenAud;
-    }
-
-    private transient GajiParameterSettingAudPath _gajiParameterSettingAud;
-
-    /**
-     * Get the implicit to-many join path to the
-     * <code>gaji_parameter_setting_aud</code> table
-     */
-    public GajiParameterSettingAudPath gajiParameterSettingAud() {
-        if (_gajiParameterSettingAud == null)
-            _gajiParameterSettingAud = new GajiParameterSettingAudPath(this, null, Keys.FK9IH1IF6L76TTD8VPCIY2RFVAJ.getInverseKey());
-
-        return _gajiParameterSettingAud;
-    }
-
-    private transient SanksiSpAudPath _sanksiSpAud;
-
-    /**
-     * Get the implicit to-many join path to the <code>sanksi_sp_aud</code>
-     * table
-     */
-    public SanksiSpAudPath sanksiSpAud() {
-        if (_sanksiSpAud == null)
-            _sanksiSpAud = new SanksiSpAudPath(this, null, Keys.FK9NPXHI3FB4JV5N71HRQ40YRIE.getInverseKey());
-
-        return _sanksiSpAud;
     }
 
     private transient CutiJenisAudPath _cutiJenisAud;
@@ -345,366 +216,22 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
      */
     public CutiJenisAudPath cutiJenisAud() {
         if (_cutiJenisAud == null)
-            _cutiJenisAud = new CutiJenisAudPath(this, null, Keys.FK9SUR2315833KBIWL4SUA5OKI2.getInverseKey());
+            _cutiJenisAud = new CutiJenisAudPath(this, null, Keys.FK_CT_JNS_AUD_REV_REV.getInverseKey());
 
         return _cutiJenisAud;
     }
 
-    private transient KeahlianAudPath _keahlianAud;
+    private transient CutiKuotaAudPath _cutiKuotaAud;
 
     /**
-     * Get the implicit to-many join path to the <code>keahlian_aud</code> table
-     */
-    public KeahlianAudPath keahlianAud() {
-        if (_keahlianAud == null)
-            _keahlianAud = new KeahlianAudPath(this, null, Keys.FKABCGSRI5HYEMCP0CBE2YPP9FO.getInverseKey());
-
-        return _keahlianAud;
-    }
-
-    private transient GajiPotonganTkkAudPath _gajiPotonganTkkAud;
-
-    /**
-     * Get the implicit to-many join path to the
-     * <code>gaji_potongan_tkk_aud</code> table
-     */
-    public GajiPotonganTkkAudPath gajiPotonganTkkAud() {
-        if (_gajiPotonganTkkAud == null)
-            _gajiPotonganTkkAud = new GajiPotonganTkkAudPath(this, null, Keys.FKARE7661XYLM2O4A9CMC38XAVE.getInverseKey());
-
-        return _gajiPotonganTkkAud;
-    }
-
-    private transient DasarGajiAudPath _dasarGajiAud;
-
-    /**
-     * Get the implicit to-many join path to the <code>dasar_gaji_aud</code>
+     * Get the implicit to-many join path to the <code>cuti_kuota_aud</code>
      * table
      */
-    public DasarGajiAudPath dasarGajiAud() {
-        if (_dasarGajiAud == null)
-            _dasarGajiAud = new DasarGajiAudPath(this, null, Keys.FKAWTSYKKLM2BRER5A81QU6JTOX.getInverseKey());
-
-        return _dasarGajiAud;
-    }
-
-    private transient PendidikanAudPath _pendidikanAud;
-
-    /**
-     * Get the implicit to-many join path to the <code>pendidikan_aud</code>
-     * table
-     */
-    public PendidikanAudPath pendidikanAud() {
-        if (_pendidikanAud == null)
-            _pendidikanAud = new PendidikanAudPath(this, null, Keys.FKB2MJB0G4I7T2F7U0R33UIKM28.getInverseKey());
-
-        return _pendidikanAud;
-    }
-
-    private transient ProfilKeluargaAudPath _profilKeluargaAud;
-
-    /**
-     * Get the implicit to-many join path to the
-     * <code>profil_keluarga_aud</code> table
-     */
-    public ProfilKeluargaAudPath profilKeluargaAud() {
-        if (_profilKeluargaAud == null)
-            _profilKeluargaAud = new ProfilKeluargaAudPath(this, null, Keys.FKB319JIQ2H9BHXOOS7XVAHBJI.getInverseKey());
-
-        return _profilKeluargaAud;
-    }
-
-    private transient RiwayatMutasiAudPath _riwayatMutasiAud;
-
-    /**
-     * Get the implicit to-many join path to the <code>riwayat_mutasi_aud</code>
-     * table
-     */
-    public RiwayatMutasiAudPath riwayatMutasiAud() {
-        if (_riwayatMutasiAud == null)
-            _riwayatMutasiAud = new RiwayatMutasiAudPath(this, null, Keys.FKB3GGXR4NORSCHWQCYFR987AXY.getInverseKey());
-
-        return _riwayatMutasiAud;
-    }
-
-    private transient GajiBatchRootAudPath _gajiBatchRootAud;
-
-    /**
-     * Get the implicit to-many join path to the
-     * <code>gaji_batch_root_aud</code> table
-     */
-    public GajiBatchRootAudPath gajiBatchRootAud() {
-        if (_gajiBatchRootAud == null)
-            _gajiBatchRootAud = new GajiBatchRootAudPath(this, null, Keys.FKBVM82XAG911HMIIBBQ8XQWGI6.getInverseKey());
-
-        return _gajiBatchRootAud;
-    }
-
-    private transient PelatihanAudPath _pelatihanAud;
-
-    /**
-     * Get the implicit to-many join path to the <code>pelatihan_aud</code>
-     * table
-     */
-    public PelatihanAudPath pelatihanAud() {
-        if (_pelatihanAud == null)
-            _pelatihanAud = new PelatihanAudPath(this, null, Keys.FKD9DO03O1GVL1BHL607NOJE3K1.getInverseKey());
-
-        return _pelatihanAud;
-    }
-
-    private transient GajiTunjanganAudPath _gajiTunjanganAud;
-
-    /**
-     * Get the implicit to-many join path to the <code>gaji_tunjangan_aud</code>
-     * table
-     */
-    public GajiTunjanganAudPath gajiTunjanganAud() {
-        if (_gajiTunjanganAud == null)
-            _gajiTunjanganAud = new GajiTunjanganAudPath(this, null, Keys.FKGKR9QRJGNQRW5WGGVRPUOJF4E.getInverseKey());
-
-        return _gajiTunjanganAud;
-    }
-
-    private transient GajiPhdpAudPath _gajiPhdpAud;
-
-    /**
-     * Get the implicit to-many join path to the <code>gaji_phdp_aud</code>
-     * table
-     */
-    public GajiPhdpAudPath gajiPhdpAud() {
-        if (_gajiPhdpAud == null)
-            _gajiPhdpAud = new GajiPhdpAudPath(this, null, Keys.FKGLJI8PRKRK7SSDLR0T5WH6R3Q.getInverseKey());
-
-        return _gajiPhdpAud;
-    }
-
-    private transient KartuIdentitasAudPath _kartuIdentitasAud;
-
-    /**
-     * Get the implicit to-many join path to the
-     * <code>kartu_identitas_aud</code> table
-     */
-    public KartuIdentitasAudPath kartuIdentitasAud() {
-        if (_kartuIdentitasAud == null)
-            _kartuIdentitasAud = new KartuIdentitasAudPath(this, null, Keys.FKHU5NU2YULMTQD0G0GYPIYEGCU.getInverseKey());
-
-        return _kartuIdentitasAud;
-    }
-
-    private transient GolonganAudPath _golonganAud;
-
-    /**
-     * Get the implicit to-many join path to the <code>golongan_aud</code> table
-     */
-    public GolonganAudPath golonganAud() {
-        if (_golonganAud == null)
-            _golonganAud = new GolonganAudPath(this, null, Keys.FKI1FUPLB0AB25CBWT9M96DEA44.getInverseKey());
-
-        return _golonganAud;
-    }
-
-    private transient LevelAudPath _levelAud;
-
-    /**
-     * Get the implicit to-many join path to the <code>level_aud</code> table
-     */
-    public LevelAudPath levelAud() {
-        if (_levelAud == null)
-            _levelAud = new LevelAudPath(this, null, Keys.FKIR9BVBCWDL8PW9IR9KA1U0RO8.getInverseKey());
-
-        return _levelAud;
-    }
-
-    private transient PegawaiAudPath _pegawaiAud;
-
-    /**
-     * Get the implicit to-many join path to the <code>pegawai_aud</code> table
-     */
-    public PegawaiAudPath pegawaiAud() {
-        if (_pegawaiAud == null)
-            _pegawaiAud = new PegawaiAudPath(this, null, Keys.FKLAO5SW0YSP1SDILY7AO4LFFV.getInverseKey());
-
-        return _pegawaiAud;
-    }
-
-    private transient RiwayatCutiAudPath _riwayatCutiAud;
-
-    /**
-     * Get the implicit to-many join path to the <code>riwayat_cuti_aud</code>
-     * table
-     */
-    public RiwayatCutiAudPath riwayatCutiAud() {
-        if (_riwayatCutiAud == null)
-            _riwayatCutiAud = new RiwayatCutiAudPath(this, null, Keys.FKLVIQ0LT0WOH8X1XOCVW4UT8JF.getInverseKey());
-
-        return _riwayatCutiAud;
-    }
-
-    private transient RumahDinasAudPath _rumahDinasAud;
-
-    /**
-     * Get the implicit to-many join path to the <code>rumah_dinas_aud</code>
-     * table
-     */
-    public RumahDinasAudPath rumahDinasAud() {
-        if (_rumahDinasAud == null)
-            _rumahDinasAud = new RumahDinasAudPath(this, null, Keys.FKMC1N1YQ0M2GAL0SKKE1PLNW0O.getInverseKey());
-
-        return _rumahDinasAud;
-    }
-
-    private transient GajiPendapatanNonPajakAudPath _gajiPendapatanNonPajakAud;
-
-    /**
-     * Get the implicit to-many join path to the
-     * <code>gaji_pendapatan_non_pajak_aud</code> table
-     */
-    public GajiPendapatanNonPajakAudPath gajiPendapatanNonPajakAud() {
-        if (_gajiPendapatanNonPajakAud == null)
-            _gajiPendapatanNonPajakAud = new GajiPendapatanNonPajakAudPath(this, null, Keys.FKNQHKW4CK5W0KBPL2KYJTL5NDK.getInverseKey());
-
-        return _gajiPendapatanNonPajakAud;
-    }
-
-    private transient DetailDasarGajiAudPath _detailDasarGajiAud;
-
-    /**
-     * Get the implicit to-many join path to the
-     * <code>detail_dasar_gaji_aud</code> table
-     */
-    public DetailDasarGajiAudPath detailDasarGajiAud() {
-        if (_detailDasarGajiAud == null)
-            _detailDasarGajiAud = new DetailDasarGajiAudPath(this, null, Keys.FKNRPC9LDTUJCFGT86M216D4RNE.getInverseKey());
-
-        return _detailDasarGajiAud;
-    }
-
-    private transient BiodataAudPath _biodataAud;
-
-    /**
-     * Get the implicit to-many join path to the <code>biodata_aud</code> table
-     */
-    public BiodataAudPath biodataAud() {
-        if (_biodataAud == null)
-            _biodataAud = new BiodataAudPath(this, null, Keys.FKOGVC1ALSCR1IF1IVCJJ4V8P79.getInverseKey());
-
-        return _biodataAud;
-    }
-
-    private transient PengalamanKerjaAudPath _pengalamanKerjaAud;
-
-    /**
-     * Get the implicit to-many join path to the
-     * <code>pengalaman_kerja_aud</code> table
-     */
-    public PengalamanKerjaAudPath pengalamanKerjaAud() {
-        if (_pengalamanKerjaAud == null)
-            _pengalamanKerjaAud = new PengalamanKerjaAudPath(this, null, Keys.FKOK3DY65WLDUWDO4KBDN18OB7W.getInverseKey());
-
-        return _pengalamanKerjaAud;
-    }
-
-    private transient RiwayatSkAudPath _riwayatSkAud;
-
-    /**
-     * Get the implicit to-many join path to the <code>riwayat_sk_aud</code>
-     * table
-     */
-    public RiwayatSkAudPath riwayatSkAud() {
-        if (_riwayatSkAud == null)
-            _riwayatSkAud = new RiwayatSkAudPath(this, null, Keys.FKP3M078BV90RT7PX9NMAGVSLR5.getInverseKey());
-
-        return _riwayatSkAud;
-    }
-
-    private transient RiwayatTerminasiAudPath _riwayatTerminasiAud;
-
-    /**
-     * Get the implicit to-many join path to the
-     * <code>riwayat_terminasi_aud</code> table
-     */
-    public RiwayatTerminasiAudPath riwayatTerminasiAud() {
-        if (_riwayatTerminasiAud == null)
-            _riwayatTerminasiAud = new RiwayatTerminasiAudPath(this, null, Keys.FKQ57NUPQNTCTUOSHI7SM1O68QW.getInverseKey());
-
-        return _riwayatTerminasiAud;
-    }
-
-    private transient LampiranProfilAudPath _lampiranProfilAud;
-
-    /**
-     * Get the implicit to-many join path to the
-     * <code>lampiran_profil_aud</code> table
-     */
-    public LampiranProfilAudPath lampiranProfilAud() {
-        if (_lampiranProfilAud == null)
-            _lampiranProfilAud = new LampiranProfilAudPath(this, null, Keys.FKQNKY7ANE6DOWL0BE7LTEU8C0D.getInverseKey());
-
-        return _lampiranProfilAud;
-    }
-
-    private transient HariLiburAudPath _hariLiburAud;
-
-    /**
-     * Get the implicit to-many join path to the <code>hari_libur_aud</code>
-     * table
-     */
-    public HariLiburAudPath hariLiburAud() {
-        if (_hariLiburAud == null)
-            _hariLiburAud = new HariLiburAudPath(this, null, Keys.FKS2B5N9R03GNRVSX98NAIBJLU9.getInverseKey());
-
-        return _hariLiburAud;
-    }
-
-    private transient JenisSpAudPath _jenisSpAud;
-
-    /**
-     * Get the implicit to-many join path to the <code>jenis_sp_aud</code> table
-     */
-    public JenisSpAudPath jenisSpAud() {
-        if (_jenisSpAud == null)
-            _jenisSpAud = new JenisSpAudPath(this, null, Keys.FKSBNSY5IWNK2SCI8ELGJKJCVC8.getInverseKey());
-
-        return _jenisSpAud;
-    }
-
-    private transient ProfesiAudPath _profesiAud;
-
-    /**
-     * Get the implicit to-many join path to the <code>profesi_aud</code> table
-     */
-    public ProfesiAudPath profesiAud() {
-        if (_profesiAud == null)
-            _profesiAud = new ProfesiAudPath(this, null, Keys.FKSKUG4MY2GHTUMIY06FOF1GS65.getInverseKey());
-
-        return _profesiAud;
-    }
-
-    private transient GajiProfilAudPath _gajiProfilAud;
-
-    /**
-     * Get the implicit to-many join path to the <code>gaji_profil_aud</code>
-     * table
-     */
-    public GajiProfilAudPath gajiProfilAud() {
-        if (_gajiProfilAud == null)
-            _gajiProfilAud = new GajiProfilAudPath(this, null, Keys.FKT37LX96JELFE4HWE1DRQO36MC.getInverseKey());
-
-        return _gajiProfilAud;
-    }
-
-    private transient OrganisasiAudPath _organisasiAud;
-
-    /**
-     * Get the implicit to-many join path to the <code>organisasi_aud</code>
-     * table
-     */
-    public OrganisasiAudPath organisasiAud() {
-        if (_organisasiAud == null)
-            _organisasiAud = new OrganisasiAudPath(this, null, Keys.FKT53J5D0PMKRCY2NJVRIOH08KK.getInverseKey());
-
-        return _organisasiAud;
+    public CutiKuotaAudPath cutiKuotaAud() {
+        if (_cutiKuotaAud == null)
+            _cutiKuotaAud = new CutiKuotaAudPath(this, null, Keys.FK_CT_KTA_AUD_REV_REV.getInverseKey());
+
+        return _cutiKuotaAud;
     }
 
     private transient CutiPegawaiAudPath _cutiPegawaiAud;
@@ -715,9 +242,320 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
      */
     public CutiPegawaiAudPath cutiPegawaiAud() {
         if (_cutiPegawaiAud == null)
-            _cutiPegawaiAud = new CutiPegawaiAudPath(this, null, Keys.FKT7RU9SQXLICXJ7EOUOTPXODNR.getInverseKey());
+            _cutiPegawaiAud = new CutiPegawaiAudPath(this, null, Keys.FK_CT_PGW_AUD_REV_REV.getInverseKey());
 
         return _cutiPegawaiAud;
+    }
+
+    private transient PendidikanAudPath _pendidikanAud;
+
+    /**
+     * Get the implicit to-many join path to the <code>pendidikan_aud</code>
+     * table
+     */
+    public PendidikanAudPath pendidikanAud() {
+        if (_pendidikanAud == null)
+            _pendidikanAud = new PendidikanAudPath(this, null, Keys.FK_DDK_AUD_REV_REV.getInverseKey());
+
+        return _pendidikanAud;
+    }
+
+    private transient DasarGajiAudPath _dasarGajiAud;
+
+    /**
+     * Get the implicit to-many join path to the <code>dasar_gaji_aud</code>
+     * table
+     */
+    public DasarGajiAudPath dasarGajiAud() {
+        if (_dasarGajiAud == null)
+            _dasarGajiAud = new DasarGajiAudPath(this, null, Keys.FK_DSR_GJ_AUD_REV_REV.getInverseKey());
+
+        return _dasarGajiAud;
+    }
+
+    private transient DetailDasarGajiAudPath _detailDasarGajiAud;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>detail_dasar_gaji_aud</code> table
+     */
+    public DetailDasarGajiAudPath detailDasarGajiAud() {
+        if (_detailDasarGajiAud == null)
+            _detailDasarGajiAud = new DetailDasarGajiAudPath(this, null, Keys.FK_DTL_DSR_GJ_AUD_REV_REV.getInverseKey());
+
+        return _detailDasarGajiAud;
+    }
+
+    private transient GajiBatchRootAudPath _gajiBatchRootAud;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>gaji_batch_root_aud</code> table
+     */
+    public GajiBatchRootAudPath gajiBatchRootAud() {
+        if (_gajiBatchRootAud == null)
+            _gajiBatchRootAud = new GajiBatchRootAudPath(this, null, Keys.FK_GJ_BT_ROOT_AUD_REV_REV.getInverseKey());
+
+        return _gajiBatchRootAud;
+    }
+
+    private transient GajiKomponenAudPath _gajiKomponenAud;
+
+    /**
+     * Get the implicit to-many join path to the <code>gaji_komponen_aud</code>
+     * table
+     */
+    public GajiKomponenAudPath gajiKomponenAud() {
+        if (_gajiKomponenAud == null)
+            _gajiKomponenAud = new GajiKomponenAudPath(this, null, Keys.FK_GJ_KPN_AUD_REV_REV.getInverseKey());
+
+        return _gajiKomponenAud;
+    }
+
+    private transient GajiPhdpAudPath _gajiPhdpAud;
+
+    /**
+     * Get the implicit to-many join path to the <code>gaji_phdp_aud</code>
+     * table
+     */
+    public GajiPhdpAudPath gajiPhdpAud() {
+        if (_gajiPhdpAud == null)
+            _gajiPhdpAud = new GajiPhdpAudPath(this, null, Keys.FK_GJ_PHDP_AUD_REV_REV.getInverseKey());
+
+        return _gajiPhdpAud;
+    }
+
+    private transient GajiPendapatanNonPajakAudPath _gajiPendapatanNonPajakAud;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>gaji_pendapatan_non_pajak_aud</code> table
+     */
+    public GajiPendapatanNonPajakAudPath gajiPendapatanNonPajakAud() {
+        if (_gajiPendapatanNonPajakAud == null)
+            _gajiPendapatanNonPajakAud = new GajiPendapatanNonPajakAudPath(this, null, Keys.FK_GJ_PP_NN_PJK_AUD_REV_REV.getInverseKey());
+
+        return _gajiPendapatanNonPajakAud;
+    }
+
+    private transient GajiProfilAudPath _gajiProfilAud;
+
+    /**
+     * Get the implicit to-many join path to the <code>gaji_profil_aud</code>
+     * table
+     */
+    public GajiProfilAudPath gajiProfilAud() {
+        if (_gajiProfilAud == null)
+            _gajiProfilAud = new GajiProfilAudPath(this, null, Keys.FK_GJ_PRF_AUD_REV_REV.getInverseKey());
+
+        return _gajiProfilAud;
+    }
+
+    private transient GajiParameterSettingAudPath _gajiParameterSettingAud;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>gaji_parameter_setting_aud</code> table
+     */
+    public GajiParameterSettingAudPath gajiParameterSettingAud() {
+        if (_gajiParameterSettingAud == null)
+            _gajiParameterSettingAud = new GajiParameterSettingAudPath(this, null, Keys.FK_GJ_PRM_STG_AUD_REV_REV.getInverseKey());
+
+        return _gajiParameterSettingAud;
+    }
+
+    private transient GajiPotonganTkkAudPath _gajiPotonganTkkAud;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>gaji_potongan_tkk_aud</code> table
+     */
+    public GajiPotonganTkkAudPath gajiPotonganTkkAud() {
+        if (_gajiPotonganTkkAud == null)
+            _gajiPotonganTkkAud = new GajiPotonganTkkAudPath(this, null, Keys.FK_GJ_PTG_TKK_AUD_REV_REV.getInverseKey());
+
+        return _gajiPotonganTkkAud;
+    }
+
+    private transient GajiTunjanganAudPath _gajiTunjanganAud;
+
+    /**
+     * Get the implicit to-many join path to the <code>gaji_tunjangan_aud</code>
+     * table
+     */
+    public GajiTunjanganAudPath gajiTunjanganAud() {
+        if (_gajiTunjanganAud == null)
+            _gajiTunjanganAud = new GajiTunjanganAudPath(this, null, Keys.FK_GJ_TJG_AUD_REV_REV.getInverseKey());
+
+        return _gajiTunjanganAud;
+    }
+
+    private transient KartuIdentitasAudPath _kartuIdentitasAud;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>kartu_identitas_aud</code> table
+     */
+    public KartuIdentitasAudPath kartuIdentitasAud() {
+        if (_kartuIdentitasAud == null)
+            _kartuIdentitasAud = new KartuIdentitasAudPath(this, null, Keys.FK_KARTU_IDN_AUD_REV_REV.getInverseKey());
+
+        return _kartuIdentitasAud;
+    }
+
+    private transient LampiranProfilAudPath _lampiranProfilAud;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>lampiran_profil_aud</code> table
+     */
+    public LampiranProfilAudPath lampiranProfilAud() {
+        if (_lampiranProfilAud == null)
+            _lampiranProfilAud = new LampiranProfilAudPath(this, null, Keys.FK_LMP_PRF_AUD_REV_REV.getInverseKey());
+
+        return _lampiranProfilAud;
+    }
+
+    private transient LampiranSkAudPath _lampiranSkAud;
+
+    /**
+     * Get the implicit to-many join path to the <code>lampiran_sk_aud</code>
+     * table
+     */
+    public LampiranSkAudPath lampiranSkAud() {
+        if (_lampiranSkAud == null)
+            _lampiranSkAud = new LampiranSkAudPath(this, null, Keys.FK_LMP_SK_AUD_REV_REV.getInverseKey());
+
+        return _lampiranSkAud;
+    }
+
+    private transient PelatihanAudPath _pelatihanAud;
+
+    /**
+     * Get the implicit to-many join path to the <code>pelatihan_aud</code>
+     * table
+     */
+    public PelatihanAudPath pelatihanAud() {
+        if (_pelatihanAud == null)
+            _pelatihanAud = new PelatihanAudPath(this, null, Keys.FK_LTH_AUD_REV_REV.getInverseKey());
+
+        return _pelatihanAud;
+    }
+
+    private transient PegawaiAudPath _pegawaiAud;
+
+    /**
+     * Get the implicit to-many join path to the <code>pegawai_aud</code> table
+     */
+    public PegawaiAudPath pegawaiAud() {
+        if (_pegawaiAud == null)
+            _pegawaiAud = new PegawaiAudPath(this, null, Keys.FK_PGW_AUD_REV_REV.getInverseKey());
+
+        return _pegawaiAud;
+    }
+
+    private transient PengalamanKerjaAudPath _pengalamanKerjaAud;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>pengalaman_kerja_aud</code> table
+     */
+    public PengalamanKerjaAudPath pengalamanKerjaAud() {
+        if (_pengalamanKerjaAud == null)
+            _pengalamanKerjaAud = new PengalamanKerjaAudPath(this, null, Keys.FK_PLM_KRJ_AUD_REV_REV.getInverseKey());
+
+        return _pengalamanKerjaAud;
+    }
+
+    private transient ProfilKeluargaAudPath _profilKeluargaAud;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>profil_keluarga_aud</code> table
+     */
+    public ProfilKeluargaAudPath profilKeluargaAud() {
+        if (_profilKeluargaAud == null)
+            _profilKeluargaAud = new ProfilKeluargaAudPath(this, null, Keys.FK_PRF_KLG_AUD_REV_REV.getInverseKey());
+
+        return _profilKeluargaAud;
+    }
+
+    private transient RiwayatCutiAudPath _riwayatCutiAud;
+
+    /**
+     * Get the implicit to-many join path to the <code>riwayat_cuti_aud</code>
+     * table
+     */
+    public RiwayatCutiAudPath riwayatCutiAud() {
+        if (_riwayatCutiAud == null)
+            _riwayatCutiAud = new RiwayatCutiAudPath(this, null, Keys.FK_RWT_CT_AUD_REV_REV.getInverseKey());
+
+        return _riwayatCutiAud;
+    }
+
+    private transient RiwayatKontrakAudPath _riwayatKontrakAud;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>riwayat_kontrak_aud</code> table
+     */
+    public RiwayatKontrakAudPath riwayatKontrakAud() {
+        if (_riwayatKontrakAud == null)
+            _riwayatKontrakAud = new RiwayatKontrakAudPath(this, null, Keys.FK_RWT_KTRK_AUD_REV_REV.getInverseKey());
+
+        return _riwayatKontrakAud;
+    }
+
+    private transient RiwayatMutasiAudPath _riwayatMutasiAud;
+
+    /**
+     * Get the implicit to-many join path to the <code>riwayat_mutasi_aud</code>
+     * table
+     */
+    public RiwayatMutasiAudPath riwayatMutasiAud() {
+        if (_riwayatMutasiAud == null)
+            _riwayatMutasiAud = new RiwayatMutasiAudPath(this, null, Keys.FK_RWT_MTS_AUD_REV_REV.getInverseKey());
+
+        return _riwayatMutasiAud;
+    }
+
+    private transient RiwayatSkAudPath _riwayatSkAud;
+
+    /**
+     * Get the implicit to-many join path to the <code>riwayat_sk_aud</code>
+     * table
+     */
+    public RiwayatSkAudPath riwayatSkAud() {
+        if (_riwayatSkAud == null)
+            _riwayatSkAud = new RiwayatSkAudPath(this, null, Keys.FK_RWT_SK_AUD_REV_REV.getInverseKey());
+
+        return _riwayatSkAud;
+    }
+
+    private transient RiwayatSpAudPath _riwayatSpAud;
+
+    /**
+     * Get the implicit to-many join path to the <code>riwayat_sp_aud</code>
+     * table
+     */
+    public RiwayatSpAudPath riwayatSpAud() {
+        if (_riwayatSpAud == null)
+            _riwayatSpAud = new RiwayatSpAudPath(this, null, Keys.FK_RWT_SP_AUD_REV_REV.getInverseKey());
+
+        return _riwayatSpAud;
+    }
+
+    private transient RiwayatTerminasiAudPath _riwayatTerminasiAud;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>riwayat_terminasi_aud</code> table
+     */
+    public RiwayatTerminasiAudPath riwayatTerminasiAud() {
+        if (_riwayatTerminasiAud == null)
+            _riwayatTerminasiAud = new RiwayatTerminasiAudPath(this, null, Keys.FK_RWT_TRM_AUD_REV_REV.getInverseKey());
+
+        return _riwayatTerminasiAud;
     }
 
     @Override

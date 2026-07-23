@@ -201,7 +201,7 @@ public class CutiApproval extends TableImpl<CutiApprovalRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.CUTI_APPROVAL_IS_DELETED_IDX);
+        return Arrays.asList(Indexes.CUTI_APPROVAL_IDX_CT_APV_APPROVER_ID, Indexes.CUTI_APPROVAL_IDX_CT_APV_CT_PGW_ID, Indexes.CUTI_APPROVAL_IDX_CT_APV_IS_DELETED, Indexes.CUTI_APPROVAL_IDX_CT_APV_JBT_ID);
     }
 
     @Override
@@ -216,7 +216,7 @@ public class CutiApproval extends TableImpl<CutiApprovalRecord> {
 
     @Override
     public List<ForeignKey<CutiApprovalRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK4DO9TSHK9XWO87722DTD94TDJ, Keys.FK95XGBDTGD8947KV02XHOFVKJ3, Keys.FKS0C49CHLM4R8CY8W1XAYSNKOS);
+        return Arrays.asList(Keys.FK_CT_APV_CT_PGW_CT_PGW_ID, Keys.FK_CT_APV_JBT_JBT_ID, Keys.FK_CT_APV_PGW_APPROVER_ID);
     }
 
     private transient CutiPegawaiPath _cutiPegawai;
@@ -226,21 +226,9 @@ public class CutiApproval extends TableImpl<CutiApprovalRecord> {
      */
     public CutiPegawaiPath cutiPegawai() {
         if (_cutiPegawai == null)
-            _cutiPegawai = new CutiPegawaiPath(this, Keys.FK4DO9TSHK9XWO87722DTD94TDJ, null);
+            _cutiPegawai = new CutiPegawaiPath(this, Keys.FK_CT_APV_CT_PGW_CT_PGW_ID, null);
 
         return _cutiPegawai;
-    }
-
-    private transient PegawaiPath _pegawai;
-
-    /**
-     * Get the implicit join path to the <code>pegawai</code> table.
-     */
-    public PegawaiPath pegawai() {
-        if (_pegawai == null)
-            _pegawai = new PegawaiPath(this, Keys.FK95XGBDTGD8947KV02XHOFVKJ3, null);
-
-        return _pegawai;
     }
 
     private transient JabatanPath _jabatan;
@@ -250,9 +238,21 @@ public class CutiApproval extends TableImpl<CutiApprovalRecord> {
      */
     public JabatanPath jabatan() {
         if (_jabatan == null)
-            _jabatan = new JabatanPath(this, Keys.FKS0C49CHLM4R8CY8W1XAYSNKOS, null);
+            _jabatan = new JabatanPath(this, Keys.FK_CT_APV_JBT_JBT_ID, null);
 
         return _jabatan;
+    }
+
+    private transient PegawaiPath _pegawai;
+
+    /**
+     * Get the implicit join path to the <code>pegawai</code> table.
+     */
+    public PegawaiPath pegawai() {
+        if (_pegawai == null)
+            _pegawai = new PegawaiPath(this, Keys.FK_CT_APV_PGW_APPROVER_ID, null);
+
+        return _pegawai;
     }
 
     @Override

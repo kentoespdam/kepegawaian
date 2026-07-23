@@ -246,7 +246,7 @@ public class Pelatihan extends TableImpl<PelatihanRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.PELATIHAN_IDX12TJ1XXAYSHC5JJ7FFSVA80WL);
+        return Arrays.asList(Indexes.PELATIHAN_IDX_LTH_BIO_ID, Indexes.PELATIHAN_IDX_LTH_IS_DELETED, Indexes.PELATIHAN_IDX_LTH_JNS_LTH_ID);
     }
 
     @Override
@@ -261,7 +261,7 @@ public class Pelatihan extends TableImpl<PelatihanRecord> {
 
     @Override
     public List<ForeignKey<PelatihanRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK3GLVWCGRYIUBQ55UMIIJPIWUA, Keys.FKOSGPC63QWYMBVKMKS2TCDJ52O);
+        return Arrays.asList(Keys.FK_LTH_BIO_BIO_ID, Keys.FK_LTH_JNS_LTH_JNS_LTH_ID);
     }
 
     private transient BiodataPath _biodata;
@@ -271,7 +271,7 @@ public class Pelatihan extends TableImpl<PelatihanRecord> {
      */
     public BiodataPath biodata() {
         if (_biodata == null)
-            _biodata = new BiodataPath(this, Keys.FK3GLVWCGRYIUBQ55UMIIJPIWUA, null);
+            _biodata = new BiodataPath(this, Keys.FK_LTH_BIO_BIO_ID, null);
 
         return _biodata;
     }
@@ -283,7 +283,7 @@ public class Pelatihan extends TableImpl<PelatihanRecord> {
      */
     public JenisPelatihanPath jenisPelatihan() {
         if (_jenisPelatihan == null)
-            _jenisPelatihan = new JenisPelatihanPath(this, Keys.FKOSGPC63QWYMBVKMKS2TCDJ52O, null);
+            _jenisPelatihan = new JenisPelatihanPath(this, Keys.FK_LTH_JNS_LTH_JNS_LTH_ID, null);
 
         return _jenisPelatihan;
     }

@@ -110,7 +110,7 @@ public class GajiBatchPotonganTkk extends TableImpl<GajiBatchPotonganTkkRecord> 
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.GAJI_BATCH_POTONGAN_TKK_IDX1XIPH00FI6YRQQ809M5LEJBJO, Indexes.GAJI_BATCH_POTONGAN_TKK_IDXRGUPSYAJKFUIB28N59HF45OIN);
+        return Arrays.asList(Indexes.GAJI_BATCH_POTONGAN_TKK_IDX_GJ_BT_PTG_TKK_BT_ID, Indexes.GAJI_BATCH_POTONGAN_TKK_IDX_GJ_BT_PTG_TKK_NIPAM);
     }
 
     @Override

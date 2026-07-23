@@ -191,7 +191,7 @@ public class JenjangPendidikan extends TableImpl<JenjangPendidikanRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.JENJANG_PENDIDIKAN_IDX46Y37O1995BN49FTPSMCBPRR6, Indexes.JENJANG_PENDIDIKAN_IDX79VC6DM5XUTWMG0KAD7AEGJWY);
+        return Arrays.asList(Indexes.JENJANG_PENDIDIKAN_IDX_JJG_DDK_IS_DELETED, Indexes.JENJANG_PENDIDIKAN_IDX_JJG_DDK_NAMA);
     }
 
     @Override
@@ -204,19 +204,6 @@ public class JenjangPendidikan extends TableImpl<JenjangPendidikanRecord> {
         return Keys.KEY_JENJANG_PENDIDIKAN_PRIMARY;
     }
 
-    private transient ProfilKeluargaPath _profilKeluarga;
-
-    /**
-     * Get the implicit to-many join path to the <code>profil_keluarga</code>
-     * table
-     */
-    public ProfilKeluargaPath profilKeluarga() {
-        if (_profilKeluarga == null)
-            _profilKeluarga = new ProfilKeluargaPath(this, null, Keys.FK1Q84V1JNHU5RJWT62MECUQ5P8.getInverseKey());
-
-        return _profilKeluarga;
-    }
-
     private transient BiodataPath _biodata;
 
     /**
@@ -224,7 +211,7 @@ public class JenjangPendidikan extends TableImpl<JenjangPendidikanRecord> {
      */
     public BiodataPath biodata() {
         if (_biodata == null)
-            _biodata = new BiodataPath(this, null, Keys.FKNEMSW9HC2KGF5GTC9HPWCVL1A.getInverseKey());
+            _biodata = new BiodataPath(this, null, Keys.FK_BIO_JJG_DDK_DDK_ID.getInverseKey());
 
         return _biodata;
     }
@@ -236,9 +223,22 @@ public class JenjangPendidikan extends TableImpl<JenjangPendidikanRecord> {
      */
     public PendidikanPath pendidikan() {
         if (_pendidikan == null)
-            _pendidikan = new PendidikanPath(this, null, Keys.FKTQ9HXLQ4CGHVMC2FFN2HGNJOY.getInverseKey());
+            _pendidikan = new PendidikanPath(this, null, Keys.FK_DDK_JJG_DDK_JJG_ID.getInverseKey());
 
         return _pendidikan;
+    }
+
+    private transient ProfilKeluargaPath _profilKeluarga;
+
+    /**
+     * Get the implicit to-many join path to the <code>profil_keluarga</code>
+     * table
+     */
+    public ProfilKeluargaPath profilKeluarga() {
+        if (_profilKeluarga == null)
+            _profilKeluarga = new ProfilKeluargaPath(this, null, Keys.FK_PRF_KLG_JJG_DDK_DDK_ID.getInverseKey());
+
+        return _profilKeluarga;
     }
 
     @Override

@@ -191,7 +191,7 @@ public class GajiPhdpAud extends TableImpl<GajiPhdpAudRecord> {
 
     @Override
     public List<ForeignKey<GajiPhdpAudRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FKGLJI8PRKRK7SSDLR0T5WH6R3Q);
+        return Arrays.asList(Keys.FK_GJ_PHDP_AUD_REV_REV);
     }
 
     private transient RevinfoPath _revinfo;
@@ -201,7 +201,7 @@ public class GajiPhdpAud extends TableImpl<GajiPhdpAudRecord> {
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)
-            _revinfo = new RevinfoPath(this, Keys.FKGLJI8PRKRK7SSDLR0T5WH6R3Q, null);
+            _revinfo = new RevinfoPath(this, Keys.FK_GJ_PHDP_AUD_REV_REV, null);
 
         return _revinfo;
     }

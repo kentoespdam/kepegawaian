@@ -189,7 +189,7 @@ public class DetailDasarGaji extends TableImpl<DetailDasarGajiRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.DETAIL_DASAR_GAJI_IDX8B01OBA43819LT5SEJBY8FRDS, Indexes.DETAIL_DASAR_GAJI_IDXCUG080NFL52X7B0FHOKPMGNP9);
+        return Arrays.asList(Indexes.DETAIL_DASAR_GAJI_IDX_DTL_DSR_GJ_DSR_GJ_ID, Indexes.DETAIL_DASAR_GAJI_IDX_DTL_DSR_GJ_IS_DELETED, Indexes.DETAIL_DASAR_GAJI_IDX_DTL_DSR_GJ_MKG);
     }
 
     @Override
@@ -204,7 +204,7 @@ public class DetailDasarGaji extends TableImpl<DetailDasarGajiRecord> {
 
     @Override
     public List<ForeignKey<DetailDasarGajiRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FKBX0UYJS3UY0ELIOAH79DA7YXD);
+        return Arrays.asList(Keys.FK_DTL_DSR_GJ_DSR_GJ_DSR_GJ_ID);
     }
 
     private transient DasarGajiPath _dasarGaji;
@@ -214,7 +214,7 @@ public class DetailDasarGaji extends TableImpl<DetailDasarGajiRecord> {
      */
     public DasarGajiPath dasarGaji() {
         if (_dasarGaji == null)
-            _dasarGaji = new DasarGajiPath(this, Keys.FKBX0UYJS3UY0ELIOAH79DA7YXD, null);
+            _dasarGaji = new DasarGajiPath(this, Keys.FK_DTL_DSR_GJ_DSR_GJ_DSR_GJ_ID, null);
 
         return _dasarGaji;
     }

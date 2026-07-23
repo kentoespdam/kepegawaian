@@ -256,7 +256,7 @@ public class PendidikanAud extends TableImpl<PendidikanAudRecord> {
 
     @Override
     public List<ForeignKey<PendidikanAudRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FKB2MJB0G4I7T2F7U0R33UIKM28);
+        return Arrays.asList(Keys.FK_DDK_AUD_REV_REV);
     }
 
     private transient RevinfoPath _revinfo;
@@ -266,7 +266,7 @@ public class PendidikanAud extends TableImpl<PendidikanAudRecord> {
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)
-            _revinfo = new RevinfoPath(this, Keys.FKB2MJB0G4I7T2F7U0R33UIKM28, null);
+            _revinfo = new RevinfoPath(this, Keys.FK_DDK_AUD_REV_REV, null);
 
         return _revinfo;
     }

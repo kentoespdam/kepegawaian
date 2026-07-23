@@ -197,13 +197,13 @@ public class PegawaiQueryRepository {
 
         var total = dsl.selectCount()
                 .from(PEGAWAI)
-                .leftJoin(BIODATA).on(PEGAWAI.NIK.eq(BIODATA.NIK))
+                .leftJoin(BIODATA).on(PEGAWAI.BIODATA_ID.eq(BIODATA.NIK))
                 .where(conditions)
                 .fetchOneInto(Long.class);
 
         var rows = dsl.select(pegawaiResponseFields())
                 .from(PEGAWAI)
-                .leftJoin(BIODATA).on(PEGAWAI.NIK.eq(BIODATA.NIK))
+                .leftJoin(BIODATA).on(PEGAWAI.BIODATA_ID.eq(BIODATA.NIK))
                 .leftJoin(PENDIDIKAN).on(PENDIDIKAN.BIODATA_ID.eq(BIODATA.NIK)
                         .and(PENDIDIKAN.IS_LATEST.eq((byte) 1))
                         .and(PENDIDIKAN.IS_DELETED.eq(false)))
@@ -228,7 +228,7 @@ public class PegawaiQueryRepository {
 
         return dsl.select(pegawaiListResponseFields())
                 .from(PEGAWAI)
-                .leftJoin(BIODATA).on(PEGAWAI.NIK.eq(BIODATA.NIK))
+                .leftJoin(BIODATA).on(PEGAWAI.BIODATA_ID.eq(BIODATA.NIK))
                 .leftJoin(ORGANISASI).on(PEGAWAI.ORGANISASI_ID.eq(ORGANISASI.ID))
                 .leftJoin(JABATAN).on(PEGAWAI.JABATAN_ID.eq(JABATAN.ID))
                 .leftJoin(LEVEL).on(JABATAN.LEVEL_ID.eq(LEVEL.ID))
@@ -244,7 +244,7 @@ public class PegawaiQueryRepository {
         }
         return dsl.select(pegawaiListResponseFields())
                 .from(PEGAWAI)
-                .leftJoin(BIODATA).on(PEGAWAI.NIK.eq(BIODATA.NIK))
+                .leftJoin(BIODATA).on(PEGAWAI.BIODATA_ID.eq(BIODATA.NIK))
                 .leftJoin(ORGANISASI).on(PEGAWAI.ORGANISASI_ID.eq(ORGANISASI.ID))
                 .leftJoin(JABATAN).on(PEGAWAI.JABATAN_ID.eq(JABATAN.ID))
                 .leftJoin(LEVEL).on(JABATAN.LEVEL_ID.eq(LEVEL.ID))
@@ -259,7 +259,7 @@ public class PegawaiQueryRepository {
         }
         return dsl.select(pegawaiResponseFields())
                 .from(PEGAWAI)
-                .leftJoin(BIODATA).on(PEGAWAI.NIK.eq(BIODATA.NIK))
+                .leftJoin(BIODATA).on(PEGAWAI.BIODATA_ID.eq(BIODATA.NIK))
                 .leftJoin(PENDIDIKAN).on(PENDIDIKAN.BIODATA_ID.eq(BIODATA.NIK)
                         .and(PENDIDIKAN.IS_LATEST.eq((byte) 1))
                         .and(PENDIDIKAN.IS_DELETED.eq(false)))
@@ -289,7 +289,7 @@ public class PegawaiQueryRepository {
         return dsl.select(PegawaiDetailSelects.detailFields())
                 .select(kartuIdentitasMultiset)
                 .from(PEGAWAI)
-                .leftJoin(BIODATA).on(PEGAWAI.NIK.eq(BIODATA.NIK))
+                .leftJoin(BIODATA).on(PEGAWAI.BIODATA_ID.eq(BIODATA.NIK))
                 .leftJoin(JENJANG_PENDIDIKAN).on(BIODATA.PENDIDIKAN_ID.eq(JENJANG_PENDIDIKAN.ID))
                 .leftJoin(ORGANISASI).on(PEGAWAI.ORGANISASI_ID.eq(ORGANISASI.ID))
                 .leftJoin(JABATAN).on(PEGAWAI.JABATAN_ID.eq(JABATAN.ID))

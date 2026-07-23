@@ -141,7 +141,7 @@ public class GajiParameterSetting extends TableImpl<GajiParameterSettingRecord> 
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.GAJI_PARAMETER_SETTING_IDX234U6ESRU90NL6L4SXKQYDRLY);
+        return Arrays.asList(Indexes.GAJI_PARAMETER_SETTING_IDX_GJ_PRM_STG_IS_DELETED);
     }
 
     @Override

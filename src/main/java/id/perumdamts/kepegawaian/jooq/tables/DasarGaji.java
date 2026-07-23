@@ -190,7 +190,7 @@ public class DasarGaji extends TableImpl<DasarGajiRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.DASAR_GAJI_IDX5WAQQUKREQ6VLFJC6GUNOJV0L, Indexes.DASAR_GAJI_IDXKT4M34X9X881KLHUWJF2WOTR5, Indexes.DASAR_GAJI_IDXQ19OVUYIRXVU21W04GG9P51EC);
+        return Arrays.asList(Indexes.DASAR_GAJI_IDX_DSR_GJ_AKTIF, Indexes.DASAR_GAJI_IDX_DSR_GJ_DESKRIPSI, Indexes.DASAR_GAJI_IDX_DSR_GJ_IS_DELETED);
     }
 
     @Override
@@ -211,7 +211,7 @@ public class DasarGaji extends TableImpl<DasarGajiRecord> {
      */
     public DetailDasarGajiPath detailDasarGaji() {
         if (_detailDasarGaji == null)
-            _detailDasarGaji = new DetailDasarGajiPath(this, null, Keys.FKBX0UYJS3UY0ELIOAH79DA7YXD.getInverseKey());
+            _detailDasarGaji = new DetailDasarGajiPath(this, null, Keys.FK_DTL_DSR_GJ_DSR_GJ_DSR_GJ_ID.getInverseKey());
 
         return _detailDasarGaji;
     }

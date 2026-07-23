@@ -174,7 +174,7 @@ public class JenisKeahlian extends TableImpl<JenisKeahlianRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.JENIS_KEAHLIAN_IDX7XFXS7VO50DKDYMMPDUJUI29W);
+        return Arrays.asList(Indexes.JENIS_KEAHLIAN_IDX_JNS_AHL_IS_DELETED);
     }
 
     @Override
@@ -194,7 +194,7 @@ public class JenisKeahlian extends TableImpl<JenisKeahlianRecord> {
      */
     public KeahlianPath keahlian() {
         if (_keahlian == null)
-            _keahlian = new KeahlianPath(this, null, Keys.FK5J2F24CM94BMD91XBCLNCVJTB.getInverseKey());
+            _keahlian = new KeahlianPath(this, null, Keys.FK_AHL_JNS_AHL_JNS_AHL_ID.getInverseKey());
 
         return _keahlian;
     }

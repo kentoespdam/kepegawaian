@@ -49,7 +49,7 @@ public class CutiApprovalQueryRepository {
                 )
                 .from(CUTI_APPROVAL)
                 .leftJoin(PEGAWAI).on(CUTI_APPROVAL.APPROVER_ID.eq(PEGAWAI.ID))
-                .leftJoin(BIODATA).on(PEGAWAI.NIK.eq(BIODATA.NIK))
+                .leftJoin(BIODATA).on(PEGAWAI.BIODATA_ID.eq(BIODATA.NIK))
                 .leftJoin(JABATAN).on(CUTI_APPROVAL.JABATAN_ID.eq(JABATAN.ID))
                 .where(where)
                 .orderBy(sortOrder)

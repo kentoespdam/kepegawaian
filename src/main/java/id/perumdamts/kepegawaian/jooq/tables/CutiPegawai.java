@@ -311,7 +311,7 @@ public class CutiPegawai extends TableImpl<CutiPegawaiRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.CUTI_PEGAWAI_IS_DELETED_IDX);
+        return Arrays.asList(Indexes.CUTI_PEGAWAI_IDX_CT_PGW_IS_DELETED, Indexes.CUTI_PEGAWAI_IDX_CT_PGW_JBT_ID, Indexes.CUTI_PEGAWAI_IDX_CT_PGW_JNS_CT_ID, Indexes.CUTI_PEGAWAI_IDX_CT_PGW_ORG_ID, Indexes.CUTI_PEGAWAI_IDX_CT_PGW_PGW_ID, Indexes.CUTI_PEGAWAI_IDX_CT_PGW_PIC_SAAT_INI_ID, Indexes.CUTI_PEGAWAI_IDX_CT_PGW_SUB_JNS_CT_ID);
     }
 
     @Override
@@ -326,7 +326,59 @@ public class CutiPegawai extends TableImpl<CutiPegawaiRecord> {
 
     @Override
     public List<ForeignKey<CutiPegawaiRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK94QGGCE9T69GTATC46XN729E1, Keys.FKDVYNO26I1J90VHD43YY1JAXH5, Keys.FKEDHJ9EMRNV8MSW77768D02VBG, Keys.FKHOOAGJ7GJ49E1CFQY2J60924M, Keys.FKRNP3OIP017RVU8F3VCLHE4MXN, Keys.FKSKGMHY1RCLHVUSX4X7OW3TK66);
+        return Arrays.asList(Keys.FK_CT_PGW_CT_JNS_JNS_CT_ID, Keys.FK_CT_PGW_CT_JNS_SUB_JNS_CT_ID, Keys.FK_CT_PGW_JBT_JBT_ID, Keys.FK_CT_PGW_JBT_PIC_SAAT_INI_ID, Keys.FK_CT_PGW_ORG_ORG_ID, Keys.FK_CT_PGW_PGW_PGW_ID);
+    }
+
+    private transient CutiJenisPath _fkCtPgwCtJnsJnsCtId;
+
+    /**
+     * Get the implicit join path to the <code>cuti_jenis</code> table, via the
+     * <code>fk_ct_pgw_ct_jns_jns_ct_id</code> key.
+     */
+    public CutiJenisPath fkCtPgwCtJnsJnsCtId() {
+        if (_fkCtPgwCtJnsJnsCtId == null)
+            _fkCtPgwCtJnsJnsCtId = new CutiJenisPath(this, Keys.FK_CT_PGW_CT_JNS_JNS_CT_ID, null);
+
+        return _fkCtPgwCtJnsJnsCtId;
+    }
+
+    private transient CutiJenisPath _fkCtPgwCtJnsSubJnsCtId;
+
+    /**
+     * Get the implicit join path to the <code>cuti_jenis</code> table, via the
+     * <code>fk_ct_pgw_ct_jns_sub_jns_ct_id</code> key.
+     */
+    public CutiJenisPath fkCtPgwCtJnsSubJnsCtId() {
+        if (_fkCtPgwCtJnsSubJnsCtId == null)
+            _fkCtPgwCtJnsSubJnsCtId = new CutiJenisPath(this, Keys.FK_CT_PGW_CT_JNS_SUB_JNS_CT_ID, null);
+
+        return _fkCtPgwCtJnsSubJnsCtId;
+    }
+
+    private transient JabatanPath _fkCtPgwJbtJbtId;
+
+    /**
+     * Get the implicit join path to the <code>jabatan</code> table, via the
+     * <code>fk_ct_pgw_jbt_jbt_id</code> key.
+     */
+    public JabatanPath fkCtPgwJbtJbtId() {
+        if (_fkCtPgwJbtJbtId == null)
+            _fkCtPgwJbtJbtId = new JabatanPath(this, Keys.FK_CT_PGW_JBT_JBT_ID, null);
+
+        return _fkCtPgwJbtJbtId;
+    }
+
+    private transient JabatanPath _fkCtPgwJbtPicSaatIniId;
+
+    /**
+     * Get the implicit join path to the <code>jabatan</code> table, via the
+     * <code>fk_ct_pgw_jbt_pic_saat_ini_id</code> key.
+     */
+    public JabatanPath fkCtPgwJbtPicSaatIniId() {
+        if (_fkCtPgwJbtPicSaatIniId == null)
+            _fkCtPgwJbtPicSaatIniId = new JabatanPath(this, Keys.FK_CT_PGW_JBT_PIC_SAAT_INI_ID, null);
+
+        return _fkCtPgwJbtPicSaatIniId;
     }
 
     private transient OrganisasiPath _organisasi;
@@ -336,48 +388,9 @@ public class CutiPegawai extends TableImpl<CutiPegawaiRecord> {
      */
     public OrganisasiPath organisasi() {
         if (_organisasi == null)
-            _organisasi = new OrganisasiPath(this, Keys.FK94QGGCE9T69GTATC46XN729E1, null);
+            _organisasi = new OrganisasiPath(this, Keys.FK_CT_PGW_ORG_ORG_ID, null);
 
         return _organisasi;
-    }
-
-    private transient JabatanPath _fkdvyno26i1j90vhd43yy1jaxh5;
-
-    /**
-     * Get the implicit join path to the <code>jabatan</code> table, via the
-     * <code>FKdvyno26i1j90vhd43yy1jaxh5</code> key.
-     */
-    public JabatanPath fkdvyno26i1j90vhd43yy1jaxh5() {
-        if (_fkdvyno26i1j90vhd43yy1jaxh5 == null)
-            _fkdvyno26i1j90vhd43yy1jaxh5 = new JabatanPath(this, Keys.FKDVYNO26I1J90VHD43YY1JAXH5, null);
-
-        return _fkdvyno26i1j90vhd43yy1jaxh5;
-    }
-
-    private transient JabatanPath _fkedhj9emrnv8msw77768d02vbg;
-
-    /**
-     * Get the implicit join path to the <code>jabatan</code> table, via the
-     * <code>FKedhj9emrnv8msw77768d02vbg</code> key.
-     */
-    public JabatanPath fkedhj9emrnv8msw77768d02vbg() {
-        if (_fkedhj9emrnv8msw77768d02vbg == null)
-            _fkedhj9emrnv8msw77768d02vbg = new JabatanPath(this, Keys.FKEDHJ9EMRNV8MSW77768D02VBG, null);
-
-        return _fkedhj9emrnv8msw77768d02vbg;
-    }
-
-    private transient CutiJenisPath _fkhooagj7gj49e1cfqy2j60924m;
-
-    /**
-     * Get the implicit join path to the <code>cuti_jenis</code> table, via the
-     * <code>FKhooagj7gj49e1cfqy2j60924m</code> key.
-     */
-    public CutiJenisPath fkhooagj7gj49e1cfqy2j60924m() {
-        if (_fkhooagj7gj49e1cfqy2j60924m == null)
-            _fkhooagj7gj49e1cfqy2j60924m = new CutiJenisPath(this, Keys.FKHOOAGJ7GJ49E1CFQY2J60924M, null);
-
-        return _fkhooagj7gj49e1cfqy2j60924m;
     }
 
     private transient PegawaiPath _pegawai;
@@ -387,22 +400,22 @@ public class CutiPegawai extends TableImpl<CutiPegawaiRecord> {
      */
     public PegawaiPath pegawai() {
         if (_pegawai == null)
-            _pegawai = new PegawaiPath(this, Keys.FKRNP3OIP017RVU8F3VCLHE4MXN, null);
+            _pegawai = new PegawaiPath(this, Keys.FK_CT_PGW_PGW_PGW_ID, null);
 
         return _pegawai;
     }
 
-    private transient CutiJenisPath _fkskgmhy1rclhvusx4x7ow3tk66;
+    private transient CutiApprovalChainPath _cutiApprovalChain;
 
     /**
-     * Get the implicit join path to the <code>cuti_jenis</code> table, via the
-     * <code>FKskgmhy1rclhvusx4x7ow3tk66</code> key.
+     * Get the implicit to-many join path to the
+     * <code>cuti_approval_chain</code> table
      */
-    public CutiJenisPath fkskgmhy1rclhvusx4x7ow3tk66() {
-        if (_fkskgmhy1rclhvusx4x7ow3tk66 == null)
-            _fkskgmhy1rclhvusx4x7ow3tk66 = new CutiJenisPath(this, Keys.FKSKGMHY1RCLHVUSX4X7OW3TK66, null);
+    public CutiApprovalChainPath cutiApprovalChain() {
+        if (_cutiApprovalChain == null)
+            _cutiApprovalChain = new CutiApprovalChainPath(this, null, Keys.FK_CT_APV_CHN_CT_PGW_REF_CT_ID.getInverseKey());
 
-        return _fkskgmhy1rclhvusx4x7ow3tk66;
+        return _cutiApprovalChain;
     }
 
     private transient CutiApprovalPath _cutiApproval;
@@ -413,7 +426,7 @@ public class CutiPegawai extends TableImpl<CutiPegawaiRecord> {
      */
     public CutiApprovalPath cutiApproval() {
         if (_cutiApproval == null)
-            _cutiApproval = new CutiApprovalPath(this, null, Keys.FK4DO9TSHK9XWO87722DTD94TDJ.getInverseKey());
+            _cutiApproval = new CutiApprovalPath(this, null, Keys.FK_CT_APV_CT_PGW_CT_PGW_ID.getInverseKey());
 
         return _cutiApproval;
     }
@@ -426,22 +439,9 @@ public class CutiPegawai extends TableImpl<CutiPegawaiRecord> {
      */
     public CutiKlaimDetailPath cutiKlaimDetail() {
         if (_cutiKlaimDetail == null)
-            _cutiKlaimDetail = new CutiKlaimDetailPath(this, null, Keys.FK793V6RC4HKWWX6PXTRO6HLM22.getInverseKey());
+            _cutiKlaimDetail = new CutiKlaimDetailPath(this, null, Keys.FK_CT_KLM_DTL_CT_PGW_REF_CT_ID.getInverseKey());
 
         return _cutiKlaimDetail;
-    }
-
-    private transient CutiApprovalChainPath _cutiApprovalChain;
-
-    /**
-     * Get the implicit to-many join path to the
-     * <code>cuti_approval_chain</code> table
-     */
-    public CutiApprovalChainPath cutiApprovalChain() {
-        if (_cutiApprovalChain == null)
-            _cutiApprovalChain = new CutiApprovalChainPath(this, null, Keys.FKN3AO94L5VYRGIH77RKXOEB0SF.getInverseKey());
-
-        return _cutiApprovalChain;
     }
 
     @Override

@@ -146,7 +146,7 @@ public class GajiPhdp extends TableImpl<GajiPhdpRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.GAJI_PHDP_IDXKKPGDI07UKO10CVEN4E2KJUC1);
+        return Arrays.asList(Indexes.GAJI_PHDP_IDX_GJ_PHDP_IS_DELETED);
     }
 
     @Override
@@ -161,7 +161,7 @@ public class GajiPhdp extends TableImpl<GajiPhdpRecord> {
 
     @Override
     public List<UniqueKey<GajiPhdpRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.KEY_GAJI_PHDP_UK10J12E3AAFLV25Q4DTHLOK5UB);
+        return Arrays.asList(Keys.KEY_GAJI_PHDP_UK_GJ_PHDP_URUT);
     }
 
     @Override

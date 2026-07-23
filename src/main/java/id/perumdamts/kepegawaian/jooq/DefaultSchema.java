@@ -5,7 +5,6 @@ package id.perumdamts.kepegawaian.jooq;
 
 
 import id.perumdamts.kepegawaian.jooq.tables.AlasanBerhenti;
-import id.perumdamts.kepegawaian.jooq.tables.AlasanBerhentiAud;
 import id.perumdamts.kepegawaian.jooq.tables.AlatKerja;
 import id.perumdamts.kepegawaian.jooq.tables.Apd;
 import id.perumdamts.kepegawaian.jooq.tables.Biodata;
@@ -46,19 +45,13 @@ import id.perumdamts.kepegawaian.jooq.tables.GajiProfilAud;
 import id.perumdamts.kepegawaian.jooq.tables.GajiTunjangan;
 import id.perumdamts.kepegawaian.jooq.tables.GajiTunjanganAud;
 import id.perumdamts.kepegawaian.jooq.tables.Golongan;
-import id.perumdamts.kepegawaian.jooq.tables.GolonganAud;
 import id.perumdamts.kepegawaian.jooq.tables.Grade;
-import id.perumdamts.kepegawaian.jooq.tables.GradeAud;
 import id.perumdamts.kepegawaian.jooq.tables.HariLibur;
-import id.perumdamts.kepegawaian.jooq.tables.HariLiburAud;
 import id.perumdamts.kepegawaian.jooq.tables.Jabatan;
-import id.perumdamts.kepegawaian.jooq.tables.JabatanAud;
 import id.perumdamts.kepegawaian.jooq.tables.JenisKeahlian;
 import id.perumdamts.kepegawaian.jooq.tables.JenisKitas;
-import id.perumdamts.kepegawaian.jooq.tables.JenisKitasAud;
 import id.perumdamts.kepegawaian.jooq.tables.JenisPelatihan;
 import id.perumdamts.kepegawaian.jooq.tables.JenisSp;
-import id.perumdamts.kepegawaian.jooq.tables.JenisSpAud;
 import id.perumdamts.kepegawaian.jooq.tables.JenjangPendidikan;
 import id.perumdamts.kepegawaian.jooq.tables.KartuIdentitas;
 import id.perumdamts.kepegawaian.jooq.tables.KartuIdentitasAud;
@@ -69,9 +62,7 @@ import id.perumdamts.kepegawaian.jooq.tables.LampiranProfilAud;
 import id.perumdamts.kepegawaian.jooq.tables.LampiranSk;
 import id.perumdamts.kepegawaian.jooq.tables.LampiranSkAud;
 import id.perumdamts.kepegawaian.jooq.tables.Level;
-import id.perumdamts.kepegawaian.jooq.tables.LevelAud;
 import id.perumdamts.kepegawaian.jooq.tables.Organisasi;
-import id.perumdamts.kepegawaian.jooq.tables.OrganisasiAud;
 import id.perumdamts.kepegawaian.jooq.tables.Pegawai;
 import id.perumdamts.kepegawaian.jooq.tables.PegawaiAud;
 import id.perumdamts.kepegawaian.jooq.tables.Pelatihan;
@@ -82,7 +73,6 @@ import id.perumdamts.kepegawaian.jooq.tables.PengalamanKerja;
 import id.perumdamts.kepegawaian.jooq.tables.PengalamanKerjaAud;
 import id.perumdamts.kepegawaian.jooq.tables.PrefRole;
 import id.perumdamts.kepegawaian.jooq.tables.Profesi;
-import id.perumdamts.kepegawaian.jooq.tables.ProfesiAud;
 import id.perumdamts.kepegawaian.jooq.tables.ProfilKeluarga;
 import id.perumdamts.kepegawaian.jooq.tables.ProfilKeluargaAud;
 import id.perumdamts.kepegawaian.jooq.tables.ProfilUpdate;
@@ -101,9 +91,7 @@ import id.perumdamts.kepegawaian.jooq.tables.RiwayatSpAud;
 import id.perumdamts.kepegawaian.jooq.tables.RiwayatTerminasi;
 import id.perumdamts.kepegawaian.jooq.tables.RiwayatTerminasiAud;
 import id.perumdamts.kepegawaian.jooq.tables.RumahDinas;
-import id.perumdamts.kepegawaian.jooq.tables.RumahDinasAud;
 import id.perumdamts.kepegawaian.jooq.tables.SanksiSp;
-import id.perumdamts.kepegawaian.jooq.tables.SanksiSpAud;
 import id.perumdamts.kepegawaian.jooq.tables.StatistikPegawai;
 import id.perumdamts.kepegawaian.jooq.tables.VPegawai;
 
@@ -132,11 +120,6 @@ public class DefaultSchema extends SchemaImpl {
      * The table <code>alasan_berhenti</code>.
      */
     public final AlasanBerhenti ALASAN_BERHENTI = AlasanBerhenti.ALASAN_BERHENTI;
-
-    /**
-     * The table <code>alasan_berhenti_aud</code>.
-     */
-    public final AlasanBerhentiAud ALASAN_BERHENTI_AUD = AlasanBerhentiAud.ALASAN_BERHENTI_AUD;
 
     /**
      * The table <code>alat_kerja</code>.
@@ -339,19 +322,9 @@ public class DefaultSchema extends SchemaImpl {
     public final Golongan GOLONGAN = Golongan.GOLONGAN;
 
     /**
-     * The table <code>golongan_aud</code>.
-     */
-    public final GolonganAud GOLONGAN_AUD = GolonganAud.GOLONGAN_AUD;
-
-    /**
      * The table <code>grade</code>.
      */
     public final Grade GRADE = Grade.GRADE;
-
-    /**
-     * The table <code>grade_aud</code>.
-     */
-    public final GradeAud GRADE_AUD = GradeAud.GRADE_AUD;
 
     /**
      * The table <code>hari_libur</code>.
@@ -359,19 +332,9 @@ public class DefaultSchema extends SchemaImpl {
     public final HariLibur HARI_LIBUR = HariLibur.HARI_LIBUR;
 
     /**
-     * The table <code>hari_libur_aud</code>.
-     */
-    public final HariLiburAud HARI_LIBUR_AUD = HariLiburAud.HARI_LIBUR_AUD;
-
-    /**
      * The table <code>jabatan</code>.
      */
     public final Jabatan JABATAN = Jabatan.JABATAN;
-
-    /**
-     * The table <code>jabatan_aud</code>.
-     */
-    public final JabatanAud JABATAN_AUD = JabatanAud.JABATAN_AUD;
 
     /**
      * The table <code>jenis_keahlian</code>.
@@ -384,11 +347,6 @@ public class DefaultSchema extends SchemaImpl {
     public final JenisKitas JENIS_KITAS = JenisKitas.JENIS_KITAS;
 
     /**
-     * The table <code>jenis_kitas_aud</code>.
-     */
-    public final JenisKitasAud JENIS_KITAS_AUD = JenisKitasAud.JENIS_KITAS_AUD;
-
-    /**
      * The table <code>jenis_pelatihan</code>.
      */
     public final JenisPelatihan JENIS_PELATIHAN = JenisPelatihan.JENIS_PELATIHAN;
@@ -397,11 +355,6 @@ public class DefaultSchema extends SchemaImpl {
      * The table <code>jenis_sp</code>.
      */
     public final JenisSp JENIS_SP = JenisSp.JENIS_SP;
-
-    /**
-     * The table <code>jenis_sp_aud</code>.
-     */
-    public final JenisSpAud JENIS_SP_AUD = JenisSpAud.JENIS_SP_AUD;
 
     /**
      * The table <code>jenjang_pendidikan</code>.
@@ -454,19 +407,9 @@ public class DefaultSchema extends SchemaImpl {
     public final Level LEVEL = Level.LEVEL;
 
     /**
-     * The table <code>level_aud</code>.
-     */
-    public final LevelAud LEVEL_AUD = LevelAud.LEVEL_AUD;
-
-    /**
      * The table <code>organisasi</code>.
      */
     public final Organisasi ORGANISASI = Organisasi.ORGANISASI;
-
-    /**
-     * The table <code>organisasi_aud</code>.
-     */
-    public final OrganisasiAud ORGANISASI_AUD = OrganisasiAud.ORGANISASI_AUD;
 
     /**
      * The table <code>pegawai</code>.
@@ -517,11 +460,6 @@ public class DefaultSchema extends SchemaImpl {
      * The table <code>profesi</code>.
      */
     public final Profesi PROFESI = Profesi.PROFESI;
-
-    /**
-     * The table <code>profesi_aud</code>.
-     */
-    public final ProfesiAud PROFESI_AUD = ProfesiAud.PROFESI_AUD;
 
     /**
      * The table <code>profil_keluarga</code>.
@@ -614,19 +552,9 @@ public class DefaultSchema extends SchemaImpl {
     public final RumahDinas RUMAH_DINAS = RumahDinas.RUMAH_DINAS;
 
     /**
-     * The table <code>rumah_dinas_aud</code>.
-     */
-    public final RumahDinasAud RUMAH_DINAS_AUD = RumahDinasAud.RUMAH_DINAS_AUD;
-
-    /**
      * The table <code>sanksi_sp</code>.
      */
     public final SanksiSp SANKSI_SP = SanksiSp.SANKSI_SP;
-
-    /**
-     * The table <code>sanksi_sp_aud</code>.
-     */
-    public final SanksiSpAud SANKSI_SP_AUD = SanksiSpAud.SANKSI_SP_AUD;
 
     /**
      * The table <code>statistik_pegawai</code>.
@@ -655,7 +583,6 @@ public class DefaultSchema extends SchemaImpl {
     public final List<Table<?>> getTables() {
         return Arrays.asList(
             AlasanBerhenti.ALASAN_BERHENTI,
-            AlasanBerhentiAud.ALASAN_BERHENTI_AUD,
             AlatKerja.ALAT_KERJA,
             Apd.APD,
             Biodata.BIODATA,
@@ -696,19 +623,13 @@ public class DefaultSchema extends SchemaImpl {
             GajiTunjangan.GAJI_TUNJANGAN,
             GajiTunjanganAud.GAJI_TUNJANGAN_AUD,
             Golongan.GOLONGAN,
-            GolonganAud.GOLONGAN_AUD,
             Grade.GRADE,
-            GradeAud.GRADE_AUD,
             HariLibur.HARI_LIBUR,
-            HariLiburAud.HARI_LIBUR_AUD,
             Jabatan.JABATAN,
-            JabatanAud.JABATAN_AUD,
             JenisKeahlian.JENIS_KEAHLIAN,
             JenisKitas.JENIS_KITAS,
-            JenisKitasAud.JENIS_KITAS_AUD,
             JenisPelatihan.JENIS_PELATIHAN,
             JenisSp.JENIS_SP,
-            JenisSpAud.JENIS_SP_AUD,
             JenjangPendidikan.JENJANG_PENDIDIKAN,
             KartuIdentitas.KARTU_IDENTITAS,
             KartuIdentitasAud.KARTU_IDENTITAS_AUD,
@@ -719,9 +640,7 @@ public class DefaultSchema extends SchemaImpl {
             LampiranSk.LAMPIRAN_SK,
             LampiranSkAud.LAMPIRAN_SK_AUD,
             Level.LEVEL,
-            LevelAud.LEVEL_AUD,
             Organisasi.ORGANISASI,
-            OrganisasiAud.ORGANISASI_AUD,
             Pegawai.PEGAWAI,
             PegawaiAud.PEGAWAI_AUD,
             Pelatihan.PELATIHAN,
@@ -732,7 +651,6 @@ public class DefaultSchema extends SchemaImpl {
             PengalamanKerjaAud.PENGALAMAN_KERJA_AUD,
             PrefRole.PREF_ROLE,
             Profesi.PROFESI,
-            ProfesiAud.PROFESI_AUD,
             ProfilKeluarga.PROFIL_KELUARGA,
             ProfilKeluargaAud.PROFIL_KELUARGA_AUD,
             ProfilUpdate.PROFIL_UPDATE,
@@ -751,9 +669,7 @@ public class DefaultSchema extends SchemaImpl {
             RiwayatTerminasi.RIWAYAT_TERMINASI,
             RiwayatTerminasiAud.RIWAYAT_TERMINASI_AUD,
             RumahDinas.RUMAH_DINAS,
-            RumahDinasAud.RUMAH_DINAS_AUD,
             SanksiSp.SANKSI_SP,
-            SanksiSpAud.SANKSI_SP_AUD,
             StatistikPegawai.STATISTIK_PEGAWAI,
             VPegawai.V_PEGAWAI
         );

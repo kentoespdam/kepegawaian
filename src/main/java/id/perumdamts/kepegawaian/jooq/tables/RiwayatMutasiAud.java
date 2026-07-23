@@ -297,7 +297,7 @@ public class RiwayatMutasiAud extends TableImpl<RiwayatMutasiAudRecord> {
 
     @Override
     public List<ForeignKey<RiwayatMutasiAudRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FKB3GGXR4NORSCHWQCYFR987AXY);
+        return Arrays.asList(Keys.FK_RWT_MTS_AUD_REV_REV);
     }
 
     private transient RevinfoPath _revinfo;
@@ -307,7 +307,7 @@ public class RiwayatMutasiAud extends TableImpl<RiwayatMutasiAudRecord> {
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)
-            _revinfo = new RevinfoPath(this, Keys.FKB3GGXR4NORSCHWQCYFR987AXY, null);
+            _revinfo = new RevinfoPath(this, Keys.FK_RWT_MTS_AUD_REV_REV, null);
 
         return _revinfo;
     }

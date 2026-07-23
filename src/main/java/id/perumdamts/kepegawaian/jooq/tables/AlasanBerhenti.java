@@ -179,7 +179,7 @@ public class AlasanBerhenti extends TableImpl<AlasanBerhentiRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.ALASAN_BERHENTI_IDX5HKVINQ0K05KRW4TGAFTM95QA, Indexes.ALASAN_BERHENTI_IDXD3W33NN12U6CXHM7HSXWMQT8C);
+        return Arrays.asList(Indexes.ALASAN_BERHENTI_IDX_ALS_BRH_IS_DELETED, Indexes.ALASAN_BERHENTI_IDX_ALS_BRH_NAMA);
     }
 
     @Override
@@ -200,7 +200,7 @@ public class AlasanBerhenti extends TableImpl<AlasanBerhentiRecord> {
      */
     public RiwayatTerminasiPath riwayatTerminasi() {
         if (_riwayatTerminasi == null)
-            _riwayatTerminasi = new RiwayatTerminasiPath(this, null, Keys.FKFBDMEG2VYR1RHDQ7U2RUVTCC4.getInverseKey());
+            _riwayatTerminasi = new RiwayatTerminasiPath(this, null, Keys.FK_RWT_TRM_ALS_BRH_ALS_TRM_ID.getInverseKey());
 
         return _riwayatTerminasi;
     }

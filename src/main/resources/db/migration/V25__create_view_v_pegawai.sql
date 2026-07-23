@@ -1,7 +1,7 @@
 -- V5_0_0__create_view_v_pegawai.sql
 -- View v_pegawai — extracted from draft schema dump (ADR-0032, epic kepegawaian-odb)
 --
--- NOTE: View masih pakai `peg.nik`. Adaptasi ke `biodata_id` menyusul sesuai entity.
+-- FK column: pegawai.biodata_id → biodata.nik (entity @JoinColumn(name = "biodata_id"))
 -- Ditempatkan di V5 (setelah V3 seed) karena tergantung tabel: pegawai, biodata,
 -- organisasi, jabatan, golongan.
 
@@ -25,7 +25,7 @@ SELECT
     `peg`.`status_kerja` AS `status_kerja`,
     `peg`.`status_pegawai` AS `status_pegawai`
 FROM `pegawai` `peg`
-JOIN `biodata` `bio` ON(`peg`.`nik` = `bio`.`nik`)
+JOIN `biodata` `bio` ON(`peg`.`biodata_id` = `bio`.`nik`)
 JOIN `organisasi` `org` ON(`peg`.`organisasi_id` = `org`.`id`)
 JOIN `jabatan` `jab` ON(`peg`.`jabatan_id` = `jab`.`id`)
 JOIN `golongan` `gol` ON(`peg`.`golongan_id` = `gol`.`id`)

@@ -236,7 +236,7 @@ public class PengalamanKerjaAud extends TableImpl<PengalamanKerjaAudRecord> {
 
     @Override
     public List<ForeignKey<PengalamanKerjaAudRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FKOK3DY65WLDUWDO4KBDN18OB7W);
+        return Arrays.asList(Keys.FK_PLM_KRJ_AUD_REV_REV);
     }
 
     private transient RevinfoPath _revinfo;
@@ -246,7 +246,7 @@ public class PengalamanKerjaAud extends TableImpl<PengalamanKerjaAudRecord> {
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)
-            _revinfo = new RevinfoPath(this, Keys.FKOK3DY65WLDUWDO4KBDN18OB7W, null);
+            _revinfo = new RevinfoPath(this, Keys.FK_PLM_KRJ_AUD_REV_REV, null);
 
         return _revinfo;
     }

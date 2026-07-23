@@ -279,7 +279,7 @@ public class RiwayatSp extends TableImpl<RiwayatSpRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.RIWAYAT_SP_IDX482OG76FSE137VVUHEWPPW4HS, Indexes.RIWAYAT_SP_IDX9BYHSAG4C837GM2CYN3OA8RKS, Indexes.RIWAYAT_SP_IDXFRM7005GBXJRD5N5EVVPFS341);
+        return Arrays.asList(Indexes.RIWAYAT_SP_IDX_RWT_SP_IS_DELETED, Indexes.RIWAYAT_SP_IDX_RWT_SP_JBT_ID, Indexes.RIWAYAT_SP_IDX_RWT_SP_JNS_SP_ID, Indexes.RIWAYAT_SP_IDX_RWT_SP_NOMOR_SP, Indexes.RIWAYAT_SP_IDX_RWT_SP_ORG_ID, Indexes.RIWAYAT_SP_IDX_RWT_SP_PGW_ID, Indexes.RIWAYAT_SP_IDX_RWT_SP_SNK_ID, Indexes.RIWAYAT_SP_IDX_RWT_SP_TANGGAL_SP);
     }
 
     @Override
@@ -294,7 +294,7 @@ public class RiwayatSp extends TableImpl<RiwayatSpRecord> {
 
     @Override
     public List<ForeignKey<RiwayatSpRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK2Q8E6HBP5N4DBGBTP1YVUVG9E, Keys.FKBIG7GAK8CSIF6HU1096NXTU04, Keys.FKCH0QHFC0IH9I6QLAG1EEA1C7F, Keys.FKI7MYY0NWFD6I2TQE2K2FO0PWB, Keys.FKME2KGEMSCNC9EB7U7FS1LF8N);
+        return Arrays.asList(Keys.FK_RWT_SP_JBT_JBT_ID, Keys.FK_RWT_SP_JNS_SP_JNS_SP_ID, Keys.FK_RWT_SP_ORG_ORG_ID, Keys.FK_RWT_SP_PGW_PGW_ID, Keys.FK_RWT_SP_SNK_SP_SNK_ID);
     }
 
     private transient JabatanPath _jabatan;
@@ -304,7 +304,7 @@ public class RiwayatSp extends TableImpl<RiwayatSpRecord> {
      */
     public JabatanPath jabatan() {
         if (_jabatan == null)
-            _jabatan = new JabatanPath(this, Keys.FK2Q8E6HBP5N4DBGBTP1YVUVG9E, null);
+            _jabatan = new JabatanPath(this, Keys.FK_RWT_SP_JBT_JBT_ID, null);
 
         return _jabatan;
     }
@@ -316,7 +316,7 @@ public class RiwayatSp extends TableImpl<RiwayatSpRecord> {
      */
     public JenisSpPath jenisSp() {
         if (_jenisSp == null)
-            _jenisSp = new JenisSpPath(this, Keys.FKBIG7GAK8CSIF6HU1096NXTU04, null);
+            _jenisSp = new JenisSpPath(this, Keys.FK_RWT_SP_JNS_SP_JNS_SP_ID, null);
 
         return _jenisSp;
     }
@@ -328,21 +328,9 @@ public class RiwayatSp extends TableImpl<RiwayatSpRecord> {
      */
     public OrganisasiPath organisasi() {
         if (_organisasi == null)
-            _organisasi = new OrganisasiPath(this, Keys.FKCH0QHFC0IH9I6QLAG1EEA1C7F, null);
+            _organisasi = new OrganisasiPath(this, Keys.FK_RWT_SP_ORG_ORG_ID, null);
 
         return _organisasi;
-    }
-
-    private transient SanksiSpPath _sanksiSp;
-
-    /**
-     * Get the implicit join path to the <code>sanksi_sp</code> table.
-     */
-    public SanksiSpPath sanksiSp() {
-        if (_sanksiSp == null)
-            _sanksiSp = new SanksiSpPath(this, Keys.FKI7MYY0NWFD6I2TQE2K2FO0PWB, null);
-
-        return _sanksiSp;
     }
 
     private transient PegawaiPath _pegawai;
@@ -352,9 +340,21 @@ public class RiwayatSp extends TableImpl<RiwayatSpRecord> {
      */
     public PegawaiPath pegawai() {
         if (_pegawai == null)
-            _pegawai = new PegawaiPath(this, Keys.FKME2KGEMSCNC9EB7U7FS1LF8N, null);
+            _pegawai = new PegawaiPath(this, Keys.FK_RWT_SP_PGW_PGW_ID, null);
 
         return _pegawai;
+    }
+
+    private transient SanksiSpPath _sanksiSp;
+
+    /**
+     * Get the implicit join path to the <code>sanksi_sp</code> table.
+     */
+    public SanksiSpPath sanksiSp() {
+        if (_sanksiSp == null)
+            _sanksiSp = new SanksiSpPath(this, Keys.FK_RWT_SP_SNK_SP_SNK_ID, null);
+
+        return _sanksiSp;
     }
 
     @Override

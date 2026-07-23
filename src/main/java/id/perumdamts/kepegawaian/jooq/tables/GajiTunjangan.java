@@ -190,7 +190,7 @@ public class GajiTunjangan extends TableImpl<GajiTunjanganRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.GAJI_TUNJANGAN_IDXM2Y8DMYYRQE14TUEU4ULQ7ANK);
+        return Arrays.asList(Indexes.GAJI_TUNJANGAN_IDX_GJ_TJG_GLG_ID, Indexes.GAJI_TUNJANGAN_IDX_GJ_TJG_IS_DELETED, Indexes.GAJI_TUNJANGAN_IDX_GJ_TJG_LVL_ID);
     }
 
     @Override
@@ -205,19 +205,7 @@ public class GajiTunjangan extends TableImpl<GajiTunjanganRecord> {
 
     @Override
     public List<ForeignKey<GajiTunjanganRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK3SWGJIHDVA7SHAI6BY6MQ8980, Keys.FKCYV33JEF4IKCAIUOPDR20X8YO);
-    }
-
-    private transient LevelPath _level;
-
-    /**
-     * Get the implicit join path to the <code>level</code> table.
-     */
-    public LevelPath level() {
-        if (_level == null)
-            _level = new LevelPath(this, Keys.FK3SWGJIHDVA7SHAI6BY6MQ8980, null);
-
-        return _level;
+        return Arrays.asList(Keys.FK_GJ_TJG_GLG_GLG_ID, Keys.FK_GJ_TJG_LVL_LVL_ID);
     }
 
     private transient GolonganPath _golongan;
@@ -227,9 +215,21 @@ public class GajiTunjangan extends TableImpl<GajiTunjanganRecord> {
      */
     public GolonganPath golongan() {
         if (_golongan == null)
-            _golongan = new GolonganPath(this, Keys.FKCYV33JEF4IKCAIUOPDR20X8YO, null);
+            _golongan = new GolonganPath(this, Keys.FK_GJ_TJG_GLG_GLG_ID, null);
 
         return _golongan;
+    }
+
+    private transient LevelPath _level;
+
+    /**
+     * Get the implicit join path to the <code>level</code> table.
+     */
+    public LevelPath level() {
+        if (_level == null)
+            _level = new LevelPath(this, Keys.FK_GJ_TJG_LVL_LVL_ID, null);
+
+        return _level;
     }
 
     @Override

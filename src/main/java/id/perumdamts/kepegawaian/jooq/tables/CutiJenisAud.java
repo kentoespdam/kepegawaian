@@ -196,7 +196,7 @@ public class CutiJenisAud extends TableImpl<CutiJenisAudRecord> {
 
     @Override
     public List<ForeignKey<CutiJenisAudRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK9SUR2315833KBIWL4SUA5OKI2);
+        return Arrays.asList(Keys.FK_CT_JNS_AUD_REV_REV);
     }
 
     private transient RevinfoPath _revinfo;
@@ -206,7 +206,7 @@ public class CutiJenisAud extends TableImpl<CutiJenisAudRecord> {
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)
-            _revinfo = new RevinfoPath(this, Keys.FK9SUR2315833KBIWL4SUA5OKI2, null);
+            _revinfo = new RevinfoPath(this, Keys.FK_CT_JNS_AUD_REV_REV, null);
 
         return _revinfo;
     }

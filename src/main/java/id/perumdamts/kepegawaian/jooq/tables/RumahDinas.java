@@ -179,7 +179,7 @@ public class RumahDinas extends TableImpl<RumahDinasRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.RUMAH_DINAS_IDXD0VNQKHYIIXSQX0AHW8Y7C5PR, Indexes.RUMAH_DINAS_IDXFOMDCVGXL78TJLPJI2DRLQS5U);
+        return Arrays.asList(Indexes.RUMAH_DINAS_IDX_RMH_DNS_IS_DELETED, Indexes.RUMAH_DINAS_IDX_RMH_DNS_NAMA);
     }
 
     @Override
@@ -199,7 +199,7 @@ public class RumahDinas extends TableImpl<RumahDinasRecord> {
      */
     public PegawaiPath pegawai() {
         if (_pegawai == null)
-            _pegawai = new PegawaiPath(this, null, Keys.FKLVRHWEMGVWTQH84WB0EILKWBF.getInverseKey());
+            _pegawai = new PegawaiPath(this, null, Keys.FK_PGW_RMH_DNS_RMH_DNS_ID.getInverseKey());
 
         return _pegawai;
     }

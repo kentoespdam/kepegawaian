@@ -5,6 +5,7 @@ package id.perumdamts.kepegawaian.jooq.tables;
 
 
 import id.perumdamts.kepegawaian.jooq.DefaultSchema;
+import id.perumdamts.kepegawaian.jooq.Indexes;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.GajiBatchRoot.GajiBatchRootPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.GajiBatchRootLampiranRecord;
@@ -17,6 +18,7 @@ import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
+import org.jooq.Index;
 import org.jooq.InverseForeignKey;
 import org.jooq.Name;
 import org.jooq.Path;
@@ -155,6 +157,11 @@ public class GajiBatchRootLampiran extends TableImpl<GajiBatchRootLampiranRecord
     }
 
     @Override
+    public List<Index> getIndexes() {
+        return Arrays.asList(Indexes.GAJI_BATCH_ROOT_LAMPIRAN_IDX_GJ_BT_ROOT_LMP_ROOT_BT_ID);
+    }
+
+    @Override
     public Identity<GajiBatchRootLampiranRecord, Long> getIdentity() {
         return (Identity<GajiBatchRootLampiranRecord, Long>) super.getIdentity();
     }
@@ -166,7 +173,7 @@ public class GajiBatchRootLampiran extends TableImpl<GajiBatchRootLampiranRecord
 
     @Override
     public List<ForeignKey<GajiBatchRootLampiranRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FKFUI0DIHB70Q2UETALGBMO7Q9J);
+        return Arrays.asList(Keys.FK_GJ_BT_ROOT_LMP_GJ_BT_ROOT_ROOT_BT_ID);
     }
 
     private transient GajiBatchRootPath _gajiBatchRoot;
@@ -176,7 +183,7 @@ public class GajiBatchRootLampiran extends TableImpl<GajiBatchRootLampiranRecord
      */
     public GajiBatchRootPath gajiBatchRoot() {
         if (_gajiBatchRoot == null)
-            _gajiBatchRoot = new GajiBatchRootPath(this, Keys.FKFUI0DIHB70Q2UETALGBMO7Q9J, null);
+            _gajiBatchRoot = new GajiBatchRootPath(this, Keys.FK_GJ_BT_ROOT_LMP_GJ_BT_ROOT_ROOT_BT_ID, null);
 
         return _gajiBatchRoot;
     }

@@ -39,7 +39,7 @@ public class PegawaiSessionQueryRepository {
                         ORGANISASI.NAMA.as("organisasi_nama")
                 )
                 .from(PEGAWAI)
-                .leftJoin(BIODATA).on(PEGAWAI.NIK.eq(BIODATA.NIK))
+                .leftJoin(BIODATA).on(PEGAWAI.BIODATA_ID.eq(BIODATA.NIK))
                 .leftJoin(JABATAN).on(PEGAWAI.JABATAN_ID.eq(JABATAN.ID))
                 .leftJoin(ORGANISASI).on(PEGAWAI.ORGANISASI_ID.eq(ORGANISASI.ID))
                 .where(PEGAWAI.ID.eq(id).and(PEGAWAI.IS_DELETED.eq(false)))

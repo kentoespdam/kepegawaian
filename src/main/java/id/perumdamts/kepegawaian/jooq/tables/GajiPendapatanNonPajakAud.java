@@ -193,7 +193,7 @@ public class GajiPendapatanNonPajakAud extends TableImpl<GajiPendapatanNonPajakA
 
     @Override
     public List<ForeignKey<GajiPendapatanNonPajakAudRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FKNQHKW4CK5W0KBPL2KYJTL5NDK);
+        return Arrays.asList(Keys.FK_GJ_PP_NN_PJK_AUD_REV_REV);
     }
 
     private transient RevinfoPath _revinfo;
@@ -203,7 +203,7 @@ public class GajiPendapatanNonPajakAud extends TableImpl<GajiPendapatanNonPajakA
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)
-            _revinfo = new RevinfoPath(this, Keys.FKNQHKW4CK5W0KBPL2KYJTL5NDK, null);
+            _revinfo = new RevinfoPath(this, Keys.FK_GJ_PP_NN_PJK_AUD_REV_REV, null);
 
         return _revinfo;
     }

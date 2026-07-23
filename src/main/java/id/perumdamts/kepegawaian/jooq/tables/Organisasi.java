@@ -207,7 +207,7 @@ public class Organisasi extends TableImpl<OrganisasiRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.ORGANISASI_IDXAXNXMX8KYBP4HXVYK54LCY3TA, Indexes.ORGANISASI_IDXFHDSIEMVDO8SN9J70WX80UGX, Indexes.ORGANISASI_IDXOXCJALAOW2DWXD19IOPXYB50P, Indexes.ORGANISASI_IDXSA1FUCN04X52OQL8WCSVK0M9F);
+        return Arrays.asList(Indexes.ORGANISASI_IDX_ORG_IS_DELETED, Indexes.ORGANISASI_IDX_ORG_KODE, Indexes.ORGANISASI_IDX_ORG_LVL_ORG, Indexes.ORGANISASI_IDX_ORG_NAMA);
     }
 
     @Override
@@ -227,59 +227,9 @@ public class Organisasi extends TableImpl<OrganisasiRecord> {
      */
     public CutiPegawaiPath cutiPegawai() {
         if (_cutiPegawai == null)
-            _cutiPegawai = new CutiPegawaiPath(this, null, Keys.FK94QGGCE9T69GTATC46XN729E1.getInverseKey());
+            _cutiPegawai = new CutiPegawaiPath(this, null, Keys.FK_CT_PGW_ORG_ORG_ID.getInverseKey());
 
         return _cutiPegawai;
-    }
-
-    private transient RiwayatTerminasiPath _riwayatTerminasi;
-
-    /**
-     * Get the implicit to-many join path to the <code>riwayat_terminasi</code>
-     * table
-     */
-    public RiwayatTerminasiPath riwayatTerminasi() {
-        if (_riwayatTerminasi == null)
-            _riwayatTerminasi = new RiwayatTerminasiPath(this, null, Keys.FKBLJN2U6FW0PMEA0TKHH8EN0FK.getInverseKey());
-
-        return _riwayatTerminasi;
-    }
-
-    private transient RiwayatSpPath _riwayatSp;
-
-    /**
-     * Get the implicit to-many join path to the <code>riwayat_sp</code> table
-     */
-    public RiwayatSpPath riwayatSp() {
-        if (_riwayatSp == null)
-            _riwayatSp = new RiwayatSpPath(this, null, Keys.FKCH0QHFC0IH9I6QLAG1EEA1C7F.getInverseKey());
-
-        return _riwayatSp;
-    }
-
-    private transient RiwayatKeluarPath _fkd5s3rs6pk2mk58wgmuux14yjx;
-
-    /**
-     * Get the implicit to-many join path to the <code>riwayat_keluar</code>
-     * table, via the <code>FKd5s3rs6pk2mk58wgmuux14yjx</code> key
-     */
-    public RiwayatKeluarPath fkd5s3rs6pk2mk58wgmuux14yjx() {
-        if (_fkd5s3rs6pk2mk58wgmuux14yjx == null)
-            _fkd5s3rs6pk2mk58wgmuux14yjx = new RiwayatKeluarPath(this, null, Keys.FKD5S3RS6PK2MK58WGMUUX14YJX.getInverseKey());
-
-        return _fkd5s3rs6pk2mk58wgmuux14yjx;
-    }
-
-    private transient PegawaiPath _pegawai;
-
-    /**
-     * Get the implicit to-many join path to the <code>pegawai</code> table
-     */
-    public PegawaiPath pegawai() {
-        if (_pegawai == null)
-            _pegawai = new PegawaiPath(this, null, Keys.FKDL9IMF4AJCJI1360YFODCGDNM.getInverseKey());
-
-        return _pegawai;
     }
 
     private transient GajiBatchMasterPath _gajiBatchMaster;
@@ -290,9 +240,71 @@ public class Organisasi extends TableImpl<OrganisasiRecord> {
      */
     public GajiBatchMasterPath gajiBatchMaster() {
         if (_gajiBatchMaster == null)
-            _gajiBatchMaster = new GajiBatchMasterPath(this, null, Keys.FKGR17QMJXK5S1CNST11EN4H9WO.getInverseKey());
+            _gajiBatchMaster = new GajiBatchMasterPath(this, null, Keys.FK_GJ_BT_MST_ORG_ORG_ID.getInverseKey());
 
         return _gajiBatchMaster;
+    }
+
+    private transient JabatanPath _jabatan;
+
+    /**
+     * Get the implicit to-many join path to the <code>jabatan</code> table
+     */
+    public JabatanPath jabatan() {
+        if (_jabatan == null)
+            _jabatan = new JabatanPath(this, null, Keys.FK_JBT_ORG_ORG_ID.getInverseKey());
+
+        return _jabatan;
+    }
+
+    private transient ProfesiPath _profesi;
+
+    /**
+     * Get the implicit to-many join path to the <code>profesi</code> table
+     */
+    public ProfesiPath profesi() {
+        if (_profesi == null)
+            _profesi = new ProfesiPath(this, null, Keys.FK_PFS_ORG_ORG_ID.getInverseKey());
+
+        return _profesi;
+    }
+
+    private transient PegawaiPath _pegawai;
+
+    /**
+     * Get the implicit to-many join path to the <code>pegawai</code> table
+     */
+    public PegawaiPath pegawai() {
+        if (_pegawai == null)
+            _pegawai = new PegawaiPath(this, null, Keys.FK_PGW_ORG_ORG_ID.getInverseKey());
+
+        return _pegawai;
+    }
+
+    private transient RiwayatKeluarPath _fkRwtKlrOrgOrgId;
+
+    /**
+     * Get the implicit to-many join path to the <code>riwayat_keluar</code>
+     * table, via the <code>fk_rwt_klr_org_org_id</code> key
+     */
+    public RiwayatKeluarPath fkRwtKlrOrgOrgId() {
+        if (_fkRwtKlrOrgOrgId == null)
+            _fkRwtKlrOrgOrgId = new RiwayatKeluarPath(this, null, Keys.FK_RWT_KLR_ORG_ORG_ID.getInverseKey());
+
+        return _fkRwtKlrOrgOrgId;
+    }
+
+    private transient RiwayatKeluarPath _fkRwtKlrOrgPenyetujuOrgId;
+
+    /**
+     * Get the implicit to-many join path to the <code>riwayat_keluar</code>
+     * table, via the <code>fk_rwt_klr_org_penyetuju_org_id</code> key
+     */
+    public RiwayatKeluarPath fkRwtKlrOrgPenyetujuOrgId() {
+        if (_fkRwtKlrOrgPenyetujuOrgId == null)
+            _fkRwtKlrOrgPenyetujuOrgId = new RiwayatKeluarPath(this, null, Keys.FK_RWT_KLR_ORG_PENYETUJU_ORG_ID.getInverseKey());
+
+        return _fkRwtKlrOrgPenyetujuOrgId;
     }
 
     private transient RiwayatKontrakPath _riwayatKontrak;
@@ -303,46 +315,34 @@ public class Organisasi extends TableImpl<OrganisasiRecord> {
      */
     public RiwayatKontrakPath riwayatKontrak() {
         if (_riwayatKontrak == null)
-            _riwayatKontrak = new RiwayatKontrakPath(this, null, Keys.FKH265IAD1I84D7JXIXKQED7H6T.getInverseKey());
+            _riwayatKontrak = new RiwayatKontrakPath(this, null, Keys.FK_RWT_KTRK_ORG_ORG_ID.getInverseKey());
 
         return _riwayatKontrak;
     }
 
-    private transient ProfesiPath _profesi;
+    private transient RiwayatSpPath _riwayatSp;
 
     /**
-     * Get the implicit to-many join path to the <code>profesi</code> table
+     * Get the implicit to-many join path to the <code>riwayat_sp</code> table
      */
-    public ProfesiPath profesi() {
-        if (_profesi == null)
-            _profesi = new ProfesiPath(this, null, Keys.FKPDO18V9PYFNINMFHQD1RJOP6O.getInverseKey());
+    public RiwayatSpPath riwayatSp() {
+        if (_riwayatSp == null)
+            _riwayatSp = new RiwayatSpPath(this, null, Keys.FK_RWT_SP_ORG_ORG_ID.getInverseKey());
 
-        return _profesi;
+        return _riwayatSp;
     }
 
-    private transient JabatanPath _jabatan;
+    private transient RiwayatTerminasiPath _riwayatTerminasi;
 
     /**
-     * Get the implicit to-many join path to the <code>jabatan</code> table
+     * Get the implicit to-many join path to the <code>riwayat_terminasi</code>
+     * table
      */
-    public JabatanPath jabatan() {
-        if (_jabatan == null)
-            _jabatan = new JabatanPath(this, null, Keys.FKQNSM2LQKF182H1MI515255UEE.getInverseKey());
+    public RiwayatTerminasiPath riwayatTerminasi() {
+        if (_riwayatTerminasi == null)
+            _riwayatTerminasi = new RiwayatTerminasiPath(this, null, Keys.FK_RWT_TRM_ORG_ORG_ID.getInverseKey());
 
-        return _jabatan;
-    }
-
-    private transient RiwayatKeluarPath _fkr987kq4dboeaf3fycg5d8yc2b;
-
-    /**
-     * Get the implicit to-many join path to the <code>riwayat_keluar</code>
-     * table, via the <code>FKr987kq4dboeaf3fycg5d8yc2b</code> key
-     */
-    public RiwayatKeluarPath fkr987kq4dboeaf3fycg5d8yc2b() {
-        if (_fkr987kq4dboeaf3fycg5d8yc2b == null)
-            _fkr987kq4dboeaf3fycg5d8yc2b = new RiwayatKeluarPath(this, null, Keys.FKR987KQ4DBOEAF3FYCG5D8YC2B.getInverseKey());
-
-        return _fkr987kq4dboeaf3fycg5d8yc2b;
+        return _riwayatTerminasi;
     }
 
     @Override

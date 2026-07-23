@@ -74,7 +74,7 @@ public class CutiInboxQueryRepository {
                 .from(ranked)
                 .leftJoin(CUTI_PEGAWAI).on(ranked.field(CUTI_APPROVAL_CHAIN.REF_CUTI_ID).eq(CUTI_PEGAWAI.ID))
                 .leftJoin(PEGAWAI).on(CUTI_PEGAWAI.PEGAWAI_ID.eq(PEGAWAI.ID))
-                .leftJoin(BIODATA).on(PEGAWAI.NIK.eq(BIODATA.NIK))
+                .leftJoin(BIODATA).on(PEGAWAI.BIODATA_ID.eq(BIODATA.NIK))
                 .leftJoin(ORGANISASI).on(CUTI_PEGAWAI.ORGANISASI_ID.eq(ORGANISASI.ID))
                 .leftJoin(JABATAN).on(CUTI_PEGAWAI.JABATAN_ID.eq(JABATAN.ID))
                 .leftJoin(jenisCuti).on(CUTI_PEGAWAI.JENIS_CUTI_ID.eq(jenisCuti.ID))

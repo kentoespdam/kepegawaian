@@ -242,7 +242,7 @@ public class RiwayatKeluar extends TableImpl<RiwayatKeluarRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.RIWAYAT_KELUAR_IDX4303D82N5VYRVM1KXP1QV63FW, Indexes.RIWAYAT_KELUAR_IDXNUAKTFSTUWPO9AX32VCWIKLWY, Indexes.RIWAYAT_KELUAR_IDXS3GB8TS46K0EHEQBI3RES4YYA);
+        return Arrays.asList(Indexes.RIWAYAT_KELUAR_IDX_RWT_KLR_DISETUJUI_OLEH, Indexes.RIWAYAT_KELUAR_IDX_RWT_KLR_IS_DELETED, Indexes.RIWAYAT_KELUAR_IDX_RWT_KLR_JBT_ID, Indexes.RIWAYAT_KELUAR_IDX_RWT_KLR_ORG_ID, Indexes.RIWAYAT_KELUAR_IDX_RWT_KLR_PENYETUJU_JBT_ID, Indexes.RIWAYAT_KELUAR_IDX_RWT_KLR_PENYETUJU_ORG_ID, Indexes.RIWAYAT_KELUAR_IDX_RWT_KLR_PGW_ID, Indexes.RIWAYAT_KELUAR_IDX_RWT_KLR_TANGGAL_PERMOHONAN, Indexes.RIWAYAT_KELUAR_IDX_RWT_KLR_TANGGAL_PERSETUJUAN);
     }
 
     @Override
@@ -257,85 +257,85 @@ public class RiwayatKeluar extends TableImpl<RiwayatKeluarRecord> {
 
     @Override
     public List<ForeignKey<RiwayatKeluarRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK3LVCT7OVNOCJDJBLQTSDVAGCN, Keys.FK57U6WUDD5SQ037FE4L894IQF1, Keys.FKD5S3RS6PK2MK58WGMUUX14YJX, Keys.FKIEI6JFQNRONI5V6RY1YS8HXPH, Keys.FKL69JX9OD4LL637WKC99N2TM6M, Keys.FKR987KQ4DBOEAF3FYCG5D8YC2B);
+        return Arrays.asList(Keys.FK_RWT_KLR_JBT_JBT_ID, Keys.FK_RWT_KLR_JBT_PENYETUJU_JBT_ID, Keys.FK_RWT_KLR_ORG_ORG_ID, Keys.FK_RWT_KLR_ORG_PENYETUJU_ORG_ID, Keys.FK_RWT_KLR_PGW_DISETUJUI_OLEH, Keys.FK_RWT_KLR_PGW_PGW_ID);
     }
 
-    private transient JabatanPath _fk3lvct7ovnocjdjblqtsdvagcn;
+    private transient JabatanPath _fkRwtKlrJbtJbtId;
 
     /**
      * Get the implicit join path to the <code>jabatan</code> table, via the
-     * <code>FK3lvct7ovnocjdjblqtsdvagcn</code> key.
+     * <code>fk_rwt_klr_jbt_jbt_id</code> key.
      */
-    public JabatanPath fk3lvct7ovnocjdjblqtsdvagcn() {
-        if (_fk3lvct7ovnocjdjblqtsdvagcn == null)
-            _fk3lvct7ovnocjdjblqtsdvagcn = new JabatanPath(this, Keys.FK3LVCT7OVNOCJDJBLQTSDVAGCN, null);
+    public JabatanPath fkRwtKlrJbtJbtId() {
+        if (_fkRwtKlrJbtJbtId == null)
+            _fkRwtKlrJbtJbtId = new JabatanPath(this, Keys.FK_RWT_KLR_JBT_JBT_ID, null);
 
-        return _fk3lvct7ovnocjdjblqtsdvagcn;
+        return _fkRwtKlrJbtJbtId;
     }
 
-    private transient PegawaiPath _fk57u6wudd5sq037fe4l894iqf1;
-
-    /**
-     * Get the implicit join path to the <code>pegawai</code> table, via the
-     * <code>FK57u6wudd5sq037fe4l894iqf1</code> key.
-     */
-    public PegawaiPath fk57u6wudd5sq037fe4l894iqf1() {
-        if (_fk57u6wudd5sq037fe4l894iqf1 == null)
-            _fk57u6wudd5sq037fe4l894iqf1 = new PegawaiPath(this, Keys.FK57U6WUDD5SQ037FE4L894IQF1, null);
-
-        return _fk57u6wudd5sq037fe4l894iqf1;
-    }
-
-    private transient OrganisasiPath _fkd5s3rs6pk2mk58wgmuux14yjx;
-
-    /**
-     * Get the implicit join path to the <code>organisasi</code> table, via the
-     * <code>FKd5s3rs6pk2mk58wgmuux14yjx</code> key.
-     */
-    public OrganisasiPath fkd5s3rs6pk2mk58wgmuux14yjx() {
-        if (_fkd5s3rs6pk2mk58wgmuux14yjx == null)
-            _fkd5s3rs6pk2mk58wgmuux14yjx = new OrganisasiPath(this, Keys.FKD5S3RS6PK2MK58WGMUUX14YJX, null);
-
-        return _fkd5s3rs6pk2mk58wgmuux14yjx;
-    }
-
-    private transient JabatanPath _fkiei6jfqnroni5v6ry1ys8hxph;
+    private transient JabatanPath _fkRwtKlrJbtPenyetujuJbtId;
 
     /**
      * Get the implicit join path to the <code>jabatan</code> table, via the
-     * <code>FKiei6jfqnroni5v6ry1ys8hxph</code> key.
+     * <code>fk_rwt_klr_jbt_penyetuju_jbt_id</code> key.
      */
-    public JabatanPath fkiei6jfqnroni5v6ry1ys8hxph() {
-        if (_fkiei6jfqnroni5v6ry1ys8hxph == null)
-            _fkiei6jfqnroni5v6ry1ys8hxph = new JabatanPath(this, Keys.FKIEI6JFQNRONI5V6RY1YS8HXPH, null);
+    public JabatanPath fkRwtKlrJbtPenyetujuJbtId() {
+        if (_fkRwtKlrJbtPenyetujuJbtId == null)
+            _fkRwtKlrJbtPenyetujuJbtId = new JabatanPath(this, Keys.FK_RWT_KLR_JBT_PENYETUJU_JBT_ID, null);
 
-        return _fkiei6jfqnroni5v6ry1ys8hxph;
+        return _fkRwtKlrJbtPenyetujuJbtId;
     }
 
-    private transient PegawaiPath _fkl69jx9od4ll637wkc99n2tm6m;
-
-    /**
-     * Get the implicit join path to the <code>pegawai</code> table, via the
-     * <code>FKl69jx9od4ll637wkc99n2tm6m</code> key.
-     */
-    public PegawaiPath fkl69jx9od4ll637wkc99n2tm6m() {
-        if (_fkl69jx9od4ll637wkc99n2tm6m == null)
-            _fkl69jx9od4ll637wkc99n2tm6m = new PegawaiPath(this, Keys.FKL69JX9OD4LL637WKC99N2TM6M, null);
-
-        return _fkl69jx9od4ll637wkc99n2tm6m;
-    }
-
-    private transient OrganisasiPath _fkr987kq4dboeaf3fycg5d8yc2b;
+    private transient OrganisasiPath _fkRwtKlrOrgOrgId;
 
     /**
      * Get the implicit join path to the <code>organisasi</code> table, via the
-     * <code>FKr987kq4dboeaf3fycg5d8yc2b</code> key.
+     * <code>fk_rwt_klr_org_org_id</code> key.
      */
-    public OrganisasiPath fkr987kq4dboeaf3fycg5d8yc2b() {
-        if (_fkr987kq4dboeaf3fycg5d8yc2b == null)
-            _fkr987kq4dboeaf3fycg5d8yc2b = new OrganisasiPath(this, Keys.FKR987KQ4DBOEAF3FYCG5D8YC2B, null);
+    public OrganisasiPath fkRwtKlrOrgOrgId() {
+        if (_fkRwtKlrOrgOrgId == null)
+            _fkRwtKlrOrgOrgId = new OrganisasiPath(this, Keys.FK_RWT_KLR_ORG_ORG_ID, null);
 
-        return _fkr987kq4dboeaf3fycg5d8yc2b;
+        return _fkRwtKlrOrgOrgId;
+    }
+
+    private transient OrganisasiPath _fkRwtKlrOrgPenyetujuOrgId;
+
+    /**
+     * Get the implicit join path to the <code>organisasi</code> table, via the
+     * <code>fk_rwt_klr_org_penyetuju_org_id</code> key.
+     */
+    public OrganisasiPath fkRwtKlrOrgPenyetujuOrgId() {
+        if (_fkRwtKlrOrgPenyetujuOrgId == null)
+            _fkRwtKlrOrgPenyetujuOrgId = new OrganisasiPath(this, Keys.FK_RWT_KLR_ORG_PENYETUJU_ORG_ID, null);
+
+        return _fkRwtKlrOrgPenyetujuOrgId;
+    }
+
+    private transient PegawaiPath _fkRwtKlrPgwDisetujuiOleh;
+
+    /**
+     * Get the implicit join path to the <code>pegawai</code> table, via the
+     * <code>fk_rwt_klr_pgw_disetujui_oleh</code> key.
+     */
+    public PegawaiPath fkRwtKlrPgwDisetujuiOleh() {
+        if (_fkRwtKlrPgwDisetujuiOleh == null)
+            _fkRwtKlrPgwDisetujuiOleh = new PegawaiPath(this, Keys.FK_RWT_KLR_PGW_DISETUJUI_OLEH, null);
+
+        return _fkRwtKlrPgwDisetujuiOleh;
+    }
+
+    private transient PegawaiPath _fkRwtKlrPgwPgwId;
+
+    /**
+     * Get the implicit join path to the <code>pegawai</code> table, via the
+     * <code>fk_rwt_klr_pgw_pgw_id</code> key.
+     */
+    public PegawaiPath fkRwtKlrPgwPgwId() {
+        if (_fkRwtKlrPgwPgwId == null)
+            _fkRwtKlrPgwPgwId = new PegawaiPath(this, Keys.FK_RWT_KLR_PGW_PGW_ID, null);
+
+        return _fkRwtKlrPgwPgwId;
     }
 
     @Override

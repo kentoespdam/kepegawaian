@@ -250,7 +250,7 @@ public class Pendidikan extends TableImpl<PendidikanRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.PENDIDIKAN_IDXK3T3MMU4QUVWL5OLWILOHL4IL, Indexes.PENDIDIKAN_IDXL6KO8XM11GHSLB1HDF3WC7UCJ, Indexes.PENDIDIKAN_IDXLS2XIHE492JTWNR3YH60F8XE2, Indexes.PENDIDIKAN_IDXMP0NRPAMAXRF6TLI4T36V4QA9);
+        return Arrays.asList(Indexes.PENDIDIKAN_IDX_DDK_DISETUJUI_OLEH, Indexes.PENDIDIKAN_IDX_DDK_IS_DELETED, Indexes.PENDIDIKAN_IDX_DDK_IS_LATEST, Indexes.PENDIDIKAN_IDX_DDK_JJG_ID);
     }
 
     @Override
@@ -265,12 +265,12 @@ public class Pendidikan extends TableImpl<PendidikanRecord> {
 
     @Override
     public List<UniqueKey<PendidikanRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.KEY_PENDIDIKAN_UKAJ1Q73DLGQMIO4S6785XVTVM5);
+        return Arrays.asList(Keys.KEY_PENDIDIKAN_UK_DDK_BIO_ID_JJG_ID_TAHUN_MASUK);
     }
 
     @Override
     public List<ForeignKey<PendidikanRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK64BC36WVICLGLOKXFDN10EFUT, Keys.FKTQ9HXLQ4CGHVMC2FFN2HGNJOY);
+        return Arrays.asList(Keys.FK_DDK_BIO_BIO_ID, Keys.FK_DDK_JJG_DDK_JJG_ID);
     }
 
     private transient BiodataPath _biodata;
@@ -280,7 +280,7 @@ public class Pendidikan extends TableImpl<PendidikanRecord> {
      */
     public BiodataPath biodata() {
         if (_biodata == null)
-            _biodata = new BiodataPath(this, Keys.FK64BC36WVICLGLOKXFDN10EFUT, null);
+            _biodata = new BiodataPath(this, Keys.FK_DDK_BIO_BIO_ID, null);
 
         return _biodata;
     }
@@ -292,7 +292,7 @@ public class Pendidikan extends TableImpl<PendidikanRecord> {
      */
     public JenjangPendidikanPath jenjangPendidikan() {
         if (_jenjangPendidikan == null)
-            _jenjangPendidikan = new JenjangPendidikanPath(this, Keys.FKTQ9HXLQ4CGHVMC2FFN2HGNJOY, null);
+            _jenjangPendidikan = new JenjangPendidikanPath(this, Keys.FK_DDK_JJG_DDK_JJG_ID, null);
 
         return _jenjangPendidikan;
     }

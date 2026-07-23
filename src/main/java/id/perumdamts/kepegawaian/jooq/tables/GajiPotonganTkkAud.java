@@ -196,7 +196,7 @@ public class GajiPotonganTkkAud extends TableImpl<GajiPotonganTkkAudRecord> {
 
     @Override
     public List<ForeignKey<GajiPotonganTkkAudRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FKARE7661XYLM2O4A9CMC38XAVE);
+        return Arrays.asList(Keys.FK_GJ_PTG_TKK_AUD_REV_REV);
     }
 
     private transient RevinfoPath _revinfo;
@@ -206,7 +206,7 @@ public class GajiPotonganTkkAud extends TableImpl<GajiPotonganTkkAudRecord> {
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)
-            _revinfo = new RevinfoPath(this, Keys.FKARE7661XYLM2O4A9CMC38XAVE, null);
+            _revinfo = new RevinfoPath(this, Keys.FK_GJ_PTG_TKK_AUD_REV_REV, null);
 
         return _revinfo;
     }

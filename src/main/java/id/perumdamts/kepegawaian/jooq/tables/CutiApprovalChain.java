@@ -163,7 +163,7 @@ public class CutiApprovalChain extends TableImpl<CutiApprovalChainRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.CUTI_APPROVAL_CHAIN_IDX64DCSLNH77BJFCECB6QHKQXEW, Indexes.CUTI_APPROVAL_CHAIN_IDX7V2OMEA1F7LD52XI2GFDOVC54);
+        return Arrays.asList(Indexes.CUTI_APPROVAL_CHAIN_IDX_CT_APV_CHN_APV_STATUS, Indexes.CUTI_APPROVAL_CHAIN_IDX_CT_APV_CHN_READ_WRITE_STATUS, Indexes.CUTI_APPROVAL_CHAIN_IDX_CT_APV_CHN_REF_CT_ID);
     }
 
     @Override
@@ -178,7 +178,7 @@ public class CutiApprovalChain extends TableImpl<CutiApprovalChainRecord> {
 
     @Override
     public List<ForeignKey<CutiApprovalChainRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FKN3AO94L5VYRGIH77RKXOEB0SF);
+        return Arrays.asList(Keys.FK_CT_APV_CHN_CT_PGW_REF_CT_ID);
     }
 
     private transient CutiPegawaiPath _cutiPegawai;
@@ -188,7 +188,7 @@ public class CutiApprovalChain extends TableImpl<CutiApprovalChainRecord> {
      */
     public CutiPegawaiPath cutiPegawai() {
         if (_cutiPegawai == null)
-            _cutiPegawai = new CutiPegawaiPath(this, Keys.FKN3AO94L5VYRGIH77RKXOEB0SF, null);
+            _cutiPegawai = new CutiPegawaiPath(this, Keys.FK_CT_APV_CHN_CT_PGW_REF_CT_ID, null);
 
         return _cutiPegawai;
     }

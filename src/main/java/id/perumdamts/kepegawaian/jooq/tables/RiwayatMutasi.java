@@ -291,7 +291,7 @@ public class RiwayatMutasi extends TableImpl<RiwayatMutasiRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.RIWAYAT_MUTASI_IDXK6U8M763GHR8TG2Q59CKB7WX7);
+        return Arrays.asList(Indexes.RIWAYAT_MUTASI_IDX_RWT_MTS_IS_DELETED, Indexes.RIWAYAT_MUTASI_IDX_RWT_MTS_RWT_SK_ID);
     }
 
     @Override
@@ -306,24 +306,12 @@ public class RiwayatMutasi extends TableImpl<RiwayatMutasiRecord> {
 
     @Override
     public List<UniqueKey<RiwayatMutasiRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.KEY_RIWAYAT_MUTASI_UK3KCOMKCXJ12CT7QPPHYRFGF7A);
+        return Arrays.asList(Keys.KEY_RIWAYAT_MUTASI_UK_RWT_MTS_PGW_ID_RWT_SK_ID);
     }
 
     @Override
     public List<ForeignKey<RiwayatMutasiRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK4APHJCVFB1EQNWB9PPX0F3H8W, Keys.FKGKFSJFW66AWVP7VE72JWUUSAQ);
-    }
-
-    private transient RiwayatSkPath _riwayatSk;
-
-    /**
-     * Get the implicit join path to the <code>riwayat_sk</code> table.
-     */
-    public RiwayatSkPath riwayatSk() {
-        if (_riwayatSk == null)
-            _riwayatSk = new RiwayatSkPath(this, Keys.FK4APHJCVFB1EQNWB9PPX0F3H8W, null);
-
-        return _riwayatSk;
+        return Arrays.asList(Keys.FK_RWT_MTS_PGW_PGW_ID, Keys.FK_RWT_MTS_RWT_SK_RWT_SK_ID);
     }
 
     private transient PegawaiPath _pegawai;
@@ -333,9 +321,21 @@ public class RiwayatMutasi extends TableImpl<RiwayatMutasiRecord> {
      */
     public PegawaiPath pegawai() {
         if (_pegawai == null)
-            _pegawai = new PegawaiPath(this, Keys.FKGKFSJFW66AWVP7VE72JWUUSAQ, null);
+            _pegawai = new PegawaiPath(this, Keys.FK_RWT_MTS_PGW_PGW_ID, null);
 
         return _pegawai;
+    }
+
+    private transient RiwayatSkPath _riwayatSk;
+
+    /**
+     * Get the implicit join path to the <code>riwayat_sk</code> table.
+     */
+    public RiwayatSkPath riwayatSk() {
+        if (_riwayatSk == null)
+            _riwayatSk = new RiwayatSkPath(this, Keys.FK_RWT_MTS_RWT_SK_RWT_SK_ID, null);
+
+        return _riwayatSk;
     }
 
     @Override

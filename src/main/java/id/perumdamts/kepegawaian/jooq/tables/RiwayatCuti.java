@@ -184,7 +184,7 @@ public class RiwayatCuti extends TableImpl<RiwayatCutiRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.RIWAYAT_CUTI_IDXRKDUFM3P19R35F2UU1AYY78GD);
+        return Arrays.asList(Indexes.RIWAYAT_CUTI_IDX_RWT_CT_IS_DELETED, Indexes.RIWAYAT_CUTI_IDX_RWT_CT_PGW_ID);
     }
 
     @Override
@@ -199,7 +199,7 @@ public class RiwayatCuti extends TableImpl<RiwayatCutiRecord> {
 
     @Override
     public List<ForeignKey<RiwayatCutiRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FKQ8HBG0VDWLGHBJOXAPQPQKF8F);
+        return Arrays.asList(Keys.FK_RWT_CT_PGW_PGW_ID);
     }
 
     private transient PegawaiPath _pegawai;
@@ -209,7 +209,7 @@ public class RiwayatCuti extends TableImpl<RiwayatCutiRecord> {
      */
     public PegawaiPath pegawai() {
         if (_pegawai == null)
-            _pegawai = new PegawaiPath(this, Keys.FKQ8HBG0VDWLGHBJOXAPQPQKF8F, null);
+            _pegawai = new PegawaiPath(this, Keys.FK_RWT_CT_PGW_PGW_ID, null);
 
         return _pegawai;
     }

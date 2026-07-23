@@ -231,7 +231,7 @@ public class KeahlianAud extends TableImpl<KeahlianAudRecord> {
 
     @Override
     public List<ForeignKey<KeahlianAudRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FKABCGSRI5HYEMCP0CBE2YPP9FO);
+        return Arrays.asList(Keys.FK_AHL_AUD_REV_REV);
     }
 
     private transient RevinfoPath _revinfo;
@@ -241,7 +241,7 @@ public class KeahlianAud extends TableImpl<KeahlianAudRecord> {
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)
-            _revinfo = new RevinfoPath(this, Keys.FKABCGSRI5HYEMCP0CBE2YPP9FO, null);
+            _revinfo = new RevinfoPath(this, Keys.FK_AHL_AUD_REV_REV, null);
 
         return _revinfo;
     }

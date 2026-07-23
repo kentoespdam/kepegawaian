@@ -240,25 +240,12 @@ public class GajiBatchRoot extends TableImpl<GajiBatchRootRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.GAJI_BATCH_ROOT_IDX40H27LE3WP0DNYPDEFF1K5GW7, Indexes.GAJI_BATCH_ROOT_IDXAEKA97UYJF2WQOHOFVP76JMO1, Indexes.GAJI_BATCH_ROOT_IDXBAMFB5YWST7LPO1NQPIHGQCQR, Indexes.GAJI_BATCH_ROOT_IDXEGXNAKC1EVF17GNRE350CDM88, Indexes.GAJI_BATCH_ROOT_IDXFGUXV4XTBT9KF2OFK6KNSCAUJ, Indexes.GAJI_BATCH_ROOT_IDXQMWYO91KUSWS227MHXRG9FHDN, Indexes.GAJI_BATCH_ROOT_IDXRRSW1EGU8POJ1717CXP3JQIFE);
+        return Arrays.asList(Indexes.GAJI_BATCH_ROOT_IDX_GJ_BT_ROOT_IS_DELETED, Indexes.GAJI_BATCH_ROOT_IDX_GJ_BT_ROOT_PERIODE, Indexes.GAJI_BATCH_ROOT_IDX_GJ_BT_ROOT_STATUS, Indexes.GAJI_BATCH_ROOT_IDX_GJ_BT_ROOT_TANGGAL_PERSETUJUAN, Indexes.GAJI_BATCH_ROOT_IDX_GJ_BT_ROOT_TANGGAL_PRS, Indexes.GAJI_BATCH_ROOT_IDX_GJ_BT_ROOT_TANGGAL_VERIFIKASI_TAHAP1, Indexes.GAJI_BATCH_ROOT_IDX_GJ_BT_ROOT_TANGGAL_VERIFIKASI_TAHAP2);
     }
 
     @Override
     public UniqueKey<GajiBatchRootRecord> getPrimaryKey() {
         return Keys.KEY_GAJI_BATCH_ROOT_PRIMARY;
-    }
-
-    private transient GajiBatchRootErrorLogsPath _gajiBatchRootErrorLogs;
-
-    /**
-     * Get the implicit to-many join path to the
-     * <code>gaji_batch_root_error_logs</code> table
-     */
-    public GajiBatchRootErrorLogsPath gajiBatchRootErrorLogs() {
-        if (_gajiBatchRootErrorLogs == null)
-            _gajiBatchRootErrorLogs = new GajiBatchRootErrorLogsPath(this, null, Keys.FKCJP75555I9TGO8BRFDEXSLI47.getInverseKey());
-
-        return _gajiBatchRootErrorLogs;
     }
 
     private transient GajiBatchMasterPath _gajiBatchMaster;
@@ -269,9 +256,22 @@ public class GajiBatchRoot extends TableImpl<GajiBatchRootRecord> {
      */
     public GajiBatchMasterPath gajiBatchMaster() {
         if (_gajiBatchMaster == null)
-            _gajiBatchMaster = new GajiBatchMasterPath(this, null, Keys.FKD1ADKSQL6DROF7VNP6POCWH09.getInverseKey());
+            _gajiBatchMaster = new GajiBatchMasterPath(this, null, Keys.FK_GJ_BT_MST_GJ_BT_ROOT_BT_ROOT_ID.getInverseKey());
 
         return _gajiBatchMaster;
+    }
+
+    private transient GajiBatchRootErrorLogsPath _gajiBatchRootErrorLogs;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>gaji_batch_root_error_logs</code> table
+     */
+    public GajiBatchRootErrorLogsPath gajiBatchRootErrorLogs() {
+        if (_gajiBatchRootErrorLogs == null)
+            _gajiBatchRootErrorLogs = new GajiBatchRootErrorLogsPath(this, null, Keys.FK_GJ_BT_ROOT_ERR_LOG_GJ_BT_ROOT_ROOT_BT_ID.getInverseKey());
+
+        return _gajiBatchRootErrorLogs;
     }
 
     private transient GajiBatchRootLampiranPath _gajiBatchRootLampiran;
@@ -282,7 +282,7 @@ public class GajiBatchRoot extends TableImpl<GajiBatchRootRecord> {
      */
     public GajiBatchRootLampiranPath gajiBatchRootLampiran() {
         if (_gajiBatchRootLampiran == null)
-            _gajiBatchRootLampiran = new GajiBatchRootLampiranPath(this, null, Keys.FKFUI0DIHB70Q2UETALGBMO7Q9J.getInverseKey());
+            _gajiBatchRootLampiran = new GajiBatchRootLampiranPath(this, null, Keys.FK_GJ_BT_ROOT_LMP_GJ_BT_ROOT_ROOT_BT_ID.getInverseKey());
 
         return _gajiBatchRootLampiran;
     }

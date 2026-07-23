@@ -179,7 +179,7 @@ public class Apd extends TableImpl<ApdRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.APD_IDX88PQWC7HVWF6KIMWTOMQG640, Indexes.APD_IDXGB6MUK74WM5XPCS2PBDU80CJ2);
+        return Arrays.asList(Indexes.APD_IDX_APD_IS_DELETED, Indexes.APD_IDX_APD_NAMA, Indexes.APD_IDX_APD_PFS_ID);
     }
 
     @Override
@@ -194,7 +194,7 @@ public class Apd extends TableImpl<ApdRecord> {
 
     @Override
     public List<ForeignKey<ApdRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FKR19SSVLFXU0OP3E7IC5Y3HM7R);
+        return Arrays.asList(Keys.FK_APD_PFS_PFS_ID);
     }
 
     private transient ProfesiPath _profesi;
@@ -204,7 +204,7 @@ public class Apd extends TableImpl<ApdRecord> {
      */
     public ProfesiPath profesi() {
         if (_profesi == null)
-            _profesi = new ProfesiPath(this, Keys.FKR19SSVLFXU0OP3E7IC5Y3HM7R, null);
+            _profesi = new ProfesiPath(this, Keys.FK_APD_PFS_PFS_ID, null);
 
         return _profesi;
     }

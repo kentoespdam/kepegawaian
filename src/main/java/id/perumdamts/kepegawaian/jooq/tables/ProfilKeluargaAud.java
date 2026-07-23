@@ -242,7 +242,7 @@ public class ProfilKeluargaAud extends TableImpl<ProfilKeluargaAudRecord> {
 
     @Override
     public List<ForeignKey<ProfilKeluargaAudRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FKB319JIQ2H9BHXOOS7XVAHBJI);
+        return Arrays.asList(Keys.FK_PRF_KLG_AUD_REV_REV);
     }
 
     private transient RevinfoPath _revinfo;
@@ -252,7 +252,7 @@ public class ProfilKeluargaAud extends TableImpl<ProfilKeluargaAudRecord> {
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)
-            _revinfo = new RevinfoPath(this, Keys.FKB319JIQ2H9BHXOOS7XVAHBJI, null);
+            _revinfo = new RevinfoPath(this, Keys.FK_PRF_KLG_AUD_REV_REV, null);
 
         return _revinfo;
     }

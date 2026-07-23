@@ -151,7 +151,7 @@ public class ProfilUpdate extends TableImpl<ProfilUpdateRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.PROFIL_UPDATE_IDX_PROFILE_UPDATE, Indexes.PROFIL_UPDATE_IDX_PROFILE_UPDATE_NAMA, Indexes.PROFIL_UPDATE_IDX_PROFILE_UPDATE_NIPAM, Indexes.PROFIL_UPDATE_IDX_PROFILE_UPDATE_REQ_DATE);
+        return Arrays.asList(Indexes.PROFIL_UPDATE_IDX_PRF_UPD_APV_STATUS, Indexes.PROFIL_UPDATE_IDX_PRF_UPD_NAMA, Indexes.PROFIL_UPDATE_IDX_PRF_UPD_NIPAM, Indexes.PROFIL_UPDATE_IDX_PRF_UPD_REQ_DATE);
     }
 
     @Override

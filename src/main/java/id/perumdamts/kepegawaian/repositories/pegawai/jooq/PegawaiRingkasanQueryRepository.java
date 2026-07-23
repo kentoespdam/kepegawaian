@@ -94,7 +94,7 @@ public class PegawaiRingkasanQueryRepository {
                         riwayatSkMultiset
                 )
                 .from(PEGAWAI)
-                .leftJoin(BIODATA).on(PEGAWAI.NIK.eq(BIODATA.NIK))
+                .leftJoin(BIODATA).on(PEGAWAI.BIODATA_ID.eq(BIODATA.NIK))
                 .leftJoin(PENDIDIKAN).on(PENDIDIKAN.BIODATA_ID.eq(BIODATA.NIK)
                         .and(PENDIDIKAN.IS_LATEST.eq((byte) 1))
                         .and(PENDIDIKAN.IS_DELETED.eq(false)))

@@ -179,7 +179,7 @@ public class AlatKerja extends TableImpl<AlatKerjaRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.ALAT_KERJA_IDXH0QASO5XURQNXOPQTTK55W37Q, Indexes.ALAT_KERJA_IDXTQIYUL14XBLVLOUO46LPY5U8P);
+        return Arrays.asList(Indexes.ALAT_KERJA_IDX_ALT_KRJ_IS_DELETED, Indexes.ALAT_KERJA_IDX_ALT_KRJ_NAMA, Indexes.ALAT_KERJA_IDX_ALT_KRJ_PFS_ID);
     }
 
     @Override
@@ -194,7 +194,7 @@ public class AlatKerja extends TableImpl<AlatKerjaRecord> {
 
     @Override
     public List<ForeignKey<AlatKerjaRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FKLR2NYHT8VNI7OAH23U4TMSEMU);
+        return Arrays.asList(Keys.FK_ALT_KRJ_PFS_PFS_ID);
     }
 
     private transient ProfesiPath _profesi;
@@ -204,7 +204,7 @@ public class AlatKerja extends TableImpl<AlatKerjaRecord> {
      */
     public ProfesiPath profesi() {
         if (_profesi == null)
-            _profesi = new ProfesiPath(this, Keys.FKLR2NYHT8VNI7OAH23U4TMSEMU, null);
+            _profesi = new ProfesiPath(this, Keys.FK_ALT_KRJ_PFS_PFS_ID, null);
 
         return _profesi;
     }

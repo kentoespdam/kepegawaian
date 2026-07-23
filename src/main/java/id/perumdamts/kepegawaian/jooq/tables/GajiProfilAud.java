@@ -181,7 +181,7 @@ public class GajiProfilAud extends TableImpl<GajiProfilAudRecord> {
 
     @Override
     public List<ForeignKey<GajiProfilAudRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FKT37LX96JELFE4HWE1DRQO36MC);
+        return Arrays.asList(Keys.FK_GJ_PRF_AUD_REV_REV);
     }
 
     private transient RevinfoPath _revinfo;
@@ -191,7 +191,7 @@ public class GajiProfilAud extends TableImpl<GajiProfilAudRecord> {
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)
-            _revinfo = new RevinfoPath(this, Keys.FKT37LX96JELFE4HWE1DRQO36MC, null);
+            _revinfo = new RevinfoPath(this, Keys.FK_GJ_PRF_AUD_REV_REV, null);
 
         return _revinfo;
     }

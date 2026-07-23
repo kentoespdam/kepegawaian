@@ -147,7 +147,7 @@ public class HariLibur extends TableImpl<HariLiburRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.HARI_LIBUR_IS_DELETED_IDX);
+        return Arrays.asList(Indexes.HARI_LIBUR_IDX_HR_LBR_IS_DELETED);
     }
 
     @Override
@@ -162,7 +162,7 @@ public class HariLibur extends TableImpl<HariLiburRecord> {
 
     @Override
     public List<UniqueKey<HariLiburRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.KEY_HARI_LIBUR_UNIQUE_TANGGAL_IDX);
+        return Arrays.asList(Keys.KEY_HARI_LIBUR_UK_HR_LBR_TANGGAL);
     }
 
     @Override

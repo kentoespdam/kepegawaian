@@ -189,7 +189,7 @@ public class CutiJenis extends TableImpl<CutiJenisRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.CUTI_JENIS_IS_DELETED_IDX);
+        return Arrays.asList(Indexes.CUTI_JENIS_IDX_CT_JNS_IS_DELETED);
     }
 
     @Override
@@ -202,30 +202,30 @@ public class CutiJenis extends TableImpl<CutiJenisRecord> {
         return Keys.KEY_CUTI_JENIS_PRIMARY;
     }
 
-    private transient CutiPegawaiPath _fkhooagj7gj49e1cfqy2j60924m;
+    private transient CutiPegawaiPath _fkCtPgwCtJnsJnsCtId;
 
     /**
      * Get the implicit to-many join path to the <code>cuti_pegawai</code>
-     * table, via the <code>FKhooagj7gj49e1cfqy2j60924m</code> key
+     * table, via the <code>fk_ct_pgw_ct_jns_jns_ct_id</code> key
      */
-    public CutiPegawaiPath fkhooagj7gj49e1cfqy2j60924m() {
-        if (_fkhooagj7gj49e1cfqy2j60924m == null)
-            _fkhooagj7gj49e1cfqy2j60924m = new CutiPegawaiPath(this, null, Keys.FKHOOAGJ7GJ49E1CFQY2J60924M.getInverseKey());
+    public CutiPegawaiPath fkCtPgwCtJnsJnsCtId() {
+        if (_fkCtPgwCtJnsJnsCtId == null)
+            _fkCtPgwCtJnsJnsCtId = new CutiPegawaiPath(this, null, Keys.FK_CT_PGW_CT_JNS_JNS_CT_ID.getInverseKey());
 
-        return _fkhooagj7gj49e1cfqy2j60924m;
+        return _fkCtPgwCtJnsJnsCtId;
     }
 
-    private transient CutiPegawaiPath _fkskgmhy1rclhvusx4x7ow3tk66;
+    private transient CutiPegawaiPath _fkCtPgwCtJnsSubJnsCtId;
 
     /**
      * Get the implicit to-many join path to the <code>cuti_pegawai</code>
-     * table, via the <code>FKskgmhy1rclhvusx4x7ow3tk66</code> key
+     * table, via the <code>fk_ct_pgw_ct_jns_sub_jns_ct_id</code> key
      */
-    public CutiPegawaiPath fkskgmhy1rclhvusx4x7ow3tk66() {
-        if (_fkskgmhy1rclhvusx4x7ow3tk66 == null)
-            _fkskgmhy1rclhvusx4x7ow3tk66 = new CutiPegawaiPath(this, null, Keys.FKSKGMHY1RCLHVUSX4X7OW3TK66.getInverseKey());
+    public CutiPegawaiPath fkCtPgwCtJnsSubJnsCtId() {
+        if (_fkCtPgwCtJnsSubJnsCtId == null)
+            _fkCtPgwCtJnsSubJnsCtId = new CutiPegawaiPath(this, null, Keys.FK_CT_PGW_CT_JNS_SUB_JNS_CT_ID.getInverseKey());
 
-        return _fkskgmhy1rclhvusx4x7ow3tk66;
+        return _fkCtPgwCtJnsSubJnsCtId;
     }
 
     @Override

@@ -243,7 +243,7 @@ public class BiodataAud extends TableImpl<BiodataAudRecord> {
 
     @Override
     public List<ForeignKey<BiodataAudRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FKOGVC1ALSCR1IF1IVCJJ4V8P79);
+        return Arrays.asList(Keys.FK_BIO_AUD_REV_REV);
     }
 
     private transient RevinfoPath _revinfo;
@@ -253,7 +253,7 @@ public class BiodataAud extends TableImpl<BiodataAudRecord> {
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)
-            _revinfo = new RevinfoPath(this, Keys.FKOGVC1ALSCR1IF1IVCJJ4V8P79, null);
+            _revinfo = new RevinfoPath(this, Keys.FK_BIO_AUD_REV_REV, null);
 
         return _revinfo;
     }

@@ -206,7 +206,7 @@ public class CutiApprovalAud extends TableImpl<CutiApprovalAudRecord> {
 
     @Override
     public List<ForeignKey<CutiApprovalAudRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK20COYHPWFQDUFHCGCIMB525T7);
+        return Arrays.asList(Keys.FK_CT_APV_AUD_REV_REV);
     }
 
     private transient RevinfoPath _revinfo;
@@ -216,7 +216,7 @@ public class CutiApprovalAud extends TableImpl<CutiApprovalAudRecord> {
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)
-            _revinfo = new RevinfoPath(this, Keys.FK20COYHPWFQDUFHCGCIMB525T7, null);
+            _revinfo = new RevinfoPath(this, Keys.FK_CT_APV_AUD_REV_REV, null);
 
         return _revinfo;
     }

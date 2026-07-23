@@ -178,7 +178,7 @@ public class Level extends TableImpl<LevelRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.LEVEL_IDX9WGOUI1TQ9BBGE31209XLR839);
+        return Arrays.asList(Indexes.LEVEL_IDX_LVL_IS_DELETED);
     }
 
     @Override
@@ -193,19 +193,20 @@ public class Level extends TableImpl<LevelRecord> {
 
     @Override
     public List<UniqueKey<LevelRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.KEY_LEVEL_UK6Y80V1QH60VNBOJ20CTXO4466);
+        return Arrays.asList(Keys.KEY_LEVEL_UK_LVL_NAMA);
     }
 
-    private transient GradePath _grade;
+    private transient GajiPotonganTkkPath _gajiPotonganTkk;
 
     /**
-     * Get the implicit to-many join path to the <code>grade</code> table
+     * Get the implicit to-many join path to the <code>gaji_potongan_tkk</code>
+     * table
      */
-    public GradePath grade() {
-        if (_grade == null)
-            _grade = new GradePath(this, null, Keys.FK1HBURLJ6SLFKHOR144UR1VL7C.getInverseKey());
+    public GajiPotonganTkkPath gajiPotonganTkk() {
+        if (_gajiPotonganTkk == null)
+            _gajiPotonganTkk = new GajiPotonganTkkPath(this, null, Keys.FK_GJ_PTG_TKK_LVL_LVL_ID.getInverseKey());
 
-        return _grade;
+        return _gajiPotonganTkk;
     }
 
     private transient GajiTunjanganPath _gajiTunjangan;
@@ -216,9 +217,21 @@ public class Level extends TableImpl<LevelRecord> {
      */
     public GajiTunjanganPath gajiTunjangan() {
         if (_gajiTunjangan == null)
-            _gajiTunjangan = new GajiTunjanganPath(this, null, Keys.FK3SWGJIHDVA7SHAI6BY6MQ8980.getInverseKey());
+            _gajiTunjangan = new GajiTunjanganPath(this, null, Keys.FK_GJ_TJG_LVL_LVL_ID.getInverseKey());
 
         return _gajiTunjangan;
+    }
+
+    private transient GradePath _grade;
+
+    /**
+     * Get the implicit to-many join path to the <code>grade</code> table
+     */
+    public GradePath grade() {
+        if (_grade == null)
+            _grade = new GradePath(this, null, Keys.FK_GRD_LVL_LVL_ID.getInverseKey());
+
+        return _grade;
     }
 
     private transient JabatanPath _jabatan;
@@ -228,7 +241,7 @@ public class Level extends TableImpl<LevelRecord> {
      */
     public JabatanPath jabatan() {
         if (_jabatan == null)
-            _jabatan = new JabatanPath(this, null, Keys.FK7UHNTAWSL2946OK908J4IN6Y1.getInverseKey());
+            _jabatan = new JabatanPath(this, null, Keys.FK_JBT_LVL_LVL_ID.getInverseKey());
 
         return _jabatan;
     }
@@ -240,22 +253,9 @@ public class Level extends TableImpl<LevelRecord> {
      */
     public ProfesiPath profesi() {
         if (_profesi == null)
-            _profesi = new ProfesiPath(this, null, Keys.FKGRQRCA3ADJK3BJ0U9RGQWPLFY.getInverseKey());
+            _profesi = new ProfesiPath(this, null, Keys.FK_PFS_LVL_LVL_ID.getInverseKey());
 
         return _profesi;
-    }
-
-    private transient GajiPotonganTkkPath _gajiPotonganTkk;
-
-    /**
-     * Get the implicit to-many join path to the <code>gaji_potongan_tkk</code>
-     * table
-     */
-    public GajiPotonganTkkPath gajiPotonganTkk() {
-        if (_gajiPotonganTkk == null)
-            _gajiPotonganTkk = new GajiPotonganTkkPath(this, null, Keys.FKJMRP5RICYXA9B82KCPJ51M7NC.getInverseKey());
-
-        return _gajiPotonganTkk;
     }
 
     @Override

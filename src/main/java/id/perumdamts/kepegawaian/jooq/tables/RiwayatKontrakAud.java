@@ -237,7 +237,7 @@ public class RiwayatKontrakAud extends TableImpl<RiwayatKontrakAudRecord> {
 
     @Override
     public List<ForeignKey<RiwayatKontrakAudRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK4ARE3YLGFJ39XA7MP1U7OVCN4);
+        return Arrays.asList(Keys.FK_RWT_KTRK_AUD_REV_REV);
     }
 
     private transient RevinfoPath _revinfo;
@@ -247,7 +247,7 @@ public class RiwayatKontrakAud extends TableImpl<RiwayatKontrakAudRecord> {
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)
-            _revinfo = new RevinfoPath(this, Keys.FK4ARE3YLGFJ39XA7MP1U7OVCN4, null);
+            _revinfo = new RevinfoPath(this, Keys.FK_RWT_KTRK_AUD_REV_REV, null);
 
         return _revinfo;
     }

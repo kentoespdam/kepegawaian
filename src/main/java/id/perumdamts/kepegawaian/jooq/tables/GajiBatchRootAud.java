@@ -155,7 +155,7 @@ public class GajiBatchRootAud extends TableImpl<GajiBatchRootAudRecord> {
 
     @Override
     public List<ForeignKey<GajiBatchRootAudRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FKBVM82XAG911HMIIBBQ8XQWGI6);
+        return Arrays.asList(Keys.FK_GJ_BT_ROOT_AUD_REV_REV);
     }
 
     private transient RevinfoPath _revinfo;
@@ -165,7 +165,7 @@ public class GajiBatchRootAud extends TableImpl<GajiBatchRootAudRecord> {
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)
-            _revinfo = new RevinfoPath(this, Keys.FKBVM82XAG911HMIIBBQ8XQWGI6, null);
+            _revinfo = new RevinfoPath(this, Keys.FK_GJ_BT_ROOT_AUD_REV_REV, null);
 
         return _revinfo;
     }

@@ -255,7 +255,7 @@ public class RiwayatTerminasi extends TableImpl<RiwayatTerminasiRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.RIWAYAT_TERMINASI_IDXEXK6T51XUIFXP2OCW9RQYDFV7, Indexes.RIWAYAT_TERMINASI_IDXGGF8OCAXNQ7BXRJ4DTG5W6VLQ, Indexes.RIWAYAT_TERMINASI_IDXME7P1LDDRQLV6KJS5YGGVBE8S, Indexes.RIWAYAT_TERMINASI_IDXRV3H5A4WJYSNO8UCLWRTFNRKP);
+        return Arrays.asList(Indexes.RIWAYAT_TERMINASI_IDX_RWT_TRM_ALS_TRM_ID, Indexes.RIWAYAT_TERMINASI_IDX_RWT_TRM_GLG_ID, Indexes.RIWAYAT_TERMINASI_IDX_RWT_TRM_JBT_ID, Indexes.RIWAYAT_TERMINASI_IDX_RWT_TRM_NAMA, Indexes.RIWAYAT_TERMINASI_IDX_RWT_TRM_NIPAM, Indexes.RIWAYAT_TERMINASI_IDX_RWT_TRM_NOMOR_SK, Indexes.RIWAYAT_TERMINASI_IDX_RWT_TRM_ORG_ID, Indexes.RIWAYAT_TERMINASI_IDX_RWT_TRM_RWT_SK_ID, Indexes.RIWAYAT_TERMINASI_IDX_RWT_TRM_TANGGAL_TRM);
     }
 
     @Override
@@ -270,24 +270,48 @@ public class RiwayatTerminasi extends TableImpl<RiwayatTerminasiRecord> {
 
     @Override
     public List<UniqueKey<RiwayatTerminasiRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.KEY_RIWAYAT_TERMINASI_UKROV05VE9UIOON25C0BMLJMV0);
+        return Arrays.asList(Keys.KEY_RIWAYAT_TERMINASI_UK_RWT_TRM_PGW_ID);
     }
 
     @Override
     public List<ForeignKey<RiwayatTerminasiRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK9N6XXA3ONBWARLKX3GI1R04RI, Keys.FKBLJN2U6FW0PMEA0TKHH8EN0FK, Keys.FKCW1918NHRCAKVD4HW1B9PKH78, Keys.FKFBDMEG2VYR1RHDQ7U2RUVTCC4, Keys.FKGVQU47WBAFPFND25WPDIUKO1E, Keys.FKMQ5496LFDG1PM8RF5H9DLOP4L);
+        return Arrays.asList(Keys.FK_RWT_TRM_ALS_BRH_ALS_TRM_ID, Keys.FK_RWT_TRM_GLG_GLG_ID, Keys.FK_RWT_TRM_JBT_JBT_ID, Keys.FK_RWT_TRM_ORG_ORG_ID, Keys.FK_RWT_TRM_PGW_PGW_ID, Keys.FK_RWT_TRM_RWT_SK_RWT_SK_ID);
     }
 
-    private transient RiwayatSkPath _riwayatSk;
+    private transient AlasanBerhentiPath _alasanBerhenti;
 
     /**
-     * Get the implicit join path to the <code>riwayat_sk</code> table.
+     * Get the implicit join path to the <code>alasan_berhenti</code> table.
      */
-    public RiwayatSkPath riwayatSk() {
-        if (_riwayatSk == null)
-            _riwayatSk = new RiwayatSkPath(this, Keys.FK9N6XXA3ONBWARLKX3GI1R04RI, null);
+    public AlasanBerhentiPath alasanBerhenti() {
+        if (_alasanBerhenti == null)
+            _alasanBerhenti = new AlasanBerhentiPath(this, Keys.FK_RWT_TRM_ALS_BRH_ALS_TRM_ID, null);
 
-        return _riwayatSk;
+        return _alasanBerhenti;
+    }
+
+    private transient GolonganPath _golongan;
+
+    /**
+     * Get the implicit join path to the <code>golongan</code> table.
+     */
+    public GolonganPath golongan() {
+        if (_golongan == null)
+            _golongan = new GolonganPath(this, Keys.FK_RWT_TRM_GLG_GLG_ID, null);
+
+        return _golongan;
+    }
+
+    private transient JabatanPath _jabatan;
+
+    /**
+     * Get the implicit join path to the <code>jabatan</code> table.
+     */
+    public JabatanPath jabatan() {
+        if (_jabatan == null)
+            _jabatan = new JabatanPath(this, Keys.FK_RWT_TRM_JBT_JBT_ID, null);
+
+        return _jabatan;
     }
 
     private transient OrganisasiPath _organisasi;
@@ -297,7 +321,7 @@ public class RiwayatTerminasi extends TableImpl<RiwayatTerminasiRecord> {
      */
     public OrganisasiPath organisasi() {
         if (_organisasi == null)
-            _organisasi = new OrganisasiPath(this, Keys.FKBLJN2U6FW0PMEA0TKHH8EN0FK, null);
+            _organisasi = new OrganisasiPath(this, Keys.FK_RWT_TRM_ORG_ORG_ID, null);
 
         return _organisasi;
     }
@@ -309,45 +333,21 @@ public class RiwayatTerminasi extends TableImpl<RiwayatTerminasiRecord> {
      */
     public PegawaiPath pegawai() {
         if (_pegawai == null)
-            _pegawai = new PegawaiPath(this, Keys.FKCW1918NHRCAKVD4HW1B9PKH78, null);
+            _pegawai = new PegawaiPath(this, Keys.FK_RWT_TRM_PGW_PGW_ID, null);
 
         return _pegawai;
     }
 
-    private transient AlasanBerhentiPath _alasanBerhenti;
+    private transient RiwayatSkPath _riwayatSk;
 
     /**
-     * Get the implicit join path to the <code>alasan_berhenti</code> table.
+     * Get the implicit join path to the <code>riwayat_sk</code> table.
      */
-    public AlasanBerhentiPath alasanBerhenti() {
-        if (_alasanBerhenti == null)
-            _alasanBerhenti = new AlasanBerhentiPath(this, Keys.FKFBDMEG2VYR1RHDQ7U2RUVTCC4, null);
+    public RiwayatSkPath riwayatSk() {
+        if (_riwayatSk == null)
+            _riwayatSk = new RiwayatSkPath(this, Keys.FK_RWT_TRM_RWT_SK_RWT_SK_ID, null);
 
-        return _alasanBerhenti;
-    }
-
-    private transient JabatanPath _jabatan;
-
-    /**
-     * Get the implicit join path to the <code>jabatan</code> table.
-     */
-    public JabatanPath jabatan() {
-        if (_jabatan == null)
-            _jabatan = new JabatanPath(this, Keys.FKGVQU47WBAFPFND25WPDIUKO1E, null);
-
-        return _jabatan;
-    }
-
-    private transient GolonganPath _golongan;
-
-    /**
-     * Get the implicit join path to the <code>golongan</code> table.
-     */
-    public GolonganPath golongan() {
-        if (_golongan == null)
-            _golongan = new GolonganPath(this, Keys.FKMQ5496LFDG1PM8RF5H9DLOP4L, null);
-
-        return _golongan;
+        return _riwayatSk;
     }
 
     @Override

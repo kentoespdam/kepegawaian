@@ -201,7 +201,7 @@ public class KartuIdentitas extends TableImpl<KartuIdentitasRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.KARTU_IDENTITAS_IDX52L5AA49LUDQBUMW4FQ0VO2NX, Indexes.KARTU_IDENTITAS_IDXO5UJ40J1DWNNKRPH726I5IO3S);
+        return Arrays.asList(Indexes.KARTU_IDENTITAS_IDX_KARTU_IDN_IS_DELETED, Indexes.KARTU_IDENTITAS_IDX_KARTU_IDN_JNS_KITAS_ID, Indexes.KARTU_IDENTITAS_IDX_KARTU_IDN_NOMOR_KARTU);
     }
 
     @Override
@@ -216,12 +216,12 @@ public class KartuIdentitas extends TableImpl<KartuIdentitasRecord> {
 
     @Override
     public List<UniqueKey<KartuIdentitasRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.KEY_KARTU_IDENTITAS_UK2NF4GS8XKWLN5SO1B54PQKAK7);
+        return Arrays.asList(Keys.KEY_KARTU_IDENTITAS_UK_KARTU_IDN_NIK_JNS_KITAS_ID);
     }
 
     @Override
     public List<ForeignKey<KartuIdentitasRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FKLUP69OA33GBN5WIM4ANSWM4KD, Keys.FKOGVQ6IJ2NU8JW7CS5JEHJ4NLX);
+        return Arrays.asList(Keys.FK_KARTU_IDN_BIO_NIK, Keys.FK_KARTU_IDN_JNS_KITAS_JNS_KITAS_ID);
     }
 
     private transient BiodataPath _biodata;
@@ -231,7 +231,7 @@ public class KartuIdentitas extends TableImpl<KartuIdentitasRecord> {
      */
     public BiodataPath biodata() {
         if (_biodata == null)
-            _biodata = new BiodataPath(this, Keys.FKLUP69OA33GBN5WIM4ANSWM4KD, null);
+            _biodata = new BiodataPath(this, Keys.FK_KARTU_IDN_BIO_NIK, null);
 
         return _biodata;
     }
@@ -243,7 +243,7 @@ public class KartuIdentitas extends TableImpl<KartuIdentitasRecord> {
      */
     public JenisKitasPath jenisKitas() {
         if (_jenisKitas == null)
-            _jenisKitas = new JenisKitasPath(this, Keys.FKOGVQ6IJ2NU8JW7CS5JEHJ4NLX, null);
+            _jenisKitas = new JenisKitasPath(this, Keys.FK_KARTU_IDN_JNS_KITAS_JNS_KITAS_ID, null);
 
         return _jenisKitas;
     }

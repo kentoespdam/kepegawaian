@@ -181,7 +181,7 @@ public class LampiranSk extends TableImpl<LampiranSkRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.LAMPIRAN_SK_IDX67FFVWQIHR6JHI8JLI03QK7S6, Indexes.LAMPIRAN_SK_IDX7VU612O8Y79JGHB2O4VJNO6NN, Indexes.LAMPIRAN_SK_IDXO5K97TGDHJ3HK06VMADVNY9GL);
+        return Arrays.asList(Indexes.LAMPIRAN_SK_IDX_LMP_SK_IS_DELETED, Indexes.LAMPIRAN_SK_IDX_LMP_SK_REF, Indexes.LAMPIRAN_SK_IDX_LMP_SK_REF_ID);
     }
 
     @Override

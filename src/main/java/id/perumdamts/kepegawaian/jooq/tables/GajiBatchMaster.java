@@ -305,7 +305,7 @@ public class GajiBatchMaster extends TableImpl<GajiBatchMasterRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.GAJI_BATCH_MASTER_IDX2881AGTF8KCMVM9PMDOXDY277, Indexes.GAJI_BATCH_MASTER_IDXHEXGGLY068GPJBI9RY7SCEXKB, Indexes.GAJI_BATCH_MASTER_IDXM86JS7C12WWDLS5V0NW12WHFW, Indexes.GAJI_BATCH_MASTER_IDXTG6HVSNIQI1XHC2LR2MSW4SRG);
+        return Arrays.asList(Indexes.GAJI_BATCH_MASTER_IDX_GJ_BT_MST_BT_ROOT_ID, Indexes.GAJI_BATCH_MASTER_IDX_GJ_BT_MST_GJ_PP_NN_PJK_ID, Indexes.GAJI_BATCH_MASTER_IDX_GJ_BT_MST_NAMA, Indexes.GAJI_BATCH_MASTER_IDX_GJ_BT_MST_NIPAM, Indexes.GAJI_BATCH_MASTER_IDX_GJ_BT_MST_ORG_ID, Indexes.GAJI_BATCH_MASTER_IDX_GJ_BT_MST_PERIODE, Indexes.GAJI_BATCH_MASTER_IDX_GJ_BT_MST_PGW_ID);
     }
 
     @Override
@@ -320,7 +320,7 @@ public class GajiBatchMaster extends TableImpl<GajiBatchMasterRecord> {
 
     @Override
     public List<ForeignKey<GajiBatchMasterRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FKD1ADKSQL6DROF7VNP6POCWH09, Keys.FKGR17QMJXK5S1CNST11EN4H9WO, Keys.FKP517HR1RWC0I22DOFIRSEK8KN);
+        return Arrays.asList(Keys.FK_GJ_BT_MST_GJ_BT_ROOT_BT_ROOT_ID, Keys.FK_GJ_BT_MST_GJ_PP_NN_PJK_GJ_PP_NN_PJK_ID, Keys.FK_GJ_BT_MST_ORG_ORG_ID);
     }
 
     private transient GajiBatchRootPath _gajiBatchRoot;
@@ -330,21 +330,9 @@ public class GajiBatchMaster extends TableImpl<GajiBatchMasterRecord> {
      */
     public GajiBatchRootPath gajiBatchRoot() {
         if (_gajiBatchRoot == null)
-            _gajiBatchRoot = new GajiBatchRootPath(this, Keys.FKD1ADKSQL6DROF7VNP6POCWH09, null);
+            _gajiBatchRoot = new GajiBatchRootPath(this, Keys.FK_GJ_BT_MST_GJ_BT_ROOT_BT_ROOT_ID, null);
 
         return _gajiBatchRoot;
-    }
-
-    private transient OrganisasiPath _organisasi;
-
-    /**
-     * Get the implicit join path to the <code>organisasi</code> table.
-     */
-    public OrganisasiPath organisasi() {
-        if (_organisasi == null)
-            _organisasi = new OrganisasiPath(this, Keys.FKGR17QMJXK5S1CNST11EN4H9WO, null);
-
-        return _organisasi;
     }
 
     private transient GajiPendapatanNonPajakPath _gajiPendapatanNonPajak;
@@ -355,9 +343,21 @@ public class GajiBatchMaster extends TableImpl<GajiBatchMasterRecord> {
      */
     public GajiPendapatanNonPajakPath gajiPendapatanNonPajak() {
         if (_gajiPendapatanNonPajak == null)
-            _gajiPendapatanNonPajak = new GajiPendapatanNonPajakPath(this, Keys.FKP517HR1RWC0I22DOFIRSEK8KN, null);
+            _gajiPendapatanNonPajak = new GajiPendapatanNonPajakPath(this, Keys.FK_GJ_BT_MST_GJ_PP_NN_PJK_GJ_PP_NN_PJK_ID, null);
 
         return _gajiPendapatanNonPajak;
+    }
+
+    private transient OrganisasiPath _organisasi;
+
+    /**
+     * Get the implicit join path to the <code>organisasi</code> table.
+     */
+    public OrganisasiPath organisasi() {
+        if (_organisasi == null)
+            _organisasi = new OrganisasiPath(this, Keys.FK_GJ_BT_MST_ORG_ORG_ID, null);
+
+        return _organisasi;
     }
 
     @Override

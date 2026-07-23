@@ -252,7 +252,7 @@ public class PelatihanAud extends TableImpl<PelatihanAudRecord> {
 
     @Override
     public List<ForeignKey<PelatihanAudRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FKD9DO03O1GVL1BHL607NOJE3K1);
+        return Arrays.asList(Keys.FK_LTH_AUD_REV_REV);
     }
 
     private transient RevinfoPath _revinfo;
@@ -262,7 +262,7 @@ public class PelatihanAud extends TableImpl<PelatihanAudRecord> {
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)
-            _revinfo = new RevinfoPath(this, Keys.FKD9DO03O1GVL1BHL607NOJE3K1, null);
+            _revinfo = new RevinfoPath(this, Keys.FK_LTH_AUD_REV_REV, null);
 
         return _revinfo;
     }

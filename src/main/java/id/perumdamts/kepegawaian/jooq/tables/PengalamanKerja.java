@@ -229,7 +229,7 @@ public class PengalamanKerja extends TableImpl<PengalamanKerjaRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.PENGALAMAN_KERJA_IDXO52N89YL6IVYGURLKBBIUTEUM);
+        return Arrays.asList(Indexes.PENGALAMAN_KERJA_IDX_PLM_KRJ_BIO_ID, Indexes.PENGALAMAN_KERJA_IDX_PLM_KRJ_IS_DELETED);
     }
 
     @Override
@@ -244,7 +244,7 @@ public class PengalamanKerja extends TableImpl<PengalamanKerjaRecord> {
 
     @Override
     public List<ForeignKey<PengalamanKerjaRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FKTFWLOU3LU3982TRUDGJVSQ8UH);
+        return Arrays.asList(Keys.FK_PLM_KRJ_BIO_BIO_ID);
     }
 
     private transient BiodataPath _biodata;
@@ -254,7 +254,7 @@ public class PengalamanKerja extends TableImpl<PengalamanKerjaRecord> {
      */
     public BiodataPath biodata() {
         if (_biodata == null)
-            _biodata = new BiodataPath(this, Keys.FKTFWLOU3LU3982TRUDGJVSQ8UH, null);
+            _biodata = new BiodataPath(this, Keys.FK_PLM_KRJ_BIO_BIO_ID, null);
 
         return _biodata;
     }

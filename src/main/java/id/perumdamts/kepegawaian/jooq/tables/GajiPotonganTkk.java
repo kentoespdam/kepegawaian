@@ -190,7 +190,7 @@ public class GajiPotonganTkk extends TableImpl<GajiPotonganTkkRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.GAJI_POTONGAN_TKK_IDX1J99JGO8P61MGXLPJK0A4JA3J);
+        return Arrays.asList(Indexes.GAJI_POTONGAN_TKK_IDX_GJ_PTG_TKK_GLG_ID, Indexes.GAJI_POTONGAN_TKK_IDX_GJ_PTG_TKK_IS_DELETED, Indexes.GAJI_POTONGAN_TKK_IDX_GJ_PTG_TKK_LVL_ID);
     }
 
     @Override
@@ -205,7 +205,7 @@ public class GajiPotonganTkk extends TableImpl<GajiPotonganTkkRecord> {
 
     @Override
     public List<ForeignKey<GajiPotonganTkkRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FKBOE0VGMHAI1IF02SCV0UQI3HV, Keys.FKJMRP5RICYXA9B82KCPJ51M7NC);
+        return Arrays.asList(Keys.FK_GJ_PTG_TKK_GLG_GLG_ID, Keys.FK_GJ_PTG_TKK_LVL_LVL_ID);
     }
 
     private transient GolonganPath _golongan;
@@ -215,7 +215,7 @@ public class GajiPotonganTkk extends TableImpl<GajiPotonganTkkRecord> {
      */
     public GolonganPath golongan() {
         if (_golongan == null)
-            _golongan = new GolonganPath(this, Keys.FKBOE0VGMHAI1IF02SCV0UQI3HV, null);
+            _golongan = new GolonganPath(this, Keys.FK_GJ_PTG_TKK_GLG_GLG_ID, null);
 
         return _golongan;
     }
@@ -227,7 +227,7 @@ public class GajiPotonganTkk extends TableImpl<GajiPotonganTkkRecord> {
      */
     public LevelPath level() {
         if (_level == null)
-            _level = new LevelPath(this, Keys.FKJMRP5RICYXA9B82KCPJ51M7NC, null);
+            _level = new LevelPath(this, Keys.FK_GJ_PTG_TKK_LVL_LVL_ID, null);
 
         return _level;
     }

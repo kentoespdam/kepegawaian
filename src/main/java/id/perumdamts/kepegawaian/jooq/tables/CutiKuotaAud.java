@@ -212,7 +212,7 @@ public class CutiKuotaAud extends TableImpl<CutiKuotaAudRecord> {
 
     @Override
     public List<ForeignKey<CutiKuotaAudRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK6CKY1Q18UEYDC77MK56STCA8S);
+        return Arrays.asList(Keys.FK_CT_KTA_AUD_REV_REV);
     }
 
     private transient RevinfoPath _revinfo;
@@ -222,7 +222,7 @@ public class CutiKuotaAud extends TableImpl<CutiKuotaAudRecord> {
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)
-            _revinfo = new RevinfoPath(this, Keys.FK6CKY1Q18UEYDC77MK56STCA8S, null);
+            _revinfo = new RevinfoPath(this, Keys.FK_CT_KTA_AUD_REV_REV, null);
 
         return _revinfo;
     }

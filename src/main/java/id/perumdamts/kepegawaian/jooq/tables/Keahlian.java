@@ -225,7 +225,7 @@ public class Keahlian extends TableImpl<KeahlianRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.KEAHLIAN_IDX975E93T2VJBTKIGOAXS0VC0SJ, Indexes.KEAHLIAN_IDXBBW133ASJ6RK5I58OQSHBF1R);
+        return Arrays.asList(Indexes.KEAHLIAN_IDX_AHL_BIO_ID, Indexes.KEAHLIAN_IDX_AHL_DISETUJUI, Indexes.KEAHLIAN_IDX_AHL_IS_DELETED, Indexes.KEAHLIAN_IDX_AHL_JNS_AHL_ID);
     }
 
     @Override
@@ -240,7 +240,7 @@ public class Keahlian extends TableImpl<KeahlianRecord> {
 
     @Override
     public List<ForeignKey<KeahlianRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK12SLGN5R1H6NDUDDQYWK9XOWS, Keys.FK5J2F24CM94BMD91XBCLNCVJTB);
+        return Arrays.asList(Keys.FK_AHL_BIO_BIO_ID, Keys.FK_AHL_JNS_AHL_JNS_AHL_ID);
     }
 
     private transient BiodataPath _biodata;
@@ -250,7 +250,7 @@ public class Keahlian extends TableImpl<KeahlianRecord> {
      */
     public BiodataPath biodata() {
         if (_biodata == null)
-            _biodata = new BiodataPath(this, Keys.FK12SLGN5R1H6NDUDDQYWK9XOWS, null);
+            _biodata = new BiodataPath(this, Keys.FK_AHL_BIO_BIO_ID, null);
 
         return _biodata;
     }
@@ -262,7 +262,7 @@ public class Keahlian extends TableImpl<KeahlianRecord> {
      */
     public JenisKeahlianPath jenisKeahlian() {
         if (_jenisKeahlian == null)
-            _jenisKeahlian = new JenisKeahlianPath(this, Keys.FK5J2F24CM94BMD91XBCLNCVJTB, null);
+            _jenisKeahlian = new JenisKeahlianPath(this, Keys.FK_AHL_JNS_AHL_JNS_AHL_ID, null);
 
         return _jenisKeahlian;
     }

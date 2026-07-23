@@ -1308,7 +1308,7 @@ CREATE TABLE `pegawai` (
   `tmt_mutasi` date DEFAULT NULL,
   `tmt_pegawai` date DEFAULT NULL,
   `tmt_pensiun` date DEFAULT NULL,
-  `nik` varchar(255) DEFAULT NULL,
+  `biodata_id` varchar(255) DEFAULT NULL,
   `gaji_profil_id` bigint(20) DEFAULT NULL,
   `golongan_id` bigint(20) DEFAULT NULL,
   `grade_id` bigint(20) DEFAULT NULL,
@@ -1329,7 +1329,7 @@ CREATE TABLE `pegawai` (
   KEY `idx_pgw_org_id` (`organisasi_id`) USING BTREE,
   KEY `idx_pgw_pfs_id` (`profesi_id`) USING BTREE,
   KEY `idx_pgw_rmh_dns_id` (`rumah_dinas_id`) USING BTREE,
-  KEY `idx_pgw_nik` (`nik`) USING BTREE,
+  KEY `idx_pgw_bio_id` (`biodata_id`) USING BTREE,
   CONSTRAINT `fk_pgw_pfs_pfs_id` FOREIGN KEY (`profesi_id`) REFERENCES `profesi` (`id`),
   CONSTRAINT `fk_pgw_glg_glg_id` FOREIGN KEY (`golongan_id`) REFERENCES `golongan` (`id`),
   CONSTRAINT `fk_pgw_gj_pp_nn_pjk_gj_pp_nn_pjk_id` FOREIGN KEY (`gaji_pendapatan_non_pajak_id`) REFERENCES `gaji_pendapatan_non_pajak` (`id`),
@@ -1337,7 +1337,7 @@ CREATE TABLE `pegawai` (
   CONSTRAINT `fk_pgw_gj_prf_gj_prf_id` FOREIGN KEY (`gaji_profil_id`) REFERENCES `gaji_profil` (`id`),
   CONSTRAINT `fk_pgw_jbt_jbt_id` FOREIGN KEY (`jabatan_id`) REFERENCES `jabatan` (`id`),
   CONSTRAINT `fk_pgw_rmh_dns_rmh_dns_id` FOREIGN KEY (`rumah_dinas_id`) REFERENCES `rumah_dinas` (`id`),
-  CONSTRAINT `fk_pgw_bio_nik` FOREIGN KEY (`nik`) REFERENCES `biodata` (`nik`),
+  CONSTRAINT `fk_pgw_bio_bio_id` FOREIGN KEY (`biodata_id`) REFERENCES `biodata` (`nik`),
   CONSTRAINT `fk_pgw_grd_grd_id` FOREIGN KEY (`grade_id`) REFERENCES `grade` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 

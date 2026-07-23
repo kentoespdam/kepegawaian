@@ -37,7 +37,7 @@ public class CutiPengajuanQueryRepository {
                 
         var count = dsl.selectCount().from(CUTI_PEGAWAI)
                 .leftJoin(PEGAWAI).on(CUTI_PEGAWAI.PEGAWAI_ID.eq(PEGAWAI.ID))
-                .leftJoin(BIODATA).on(PEGAWAI.NIK.eq(BIODATA.NIK))
+                .leftJoin(BIODATA).on(PEGAWAI.BIODATA_ID.eq(BIODATA.NIK))
                 .where(where).fetchOptional(0, Long.class).orElse(0L);
                 
         var jenisCuti = CUTI_JENIS.as("jc");
@@ -47,7 +47,7 @@ public class CutiPengajuanQueryRepository {
         var data = dsl.select(CutiPegawaiSelects.fullQueryFields(jenisCuti, subJenisCuti, pic))
                 .from(CUTI_PEGAWAI)
                 .leftJoin(PEGAWAI).on(CUTI_PEGAWAI.PEGAWAI_ID.eq(PEGAWAI.ID))
-                .leftJoin(BIODATA).on(PEGAWAI.NIK.eq(BIODATA.NIK))
+                .leftJoin(BIODATA).on(PEGAWAI.BIODATA_ID.eq(BIODATA.NIK))
                 .leftJoin(ORGANISASI).on(CUTI_PEGAWAI.ORGANISASI_ID.eq(ORGANISASI.ID))
                 .leftJoin(JABATAN).on(CUTI_PEGAWAI.JABATAN_ID.eq(JABATAN.ID))
                 .leftJoin(jenisCuti).on(CUTI_PEGAWAI.JENIS_CUTI_ID.eq(jenisCuti.ID))
@@ -70,7 +70,7 @@ public class CutiPengajuanQueryRepository {
         var record = dsl.select(CutiPegawaiSelects.fullQueryFields(jenisCuti, subJenisCuti, pic))
                 .from(CUTI_PEGAWAI)
                 .leftJoin(PEGAWAI).on(CUTI_PEGAWAI.PEGAWAI_ID.eq(PEGAWAI.ID))
-                .leftJoin(BIODATA).on(PEGAWAI.NIK.eq(BIODATA.NIK))
+                .leftJoin(BIODATA).on(PEGAWAI.BIODATA_ID.eq(BIODATA.NIK))
                 .leftJoin(ORGANISASI).on(CUTI_PEGAWAI.ORGANISASI_ID.eq(ORGANISASI.ID))
                 .leftJoin(JABATAN).on(CUTI_PEGAWAI.JABATAN_ID.eq(JABATAN.ID))
                 .leftJoin(jenisCuti).on(CUTI_PEGAWAI.JENIS_CUTI_ID.eq(jenisCuti.ID))
@@ -110,7 +110,7 @@ public class CutiPengajuanQueryRepository {
         return dsl.select(CutiPegawaiSelects.miniQueryFields(jenisCuti, subJenisCuti, pic))
                 .from(CUTI_PEGAWAI)
                 .leftJoin(PEGAWAI).on(CUTI_PEGAWAI.PEGAWAI_ID.eq(PEGAWAI.ID))
-                .leftJoin(BIODATA).on(PEGAWAI.NIK.eq(BIODATA.NIK))
+                .leftJoin(BIODATA).on(PEGAWAI.BIODATA_ID.eq(BIODATA.NIK))
                 .leftJoin(ORGANISASI).on(CUTI_PEGAWAI.ORGANISASI_ID.eq(ORGANISASI.ID))
                 .leftJoin(JABATAN).on(CUTI_PEGAWAI.JABATAN_ID.eq(JABATAN.ID))
                 .leftJoin(jenisCuti).on(CUTI_PEGAWAI.JENIS_CUTI_ID.eq(jenisCuti.ID))

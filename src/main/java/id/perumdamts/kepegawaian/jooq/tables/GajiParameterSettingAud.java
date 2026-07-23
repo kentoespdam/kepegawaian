@@ -186,7 +186,7 @@ public class GajiParameterSettingAud extends TableImpl<GajiParameterSettingAudRe
 
     @Override
     public List<ForeignKey<GajiParameterSettingAudRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK9IH1IF6L76TTD8VPCIY2RFVAJ);
+        return Arrays.asList(Keys.FK_GJ_PRM_STG_AUD_REV_REV);
     }
 
     private transient RevinfoPath _revinfo;
@@ -196,7 +196,7 @@ public class GajiParameterSettingAud extends TableImpl<GajiParameterSettingAudRe
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)
-            _revinfo = new RevinfoPath(this, Keys.FK9IH1IF6L76TTD8VPCIY2RFVAJ, null);
+            _revinfo = new RevinfoPath(this, Keys.FK_GJ_PRM_STG_AUD_REV_REV, null);
 
         return _revinfo;
     }

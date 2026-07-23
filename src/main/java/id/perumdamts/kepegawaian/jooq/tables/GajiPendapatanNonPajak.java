@@ -185,7 +185,7 @@ public class GajiPendapatanNonPajak extends TableImpl<GajiPendapatanNonPajakReco
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.GAJI_PENDAPATAN_NON_PAJAK_IDX4J0YKODGUJ6EE6SWUBTO7UXUN, Indexes.GAJI_PENDAPATAN_NON_PAJAK_IDX4UO1PGBAF1NJS66C9PQNMP27E);
+        return Arrays.asList(Indexes.GAJI_PENDAPATAN_NON_PAJAK_IDX_GJ_PP_NN_PJK_IS_DELETED, Indexes.GAJI_PENDAPATAN_NON_PAJAK_IDX_GJ_PP_NN_PJK_KODE);
     }
 
     @Override
@@ -198,18 +198,6 @@ public class GajiPendapatanNonPajak extends TableImpl<GajiPendapatanNonPajakReco
         return Keys.KEY_GAJI_PENDAPATAN_NON_PAJAK_PRIMARY;
     }
 
-    private transient PegawaiPath _pegawai;
-
-    /**
-     * Get the implicit to-many join path to the <code>pegawai</code> table
-     */
-    public PegawaiPath pegawai() {
-        if (_pegawai == null)
-            _pegawai = new PegawaiPath(this, null, Keys.FKD4C58P3UJBNV0R1YQWR4I9JXG.getInverseKey());
-
-        return _pegawai;
-    }
-
     private transient GajiBatchMasterPath _gajiBatchMaster;
 
     /**
@@ -218,9 +206,21 @@ public class GajiPendapatanNonPajak extends TableImpl<GajiPendapatanNonPajakReco
      */
     public GajiBatchMasterPath gajiBatchMaster() {
         if (_gajiBatchMaster == null)
-            _gajiBatchMaster = new GajiBatchMasterPath(this, null, Keys.FKP517HR1RWC0I22DOFIRSEK8KN.getInverseKey());
+            _gajiBatchMaster = new GajiBatchMasterPath(this, null, Keys.FK_GJ_BT_MST_GJ_PP_NN_PJK_GJ_PP_NN_PJK_ID.getInverseKey());
 
         return _gajiBatchMaster;
+    }
+
+    private transient PegawaiPath _pegawai;
+
+    /**
+     * Get the implicit to-many join path to the <code>pegawai</code> table
+     */
+    public PegawaiPath pegawai() {
+        if (_pegawai == null)
+            _pegawai = new PegawaiPath(this, null, Keys.FK_PGW_GJ_PP_NN_PJK_GJ_PP_NN_PJK_ID.getInverseKey());
+
+        return _pegawai;
     }
 
     @Override

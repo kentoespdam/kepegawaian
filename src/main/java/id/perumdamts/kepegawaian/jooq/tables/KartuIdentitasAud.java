@@ -207,7 +207,7 @@ public class KartuIdentitasAud extends TableImpl<KartuIdentitasAudRecord> {
 
     @Override
     public List<ForeignKey<KartuIdentitasAudRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FKHU5NU2YULMTQD0G0GYPIYEGCU);
+        return Arrays.asList(Keys.FK_KARTU_IDN_AUD_REV_REV);
     }
 
     private transient RevinfoPath _revinfo;
@@ -217,7 +217,7 @@ public class KartuIdentitasAud extends TableImpl<KartuIdentitasAudRecord> {
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)
-            _revinfo = new RevinfoPath(this, Keys.FKHU5NU2YULMTQD0G0GYPIYEGCU, null);
+            _revinfo = new RevinfoPath(this, Keys.FK_KARTU_IDN_AUD_REV_REV, null);
 
         return _revinfo;
     }

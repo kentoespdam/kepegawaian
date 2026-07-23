@@ -205,7 +205,7 @@ public class CutiKuota extends TableImpl<CutiKuotaRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.CUTI_KUOTA_IS_DELETED_IDX);
+        return Arrays.asList(Indexes.CUTI_KUOTA_IDX_CT_KTA_IS_DELETED, Indexes.CUTI_KUOTA_IDX_CT_KTA_PGW_ID);
     }
 
     @Override
@@ -220,7 +220,7 @@ public class CutiKuota extends TableImpl<CutiKuotaRecord> {
 
     @Override
     public List<ForeignKey<CutiKuotaRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK8E4BRQ58446U1ISM0WQSP1OS2);
+        return Arrays.asList(Keys.FK_CT_KTA_PGW_PGW_ID);
     }
 
     private transient PegawaiPath _pegawai;
@@ -230,7 +230,7 @@ public class CutiKuota extends TableImpl<CutiKuotaRecord> {
      */
     public PegawaiPath pegawai() {
         if (_pegawai == null)
-            _pegawai = new PegawaiPath(this, Keys.FK8E4BRQ58446U1ISM0WQSP1OS2, null);
+            _pegawai = new PegawaiPath(this, Keys.FK_CT_KTA_PGW_PGW_ID, null);
 
         return _pegawai;
     }

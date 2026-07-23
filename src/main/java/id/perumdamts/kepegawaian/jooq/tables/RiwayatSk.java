@@ -253,7 +253,7 @@ public class RiwayatSk extends TableImpl<RiwayatSkRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.RIWAYAT_SK_IDX1NVFJFGRUXHBP8HSINRJ9XWOJ, Indexes.RIWAYAT_SK_IDX882GV5NAU8LWRY4HLML5HMB7M, Indexes.RIWAYAT_SK_IDXAJ7K5LI46QABCTNFNVF0BONX6, Indexes.RIWAYAT_SK_IDXBLWDYMMYS5G1ORU6KGQT3XS96, Indexes.RIWAYAT_SK_IDXMARSV7HD37Q67RS3TMVK8LN1C, Indexes.RIWAYAT_SK_IDXN0XLYLMUGO3L3HFRLO0G7LWLW, Indexes.RIWAYAT_SK_IDXOUQ7S77KRD1G3G8H6JPEP0VNE);
+        return Arrays.asList(Indexes.RIWAYAT_SK_IDX_RWT_SK_GLG_ID, Indexes.RIWAYAT_SK_IDX_RWT_SK_IS_DELETED, Indexes.RIWAYAT_SK_IDX_RWT_SK_MKG_TAHUN, Indexes.RIWAYAT_SK_IDX_RWT_SK_MKGB_TAHUN, Indexes.RIWAYAT_SK_IDX_RWT_SK_NAMA, Indexes.RIWAYAT_SK_IDX_RWT_SK_NIPAM, Indexes.RIWAYAT_SK_IDX_RWT_SK_NOMOR_SK, Indexes.RIWAYAT_SK_IDX_RWT_SK_PGW_ID, Indexes.RIWAYAT_SK_IDX_RWT_SK_TANGGAL_SK);
     }
 
     @Override
@@ -268,19 +268,7 @@ public class RiwayatSk extends TableImpl<RiwayatSkRecord> {
 
     @Override
     public List<ForeignKey<RiwayatSkRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FKS8EM44AFF7JVH06I31WFPJNJG, Keys.FKSSDKK6IN2B2RP1FMTS4N4MU7R);
-    }
-
-    private transient PegawaiPath _pegawai;
-
-    /**
-     * Get the implicit join path to the <code>pegawai</code> table.
-     */
-    public PegawaiPath pegawai() {
-        if (_pegawai == null)
-            _pegawai = new PegawaiPath(this, Keys.FKS8EM44AFF7JVH06I31WFPJNJG, null);
-
-        return _pegawai;
+        return Arrays.asList(Keys.FK_RWT_SK_GLG_GLG_ID, Keys.FK_RWT_SK_PGW_PGW_ID);
     }
 
     private transient GolonganPath _golongan;
@@ -290,9 +278,21 @@ public class RiwayatSk extends TableImpl<RiwayatSkRecord> {
      */
     public GolonganPath golongan() {
         if (_golongan == null)
-            _golongan = new GolonganPath(this, Keys.FKSSDKK6IN2B2RP1FMTS4N4MU7R, null);
+            _golongan = new GolonganPath(this, Keys.FK_RWT_SK_GLG_GLG_ID, null);
 
         return _golongan;
+    }
+
+    private transient PegawaiPath _pegawai;
+
+    /**
+     * Get the implicit join path to the <code>pegawai</code> table.
+     */
+    public PegawaiPath pegawai() {
+        if (_pegawai == null)
+            _pegawai = new PegawaiPath(this, Keys.FK_RWT_SK_PGW_PGW_ID, null);
+
+        return _pegawai;
     }
 
     private transient RiwayatMutasiPath _riwayatMutasi;
@@ -303,7 +303,7 @@ public class RiwayatSk extends TableImpl<RiwayatSkRecord> {
      */
     public RiwayatMutasiPath riwayatMutasi() {
         if (_riwayatMutasi == null)
-            _riwayatMutasi = new RiwayatMutasiPath(this, null, Keys.FK4APHJCVFB1EQNWB9PPX0F3H8W.getInverseKey());
+            _riwayatMutasi = new RiwayatMutasiPath(this, null, Keys.FK_RWT_MTS_RWT_SK_RWT_SK_ID.getInverseKey());
 
         return _riwayatMutasi;
     }
@@ -316,7 +316,7 @@ public class RiwayatSk extends TableImpl<RiwayatSkRecord> {
      */
     public RiwayatTerminasiPath riwayatTerminasi() {
         if (_riwayatTerminasi == null)
-            _riwayatTerminasi = new RiwayatTerminasiPath(this, null, Keys.FK9N6XXA3ONBWARLKX3GI1R04RI.getInverseKey());
+            _riwayatTerminasi = new RiwayatTerminasiPath(this, null, Keys.FK_RWT_TRM_RWT_SK_RWT_SK_ID.getInverseKey());
 
         return _riwayatTerminasi;
     }

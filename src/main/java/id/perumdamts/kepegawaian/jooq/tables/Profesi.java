@@ -210,7 +210,7 @@ public class Profesi extends TableImpl<ProfesiRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.PROFESI_IDXA6TTUB6NENO90PT9PDOMPAHY9, Indexes.PROFESI_IDXDF2V2D8M8KJ2FNO6JIA21AQWU);
+        return Arrays.asList(Indexes.PROFESI_IDX_PFS_GRD_ID, Indexes.PROFESI_IDX_PFS_IS_DELETED, Indexes.PROFESI_IDX_PFS_JBT_ID, Indexes.PROFESI_IDX_PFS_LVL_ID, Indexes.PROFESI_IDX_PFS_NAMA, Indexes.PROFESI_IDX_PFS_ORG_ID);
     }
 
     @Override
@@ -225,19 +225,7 @@ public class Profesi extends TableImpl<ProfesiRecord> {
 
     @Override
     public List<ForeignKey<ProfesiRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK7Y0J8PF2RXYWRWHQYBJ06VA69, Keys.FK9MTQTFVREOK33QVC1H05D09VP, Keys.FKGRQRCA3ADJK3BJ0U9RGQWPLFY, Keys.FKPDO18V9PYFNINMFHQD1RJOP6O);
-    }
-
-    private transient JabatanPath _jabatan;
-
-    /**
-     * Get the implicit join path to the <code>jabatan</code> table.
-     */
-    public JabatanPath jabatan() {
-        if (_jabatan == null)
-            _jabatan = new JabatanPath(this, Keys.FK7Y0J8PF2RXYWRWHQYBJ06VA69, null);
-
-        return _jabatan;
+        return Arrays.asList(Keys.FK_PFS_GRD_GRD_ID, Keys.FK_PFS_JBT_JBT_ID, Keys.FK_PFS_LVL_LVL_ID, Keys.FK_PFS_ORG_ORG_ID);
     }
 
     private transient GradePath _grade;
@@ -247,9 +235,21 @@ public class Profesi extends TableImpl<ProfesiRecord> {
      */
     public GradePath grade() {
         if (_grade == null)
-            _grade = new GradePath(this, Keys.FK9MTQTFVREOK33QVC1H05D09VP, null);
+            _grade = new GradePath(this, Keys.FK_PFS_GRD_GRD_ID, null);
 
         return _grade;
+    }
+
+    private transient JabatanPath _jabatan;
+
+    /**
+     * Get the implicit join path to the <code>jabatan</code> table.
+     */
+    public JabatanPath jabatan() {
+        if (_jabatan == null)
+            _jabatan = new JabatanPath(this, Keys.FK_PFS_JBT_JBT_ID, null);
+
+        return _jabatan;
     }
 
     private transient LevelPath _level;
@@ -259,7 +259,7 @@ public class Profesi extends TableImpl<ProfesiRecord> {
      */
     public LevelPath level() {
         if (_level == null)
-            _level = new LevelPath(this, Keys.FKGRQRCA3ADJK3BJ0U9RGQWPLFY, null);
+            _level = new LevelPath(this, Keys.FK_PFS_LVL_LVL_ID, null);
 
         return _level;
     }
@@ -271,21 +271,9 @@ public class Profesi extends TableImpl<ProfesiRecord> {
      */
     public OrganisasiPath organisasi() {
         if (_organisasi == null)
-            _organisasi = new OrganisasiPath(this, Keys.FKPDO18V9PYFNINMFHQD1RJOP6O, null);
+            _organisasi = new OrganisasiPath(this, Keys.FK_PFS_ORG_ORG_ID, null);
 
         return _organisasi;
-    }
-
-    private transient PegawaiPath _pegawai;
-
-    /**
-     * Get the implicit to-many join path to the <code>pegawai</code> table
-     */
-    public PegawaiPath pegawai() {
-        if (_pegawai == null)
-            _pegawai = new PegawaiPath(this, null, Keys.FK6MFHIOGA8LVAFTUBPP0JGGENV.getInverseKey());
-
-        return _pegawai;
     }
 
     private transient AlatKerjaPath _alatKerja;
@@ -295,7 +283,7 @@ public class Profesi extends TableImpl<ProfesiRecord> {
      */
     public AlatKerjaPath alatKerja() {
         if (_alatKerja == null)
-            _alatKerja = new AlatKerjaPath(this, null, Keys.FKLR2NYHT8VNI7OAH23U4TMSEMU.getInverseKey());
+            _alatKerja = new AlatKerjaPath(this, null, Keys.FK_ALT_KRJ_PFS_PFS_ID.getInverseKey());
 
         return _alatKerja;
     }
@@ -307,9 +295,21 @@ public class Profesi extends TableImpl<ProfesiRecord> {
      */
     public ApdPath apd() {
         if (_apd == null)
-            _apd = new ApdPath(this, null, Keys.FKR19SSVLFXU0OP3E7IC5Y3HM7R.getInverseKey());
+            _apd = new ApdPath(this, null, Keys.FK_APD_PFS_PFS_ID.getInverseKey());
 
         return _apd;
+    }
+
+    private transient PegawaiPath _pegawai;
+
+    /**
+     * Get the implicit to-many join path to the <code>pegawai</code> table
+     */
+    public PegawaiPath pegawai() {
+        if (_pegawai == null)
+            _pegawai = new PegawaiPath(this, null, Keys.FK_PGW_PFS_PFS_ID.getInverseKey());
+
+        return _pegawai;
     }
 
     @Override

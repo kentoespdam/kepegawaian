@@ -186,7 +186,7 @@ public class Grade extends TableImpl<GradeRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.GRADE_IDXFX6DDQOSVQGOAWLHL4BEAIKKD, Indexes.GRADE_IDXLPBHLVKQ9I4UUR83AF9CM9W3);
+        return Arrays.asList(Indexes.GRADE_IDX_GRD_GRD, Indexes.GRADE_IDX_GRD_IS_DELETED, Indexes.GRADE_IDX_GRD_LVL_ID);
     }
 
     @Override
@@ -201,7 +201,7 @@ public class Grade extends TableImpl<GradeRecord> {
 
     @Override
     public List<ForeignKey<GradeRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK1HBURLJ6SLFKHOR144UR1VL7C);
+        return Arrays.asList(Keys.FK_GRD_LVL_LVL_ID);
     }
 
     private transient LevelPath _level;
@@ -211,7 +211,7 @@ public class Grade extends TableImpl<GradeRecord> {
      */
     public LevelPath level() {
         if (_level == null)
-            _level = new LevelPath(this, Keys.FK1HBURLJ6SLFKHOR144UR1VL7C, null);
+            _level = new LevelPath(this, Keys.FK_GRD_LVL_LVL_ID, null);
 
         return _level;
     }
@@ -223,7 +223,7 @@ public class Grade extends TableImpl<GradeRecord> {
      */
     public ProfesiPath profesi() {
         if (_profesi == null)
-            _profesi = new ProfesiPath(this, null, Keys.FK9MTQTFVREOK33QVC1H05D09VP.getInverseKey());
+            _profesi = new ProfesiPath(this, null, Keys.FK_PFS_GRD_GRD_ID.getInverseKey());
 
         return _profesi;
     }
@@ -235,7 +235,7 @@ public class Grade extends TableImpl<GradeRecord> {
      */
     public PegawaiPath pegawai() {
         if (_pegawai == null)
-            _pegawai = new PegawaiPath(this, null, Keys.FKOB6BOSELEYIL4F8D9OGCE89G1.getInverseKey());
+            _pegawai = new PegawaiPath(this, null, Keys.FK_PGW_GRD_GRD_ID.getInverseKey());
 
         return _pegawai;
     }

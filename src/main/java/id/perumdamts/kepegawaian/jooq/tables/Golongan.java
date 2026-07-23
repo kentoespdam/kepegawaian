@@ -183,7 +183,7 @@ public class Golongan extends TableImpl<GolonganRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.GOLONGAN_IDX70633PFABJFCFL9Q5RY2WKX91, Indexes.GOLONGAN_IDXC0XQGF5WKO9HU0X8P4TW7GFJN, Indexes.GOLONGAN_IDXTB6MAY6A8K5HA9Q3CWN45CDJ3);
+        return Arrays.asList(Indexes.GOLONGAN_IDX_GLG_GLG, Indexes.GOLONGAN_IDX_GLG_IS_DELETED, Indexes.GOLONGAN_IDX_GLG_PANGKAT);
     }
 
     @Override
@@ -196,18 +196,6 @@ public class Golongan extends TableImpl<GolonganRecord> {
         return Keys.KEY_GOLONGAN_PRIMARY;
     }
 
-    private transient PegawaiPath _pegawai;
-
-    /**
-     * Get the implicit to-many join path to the <code>pegawai</code> table
-     */
-    public PegawaiPath pegawai() {
-        if (_pegawai == null)
-            _pegawai = new PegawaiPath(this, null, Keys.FK8CKLQJPRPRG22X5HFVCQM5XEH.getInverseKey());
-
-        return _pegawai;
-    }
-
     private transient GajiPotonganTkkPath _gajiPotonganTkk;
 
     /**
@@ -216,7 +204,7 @@ public class Golongan extends TableImpl<GolonganRecord> {
      */
     public GajiPotonganTkkPath gajiPotonganTkk() {
         if (_gajiPotonganTkk == null)
-            _gajiPotonganTkk = new GajiPotonganTkkPath(this, null, Keys.FKBOE0VGMHAI1IF02SCV0UQI3HV.getInverseKey());
+            _gajiPotonganTkk = new GajiPotonganTkkPath(this, null, Keys.FK_GJ_PTG_TKK_GLG_GLG_ID.getInverseKey());
 
         return _gajiPotonganTkk;
     }
@@ -229,9 +217,33 @@ public class Golongan extends TableImpl<GolonganRecord> {
      */
     public GajiTunjanganPath gajiTunjangan() {
         if (_gajiTunjangan == null)
-            _gajiTunjangan = new GajiTunjanganPath(this, null, Keys.FKCYV33JEF4IKCAIUOPDR20X8YO.getInverseKey());
+            _gajiTunjangan = new GajiTunjanganPath(this, null, Keys.FK_GJ_TJG_GLG_GLG_ID.getInverseKey());
 
         return _gajiTunjangan;
+    }
+
+    private transient PegawaiPath _pegawai;
+
+    /**
+     * Get the implicit to-many join path to the <code>pegawai</code> table
+     */
+    public PegawaiPath pegawai() {
+        if (_pegawai == null)
+            _pegawai = new PegawaiPath(this, null, Keys.FK_PGW_GLG_GLG_ID.getInverseKey());
+
+        return _pegawai;
+    }
+
+    private transient RiwayatSkPath _riwayatSk;
+
+    /**
+     * Get the implicit to-many join path to the <code>riwayat_sk</code> table
+     */
+    public RiwayatSkPath riwayatSk() {
+        if (_riwayatSk == null)
+            _riwayatSk = new RiwayatSkPath(this, null, Keys.FK_RWT_SK_GLG_GLG_ID.getInverseKey());
+
+        return _riwayatSk;
     }
 
     private transient RiwayatTerminasiPath _riwayatTerminasi;
@@ -242,21 +254,9 @@ public class Golongan extends TableImpl<GolonganRecord> {
      */
     public RiwayatTerminasiPath riwayatTerminasi() {
         if (_riwayatTerminasi == null)
-            _riwayatTerminasi = new RiwayatTerminasiPath(this, null, Keys.FKMQ5496LFDG1PM8RF5H9DLOP4L.getInverseKey());
+            _riwayatTerminasi = new RiwayatTerminasiPath(this, null, Keys.FK_RWT_TRM_GLG_GLG_ID.getInverseKey());
 
         return _riwayatTerminasi;
-    }
-
-    private transient RiwayatSkPath _riwayatSk;
-
-    /**
-     * Get the implicit to-many join path to the <code>riwayat_sk</code> table
-     */
-    public RiwayatSkPath riwayatSk() {
-        if (_riwayatSk == null)
-            _riwayatSk = new RiwayatSkPath(this, null, Keys.FKSSDKK6IN2B2RP1FMTS4N4MU7R.getInverseKey());
-
-        return _riwayatSk;
     }
 
     @Override

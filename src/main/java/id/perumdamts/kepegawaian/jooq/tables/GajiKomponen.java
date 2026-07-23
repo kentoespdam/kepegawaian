@@ -210,7 +210,7 @@ public class GajiKomponen extends TableImpl<GajiKomponenRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.GAJI_KOMPONEN_IDXL2PIC9X86XB26OPXH6GCGFK3);
+        return Arrays.asList(Indexes.GAJI_KOMPONEN_IDX_GJ_KPN_IS_DELETED, Indexes.GAJI_KOMPONEN_IDX_GJ_KPN_PRF_GJ_ID);
     }
 
     @Override
@@ -225,7 +225,7 @@ public class GajiKomponen extends TableImpl<GajiKomponenRecord> {
 
     @Override
     public List<ForeignKey<GajiKomponenRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK5PHAMFQ1ATJUDIIYQY0X2IL98);
+        return Arrays.asList(Keys.FK_GJ_KPN_GJ_PRF_PRF_GJ_ID);
     }
 
     private transient GajiProfilPath _gajiProfil;
@@ -235,7 +235,7 @@ public class GajiKomponen extends TableImpl<GajiKomponenRecord> {
      */
     public GajiProfilPath gajiProfil() {
         if (_gajiProfil == null)
-            _gajiProfil = new GajiProfilPath(this, Keys.FK5PHAMFQ1ATJUDIIYQY0X2IL98, null);
+            _gajiProfil = new GajiProfilPath(this, Keys.FK_GJ_KPN_GJ_PRF_PRF_GJ_ID, null);
 
         return _gajiProfil;
     }

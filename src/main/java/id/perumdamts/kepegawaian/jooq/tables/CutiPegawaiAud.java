@@ -312,7 +312,7 @@ public class CutiPegawaiAud extends TableImpl<CutiPegawaiAudRecord> {
 
     @Override
     public List<ForeignKey<CutiPegawaiAudRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FKT7RU9SQXLICXJ7EOUOTPXODNR);
+        return Arrays.asList(Keys.FK_CT_PGW_AUD_REV_REV);
     }
 
     private transient RevinfoPath _revinfo;
@@ -322,7 +322,7 @@ public class CutiPegawaiAud extends TableImpl<CutiPegawaiAudRecord> {
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)
-            _revinfo = new RevinfoPath(this, Keys.FKT7RU9SQXLICXJ7EOUOTPXODNR, null);
+            _revinfo = new RevinfoPath(this, Keys.FK_CT_PGW_AUD_REV_REV, null);
 
         return _revinfo;
     }

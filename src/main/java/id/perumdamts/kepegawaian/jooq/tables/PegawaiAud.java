@@ -352,7 +352,7 @@ public class PegawaiAud extends TableImpl<PegawaiAudRecord> {
 
     @Override
     public List<ForeignKey<PegawaiAudRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FKLAO5SW0YSP1SDILY7AO4LFFV);
+        return Arrays.asList(Keys.FK_PGW_AUD_REV_REV);
     }
 
     private transient RevinfoPath _revinfo;
@@ -362,7 +362,7 @@ public class PegawaiAud extends TableImpl<PegawaiAudRecord> {
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)
-            _revinfo = new RevinfoPath(this, Keys.FKLAO5SW0YSP1SDILY7AO4LFFV, null);
+            _revinfo = new RevinfoPath(this, Keys.FK_PGW_AUD_REV_REV, null);
 
         return _revinfo;
     }

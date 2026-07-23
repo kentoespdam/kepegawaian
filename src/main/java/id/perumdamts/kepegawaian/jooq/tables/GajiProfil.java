@@ -175,7 +175,7 @@ public class GajiProfil extends TableImpl<GajiProfilRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.GAJI_PROFIL_IDXNEM9IAJKKJCVU3YF3BAB077IC);
+        return Arrays.asList(Indexes.GAJI_PROFIL_IDX_GJ_PRF_IS_DELETED);
     }
 
     @Override
@@ -196,7 +196,7 @@ public class GajiProfil extends TableImpl<GajiProfilRecord> {
      */
     public GajiKomponenPath gajiKomponen() {
         if (_gajiKomponen == null)
-            _gajiKomponen = new GajiKomponenPath(this, null, Keys.FK5PHAMFQ1ATJUDIIYQY0X2IL98.getInverseKey());
+            _gajiKomponen = new GajiKomponenPath(this, null, Keys.FK_GJ_KPN_GJ_PRF_PRF_GJ_ID.getInverseKey());
 
         return _gajiKomponen;
     }
@@ -208,7 +208,7 @@ public class GajiProfil extends TableImpl<GajiProfilRecord> {
      */
     public PegawaiPath pegawai() {
         if (_pegawai == null)
-            _pegawai = new PegawaiPath(this, null, Keys.FKDYWGPYSIY8MWGQNN25E9JTVKY.getInverseKey());
+            _pegawai = new PegawaiPath(this, null, Keys.FK_PGW_GJ_PRF_GJ_PRF_ID.getInverseKey());
 
         return _pegawai;
     }

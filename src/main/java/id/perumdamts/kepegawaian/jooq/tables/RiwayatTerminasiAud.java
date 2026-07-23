@@ -257,7 +257,7 @@ public class RiwayatTerminasiAud extends TableImpl<RiwayatTerminasiAudRecord> {
 
     @Override
     public List<ForeignKey<RiwayatTerminasiAudRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FKQ57NUPQNTCTUOSHI7SM1O68QW);
+        return Arrays.asList(Keys.FK_RWT_TRM_AUD_REV_REV);
     }
 
     private transient RevinfoPath _revinfo;
@@ -267,7 +267,7 @@ public class RiwayatTerminasiAud extends TableImpl<RiwayatTerminasiAudRecord> {
      */
     public RevinfoPath revinfo() {
         if (_revinfo == null)
-            _revinfo = new RevinfoPath(this, Keys.FKQ57NUPQNTCTUOSHI7SM1O68QW, null);
+            _revinfo = new RevinfoPath(this, Keys.FK_RWT_TRM_AUD_REV_REV, null);
 
         return _revinfo;
     }

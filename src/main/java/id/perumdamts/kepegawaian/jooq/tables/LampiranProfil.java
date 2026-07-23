@@ -181,7 +181,7 @@ public class LampiranProfil extends TableImpl<LampiranProfilRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.LAMPIRAN_PROFIL_IDXCBXXX72LTDFFRPEX2EOKY44LW, Indexes.LAMPIRAN_PROFIL_IDXNQXYY5RW082VE9NDT7BSTI7WW, Indexes.LAMPIRAN_PROFIL_IDXSR43T3B8L3F27U4Q7CIQSMKKE);
+        return Arrays.asList(Indexes.LAMPIRAN_PROFIL_IDX_LMP_PRF_IS_DELETED, Indexes.LAMPIRAN_PROFIL_IDX_LMP_PRF_REF, Indexes.LAMPIRAN_PROFIL_IDX_LMP_PRF_REF_ID);
     }
 
     @Override

@@ -236,7 +236,7 @@ public class ProfilKeluarga extends TableImpl<ProfilKeluargaRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.PROFIL_KELUARGA_IDX_PROFILKELUARGA_IS_DELETED, Indexes.PROFIL_KELUARGA_IDX_PROFILKELUARGA_NAMA, Indexes.PROFIL_KELUARGA_IDX_PROFILKELUARGA_NIK, Indexes.PROFIL_KELUARGA_IDX_PROFILKELUARGA_TANGGUNGAN);
+        return Arrays.asList(Indexes.PROFIL_KELUARGA_IDX_PRF_KLG_DDK_ID, Indexes.PROFIL_KELUARGA_IDX_PRF_KLG_IS_DELETED, Indexes.PROFIL_KELUARGA_IDX_PRF_KLG_NAMA, Indexes.PROFIL_KELUARGA_IDX_PRF_KLG_NIK, Indexes.PROFIL_KELUARGA_IDX_PRF_KLG_TANGGUNGAN);
     }
 
     @Override
@@ -251,24 +251,12 @@ public class ProfilKeluarga extends TableImpl<ProfilKeluargaRecord> {
 
     @Override
     public List<UniqueKey<ProfilKeluargaRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.KEY_PROFIL_KELUARGA_UC_PROFILKELUARGA_NIK);
+        return Arrays.asList(Keys.KEY_PROFIL_KELUARGA_UK_PRF_KLG_BIO_ID_VERSION_NAMA_TANGGAL_LAHIR_IS_DELETED);
     }
 
     @Override
     public List<ForeignKey<ProfilKeluargaRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK1Q84V1JNHU5RJWT62MECUQ5P8, Keys.FKP5IMT94N88QU16SBJGI4X4HHN);
-    }
-
-    private transient JenjangPendidikanPath _jenjangPendidikan;
-
-    /**
-     * Get the implicit join path to the <code>jenjang_pendidikan</code> table.
-     */
-    public JenjangPendidikanPath jenjangPendidikan() {
-        if (_jenjangPendidikan == null)
-            _jenjangPendidikan = new JenjangPendidikanPath(this, Keys.FK1Q84V1JNHU5RJWT62MECUQ5P8, null);
-
-        return _jenjangPendidikan;
+        return Arrays.asList(Keys.FK_PRF_KLG_BIO_BIO_ID, Keys.FK_PRF_KLG_JJG_DDK_DDK_ID);
     }
 
     private transient BiodataPath _biodata;
@@ -278,9 +266,21 @@ public class ProfilKeluarga extends TableImpl<ProfilKeluargaRecord> {
      */
     public BiodataPath biodata() {
         if (_biodata == null)
-            _biodata = new BiodataPath(this, Keys.FKP5IMT94N88QU16SBJGI4X4HHN, null);
+            _biodata = new BiodataPath(this, Keys.FK_PRF_KLG_BIO_BIO_ID, null);
 
         return _biodata;
+    }
+
+    private transient JenjangPendidikanPath _jenjangPendidikan;
+
+    /**
+     * Get the implicit join path to the <code>jenjang_pendidikan</code> table.
+     */
+    public JenjangPendidikanPath jenjangPendidikan() {
+        if (_jenjangPendidikan == null)
+            _jenjangPendidikan = new JenjangPendidikanPath(this, Keys.FK_PRF_KLG_JJG_DDK_DDK_ID, null);
+
+        return _jenjangPendidikan;
     }
 
     @Override

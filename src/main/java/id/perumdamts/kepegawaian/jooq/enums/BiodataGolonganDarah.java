@@ -17,9 +17,9 @@ public enum BiodataGolonganDarah implements EnumType {
 
     A("A"),
 
-    AB("AB"),
-
     B("B"),
+
+    AB("AB"),
 
     O("O");
 

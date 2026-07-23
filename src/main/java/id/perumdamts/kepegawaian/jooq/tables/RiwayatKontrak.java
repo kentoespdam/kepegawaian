@@ -232,7 +232,7 @@ public class RiwayatKontrak extends TableImpl<RiwayatKontrakRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.RIWAYAT_KONTRAK_IDX4572JMRMNIQXID5X5CLNCO7TA, Indexes.RIWAYAT_KONTRAK_IDXFLY936VEC9JQ13Y7849F885QG, Indexes.RIWAYAT_KONTRAK_IDXL5F85XVLSG8XHI9HG4EWP3LT0);
+        return Arrays.asList(Indexes.RIWAYAT_KONTRAK_IDX_RWT_KTRK_IS_DELETED, Indexes.RIWAYAT_KONTRAK_IDX_RWT_KTRK_JBT_ID, Indexes.RIWAYAT_KONTRAK_IDX_RWT_KTRK_NOMOR_KTRK, Indexes.RIWAYAT_KONTRAK_IDX_RWT_KTRK_ORG_ID, Indexes.RIWAYAT_KONTRAK_IDX_RWT_KTRK_TANGGAL_MULAI);
     }
 
     @Override
@@ -247,36 +247,12 @@ public class RiwayatKontrak extends TableImpl<RiwayatKontrakRecord> {
 
     @Override
     public List<UniqueKey<RiwayatKontrakRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.KEY_RIWAYAT_KONTRAK_UK29SCGDJH0PQY24Y60LQ1MTECQ);
+        return Arrays.asList(Keys.KEY_RIWAYAT_KONTRAK_UK_RWT_KTRK_PGW_ID_NOMOR_KTRK);
     }
 
     @Override
     public List<ForeignKey<RiwayatKontrakRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FKDUB36MT3WN43M6YRMANKM2VOW, Keys.FKH265IAD1I84D7JXIXKQED7H6T, Keys.FKNJ30WHK7609AUO3SXH5D2EKJO);
-    }
-
-    private transient PegawaiPath _pegawai;
-
-    /**
-     * Get the implicit join path to the <code>pegawai</code> table.
-     */
-    public PegawaiPath pegawai() {
-        if (_pegawai == null)
-            _pegawai = new PegawaiPath(this, Keys.FKDUB36MT3WN43M6YRMANKM2VOW, null);
-
-        return _pegawai;
-    }
-
-    private transient OrganisasiPath _organisasi;
-
-    /**
-     * Get the implicit join path to the <code>organisasi</code> table.
-     */
-    public OrganisasiPath organisasi() {
-        if (_organisasi == null)
-            _organisasi = new OrganisasiPath(this, Keys.FKH265IAD1I84D7JXIXKQED7H6T, null);
-
-        return _organisasi;
+        return Arrays.asList(Keys.FK_RWT_KTRK_JBT_JBT_ID, Keys.FK_RWT_KTRK_ORG_ORG_ID, Keys.FK_RWT_KTRK_PGW_PGW_ID);
     }
 
     private transient JabatanPath _jabatan;
@@ -286,9 +262,33 @@ public class RiwayatKontrak extends TableImpl<RiwayatKontrakRecord> {
      */
     public JabatanPath jabatan() {
         if (_jabatan == null)
-            _jabatan = new JabatanPath(this, Keys.FKNJ30WHK7609AUO3SXH5D2EKJO, null);
+            _jabatan = new JabatanPath(this, Keys.FK_RWT_KTRK_JBT_JBT_ID, null);
 
         return _jabatan;
+    }
+
+    private transient OrganisasiPath _organisasi;
+
+    /**
+     * Get the implicit join path to the <code>organisasi</code> table.
+     */
+    public OrganisasiPath organisasi() {
+        if (_organisasi == null)
+            _organisasi = new OrganisasiPath(this, Keys.FK_RWT_KTRK_ORG_ORG_ID, null);
+
+        return _organisasi;
+    }
+
+    private transient PegawaiPath _pegawai;
+
+    /**
+     * Get the implicit join path to the <code>pegawai</code> table.
+     */
+    public PegawaiPath pegawai() {
+        if (_pegawai == null)
+            _pegawai = new PegawaiPath(this, Keys.FK_RWT_KTRK_PGW_PGW_ID, null);
+
+        return _pegawai;
     }
 
     @Override

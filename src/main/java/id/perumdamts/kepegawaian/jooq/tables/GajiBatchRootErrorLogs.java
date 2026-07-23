@@ -153,7 +153,7 @@ public class GajiBatchRootErrorLogs extends TableImpl<GajiBatchRootErrorLogsReco
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.GAJI_BATCH_ROOT_ERROR_LOGS_IDXF379PX1H80FR1YUT9XIRHWHSA, Indexes.GAJI_BATCH_ROOT_ERROR_LOGS_IDXNPLPLL71OAXF0NC4LLUVGBIO0);
+        return Arrays.asList(Indexes.GAJI_BATCH_ROOT_ERROR_LOGS_IDX_GJ_BT_ROOT_ERR_LOG_NAMA, Indexes.GAJI_BATCH_ROOT_ERROR_LOGS_IDX_GJ_BT_ROOT_ERR_LOG_NIPAM, Indexes.GAJI_BATCH_ROOT_ERROR_LOGS_IDX_GJ_BT_ROOT_ERR_LOG_ROOT_BT_ID);
     }
 
     @Override
@@ -168,7 +168,7 @@ public class GajiBatchRootErrorLogs extends TableImpl<GajiBatchRootErrorLogsReco
 
     @Override
     public List<ForeignKey<GajiBatchRootErrorLogsRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FKCJP75555I9TGO8BRFDEXSLI47);
+        return Arrays.asList(Keys.FK_GJ_BT_ROOT_ERR_LOG_GJ_BT_ROOT_ROOT_BT_ID);
     }
 
     private transient GajiBatchRootPath _gajiBatchRoot;
@@ -178,7 +178,7 @@ public class GajiBatchRootErrorLogs extends TableImpl<GajiBatchRootErrorLogsReco
      */
     public GajiBatchRootPath gajiBatchRoot() {
         if (_gajiBatchRoot == null)
-            _gajiBatchRoot = new GajiBatchRootPath(this, Keys.FKCJP75555I9TGO8BRFDEXSLI47, null);
+            _gajiBatchRoot = new GajiBatchRootPath(this, Keys.FK_GJ_BT_ROOT_ERR_LOG_GJ_BT_ROOT_ROOT_BT_ID, null);
 
         return _gajiBatchRoot;
     }

@@ -243,7 +243,7 @@ public class Biodata extends TableImpl<BiodataRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.BIODATA_IDXDFMIKWOHXEK88EO8F16PCBW6P, Indexes.BIODATA_IDXNA7VW7HUREUQXS36LY93EJ6RV, Indexes.BIODATA_IDXNHUBJKTWF27BI0GAGW7F837YE, Indexes.BIODATA_IDXNQR3YM1WKJ2NOCDKDQOEIQ9YP, Indexes.BIODATA_IDXROPLFPWCFU9FGLTILANI0WS1M);
+        return Arrays.asList(Indexes.BIODATA_IDX_BIO_ALAMAT, Indexes.BIODATA_IDX_BIO_DDK_ID, Indexes.BIODATA_IDX_BIO_IS_DELETED, Indexes.BIODATA_IDX_BIO_IS_PGW, Indexes.BIODATA_IDX_BIO_JNS_KELAMIN, Indexes.BIODATA_IDX_BIO_NAMA);
     }
 
     @Override
@@ -253,7 +253,7 @@ public class Biodata extends TableImpl<BiodataRecord> {
 
     @Override
     public List<ForeignKey<BiodataRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FKNEMSW9HC2KGF5GTC9HPWCVL1A);
+        return Arrays.asList(Keys.FK_BIO_JJG_DDK_DDK_ID);
     }
 
     private transient JenjangPendidikanPath _jenjangPendidikan;
@@ -263,7 +263,7 @@ public class Biodata extends TableImpl<BiodataRecord> {
      */
     public JenjangPendidikanPath jenjangPendidikan() {
         if (_jenjangPendidikan == null)
-            _jenjangPendidikan = new JenjangPendidikanPath(this, Keys.FKNEMSW9HC2KGF5GTC9HPWCVL1A, null);
+            _jenjangPendidikan = new JenjangPendidikanPath(this, Keys.FK_BIO_JJG_DDK_DDK_ID, null);
 
         return _jenjangPendidikan;
     }
@@ -275,21 +275,9 @@ public class Biodata extends TableImpl<BiodataRecord> {
      */
     public KeahlianPath keahlian() {
         if (_keahlian == null)
-            _keahlian = new KeahlianPath(this, null, Keys.FK12SLGN5R1H6NDUDDQYWK9XOWS.getInverseKey());
+            _keahlian = new KeahlianPath(this, null, Keys.FK_AHL_BIO_BIO_ID.getInverseKey());
 
         return _keahlian;
-    }
-
-    private transient PelatihanPath _pelatihan;
-
-    /**
-     * Get the implicit to-many join path to the <code>pelatihan</code> table
-     */
-    public PelatihanPath pelatihan() {
-        if (_pelatihan == null)
-            _pelatihan = new PelatihanPath(this, null, Keys.FK3GLVWCGRYIUBQ55UMIIJPIWUA.getInverseKey());
-
-        return _pelatihan;
     }
 
     private transient PendidikanPath _pendidikan;
@@ -299,7 +287,7 @@ public class Biodata extends TableImpl<BiodataRecord> {
      */
     public PendidikanPath pendidikan() {
         if (_pendidikan == null)
-            _pendidikan = new PendidikanPath(this, null, Keys.FK64BC36WVICLGLOKXFDN10EFUT.getInverseKey());
+            _pendidikan = new PendidikanPath(this, null, Keys.FK_DDK_BIO_BIO_ID.getInverseKey());
 
         return _pendidikan;
     }
@@ -312,9 +300,21 @@ public class Biodata extends TableImpl<BiodataRecord> {
      */
     public KartuIdentitasPath kartuIdentitas() {
         if (_kartuIdentitas == null)
-            _kartuIdentitas = new KartuIdentitasPath(this, null, Keys.FKLUP69OA33GBN5WIM4ANSWM4KD.getInverseKey());
+            _kartuIdentitas = new KartuIdentitasPath(this, null, Keys.FK_KARTU_IDN_BIO_NIK.getInverseKey());
 
         return _kartuIdentitas;
+    }
+
+    private transient PelatihanPath _pelatihan;
+
+    /**
+     * Get the implicit to-many join path to the <code>pelatihan</code> table
+     */
+    public PelatihanPath pelatihan() {
+        if (_pelatihan == null)
+            _pelatihan = new PelatihanPath(this, null, Keys.FK_LTH_BIO_BIO_ID.getInverseKey());
+
+        return _pelatihan;
     }
 
     private transient PegawaiPath _pegawai;
@@ -324,22 +324,9 @@ public class Biodata extends TableImpl<BiodataRecord> {
      */
     public PegawaiPath pegawai() {
         if (_pegawai == null)
-            _pegawai = new PegawaiPath(this, null, Keys.FKMPAE090HS1MDSWDQLQN1O6NID.getInverseKey());
+            _pegawai = new PegawaiPath(this, null, Keys.FK_PGW_BIO_BIO_ID.getInverseKey());
 
         return _pegawai;
-    }
-
-    private transient ProfilKeluargaPath _profilKeluarga;
-
-    /**
-     * Get the implicit to-many join path to the <code>profil_keluarga</code>
-     * table
-     */
-    public ProfilKeluargaPath profilKeluarga() {
-        if (_profilKeluarga == null)
-            _profilKeluarga = new ProfilKeluargaPath(this, null, Keys.FKP5IMT94N88QU16SBJGI4X4HHN.getInverseKey());
-
-        return _profilKeluarga;
     }
 
     private transient PengalamanKerjaPath _pengalamanKerja;
@@ -350,9 +337,22 @@ public class Biodata extends TableImpl<BiodataRecord> {
      */
     public PengalamanKerjaPath pengalamanKerja() {
         if (_pengalamanKerja == null)
-            _pengalamanKerja = new PengalamanKerjaPath(this, null, Keys.FKTFWLOU3LU3982TRUDGJVSQ8UH.getInverseKey());
+            _pengalamanKerja = new PengalamanKerjaPath(this, null, Keys.FK_PLM_KRJ_BIO_BIO_ID.getInverseKey());
 
         return _pengalamanKerja;
+    }
+
+    private transient ProfilKeluargaPath _profilKeluarga;
+
+    /**
+     * Get the implicit to-many join path to the <code>profil_keluarga</code>
+     * table
+     */
+    public ProfilKeluargaPath profilKeluarga() {
+        if (_profilKeluarga == null)
+            _profilKeluarga = new ProfilKeluargaPath(this, null, Keys.FK_PRF_KLG_BIO_BIO_ID.getInverseKey());
+
+        return _profilKeluarga;
     }
 
     /**
