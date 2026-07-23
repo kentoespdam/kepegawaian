@@ -72,6 +72,26 @@ public class GajiPotonganTkk extends TableImpl<GajiPotonganTkkRecord> {
     public final TableField<GajiPotonganTkkRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
+     * The column <code>gaji_potongan_tkk.nominal</code>.
+     */
+    public final TableField<GajiPotonganTkkRecord, Double> NOMINAL = createField(DSL.name("nominal"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
+
+    /**
+     * The column <code>gaji_potongan_tkk.status_pegawai</code>.
+     */
+    public final TableField<GajiPotonganTkkRecord, Byte> STATUS_PEGAWAI = createField(DSL.name("status_pegawai"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
+
+    /**
+     * The column <code>gaji_potongan_tkk.golongan_id</code>.
+     */
+    public final TableField<GajiPotonganTkkRecord, Long> GOLONGAN_ID = createField(DSL.name("golongan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
+
+    /**
+     * The column <code>gaji_potongan_tkk.level_id</code>.
+     */
+    public final TableField<GajiPotonganTkkRecord, Long> LEVEL_ID = createField(DSL.name("level_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
+
+    /**
      * The column <code>gaji_potongan_tkk.created_at</code>.
      */
     public final TableField<GajiPotonganTkkRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
@@ -100,26 +120,6 @@ public class GajiPotonganTkk extends TableImpl<GajiPotonganTkkRecord> {
      * The column <code>gaji_potongan_tkk.version</code>.
      */
     public final TableField<GajiPotonganTkkRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>gaji_potongan_tkk.nominal</code>.
-     */
-    public final TableField<GajiPotonganTkkRecord, Double> NOMINAL = createField(DSL.name("nominal"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
-
-    /**
-     * The column <code>gaji_potongan_tkk.status_pegawai</code>.
-     */
-    public final TableField<GajiPotonganTkkRecord, Byte> STATUS_PEGAWAI = createField(DSL.name("status_pegawai"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
-
-    /**
-     * The column <code>gaji_potongan_tkk.golongan_id</code>.
-     */
-    public final TableField<GajiPotonganTkkRecord, Long> GOLONGAN_ID = createField(DSL.name("golongan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
-
-    /**
-     * The column <code>gaji_potongan_tkk.level_id</code>.
-     */
-    public final TableField<GajiPotonganTkkRecord, Long> LEVEL_ID = createField(DSL.name("level_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     private GajiPotonganTkk(Name alias, Table<GajiPotonganTkkRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

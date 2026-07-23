@@ -35,17 +35,17 @@ public class JenisKitasRecord extends UpdatableRecordImpl<JenisKitasRecord> {
     }
 
     /**
-     * Setter for <code>jenis_kitas.changed_status</code>.
+     * Setter for <code>jenis_kitas.nama</code>.
      */
-    public void setChangedStatus(Byte value) {
+    public void setNama(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>jenis_kitas.changed_status</code>.
+     * Getter for <code>jenis_kitas.nama</code>.
      */
-    public Byte getChangedStatus() {
-        return (Byte) get(1);
+    public String getNama() {
+        return (String) get(1);
     }
 
     /**
@@ -118,34 +118,6 @@ public class JenisKitasRecord extends UpdatableRecordImpl<JenisKitasRecord> {
         return (String) get(6);
     }
 
-    /**
-     * Setter for <code>jenis_kitas.version</code>.
-     */
-    public void setVersion(Integer value) {
-        set(7, value);
-    }
-
-    /**
-     * Getter for <code>jenis_kitas.version</code>.
-     */
-    public Integer getVersion() {
-        return (Integer) get(7);
-    }
-
-    /**
-     * Setter for <code>jenis_kitas.nama</code>.
-     */
-    public void setNama(String value) {
-        set(8, value);
-    }
-
-    /**
-     * Getter for <code>jenis_kitas.nama</code>.
-     */
-    public String getNama() {
-        return (String) get(8);
-    }
-
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -169,18 +141,16 @@ public class JenisKitasRecord extends UpdatableRecordImpl<JenisKitasRecord> {
     /**
      * Create a detached, initialised JenisKitasRecord
      */
-    public JenisKitasRecord(Long id_, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version, String nama) {
+    public JenisKitasRecord(Long id_, String nama, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy) {
         super(JenisKitas.JENIS_KITAS);
 
         setId(id_);
-        setChangedStatus(changedStatus);
+        setNama(nama);
         setCreatedAt(createdAt);
         setCreatedBy(createdBy);
         setIsDeleted(isDeleted);
         setUpdatedAt(updatedAt);
         setUpdatedBy(updatedBy);
-        setVersion(version);
-        setNama(nama);
         resetChangedOnNotNull();
     }
 }

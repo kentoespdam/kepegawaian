@@ -71,36 +71,6 @@ public class PengalamanKerja extends TableImpl<PengalamanKerjaRecord> {
     public final TableField<PengalamanKerjaRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>pengalaman_kerja.created_at</code>.
-     */
-    public final TableField<PengalamanKerjaRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>pengalaman_kerja.created_by</code>.
-     */
-    public final TableField<PengalamanKerjaRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>pengalaman_kerja.is_deleted</code>.
-     */
-    public final TableField<PengalamanKerjaRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
-
-    /**
-     * The column <code>pengalaman_kerja.updated_at</code>.
-     */
-    public final TableField<PengalamanKerjaRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>pengalaman_kerja.updated_by</code>.
-     */
-    public final TableField<PengalamanKerjaRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>pengalaman_kerja.version</code>.
-     */
-    public final TableField<PengalamanKerjaRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
      * The column <code>pengalaman_kerja.disetujui</code>.
      */
     public final TableField<PengalamanKerjaRecord, Byte> DISETUJUI = createField(DSL.name("disetujui"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
@@ -159,6 +129,36 @@ public class PengalamanKerja extends TableImpl<PengalamanKerjaRecord> {
      * The column <code>pengalaman_kerja.biodata_id</code>.
      */
     public final TableField<PengalamanKerjaRecord, String> BIODATA_ID = createField(DSL.name("biodata_id"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>pengalaman_kerja.created_at</code>.
+     */
+    public final TableField<PengalamanKerjaRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>pengalaman_kerja.created_by</code>.
+     */
+    public final TableField<PengalamanKerjaRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>pengalaman_kerja.is_deleted</code>.
+     */
+    public final TableField<PengalamanKerjaRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
+     * The column <code>pengalaman_kerja.updated_at</code>.
+     */
+    public final TableField<PengalamanKerjaRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>pengalaman_kerja.updated_by</code>.
+     */
+    public final TableField<PengalamanKerjaRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>pengalaman_kerja.version</code>.
+     */
+    public final TableField<PengalamanKerjaRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     private PengalamanKerja(Name alias, Table<PengalamanKerjaRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

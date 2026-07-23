@@ -49,143 +49,143 @@ public class DetailDasarGajiRecord extends UpdatableRecordImpl<DetailDasarGajiRe
     }
 
     /**
-     * Setter for <code>detail_dasar_gaji.created_at</code>.
-     */
-    public void setCreatedAt(LocalDateTime value) {
-        set(2, value);
-    }
-
-    /**
-     * Getter for <code>detail_dasar_gaji.created_at</code>.
-     */
-    public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(2);
-    }
-
-    /**
-     * Setter for <code>detail_dasar_gaji.created_by</code>.
-     */
-    public void setCreatedBy(String value) {
-        set(3, value);
-    }
-
-    /**
-     * Getter for <code>detail_dasar_gaji.created_by</code>.
-     */
-    public String getCreatedBy() {
-        return (String) get(3);
-    }
-
-    /**
-     * Setter for <code>detail_dasar_gaji.is_deleted</code>.
-     */
-    public void setIsDeleted(Boolean value) {
-        set(4, value);
-    }
-
-    /**
-     * Getter for <code>detail_dasar_gaji.is_deleted</code>.
-     */
-    public Boolean getIsDeleted() {
-        return (Boolean) get(4);
-    }
-
-    /**
-     * Setter for <code>detail_dasar_gaji.updated_at</code>.
-     */
-    public void setUpdatedAt(LocalDateTime value) {
-        set(5, value);
-    }
-
-    /**
-     * Getter for <code>detail_dasar_gaji.updated_at</code>.
-     */
-    public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(5);
-    }
-
-    /**
-     * Setter for <code>detail_dasar_gaji.updated_by</code>.
-     */
-    public void setUpdatedBy(String value) {
-        set(6, value);
-    }
-
-    /**
-     * Getter for <code>detail_dasar_gaji.updated_by</code>.
-     */
-    public String getUpdatedBy() {
-        return (String) get(6);
-    }
-
-    /**
-     * Setter for <code>detail_dasar_gaji.version</code>.
-     */
-    public void setVersion(Integer value) {
-        set(7, value);
-    }
-
-    /**
-     * Getter for <code>detail_dasar_gaji.version</code>.
-     */
-    public Integer getVersion() {
-        return (Integer) get(7);
-    }
-
-    /**
      * Setter for <code>detail_dasar_gaji.golongan_kode</code>.
      */
     public void setGolonganKode(Integer value) {
-        set(8, value);
+        set(2, value);
     }
 
     /**
      * Getter for <code>detail_dasar_gaji.golongan_kode</code>.
      */
     public Integer getGolonganKode() {
-        return (Integer) get(8);
+        return (Integer) get(2);
     }
 
     /**
      * Setter for <code>detail_dasar_gaji.mkg</code>.
      */
     public void setMkg(Integer value) {
-        set(9, value);
+        set(3, value);
     }
 
     /**
      * Getter for <code>detail_dasar_gaji.mkg</code>.
      */
     public Integer getMkg() {
-        return (Integer) get(9);
+        return (Integer) get(3);
     }
 
     /**
      * Setter for <code>detail_dasar_gaji.nominal</code>.
      */
     public void setNominal(Double value) {
-        set(10, value);
+        set(4, value);
     }
 
     /**
      * Getter for <code>detail_dasar_gaji.nominal</code>.
      */
     public Double getNominal() {
-        return (Double) get(10);
+        return (Double) get(4);
     }
 
     /**
      * Setter for <code>detail_dasar_gaji.dasar_gaji_id</code>.
      */
     public void setDasarGajiId(Long value) {
-        set(11, value);
+        set(5, value);
     }
 
     /**
      * Getter for <code>detail_dasar_gaji.dasar_gaji_id</code>.
      */
     public Long getDasarGajiId() {
-        return (Long) get(11);
+        return (Long) get(5);
+    }
+
+    /**
+     * Setter for <code>detail_dasar_gaji.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime value) {
+        set(6, value);
+    }
+
+    /**
+     * Getter for <code>detail_dasar_gaji.created_at</code>.
+     */
+    public LocalDateTime getCreatedAt() {
+        return (LocalDateTime) get(6);
+    }
+
+    /**
+     * Setter for <code>detail_dasar_gaji.created_by</code>.
+     */
+    public void setCreatedBy(String value) {
+        set(7, value);
+    }
+
+    /**
+     * Getter for <code>detail_dasar_gaji.created_by</code>.
+     */
+    public String getCreatedBy() {
+        return (String) get(7);
+    }
+
+    /**
+     * Setter for <code>detail_dasar_gaji.is_deleted</code>.
+     */
+    public void setIsDeleted(Boolean value) {
+        set(8, value);
+    }
+
+    /**
+     * Getter for <code>detail_dasar_gaji.is_deleted</code>.
+     */
+    public Boolean getIsDeleted() {
+        return (Boolean) get(8);
+    }
+
+    /**
+     * Setter for <code>detail_dasar_gaji.updated_at</code>.
+     */
+    public void setUpdatedAt(LocalDateTime value) {
+        set(9, value);
+    }
+
+    /**
+     * Getter for <code>detail_dasar_gaji.updated_at</code>.
+     */
+    public LocalDateTime getUpdatedAt() {
+        return (LocalDateTime) get(9);
+    }
+
+    /**
+     * Setter for <code>detail_dasar_gaji.updated_by</code>.
+     */
+    public void setUpdatedBy(String value) {
+        set(10, value);
+    }
+
+    /**
+     * Getter for <code>detail_dasar_gaji.updated_by</code>.
+     */
+    public String getUpdatedBy() {
+        return (String) get(10);
+    }
+
+    /**
+     * Setter for <code>detail_dasar_gaji.version</code>.
+     */
+    public void setVersion(Integer value) {
+        set(11, value);
+    }
+
+    /**
+     * Getter for <code>detail_dasar_gaji.version</code>.
+     */
+    public Integer getVersion() {
+        return (Integer) get(11);
     }
 
     // -------------------------------------------------------------------------
@@ -211,21 +211,21 @@ public class DetailDasarGajiRecord extends UpdatableRecordImpl<DetailDasarGajiRe
     /**
      * Create a detached, initialised DetailDasarGajiRecord
      */
-    public DetailDasarGajiRecord(Long id_, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version, Integer golonganKode, Integer mkg, Double nominal, Long dasarGajiId) {
+    public DetailDasarGajiRecord(Long id_, Byte changedStatus, Integer golonganKode, Integer mkg, Double nominal, Long dasarGajiId, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version) {
         super(DetailDasarGaji.DETAIL_DASAR_GAJI);
 
         setId(id_);
         setChangedStatus(changedStatus);
+        setGolonganKode(golonganKode);
+        setMkg(mkg);
+        setNominal(nominal);
+        setDasarGajiId(dasarGajiId);
         setCreatedAt(createdAt);
         setCreatedBy(createdBy);
         setIsDeleted(isDeleted);
         setUpdatedAt(updatedAt);
         setUpdatedBy(updatedBy);
         setVersion(version);
-        setGolonganKode(golonganKode);
-        setMkg(mkg);
-        setNominal(nominal);
-        setDasarGajiId(dasarGajiId);
         resetChangedOnNotNull();
     }
 }

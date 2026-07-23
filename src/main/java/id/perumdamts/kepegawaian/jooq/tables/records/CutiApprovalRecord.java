@@ -49,171 +49,171 @@ public class CutiApprovalRecord extends UpdatableRecordImpl<CutiApprovalRecord> 
     }
 
     /**
-     * Setter for <code>cuti_approval.created_at</code>.
-     */
-    public void setCreatedAt(LocalDateTime value) {
-        set(2, value);
-    }
-
-    /**
-     * Getter for <code>cuti_approval.created_at</code>.
-     */
-    public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(2);
-    }
-
-    /**
-     * Setter for <code>cuti_approval.created_by</code>.
-     */
-    public void setCreatedBy(String value) {
-        set(3, value);
-    }
-
-    /**
-     * Getter for <code>cuti_approval.created_by</code>.
-     */
-    public String getCreatedBy() {
-        return (String) get(3);
-    }
-
-    /**
-     * Setter for <code>cuti_approval.is_deleted</code>.
-     */
-    public void setIsDeleted(Boolean value) {
-        set(4, value);
-    }
-
-    /**
-     * Getter for <code>cuti_approval.is_deleted</code>.
-     */
-    public Boolean getIsDeleted() {
-        return (Boolean) get(4);
-    }
-
-    /**
-     * Setter for <code>cuti_approval.updated_at</code>.
-     */
-    public void setUpdatedAt(LocalDateTime value) {
-        set(5, value);
-    }
-
-    /**
-     * Getter for <code>cuti_approval.updated_at</code>.
-     */
-    public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(5);
-    }
-
-    /**
-     * Setter for <code>cuti_approval.updated_by</code>.
-     */
-    public void setUpdatedBy(String value) {
-        set(6, value);
-    }
-
-    /**
-     * Getter for <code>cuti_approval.updated_by</code>.
-     */
-    public String getUpdatedBy() {
-        return (String) get(6);
-    }
-
-    /**
-     * Setter for <code>cuti_approval.version</code>.
-     */
-    public void setVersion(Integer value) {
-        set(7, value);
-    }
-
-    /**
-     * Getter for <code>cuti_approval.version</code>.
-     */
-    public Integer getVersion() {
-        return (Integer) get(7);
-    }
-
-    /**
      * Setter for <code>cuti_approval.approval_level</code>.
      */
     public void setApprovalLevel(Integer value) {
-        set(8, value);
+        set(2, value);
     }
 
     /**
      * Getter for <code>cuti_approval.approval_level</code>.
      */
     public Integer getApprovalLevel() {
-        return (Integer) get(8);
+        return (Integer) get(2);
     }
 
     /**
      * Setter for <code>cuti_approval.approval_status</code>.
      */
     public void setApprovalStatus(Byte value) {
-        set(9, value);
+        set(3, value);
     }
 
     /**
      * Getter for <code>cuti_approval.approval_status</code>.
      */
     public Byte getApprovalStatus() {
-        return (Byte) get(9);
+        return (Byte) get(3);
     }
 
     /**
      * Setter for <code>cuti_approval.notes</code>.
      */
     public void setNotes(String value) {
-        set(10, value);
+        set(4, value);
     }
 
     /**
      * Getter for <code>cuti_approval.notes</code>.
      */
     public String getNotes() {
-        return (String) get(10);
+        return (String) get(4);
     }
 
     /**
      * Setter for <code>cuti_approval.approver_id</code>.
      */
     public void setApproverId(Long value) {
-        set(11, value);
+        set(5, value);
     }
 
     /**
      * Getter for <code>cuti_approval.approver_id</code>.
      */
     public Long getApproverId() {
-        return (Long) get(11);
+        return (Long) get(5);
     }
 
     /**
      * Setter for <code>cuti_approval.cuti_pegawai_id</code>.
      */
     public void setCutiPegawaiId(Long value) {
-        set(12, value);
+        set(6, value);
     }
 
     /**
      * Getter for <code>cuti_approval.cuti_pegawai_id</code>.
      */
     public Long getCutiPegawaiId() {
-        return (Long) get(12);
+        return (Long) get(6);
     }
 
     /**
      * Setter for <code>cuti_approval.jabatan_id</code>.
      */
     public void setJabatanId(Long value) {
-        set(13, value);
+        set(7, value);
     }
 
     /**
      * Getter for <code>cuti_approval.jabatan_id</code>.
      */
     public Long getJabatanId() {
-        return (Long) get(13);
+        return (Long) get(7);
+    }
+
+    /**
+     * Setter for <code>cuti_approval.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime value) {
+        set(8, value);
+    }
+
+    /**
+     * Getter for <code>cuti_approval.created_at</code>.
+     */
+    public LocalDateTime getCreatedAt() {
+        return (LocalDateTime) get(8);
+    }
+
+    /**
+     * Setter for <code>cuti_approval.created_by</code>.
+     */
+    public void setCreatedBy(String value) {
+        set(9, value);
+    }
+
+    /**
+     * Getter for <code>cuti_approval.created_by</code>.
+     */
+    public String getCreatedBy() {
+        return (String) get(9);
+    }
+
+    /**
+     * Setter for <code>cuti_approval.is_deleted</code>.
+     */
+    public void setIsDeleted(Boolean value) {
+        set(10, value);
+    }
+
+    /**
+     * Getter for <code>cuti_approval.is_deleted</code>.
+     */
+    public Boolean getIsDeleted() {
+        return (Boolean) get(10);
+    }
+
+    /**
+     * Setter for <code>cuti_approval.updated_at</code>.
+     */
+    public void setUpdatedAt(LocalDateTime value) {
+        set(11, value);
+    }
+
+    /**
+     * Getter for <code>cuti_approval.updated_at</code>.
+     */
+    public LocalDateTime getUpdatedAt() {
+        return (LocalDateTime) get(11);
+    }
+
+    /**
+     * Setter for <code>cuti_approval.updated_by</code>.
+     */
+    public void setUpdatedBy(String value) {
+        set(12, value);
+    }
+
+    /**
+     * Getter for <code>cuti_approval.updated_by</code>.
+     */
+    public String getUpdatedBy() {
+        return (String) get(12);
+    }
+
+    /**
+     * Setter for <code>cuti_approval.version</code>.
+     */
+    public void setVersion(Integer value) {
+        set(13, value);
+    }
+
+    /**
+     * Getter for <code>cuti_approval.version</code>.
+     */
+    public Integer getVersion() {
+        return (Integer) get(13);
     }
 
     // -------------------------------------------------------------------------
@@ -239,23 +239,23 @@ public class CutiApprovalRecord extends UpdatableRecordImpl<CutiApprovalRecord> 
     /**
      * Create a detached, initialised CutiApprovalRecord
      */
-    public CutiApprovalRecord(Long id_, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version, Integer approvalLevel, Byte approvalStatus, String notes, Long approverId, Long cutiPegawaiId, Long jabatanId) {
+    public CutiApprovalRecord(Long id_, Byte changedStatus, Integer approvalLevel, Byte approvalStatus, String notes, Long approverId, Long cutiPegawaiId, Long jabatanId, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version) {
         super(CutiApproval.CUTI_APPROVAL);
 
         setId(id_);
         setChangedStatus(changedStatus);
-        setCreatedAt(createdAt);
-        setCreatedBy(createdBy);
-        setIsDeleted(isDeleted);
-        setUpdatedAt(updatedAt);
-        setUpdatedBy(updatedBy);
-        setVersion(version);
         setApprovalLevel(approvalLevel);
         setApprovalStatus(approvalStatus);
         setNotes(notes);
         setApproverId(approverId);
         setCutiPegawaiId(cutiPegawaiId);
         setJabatanId(jabatanId);
+        setCreatedAt(createdAt);
+        setCreatedBy(createdBy);
+        setIsDeleted(isDeleted);
+        setUpdatedAt(updatedAt);
+        setUpdatedBy(updatedBy);
+        setVersion(version);
         resetChangedOnNotNull();
     }
 }

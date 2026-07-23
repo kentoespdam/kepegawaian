@@ -35,143 +35,115 @@ public class GradeRecord extends UpdatableRecordImpl<GradeRecord> {
     }
 
     /**
-     * Setter for <code>grade.changed_status</code>.
-     */
-    public void setChangedStatus(Byte value) {
-        set(1, value);
-    }
-
-    /**
-     * Getter for <code>grade.changed_status</code>.
-     */
-    public Byte getChangedStatus() {
-        return (Byte) get(1);
-    }
-
-    /**
-     * Setter for <code>grade.created_at</code>.
-     */
-    public void setCreatedAt(LocalDateTime value) {
-        set(2, value);
-    }
-
-    /**
-     * Getter for <code>grade.created_at</code>.
-     */
-    public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(2);
-    }
-
-    /**
-     * Setter for <code>grade.created_by</code>.
-     */
-    public void setCreatedBy(String value) {
-        set(3, value);
-    }
-
-    /**
-     * Getter for <code>grade.created_by</code>.
-     */
-    public String getCreatedBy() {
-        return (String) get(3);
-    }
-
-    /**
-     * Setter for <code>grade.is_deleted</code>.
-     */
-    public void setIsDeleted(Boolean value) {
-        set(4, value);
-    }
-
-    /**
-     * Getter for <code>grade.is_deleted</code>.
-     */
-    public Boolean getIsDeleted() {
-        return (Boolean) get(4);
-    }
-
-    /**
-     * Setter for <code>grade.updated_at</code>.
-     */
-    public void setUpdatedAt(LocalDateTime value) {
-        set(5, value);
-    }
-
-    /**
-     * Getter for <code>grade.updated_at</code>.
-     */
-    public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(5);
-    }
-
-    /**
-     * Setter for <code>grade.updated_by</code>.
-     */
-    public void setUpdatedBy(String value) {
-        set(6, value);
-    }
-
-    /**
-     * Getter for <code>grade.updated_by</code>.
-     */
-    public String getUpdatedBy() {
-        return (String) get(6);
-    }
-
-    /**
-     * Setter for <code>grade.version</code>.
-     */
-    public void setVersion(Integer value) {
-        set(7, value);
-    }
-
-    /**
-     * Getter for <code>grade.version</code>.
-     */
-    public Integer getVersion() {
-        return (Integer) get(7);
-    }
-
-    /**
      * Setter for <code>grade.grade</code>.
      */
     public void setGrade(Integer value) {
-        set(8, value);
+        set(1, value);
     }
 
     /**
      * Getter for <code>grade.grade</code>.
      */
     public Integer getGrade() {
-        return (Integer) get(8);
+        return (Integer) get(1);
     }
 
     /**
      * Setter for <code>grade.tukin</code>.
      */
     public void setTukin(Double value) {
-        set(9, value);
+        set(2, value);
     }
 
     /**
      * Getter for <code>grade.tukin</code>.
      */
     public Double getTukin() {
-        return (Double) get(9);
+        return (Double) get(2);
     }
 
     /**
      * Setter for <code>grade.level_id</code>.
      */
     public void setLevelId(Long value) {
-        set(10, value);
+        set(3, value);
     }
 
     /**
      * Getter for <code>grade.level_id</code>.
      */
     public Long getLevelId() {
-        return (Long) get(10);
+        return (Long) get(3);
+    }
+
+    /**
+     * Setter for <code>grade.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime value) {
+        set(4, value);
+    }
+
+    /**
+     * Getter for <code>grade.created_at</code>.
+     */
+    public LocalDateTime getCreatedAt() {
+        return (LocalDateTime) get(4);
+    }
+
+    /**
+     * Setter for <code>grade.created_by</code>.
+     */
+    public void setCreatedBy(String value) {
+        set(5, value);
+    }
+
+    /**
+     * Getter for <code>grade.created_by</code>.
+     */
+    public String getCreatedBy() {
+        return (String) get(5);
+    }
+
+    /**
+     * Setter for <code>grade.is_deleted</code>.
+     */
+    public void setIsDeleted(Boolean value) {
+        set(6, value);
+    }
+
+    /**
+     * Getter for <code>grade.is_deleted</code>.
+     */
+    public Boolean getIsDeleted() {
+        return (Boolean) get(6);
+    }
+
+    /**
+     * Setter for <code>grade.updated_at</code>.
+     */
+    public void setUpdatedAt(LocalDateTime value) {
+        set(7, value);
+    }
+
+    /**
+     * Getter for <code>grade.updated_at</code>.
+     */
+    public LocalDateTime getUpdatedAt() {
+        return (LocalDateTime) get(7);
+    }
+
+    /**
+     * Setter for <code>grade.updated_by</code>.
+     */
+    public void setUpdatedBy(String value) {
+        set(8, value);
+    }
+
+    /**
+     * Getter for <code>grade.updated_by</code>.
+     */
+    public String getUpdatedBy() {
+        return (String) get(8);
     }
 
     // -------------------------------------------------------------------------
@@ -197,20 +169,18 @@ public class GradeRecord extends UpdatableRecordImpl<GradeRecord> {
     /**
      * Create a detached, initialised GradeRecord
      */
-    public GradeRecord(Long id_, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version, Integer grade, Double tukin, Long levelId) {
+    public GradeRecord(Long id_, Integer grade, Double tukin, Long levelId, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy) {
         super(Grade.GRADE);
 
         setId(id_);
-        setChangedStatus(changedStatus);
+        setGrade(grade);
+        setTukin(tukin);
+        setLevelId(levelId);
         setCreatedAt(createdAt);
         setCreatedBy(createdBy);
         setIsDeleted(isDeleted);
         setUpdatedAt(updatedAt);
         setUpdatedBy(updatedBy);
-        setVersion(version);
-        setGrade(grade);
-        setTukin(tukin);
-        setLevelId(levelId);
         resetChangedOnNotNull();
     }
 }

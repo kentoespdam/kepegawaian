@@ -66,9 +66,9 @@ public class JenisPelatihan extends TableImpl<JenisPelatihanRecord> {
     public final TableField<JenisPelatihanRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>jenis_pelatihan.changed_status</code>.
+     * The column <code>jenis_pelatihan.nama</code>.
      */
-    public final TableField<JenisPelatihanRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
+    public final TableField<JenisPelatihanRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>jenis_pelatihan.created_at</code>.
@@ -94,16 +94,6 @@ public class JenisPelatihan extends TableImpl<JenisPelatihanRecord> {
      * The column <code>jenis_pelatihan.updated_by</code>.
      */
     public final TableField<JenisPelatihanRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>jenis_pelatihan.version</code>.
-     */
-    public final TableField<JenisPelatihanRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>jenis_pelatihan.nama</code>.
-     */
-    public final TableField<JenisPelatihanRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     private JenisPelatihan(Name alias, Table<JenisPelatihanRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

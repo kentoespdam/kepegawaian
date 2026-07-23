@@ -61,9 +61,49 @@ public class ProfilUpdate extends TableImpl<ProfilUpdateRecord> {
     public final TableField<ProfilUpdateRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
+     * The column <code>profil_update.nipam</code>.
+     */
+    public final TableField<ProfilUpdateRecord, String> NIPAM = createField(DSL.name("nipam"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>profil_update.nama</code>.
+     */
+    public final TableField<ProfilUpdateRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>profil_update.jabatan</code>.
+     */
+    public final TableField<ProfilUpdateRecord, String> JABATAN = createField(DSL.name("jabatan"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>profil_update.req_date</code>.
+     */
+    public final TableField<ProfilUpdateRecord, LocalDateTime> REQ_DATE = createField(DSL.name("req_date"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>profil_update.table_name</code>.
+     */
+    public final TableField<ProfilUpdateRecord, Byte> TABLE_NAME = createField(DSL.name("table_name"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
+
+    /**
      * The column <code>profil_update.action_type</code>.
      */
     public final TableField<ProfilUpdateRecord, Byte> ACTION_TYPE = createField(DSL.name("action_type"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
+
+    /**
+     * The column <code>profil_update.data_description</code>.
+     */
+    public final TableField<ProfilUpdateRecord, String> DATA_DESCRIPTION = createField(DSL.name("data_description"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>profil_update.rev_id</code>.
+     */
+    public final TableField<ProfilUpdateRecord, Long> REV_ID = createField(DSL.name("rev_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
+
+    /**
+     * The column <code>profil_update.approval_status</code>.
+     */
+    public final TableField<ProfilUpdateRecord, Byte> APPROVAL_STATUS = createField(DSL.name("approval_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     /**
      * The column <code>profil_update.approval_date</code>.
@@ -74,46 +114,6 @@ public class ProfilUpdate extends TableImpl<ProfilUpdateRecord> {
      * The column <code>profil_update.approval_pic</code>.
      */
     public final TableField<ProfilUpdateRecord, String> APPROVAL_PIC = createField(DSL.name("approval_pic"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>profil_update.approval_status</code>.
-     */
-    public final TableField<ProfilUpdateRecord, Byte> APPROVAL_STATUS = createField(DSL.name("approval_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
-
-    /**
-     * The column <code>profil_update.data_description</code>.
-     */
-    public final TableField<ProfilUpdateRecord, String> DATA_DESCRIPTION = createField(DSL.name("data_description"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>profil_update.jabatan</code>.
-     */
-    public final TableField<ProfilUpdateRecord, String> JABATAN = createField(DSL.name("jabatan"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>profil_update.nama</code>.
-     */
-    public final TableField<ProfilUpdateRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>profil_update.nipam</code>.
-     */
-    public final TableField<ProfilUpdateRecord, String> NIPAM = createField(DSL.name("nipam"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>profil_update.req_date</code>.
-     */
-    public final TableField<ProfilUpdateRecord, LocalDateTime> REQ_DATE = createField(DSL.name("req_date"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>profil_update.rev_id</code>.
-     */
-    public final TableField<ProfilUpdateRecord, Long> REV_ID = createField(DSL.name("rev_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
-
-    /**
-     * The column <code>profil_update.table_name</code>.
-     */
-    public final TableField<ProfilUpdateRecord, Byte> TABLE_NAME = createField(DSL.name("table_name"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
 
     private ProfilUpdate(Name alias, Table<ProfilUpdateRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

@@ -50,143 +50,143 @@ public class DasarGajiRecord extends UpdatableRecordImpl<DasarGajiRecord> {
     }
 
     /**
-     * Setter for <code>dasar_gaji.created_at</code>.
-     */
-    public void setCreatedAt(LocalDateTime value) {
-        set(2, value);
-    }
-
-    /**
-     * Getter for <code>dasar_gaji.created_at</code>.
-     */
-    public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(2);
-    }
-
-    /**
-     * Setter for <code>dasar_gaji.created_by</code>.
-     */
-    public void setCreatedBy(String value) {
-        set(3, value);
-    }
-
-    /**
-     * Getter for <code>dasar_gaji.created_by</code>.
-     */
-    public String getCreatedBy() {
-        return (String) get(3);
-    }
-
-    /**
-     * Setter for <code>dasar_gaji.is_deleted</code>.
-     */
-    public void setIsDeleted(Boolean value) {
-        set(4, value);
-    }
-
-    /**
-     * Getter for <code>dasar_gaji.is_deleted</code>.
-     */
-    public Boolean getIsDeleted() {
-        return (Boolean) get(4);
-    }
-
-    /**
-     * Setter for <code>dasar_gaji.updated_at</code>.
-     */
-    public void setUpdatedAt(LocalDateTime value) {
-        set(5, value);
-    }
-
-    /**
-     * Getter for <code>dasar_gaji.updated_at</code>.
-     */
-    public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(5);
-    }
-
-    /**
-     * Setter for <code>dasar_gaji.updated_by</code>.
-     */
-    public void setUpdatedBy(String value) {
-        set(6, value);
-    }
-
-    /**
-     * Getter for <code>dasar_gaji.updated_by</code>.
-     */
-    public String getUpdatedBy() {
-        return (String) get(6);
-    }
-
-    /**
-     * Setter for <code>dasar_gaji.version</code>.
-     */
-    public void setVersion(Integer value) {
-        set(7, value);
-    }
-
-    /**
-     * Getter for <code>dasar_gaji.version</code>.
-     */
-    public Integer getVersion() {
-        return (Integer) get(7);
-    }
-
-    /**
      * Setter for <code>dasar_gaji.aktif</code>.
      */
     public void setAktif(Boolean value) {
-        set(8, value);
+        set(2, value);
     }
 
     /**
      * Getter for <code>dasar_gaji.aktif</code>.
      */
     public Boolean getAktif() {
-        return (Boolean) get(8);
+        return (Boolean) get(2);
     }
 
     /**
      * Setter for <code>dasar_gaji.deskripsi</code>.
      */
     public void setDeskripsi(String value) {
-        set(9, value);
+        set(3, value);
     }
 
     /**
      * Getter for <code>dasar_gaji.deskripsi</code>.
      */
     public String getDeskripsi() {
-        return (String) get(9);
+        return (String) get(3);
     }
 
     /**
      * Setter for <code>dasar_gaji.tanggal_akhir</code>.
      */
     public void setTanggalAkhir(LocalDate value) {
-        set(10, value);
+        set(4, value);
     }
 
     /**
      * Getter for <code>dasar_gaji.tanggal_akhir</code>.
      */
     public LocalDate getTanggalAkhir() {
-        return (LocalDate) get(10);
+        return (LocalDate) get(4);
     }
 
     /**
      * Setter for <code>dasar_gaji.tanggal_awal</code>.
      */
     public void setTanggalAwal(LocalDate value) {
-        set(11, value);
+        set(5, value);
     }
 
     /**
      * Getter for <code>dasar_gaji.tanggal_awal</code>.
      */
     public LocalDate getTanggalAwal() {
-        return (LocalDate) get(11);
+        return (LocalDate) get(5);
+    }
+
+    /**
+     * Setter for <code>dasar_gaji.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime value) {
+        set(6, value);
+    }
+
+    /**
+     * Getter for <code>dasar_gaji.created_at</code>.
+     */
+    public LocalDateTime getCreatedAt() {
+        return (LocalDateTime) get(6);
+    }
+
+    /**
+     * Setter for <code>dasar_gaji.created_by</code>.
+     */
+    public void setCreatedBy(String value) {
+        set(7, value);
+    }
+
+    /**
+     * Getter for <code>dasar_gaji.created_by</code>.
+     */
+    public String getCreatedBy() {
+        return (String) get(7);
+    }
+
+    /**
+     * Setter for <code>dasar_gaji.is_deleted</code>.
+     */
+    public void setIsDeleted(Boolean value) {
+        set(8, value);
+    }
+
+    /**
+     * Getter for <code>dasar_gaji.is_deleted</code>.
+     */
+    public Boolean getIsDeleted() {
+        return (Boolean) get(8);
+    }
+
+    /**
+     * Setter for <code>dasar_gaji.updated_at</code>.
+     */
+    public void setUpdatedAt(LocalDateTime value) {
+        set(9, value);
+    }
+
+    /**
+     * Getter for <code>dasar_gaji.updated_at</code>.
+     */
+    public LocalDateTime getUpdatedAt() {
+        return (LocalDateTime) get(9);
+    }
+
+    /**
+     * Setter for <code>dasar_gaji.updated_by</code>.
+     */
+    public void setUpdatedBy(String value) {
+        set(10, value);
+    }
+
+    /**
+     * Getter for <code>dasar_gaji.updated_by</code>.
+     */
+    public String getUpdatedBy() {
+        return (String) get(10);
+    }
+
+    /**
+     * Setter for <code>dasar_gaji.version</code>.
+     */
+    public void setVersion(Integer value) {
+        set(11, value);
+    }
+
+    /**
+     * Getter for <code>dasar_gaji.version</code>.
+     */
+    public Integer getVersion() {
+        return (Integer) get(11);
     }
 
     // -------------------------------------------------------------------------
@@ -212,21 +212,21 @@ public class DasarGajiRecord extends UpdatableRecordImpl<DasarGajiRecord> {
     /**
      * Create a detached, initialised DasarGajiRecord
      */
-    public DasarGajiRecord(Long id_, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version, Boolean aktif, String deskripsi, LocalDate tanggalAkhir, LocalDate tanggalAwal) {
+    public DasarGajiRecord(Long id_, Byte changedStatus, Boolean aktif, String deskripsi, LocalDate tanggalAkhir, LocalDate tanggalAwal, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version) {
         super(DasarGaji.DASAR_GAJI);
 
         setId(id_);
         setChangedStatus(changedStatus);
+        setAktif(aktif);
+        setDeskripsi(deskripsi);
+        setTanggalAkhir(tanggalAkhir);
+        setTanggalAwal(tanggalAwal);
         setCreatedAt(createdAt);
         setCreatedBy(createdBy);
         setIsDeleted(isDeleted);
         setUpdatedAt(updatedAt);
         setUpdatedBy(updatedBy);
         setVersion(version);
-        setAktif(aktif);
-        setDeskripsi(deskripsi);
-        setTanggalAkhir(tanggalAkhir);
-        setTanggalAwal(tanggalAwal);
         resetChangedOnNotNull();
     }
 }

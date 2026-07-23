@@ -74,36 +74,6 @@ public class RiwayatKontrak extends TableImpl<RiwayatKontrakRecord> {
     public final TableField<RiwayatKontrakRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>riwayat_kontrak.created_at</code>.
-     */
-    public final TableField<RiwayatKontrakRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>riwayat_kontrak.created_by</code>.
-     */
-    public final TableField<RiwayatKontrakRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>riwayat_kontrak.is_deleted</code>.
-     */
-    public final TableField<RiwayatKontrakRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
-
-    /**
-     * The column <code>riwayat_kontrak.updated_at</code>.
-     */
-    public final TableField<RiwayatKontrakRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>riwayat_kontrak.updated_by</code>.
-     */
-    public final TableField<RiwayatKontrakRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>riwayat_kontrak.version</code>.
-     */
-    public final TableField<RiwayatKontrakRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
      * The column <code>riwayat_kontrak.is_latest</code>.
      */
     public final TableField<RiwayatKontrakRecord, Boolean> IS_LATEST = createField(DSL.name("is_latest"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
@@ -162,6 +132,36 @@ public class RiwayatKontrak extends TableImpl<RiwayatKontrakRecord> {
      * The column <code>riwayat_kontrak.pegawai_id</code>.
      */
     public final TableField<RiwayatKontrakRecord, Long> PEGAWAI_ID = createField(DSL.name("pegawai_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
+
+    /**
+     * The column <code>riwayat_kontrak.created_at</code>.
+     */
+    public final TableField<RiwayatKontrakRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>riwayat_kontrak.created_by</code>.
+     */
+    public final TableField<RiwayatKontrakRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>riwayat_kontrak.is_deleted</code>.
+     */
+    public final TableField<RiwayatKontrakRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
+     * The column <code>riwayat_kontrak.updated_at</code>.
+     */
+    public final TableField<RiwayatKontrakRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>riwayat_kontrak.updated_by</code>.
+     */
+    public final TableField<RiwayatKontrakRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>riwayat_kontrak.version</code>.
+     */
+    public final TableField<RiwayatKontrakRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     private RiwayatKontrak(Name alias, Table<RiwayatKontrakRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

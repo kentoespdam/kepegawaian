@@ -67,41 +67,6 @@ public class SanksiSp extends TableImpl<SanksiSpRecord> {
     public final TableField<SanksiSpRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>sanksi_sp.changed_status</code>.
-     */
-    public final TableField<SanksiSpRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
-
-    /**
-     * The column <code>sanksi_sp.created_at</code>.
-     */
-    public final TableField<SanksiSpRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>sanksi_sp.created_by</code>.
-     */
-    public final TableField<SanksiSpRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>sanksi_sp.is_deleted</code>.
-     */
-    public final TableField<SanksiSpRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
-
-    /**
-     * The column <code>sanksi_sp.updated_at</code>.
-     */
-    public final TableField<SanksiSpRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>sanksi_sp.updated_by</code>.
-     */
-    public final TableField<SanksiSpRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>sanksi_sp.version</code>.
-     */
-    public final TableField<SanksiSpRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
      * The column <code>sanksi_sp.is_pending_gaji</code>.
      */
     public final TableField<SanksiSpRecord, Boolean> IS_PENDING_GAJI = createField(DSL.name("is_pending_gaji"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
@@ -160,6 +125,31 @@ public class SanksiSp extends TableImpl<SanksiSpRecord> {
      * The column <code>sanksi_sp.jenis_sp_id</code>.
      */
     public final TableField<SanksiSpRecord, Long> JENIS_SP_ID = createField(DSL.name("jenis_sp_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
+
+    /**
+     * The column <code>sanksi_sp.created_at</code>.
+     */
+    public final TableField<SanksiSpRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>sanksi_sp.created_by</code>.
+     */
+    public final TableField<SanksiSpRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>sanksi_sp.is_deleted</code>.
+     */
+    public final TableField<SanksiSpRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
+     * The column <code>sanksi_sp.updated_at</code>.
+     */
+    public final TableField<SanksiSpRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>sanksi_sp.updated_by</code>.
+     */
+    public final TableField<SanksiSpRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     private SanksiSp(Name alias, Table<SanksiSpRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

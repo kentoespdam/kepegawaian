@@ -70,9 +70,14 @@ public class Golongan extends TableImpl<GolonganRecord> {
     public final TableField<GolonganRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>golongan.changed_status</code>.
+     * The column <code>golongan.golongan</code>.
      */
-    public final TableField<GolonganRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
+    public final TableField<GolonganRecord, String> GOLONGAN_ = createField(DSL.name("golongan"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>golongan.pangkat</code>.
+     */
+    public final TableField<GolonganRecord, String> PANGKAT = createField(DSL.name("pangkat"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>golongan.created_at</code>.
@@ -98,21 +103,6 @@ public class Golongan extends TableImpl<GolonganRecord> {
      * The column <code>golongan.updated_by</code>.
      */
     public final TableField<GolonganRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>golongan.version</code>.
-     */
-    public final TableField<GolonganRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>golongan.golongan</code>.
-     */
-    public final TableField<GolonganRecord, String> GOLONGAN_ = createField(DSL.name("golongan"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>golongan.pangkat</code>.
-     */
-    public final TableField<GolonganRecord, String> PANGKAT = createField(DSL.name("pangkat"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     private Golongan(Name alias, Table<GolonganRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

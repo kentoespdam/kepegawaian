@@ -72,6 +72,21 @@ public class GajiPendapatanNonPajak extends TableImpl<GajiPendapatanNonPajakReco
     public final TableField<GajiPendapatanNonPajakRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
+     * The column <code>gaji_pendapatan_non_pajak.kode</code>.
+     */
+    public final TableField<GajiPendapatanNonPajakRecord, String> KODE = createField(DSL.name("kode"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>gaji_pendapatan_non_pajak.nominal</code>.
+     */
+    public final TableField<GajiPendapatanNonPajakRecord, Double> NOMINAL = createField(DSL.name("nominal"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
+
+    /**
+     * The column <code>gaji_pendapatan_non_pajak.notes</code>.
+     */
+    public final TableField<GajiPendapatanNonPajakRecord, String> NOTES = createField(DSL.name("notes"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
      * The column <code>gaji_pendapatan_non_pajak.created_at</code>.
      */
     public final TableField<GajiPendapatanNonPajakRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
@@ -100,21 +115,6 @@ public class GajiPendapatanNonPajak extends TableImpl<GajiPendapatanNonPajakReco
      * The column <code>gaji_pendapatan_non_pajak.version</code>.
      */
     public final TableField<GajiPendapatanNonPajakRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>gaji_pendapatan_non_pajak.kode</code>.
-     */
-    public final TableField<GajiPendapatanNonPajakRecord, String> KODE = createField(DSL.name("kode"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>gaji_pendapatan_non_pajak.nominal</code>.
-     */
-    public final TableField<GajiPendapatanNonPajakRecord, Double> NOMINAL = createField(DSL.name("nominal"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
-
-    /**
-     * The column <code>gaji_pendapatan_non_pajak.notes</code>.
-     */
-    public final TableField<GajiPendapatanNonPajakRecord, String> NOTES = createField(DSL.name("notes"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     private GajiPendapatanNonPajak(Name alias, Table<GajiPendapatanNonPajakRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

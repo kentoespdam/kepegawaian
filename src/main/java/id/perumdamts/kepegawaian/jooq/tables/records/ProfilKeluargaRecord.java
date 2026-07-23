@@ -50,269 +50,269 @@ public class ProfilKeluargaRecord extends UpdatableRecordImpl<ProfilKeluargaReco
     }
 
     /**
-     * Setter for <code>profil_keluarga.created_at</code>.
-     */
-    public void setCreatedAt(LocalDateTime value) {
-        set(2, value);
-    }
-
-    /**
-     * Getter for <code>profil_keluarga.created_at</code>.
-     */
-    public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(2);
-    }
-
-    /**
-     * Setter for <code>profil_keluarga.created_by</code>.
-     */
-    public void setCreatedBy(String value) {
-        set(3, value);
-    }
-
-    /**
-     * Getter for <code>profil_keluarga.created_by</code>.
-     */
-    public String getCreatedBy() {
-        return (String) get(3);
-    }
-
-    /**
-     * Setter for <code>profil_keluarga.is_deleted</code>.
-     */
-    public void setIsDeleted(Boolean value) {
-        set(4, value);
-    }
-
-    /**
-     * Getter for <code>profil_keluarga.is_deleted</code>.
-     */
-    public Boolean getIsDeleted() {
-        return (Boolean) get(4);
-    }
-
-    /**
-     * Setter for <code>profil_keluarga.updated_at</code>.
-     */
-    public void setUpdatedAt(LocalDateTime value) {
-        set(5, value);
-    }
-
-    /**
-     * Getter for <code>profil_keluarga.updated_at</code>.
-     */
-    public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(5);
-    }
-
-    /**
-     * Setter for <code>profil_keluarga.updated_by</code>.
-     */
-    public void setUpdatedBy(String value) {
-        set(6, value);
-    }
-
-    /**
-     * Getter for <code>profil_keluarga.updated_by</code>.
-     */
-    public String getUpdatedBy() {
-        return (String) get(6);
-    }
-
-    /**
-     * Setter for <code>profil_keluarga.version</code>.
-     */
-    public void setVersion(Integer value) {
-        set(7, value);
-    }
-
-    /**
-     * Getter for <code>profil_keluarga.version</code>.
-     */
-    public Integer getVersion() {
-        return (Integer) get(7);
-    }
-
-    /**
      * Setter for <code>profil_keluarga.agama</code>.
      */
     public void setAgama(Byte value) {
-        set(8, value);
+        set(2, value);
     }
 
     /**
      * Getter for <code>profil_keluarga.agama</code>.
      */
     public Byte getAgama() {
-        return (Byte) get(8);
+        return (Byte) get(2);
     }
 
     /**
      * Setter for <code>profil_keluarga.hubungan_keluarga</code>.
      */
     public void setHubunganKeluarga(Byte value) {
-        set(9, value);
+        set(3, value);
     }
 
     /**
      * Getter for <code>profil_keluarga.hubungan_keluarga</code>.
      */
     public Byte getHubunganKeluarga() {
-        return (Byte) get(9);
+        return (Byte) get(3);
     }
 
     /**
      * Setter for <code>profil_keluarga.jenis_kelamin</code>.
      */
     public void setJenisKelamin(Byte value) {
-        set(10, value);
+        set(4, value);
     }
 
     /**
      * Getter for <code>profil_keluarga.jenis_kelamin</code>.
      */
     public Byte getJenisKelamin() {
-        return (Byte) get(10);
+        return (Byte) get(4);
     }
 
     /**
      * Setter for <code>profil_keluarga.nama</code>.
      */
     public void setNama(String value) {
-        set(11, value);
+        set(5, value);
     }
 
     /**
      * Getter for <code>profil_keluarga.nama</code>.
      */
     public String getNama() {
-        return (String) get(11);
+        return (String) get(5);
     }
 
     /**
      * Setter for <code>profil_keluarga.nik</code>.
      */
     public void setNik(String value) {
-        set(12, value);
+        set(6, value);
     }
 
     /**
      * Getter for <code>profil_keluarga.nik</code>.
      */
     public String getNik() {
-        return (String) get(12);
+        return (String) get(6);
     }
 
     /**
      * Setter for <code>profil_keluarga.notes</code>.
      */
     public void setNotes(String value) {
-        set(13, value);
+        set(7, value);
     }
 
     /**
      * Getter for <code>profil_keluarga.notes</code>.
      */
     public String getNotes() {
-        return (String) get(13);
+        return (String) get(7);
     }
 
     /**
      * Setter for <code>profil_keluarga.status_kawin</code>.
      */
     public void setStatusKawin(Boolean value) {
-        set(14, value);
+        set(8, value);
     }
 
     /**
      * Getter for <code>profil_keluarga.status_kawin</code>.
      */
     public Boolean getStatusKawin() {
-        return (Boolean) get(14);
+        return (Boolean) get(8);
     }
 
     /**
      * Setter for <code>profil_keluarga.status_pendidikan</code>.
      */
     public void setStatusPendidikan(Byte value) {
-        set(15, value);
+        set(9, value);
     }
 
     /**
      * Getter for <code>profil_keluarga.status_pendidikan</code>.
      */
     public Byte getStatusPendidikan() {
-        return (Byte) get(15);
+        return (Byte) get(9);
     }
 
     /**
      * Setter for <code>profil_keluarga.tanggal_lahir</code>.
      */
     public void setTanggalLahir(LocalDate value) {
-        set(16, value);
+        set(10, value);
     }
 
     /**
      * Getter for <code>profil_keluarga.tanggal_lahir</code>.
      */
     public LocalDate getTanggalLahir() {
-        return (LocalDate) get(16);
+        return (LocalDate) get(10);
     }
 
     /**
      * Setter for <code>profil_keluarga.tanggungan</code>.
      */
     public void setTanggungan(Byte value) {
-        set(17, value);
+        set(11, value);
     }
 
     /**
      * Getter for <code>profil_keluarga.tanggungan</code>.
      */
     public Byte getTanggungan() {
-        return (Byte) get(17);
+        return (Byte) get(11);
     }
 
     /**
      * Setter for <code>profil_keluarga.tempat_lahir</code>.
      */
     public void setTempatLahir(String value) {
-        set(18, value);
+        set(12, value);
     }
 
     /**
      * Getter for <code>profil_keluarga.tempat_lahir</code>.
      */
     public String getTempatLahir() {
-        return (String) get(18);
+        return (String) get(12);
     }
 
     /**
      * Setter for <code>profil_keluarga.biodata_id</code>.
      */
     public void setBiodataId(String value) {
-        set(19, value);
+        set(13, value);
     }
 
     /**
      * Getter for <code>profil_keluarga.biodata_id</code>.
      */
     public String getBiodataId() {
-        return (String) get(19);
+        return (String) get(13);
     }
 
     /**
      * Setter for <code>profil_keluarga.pendidikan_id</code>.
      */
     public void setPendidikanId(Long value) {
-        set(20, value);
+        set(14, value);
     }
 
     /**
      * Getter for <code>profil_keluarga.pendidikan_id</code>.
      */
     public Long getPendidikanId() {
-        return (Long) get(20);
+        return (Long) get(14);
+    }
+
+    /**
+     * Setter for <code>profil_keluarga.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime value) {
+        set(15, value);
+    }
+
+    /**
+     * Getter for <code>profil_keluarga.created_at</code>.
+     */
+    public LocalDateTime getCreatedAt() {
+        return (LocalDateTime) get(15);
+    }
+
+    /**
+     * Setter for <code>profil_keluarga.created_by</code>.
+     */
+    public void setCreatedBy(String value) {
+        set(16, value);
+    }
+
+    /**
+     * Getter for <code>profil_keluarga.created_by</code>.
+     */
+    public String getCreatedBy() {
+        return (String) get(16);
+    }
+
+    /**
+     * Setter for <code>profil_keluarga.is_deleted</code>.
+     */
+    public void setIsDeleted(Boolean value) {
+        set(17, value);
+    }
+
+    /**
+     * Getter for <code>profil_keluarga.is_deleted</code>.
+     */
+    public Boolean getIsDeleted() {
+        return (Boolean) get(17);
+    }
+
+    /**
+     * Setter for <code>profil_keluarga.updated_at</code>.
+     */
+    public void setUpdatedAt(LocalDateTime value) {
+        set(18, value);
+    }
+
+    /**
+     * Getter for <code>profil_keluarga.updated_at</code>.
+     */
+    public LocalDateTime getUpdatedAt() {
+        return (LocalDateTime) get(18);
+    }
+
+    /**
+     * Setter for <code>profil_keluarga.updated_by</code>.
+     */
+    public void setUpdatedBy(String value) {
+        set(19, value);
+    }
+
+    /**
+     * Getter for <code>profil_keluarga.updated_by</code>.
+     */
+    public String getUpdatedBy() {
+        return (String) get(19);
+    }
+
+    /**
+     * Setter for <code>profil_keluarga.version</code>.
+     */
+    public void setVersion(Integer value) {
+        set(20, value);
+    }
+
+    /**
+     * Getter for <code>profil_keluarga.version</code>.
+     */
+    public Integer getVersion() {
+        return (Integer) get(20);
     }
 
     // -------------------------------------------------------------------------
@@ -338,17 +338,11 @@ public class ProfilKeluargaRecord extends UpdatableRecordImpl<ProfilKeluargaReco
     /**
      * Create a detached, initialised ProfilKeluargaRecord
      */
-    public ProfilKeluargaRecord(Long id_, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version, Byte agama, Byte hubunganKeluarga, Byte jenisKelamin, String nama, String nik, String notes, Boolean statusKawin, Byte statusPendidikan, LocalDate tanggalLahir, Byte tanggungan, String tempatLahir, String biodataId, Long pendidikanId) {
+    public ProfilKeluargaRecord(Long id_, Byte changedStatus, Byte agama, Byte hubunganKeluarga, Byte jenisKelamin, String nama, String nik, String notes, Boolean statusKawin, Byte statusPendidikan, LocalDate tanggalLahir, Byte tanggungan, String tempatLahir, String biodataId, Long pendidikanId, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version) {
         super(ProfilKeluarga.PROFIL_KELUARGA);
 
         setId(id_);
         setChangedStatus(changedStatus);
-        setCreatedAt(createdAt);
-        setCreatedBy(createdBy);
-        setIsDeleted(isDeleted);
-        setUpdatedAt(updatedAt);
-        setUpdatedBy(updatedBy);
-        setVersion(version);
         setAgama(agama);
         setHubunganKeluarga(hubunganKeluarga);
         setJenisKelamin(jenisKelamin);
@@ -362,6 +356,12 @@ public class ProfilKeluargaRecord extends UpdatableRecordImpl<ProfilKeluargaReco
         setTempatLahir(tempatLahir);
         setBiodataId(biodataId);
         setPendidikanId(pendidikanId);
+        setCreatedAt(createdAt);
+        setCreatedBy(createdBy);
+        setIsDeleted(isDeleted);
+        setUpdatedAt(updatedAt);
+        setUpdatedBy(updatedBy);
+        setVersion(version);
         resetChangedOnNotNull();
     }
 }

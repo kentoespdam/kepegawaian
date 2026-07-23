@@ -49,143 +49,143 @@ public class GajiPotonganTkkRecord extends UpdatableRecordImpl<GajiPotonganTkkRe
     }
 
     /**
-     * Setter for <code>gaji_potongan_tkk.created_at</code>.
-     */
-    public void setCreatedAt(LocalDateTime value) {
-        set(2, value);
-    }
-
-    /**
-     * Getter for <code>gaji_potongan_tkk.created_at</code>.
-     */
-    public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(2);
-    }
-
-    /**
-     * Setter for <code>gaji_potongan_tkk.created_by</code>.
-     */
-    public void setCreatedBy(String value) {
-        set(3, value);
-    }
-
-    /**
-     * Getter for <code>gaji_potongan_tkk.created_by</code>.
-     */
-    public String getCreatedBy() {
-        return (String) get(3);
-    }
-
-    /**
-     * Setter for <code>gaji_potongan_tkk.is_deleted</code>.
-     */
-    public void setIsDeleted(Boolean value) {
-        set(4, value);
-    }
-
-    /**
-     * Getter for <code>gaji_potongan_tkk.is_deleted</code>.
-     */
-    public Boolean getIsDeleted() {
-        return (Boolean) get(4);
-    }
-
-    /**
-     * Setter for <code>gaji_potongan_tkk.updated_at</code>.
-     */
-    public void setUpdatedAt(LocalDateTime value) {
-        set(5, value);
-    }
-
-    /**
-     * Getter for <code>gaji_potongan_tkk.updated_at</code>.
-     */
-    public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(5);
-    }
-
-    /**
-     * Setter for <code>gaji_potongan_tkk.updated_by</code>.
-     */
-    public void setUpdatedBy(String value) {
-        set(6, value);
-    }
-
-    /**
-     * Getter for <code>gaji_potongan_tkk.updated_by</code>.
-     */
-    public String getUpdatedBy() {
-        return (String) get(6);
-    }
-
-    /**
-     * Setter for <code>gaji_potongan_tkk.version</code>.
-     */
-    public void setVersion(Integer value) {
-        set(7, value);
-    }
-
-    /**
-     * Getter for <code>gaji_potongan_tkk.version</code>.
-     */
-    public Integer getVersion() {
-        return (Integer) get(7);
-    }
-
-    /**
      * Setter for <code>gaji_potongan_tkk.nominal</code>.
      */
     public void setNominal(Double value) {
-        set(8, value);
+        set(2, value);
     }
 
     /**
      * Getter for <code>gaji_potongan_tkk.nominal</code>.
      */
     public Double getNominal() {
-        return (Double) get(8);
+        return (Double) get(2);
     }
 
     /**
      * Setter for <code>gaji_potongan_tkk.status_pegawai</code>.
      */
     public void setStatusPegawai(Byte value) {
-        set(9, value);
+        set(3, value);
     }
 
     /**
      * Getter for <code>gaji_potongan_tkk.status_pegawai</code>.
      */
     public Byte getStatusPegawai() {
-        return (Byte) get(9);
+        return (Byte) get(3);
     }
 
     /**
      * Setter for <code>gaji_potongan_tkk.golongan_id</code>.
      */
     public void setGolonganId(Long value) {
-        set(10, value);
+        set(4, value);
     }
 
     /**
      * Getter for <code>gaji_potongan_tkk.golongan_id</code>.
      */
     public Long getGolonganId() {
-        return (Long) get(10);
+        return (Long) get(4);
     }
 
     /**
      * Setter for <code>gaji_potongan_tkk.level_id</code>.
      */
     public void setLevelId(Long value) {
-        set(11, value);
+        set(5, value);
     }
 
     /**
      * Getter for <code>gaji_potongan_tkk.level_id</code>.
      */
     public Long getLevelId() {
-        return (Long) get(11);
+        return (Long) get(5);
+    }
+
+    /**
+     * Setter for <code>gaji_potongan_tkk.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime value) {
+        set(6, value);
+    }
+
+    /**
+     * Getter for <code>gaji_potongan_tkk.created_at</code>.
+     */
+    public LocalDateTime getCreatedAt() {
+        return (LocalDateTime) get(6);
+    }
+
+    /**
+     * Setter for <code>gaji_potongan_tkk.created_by</code>.
+     */
+    public void setCreatedBy(String value) {
+        set(7, value);
+    }
+
+    /**
+     * Getter for <code>gaji_potongan_tkk.created_by</code>.
+     */
+    public String getCreatedBy() {
+        return (String) get(7);
+    }
+
+    /**
+     * Setter for <code>gaji_potongan_tkk.is_deleted</code>.
+     */
+    public void setIsDeleted(Boolean value) {
+        set(8, value);
+    }
+
+    /**
+     * Getter for <code>gaji_potongan_tkk.is_deleted</code>.
+     */
+    public Boolean getIsDeleted() {
+        return (Boolean) get(8);
+    }
+
+    /**
+     * Setter for <code>gaji_potongan_tkk.updated_at</code>.
+     */
+    public void setUpdatedAt(LocalDateTime value) {
+        set(9, value);
+    }
+
+    /**
+     * Getter for <code>gaji_potongan_tkk.updated_at</code>.
+     */
+    public LocalDateTime getUpdatedAt() {
+        return (LocalDateTime) get(9);
+    }
+
+    /**
+     * Setter for <code>gaji_potongan_tkk.updated_by</code>.
+     */
+    public void setUpdatedBy(String value) {
+        set(10, value);
+    }
+
+    /**
+     * Getter for <code>gaji_potongan_tkk.updated_by</code>.
+     */
+    public String getUpdatedBy() {
+        return (String) get(10);
+    }
+
+    /**
+     * Setter for <code>gaji_potongan_tkk.version</code>.
+     */
+    public void setVersion(Integer value) {
+        set(11, value);
+    }
+
+    /**
+     * Getter for <code>gaji_potongan_tkk.version</code>.
+     */
+    public Integer getVersion() {
+        return (Integer) get(11);
     }
 
     // -------------------------------------------------------------------------
@@ -211,21 +211,21 @@ public class GajiPotonganTkkRecord extends UpdatableRecordImpl<GajiPotonganTkkRe
     /**
      * Create a detached, initialised GajiPotonganTkkRecord
      */
-    public GajiPotonganTkkRecord(Long id_, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version, Double nominal, Byte statusPegawai, Long golonganId, Long levelId) {
+    public GajiPotonganTkkRecord(Long id_, Byte changedStatus, Double nominal, Byte statusPegawai, Long golonganId, Long levelId, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version) {
         super(GajiPotonganTkk.GAJI_POTONGAN_TKK);
 
         setId(id_);
         setChangedStatus(changedStatus);
+        setNominal(nominal);
+        setStatusPegawai(statusPegawai);
+        setGolonganId(golonganId);
+        setLevelId(levelId);
         setCreatedAt(createdAt);
         setCreatedBy(createdBy);
         setIsDeleted(isDeleted);
         setUpdatedAt(updatedAt);
         setUpdatedBy(updatedBy);
         setVersion(version);
-        setNominal(nominal);
-        setStatusPegawai(statusPegawai);
-        setGolonganId(golonganId);
-        setLevelId(levelId);
         resetChangedOnNotNull();
     }
 }

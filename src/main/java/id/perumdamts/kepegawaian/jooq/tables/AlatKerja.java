@@ -66,9 +66,14 @@ public class AlatKerja extends TableImpl<AlatKerjaRecord> {
     public final TableField<AlatKerjaRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>alat_kerja.changed_status</code>.
+     * The column <code>alat_kerja.nama</code>.
      */
-    public final TableField<AlatKerjaRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
+    public final TableField<AlatKerjaRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>alat_kerja.profesi_id</code>.
+     */
+    public final TableField<AlatKerjaRecord, Long> PROFESI_ID = createField(DSL.name("profesi_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
      * The column <code>alat_kerja.created_at</code>.
@@ -94,21 +99,6 @@ public class AlatKerja extends TableImpl<AlatKerjaRecord> {
      * The column <code>alat_kerja.updated_by</code>.
      */
     public final TableField<AlatKerjaRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>alat_kerja.version</code>.
-     */
-    public final TableField<AlatKerjaRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>alat_kerja.nama</code>.
-     */
-    public final TableField<AlatKerjaRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>alat_kerja.profesi_id</code>.
-     */
-    public final TableField<AlatKerjaRecord, Long> PROFESI_ID = createField(DSL.name("profesi_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     private AlatKerja(Name alias, Table<AlatKerjaRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

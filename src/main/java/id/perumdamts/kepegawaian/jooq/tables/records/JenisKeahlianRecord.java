@@ -35,17 +35,17 @@ public class JenisKeahlianRecord extends UpdatableRecordImpl<JenisKeahlianRecord
     }
 
     /**
-     * Setter for <code>jenis_keahlian.changed_status</code>.
+     * Setter for <code>jenis_keahlian.nama</code>.
      */
-    public void setChangedStatus(Byte value) {
+    public void setNama(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>jenis_keahlian.changed_status</code>.
+     * Getter for <code>jenis_keahlian.nama</code>.
      */
-    public Byte getChangedStatus() {
-        return (Byte) get(1);
+    public String getNama() {
+        return (String) get(1);
     }
 
     /**
@@ -118,34 +118,6 @@ public class JenisKeahlianRecord extends UpdatableRecordImpl<JenisKeahlianRecord
         return (String) get(6);
     }
 
-    /**
-     * Setter for <code>jenis_keahlian.version</code>.
-     */
-    public void setVersion(Integer value) {
-        set(7, value);
-    }
-
-    /**
-     * Getter for <code>jenis_keahlian.version</code>.
-     */
-    public Integer getVersion() {
-        return (Integer) get(7);
-    }
-
-    /**
-     * Setter for <code>jenis_keahlian.nama</code>.
-     */
-    public void setNama(String value) {
-        set(8, value);
-    }
-
-    /**
-     * Getter for <code>jenis_keahlian.nama</code>.
-     */
-    public String getNama() {
-        return (String) get(8);
-    }
-
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -169,18 +141,16 @@ public class JenisKeahlianRecord extends UpdatableRecordImpl<JenisKeahlianRecord
     /**
      * Create a detached, initialised JenisKeahlianRecord
      */
-    public JenisKeahlianRecord(Long id_, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version, String nama) {
+    public JenisKeahlianRecord(Long id_, String nama, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy) {
         super(JenisKeahlian.JENIS_KEAHLIAN);
 
         setId(id_);
-        setChangedStatus(changedStatus);
+        setNama(nama);
         setCreatedAt(createdAt);
         setCreatedBy(createdBy);
         setIsDeleted(isDeleted);
         setUpdatedAt(updatedAt);
         setUpdatedBy(updatedBy);
-        setVersion(version);
-        setNama(nama);
         resetChangedOnNotNull();
     }
 }

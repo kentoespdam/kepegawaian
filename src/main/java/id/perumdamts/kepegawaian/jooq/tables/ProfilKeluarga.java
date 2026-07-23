@@ -73,36 +73,6 @@ public class ProfilKeluarga extends TableImpl<ProfilKeluargaRecord> {
     public final TableField<ProfilKeluargaRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>profil_keluarga.created_at</code>.
-     */
-    public final TableField<ProfilKeluargaRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>profil_keluarga.created_by</code>.
-     */
-    public final TableField<ProfilKeluargaRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>profil_keluarga.is_deleted</code>.
-     */
-    public final TableField<ProfilKeluargaRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
-
-    /**
-     * The column <code>profil_keluarga.updated_at</code>.
-     */
-    public final TableField<ProfilKeluargaRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>profil_keluarga.updated_by</code>.
-     */
-    public final TableField<ProfilKeluargaRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>profil_keluarga.version</code>.
-     */
-    public final TableField<ProfilKeluargaRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
      * The column <code>profil_keluarga.agama</code>.
      */
     public final TableField<ProfilKeluargaRecord, Byte> AGAMA = createField(DSL.name("agama"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
@@ -166,6 +136,36 @@ public class ProfilKeluarga extends TableImpl<ProfilKeluargaRecord> {
      * The column <code>profil_keluarga.pendidikan_id</code>.
      */
     public final TableField<ProfilKeluargaRecord, Long> PENDIDIKAN_ID = createField(DSL.name("pendidikan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
+
+    /**
+     * The column <code>profil_keluarga.created_at</code>.
+     */
+    public final TableField<ProfilKeluargaRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>profil_keluarga.created_by</code>.
+     */
+    public final TableField<ProfilKeluargaRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>profil_keluarga.is_deleted</code>.
+     */
+    public final TableField<ProfilKeluargaRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
+     * The column <code>profil_keluarga.updated_at</code>.
+     */
+    public final TableField<ProfilKeluargaRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>profil_keluarga.updated_by</code>.
+     */
+    public final TableField<ProfilKeluargaRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>profil_keluarga.version</code>.
+     */
+    public final TableField<ProfilKeluargaRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     private ProfilKeluarga(Name alias, Table<ProfilKeluargaRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

@@ -50,311 +50,311 @@ public class RiwayatSkRecord extends UpdatableRecordImpl<RiwayatSkRecord> {
     }
 
     /**
-     * Setter for <code>riwayat_sk.created_at</code>.
-     */
-    public void setCreatedAt(LocalDateTime value) {
-        set(2, value);
-    }
-
-    /**
-     * Getter for <code>riwayat_sk.created_at</code>.
-     */
-    public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(2);
-    }
-
-    /**
-     * Setter for <code>riwayat_sk.created_by</code>.
-     */
-    public void setCreatedBy(String value) {
-        set(3, value);
-    }
-
-    /**
-     * Getter for <code>riwayat_sk.created_by</code>.
-     */
-    public String getCreatedBy() {
-        return (String) get(3);
-    }
-
-    /**
-     * Setter for <code>riwayat_sk.is_deleted</code>.
-     */
-    public void setIsDeleted(Boolean value) {
-        set(4, value);
-    }
-
-    /**
-     * Getter for <code>riwayat_sk.is_deleted</code>.
-     */
-    public Boolean getIsDeleted() {
-        return (Boolean) get(4);
-    }
-
-    /**
-     * Setter for <code>riwayat_sk.updated_at</code>.
-     */
-    public void setUpdatedAt(LocalDateTime value) {
-        set(5, value);
-    }
-
-    /**
-     * Getter for <code>riwayat_sk.updated_at</code>.
-     */
-    public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(5);
-    }
-
-    /**
-     * Setter for <code>riwayat_sk.updated_by</code>.
-     */
-    public void setUpdatedBy(String value) {
-        set(6, value);
-    }
-
-    /**
-     * Getter for <code>riwayat_sk.updated_by</code>.
-     */
-    public String getUpdatedBy() {
-        return (String) get(6);
-    }
-
-    /**
-     * Setter for <code>riwayat_sk.version</code>.
-     */
-    public void setVersion(Integer value) {
-        set(7, value);
-    }
-
-    /**
-     * Getter for <code>riwayat_sk.version</code>.
-     */
-    public Integer getVersion() {
-        return (Integer) get(7);
-    }
-
-    /**
      * Setter for <code>riwayat_sk.gaji_pokok</code>.
      */
     public void setGajiPokok(Double value) {
-        set(8, value);
+        set(2, value);
     }
 
     /**
      * Getter for <code>riwayat_sk.gaji_pokok</code>.
      */
     public Double getGajiPokok() {
-        return (Double) get(8);
+        return (Double) get(2);
     }
 
     /**
      * Setter for <code>riwayat_sk.jenis_sk</code>.
      */
     public void setJenisSk(Byte value) {
-        set(9, value);
+        set(3, value);
     }
 
     /**
      * Getter for <code>riwayat_sk.jenis_sk</code>.
      */
     public Byte getJenisSk() {
-        return (Byte) get(9);
+        return (Byte) get(3);
     }
 
     /**
      * Setter for <code>riwayat_sk.kenaikan_berikutnya</code>.
      */
     public void setKenaikanBerikutnya(LocalDate value) {
-        set(10, value);
+        set(4, value);
     }
 
     /**
      * Getter for <code>riwayat_sk.kenaikan_berikutnya</code>.
      */
     public LocalDate getKenaikanBerikutnya() {
-        return (LocalDate) get(10);
+        return (LocalDate) get(4);
     }
 
     /**
      * Setter for <code>riwayat_sk.mkg_bulan</code>.
      */
     public void setMkgBulan(Integer value) {
-        set(11, value);
+        set(5, value);
     }
 
     /**
      * Getter for <code>riwayat_sk.mkg_bulan</code>.
      */
     public Integer getMkgBulan() {
-        return (Integer) get(11);
+        return (Integer) get(5);
     }
 
     /**
      * Setter for <code>riwayat_sk.mkg_tahun</code>.
      */
     public void setMkgTahun(Integer value) {
-        set(12, value);
+        set(6, value);
     }
 
     /**
      * Getter for <code>riwayat_sk.mkg_tahun</code>.
      */
     public Integer getMkgTahun() {
-        return (Integer) get(12);
+        return (Integer) get(6);
     }
 
     /**
      * Setter for <code>riwayat_sk.mkgb_bulan</code>.
      */
     public void setMkgbBulan(Integer value) {
-        set(13, value);
+        set(7, value);
     }
 
     /**
      * Getter for <code>riwayat_sk.mkgb_bulan</code>.
      */
     public Integer getMkgbBulan() {
-        return (Integer) get(13);
+        return (Integer) get(7);
     }
 
     /**
      * Setter for <code>riwayat_sk.mkgb_tahun</code>.
      */
     public void setMkgbTahun(Integer value) {
-        set(14, value);
+        set(8, value);
     }
 
     /**
      * Getter for <code>riwayat_sk.mkgb_tahun</code>.
      */
     public Integer getMkgbTahun() {
-        return (Integer) get(14);
+        return (Integer) get(8);
     }
 
     /**
      * Setter for <code>riwayat_sk.nama</code>.
      */
     public void setNama(String value) {
-        set(15, value);
+        set(9, value);
     }
 
     /**
      * Getter for <code>riwayat_sk.nama</code>.
      */
     public String getNama() {
-        return (String) get(15);
+        return (String) get(9);
     }
 
     /**
      * Setter for <code>riwayat_sk.nipam</code>.
      */
     public void setNipam(String value) {
-        set(16, value);
+        set(10, value);
     }
 
     /**
      * Getter for <code>riwayat_sk.nipam</code>.
      */
     public String getNipam() {
-        return (String) get(16);
+        return (String) get(10);
     }
 
     /**
      * Setter for <code>riwayat_sk.nomor_sk</code>.
      */
     public void setNomorSk(String value) {
-        set(17, value);
+        set(11, value);
     }
 
     /**
      * Getter for <code>riwayat_sk.nomor_sk</code>.
      */
     public String getNomorSk() {
-        return (String) get(17);
+        return (String) get(11);
     }
 
     /**
      * Setter for <code>riwayat_sk.notes</code>.
      */
     public void setNotes(String value) {
-        set(18, value);
+        set(12, value);
     }
 
     /**
      * Getter for <code>riwayat_sk.notes</code>.
      */
     public String getNotes() {
-        return (String) get(18);
+        return (String) get(12);
     }
 
     /**
      * Setter for <code>riwayat_sk.tanggal_sk</code>.
      */
     public void setTanggalSk(LocalDate value) {
-        set(19, value);
+        set(13, value);
     }
 
     /**
      * Getter for <code>riwayat_sk.tanggal_sk</code>.
      */
     public LocalDate getTanggalSk() {
-        return (LocalDate) get(19);
+        return (LocalDate) get(13);
     }
 
     /**
      * Setter for <code>riwayat_sk.tmt_berlaku</code>.
      */
     public void setTmtBerlaku(LocalDate value) {
-        set(20, value);
+        set(14, value);
     }
 
     /**
      * Getter for <code>riwayat_sk.tmt_berlaku</code>.
      */
     public LocalDate getTmtBerlaku() {
-        return (LocalDate) get(20);
+        return (LocalDate) get(14);
     }
 
     /**
      * Setter for <code>riwayat_sk.update_master</code>.
      */
     public void setUpdateMaster(Boolean value) {
-        set(21, value);
+        set(15, value);
     }
 
     /**
      * Getter for <code>riwayat_sk.update_master</code>.
      */
     public Boolean getUpdateMaster() {
-        return (Boolean) get(21);
+        return (Boolean) get(15);
     }
 
     /**
      * Setter for <code>riwayat_sk.golongan_id</code>.
      */
     public void setGolonganId(Long value) {
-        set(22, value);
+        set(16, value);
     }
 
     /**
      * Getter for <code>riwayat_sk.golongan_id</code>.
      */
     public Long getGolonganId() {
-        return (Long) get(22);
+        return (Long) get(16);
     }
 
     /**
      * Setter for <code>riwayat_sk.pegawai_id</code>.
      */
     public void setPegawaiId(Long value) {
-        set(23, value);
+        set(17, value);
     }
 
     /**
      * Getter for <code>riwayat_sk.pegawai_id</code>.
      */
     public Long getPegawaiId() {
-        return (Long) get(23);
+        return (Long) get(17);
+    }
+
+    /**
+     * Setter for <code>riwayat_sk.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime value) {
+        set(18, value);
+    }
+
+    /**
+     * Getter for <code>riwayat_sk.created_at</code>.
+     */
+    public LocalDateTime getCreatedAt() {
+        return (LocalDateTime) get(18);
+    }
+
+    /**
+     * Setter for <code>riwayat_sk.created_by</code>.
+     */
+    public void setCreatedBy(String value) {
+        set(19, value);
+    }
+
+    /**
+     * Getter for <code>riwayat_sk.created_by</code>.
+     */
+    public String getCreatedBy() {
+        return (String) get(19);
+    }
+
+    /**
+     * Setter for <code>riwayat_sk.is_deleted</code>.
+     */
+    public void setIsDeleted(Boolean value) {
+        set(20, value);
+    }
+
+    /**
+     * Getter for <code>riwayat_sk.is_deleted</code>.
+     */
+    public Boolean getIsDeleted() {
+        return (Boolean) get(20);
+    }
+
+    /**
+     * Setter for <code>riwayat_sk.updated_at</code>.
+     */
+    public void setUpdatedAt(LocalDateTime value) {
+        set(21, value);
+    }
+
+    /**
+     * Getter for <code>riwayat_sk.updated_at</code>.
+     */
+    public LocalDateTime getUpdatedAt() {
+        return (LocalDateTime) get(21);
+    }
+
+    /**
+     * Setter for <code>riwayat_sk.updated_by</code>.
+     */
+    public void setUpdatedBy(String value) {
+        set(22, value);
+    }
+
+    /**
+     * Getter for <code>riwayat_sk.updated_by</code>.
+     */
+    public String getUpdatedBy() {
+        return (String) get(22);
+    }
+
+    /**
+     * Setter for <code>riwayat_sk.version</code>.
+     */
+    public void setVersion(Integer value) {
+        set(23, value);
+    }
+
+    /**
+     * Getter for <code>riwayat_sk.version</code>.
+     */
+    public Integer getVersion() {
+        return (Integer) get(23);
     }
 
     // -------------------------------------------------------------------------
@@ -380,17 +380,11 @@ public class RiwayatSkRecord extends UpdatableRecordImpl<RiwayatSkRecord> {
     /**
      * Create a detached, initialised RiwayatSkRecord
      */
-    public RiwayatSkRecord(Long id_, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version, Double gajiPokok, Byte jenisSk, LocalDate kenaikanBerikutnya, Integer mkgBulan, Integer mkgTahun, Integer mkgbBulan, Integer mkgbTahun, String nama, String nipam, String nomorSk, String notes, LocalDate tanggalSk, LocalDate tmtBerlaku, Boolean updateMaster, Long golonganId, Long pegawaiId) {
+    public RiwayatSkRecord(Long id_, Byte changedStatus, Double gajiPokok, Byte jenisSk, LocalDate kenaikanBerikutnya, Integer mkgBulan, Integer mkgTahun, Integer mkgbBulan, Integer mkgbTahun, String nama, String nipam, String nomorSk, String notes, LocalDate tanggalSk, LocalDate tmtBerlaku, Boolean updateMaster, Long golonganId, Long pegawaiId, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version) {
         super(RiwayatSk.RIWAYAT_SK);
 
         setId(id_);
         setChangedStatus(changedStatus);
-        setCreatedAt(createdAt);
-        setCreatedBy(createdBy);
-        setIsDeleted(isDeleted);
-        setUpdatedAt(updatedAt);
-        setUpdatedBy(updatedBy);
-        setVersion(version);
         setGajiPokok(gajiPokok);
         setJenisSk(jenisSk);
         setKenaikanBerikutnya(kenaikanBerikutnya);
@@ -407,6 +401,12 @@ public class RiwayatSkRecord extends UpdatableRecordImpl<RiwayatSkRecord> {
         setUpdateMaster(updateMaster);
         setGolonganId(golonganId);
         setPegawaiId(pegawaiId);
+        setCreatedAt(createdAt);
+        setCreatedBy(createdBy);
+        setIsDeleted(isDeleted);
+        setUpdatedAt(updatedAt);
+        setUpdatedBy(updatedBy);
+        setVersion(version);
         resetChangedOnNotNull();
     }
 }

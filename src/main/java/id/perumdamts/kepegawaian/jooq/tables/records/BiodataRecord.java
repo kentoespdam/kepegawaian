@@ -65,254 +65,254 @@ public class BiodataRecord extends UpdatableRecordImpl<BiodataRecord> {
     }
 
     /**
-     * Setter for <code>biodata.created_at</code>.
-     */
-    public void setCreatedAt(LocalDateTime value) {
-        set(3, value);
-    }
-
-    /**
-     * Getter for <code>biodata.created_at</code>.
-     */
-    public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(3);
-    }
-
-    /**
-     * Setter for <code>biodata.created_by</code>.
-     */
-    public void setCreatedBy(String value) {
-        set(4, value);
-    }
-
-    /**
-     * Getter for <code>biodata.created_by</code>.
-     */
-    public String getCreatedBy() {
-        return (String) get(4);
-    }
-
-    /**
      * Setter for <code>biodata.foto_profil</code>.
      */
     public void setFotoProfil(String value) {
-        set(5, value);
+        set(3, value);
     }
 
     /**
      * Getter for <code>biodata.foto_profil</code>.
      */
     public String getFotoProfil() {
-        return (String) get(5);
+        return (String) get(3);
     }
 
     /**
      * Setter for <code>biodata.golongan_darah</code>.
      */
     public void setGolonganDarah(BiodataGolonganDarah value) {
-        set(6, value);
+        set(4, value);
     }
 
     /**
      * Getter for <code>biodata.golongan_darah</code>.
      */
     public BiodataGolonganDarah getGolonganDarah() {
-        return (BiodataGolonganDarah) get(6);
+        return (BiodataGolonganDarah) get(4);
     }
 
     /**
      * Setter for <code>biodata.ibu_kandung</code>.
      */
     public void setIbuKandung(String value) {
-        set(7, value);
+        set(5, value);
     }
 
     /**
      * Getter for <code>biodata.ibu_kandung</code>.
      */
     public String getIbuKandung() {
-        return (String) get(7);
-    }
-
-    /**
-     * Setter for <code>biodata.is_deleted</code>.
-     */
-    public void setIsDeleted(Boolean value) {
-        set(8, value);
-    }
-
-    /**
-     * Getter for <code>biodata.is_deleted</code>.
-     */
-    public Boolean getIsDeleted() {
-        return (Boolean) get(8);
+        return (String) get(5);
     }
 
     /**
      * Setter for <code>biodata.is_pegawai</code>.
      */
     public void setIsPegawai(Boolean value) {
-        set(9, value);
+        set(6, value);
     }
 
     /**
      * Getter for <code>biodata.is_pegawai</code>.
      */
     public Boolean getIsPegawai() {
-        return (Boolean) get(9);
+        return (Boolean) get(6);
     }
 
     /**
      * Setter for <code>biodata.jenis_kelamin</code>.
      */
     public void setJenisKelamin(Byte value) {
-        set(10, value);
+        set(7, value);
     }
 
     /**
      * Getter for <code>biodata.jenis_kelamin</code>.
      */
     public Byte getJenisKelamin() {
-        return (Byte) get(10);
+        return (Byte) get(7);
     }
 
     /**
      * Setter for <code>biodata.nama</code>.
      */
     public void setNama(String value) {
-        set(11, value);
+        set(8, value);
     }
 
     /**
      * Getter for <code>biodata.nama</code>.
      */
     public String getNama() {
-        return (String) get(11);
+        return (String) get(8);
     }
 
     /**
      * Setter for <code>biodata.notes</code>.
      */
     public void setNotes(String value) {
-        set(12, value);
+        set(9, value);
     }
 
     /**
      * Getter for <code>biodata.notes</code>.
      */
     public String getNotes() {
-        return (String) get(12);
+        return (String) get(9);
     }
 
     /**
      * Setter for <code>biodata.status_kawin</code>.
      */
     public void setStatusKawin(Byte value) {
-        set(13, value);
+        set(10, value);
     }
 
     /**
      * Getter for <code>biodata.status_kawin</code>.
      */
     public Byte getStatusKawin() {
-        return (Byte) get(13);
+        return (Byte) get(10);
     }
 
     /**
      * Setter for <code>biodata.tanggal_lahir</code>.
      */
     public void setTanggalLahir(LocalDate value) {
-        set(14, value);
+        set(11, value);
     }
 
     /**
      * Getter for <code>biodata.tanggal_lahir</code>.
      */
     public LocalDate getTanggalLahir() {
-        return (LocalDate) get(14);
+        return (LocalDate) get(11);
     }
 
     /**
      * Setter for <code>biodata.telp</code>.
      */
     public void setTelp(String value) {
-        set(15, value);
+        set(12, value);
     }
 
     /**
      * Getter for <code>biodata.telp</code>.
      */
     public String getTelp() {
-        return (String) get(15);
+        return (String) get(12);
     }
 
     /**
      * Setter for <code>biodata.tempat_lahir</code>.
      */
     public void setTempatLahir(String value) {
-        set(16, value);
+        set(13, value);
     }
 
     /**
      * Getter for <code>biodata.tempat_lahir</code>.
      */
     public String getTempatLahir() {
-        return (String) get(16);
-    }
-
-    /**
-     * Setter for <code>biodata.updated_at</code>.
-     */
-    public void setUpdatedAt(LocalDateTime value) {
-        set(17, value);
-    }
-
-    /**
-     * Getter for <code>biodata.updated_at</code>.
-     */
-    public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(17);
-    }
-
-    /**
-     * Setter for <code>biodata.updated_by</code>.
-     */
-    public void setUpdatedBy(String value) {
-        set(18, value);
-    }
-
-    /**
-     * Getter for <code>biodata.updated_by</code>.
-     */
-    public String getUpdatedBy() {
-        return (String) get(18);
-    }
-
-    /**
-     * Setter for <code>biodata.version</code>.
-     */
-    public void setVersion(Long value) {
-        set(19, value);
-    }
-
-    /**
-     * Getter for <code>biodata.version</code>.
-     */
-    public Long getVersion() {
-        return (Long) get(19);
+        return (String) get(13);
     }
 
     /**
      * Setter for <code>biodata.pendidikan_id</code>.
      */
     public void setPendidikanId(Long value) {
-        set(20, value);
+        set(14, value);
     }
 
     /**
      * Getter for <code>biodata.pendidikan_id</code>.
      */
     public Long getPendidikanId() {
+        return (Long) get(14);
+    }
+
+    /**
+     * Setter for <code>biodata.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime value) {
+        set(15, value);
+    }
+
+    /**
+     * Getter for <code>biodata.created_at</code>.
+     */
+    public LocalDateTime getCreatedAt() {
+        return (LocalDateTime) get(15);
+    }
+
+    /**
+     * Setter for <code>biodata.created_by</code>.
+     */
+    public void setCreatedBy(String value) {
+        set(16, value);
+    }
+
+    /**
+     * Getter for <code>biodata.created_by</code>.
+     */
+    public String getCreatedBy() {
+        return (String) get(16);
+    }
+
+    /**
+     * Setter for <code>biodata.is_deleted</code>.
+     */
+    public void setIsDeleted(Boolean value) {
+        set(17, value);
+    }
+
+    /**
+     * Getter for <code>biodata.is_deleted</code>.
+     */
+    public Boolean getIsDeleted() {
+        return (Boolean) get(17);
+    }
+
+    /**
+     * Setter for <code>biodata.updated_at</code>.
+     */
+    public void setUpdatedAt(LocalDateTime value) {
+        set(18, value);
+    }
+
+    /**
+     * Getter for <code>biodata.updated_at</code>.
+     */
+    public LocalDateTime getUpdatedAt() {
+        return (LocalDateTime) get(18);
+    }
+
+    /**
+     * Setter for <code>biodata.updated_by</code>.
+     */
+    public void setUpdatedBy(String value) {
+        set(19, value);
+    }
+
+    /**
+     * Getter for <code>biodata.updated_by</code>.
+     */
+    public String getUpdatedBy() {
+        return (String) get(19);
+    }
+
+    /**
+     * Setter for <code>biodata.version</code>.
+     */
+    public void setVersion(Long value) {
+        set(20, value);
+    }
+
+    /**
+     * Getter for <code>biodata.version</code>.
+     */
+    public Long getVersion() {
         return (Long) get(20);
     }
 
@@ -339,18 +339,15 @@ public class BiodataRecord extends UpdatableRecordImpl<BiodataRecord> {
     /**
      * Create a detached, initialised BiodataRecord
      */
-    public BiodataRecord(String nik, Byte agama, String alamat, LocalDateTime createdAt, String createdBy, String fotoProfil, BiodataGolonganDarah golonganDarah, String ibuKandung, Boolean isDeleted, Boolean isPegawai, Byte jenisKelamin, String nama, String notes, Byte statusKawin, LocalDate tanggalLahir, String telp, String tempatLahir, LocalDateTime updatedAt, String updatedBy, Long version, Long pendidikanId) {
+    public BiodataRecord(String nik, Byte agama, String alamat, String fotoProfil, BiodataGolonganDarah golonganDarah, String ibuKandung, Boolean isPegawai, Byte jenisKelamin, String nama, String notes, Byte statusKawin, LocalDate tanggalLahir, String telp, String tempatLahir, Long pendidikanId, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Long version) {
         super(Biodata.BIODATA);
 
         setNik(nik);
         setAgama(agama);
         setAlamat(alamat);
-        setCreatedAt(createdAt);
-        setCreatedBy(createdBy);
         setFotoProfil(fotoProfil);
         setGolonganDarah(golonganDarah);
         setIbuKandung(ibuKandung);
-        setIsDeleted(isDeleted);
         setIsPegawai(isPegawai);
         setJenisKelamin(jenisKelamin);
         setNama(nama);
@@ -359,10 +356,13 @@ public class BiodataRecord extends UpdatableRecordImpl<BiodataRecord> {
         setTanggalLahir(tanggalLahir);
         setTelp(telp);
         setTempatLahir(tempatLahir);
+        setPendidikanId(pendidikanId);
+        setCreatedAt(createdAt);
+        setCreatedBy(createdBy);
+        setIsDeleted(isDeleted);
         setUpdatedAt(updatedAt);
         setUpdatedBy(updatedBy);
         setVersion(version);
-        setPendidikanId(pendidikanId);
         resetChangedOnNotNull();
     }
 }

@@ -85,16 +85,6 @@ public class Biodata extends TableImpl<BiodataRecord> {
     public final TableField<BiodataRecord, String> ALAMAT = createField(DSL.name("alamat"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>biodata.created_at</code>.
-     */
-    public final TableField<BiodataRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>biodata.created_by</code>.
-     */
-    public final TableField<BiodataRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
      * The column <code>biodata.foto_profil</code>.
      */
     public final TableField<BiodataRecord, String> FOTO_PROFIL = createField(DSL.name("foto_profil"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
@@ -108,11 +98,6 @@ public class Biodata extends TableImpl<BiodataRecord> {
      * The column <code>biodata.ibu_kandung</code>.
      */
     public final TableField<BiodataRecord, String> IBU_KANDUNG = createField(DSL.name("ibu_kandung"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>biodata.is_deleted</code>.
-     */
-    public final TableField<BiodataRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>biodata.is_pegawai</code>.
@@ -155,6 +140,26 @@ public class Biodata extends TableImpl<BiodataRecord> {
     public final TableField<BiodataRecord, String> TEMPAT_LAHIR = createField(DSL.name("tempat_lahir"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
+     * The column <code>biodata.pendidikan_id</code>.
+     */
+    public final TableField<BiodataRecord, Long> PENDIDIKAN_ID = createField(DSL.name("pendidikan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
+
+    /**
+     * The column <code>biodata.created_at</code>.
+     */
+    public final TableField<BiodataRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>biodata.created_by</code>.
+     */
+    public final TableField<BiodataRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>biodata.is_deleted</code>.
+     */
+    public final TableField<BiodataRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
      * The column <code>biodata.updated_at</code>.
      */
     public final TableField<BiodataRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
@@ -168,11 +173,6 @@ public class Biodata extends TableImpl<BiodataRecord> {
      * The column <code>biodata.version</code>.
      */
     public final TableField<BiodataRecord, Long> VERSION = createField(DSL.name("version"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BIGINT)), this, "");
-
-    /**
-     * The column <code>biodata.pendidikan_id</code>.
-     */
-    public final TableField<BiodataRecord, Long> PENDIDIKAN_ID = createField(DSL.name("pendidikan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     private Biodata(Name alias, Table<BiodataRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

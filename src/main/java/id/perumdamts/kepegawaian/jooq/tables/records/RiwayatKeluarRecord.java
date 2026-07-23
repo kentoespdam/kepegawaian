@@ -50,283 +50,283 @@ public class RiwayatKeluarRecord extends UpdatableRecordImpl<RiwayatKeluarRecord
     }
 
     /**
-     * Setter for <code>riwayat_keluar.created_at</code>.
-     */
-    public void setCreatedAt(LocalDateTime value) {
-        set(2, value);
-    }
-
-    /**
-     * Getter for <code>riwayat_keluar.created_at</code>.
-     */
-    public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(2);
-    }
-
-    /**
-     * Setter for <code>riwayat_keluar.created_by</code>.
-     */
-    public void setCreatedBy(String value) {
-        set(3, value);
-    }
-
-    /**
-     * Getter for <code>riwayat_keluar.created_by</code>.
-     */
-    public String getCreatedBy() {
-        return (String) get(3);
-    }
-
-    /**
-     * Setter for <code>riwayat_keluar.is_deleted</code>.
-     */
-    public void setIsDeleted(Boolean value) {
-        set(4, value);
-    }
-
-    /**
-     * Getter for <code>riwayat_keluar.is_deleted</code>.
-     */
-    public Boolean getIsDeleted() {
-        return (Boolean) get(4);
-    }
-
-    /**
-     * Setter for <code>riwayat_keluar.updated_at</code>.
-     */
-    public void setUpdatedAt(LocalDateTime value) {
-        set(5, value);
-    }
-
-    /**
-     * Getter for <code>riwayat_keluar.updated_at</code>.
-     */
-    public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(5);
-    }
-
-    /**
-     * Setter for <code>riwayat_keluar.updated_by</code>.
-     */
-    public void setUpdatedBy(String value) {
-        set(6, value);
-    }
-
-    /**
-     * Getter for <code>riwayat_keluar.updated_by</code>.
-     */
-    public String getUpdatedBy() {
-        return (String) get(6);
-    }
-
-    /**
-     * Setter for <code>riwayat_keluar.version</code>.
-     */
-    public void setVersion(Integer value) {
-        set(7, value);
-    }
-
-    /**
-     * Getter for <code>riwayat_keluar.version</code>.
-     */
-    public Integer getVersion() {
-        return (Integer) get(7);
-    }
-
-    /**
      * Setter for <code>riwayat_keluar.disetujui_oleh_nama</code>.
      */
     public void setDisetujuiOlehNama(String value) {
-        set(8, value);
+        set(2, value);
     }
 
     /**
      * Getter for <code>riwayat_keluar.disetujui_oleh_nama</code>.
      */
     public String getDisetujuiOlehNama() {
-        return (String) get(8);
+        return (String) get(2);
     }
 
     /**
      * Setter for <code>riwayat_keluar.nama_jabatan</code>.
      */
     public void setNamaJabatan(String value) {
-        set(9, value);
+        set(3, value);
     }
 
     /**
      * Getter for <code>riwayat_keluar.nama_jabatan</code>.
      */
     public String getNamaJabatan() {
-        return (String) get(9);
+        return (String) get(3);
     }
 
     /**
      * Setter for <code>riwayat_keluar.nama_jabatan_penyetuju</code>.
      */
     public void setNamaJabatanPenyetuju(String value) {
-        set(10, value);
+        set(4, value);
     }
 
     /**
      * Getter for <code>riwayat_keluar.nama_jabatan_penyetuju</code>.
      */
     public String getNamaJabatanPenyetuju() {
-        return (String) get(10);
+        return (String) get(4);
     }
 
     /**
      * Setter for <code>riwayat_keluar.nama_organisasi</code>.
      */
     public void setNamaOrganisasi(String value) {
-        set(11, value);
+        set(5, value);
     }
 
     /**
      * Getter for <code>riwayat_keluar.nama_organisasi</code>.
      */
     public String getNamaOrganisasi() {
-        return (String) get(11);
+        return (String) get(5);
     }
 
     /**
      * Setter for <code>riwayat_keluar.nama_organisasi_penyetuju</code>.
      */
     public void setNamaOrganisasiPenyetuju(String value) {
-        set(12, value);
+        set(6, value);
     }
 
     /**
      * Getter for <code>riwayat_keluar.nama_organisasi_penyetuju</code>.
      */
     public String getNamaOrganisasiPenyetuju() {
-        return (String) get(12);
+        return (String) get(6);
     }
 
     /**
      * Setter for <code>riwayat_keluar.notes</code>.
      */
     public void setNotes(String value) {
-        set(13, value);
+        set(7, value);
     }
 
     /**
      * Getter for <code>riwayat_keluar.notes</code>.
      */
     public String getNotes() {
-        return (String) get(13);
+        return (String) get(7);
     }
 
     /**
      * Setter for <code>riwayat_keluar.tanggal_permohonan</code>.
      */
     public void setTanggalPermohonan(LocalDate value) {
-        set(14, value);
+        set(8, value);
     }
 
     /**
      * Getter for <code>riwayat_keluar.tanggal_permohonan</code>.
      */
     public LocalDate getTanggalPermohonan() {
-        return (LocalDate) get(14);
+        return (LocalDate) get(8);
     }
 
     /**
      * Setter for <code>riwayat_keluar.tanggal_persetujuan</code>.
      */
     public void setTanggalPersetujuan(LocalDate value) {
-        set(15, value);
+        set(9, value);
     }
 
     /**
      * Getter for <code>riwayat_keluar.tanggal_persetujuan</code>.
      */
     public LocalDate getTanggalPersetujuan() {
-        return (LocalDate) get(15);
+        return (LocalDate) get(9);
     }
 
     /**
      * Setter for <code>riwayat_keluar.disetujui_oleh</code>.
      */
     public void setDisetujuiOleh(Long value) {
-        set(16, value);
+        set(10, value);
     }
 
     /**
      * Getter for <code>riwayat_keluar.disetujui_oleh</code>.
      */
     public Long getDisetujuiOleh() {
-        return (Long) get(16);
+        return (Long) get(10);
     }
 
     /**
      * Setter for <code>riwayat_keluar.jabatan_id</code>.
      */
     public void setJabatanId(Long value) {
-        set(17, value);
+        set(11, value);
     }
 
     /**
      * Getter for <code>riwayat_keluar.jabatan_id</code>.
      */
     public Long getJabatanId() {
-        return (Long) get(17);
+        return (Long) get(11);
     }
 
     /**
      * Setter for <code>riwayat_keluar.penyetuju_jabatan_id</code>.
      */
     public void setPenyetujuJabatanId(Long value) {
-        set(18, value);
+        set(12, value);
     }
 
     /**
      * Getter for <code>riwayat_keluar.penyetuju_jabatan_id</code>.
      */
     public Long getPenyetujuJabatanId() {
-        return (Long) get(18);
+        return (Long) get(12);
     }
 
     /**
      * Setter for <code>riwayat_keluar.organisasi_id</code>.
      */
     public void setOrganisasiId(Long value) {
-        set(19, value);
+        set(13, value);
     }
 
     /**
      * Getter for <code>riwayat_keluar.organisasi_id</code>.
      */
     public Long getOrganisasiId() {
-        return (Long) get(19);
+        return (Long) get(13);
     }
 
     /**
      * Setter for <code>riwayat_keluar.penyetuju_organisasi_id</code>.
      */
     public void setPenyetujuOrganisasiId(Long value) {
-        set(20, value);
+        set(14, value);
     }
 
     /**
      * Getter for <code>riwayat_keluar.penyetuju_organisasi_id</code>.
      */
     public Long getPenyetujuOrganisasiId() {
-        return (Long) get(20);
+        return (Long) get(14);
     }
 
     /**
      * Setter for <code>riwayat_keluar.pegawai_id</code>.
      */
     public void setPegawaiId(Long value) {
-        set(21, value);
+        set(15, value);
     }
 
     /**
      * Getter for <code>riwayat_keluar.pegawai_id</code>.
      */
     public Long getPegawaiId() {
-        return (Long) get(21);
+        return (Long) get(15);
+    }
+
+    /**
+     * Setter for <code>riwayat_keluar.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime value) {
+        set(16, value);
+    }
+
+    /**
+     * Getter for <code>riwayat_keluar.created_at</code>.
+     */
+    public LocalDateTime getCreatedAt() {
+        return (LocalDateTime) get(16);
+    }
+
+    /**
+     * Setter for <code>riwayat_keluar.created_by</code>.
+     */
+    public void setCreatedBy(String value) {
+        set(17, value);
+    }
+
+    /**
+     * Getter for <code>riwayat_keluar.created_by</code>.
+     */
+    public String getCreatedBy() {
+        return (String) get(17);
+    }
+
+    /**
+     * Setter for <code>riwayat_keluar.is_deleted</code>.
+     */
+    public void setIsDeleted(Boolean value) {
+        set(18, value);
+    }
+
+    /**
+     * Getter for <code>riwayat_keluar.is_deleted</code>.
+     */
+    public Boolean getIsDeleted() {
+        return (Boolean) get(18);
+    }
+
+    /**
+     * Setter for <code>riwayat_keluar.updated_at</code>.
+     */
+    public void setUpdatedAt(LocalDateTime value) {
+        set(19, value);
+    }
+
+    /**
+     * Getter for <code>riwayat_keluar.updated_at</code>.
+     */
+    public LocalDateTime getUpdatedAt() {
+        return (LocalDateTime) get(19);
+    }
+
+    /**
+     * Setter for <code>riwayat_keluar.updated_by</code>.
+     */
+    public void setUpdatedBy(String value) {
+        set(20, value);
+    }
+
+    /**
+     * Getter for <code>riwayat_keluar.updated_by</code>.
+     */
+    public String getUpdatedBy() {
+        return (String) get(20);
+    }
+
+    /**
+     * Setter for <code>riwayat_keluar.version</code>.
+     */
+    public void setVersion(Integer value) {
+        set(21, value);
+    }
+
+    /**
+     * Getter for <code>riwayat_keluar.version</code>.
+     */
+    public Integer getVersion() {
+        return (Integer) get(21);
     }
 
     // -------------------------------------------------------------------------
@@ -352,17 +352,11 @@ public class RiwayatKeluarRecord extends UpdatableRecordImpl<RiwayatKeluarRecord
     /**
      * Create a detached, initialised RiwayatKeluarRecord
      */
-    public RiwayatKeluarRecord(Long id_, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version, String disetujuiOlehNama, String namaJabatan, String namaJabatanPenyetuju, String namaOrganisasi, String namaOrganisasiPenyetuju, String notes, LocalDate tanggalPermohonan, LocalDate tanggalPersetujuan, Long disetujuiOleh, Long jabatanId, Long penyetujuJabatanId, Long organisasiId, Long penyetujuOrganisasiId, Long pegawaiId) {
+    public RiwayatKeluarRecord(Long id_, Byte changedStatus, String disetujuiOlehNama, String namaJabatan, String namaJabatanPenyetuju, String namaOrganisasi, String namaOrganisasiPenyetuju, String notes, LocalDate tanggalPermohonan, LocalDate tanggalPersetujuan, Long disetujuiOleh, Long jabatanId, Long penyetujuJabatanId, Long organisasiId, Long penyetujuOrganisasiId, Long pegawaiId, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version) {
         super(RiwayatKeluar.RIWAYAT_KELUAR);
 
         setId(id_);
         setChangedStatus(changedStatus);
-        setCreatedAt(createdAt);
-        setCreatedBy(createdBy);
-        setIsDeleted(isDeleted);
-        setUpdatedAt(updatedAt);
-        setUpdatedBy(updatedBy);
-        setVersion(version);
         setDisetujuiOlehNama(disetujuiOlehNama);
         setNamaJabatan(namaJabatan);
         setNamaJabatanPenyetuju(namaJabatanPenyetuju);
@@ -377,6 +371,12 @@ public class RiwayatKeluarRecord extends UpdatableRecordImpl<RiwayatKeluarRecord
         setOrganisasiId(organisasiId);
         setPenyetujuOrganisasiId(penyetujuOrganisasiId);
         setPegawaiId(pegawaiId);
+        setCreatedAt(createdAt);
+        setCreatedBy(createdBy);
+        setIsDeleted(isDeleted);
+        setUpdatedAt(updatedAt);
+        setUpdatedBy(updatedBy);
+        setVersion(version);
         resetChangedOnNotNull();
     }
 }

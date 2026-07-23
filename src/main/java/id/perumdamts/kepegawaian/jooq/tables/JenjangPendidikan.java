@@ -68,9 +68,24 @@ public class JenjangPendidikan extends TableImpl<JenjangPendidikanRecord> {
     public final TableField<JenjangPendidikanRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>jenjang_pendidikan.changed_status</code>.
+     * The column <code>jenjang_pendidikan.is_statistik</code>.
      */
-    public final TableField<JenjangPendidikanRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
+    public final TableField<JenjangPendidikanRecord, Boolean> IS_STATISTIK = createField(DSL.name("is_statistik"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
+
+    /**
+     * The column <code>jenjang_pendidikan.nama</code>.
+     */
+    public final TableField<JenjangPendidikanRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>jenjang_pendidikan.seq</code>.
+     */
+    public final TableField<JenjangPendidikanRecord, Integer> SEQ = createField(DSL.name("seq"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>jenjang_pendidikan.short_name</code>.
+     */
+    public final TableField<JenjangPendidikanRecord, String> SHORT_NAME = createField(DSL.name("short_name"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>jenjang_pendidikan.created_at</code>.
@@ -96,31 +111,6 @@ public class JenjangPendidikan extends TableImpl<JenjangPendidikanRecord> {
      * The column <code>jenjang_pendidikan.updated_by</code>.
      */
     public final TableField<JenjangPendidikanRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>jenjang_pendidikan.version</code>.
-     */
-    public final TableField<JenjangPendidikanRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>jenjang_pendidikan.is_statistik</code>.
-     */
-    public final TableField<JenjangPendidikanRecord, Boolean> IS_STATISTIK = createField(DSL.name("is_statistik"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
-
-    /**
-     * The column <code>jenjang_pendidikan.nama</code>.
-     */
-    public final TableField<JenjangPendidikanRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>jenjang_pendidikan.seq</code>.
-     */
-    public final TableField<JenjangPendidikanRecord, Integer> SEQ = createField(DSL.name("seq"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>jenjang_pendidikan.short_name</code>.
-     */
-    public final TableField<JenjangPendidikanRecord, String> SHORT_NAME = createField(DSL.name("short_name"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     private JenjangPendidikan(Name alias, Table<JenjangPendidikanRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

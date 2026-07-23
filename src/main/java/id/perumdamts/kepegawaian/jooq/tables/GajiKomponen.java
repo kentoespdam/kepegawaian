@@ -72,36 +72,6 @@ public class GajiKomponen extends TableImpl<GajiKomponenRecord> {
     public final TableField<GajiKomponenRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>gaji_komponen.created_at</code>.
-     */
-    public final TableField<GajiKomponenRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>gaji_komponen.created_by</code>.
-     */
-    public final TableField<GajiKomponenRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>gaji_komponen.is_deleted</code>.
-     */
-    public final TableField<GajiKomponenRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
-
-    /**
-     * The column <code>gaji_komponen.updated_at</code>.
-     */
-    public final TableField<GajiKomponenRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>gaji_komponen.updated_by</code>.
-     */
-    public final TableField<GajiKomponenRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>gaji_komponen.version</code>.
-     */
-    public final TableField<GajiKomponenRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
      * The column <code>gaji_komponen.formula</code>.
      */
     public final TableField<GajiKomponenRecord, String> FORMULA = createField(DSL.name("formula"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
@@ -140,6 +110,36 @@ public class GajiKomponen extends TableImpl<GajiKomponenRecord> {
      * The column <code>gaji_komponen.profil_gaji_id</code>.
      */
     public final TableField<GajiKomponenRecord, Long> PROFIL_GAJI_ID = createField(DSL.name("profil_gaji_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
+
+    /**
+     * The column <code>gaji_komponen.created_at</code>.
+     */
+    public final TableField<GajiKomponenRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>gaji_komponen.created_by</code>.
+     */
+    public final TableField<GajiKomponenRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>gaji_komponen.is_deleted</code>.
+     */
+    public final TableField<GajiKomponenRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
+     * The column <code>gaji_komponen.updated_at</code>.
+     */
+    public final TableField<GajiKomponenRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>gaji_komponen.updated_by</code>.
+     */
+    public final TableField<GajiKomponenRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>gaji_komponen.version</code>.
+     */
+    public final TableField<GajiKomponenRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     private GajiKomponen(Name alias, Table<GajiKomponenRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

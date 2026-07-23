@@ -35,171 +35,143 @@ public class JabatanRecord extends UpdatableRecordImpl<JabatanRecord> {
     }
 
     /**
-     * Setter for <code>jabatan.changed_status</code>.
-     */
-    public void setChangedStatus(Byte value) {
-        set(1, value);
-    }
-
-    /**
-     * Getter for <code>jabatan.changed_status</code>.
-     */
-    public Byte getChangedStatus() {
-        return (Byte) get(1);
-    }
-
-    /**
-     * Setter for <code>jabatan.created_at</code>.
-     */
-    public void setCreatedAt(LocalDateTime value) {
-        set(2, value);
-    }
-
-    /**
-     * Getter for <code>jabatan.created_at</code>.
-     */
-    public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(2);
-    }
-
-    /**
-     * Setter for <code>jabatan.created_by</code>.
-     */
-    public void setCreatedBy(String value) {
-        set(3, value);
-    }
-
-    /**
-     * Getter for <code>jabatan.created_by</code>.
-     */
-    public String getCreatedBy() {
-        return (String) get(3);
-    }
-
-    /**
-     * Setter for <code>jabatan.is_deleted</code>.
-     */
-    public void setIsDeleted(Boolean value) {
-        set(4, value);
-    }
-
-    /**
-     * Getter for <code>jabatan.is_deleted</code>.
-     */
-    public Boolean getIsDeleted() {
-        return (Boolean) get(4);
-    }
-
-    /**
-     * Setter for <code>jabatan.updated_at</code>.
-     */
-    public void setUpdatedAt(LocalDateTime value) {
-        set(5, value);
-    }
-
-    /**
-     * Getter for <code>jabatan.updated_at</code>.
-     */
-    public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(5);
-    }
-
-    /**
-     * Setter for <code>jabatan.updated_by</code>.
-     */
-    public void setUpdatedBy(String value) {
-        set(6, value);
-    }
-
-    /**
-     * Getter for <code>jabatan.updated_by</code>.
-     */
-    public String getUpdatedBy() {
-        return (String) get(6);
-    }
-
-    /**
-     * Setter for <code>jabatan.version</code>.
-     */
-    public void setVersion(Integer value) {
-        set(7, value);
-    }
-
-    /**
-     * Getter for <code>jabatan.version</code>.
-     */
-    public Integer getVersion() {
-        return (Integer) get(7);
-    }
-
-    /**
      * Setter for <code>jabatan.kode</code>.
      */
     public void setKode(String value) {
-        set(8, value);
+        set(1, value);
     }
 
     /**
      * Getter for <code>jabatan.kode</code>.
      */
     public String getKode() {
-        return (String) get(8);
+        return (String) get(1);
     }
 
     /**
      * Setter for <code>jabatan.nama</code>.
      */
     public void setNama(String value) {
-        set(9, value);
+        set(2, value);
     }
 
     /**
      * Getter for <code>jabatan.nama</code>.
      */
     public String getNama() {
-        return (String) get(9);
+        return (String) get(2);
     }
 
     /**
      * Setter for <code>jabatan.level_id</code>.
      */
     public void setLevelId(Long value) {
-        set(10, value);
+        set(3, value);
     }
 
     /**
      * Getter for <code>jabatan.level_id</code>.
      */
     public Long getLevelId() {
-        return (Long) get(10);
+        return (Long) get(3);
     }
 
     /**
      * Setter for <code>jabatan.organisasi_id</code>.
      */
     public void setOrganisasiId(Long value) {
-        set(11, value);
+        set(4, value);
     }
 
     /**
      * Getter for <code>jabatan.organisasi_id</code>.
      */
     public Long getOrganisasiId() {
-        return (Long) get(11);
+        return (Long) get(4);
     }
 
     /**
      * Setter for <code>jabatan.parent_id</code>.
      */
     public void setParentId(Long value) {
-        set(12, value);
+        set(5, value);
     }
 
     /**
      * Getter for <code>jabatan.parent_id</code>.
      */
     public Long getParentId() {
-        return (Long) get(12);
+        return (Long) get(5);
+    }
+
+    /**
+     * Setter for <code>jabatan.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime value) {
+        set(6, value);
+    }
+
+    /**
+     * Getter for <code>jabatan.created_at</code>.
+     */
+    public LocalDateTime getCreatedAt() {
+        return (LocalDateTime) get(6);
+    }
+
+    /**
+     * Setter for <code>jabatan.created_by</code>.
+     */
+    public void setCreatedBy(String value) {
+        set(7, value);
+    }
+
+    /**
+     * Getter for <code>jabatan.created_by</code>.
+     */
+    public String getCreatedBy() {
+        return (String) get(7);
+    }
+
+    /**
+     * Setter for <code>jabatan.is_deleted</code>.
+     */
+    public void setIsDeleted(Boolean value) {
+        set(8, value);
+    }
+
+    /**
+     * Getter for <code>jabatan.is_deleted</code>.
+     */
+    public Boolean getIsDeleted() {
+        return (Boolean) get(8);
+    }
+
+    /**
+     * Setter for <code>jabatan.updated_at</code>.
+     */
+    public void setUpdatedAt(LocalDateTime value) {
+        set(9, value);
+    }
+
+    /**
+     * Getter for <code>jabatan.updated_at</code>.
+     */
+    public LocalDateTime getUpdatedAt() {
+        return (LocalDateTime) get(9);
+    }
+
+    /**
+     * Setter for <code>jabatan.updated_by</code>.
+     */
+    public void setUpdatedBy(String value) {
+        set(10, value);
+    }
+
+    /**
+     * Getter for <code>jabatan.updated_by</code>.
+     */
+    public String getUpdatedBy() {
+        return (String) get(10);
     }
 
     // -------------------------------------------------------------------------
@@ -225,22 +197,20 @@ public class JabatanRecord extends UpdatableRecordImpl<JabatanRecord> {
     /**
      * Create a detached, initialised JabatanRecord
      */
-    public JabatanRecord(Long id_, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version, String kode, String nama, Long levelId, Long organisasiId, Long parentId) {
+    public JabatanRecord(Long id_, String kode, String nama, Long levelId, Long organisasiId, Long parentId, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy) {
         super(Jabatan.JABATAN);
 
         setId(id_);
-        setChangedStatus(changedStatus);
-        setCreatedAt(createdAt);
-        setCreatedBy(createdBy);
-        setIsDeleted(isDeleted);
-        setUpdatedAt(updatedAt);
-        setUpdatedBy(updatedBy);
-        setVersion(version);
         setKode(kode);
         setNama(nama);
         setLevelId(levelId);
         setOrganisasiId(organisasiId);
         setParentId(parentId);
+        setCreatedAt(createdAt);
+        setCreatedBy(createdBy);
+        setIsDeleted(isDeleted);
+        setUpdatedAt(updatedAt);
+        setUpdatedBy(updatedBy);
         resetChangedOnNotNull();
     }
 }

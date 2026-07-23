@@ -49,115 +49,115 @@ public class GajiParameterSettingRecord extends UpdatableRecordImpl<GajiParamete
     }
 
     /**
-     * Setter for <code>gaji_parameter_setting.created_at</code>.
-     */
-    public void setCreatedAt(LocalDateTime value) {
-        set(2, value);
-    }
-
-    /**
-     * Getter for <code>gaji_parameter_setting.created_at</code>.
-     */
-    public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(2);
-    }
-
-    /**
-     * Setter for <code>gaji_parameter_setting.created_by</code>.
-     */
-    public void setCreatedBy(String value) {
-        set(3, value);
-    }
-
-    /**
-     * Getter for <code>gaji_parameter_setting.created_by</code>.
-     */
-    public String getCreatedBy() {
-        return (String) get(3);
-    }
-
-    /**
-     * Setter for <code>gaji_parameter_setting.is_deleted</code>.
-     */
-    public void setIsDeleted(Boolean value) {
-        set(4, value);
-    }
-
-    /**
-     * Getter for <code>gaji_parameter_setting.is_deleted</code>.
-     */
-    public Boolean getIsDeleted() {
-        return (Boolean) get(4);
-    }
-
-    /**
-     * Setter for <code>gaji_parameter_setting.updated_at</code>.
-     */
-    public void setUpdatedAt(LocalDateTime value) {
-        set(5, value);
-    }
-
-    /**
-     * Getter for <code>gaji_parameter_setting.updated_at</code>.
-     */
-    public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(5);
-    }
-
-    /**
-     * Setter for <code>gaji_parameter_setting.updated_by</code>.
-     */
-    public void setUpdatedBy(String value) {
-        set(6, value);
-    }
-
-    /**
-     * Getter for <code>gaji_parameter_setting.updated_by</code>.
-     */
-    public String getUpdatedBy() {
-        return (String) get(6);
-    }
-
-    /**
-     * Setter for <code>gaji_parameter_setting.version</code>.
-     */
-    public void setVersion(Integer value) {
-        set(7, value);
-    }
-
-    /**
-     * Getter for <code>gaji_parameter_setting.version</code>.
-     */
-    public Integer getVersion() {
-        return (Integer) get(7);
-    }
-
-    /**
      * Setter for <code>gaji_parameter_setting.kode</code>.
      */
     public void setKode(String value) {
-        set(8, value);
+        set(2, value);
     }
 
     /**
      * Getter for <code>gaji_parameter_setting.kode</code>.
      */
     public String getKode() {
-        return (String) get(8);
+        return (String) get(2);
     }
 
     /**
      * Setter for <code>gaji_parameter_setting.nominal</code>.
      */
     public void setNominal(Double value) {
-        set(9, value);
+        set(3, value);
     }
 
     /**
      * Getter for <code>gaji_parameter_setting.nominal</code>.
      */
     public Double getNominal() {
-        return (Double) get(9);
+        return (Double) get(3);
+    }
+
+    /**
+     * Setter for <code>gaji_parameter_setting.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime value) {
+        set(4, value);
+    }
+
+    /**
+     * Getter for <code>gaji_parameter_setting.created_at</code>.
+     */
+    public LocalDateTime getCreatedAt() {
+        return (LocalDateTime) get(4);
+    }
+
+    /**
+     * Setter for <code>gaji_parameter_setting.created_by</code>.
+     */
+    public void setCreatedBy(String value) {
+        set(5, value);
+    }
+
+    /**
+     * Getter for <code>gaji_parameter_setting.created_by</code>.
+     */
+    public String getCreatedBy() {
+        return (String) get(5);
+    }
+
+    /**
+     * Setter for <code>gaji_parameter_setting.is_deleted</code>.
+     */
+    public void setIsDeleted(Boolean value) {
+        set(6, value);
+    }
+
+    /**
+     * Getter for <code>gaji_parameter_setting.is_deleted</code>.
+     */
+    public Boolean getIsDeleted() {
+        return (Boolean) get(6);
+    }
+
+    /**
+     * Setter for <code>gaji_parameter_setting.updated_at</code>.
+     */
+    public void setUpdatedAt(LocalDateTime value) {
+        set(7, value);
+    }
+
+    /**
+     * Getter for <code>gaji_parameter_setting.updated_at</code>.
+     */
+    public LocalDateTime getUpdatedAt() {
+        return (LocalDateTime) get(7);
+    }
+
+    /**
+     * Setter for <code>gaji_parameter_setting.updated_by</code>.
+     */
+    public void setUpdatedBy(String value) {
+        set(8, value);
+    }
+
+    /**
+     * Getter for <code>gaji_parameter_setting.updated_by</code>.
+     */
+    public String getUpdatedBy() {
+        return (String) get(8);
+    }
+
+    /**
+     * Setter for <code>gaji_parameter_setting.version</code>.
+     */
+    public void setVersion(Integer value) {
+        set(9, value);
+    }
+
+    /**
+     * Getter for <code>gaji_parameter_setting.version</code>.
+     */
+    public Integer getVersion() {
+        return (Integer) get(9);
     }
 
     // -------------------------------------------------------------------------
@@ -183,19 +183,19 @@ public class GajiParameterSettingRecord extends UpdatableRecordImpl<GajiParamete
     /**
      * Create a detached, initialised GajiParameterSettingRecord
      */
-    public GajiParameterSettingRecord(Long id_, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version, String kode, Double nominal) {
+    public GajiParameterSettingRecord(Long id_, Byte changedStatus, String kode, Double nominal, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version) {
         super(GajiParameterSetting.GAJI_PARAMETER_SETTING);
 
         setId(id_);
         setChangedStatus(changedStatus);
+        setKode(kode);
+        setNominal(nominal);
         setCreatedAt(createdAt);
         setCreatedBy(createdBy);
         setIsDeleted(isDeleted);
         setUpdatedAt(updatedAt);
         setUpdatedBy(updatedBy);
         setVersion(version);
-        setKode(kode);
-        setNominal(nominal);
         resetChangedOnNotNull();
     }
 }

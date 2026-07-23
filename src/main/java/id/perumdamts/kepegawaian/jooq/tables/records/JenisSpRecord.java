@@ -35,129 +35,101 @@ public class JenisSpRecord extends UpdatableRecordImpl<JenisSpRecord> {
     }
 
     /**
-     * Setter for <code>jenis_sp.changed_status</code>.
-     */
-    public void setChangedStatus(Byte value) {
-        set(1, value);
-    }
-
-    /**
-     * Getter for <code>jenis_sp.changed_status</code>.
-     */
-    public Byte getChangedStatus() {
-        return (Byte) get(1);
-    }
-
-    /**
-     * Setter for <code>jenis_sp.created_at</code>.
-     */
-    public void setCreatedAt(LocalDateTime value) {
-        set(2, value);
-    }
-
-    /**
-     * Getter for <code>jenis_sp.created_at</code>.
-     */
-    public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(2);
-    }
-
-    /**
-     * Setter for <code>jenis_sp.created_by</code>.
-     */
-    public void setCreatedBy(String value) {
-        set(3, value);
-    }
-
-    /**
-     * Getter for <code>jenis_sp.created_by</code>.
-     */
-    public String getCreatedBy() {
-        return (String) get(3);
-    }
-
-    /**
-     * Setter for <code>jenis_sp.is_deleted</code>.
-     */
-    public void setIsDeleted(Boolean value) {
-        set(4, value);
-    }
-
-    /**
-     * Getter for <code>jenis_sp.is_deleted</code>.
-     */
-    public Boolean getIsDeleted() {
-        return (Boolean) get(4);
-    }
-
-    /**
-     * Setter for <code>jenis_sp.updated_at</code>.
-     */
-    public void setUpdatedAt(LocalDateTime value) {
-        set(5, value);
-    }
-
-    /**
-     * Getter for <code>jenis_sp.updated_at</code>.
-     */
-    public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(5);
-    }
-
-    /**
-     * Setter for <code>jenis_sp.updated_by</code>.
-     */
-    public void setUpdatedBy(String value) {
-        set(6, value);
-    }
-
-    /**
-     * Getter for <code>jenis_sp.updated_by</code>.
-     */
-    public String getUpdatedBy() {
-        return (String) get(6);
-    }
-
-    /**
-     * Setter for <code>jenis_sp.version</code>.
-     */
-    public void setVersion(Integer value) {
-        set(7, value);
-    }
-
-    /**
-     * Getter for <code>jenis_sp.version</code>.
-     */
-    public Integer getVersion() {
-        return (Integer) get(7);
-    }
-
-    /**
      * Setter for <code>jenis_sp.kode</code>.
      */
     public void setKode(String value) {
-        set(8, value);
+        set(1, value);
     }
 
     /**
      * Getter for <code>jenis_sp.kode</code>.
      */
     public String getKode() {
-        return (String) get(8);
+        return (String) get(1);
     }
 
     /**
      * Setter for <code>jenis_sp.nama</code>.
      */
     public void setNama(String value) {
-        set(9, value);
+        set(2, value);
     }
 
     /**
      * Getter for <code>jenis_sp.nama</code>.
      */
     public String getNama() {
-        return (String) get(9);
+        return (String) get(2);
+    }
+
+    /**
+     * Setter for <code>jenis_sp.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime value) {
+        set(3, value);
+    }
+
+    /**
+     * Getter for <code>jenis_sp.created_at</code>.
+     */
+    public LocalDateTime getCreatedAt() {
+        return (LocalDateTime) get(3);
+    }
+
+    /**
+     * Setter for <code>jenis_sp.created_by</code>.
+     */
+    public void setCreatedBy(String value) {
+        set(4, value);
+    }
+
+    /**
+     * Getter for <code>jenis_sp.created_by</code>.
+     */
+    public String getCreatedBy() {
+        return (String) get(4);
+    }
+
+    /**
+     * Setter for <code>jenis_sp.is_deleted</code>.
+     */
+    public void setIsDeleted(Boolean value) {
+        set(5, value);
+    }
+
+    /**
+     * Getter for <code>jenis_sp.is_deleted</code>.
+     */
+    public Boolean getIsDeleted() {
+        return (Boolean) get(5);
+    }
+
+    /**
+     * Setter for <code>jenis_sp.updated_at</code>.
+     */
+    public void setUpdatedAt(LocalDateTime value) {
+        set(6, value);
+    }
+
+    /**
+     * Getter for <code>jenis_sp.updated_at</code>.
+     */
+    public LocalDateTime getUpdatedAt() {
+        return (LocalDateTime) get(6);
+    }
+
+    /**
+     * Setter for <code>jenis_sp.updated_by</code>.
+     */
+    public void setUpdatedBy(String value) {
+        set(7, value);
+    }
+
+    /**
+     * Getter for <code>jenis_sp.updated_by</code>.
+     */
+    public String getUpdatedBy() {
+        return (String) get(7);
     }
 
     // -------------------------------------------------------------------------
@@ -183,19 +155,17 @@ public class JenisSpRecord extends UpdatableRecordImpl<JenisSpRecord> {
     /**
      * Create a detached, initialised JenisSpRecord
      */
-    public JenisSpRecord(Long id_, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version, String kode, String nama) {
+    public JenisSpRecord(Long id_, String kode, String nama, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy) {
         super(JenisSp.JENIS_SP);
 
         setId(id_);
-        setChangedStatus(changedStatus);
+        setKode(kode);
+        setNama(nama);
         setCreatedAt(createdAt);
         setCreatedBy(createdBy);
         setIsDeleted(isDeleted);
         setUpdatedAt(updatedAt);
         setUpdatedBy(updatedBy);
-        setVersion(version);
-        setKode(kode);
-        setNama(nama);
         resetChangedOnNotNull();
     }
 }

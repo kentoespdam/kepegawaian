@@ -35,269 +35,241 @@ public class SanksiSpRecord extends UpdatableRecordImpl<SanksiSpRecord> {
     }
 
     /**
-     * Setter for <code>sanksi_sp.changed_status</code>.
-     */
-    public void setChangedStatus(Byte value) {
-        set(1, value);
-    }
-
-    /**
-     * Getter for <code>sanksi_sp.changed_status</code>.
-     */
-    public Byte getChangedStatus() {
-        return (Byte) get(1);
-    }
-
-    /**
-     * Setter for <code>sanksi_sp.created_at</code>.
-     */
-    public void setCreatedAt(LocalDateTime value) {
-        set(2, value);
-    }
-
-    /**
-     * Getter for <code>sanksi_sp.created_at</code>.
-     */
-    public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(2);
-    }
-
-    /**
-     * Setter for <code>sanksi_sp.created_by</code>.
-     */
-    public void setCreatedBy(String value) {
-        set(3, value);
-    }
-
-    /**
-     * Getter for <code>sanksi_sp.created_by</code>.
-     */
-    public String getCreatedBy() {
-        return (String) get(3);
-    }
-
-    /**
-     * Setter for <code>sanksi_sp.is_deleted</code>.
-     */
-    public void setIsDeleted(Boolean value) {
-        set(4, value);
-    }
-
-    /**
-     * Getter for <code>sanksi_sp.is_deleted</code>.
-     */
-    public Boolean getIsDeleted() {
-        return (Boolean) get(4);
-    }
-
-    /**
-     * Setter for <code>sanksi_sp.updated_at</code>.
-     */
-    public void setUpdatedAt(LocalDateTime value) {
-        set(5, value);
-    }
-
-    /**
-     * Getter for <code>sanksi_sp.updated_at</code>.
-     */
-    public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(5);
-    }
-
-    /**
-     * Setter for <code>sanksi_sp.updated_by</code>.
-     */
-    public void setUpdatedBy(String value) {
-        set(6, value);
-    }
-
-    /**
-     * Getter for <code>sanksi_sp.updated_by</code>.
-     */
-    public String getUpdatedBy() {
-        return (String) get(6);
-    }
-
-    /**
-     * Setter for <code>sanksi_sp.version</code>.
-     */
-    public void setVersion(Integer value) {
-        set(7, value);
-    }
-
-    /**
-     * Getter for <code>sanksi_sp.version</code>.
-     */
-    public Integer getVersion() {
-        return (Integer) get(7);
-    }
-
-    /**
      * Setter for <code>sanksi_sp.is_pending_gaji</code>.
      */
     public void setIsPendingGaji(Boolean value) {
-        set(8, value);
+        set(1, value);
     }
 
     /**
      * Getter for <code>sanksi_sp.is_pending_gaji</code>.
      */
     public Boolean getIsPendingGaji() {
-        return (Boolean) get(8);
+        return (Boolean) get(1);
     }
 
     /**
      * Setter for <code>sanksi_sp.is_pending_pangkat</code>.
      */
     public void setIsPendingPangkat(Boolean value) {
-        set(9, value);
+        set(2, value);
     }
 
     /**
      * Getter for <code>sanksi_sp.is_pending_pangkat</code>.
      */
     public Boolean getIsPendingPangkat() {
-        return (Boolean) get(9);
+        return (Boolean) get(2);
     }
 
     /**
      * Setter for <code>sanksi_sp.is_suspension</code>.
      */
     public void setIsSuspension(Boolean value) {
-        set(10, value);
+        set(3, value);
     }
 
     /**
      * Getter for <code>sanksi_sp.is_suspension</code>.
      */
     public Boolean getIsSuspension() {
-        return (Boolean) get(10);
+        return (Boolean) get(3);
     }
 
     /**
      * Setter for <code>sanksi_sp.is_terminate_dh</code>.
      */
     public void setIsTerminateDh(Boolean value) {
-        set(11, value);
+        set(4, value);
     }
 
     /**
      * Getter for <code>sanksi_sp.is_terminate_dh</code>.
      */
     public Boolean getIsTerminateDh() {
-        return (Boolean) get(11);
+        return (Boolean) get(4);
     }
 
     /**
      * Setter for <code>sanksi_sp.is_terminate_th</code>.
      */
     public void setIsTerminateTh(Boolean value) {
-        set(12, value);
+        set(5, value);
     }
 
     /**
      * Getter for <code>sanksi_sp.is_terminate_th</code>.
      */
     public Boolean getIsTerminateTh() {
-        return (Boolean) get(12);
+        return (Boolean) get(5);
     }
 
     /**
      * Setter for <code>sanksi_sp.is_turun_jabatan</code>.
      */
     public void setIsTurunJabatan(Boolean value) {
-        set(13, value);
+        set(6, value);
     }
 
     /**
      * Getter for <code>sanksi_sp.is_turun_jabatan</code>.
      */
     public Boolean getIsTurunJabatan() {
-        return (Boolean) get(13);
+        return (Boolean) get(6);
     }
 
     /**
      * Setter for <code>sanksi_sp.is_turun_pangkat</code>.
      */
     public void setIsTurunPangkat(Boolean value) {
-        set(14, value);
+        set(7, value);
     }
 
     /**
      * Getter for <code>sanksi_sp.is_turun_pangkat</code>.
      */
     public Boolean getIsTurunPangkat() {
-        return (Boolean) get(14);
+        return (Boolean) get(7);
     }
 
     /**
      * Setter for <code>sanksi_sp.jml_pot_tkk</code>.
      */
     public void setJmlPotTkk(Integer value) {
-        set(15, value);
+        set(8, value);
     }
 
     /**
      * Getter for <code>sanksi_sp.jml_pot_tkk</code>.
      */
     public Integer getJmlPotTkk() {
-        return (Integer) get(15);
+        return (Integer) get(8);
     }
 
     /**
      * Setter for <code>sanksi_sp.keterangan</code>.
      */
     public void setKeterangan(String value) {
-        set(16, value);
+        set(9, value);
     }
 
     /**
      * Getter for <code>sanksi_sp.keterangan</code>.
      */
     public String getKeterangan() {
-        return (String) get(16);
+        return (String) get(9);
     }
 
     /**
      * Setter for <code>sanksi_sp.kode</code>.
      */
     public void setKode(String value) {
-        set(17, value);
+        set(10, value);
     }
 
     /**
      * Getter for <code>sanksi_sp.kode</code>.
      */
     public String getKode() {
-        return (String) get(17);
+        return (String) get(10);
     }
 
     /**
      * Setter for <code>sanksi_sp.pot_tkk</code>.
      */
     public void setPotTkk(Boolean value) {
-        set(18, value);
+        set(11, value);
     }
 
     /**
      * Getter for <code>sanksi_sp.pot_tkk</code>.
      */
     public Boolean getPotTkk() {
-        return (Boolean) get(18);
+        return (Boolean) get(11);
     }
 
     /**
      * Setter for <code>sanksi_sp.jenis_sp_id</code>.
      */
     public void setJenisSpId(Long value) {
-        set(19, value);
+        set(12, value);
     }
 
     /**
      * Getter for <code>sanksi_sp.jenis_sp_id</code>.
      */
     public Long getJenisSpId() {
-        return (Long) get(19);
+        return (Long) get(12);
+    }
+
+    /**
+     * Setter for <code>sanksi_sp.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime value) {
+        set(13, value);
+    }
+
+    /**
+     * Getter for <code>sanksi_sp.created_at</code>.
+     */
+    public LocalDateTime getCreatedAt() {
+        return (LocalDateTime) get(13);
+    }
+
+    /**
+     * Setter for <code>sanksi_sp.created_by</code>.
+     */
+    public void setCreatedBy(String value) {
+        set(14, value);
+    }
+
+    /**
+     * Getter for <code>sanksi_sp.created_by</code>.
+     */
+    public String getCreatedBy() {
+        return (String) get(14);
+    }
+
+    /**
+     * Setter for <code>sanksi_sp.is_deleted</code>.
+     */
+    public void setIsDeleted(Boolean value) {
+        set(15, value);
+    }
+
+    /**
+     * Getter for <code>sanksi_sp.is_deleted</code>.
+     */
+    public Boolean getIsDeleted() {
+        return (Boolean) get(15);
+    }
+
+    /**
+     * Setter for <code>sanksi_sp.updated_at</code>.
+     */
+    public void setUpdatedAt(LocalDateTime value) {
+        set(16, value);
+    }
+
+    /**
+     * Getter for <code>sanksi_sp.updated_at</code>.
+     */
+    public LocalDateTime getUpdatedAt() {
+        return (LocalDateTime) get(16);
+    }
+
+    /**
+     * Setter for <code>sanksi_sp.updated_by</code>.
+     */
+    public void setUpdatedBy(String value) {
+        set(17, value);
+    }
+
+    /**
+     * Getter for <code>sanksi_sp.updated_by</code>.
+     */
+    public String getUpdatedBy() {
+        return (String) get(17);
     }
 
     // -------------------------------------------------------------------------
@@ -323,17 +295,10 @@ public class SanksiSpRecord extends UpdatableRecordImpl<SanksiSpRecord> {
     /**
      * Create a detached, initialised SanksiSpRecord
      */
-    public SanksiSpRecord(Long id_, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version, Boolean isPendingGaji, Boolean isPendingPangkat, Boolean isSuspension, Boolean isTerminateDh, Boolean isTerminateTh, Boolean isTurunJabatan, Boolean isTurunPangkat, Integer jmlPotTkk, String keterangan, String kode, Boolean potTkk, Long jenisSpId) {
+    public SanksiSpRecord(Long id_, Boolean isPendingGaji, Boolean isPendingPangkat, Boolean isSuspension, Boolean isTerminateDh, Boolean isTerminateTh, Boolean isTurunJabatan, Boolean isTurunPangkat, Integer jmlPotTkk, String keterangan, String kode, Boolean potTkk, Long jenisSpId, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy) {
         super(SanksiSp.SANKSI_SP);
 
         setId(id_);
-        setChangedStatus(changedStatus);
-        setCreatedAt(createdAt);
-        setCreatedBy(createdBy);
-        setIsDeleted(isDeleted);
-        setUpdatedAt(updatedAt);
-        setUpdatedBy(updatedBy);
-        setVersion(version);
         setIsPendingGaji(isPendingGaji);
         setIsPendingPangkat(isPendingPangkat);
         setIsSuspension(isSuspension);
@@ -346,6 +311,11 @@ public class SanksiSpRecord extends UpdatableRecordImpl<SanksiSpRecord> {
         setKode(kode);
         setPotTkk(potTkk);
         setJenisSpId(jenisSpId);
+        setCreatedAt(createdAt);
+        setCreatedBy(createdBy);
+        setIsDeleted(isDeleted);
+        setUpdatedAt(updatedAt);
+        setUpdatedBy(updatedBy);
         resetChangedOnNotNull();
     }
 }

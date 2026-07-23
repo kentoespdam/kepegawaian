@@ -35,157 +35,129 @@ public class JenjangPendidikanRecord extends UpdatableRecordImpl<JenjangPendidik
     }
 
     /**
-     * Setter for <code>jenjang_pendidikan.changed_status</code>.
-     */
-    public void setChangedStatus(Byte value) {
-        set(1, value);
-    }
-
-    /**
-     * Getter for <code>jenjang_pendidikan.changed_status</code>.
-     */
-    public Byte getChangedStatus() {
-        return (Byte) get(1);
-    }
-
-    /**
-     * Setter for <code>jenjang_pendidikan.created_at</code>.
-     */
-    public void setCreatedAt(LocalDateTime value) {
-        set(2, value);
-    }
-
-    /**
-     * Getter for <code>jenjang_pendidikan.created_at</code>.
-     */
-    public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(2);
-    }
-
-    /**
-     * Setter for <code>jenjang_pendidikan.created_by</code>.
-     */
-    public void setCreatedBy(String value) {
-        set(3, value);
-    }
-
-    /**
-     * Getter for <code>jenjang_pendidikan.created_by</code>.
-     */
-    public String getCreatedBy() {
-        return (String) get(3);
-    }
-
-    /**
-     * Setter for <code>jenjang_pendidikan.is_deleted</code>.
-     */
-    public void setIsDeleted(Boolean value) {
-        set(4, value);
-    }
-
-    /**
-     * Getter for <code>jenjang_pendidikan.is_deleted</code>.
-     */
-    public Boolean getIsDeleted() {
-        return (Boolean) get(4);
-    }
-
-    /**
-     * Setter for <code>jenjang_pendidikan.updated_at</code>.
-     */
-    public void setUpdatedAt(LocalDateTime value) {
-        set(5, value);
-    }
-
-    /**
-     * Getter for <code>jenjang_pendidikan.updated_at</code>.
-     */
-    public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(5);
-    }
-
-    /**
-     * Setter for <code>jenjang_pendidikan.updated_by</code>.
-     */
-    public void setUpdatedBy(String value) {
-        set(6, value);
-    }
-
-    /**
-     * Getter for <code>jenjang_pendidikan.updated_by</code>.
-     */
-    public String getUpdatedBy() {
-        return (String) get(6);
-    }
-
-    /**
-     * Setter for <code>jenjang_pendidikan.version</code>.
-     */
-    public void setVersion(Integer value) {
-        set(7, value);
-    }
-
-    /**
-     * Getter for <code>jenjang_pendidikan.version</code>.
-     */
-    public Integer getVersion() {
-        return (Integer) get(7);
-    }
-
-    /**
      * Setter for <code>jenjang_pendidikan.is_statistik</code>.
      */
     public void setIsStatistik(Boolean value) {
-        set(8, value);
+        set(1, value);
     }
 
     /**
      * Getter for <code>jenjang_pendidikan.is_statistik</code>.
      */
     public Boolean getIsStatistik() {
-        return (Boolean) get(8);
+        return (Boolean) get(1);
     }
 
     /**
      * Setter for <code>jenjang_pendidikan.nama</code>.
      */
     public void setNama(String value) {
-        set(9, value);
+        set(2, value);
     }
 
     /**
      * Getter for <code>jenjang_pendidikan.nama</code>.
      */
     public String getNama() {
-        return (String) get(9);
+        return (String) get(2);
     }
 
     /**
      * Setter for <code>jenjang_pendidikan.seq</code>.
      */
     public void setSeq(Integer value) {
-        set(10, value);
+        set(3, value);
     }
 
     /**
      * Getter for <code>jenjang_pendidikan.seq</code>.
      */
     public Integer getSeq() {
-        return (Integer) get(10);
+        return (Integer) get(3);
     }
 
     /**
      * Setter for <code>jenjang_pendidikan.short_name</code>.
      */
     public void setShortName(String value) {
-        set(11, value);
+        set(4, value);
     }
 
     /**
      * Getter for <code>jenjang_pendidikan.short_name</code>.
      */
     public String getShortName() {
-        return (String) get(11);
+        return (String) get(4);
+    }
+
+    /**
+     * Setter for <code>jenjang_pendidikan.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime value) {
+        set(5, value);
+    }
+
+    /**
+     * Getter for <code>jenjang_pendidikan.created_at</code>.
+     */
+    public LocalDateTime getCreatedAt() {
+        return (LocalDateTime) get(5);
+    }
+
+    /**
+     * Setter for <code>jenjang_pendidikan.created_by</code>.
+     */
+    public void setCreatedBy(String value) {
+        set(6, value);
+    }
+
+    /**
+     * Getter for <code>jenjang_pendidikan.created_by</code>.
+     */
+    public String getCreatedBy() {
+        return (String) get(6);
+    }
+
+    /**
+     * Setter for <code>jenjang_pendidikan.is_deleted</code>.
+     */
+    public void setIsDeleted(Boolean value) {
+        set(7, value);
+    }
+
+    /**
+     * Getter for <code>jenjang_pendidikan.is_deleted</code>.
+     */
+    public Boolean getIsDeleted() {
+        return (Boolean) get(7);
+    }
+
+    /**
+     * Setter for <code>jenjang_pendidikan.updated_at</code>.
+     */
+    public void setUpdatedAt(LocalDateTime value) {
+        set(8, value);
+    }
+
+    /**
+     * Getter for <code>jenjang_pendidikan.updated_at</code>.
+     */
+    public LocalDateTime getUpdatedAt() {
+        return (LocalDateTime) get(8);
+    }
+
+    /**
+     * Setter for <code>jenjang_pendidikan.updated_by</code>.
+     */
+    public void setUpdatedBy(String value) {
+        set(9, value);
+    }
+
+    /**
+     * Getter for <code>jenjang_pendidikan.updated_by</code>.
+     */
+    public String getUpdatedBy() {
+        return (String) get(9);
     }
 
     // -------------------------------------------------------------------------
@@ -211,21 +183,19 @@ public class JenjangPendidikanRecord extends UpdatableRecordImpl<JenjangPendidik
     /**
      * Create a detached, initialised JenjangPendidikanRecord
      */
-    public JenjangPendidikanRecord(Long id_, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version, Boolean isStatistik, String nama, Integer seq, String shortName) {
+    public JenjangPendidikanRecord(Long id_, Boolean isStatistik, String nama, Integer seq, String shortName, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy) {
         super(JenjangPendidikan.JENJANG_PENDIDIKAN);
 
         setId(id_);
-        setChangedStatus(changedStatus);
+        setIsStatistik(isStatistik);
+        setNama(nama);
+        setSeq(seq);
+        setShortName(shortName);
         setCreatedAt(createdAt);
         setCreatedBy(createdBy);
         setIsDeleted(isDeleted);
         setUpdatedAt(updatedAt);
         setUpdatedBy(updatedBy);
-        setVersion(version);
-        setIsStatistik(isStatistik);
-        setNama(nama);
-        setSeq(seq);
-        setShortName(shortName);
         resetChangedOnNotNull();
     }
 }

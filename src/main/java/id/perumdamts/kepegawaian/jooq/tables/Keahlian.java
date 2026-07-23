@@ -72,36 +72,6 @@ public class Keahlian extends TableImpl<KeahlianRecord> {
     public final TableField<KeahlianRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>keahlian.created_at</code>.
-     */
-    public final TableField<KeahlianRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>keahlian.created_by</code>.
-     */
-    public final TableField<KeahlianRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>keahlian.is_deleted</code>.
-     */
-    public final TableField<KeahlianRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
-
-    /**
-     * The column <code>keahlian.updated_at</code>.
-     */
-    public final TableField<KeahlianRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>keahlian.updated_by</code>.
-     */
-    public final TableField<KeahlianRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>keahlian.version</code>.
-     */
-    public final TableField<KeahlianRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
      * The column <code>keahlian.disetujui</code>.
      */
     public final TableField<KeahlianRecord, Boolean> DISETUJUI = createField(DSL.name("disetujui"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
@@ -155,6 +125,36 @@ public class Keahlian extends TableImpl<KeahlianRecord> {
      * The column <code>keahlian.jenis_keahlian_id</code>.
      */
     public final TableField<KeahlianRecord, Long> JENIS_KEAHLIAN_ID = createField(DSL.name("jenis_keahlian_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
+
+    /**
+     * The column <code>keahlian.created_at</code>.
+     */
+    public final TableField<KeahlianRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>keahlian.created_by</code>.
+     */
+    public final TableField<KeahlianRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>keahlian.is_deleted</code>.
+     */
+    public final TableField<KeahlianRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
+     * The column <code>keahlian.updated_at</code>.
+     */
+    public final TableField<KeahlianRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>keahlian.updated_by</code>.
+     */
+    public final TableField<KeahlianRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>keahlian.version</code>.
+     */
+    public final TableField<KeahlianRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     private Keahlian(Name alias, Table<KeahlianRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

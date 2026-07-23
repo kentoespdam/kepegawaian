@@ -71,6 +71,21 @@ public class RiwayatCuti extends TableImpl<RiwayatCutiRecord> {
     public final TableField<RiwayatCutiRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
+     * The column <code>riwayat_cuti.nama</code>.
+     */
+    public final TableField<RiwayatCutiRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>riwayat_cuti.nipam</code>.
+     */
+    public final TableField<RiwayatCutiRecord, String> NIPAM = createField(DSL.name("nipam"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>riwayat_cuti.pegawai_id</code>.
+     */
+    public final TableField<RiwayatCutiRecord, Long> PEGAWAI_ID = createField(DSL.name("pegawai_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
+
+    /**
      * The column <code>riwayat_cuti.created_at</code>.
      */
     public final TableField<RiwayatCutiRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
@@ -99,21 +114,6 @@ public class RiwayatCuti extends TableImpl<RiwayatCutiRecord> {
      * The column <code>riwayat_cuti.version</code>.
      */
     public final TableField<RiwayatCutiRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>riwayat_cuti.nama</code>.
-     */
-    public final TableField<RiwayatCutiRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>riwayat_cuti.nipam</code>.
-     */
-    public final TableField<RiwayatCutiRecord, String> NIPAM = createField(DSL.name("nipam"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>riwayat_cuti.pegawai_id</code>.
-     */
-    public final TableField<RiwayatCutiRecord, Long> PEGAWAI_ID = createField(DSL.name("pegawai_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     private RiwayatCuti(Name alias, Table<RiwayatCutiRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

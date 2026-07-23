@@ -72,6 +72,26 @@ public class GajiTunjangan extends TableImpl<GajiTunjanganRecord> {
     public final TableField<GajiTunjanganRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
+     * The column <code>gaji_tunjangan.jenis_tunjangan</code>.
+     */
+    public final TableField<GajiTunjanganRecord, Byte> JENIS_TUNJANGAN = createField(DSL.name("jenis_tunjangan"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
+
+    /**
+     * The column <code>gaji_tunjangan.nominal</code>.
+     */
+    public final TableField<GajiTunjanganRecord, Double> NOMINAL = createField(DSL.name("nominal"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
+
+    /**
+     * The column <code>gaji_tunjangan.golongan_id</code>.
+     */
+    public final TableField<GajiTunjanganRecord, Long> GOLONGAN_ID = createField(DSL.name("golongan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
+
+    /**
+     * The column <code>gaji_tunjangan.level_id</code>.
+     */
+    public final TableField<GajiTunjanganRecord, Long> LEVEL_ID = createField(DSL.name("level_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
+
+    /**
      * The column <code>gaji_tunjangan.created_at</code>.
      */
     public final TableField<GajiTunjanganRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
@@ -100,26 +120,6 @@ public class GajiTunjangan extends TableImpl<GajiTunjanganRecord> {
      * The column <code>gaji_tunjangan.version</code>.
      */
     public final TableField<GajiTunjanganRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>gaji_tunjangan.jenis_tunjangan</code>.
-     */
-    public final TableField<GajiTunjanganRecord, Byte> JENIS_TUNJANGAN = createField(DSL.name("jenis_tunjangan"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINT)), this, "");
-
-    /**
-     * The column <code>gaji_tunjangan.nominal</code>.
-     */
-    public final TableField<GajiTunjanganRecord, Double> NOMINAL = createField(DSL.name("nominal"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
-
-    /**
-     * The column <code>gaji_tunjangan.golongan_id</code>.
-     */
-    public final TableField<GajiTunjanganRecord, Long> GOLONGAN_ID = createField(DSL.name("golongan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
-
-    /**
-     * The column <code>gaji_tunjangan.level_id</code>.
-     */
-    public final TableField<GajiTunjanganRecord, Long> LEVEL_ID = createField(DSL.name("level_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     private GajiTunjangan(Name alias, Table<GajiTunjanganRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

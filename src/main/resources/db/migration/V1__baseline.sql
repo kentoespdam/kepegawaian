@@ -8,56 +8,50 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `alasan_berhenti`;
 CREATE TABLE `alasan_berhenti` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT 0,
   `nama` varchar(255) DEFAULT NULL,
   `notes` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_als_brh_nama` (`nama`) USING BTREE,
-  KEY `idx_als_brh_is_deleted` (`is_deleted`) USING BTREE
+  KEY `idx_als_brh_is_deleted` (`is_deleted`) USING BTREE,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `alat_kerja`;
 CREATE TABLE `alat_kerja` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `nama` varchar(255) DEFAULT NULL,
   `profesi_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_alt_krj_is_deleted` (`is_deleted`) USING BTREE,
   KEY `idx_alt_krj_nama` (`nama`) USING BTREE,
   KEY `idx_alt_krj_pfs_id` (`profesi_id`) USING BTREE,
-  CONSTRAINT `fk_alt_krj_pfs_pfs_id` FOREIGN KEY (`profesi_id`) REFERENCES `profesi` (`id`)
+  CONSTRAINT `fk_alt_krj_pfs_pfs_id` FOREIGN KEY (`profesi_id`) REFERENCES `profesi` (`id`),
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `apd`;
 CREATE TABLE `apd` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `nama` varchar(255) DEFAULT NULL,
   `profesi_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_apd_nama` (`nama`) USING BTREE,
   KEY `idx_apd_is_deleted` (`is_deleted`) USING BTREE,
   KEY `idx_apd_pfs_id` (`profesi_id`) USING BTREE,
-  CONSTRAINT `fk_apd_pfs_pfs_id` FOREIGN KEY (`profesi_id`) REFERENCES `profesi` (`id`)
+  CONSTRAINT `fk_apd_pfs_pfs_id` FOREIGN KEY (`profesi_id`) REFERENCES `profesi` (`id`),
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `biodata`;
@@ -65,12 +59,9 @@ CREATE TABLE `biodata` (
   `nik` varchar(255) NOT NULL,
   `agama` tinyint(4) DEFAULT NULL,
   `alamat` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
   `foto_profil` varchar(255) DEFAULT NULL,
   `golongan_darah` enum('A','B','AB','O') DEFAULT NULL,
   `ibu_kandung` varchar(255) DEFAULT NULL,
-  `is_deleted` bit(1) DEFAULT NULL,
   `is_pegawai` bit(1) DEFAULT NULL,
   `jenis_kelamin` tinyint(4) DEFAULT NULL,
   `nama` varchar(255) DEFAULT NULL,
@@ -79,9 +70,6 @@ CREATE TABLE `biodata` (
   `tanggal_lahir` date DEFAULT NULL,
   `telp` varchar(255) DEFAULT NULL,
   `tempat_lahir` varchar(255) DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` bigint(20) DEFAULT 0,
   `pendidikan_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`nik`) USING BTREE,
   KEY `idx_bio_nama` (`nama`) USING BTREE,
@@ -90,7 +78,13 @@ CREATE TABLE `biodata` (
   KEY `idx_bio_alamat` (`alamat`) USING BTREE,
   KEY `idx_bio_is_pgw` (`is_pegawai`) USING BTREE,
   KEY `idx_bio_ddk_id` (`pendidikan_id`) USING BTREE,
-  CONSTRAINT `fk_bio_jjg_ddk_ddk_id` FOREIGN KEY (`pendidikan_id`) REFERENCES `jenjang_pendidikan` (`id`)
+  CONSTRAINT `fk_bio_jjg_ddk_ddk_id` FOREIGN KEY (`pendidikan_id`) REFERENCES `jenjang_pendidikan` (`id`),
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` bit(1) DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `biodata_aud`;
@@ -125,12 +119,6 @@ DROP TABLE IF EXISTS `cuti_approval`;
 CREATE TABLE `cuti_approval` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `approval_level` int(11) DEFAULT NULL,
   `approval_status` tinyint(4) DEFAULT NULL,
   `notes` text DEFAULT NULL,
@@ -144,7 +132,13 @@ CREATE TABLE `cuti_approval` (
   KEY `idx_ct_apv_jbt_id` (`jabatan_id`) USING BTREE,
   CONSTRAINT `fk_ct_apv_ct_pgw_ct_pgw_id` FOREIGN KEY (`cuti_pegawai_id`) REFERENCES `cuti_pegawai` (`id`),
   CONSTRAINT `fk_ct_apv_pgw_approver_id` FOREIGN KEY (`approver_id`) REFERENCES `pegawai` (`id`),
-  CONSTRAINT `fk_ct_apv_jbt_jbt_id` FOREIGN KEY (`jabatan_id`) REFERENCES `jabatan` (`id`)
+  CONSTRAINT `fk_ct_apv_jbt_jbt_id` FOREIGN KEY (`jabatan_id`) REFERENCES `jabatan` (`id`),
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `cuti_approval_aud`;
@@ -188,18 +182,18 @@ DROP TABLE IF EXISTS `cuti_jenis`;
 CREATE TABLE `cuti_jenis` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `max_hari` int(11) DEFAULT NULL,
   `nama` varchar(255) DEFAULT NULL,
   `potong_kuota_tahunan` bit(1) DEFAULT NULL,
   `parent_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_ct_jns_is_deleted` (`is_deleted`) USING BTREE
+  KEY `idx_ct_jns_is_deleted` (`is_deleted`) USING BTREE,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `cuti_jenis_aud`;
@@ -235,12 +229,6 @@ DROP TABLE IF EXISTS `cuti_kuota`;
 CREATE TABLE `cuti_kuota` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `expired` date DEFAULT NULL,
   `kuota` int(11) DEFAULT NULL,
   `kuota_tambahan` int(11) DEFAULT NULL,
@@ -251,7 +239,13 @@ CREATE TABLE `cuti_kuota` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_ct_kta_is_deleted` (`is_deleted`) USING BTREE,
   KEY `idx_ct_kta_pgw_id` (`pegawai_id`) USING BTREE,
-  CONSTRAINT `fk_ct_kta_pgw_pgw_id` FOREIGN KEY (`pegawai_id`) REFERENCES `pegawai` (`id`)
+  CONSTRAINT `fk_ct_kta_pgw_pgw_id` FOREIGN KEY (`pegawai_id`) REFERENCES `pegawai` (`id`),
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `cuti_kuota_aud`;
@@ -280,12 +274,6 @@ DROP TABLE IF EXISTS `cuti_pegawai`;
 CREATE TABLE `cuti_pegawai` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `alasan` varchar(255) DEFAULT NULL,
   `approval_cuti_status` tinyint(4) DEFAULT NULL,
   `approval_level` int(11) DEFAULT NULL,
@@ -326,7 +314,13 @@ CREATE TABLE `cuti_pegawai` (
   CONSTRAINT `fk_ct_pgw_jbt_pic_saat_ini_id` FOREIGN KEY (`pic_saat_ini_id`) REFERENCES `jabatan` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_ct_pgw_ct_jns_jns_ct_id` FOREIGN KEY (`jenis_cuti_id`) REFERENCES `cuti_jenis` (`id`),
   CONSTRAINT `fk_ct_pgw_pgw_pgw_id` FOREIGN KEY (`pegawai_id`) REFERENCES `pegawai` (`id`),
-  CONSTRAINT `fk_ct_pgw_ct_jns_sub_jns_ct_id` FOREIGN KEY (`sub_jenis_cuti_id`) REFERENCES `cuti_jenis` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_ct_pgw_ct_jns_sub_jns_ct_id` FOREIGN KEY (`sub_jenis_cuti_id`) REFERENCES `cuti_jenis` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `cuti_pegawai_aud`;
@@ -375,12 +369,6 @@ DROP TABLE IF EXISTS `dasar_gaji`;
 CREATE TABLE `dasar_gaji` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `aktif` bit(1) NOT NULL,
   `deskripsi` varchar(255) DEFAULT NULL,
   `tanggal_akhir` date DEFAULT NULL,
@@ -388,7 +376,13 @@ CREATE TABLE `dasar_gaji` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_dsr_gj_deskripsi` (`deskripsi`) USING BTREE,
   KEY `idx_dsr_gj_aktif` (`aktif`) USING BTREE,
-  KEY `idx_dsr_gj_is_deleted` (`is_deleted`) USING BTREE
+  KEY `idx_dsr_gj_is_deleted` (`is_deleted`) USING BTREE,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `dasar_gaji_aud`;
@@ -414,12 +408,6 @@ DROP TABLE IF EXISTS `detail_dasar_gaji`;
 CREATE TABLE `detail_dasar_gaji` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `golongan_kode` int(11) DEFAULT NULL,
   `mkg` int(11) DEFAULT NULL,
   `nominal` double DEFAULT NULL,
@@ -428,7 +416,13 @@ CREATE TABLE `detail_dasar_gaji` (
   KEY `idx_dtl_dsr_gj_mkg` (`mkg`) USING BTREE,
   KEY `idx_dtl_dsr_gj_is_deleted` (`is_deleted`) USING BTREE,
   KEY `idx_dtl_dsr_gj_dsr_gj_id` (`dasar_gaji_id`) USING BTREE,
-  CONSTRAINT `fk_dtl_dsr_gj_dsr_gj_dsr_gj_id` FOREIGN KEY (`dasar_gaji_id`) REFERENCES `dasar_gaji` (`id`)
+  CONSTRAINT `fk_dtl_dsr_gj_dsr_gj_dsr_gj_id` FOREIGN KEY (`dasar_gaji_id`) REFERENCES `dasar_gaji` (`id`),
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `detail_dasar_gaji_aud`;
@@ -605,12 +599,6 @@ DROP TABLE IF EXISTS `gaji_komponen`;
 CREATE TABLE `gaji_komponen` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `formula` varchar(255) DEFAULT NULL,
   `is_reference` bit(1) DEFAULT NULL,
   `jenis_gaji` enum('NONE','PEMASUKAN','POTONGAN') DEFAULT NULL,
@@ -622,7 +610,13 @@ CREATE TABLE `gaji_komponen` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_gj_kpn_is_deleted` (`is_deleted`) USING BTREE,
   KEY `idx_gj_kpn_prf_gj_id` (`profil_gaji_id`) USING BTREE,
-  CONSTRAINT `fk_gj_kpn_gj_prf_prf_gj_id` FOREIGN KEY (`profil_gaji_id`) REFERENCES `gaji_profil` (`id`)
+  CONSTRAINT `fk_gj_kpn_gj_prf_prf_gj_id` FOREIGN KEY (`profil_gaji_id`) REFERENCES `gaji_profil` (`id`),
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `gaji_komponen_aud`;
@@ -652,16 +646,16 @@ DROP TABLE IF EXISTS `gaji_parameter_setting`;
 CREATE TABLE `gaji_parameter_setting` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `changed_status` tinyint(1) DEFAULT 0,
+  `kode` varchar(255) DEFAULT NULL,
+  `nominal` double DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `idx_gj_prm_stg_is_deleted` (`is_deleted`) USING BTREE,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
   `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
-  `kode` varchar(255) DEFAULT NULL,
-  `nominal` double DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_gj_prm_stg_is_deleted` (`is_deleted`) USING BTREE
+  `version` int(11) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `gaji_parameter_setting_aud`;
@@ -685,18 +679,18 @@ DROP TABLE IF EXISTS `gaji_pendapatan_non_pajak`;
 CREATE TABLE `gaji_pendapatan_non_pajak` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `kode` varchar(255) DEFAULT NULL,
   `nominal` double DEFAULT NULL,
   `notes` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_gj_pp_nn_pjk_kode` (`kode`) USING BTREE,
-  KEY `idx_gj_pp_nn_pjk_is_deleted` (`is_deleted`) USING BTREE
+  KEY `idx_gj_pp_nn_pjk_is_deleted` (`is_deleted`) USING BTREE,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `gaji_pendapatan_non_pajak_aud`;
@@ -721,18 +715,18 @@ DROP TABLE IF EXISTS `gaji_phdp`;
 CREATE TABLE `gaji_phdp` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `formula` varchar(255) DEFAULT NULL,
   `kondisi` varchar(255) DEFAULT NULL,
   `urut` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `uk_gj_phdp_urut` (`urut`) USING BTREE,
-  KEY `idx_gj_phdp_is_deleted` (`is_deleted`) USING BTREE
+  KEY `idx_gj_phdp_is_deleted` (`is_deleted`) USING BTREE,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `gaji_phdp_aud`;
@@ -757,12 +751,6 @@ DROP TABLE IF EXISTS `gaji_potongan_tkk`;
 CREATE TABLE `gaji_potongan_tkk` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `nominal` double DEFAULT NULL,
   `status_pegawai` tinyint(4) DEFAULT NULL,
   `golongan_id` bigint(20) DEFAULT NULL,
@@ -772,7 +760,13 @@ CREATE TABLE `gaji_potongan_tkk` (
   KEY `idx_gj_ptg_tkk_glg_id` (`golongan_id`) USING BTREE,
   KEY `idx_gj_ptg_tkk_lvl_id` (`level_id`) USING BTREE,
   CONSTRAINT `fk_gj_ptg_tkk_glg_glg_id` FOREIGN KEY (`golongan_id`) REFERENCES `golongan` (`id`),
-  CONSTRAINT `fk_gj_ptg_tkk_lvl_lvl_id` FOREIGN KEY (`level_id`) REFERENCES `level` (`id`)
+  CONSTRAINT `fk_gj_ptg_tkk_lvl_lvl_id` FOREIGN KEY (`level_id`) REFERENCES `level` (`id`),
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `gaji_potongan_tkk_aud`;
@@ -798,15 +792,15 @@ DROP TABLE IF EXISTS `gaji_profil`;
 CREATE TABLE `gaji_profil` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `changed_status` tinyint(1) DEFAULT 0,
+  `nama` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `idx_gj_prf_is_deleted` (`is_deleted`) USING BTREE,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
   `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
-  `nama` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_gj_prf_is_deleted` (`is_deleted`) USING BTREE
+  `version` int(11) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `gaji_profil_aud`;
@@ -829,12 +823,6 @@ DROP TABLE IF EXISTS `gaji_tunjangan`;
 CREATE TABLE `gaji_tunjangan` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `jenis_tunjangan` tinyint(4) DEFAULT NULL,
   `nominal` double DEFAULT NULL,
   `golongan_id` bigint(20) DEFAULT NULL,
@@ -844,7 +832,13 @@ CREATE TABLE `gaji_tunjangan` (
   KEY `idx_gj_tjg_glg_id` (`golongan_id`) USING BTREE,
   KEY `idx_gj_tjg_lvl_id` (`level_id`) USING BTREE,
   CONSTRAINT `fk_gj_tjg_lvl_lvl_id` FOREIGN KEY (`level_id`) REFERENCES `level` (`id`),
-  CONSTRAINT `fk_gj_tjg_glg_glg_id` FOREIGN KEY (`golongan_id`) REFERENCES `golongan` (`id`)
+  CONSTRAINT `fk_gj_tjg_glg_glg_id` FOREIGN KEY (`golongan_id`) REFERENCES `golongan` (`id`),
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `gaji_tunjangan_aud`;
@@ -869,31 +863,22 @@ CREATE TABLE `gaji_tunjangan_aud` (
 DROP TABLE IF EXISTS `golongan`;
 CREATE TABLE `golongan` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `golongan` varchar(255) DEFAULT NULL,
   `pangkat` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_glg_glg` (`golongan`) USING BTREE,
   KEY `idx_glg_pangkat` (`pangkat`) USING BTREE,
-  KEY `idx_glg_is_deleted` (`is_deleted`) USING BTREE
+  KEY `idx_glg_is_deleted` (`is_deleted`) USING BTREE,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `grade`;
 CREATE TABLE `grade` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `grade` int(11) DEFAULT NULL,
   `tukin` double DEFAULT NULL,
   `level_id` bigint(20) DEFAULT NULL,
@@ -901,37 +886,33 @@ CREATE TABLE `grade` (
   KEY `idx_grd_grd` (`grade`) USING BTREE,
   KEY `idx_grd_is_deleted` (`is_deleted`) USING BTREE,
   KEY `idx_grd_lvl_id` (`level_id`) USING BTREE,
-  CONSTRAINT `fk_grd_lvl_lvl_id` FOREIGN KEY (`level_id`) REFERENCES `level` (`id`)
+  CONSTRAINT `fk_grd_lvl_lvl_id` FOREIGN KEY (`level_id`) REFERENCES `level` (`id`),
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `hari_libur`;
 CREATE TABLE `hari_libur` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `jenis_libur` tinyint(4) DEFAULT NULL,
   `notes` text DEFAULT NULL,
   `tanggal` date DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `uk_hr_lbr_tanggal` (`tanggal`) USING BTREE,
-  KEY `idx_hr_lbr_is_deleted` (`is_deleted`) USING BTREE
+  KEY `idx_hr_lbr_is_deleted` (`is_deleted`) USING BTREE,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `jabatan`;
 CREATE TABLE `jabatan` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `kode` varchar(255) DEFAULT NULL,
   `nama` varchar(255) DEFAULT NULL,
   `level_id` bigint(20) DEFAULT NULL,
@@ -944,101 +925,90 @@ CREATE TABLE `jabatan` (
   KEY `idx_jbt_lvl_id` (`level_id`) USING BTREE,
   KEY `idx_jbt_org_id` (`organisasi_id`) USING BTREE,
   CONSTRAINT `fk_jbt_lvl_lvl_id` FOREIGN KEY (`level_id`) REFERENCES `level` (`id`),
-  CONSTRAINT `fk_jbt_org_org_id` FOREIGN KEY (`organisasi_id`) REFERENCES `organisasi` (`id`)
+  CONSTRAINT `fk_jbt_org_org_id` FOREIGN KEY (`organisasi_id`) REFERENCES `organisasi` (`id`),
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `jenis_keahlian`;
 CREATE TABLE `jenis_keahlian` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
+  `nama` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `idx_jns_ahl_is_deleted` (`is_deleted`) USING BTREE,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
   `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
-  `nama` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_jns_ahl_is_deleted` (`is_deleted`) USING BTREE
+  `updated_by` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `jenis_kitas`;
 CREATE TABLE `jenis_kitas` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
+  `nama` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `idx_jns_kitas_nama` (`nama`) USING BTREE,
+  KEY `idx_jns_kitas_is_deleted` (`is_deleted`) USING BTREE,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
   `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
-  `nama` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_jns_kitas_nama` (`nama`) USING BTREE,
-  KEY `idx_jns_kitas_is_deleted` (`is_deleted`) USING BTREE
+  `updated_by` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `jenis_pelatihan`;
 CREATE TABLE `jenis_pelatihan` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
+  `nama` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `idx_jns_lth_is_deleted` (`is_deleted`) USING BTREE,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
   `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
-  `nama` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_jns_lth_is_deleted` (`is_deleted`) USING BTREE
+  `updated_by` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `jenis_sp`;
 CREATE TABLE `jenis_sp` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `kode` varchar(10) NOT NULL,
   `nama` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `uk_jns_sp_kode` (`kode`) USING BTREE,
-  KEY `idx_jns_sp_is_deleted` (`is_deleted`) USING BTREE
+  KEY `idx_jns_sp_is_deleted` (`is_deleted`) USING BTREE,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `jenjang_pendidikan`;
 CREATE TABLE `jenjang_pendidikan` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `is_statistik` bit(1) DEFAULT NULL,
   `nama` varchar(255) DEFAULT NULL,
   `seq` int(11) DEFAULT NULL,
   `short_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_jjg_ddk_nama` (`nama`) USING BTREE,
-  KEY `idx_jjg_ddk_is_deleted` (`is_deleted`) USING BTREE
+  KEY `idx_jjg_ddk_is_deleted` (`is_deleted`) USING BTREE,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `kartu_identitas`;
 CREATE TABLE `kartu_identitas` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `nomor_kartu` varchar(255) DEFAULT NULL,
   `notes` varchar(255) DEFAULT NULL,
   `tanggal_expired` date DEFAULT NULL,
@@ -1051,7 +1021,13 @@ CREATE TABLE `kartu_identitas` (
   KEY `idx_kartu_idn_is_deleted` (`is_deleted`) USING BTREE,
   KEY `idx_kartu_idn_jns_kitas_id` (`jenis_kitas_id`) USING BTREE,
   CONSTRAINT `fk_kartu_idn_bio_nik` FOREIGN KEY (`nik`) REFERENCES `biodata` (`nik`),
-  CONSTRAINT `fk_kartu_idn_jns_kitas_jns_kitas_id` FOREIGN KEY (`jenis_kitas_id`) REFERENCES `jenis_kitas` (`id`)
+  CONSTRAINT `fk_kartu_idn_jns_kitas_jns_kitas_id` FOREIGN KEY (`jenis_kitas_id`) REFERENCES `jenis_kitas` (`id`),
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `kartu_identitas_aud`;
@@ -1079,12 +1055,6 @@ DROP TABLE IF EXISTS `keahlian`;
 CREATE TABLE `keahlian` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `disetujui` bit(1) DEFAULT NULL,
   `disetujui_oleh` varchar(255) DEFAULT NULL,
   `institusi` varchar(255) DEFAULT NULL,
@@ -1102,7 +1072,13 @@ CREATE TABLE `keahlian` (
   KEY `idx_ahl_bio_id` (`biodata_id`) USING BTREE,
   KEY `idx_ahl_jns_ahl_id` (`jenis_keahlian_id`) USING BTREE,
   CONSTRAINT `fk_ahl_bio_bio_id` FOREIGN KEY (`biodata_id`) REFERENCES `biodata` (`nik`),
-  CONSTRAINT `fk_ahl_jns_ahl_jns_ahl_id` FOREIGN KEY (`jenis_keahlian_id`) REFERENCES `jenis_keahlian` (`id`)
+  CONSTRAINT `fk_ahl_jns_ahl_jns_ahl_id` FOREIGN KEY (`jenis_keahlian_id`) REFERENCES `jenis_keahlian` (`id`),
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `keahlian_aud`;
@@ -1135,12 +1111,6 @@ DROP TABLE IF EXISTS `lampiran_profil`;
 CREATE TABLE `lampiran_profil` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `disetujui` bit(1) DEFAULT NULL,
   `disetujui_oleh` varchar(255) DEFAULT NULL,
   `file_name` varchar(255) DEFAULT NULL,
@@ -1154,7 +1124,13 @@ CREATE TABLE `lampiran_profil` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_lmp_prf_is_deleted` (`is_deleted`) USING BTREE,
   KEY `idx_lmp_prf_ref` (`ref`) USING BTREE,
-  KEY `idx_lmp_prf_ref_id` (`ref_id`) USING BTREE
+  KEY `idx_lmp_prf_ref_id` (`ref_id`) USING BTREE,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `lampiran_profil_aud`;
@@ -1186,12 +1162,6 @@ DROP TABLE IF EXISTS `lampiran_sk`;
 CREATE TABLE `lampiran_sk` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `disetujui` bit(1) DEFAULT NULL,
   `disetujui_oleh` varchar(255) DEFAULT NULL,
   `file_name` varchar(255) DEFAULT NULL,
@@ -1205,7 +1175,13 @@ CREATE TABLE `lampiran_sk` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_lmp_sk_is_deleted` (`is_deleted`) USING BTREE,
   KEY `idx_lmp_sk_ref` (`ref`) USING BTREE,
-  KEY `idx_lmp_sk_ref_id` (`ref_id`) USING BTREE
+  KEY `idx_lmp_sk_ref_id` (`ref_id`) USING BTREE,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `lampiran_sk_aud`;
@@ -1236,29 +1212,20 @@ CREATE TABLE `lampiran_sk_aud` (
 DROP TABLE IF EXISTS `level`;
 CREATE TABLE `level` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
+  `nama` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `uk_lvl_nama` (`nama`) USING BTREE,
+  KEY `idx_lvl_is_deleted` (`is_deleted`) USING BTREE,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
   `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
-  `nama` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `uk_lvl_nama` (`nama`) USING BTREE,
-  KEY `idx_lvl_is_deleted` (`is_deleted`) USING BTREE
+  `updated_by` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `organisasi`;
 CREATE TABLE `organisasi` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `category` varchar(255) DEFAULT NULL,
   `kode` varchar(255) DEFAULT NULL,
   `level_org` int(11) DEFAULT NULL,
@@ -1269,19 +1236,18 @@ CREATE TABLE `organisasi` (
   KEY `idx_org_kode` (`kode`) USING BTREE,
   KEY `idx_org_nama` (`nama`) USING BTREE,
   KEY `idx_org_lvl_org` (`level_org`) USING BTREE,
-  KEY `idx_org_is_deleted` (`is_deleted`) USING BTREE
+  KEY `idx_org_is_deleted` (`is_deleted`) USING BTREE,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `pegawai`;
 CREATE TABLE `pegawai` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `absensi_id` bigint(20) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `gaji_pokok` double DEFAULT NULL,
@@ -1338,7 +1304,13 @@ CREATE TABLE `pegawai` (
   CONSTRAINT `fk_pgw_jbt_jbt_id` FOREIGN KEY (`jabatan_id`) REFERENCES `jabatan` (`id`),
   CONSTRAINT `fk_pgw_rmh_dns_rmh_dns_id` FOREIGN KEY (`rumah_dinas_id`) REFERENCES `rumah_dinas` (`id`),
   CONSTRAINT `fk_pgw_bio_bio_id` FOREIGN KEY (`biodata_id`) REFERENCES `biodata` (`nik`),
-  CONSTRAINT `fk_pgw_grd_grd_id` FOREIGN KEY (`grade_id`) REFERENCES `grade` (`id`)
+  CONSTRAINT `fk_pgw_grd_grd_id` FOREIGN KEY (`grade_id`) REFERENCES `grade` (`id`),
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `pegawai_aud`;
@@ -1395,12 +1367,6 @@ DROP TABLE IF EXISTS `pelatihan`;
 CREATE TABLE `pelatihan` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `disetujui` bit(1) DEFAULT NULL,
   `disetujui_oleh` varchar(255) DEFAULT NULL,
   `ikatan_dinas` bit(1) DEFAULT NULL,
@@ -1421,7 +1387,13 @@ CREATE TABLE `pelatihan` (
   KEY `idx_lth_bio_id` (`biodata_id`) USING BTREE,
   KEY `idx_lth_jns_lth_id` (`jenis_pelatihan_id`) USING BTREE,
   CONSTRAINT `fk_lth_bio_bio_id` FOREIGN KEY (`biodata_id`) REFERENCES `biodata` (`nik`),
-  CONSTRAINT `fk_lth_jns_lth_jns_lth_id` FOREIGN KEY (`jenis_pelatihan_id`) REFERENCES `jenis_pelatihan` (`id`)
+  CONSTRAINT `fk_lth_jns_lth_jns_lth_id` FOREIGN KEY (`jenis_pelatihan_id`) REFERENCES `jenis_pelatihan` (`id`),
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `pelatihan_aud`;
@@ -1458,12 +1430,6 @@ DROP TABLE IF EXISTS `pendidikan`;
 CREATE TABLE `pendidikan` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `disetujui` tinyint(1) DEFAULT 0,
   `disetujui_oleh` varchar(255) DEFAULT NULL,
   `gelar_belakang` varchar(255) DEFAULT NULL,
@@ -1487,7 +1453,13 @@ CREATE TABLE `pendidikan` (
   KEY `idx_ddk_is_latest` (`is_latest`) USING BTREE,
   KEY `idx_ddk_disetujui_oleh` (`disetujui_oleh`) USING BTREE,
   CONSTRAINT `fk_ddk_bio_bio_id` FOREIGN KEY (`biodata_id`) REFERENCES `biodata` (`nik`),
-  CONSTRAINT `fk_ddk_jjg_ddk_jjg_id` FOREIGN KEY (`jenjang_id`) REFERENCES `jenjang_pendidikan` (`id`)
+  CONSTRAINT `fk_ddk_jjg_ddk_jjg_id` FOREIGN KEY (`jenjang_id`) REFERENCES `jenjang_pendidikan` (`id`),
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `pendidikan_aud`;
@@ -1525,12 +1497,6 @@ DROP TABLE IF EXISTS `pengalaman_kerja`;
 CREATE TABLE `pengalaman_kerja` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `disetujui` tinyint(1) DEFAULT 0,
   `disetujui_oleh` varchar(255) DEFAULT NULL,
   `jabatan` varchar(255) DEFAULT NULL,
@@ -1546,7 +1512,13 @@ CREATE TABLE `pengalaman_kerja` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_plm_krj_is_deleted` (`is_deleted`) USING BTREE,
   KEY `idx_plm_krj_bio_id` (`biodata_id`) USING BTREE,
-  CONSTRAINT `fk_plm_krj_bio_bio_id` FOREIGN KEY (`biodata_id`) REFERENCES `biodata` (`nik`)
+  CONSTRAINT `fk_plm_krj_bio_bio_id` FOREIGN KEY (`biodata_id`) REFERENCES `biodata` (`nik`),
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `pengalaman_kerja_aud`;
@@ -1585,13 +1557,6 @@ CREATE TABLE `pref_role` (
 DROP TABLE IF EXISTS `profesi`;
 CREATE TABLE `profesi` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `detail` varchar(255) DEFAULT NULL,
   `nama` varchar(255) DEFAULT NULL,
   `resiko` varchar(255) DEFAULT NULL,
@@ -1609,19 +1574,18 @@ CREATE TABLE `profesi` (
   CONSTRAINT `fk_pfs_jbt_jbt_id` FOREIGN KEY (`jabatan_id`) REFERENCES `jabatan` (`id`),
   CONSTRAINT `fk_pfs_grd_grd_id` FOREIGN KEY (`grade_id`) REFERENCES `grade` (`id`),
   CONSTRAINT `fk_pfs_lvl_lvl_id` FOREIGN KEY (`level_id`) REFERENCES `level` (`id`),
-  CONSTRAINT `fk_pfs_org_org_id` FOREIGN KEY (`organisasi_id`) REFERENCES `organisasi` (`id`)
+  CONSTRAINT `fk_pfs_org_org_id` FOREIGN KEY (`organisasi_id`) REFERENCES `organisasi` (`id`),
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `profil_keluarga`;
 CREATE TABLE `profil_keluarga` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `agama` tinyint(4) DEFAULT NULL,
   `hubungan_keluarga` tinyint(4) DEFAULT NULL,
   `jenis_kelamin` tinyint(4) DEFAULT NULL,
@@ -1643,7 +1607,13 @@ CREATE TABLE `profil_keluarga` (
   KEY `idx_prf_klg_is_deleted` (`is_deleted`) USING BTREE,
   KEY `idx_prf_klg_tanggungan` (`tanggungan`) USING BTREE,
   CONSTRAINT `fk_prf_klg_jjg_ddk_ddk_id` FOREIGN KEY (`pendidikan_id`) REFERENCES `jenjang_pendidikan` (`id`),
-  CONSTRAINT `fk_prf_klg_bio_bio_id` FOREIGN KEY (`biodata_id`) REFERENCES `biodata` (`nik`)
+  CONSTRAINT `fk_prf_klg_bio_bio_id` FOREIGN KEY (`biodata_id`) REFERENCES `biodata` (`nik`),
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `profil_keluarga_aud`;
@@ -1677,22 +1647,22 @@ CREATE TABLE `profil_keluarga_aud` (
 DROP TABLE IF EXISTS `profil_update`;
 CREATE TABLE `profil_update` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `action_type` tinyint(4) DEFAULT NULL,
-  `approval_date` datetime(6) DEFAULT NULL,
-  `approval_pic` varchar(255) DEFAULT NULL,
-  `approval_status` tinyint(4) DEFAULT NULL,
-  `data_description` varchar(255) DEFAULT NULL,
-  `jabatan` varchar(255) DEFAULT NULL,
-  `nama` varchar(255) DEFAULT NULL,
   `nipam` varchar(255) DEFAULT NULL,
+  `nama` varchar(255) DEFAULT NULL,
+  `jabatan` varchar(255) DEFAULT NULL,
   `req_date` timestamp NULL DEFAULT current_timestamp(),
-  `rev_id` bigint(20) DEFAULT NULL,
   `table_name` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_prf_upd_nipam` (`nipam`) USING BTREE,
   KEY `idx_prf_upd_nama` (`nama`) USING BTREE,
   KEY `idx_prf_upd_apv_status` (`approval_status`) USING BTREE,
-  KEY `idx_prf_upd_req_date` (`req_date`) USING BTREE
+  KEY `idx_prf_upd_req_date` (`req_date`) USING BTREE,
+  `action_type` tinyint(4) DEFAULT NULL,
+  `data_description` varchar(255) DEFAULT NULL,
+  `rev_id` bigint(20) DEFAULT NULL,
+  `approval_status` tinyint(4) DEFAULT NULL,
+  `approval_date` datetime(6) DEFAULT NULL,
+  `approval_pic` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `revinfo`;
@@ -1706,19 +1676,19 @@ DROP TABLE IF EXISTS `riwayat_cuti`;
 CREATE TABLE `riwayat_cuti` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `nama` varchar(255) DEFAULT NULL,
   `nipam` varchar(255) DEFAULT NULL,
   `pegawai_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_rwt_ct_is_deleted` (`is_deleted`) USING BTREE,
   KEY `idx_rwt_ct_pgw_id` (`pegawai_id`) USING BTREE,
-  CONSTRAINT `fk_rwt_ct_pgw_pgw_id` FOREIGN KEY (`pegawai_id`) REFERENCES `pegawai` (`id`)
+  CONSTRAINT `fk_rwt_ct_pgw_pgw_id` FOREIGN KEY (`pegawai_id`) REFERENCES `pegawai` (`id`),
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `riwayat_cuti_aud`;
@@ -1743,12 +1713,6 @@ DROP TABLE IF EXISTS `riwayat_keluar`;
 CREATE TABLE `riwayat_keluar` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `disetujui_oleh_nama` varchar(255) DEFAULT NULL,
   `nama_jabatan` varchar(255) DEFAULT NULL,
   `nama_jabatan_penyetuju` varchar(255) DEFAULT NULL,
@@ -1778,19 +1742,19 @@ CREATE TABLE `riwayat_keluar` (
   CONSTRAINT `fk_rwt_klr_org_org_id` FOREIGN KEY (`organisasi_id`) REFERENCES `organisasi` (`id`),
   CONSTRAINT `fk_rwt_klr_jbt_jbt_id` FOREIGN KEY (`jabatan_id`) REFERENCES `jabatan` (`id`),
   CONSTRAINT `fk_rwt_klr_pgw_pgw_id` FOREIGN KEY (`pegawai_id`) REFERENCES `pegawai` (`id`),
-  CONSTRAINT `fk_rwt_klr_org_penyetuju_org_id` FOREIGN KEY (`penyetuju_organisasi_id`) REFERENCES `organisasi` (`id`)
+  CONSTRAINT `fk_rwt_klr_org_penyetuju_org_id` FOREIGN KEY (`penyetuju_organisasi_id`) REFERENCES `organisasi` (`id`),
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `riwayat_kontrak`;
 CREATE TABLE `riwayat_kontrak` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `is_latest` bit(1) DEFAULT NULL,
   `jenis_kontrak` tinyint(4) DEFAULT NULL,
   `nama` varchar(255) DEFAULT NULL,
@@ -1812,7 +1776,13 @@ CREATE TABLE `riwayat_kontrak` (
   KEY `idx_rwt_ktrk_org_id` (`organisasi_id`) USING BTREE,
   CONSTRAINT `fk_rwt_ktrk_pgw_pgw_id` FOREIGN KEY (`pegawai_id`) REFERENCES `pegawai` (`id`),
   CONSTRAINT `fk_rwt_ktrk_org_org_id` FOREIGN KEY (`organisasi_id`) REFERENCES `organisasi` (`id`),
-  CONSTRAINT `fk_rwt_ktrk_jbt_jbt_id` FOREIGN KEY (`jabatan_id`) REFERENCES `jabatan` (`id`)
+  CONSTRAINT `fk_rwt_ktrk_jbt_jbt_id` FOREIGN KEY (`jabatan_id`) REFERENCES `jabatan` (`id`),
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `riwayat_kontrak_aud`;
@@ -1846,12 +1816,6 @@ DROP TABLE IF EXISTS `riwayat_mutasi`;
 CREATE TABLE `riwayat_mutasi` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `jenis_mutasi` tinyint(4) DEFAULT NULL,
   `nama` varchar(255) DEFAULT NULL,
   `nama_golongan` varchar(255) DEFAULT NULL,
@@ -1881,7 +1845,13 @@ CREATE TABLE `riwayat_mutasi` (
   KEY `idx_rwt_mts_is_deleted` (`is_deleted`) USING BTREE,
   KEY `idx_rwt_mts_rwt_sk_id` (`riwayat_sk_id`) USING BTREE,
   CONSTRAINT `fk_rwt_mts_rwt_sk_rwt_sk_id` FOREIGN KEY (`riwayat_sk_id`) REFERENCES `riwayat_sk` (`id`),
-  CONSTRAINT `fk_rwt_mts_pgw_pgw_id` FOREIGN KEY (`pegawai_id`) REFERENCES `pegawai` (`id`)
+  CONSTRAINT `fk_rwt_mts_pgw_pgw_id` FOREIGN KEY (`pegawai_id`) REFERENCES `pegawai` (`id`),
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `riwayat_mutasi_aud`;
@@ -1927,12 +1897,6 @@ DROP TABLE IF EXISTS `riwayat_sk`;
 CREATE TABLE `riwayat_sk` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `gaji_pokok` double DEFAULT NULL,
   `jenis_sk` tinyint(4) DEFAULT NULL,
   `kenaikan_berikutnya` date DEFAULT NULL,
@@ -1960,7 +1924,13 @@ CREATE TABLE `riwayat_sk` (
   KEY `idx_rwt_sk_glg_id` (`golongan_id`) USING BTREE,
   KEY `idx_rwt_sk_pgw_id` (`pegawai_id`) USING BTREE,
   CONSTRAINT `fk_rwt_sk_pgw_pgw_id` FOREIGN KEY (`pegawai_id`) REFERENCES `pegawai` (`id`),
-  CONSTRAINT `fk_rwt_sk_glg_glg_id` FOREIGN KEY (`golongan_id`) REFERENCES `golongan` (`id`)
+  CONSTRAINT `fk_rwt_sk_glg_glg_id` FOREIGN KEY (`golongan_id`) REFERENCES `golongan` (`id`),
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `riwayat_sk_aud`;
@@ -2081,12 +2051,6 @@ DROP TABLE IF EXISTS `riwayat_terminasi`;
 CREATE TABLE `riwayat_terminasi` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `masa_kerja` int(11) DEFAULT NULL,
   `nama` varchar(255) DEFAULT NULL,
   `nama_golongan` varchar(255) DEFAULT NULL,
@@ -2119,7 +2083,13 @@ CREATE TABLE `riwayat_terminasi` (
   CONSTRAINT `fk_rwt_trm_pgw_pgw_id` FOREIGN KEY (`pegawai_id`) REFERENCES `pegawai` (`id`),
   CONSTRAINT `fk_rwt_trm_als_brh_als_trm_id` FOREIGN KEY (`alasan_terminasi_id`) REFERENCES `alasan_berhenti` (`id`),
   CONSTRAINT `fk_rwt_trm_jbt_jbt_id` FOREIGN KEY (`jabatan_id`) REFERENCES `jabatan` (`id`),
-  CONSTRAINT `fk_rwt_trm_glg_glg_id` FOREIGN KEY (`golongan_id`) REFERENCES `golongan` (`id`)
+  CONSTRAINT `fk_rwt_trm_glg_glg_id` FOREIGN KEY (`golongan_id`) REFERENCES `golongan` (`id`),
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `riwayat_terminasi_aud`;
@@ -2156,30 +2126,21 @@ CREATE TABLE `riwayat_terminasi_aud` (
 DROP TABLE IF EXISTS `rumah_dinas`;
 CREATE TABLE `rumah_dinas` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `nama` varchar(255) DEFAULT NULL,
   `nilai` double DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_rmh_dns_nama` (`nama`) USING BTREE,
-  KEY `idx_rmh_dns_is_deleted` (`is_deleted`) USING BTREE
+  KEY `idx_rmh_dns_is_deleted` (`is_deleted`) USING BTREE,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `sanksi_sp`;
 CREATE TABLE `sanksi_sp` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `created_by` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0,
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
   `is_pending_gaji` bit(1) DEFAULT NULL,
   `is_pending_pangkat` bit(1) DEFAULT NULL,
   `is_suspension` bit(1) DEFAULT NULL,
@@ -2196,7 +2157,12 @@ CREATE TABLE `sanksi_sp` (
   UNIQUE KEY `uk_snk_sp_kode` (`kode`) USING BTREE,
   KEY `idx_snk_sp_is_deleted` (`is_deleted`) USING BTREE,
   KEY `idx_snk_sp_jns_sp_id` (`jenis_sp_id`) USING BTREE,
-  CONSTRAINT `fk_snk_sp_jns_sp_jns_sp_id` FOREIGN KEY (`jenis_sp_id`) REFERENCES `jenis_sp` (`id`)
+  CONSTRAINT `fk_snk_sp_jns_sp_jns_sp_id` FOREIGN KEY (`jenis_sp_id`) REFERENCES `jenis_sp` (`id`),
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_by` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_by` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS `statistik_pegawai`;

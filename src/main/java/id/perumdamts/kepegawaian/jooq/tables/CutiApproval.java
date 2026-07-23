@@ -73,36 +73,6 @@ public class CutiApproval extends TableImpl<CutiApprovalRecord> {
     public final TableField<CutiApprovalRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>cuti_approval.created_at</code>.
-     */
-    public final TableField<CutiApprovalRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>cuti_approval.created_by</code>.
-     */
-    public final TableField<CutiApprovalRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>cuti_approval.is_deleted</code>.
-     */
-    public final TableField<CutiApprovalRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
-
-    /**
-     * The column <code>cuti_approval.updated_at</code>.
-     */
-    public final TableField<CutiApprovalRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>cuti_approval.updated_by</code>.
-     */
-    public final TableField<CutiApprovalRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>cuti_approval.version</code>.
-     */
-    public final TableField<CutiApprovalRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
      * The column <code>cuti_approval.approval_level</code>.
      */
     public final TableField<CutiApprovalRecord, Integer> APPROVAL_LEVEL = createField(DSL.name("approval_level"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
@@ -131,6 +101,36 @@ public class CutiApproval extends TableImpl<CutiApprovalRecord> {
      * The column <code>cuti_approval.jabatan_id</code>.
      */
     public final TableField<CutiApprovalRecord, Long> JABATAN_ID = createField(DSL.name("jabatan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
+
+    /**
+     * The column <code>cuti_approval.created_at</code>.
+     */
+    public final TableField<CutiApprovalRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>cuti_approval.created_by</code>.
+     */
+    public final TableField<CutiApprovalRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>cuti_approval.is_deleted</code>.
+     */
+    public final TableField<CutiApprovalRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
+     * The column <code>cuti_approval.updated_at</code>.
+     */
+    public final TableField<CutiApprovalRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>cuti_approval.updated_by</code>.
+     */
+    public final TableField<CutiApprovalRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>cuti_approval.version</code>.
+     */
+    public final TableField<CutiApprovalRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     private CutiApproval(Name alias, Table<CutiApprovalRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

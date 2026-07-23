@@ -49,241 +49,241 @@ public class KeahlianRecord extends UpdatableRecordImpl<KeahlianRecord> {
     }
 
     /**
-     * Setter for <code>keahlian.created_at</code>.
-     */
-    public void setCreatedAt(LocalDateTime value) {
-        set(2, value);
-    }
-
-    /**
-     * Getter for <code>keahlian.created_at</code>.
-     */
-    public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(2);
-    }
-
-    /**
-     * Setter for <code>keahlian.created_by</code>.
-     */
-    public void setCreatedBy(String value) {
-        set(3, value);
-    }
-
-    /**
-     * Getter for <code>keahlian.created_by</code>.
-     */
-    public String getCreatedBy() {
-        return (String) get(3);
-    }
-
-    /**
-     * Setter for <code>keahlian.is_deleted</code>.
-     */
-    public void setIsDeleted(Boolean value) {
-        set(4, value);
-    }
-
-    /**
-     * Getter for <code>keahlian.is_deleted</code>.
-     */
-    public Boolean getIsDeleted() {
-        return (Boolean) get(4);
-    }
-
-    /**
-     * Setter for <code>keahlian.updated_at</code>.
-     */
-    public void setUpdatedAt(LocalDateTime value) {
-        set(5, value);
-    }
-
-    /**
-     * Getter for <code>keahlian.updated_at</code>.
-     */
-    public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(5);
-    }
-
-    /**
-     * Setter for <code>keahlian.updated_by</code>.
-     */
-    public void setUpdatedBy(String value) {
-        set(6, value);
-    }
-
-    /**
-     * Getter for <code>keahlian.updated_by</code>.
-     */
-    public String getUpdatedBy() {
-        return (String) get(6);
-    }
-
-    /**
-     * Setter for <code>keahlian.version</code>.
-     */
-    public void setVersion(Integer value) {
-        set(7, value);
-    }
-
-    /**
-     * Getter for <code>keahlian.version</code>.
-     */
-    public Integer getVersion() {
-        return (Integer) get(7);
-    }
-
-    /**
      * Setter for <code>keahlian.disetujui</code>.
      */
     public void setDisetujui(Boolean value) {
-        set(8, value);
+        set(2, value);
     }
 
     /**
      * Getter for <code>keahlian.disetujui</code>.
      */
     public Boolean getDisetujui() {
-        return (Boolean) get(8);
+        return (Boolean) get(2);
     }
 
     /**
      * Setter for <code>keahlian.disetujui_oleh</code>.
      */
     public void setDisetujuiOleh(String value) {
-        set(9, value);
+        set(3, value);
     }
 
     /**
      * Getter for <code>keahlian.disetujui_oleh</code>.
      */
     public String getDisetujuiOleh() {
-        return (String) get(9);
+        return (String) get(3);
     }
 
     /**
      * Setter for <code>keahlian.institusi</code>.
      */
     public void setInstitusi(String value) {
-        set(10, value);
+        set(4, value);
     }
 
     /**
      * Getter for <code>keahlian.institusi</code>.
      */
     public String getInstitusi() {
-        return (String) get(10);
+        return (String) get(4);
     }
 
     /**
      * Setter for <code>keahlian.kualifikasi</code>.
      */
     public void setKualifikasi(Byte value) {
-        set(11, value);
+        set(5, value);
     }
 
     /**
      * Getter for <code>keahlian.kualifikasi</code>.
      */
     public Byte getKualifikasi() {
-        return (Byte) get(11);
+        return (Byte) get(5);
     }
 
     /**
      * Setter for <code>keahlian.masa_berlaku</code>.
      */
     public void setMasaBerlaku(String value) {
-        set(12, value);
+        set(6, value);
     }
 
     /**
      * Getter for <code>keahlian.masa_berlaku</code>.
      */
     public String getMasaBerlaku() {
-        return (String) get(12);
+        return (String) get(6);
     }
 
     /**
      * Setter for <code>keahlian.sertifikasi</code>.
      */
     public void setSertifikasi(Boolean value) {
-        set(13, value);
+        set(7, value);
     }
 
     /**
      * Getter for <code>keahlian.sertifikasi</code>.
      */
     public Boolean getSertifikasi() {
-        return (Boolean) get(13);
+        return (Boolean) get(7);
     }
 
     /**
      * Setter for <code>keahlian.tahun</code>.
      */
     public void setTahun(Integer value) {
-        set(14, value);
+        set(8, value);
     }
 
     /**
      * Getter for <code>keahlian.tahun</code>.
      */
     public Integer getTahun() {
-        return (Integer) get(14);
+        return (Integer) get(8);
     }
 
     /**
      * Setter for <code>keahlian.tanggal_disetujui</code>.
      */
     public void setTanggalDisetujui(LocalDateTime value) {
-        set(15, value);
+        set(9, value);
     }
 
     /**
      * Getter for <code>keahlian.tanggal_disetujui</code>.
      */
     public LocalDateTime getTanggalDisetujui() {
-        return (LocalDateTime) get(15);
+        return (LocalDateTime) get(9);
     }
 
     /**
      * Setter for <code>keahlian.tanggal_pengajuan</code>.
      */
     public void setTanggalPengajuan(LocalDateTime value) {
-        set(16, value);
+        set(10, value);
     }
 
     /**
      * Getter for <code>keahlian.tanggal_pengajuan</code>.
      */
     public LocalDateTime getTanggalPengajuan() {
-        return (LocalDateTime) get(16);
+        return (LocalDateTime) get(10);
     }
 
     /**
      * Setter for <code>keahlian.biodata_id</code>.
      */
     public void setBiodataId(String value) {
-        set(17, value);
+        set(11, value);
     }
 
     /**
      * Getter for <code>keahlian.biodata_id</code>.
      */
     public String getBiodataId() {
-        return (String) get(17);
+        return (String) get(11);
     }
 
     /**
      * Setter for <code>keahlian.jenis_keahlian_id</code>.
      */
     public void setJenisKeahlianId(Long value) {
-        set(18, value);
+        set(12, value);
     }
 
     /**
      * Getter for <code>keahlian.jenis_keahlian_id</code>.
      */
     public Long getJenisKeahlianId() {
-        return (Long) get(18);
+        return (Long) get(12);
+    }
+
+    /**
+     * Setter for <code>keahlian.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime value) {
+        set(13, value);
+    }
+
+    /**
+     * Getter for <code>keahlian.created_at</code>.
+     */
+    public LocalDateTime getCreatedAt() {
+        return (LocalDateTime) get(13);
+    }
+
+    /**
+     * Setter for <code>keahlian.created_by</code>.
+     */
+    public void setCreatedBy(String value) {
+        set(14, value);
+    }
+
+    /**
+     * Getter for <code>keahlian.created_by</code>.
+     */
+    public String getCreatedBy() {
+        return (String) get(14);
+    }
+
+    /**
+     * Setter for <code>keahlian.is_deleted</code>.
+     */
+    public void setIsDeleted(Boolean value) {
+        set(15, value);
+    }
+
+    /**
+     * Getter for <code>keahlian.is_deleted</code>.
+     */
+    public Boolean getIsDeleted() {
+        return (Boolean) get(15);
+    }
+
+    /**
+     * Setter for <code>keahlian.updated_at</code>.
+     */
+    public void setUpdatedAt(LocalDateTime value) {
+        set(16, value);
+    }
+
+    /**
+     * Getter for <code>keahlian.updated_at</code>.
+     */
+    public LocalDateTime getUpdatedAt() {
+        return (LocalDateTime) get(16);
+    }
+
+    /**
+     * Setter for <code>keahlian.updated_by</code>.
+     */
+    public void setUpdatedBy(String value) {
+        set(17, value);
+    }
+
+    /**
+     * Getter for <code>keahlian.updated_by</code>.
+     */
+    public String getUpdatedBy() {
+        return (String) get(17);
+    }
+
+    /**
+     * Setter for <code>keahlian.version</code>.
+     */
+    public void setVersion(Integer value) {
+        set(18, value);
+    }
+
+    /**
+     * Getter for <code>keahlian.version</code>.
+     */
+    public Integer getVersion() {
+        return (Integer) get(18);
     }
 
     // -------------------------------------------------------------------------
@@ -309,17 +309,11 @@ public class KeahlianRecord extends UpdatableRecordImpl<KeahlianRecord> {
     /**
      * Create a detached, initialised KeahlianRecord
      */
-    public KeahlianRecord(Long id_, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version, Boolean disetujui, String disetujuiOleh, String institusi, Byte kualifikasi, String masaBerlaku, Boolean sertifikasi, Integer tahun, LocalDateTime tanggalDisetujui, LocalDateTime tanggalPengajuan, String biodataId, Long jenisKeahlianId) {
+    public KeahlianRecord(Long id_, Byte changedStatus, Boolean disetujui, String disetujuiOleh, String institusi, Byte kualifikasi, String masaBerlaku, Boolean sertifikasi, Integer tahun, LocalDateTime tanggalDisetujui, LocalDateTime tanggalPengajuan, String biodataId, Long jenisKeahlianId, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version) {
         super(Keahlian.KEAHLIAN);
 
         setId(id_);
         setChangedStatus(changedStatus);
-        setCreatedAt(createdAt);
-        setCreatedBy(createdBy);
-        setIsDeleted(isDeleted);
-        setUpdatedAt(updatedAt);
-        setUpdatedBy(updatedBy);
-        setVersion(version);
         setDisetujui(disetujui);
         setDisetujuiOleh(disetujuiOleh);
         setInstitusi(institusi);
@@ -331,6 +325,12 @@ public class KeahlianRecord extends UpdatableRecordImpl<KeahlianRecord> {
         setTanggalPengajuan(tanggalPengajuan);
         setBiodataId(biodataId);
         setJenisKeahlianId(jenisKeahlianId);
+        setCreatedAt(createdAt);
+        setCreatedBy(createdBy);
+        setIsDeleted(isDeleted);
+        setUpdatedAt(updatedAt);
+        setUpdatedBy(updatedBy);
+        setVersion(version);
         resetChangedOnNotNull();
     }
 }

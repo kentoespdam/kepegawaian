@@ -50,171 +50,171 @@ public class KartuIdentitasRecord extends UpdatableRecordImpl<KartuIdentitasReco
     }
 
     /**
-     * Setter for <code>kartu_identitas.created_at</code>.
-     */
-    public void setCreatedAt(LocalDateTime value) {
-        set(2, value);
-    }
-
-    /**
-     * Getter for <code>kartu_identitas.created_at</code>.
-     */
-    public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(2);
-    }
-
-    /**
-     * Setter for <code>kartu_identitas.created_by</code>.
-     */
-    public void setCreatedBy(String value) {
-        set(3, value);
-    }
-
-    /**
-     * Getter for <code>kartu_identitas.created_by</code>.
-     */
-    public String getCreatedBy() {
-        return (String) get(3);
-    }
-
-    /**
-     * Setter for <code>kartu_identitas.is_deleted</code>.
-     */
-    public void setIsDeleted(Boolean value) {
-        set(4, value);
-    }
-
-    /**
-     * Getter for <code>kartu_identitas.is_deleted</code>.
-     */
-    public Boolean getIsDeleted() {
-        return (Boolean) get(4);
-    }
-
-    /**
-     * Setter for <code>kartu_identitas.updated_at</code>.
-     */
-    public void setUpdatedAt(LocalDateTime value) {
-        set(5, value);
-    }
-
-    /**
-     * Getter for <code>kartu_identitas.updated_at</code>.
-     */
-    public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(5);
-    }
-
-    /**
-     * Setter for <code>kartu_identitas.updated_by</code>.
-     */
-    public void setUpdatedBy(String value) {
-        set(6, value);
-    }
-
-    /**
-     * Getter for <code>kartu_identitas.updated_by</code>.
-     */
-    public String getUpdatedBy() {
-        return (String) get(6);
-    }
-
-    /**
-     * Setter for <code>kartu_identitas.version</code>.
-     */
-    public void setVersion(Integer value) {
-        set(7, value);
-    }
-
-    /**
-     * Getter for <code>kartu_identitas.version</code>.
-     */
-    public Integer getVersion() {
-        return (Integer) get(7);
-    }
-
-    /**
      * Setter for <code>kartu_identitas.nomor_kartu</code>.
      */
     public void setNomorKartu(String value) {
-        set(8, value);
+        set(2, value);
     }
 
     /**
      * Getter for <code>kartu_identitas.nomor_kartu</code>.
      */
     public String getNomorKartu() {
-        return (String) get(8);
+        return (String) get(2);
     }
 
     /**
      * Setter for <code>kartu_identitas.notes</code>.
      */
     public void setNotes(String value) {
-        set(9, value);
+        set(3, value);
     }
 
     /**
      * Getter for <code>kartu_identitas.notes</code>.
      */
     public String getNotes() {
-        return (String) get(9);
+        return (String) get(3);
     }
 
     /**
      * Setter for <code>kartu_identitas.tanggal_expired</code>.
      */
     public void setTanggalExpired(LocalDate value) {
-        set(10, value);
+        set(4, value);
     }
 
     /**
      * Getter for <code>kartu_identitas.tanggal_expired</code>.
      */
     public LocalDate getTanggalExpired() {
-        return (LocalDate) get(10);
+        return (LocalDate) get(4);
     }
 
     /**
      * Setter for <code>kartu_identitas.tanggal_terima</code>.
      */
     public void setTanggalTerima(LocalDate value) {
-        set(11, value);
+        set(5, value);
     }
 
     /**
      * Getter for <code>kartu_identitas.tanggal_terima</code>.
      */
     public LocalDate getTanggalTerima() {
-        return (LocalDate) get(11);
+        return (LocalDate) get(5);
     }
 
     /**
      * Setter for <code>kartu_identitas.nik</code>.
      */
     public void setNik(String value) {
-        set(12, value);
+        set(6, value);
     }
 
     /**
      * Getter for <code>kartu_identitas.nik</code>.
      */
     public String getNik() {
-        return (String) get(12);
+        return (String) get(6);
     }
 
     /**
      * Setter for <code>kartu_identitas.jenis_kitas_id</code>.
      */
     public void setJenisKitasId(Long value) {
-        set(13, value);
+        set(7, value);
     }
 
     /**
      * Getter for <code>kartu_identitas.jenis_kitas_id</code>.
      */
     public Long getJenisKitasId() {
-        return (Long) get(13);
+        return (Long) get(7);
+    }
+
+    /**
+     * Setter for <code>kartu_identitas.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime value) {
+        set(8, value);
+    }
+
+    /**
+     * Getter for <code>kartu_identitas.created_at</code>.
+     */
+    public LocalDateTime getCreatedAt() {
+        return (LocalDateTime) get(8);
+    }
+
+    /**
+     * Setter for <code>kartu_identitas.created_by</code>.
+     */
+    public void setCreatedBy(String value) {
+        set(9, value);
+    }
+
+    /**
+     * Getter for <code>kartu_identitas.created_by</code>.
+     */
+    public String getCreatedBy() {
+        return (String) get(9);
+    }
+
+    /**
+     * Setter for <code>kartu_identitas.is_deleted</code>.
+     */
+    public void setIsDeleted(Boolean value) {
+        set(10, value);
+    }
+
+    /**
+     * Getter for <code>kartu_identitas.is_deleted</code>.
+     */
+    public Boolean getIsDeleted() {
+        return (Boolean) get(10);
+    }
+
+    /**
+     * Setter for <code>kartu_identitas.updated_at</code>.
+     */
+    public void setUpdatedAt(LocalDateTime value) {
+        set(11, value);
+    }
+
+    /**
+     * Getter for <code>kartu_identitas.updated_at</code>.
+     */
+    public LocalDateTime getUpdatedAt() {
+        return (LocalDateTime) get(11);
+    }
+
+    /**
+     * Setter for <code>kartu_identitas.updated_by</code>.
+     */
+    public void setUpdatedBy(String value) {
+        set(12, value);
+    }
+
+    /**
+     * Getter for <code>kartu_identitas.updated_by</code>.
+     */
+    public String getUpdatedBy() {
+        return (String) get(12);
+    }
+
+    /**
+     * Setter for <code>kartu_identitas.version</code>.
+     */
+    public void setVersion(Integer value) {
+        set(13, value);
+    }
+
+    /**
+     * Getter for <code>kartu_identitas.version</code>.
+     */
+    public Integer getVersion() {
+        return (Integer) get(13);
     }
 
     // -------------------------------------------------------------------------
@@ -240,23 +240,23 @@ public class KartuIdentitasRecord extends UpdatableRecordImpl<KartuIdentitasReco
     /**
      * Create a detached, initialised KartuIdentitasRecord
      */
-    public KartuIdentitasRecord(Long id_, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version, String nomorKartu, String notes, LocalDate tanggalExpired, LocalDate tanggalTerima, String nik, Long jenisKitasId) {
+    public KartuIdentitasRecord(Long id_, Byte changedStatus, String nomorKartu, String notes, LocalDate tanggalExpired, LocalDate tanggalTerima, String nik, Long jenisKitasId, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version) {
         super(KartuIdentitas.KARTU_IDENTITAS);
 
         setId(id_);
         setChangedStatus(changedStatus);
-        setCreatedAt(createdAt);
-        setCreatedBy(createdBy);
-        setIsDeleted(isDeleted);
-        setUpdatedAt(updatedAt);
-        setUpdatedBy(updatedBy);
-        setVersion(version);
         setNomorKartu(nomorKartu);
         setNotes(notes);
         setTanggalExpired(tanggalExpired);
         setTanggalTerima(tanggalTerima);
         setNik(nik);
         setJenisKitasId(jenisKitasId);
+        setCreatedAt(createdAt);
+        setCreatedBy(createdBy);
+        setIsDeleted(isDeleted);
+        setUpdatedAt(updatedAt);
+        setUpdatedBy(updatedBy);
+        setVersion(version);
         resetChangedOnNotNull();
     }
 }

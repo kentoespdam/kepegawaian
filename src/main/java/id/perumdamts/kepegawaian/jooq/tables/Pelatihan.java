@@ -73,36 +73,6 @@ public class Pelatihan extends TableImpl<PelatihanRecord> {
     public final TableField<PelatihanRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>pelatihan.created_at</code>.
-     */
-    public final TableField<PelatihanRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>pelatihan.created_by</code>.
-     */
-    public final TableField<PelatihanRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>pelatihan.is_deleted</code>.
-     */
-    public final TableField<PelatihanRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
-
-    /**
-     * The column <code>pelatihan.updated_at</code>.
-     */
-    public final TableField<PelatihanRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>pelatihan.updated_by</code>.
-     */
-    public final TableField<PelatihanRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>pelatihan.version</code>.
-     */
-    public final TableField<PelatihanRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
      * The column <code>pelatihan.disetujui</code>.
      */
     public final TableField<PelatihanRecord, Boolean> DISETUJUI = createField(DSL.name("disetujui"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
@@ -176,6 +146,36 @@ public class Pelatihan extends TableImpl<PelatihanRecord> {
      * The column <code>pelatihan.jenis_pelatihan_id</code>.
      */
     public final TableField<PelatihanRecord, Long> JENIS_PELATIHAN_ID = createField(DSL.name("jenis_pelatihan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
+
+    /**
+     * The column <code>pelatihan.created_at</code>.
+     */
+    public final TableField<PelatihanRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>pelatihan.created_by</code>.
+     */
+    public final TableField<PelatihanRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>pelatihan.is_deleted</code>.
+     */
+    public final TableField<PelatihanRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
+     * The column <code>pelatihan.updated_at</code>.
+     */
+    public final TableField<PelatihanRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>pelatihan.updated_by</code>.
+     */
+    public final TableField<PelatihanRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>pelatihan.version</code>.
+     */
+    public final TableField<PelatihanRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     private Pelatihan(Name alias, Table<PelatihanRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

@@ -70,9 +70,9 @@ public class Level extends TableImpl<LevelRecord> {
     public final TableField<LevelRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>level.changed_status</code>.
+     * The column <code>level.nama</code>.
      */
-    public final TableField<LevelRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
+    public final TableField<LevelRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>level.created_at</code>.
@@ -98,16 +98,6 @@ public class Level extends TableImpl<LevelRecord> {
      * The column <code>level.updated_by</code>.
      */
     public final TableField<LevelRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>level.version</code>.
-     */
-    public final TableField<LevelRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>level.nama</code>.
-     */
-    public final TableField<LevelRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     private Level(Name alias, Table<LevelRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

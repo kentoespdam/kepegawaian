@@ -75,9 +75,29 @@ public class Jabatan extends TableImpl<JabatanRecord> {
     public final TableField<JabatanRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>jabatan.changed_status</code>.
+     * The column <code>jabatan.kode</code>.
      */
-    public final TableField<JabatanRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
+    public final TableField<JabatanRecord, String> KODE = createField(DSL.name("kode"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>jabatan.nama</code>.
+     */
+    public final TableField<JabatanRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>jabatan.level_id</code>.
+     */
+    public final TableField<JabatanRecord, Long> LEVEL_ID = createField(DSL.name("level_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
+
+    /**
+     * The column <code>jabatan.organisasi_id</code>.
+     */
+    public final TableField<JabatanRecord, Long> ORGANISASI_ID = createField(DSL.name("organisasi_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
+
+    /**
+     * The column <code>jabatan.parent_id</code>.
+     */
+    public final TableField<JabatanRecord, Long> PARENT_ID = createField(DSL.name("parent_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
      * The column <code>jabatan.created_at</code>.
@@ -103,36 +123,6 @@ public class Jabatan extends TableImpl<JabatanRecord> {
      * The column <code>jabatan.updated_by</code>.
      */
     public final TableField<JabatanRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>jabatan.version</code>.
-     */
-    public final TableField<JabatanRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>jabatan.kode</code>.
-     */
-    public final TableField<JabatanRecord, String> KODE = createField(DSL.name("kode"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>jabatan.nama</code>.
-     */
-    public final TableField<JabatanRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>jabatan.level_id</code>.
-     */
-    public final TableField<JabatanRecord, Long> LEVEL_ID = createField(DSL.name("level_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
-
-    /**
-     * The column <code>jabatan.organisasi_id</code>.
-     */
-    public final TableField<JabatanRecord, Long> ORGANISASI_ID = createField(DSL.name("organisasi_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
-
-    /**
-     * The column <code>jabatan.parent_id</code>.
-     */
-    public final TableField<JabatanRecord, Long> PARENT_ID = createField(DSL.name("parent_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     private Jabatan(Name alias, Table<JabatanRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

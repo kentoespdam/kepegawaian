@@ -66,6 +66,16 @@ public class GajiParameterSetting extends TableImpl<GajiParameterSettingRecord> 
     public final TableField<GajiParameterSettingRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
+     * The column <code>gaji_parameter_setting.kode</code>.
+     */
+    public final TableField<GajiParameterSettingRecord, String> KODE = createField(DSL.name("kode"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>gaji_parameter_setting.nominal</code>.
+     */
+    public final TableField<GajiParameterSettingRecord, Double> NOMINAL = createField(DSL.name("nominal"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
+
+    /**
      * The column <code>gaji_parameter_setting.created_at</code>.
      */
     public final TableField<GajiParameterSettingRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
@@ -94,16 +104,6 @@ public class GajiParameterSetting extends TableImpl<GajiParameterSettingRecord> 
      * The column <code>gaji_parameter_setting.version</code>.
      */
     public final TableField<GajiParameterSettingRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>gaji_parameter_setting.kode</code>.
-     */
-    public final TableField<GajiParameterSettingRecord, String> KODE = createField(DSL.name("kode"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>gaji_parameter_setting.nominal</code>.
-     */
-    public final TableField<GajiParameterSettingRecord, Double> NOMINAL = createField(DSL.name("nominal"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
 
     private GajiParameterSetting(Name alias, Table<GajiParameterSettingRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

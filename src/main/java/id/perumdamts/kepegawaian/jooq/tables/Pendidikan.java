@@ -72,36 +72,6 @@ public class Pendidikan extends TableImpl<PendidikanRecord> {
     public final TableField<PendidikanRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>pendidikan.created_at</code>.
-     */
-    public final TableField<PendidikanRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>pendidikan.created_by</code>.
-     */
-    public final TableField<PendidikanRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>pendidikan.is_deleted</code>.
-     */
-    public final TableField<PendidikanRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
-
-    /**
-     * The column <code>pendidikan.updated_at</code>.
-     */
-    public final TableField<PendidikanRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>pendidikan.updated_by</code>.
-     */
-    public final TableField<PendidikanRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>pendidikan.version</code>.
-     */
-    public final TableField<PendidikanRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
      * The column <code>pendidikan.disetujui</code>.
      */
     public final TableField<PendidikanRecord, Byte> DISETUJUI = createField(DSL.name("disetujui"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
@@ -180,6 +150,36 @@ public class Pendidikan extends TableImpl<PendidikanRecord> {
      * The column <code>pendidikan.jenjang_id</code>.
      */
     public final TableField<PendidikanRecord, Long> JENJANG_ID = createField(DSL.name("jenjang_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
+
+    /**
+     * The column <code>pendidikan.created_at</code>.
+     */
+    public final TableField<PendidikanRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>pendidikan.created_by</code>.
+     */
+    public final TableField<PendidikanRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>pendidikan.is_deleted</code>.
+     */
+    public final TableField<PendidikanRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
+     * The column <code>pendidikan.updated_at</code>.
+     */
+    public final TableField<PendidikanRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>pendidikan.updated_by</code>.
+     */
+    public final TableField<PendidikanRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>pendidikan.version</code>.
+     */
+    public final TableField<PendidikanRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     private Pendidikan(Name alias, Table<PendidikanRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

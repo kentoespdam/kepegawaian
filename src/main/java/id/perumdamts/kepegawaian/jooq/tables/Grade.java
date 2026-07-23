@@ -68,9 +68,19 @@ public class Grade extends TableImpl<GradeRecord> {
     public final TableField<GradeRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>grade.changed_status</code>.
+     * The column <code>grade.grade</code>.
      */
-    public final TableField<GradeRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
+    public final TableField<GradeRecord, Integer> GRADE_ = createField(DSL.name("grade"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>grade.tukin</code>.
+     */
+    public final TableField<GradeRecord, Double> TUKIN = createField(DSL.name("tukin"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
+
+    /**
+     * The column <code>grade.level_id</code>.
+     */
+    public final TableField<GradeRecord, Long> LEVEL_ID = createField(DSL.name("level_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
      * The column <code>grade.created_at</code>.
@@ -96,26 +106,6 @@ public class Grade extends TableImpl<GradeRecord> {
      * The column <code>grade.updated_by</code>.
      */
     public final TableField<GradeRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>grade.version</code>.
-     */
-    public final TableField<GradeRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>grade.grade</code>.
-     */
-    public final TableField<GradeRecord, Integer> GRADE_ = createField(DSL.name("grade"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>grade.tukin</code>.
-     */
-    public final TableField<GradeRecord, Double> TUKIN = createField(DSL.name("tukin"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
-
-    /**
-     * The column <code>grade.level_id</code>.
-     */
-    public final TableField<GradeRecord, Long> LEVEL_ID = createField(DSL.name("level_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     private Grade(Name alias, Table<GradeRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

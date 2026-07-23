@@ -50,255 +50,255 @@ public class RiwayatKontrakRecord extends UpdatableRecordImpl<RiwayatKontrakReco
     }
 
     /**
-     * Setter for <code>riwayat_kontrak.created_at</code>.
-     */
-    public void setCreatedAt(LocalDateTime value) {
-        set(2, value);
-    }
-
-    /**
-     * Getter for <code>riwayat_kontrak.created_at</code>.
-     */
-    public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(2);
-    }
-
-    /**
-     * Setter for <code>riwayat_kontrak.created_by</code>.
-     */
-    public void setCreatedBy(String value) {
-        set(3, value);
-    }
-
-    /**
-     * Getter for <code>riwayat_kontrak.created_by</code>.
-     */
-    public String getCreatedBy() {
-        return (String) get(3);
-    }
-
-    /**
-     * Setter for <code>riwayat_kontrak.is_deleted</code>.
-     */
-    public void setIsDeleted(Boolean value) {
-        set(4, value);
-    }
-
-    /**
-     * Getter for <code>riwayat_kontrak.is_deleted</code>.
-     */
-    public Boolean getIsDeleted() {
-        return (Boolean) get(4);
-    }
-
-    /**
-     * Setter for <code>riwayat_kontrak.updated_at</code>.
-     */
-    public void setUpdatedAt(LocalDateTime value) {
-        set(5, value);
-    }
-
-    /**
-     * Getter for <code>riwayat_kontrak.updated_at</code>.
-     */
-    public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(5);
-    }
-
-    /**
-     * Setter for <code>riwayat_kontrak.updated_by</code>.
-     */
-    public void setUpdatedBy(String value) {
-        set(6, value);
-    }
-
-    /**
-     * Getter for <code>riwayat_kontrak.updated_by</code>.
-     */
-    public String getUpdatedBy() {
-        return (String) get(6);
-    }
-
-    /**
-     * Setter for <code>riwayat_kontrak.version</code>.
-     */
-    public void setVersion(Integer value) {
-        set(7, value);
-    }
-
-    /**
-     * Getter for <code>riwayat_kontrak.version</code>.
-     */
-    public Integer getVersion() {
-        return (Integer) get(7);
-    }
-
-    /**
      * Setter for <code>riwayat_kontrak.is_latest</code>.
      */
     public void setIsLatest(Boolean value) {
-        set(8, value);
+        set(2, value);
     }
 
     /**
      * Getter for <code>riwayat_kontrak.is_latest</code>.
      */
     public Boolean getIsLatest() {
-        return (Boolean) get(8);
+        return (Boolean) get(2);
     }
 
     /**
      * Setter for <code>riwayat_kontrak.jenis_kontrak</code>.
      */
     public void setJenisKontrak(Byte value) {
-        set(9, value);
+        set(3, value);
     }
 
     /**
      * Getter for <code>riwayat_kontrak.jenis_kontrak</code>.
      */
     public Byte getJenisKontrak() {
-        return (Byte) get(9);
+        return (Byte) get(3);
     }
 
     /**
      * Setter for <code>riwayat_kontrak.nama</code>.
      */
     public void setNama(String value) {
-        set(10, value);
+        set(4, value);
     }
 
     /**
      * Getter for <code>riwayat_kontrak.nama</code>.
      */
     public String getNama() {
-        return (String) get(10);
+        return (String) get(4);
     }
 
     /**
      * Setter for <code>riwayat_kontrak.nipam</code>.
      */
     public void setNipam(String value) {
-        set(11, value);
+        set(5, value);
     }
 
     /**
      * Getter for <code>riwayat_kontrak.nipam</code>.
      */
     public String getNipam() {
-        return (String) get(11);
+        return (String) get(5);
     }
 
     /**
      * Setter for <code>riwayat_kontrak.nomor_kontrak</code>.
      */
     public void setNomorKontrak(String value) {
-        set(12, value);
+        set(6, value);
     }
 
     /**
      * Getter for <code>riwayat_kontrak.nomor_kontrak</code>.
      */
     public String getNomorKontrak() {
-        return (String) get(12);
+        return (String) get(6);
     }
 
     /**
      * Setter for <code>riwayat_kontrak.notes</code>.
      */
     public void setNotes(String value) {
-        set(13, value);
+        set(7, value);
     }
 
     /**
      * Getter for <code>riwayat_kontrak.notes</code>.
      */
     public String getNotes() {
-        return (String) get(13);
+        return (String) get(7);
     }
 
     /**
      * Setter for <code>riwayat_kontrak.tanggal_mulai</code>.
      */
     public void setTanggalMulai(LocalDate value) {
-        set(14, value);
+        set(8, value);
     }
 
     /**
      * Getter for <code>riwayat_kontrak.tanggal_mulai</code>.
      */
     public LocalDate getTanggalMulai() {
-        return (LocalDate) get(14);
+        return (LocalDate) get(8);
     }
 
     /**
      * Setter for <code>riwayat_kontrak.tanggal_selesai</code>.
      */
     public void setTanggalSelesai(LocalDate value) {
-        set(15, value);
+        set(9, value);
     }
 
     /**
      * Getter for <code>riwayat_kontrak.tanggal_selesai</code>.
      */
     public LocalDate getTanggalSelesai() {
-        return (LocalDate) get(15);
+        return (LocalDate) get(9);
     }
 
     /**
      * Setter for <code>riwayat_kontrak.tanggal_sk</code>.
      */
     public void setTanggalSk(LocalDate value) {
-        set(16, value);
+        set(10, value);
     }
 
     /**
      * Getter for <code>riwayat_kontrak.tanggal_sk</code>.
      */
     public LocalDate getTanggalSk() {
-        return (LocalDate) get(16);
+        return (LocalDate) get(10);
     }
 
     /**
      * Setter for <code>riwayat_kontrak.jabatan_id</code>.
      */
     public void setJabatanId(Long value) {
-        set(17, value);
+        set(11, value);
     }
 
     /**
      * Getter for <code>riwayat_kontrak.jabatan_id</code>.
      */
     public Long getJabatanId() {
-        return (Long) get(17);
+        return (Long) get(11);
     }
 
     /**
      * Setter for <code>riwayat_kontrak.organisasi_id</code>.
      */
     public void setOrganisasiId(Long value) {
-        set(18, value);
+        set(12, value);
     }
 
     /**
      * Getter for <code>riwayat_kontrak.organisasi_id</code>.
      */
     public Long getOrganisasiId() {
-        return (Long) get(18);
+        return (Long) get(12);
     }
 
     /**
      * Setter for <code>riwayat_kontrak.pegawai_id</code>.
      */
     public void setPegawaiId(Long value) {
-        set(19, value);
+        set(13, value);
     }
 
     /**
      * Getter for <code>riwayat_kontrak.pegawai_id</code>.
      */
     public Long getPegawaiId() {
-        return (Long) get(19);
+        return (Long) get(13);
+    }
+
+    /**
+     * Setter for <code>riwayat_kontrak.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime value) {
+        set(14, value);
+    }
+
+    /**
+     * Getter for <code>riwayat_kontrak.created_at</code>.
+     */
+    public LocalDateTime getCreatedAt() {
+        return (LocalDateTime) get(14);
+    }
+
+    /**
+     * Setter for <code>riwayat_kontrak.created_by</code>.
+     */
+    public void setCreatedBy(String value) {
+        set(15, value);
+    }
+
+    /**
+     * Getter for <code>riwayat_kontrak.created_by</code>.
+     */
+    public String getCreatedBy() {
+        return (String) get(15);
+    }
+
+    /**
+     * Setter for <code>riwayat_kontrak.is_deleted</code>.
+     */
+    public void setIsDeleted(Boolean value) {
+        set(16, value);
+    }
+
+    /**
+     * Getter for <code>riwayat_kontrak.is_deleted</code>.
+     */
+    public Boolean getIsDeleted() {
+        return (Boolean) get(16);
+    }
+
+    /**
+     * Setter for <code>riwayat_kontrak.updated_at</code>.
+     */
+    public void setUpdatedAt(LocalDateTime value) {
+        set(17, value);
+    }
+
+    /**
+     * Getter for <code>riwayat_kontrak.updated_at</code>.
+     */
+    public LocalDateTime getUpdatedAt() {
+        return (LocalDateTime) get(17);
+    }
+
+    /**
+     * Setter for <code>riwayat_kontrak.updated_by</code>.
+     */
+    public void setUpdatedBy(String value) {
+        set(18, value);
+    }
+
+    /**
+     * Getter for <code>riwayat_kontrak.updated_by</code>.
+     */
+    public String getUpdatedBy() {
+        return (String) get(18);
+    }
+
+    /**
+     * Setter for <code>riwayat_kontrak.version</code>.
+     */
+    public void setVersion(Integer value) {
+        set(19, value);
+    }
+
+    /**
+     * Getter for <code>riwayat_kontrak.version</code>.
+     */
+    public Integer getVersion() {
+        return (Integer) get(19);
     }
 
     // -------------------------------------------------------------------------
@@ -324,17 +324,11 @@ public class RiwayatKontrakRecord extends UpdatableRecordImpl<RiwayatKontrakReco
     /**
      * Create a detached, initialised RiwayatKontrakRecord
      */
-    public RiwayatKontrakRecord(Long id_, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version, Boolean isLatest, Byte jenisKontrak, String nama, String nipam, String nomorKontrak, String notes, LocalDate tanggalMulai, LocalDate tanggalSelesai, LocalDate tanggalSk, Long jabatanId, Long organisasiId, Long pegawaiId) {
+    public RiwayatKontrakRecord(Long id_, Byte changedStatus, Boolean isLatest, Byte jenisKontrak, String nama, String nipam, String nomorKontrak, String notes, LocalDate tanggalMulai, LocalDate tanggalSelesai, LocalDate tanggalSk, Long jabatanId, Long organisasiId, Long pegawaiId, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version) {
         super(RiwayatKontrak.RIWAYAT_KONTRAK);
 
         setId(id_);
         setChangedStatus(changedStatus);
-        setCreatedAt(createdAt);
-        setCreatedBy(createdBy);
-        setIsDeleted(isDeleted);
-        setUpdatedAt(updatedAt);
-        setUpdatedBy(updatedBy);
-        setVersion(version);
         setIsLatest(isLatest);
         setJenisKontrak(jenisKontrak);
         setNama(nama);
@@ -347,6 +341,12 @@ public class RiwayatKontrakRecord extends UpdatableRecordImpl<RiwayatKontrakReco
         setJabatanId(jabatanId);
         setOrganisasiId(organisasiId);
         setPegawaiId(pegawaiId);
+        setCreatedAt(createdAt);
+        setCreatedBy(createdBy);
+        setIsDeleted(isDeleted);
+        setUpdatedAt(updatedAt);
+        setUpdatedBy(updatedBy);
+        setVersion(version);
         resetChangedOnNotNull();
     }
 }

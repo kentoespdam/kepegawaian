@@ -71,6 +71,26 @@ public class CutiJenis extends TableImpl<CutiJenisRecord> {
     public final TableField<CutiJenisRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
+     * The column <code>cuti_jenis.max_hari</code>.
+     */
+    public final TableField<CutiJenisRecord, Integer> MAX_HARI = createField(DSL.name("max_hari"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>cuti_jenis.nama</code>.
+     */
+    public final TableField<CutiJenisRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>cuti_jenis.potong_kuota_tahunan</code>.
+     */
+    public final TableField<CutiJenisRecord, Boolean> POTONG_KUOTA_TAHUNAN = createField(DSL.name("potong_kuota_tahunan"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
+
+    /**
+     * The column <code>cuti_jenis.parent_id</code>.
+     */
+    public final TableField<CutiJenisRecord, Long> PARENT_ID = createField(DSL.name("parent_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
+
+    /**
      * The column <code>cuti_jenis.created_at</code>.
      */
     public final TableField<CutiJenisRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
@@ -99,26 +119,6 @@ public class CutiJenis extends TableImpl<CutiJenisRecord> {
      * The column <code>cuti_jenis.version</code>.
      */
     public final TableField<CutiJenisRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>cuti_jenis.max_hari</code>.
-     */
-    public final TableField<CutiJenisRecord, Integer> MAX_HARI = createField(DSL.name("max_hari"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>cuti_jenis.nama</code>.
-     */
-    public final TableField<CutiJenisRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>cuti_jenis.potong_kuota_tahunan</code>.
-     */
-    public final TableField<CutiJenisRecord, Boolean> POTONG_KUOTA_TAHUNAN = createField(DSL.name("potong_kuota_tahunan"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
-
-    /**
-     * The column <code>cuti_jenis.parent_id</code>.
-     */
-    public final TableField<CutiJenisRecord, Long> PARENT_ID = createField(DSL.name("parent_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     private CutiJenis(Name alias, Table<CutiJenisRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

@@ -49,101 +49,101 @@ public class GajiProfilRecord extends UpdatableRecordImpl<GajiProfilRecord> {
     }
 
     /**
-     * Setter for <code>gaji_profil.created_at</code>.
-     */
-    public void setCreatedAt(LocalDateTime value) {
-        set(2, value);
-    }
-
-    /**
-     * Getter for <code>gaji_profil.created_at</code>.
-     */
-    public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(2);
-    }
-
-    /**
-     * Setter for <code>gaji_profil.created_by</code>.
-     */
-    public void setCreatedBy(String value) {
-        set(3, value);
-    }
-
-    /**
-     * Getter for <code>gaji_profil.created_by</code>.
-     */
-    public String getCreatedBy() {
-        return (String) get(3);
-    }
-
-    /**
-     * Setter for <code>gaji_profil.is_deleted</code>.
-     */
-    public void setIsDeleted(Boolean value) {
-        set(4, value);
-    }
-
-    /**
-     * Getter for <code>gaji_profil.is_deleted</code>.
-     */
-    public Boolean getIsDeleted() {
-        return (Boolean) get(4);
-    }
-
-    /**
-     * Setter for <code>gaji_profil.updated_at</code>.
-     */
-    public void setUpdatedAt(LocalDateTime value) {
-        set(5, value);
-    }
-
-    /**
-     * Getter for <code>gaji_profil.updated_at</code>.
-     */
-    public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(5);
-    }
-
-    /**
-     * Setter for <code>gaji_profil.updated_by</code>.
-     */
-    public void setUpdatedBy(String value) {
-        set(6, value);
-    }
-
-    /**
-     * Getter for <code>gaji_profil.updated_by</code>.
-     */
-    public String getUpdatedBy() {
-        return (String) get(6);
-    }
-
-    /**
-     * Setter for <code>gaji_profil.version</code>.
-     */
-    public void setVersion(Integer value) {
-        set(7, value);
-    }
-
-    /**
-     * Getter for <code>gaji_profil.version</code>.
-     */
-    public Integer getVersion() {
-        return (Integer) get(7);
-    }
-
-    /**
      * Setter for <code>gaji_profil.nama</code>.
      */
     public void setNama(String value) {
-        set(8, value);
+        set(2, value);
     }
 
     /**
      * Getter for <code>gaji_profil.nama</code>.
      */
     public String getNama() {
-        return (String) get(8);
+        return (String) get(2);
+    }
+
+    /**
+     * Setter for <code>gaji_profil.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime value) {
+        set(3, value);
+    }
+
+    /**
+     * Getter for <code>gaji_profil.created_at</code>.
+     */
+    public LocalDateTime getCreatedAt() {
+        return (LocalDateTime) get(3);
+    }
+
+    /**
+     * Setter for <code>gaji_profil.created_by</code>.
+     */
+    public void setCreatedBy(String value) {
+        set(4, value);
+    }
+
+    /**
+     * Getter for <code>gaji_profil.created_by</code>.
+     */
+    public String getCreatedBy() {
+        return (String) get(4);
+    }
+
+    /**
+     * Setter for <code>gaji_profil.is_deleted</code>.
+     */
+    public void setIsDeleted(Boolean value) {
+        set(5, value);
+    }
+
+    /**
+     * Getter for <code>gaji_profil.is_deleted</code>.
+     */
+    public Boolean getIsDeleted() {
+        return (Boolean) get(5);
+    }
+
+    /**
+     * Setter for <code>gaji_profil.updated_at</code>.
+     */
+    public void setUpdatedAt(LocalDateTime value) {
+        set(6, value);
+    }
+
+    /**
+     * Getter for <code>gaji_profil.updated_at</code>.
+     */
+    public LocalDateTime getUpdatedAt() {
+        return (LocalDateTime) get(6);
+    }
+
+    /**
+     * Setter for <code>gaji_profil.updated_by</code>.
+     */
+    public void setUpdatedBy(String value) {
+        set(7, value);
+    }
+
+    /**
+     * Getter for <code>gaji_profil.updated_by</code>.
+     */
+    public String getUpdatedBy() {
+        return (String) get(7);
+    }
+
+    /**
+     * Setter for <code>gaji_profil.version</code>.
+     */
+    public void setVersion(Integer value) {
+        set(8, value);
+    }
+
+    /**
+     * Getter for <code>gaji_profil.version</code>.
+     */
+    public Integer getVersion() {
+        return (Integer) get(8);
     }
 
     // -------------------------------------------------------------------------
@@ -169,18 +169,18 @@ public class GajiProfilRecord extends UpdatableRecordImpl<GajiProfilRecord> {
     /**
      * Create a detached, initialised GajiProfilRecord
      */
-    public GajiProfilRecord(Long id_, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version, String nama) {
+    public GajiProfilRecord(Long id_, Byte changedStatus, String nama, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version) {
         super(GajiProfil.GAJI_PROFIL);
 
         setId(id_);
         setChangedStatus(changedStatus);
+        setNama(nama);
         setCreatedAt(createdAt);
         setCreatedBy(createdBy);
         setIsDeleted(isDeleted);
         setUpdatedAt(updatedAt);
         setUpdatedBy(updatedBy);
         setVersion(version);
-        setNama(nama);
         resetChangedOnNotNull();
     }
 }

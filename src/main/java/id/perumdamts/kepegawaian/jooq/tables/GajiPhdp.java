@@ -66,6 +66,21 @@ public class GajiPhdp extends TableImpl<GajiPhdpRecord> {
     public final TableField<GajiPhdpRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
+     * The column <code>gaji_phdp.formula</code>.
+     */
+    public final TableField<GajiPhdpRecord, String> FORMULA = createField(DSL.name("formula"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>gaji_phdp.kondisi</code>.
+     */
+    public final TableField<GajiPhdpRecord, String> KONDISI = createField(DSL.name("kondisi"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>gaji_phdp.urut</code>.
+     */
+    public final TableField<GajiPhdpRecord, Integer> URUT = createField(DSL.name("urut"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
+
+    /**
      * The column <code>gaji_phdp.created_at</code>.
      */
     public final TableField<GajiPhdpRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
@@ -94,21 +109,6 @@ public class GajiPhdp extends TableImpl<GajiPhdpRecord> {
      * The column <code>gaji_phdp.version</code>.
      */
     public final TableField<GajiPhdpRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>gaji_phdp.formula</code>.
-     */
-    public final TableField<GajiPhdpRecord, String> FORMULA = createField(DSL.name("formula"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>gaji_phdp.kondisi</code>.
-     */
-    public final TableField<GajiPhdpRecord, String> KONDISI = createField(DSL.name("kondisi"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>gaji_phdp.urut</code>.
-     */
-    public final TableField<GajiPhdpRecord, Integer> URUT = createField(DSL.name("urut"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     private GajiPhdp(Name alias, Table<GajiPhdpRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

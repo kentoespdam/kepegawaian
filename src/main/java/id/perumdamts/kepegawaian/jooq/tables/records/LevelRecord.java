@@ -35,17 +35,17 @@ public class LevelRecord extends UpdatableRecordImpl<LevelRecord> {
     }
 
     /**
-     * Setter for <code>level.changed_status</code>.
+     * Setter for <code>level.nama</code>.
      */
-    public void setChangedStatus(Byte value) {
+    public void setNama(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>level.changed_status</code>.
+     * Getter for <code>level.nama</code>.
      */
-    public Byte getChangedStatus() {
-        return (Byte) get(1);
+    public String getNama() {
+        return (String) get(1);
     }
 
     /**
@@ -118,34 +118,6 @@ public class LevelRecord extends UpdatableRecordImpl<LevelRecord> {
         return (String) get(6);
     }
 
-    /**
-     * Setter for <code>level.version</code>.
-     */
-    public void setVersion(Integer value) {
-        set(7, value);
-    }
-
-    /**
-     * Getter for <code>level.version</code>.
-     */
-    public Integer getVersion() {
-        return (Integer) get(7);
-    }
-
-    /**
-     * Setter for <code>level.nama</code>.
-     */
-    public void setNama(String value) {
-        set(8, value);
-    }
-
-    /**
-     * Getter for <code>level.nama</code>.
-     */
-    public String getNama() {
-        return (String) get(8);
-    }
-
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -169,18 +141,16 @@ public class LevelRecord extends UpdatableRecordImpl<LevelRecord> {
     /**
      * Create a detached, initialised LevelRecord
      */
-    public LevelRecord(Long id_, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version, String nama) {
+    public LevelRecord(Long id_, String nama, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy) {
         super(Level.LEVEL);
 
         setId(id_);
-        setChangedStatus(changedStatus);
+        setNama(nama);
         setCreatedAt(createdAt);
         setCreatedBy(createdBy);
         setIsDeleted(isDeleted);
         setUpdatedAt(updatedAt);
         setUpdatedBy(updatedBy);
-        setVersion(version);
-        setNama(nama);
         resetChangedOnNotNull();
     }
 }

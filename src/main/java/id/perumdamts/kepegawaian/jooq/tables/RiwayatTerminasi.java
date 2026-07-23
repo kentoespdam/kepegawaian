@@ -77,36 +77,6 @@ public class RiwayatTerminasi extends TableImpl<RiwayatTerminasiRecord> {
     public final TableField<RiwayatTerminasiRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>riwayat_terminasi.created_at</code>.
-     */
-    public final TableField<RiwayatTerminasiRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>riwayat_terminasi.created_by</code>.
-     */
-    public final TableField<RiwayatTerminasiRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>riwayat_terminasi.is_deleted</code>.
-     */
-    public final TableField<RiwayatTerminasiRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
-
-    /**
-     * The column <code>riwayat_terminasi.updated_at</code>.
-     */
-    public final TableField<RiwayatTerminasiRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>riwayat_terminasi.updated_by</code>.
-     */
-    public final TableField<RiwayatTerminasiRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>riwayat_terminasi.version</code>.
-     */
-    public final TableField<RiwayatTerminasiRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
      * The column <code>riwayat_terminasi.masa_kerja</code>.
      */
     public final TableField<RiwayatTerminasiRecord, Integer> MASA_KERJA = createField(DSL.name("masa_kerja"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
@@ -185,6 +155,36 @@ public class RiwayatTerminasi extends TableImpl<RiwayatTerminasiRecord> {
      * The column <code>riwayat_terminasi.riwayat_sk_id</code>.
      */
     public final TableField<RiwayatTerminasiRecord, Long> RIWAYAT_SK_ID = createField(DSL.name("riwayat_sk_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
+
+    /**
+     * The column <code>riwayat_terminasi.created_at</code>.
+     */
+    public final TableField<RiwayatTerminasiRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>riwayat_terminasi.created_by</code>.
+     */
+    public final TableField<RiwayatTerminasiRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>riwayat_terminasi.is_deleted</code>.
+     */
+    public final TableField<RiwayatTerminasiRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
+     * The column <code>riwayat_terminasi.updated_at</code>.
+     */
+    public final TableField<RiwayatTerminasiRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>riwayat_terminasi.updated_by</code>.
+     */
+    public final TableField<RiwayatTerminasiRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>riwayat_terminasi.version</code>.
+     */
+    public final TableField<RiwayatTerminasiRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     private RiwayatTerminasi(Name alias, Table<RiwayatTerminasiRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

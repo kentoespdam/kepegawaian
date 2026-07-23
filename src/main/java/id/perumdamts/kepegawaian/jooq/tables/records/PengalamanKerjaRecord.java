@@ -49,255 +49,255 @@ public class PengalamanKerjaRecord extends UpdatableRecordImpl<PengalamanKerjaRe
     }
 
     /**
-     * Setter for <code>pengalaman_kerja.created_at</code>.
-     */
-    public void setCreatedAt(LocalDateTime value) {
-        set(2, value);
-    }
-
-    /**
-     * Getter for <code>pengalaman_kerja.created_at</code>.
-     */
-    public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(2);
-    }
-
-    /**
-     * Setter for <code>pengalaman_kerja.created_by</code>.
-     */
-    public void setCreatedBy(String value) {
-        set(3, value);
-    }
-
-    /**
-     * Getter for <code>pengalaman_kerja.created_by</code>.
-     */
-    public String getCreatedBy() {
-        return (String) get(3);
-    }
-
-    /**
-     * Setter for <code>pengalaman_kerja.is_deleted</code>.
-     */
-    public void setIsDeleted(Boolean value) {
-        set(4, value);
-    }
-
-    /**
-     * Getter for <code>pengalaman_kerja.is_deleted</code>.
-     */
-    public Boolean getIsDeleted() {
-        return (Boolean) get(4);
-    }
-
-    /**
-     * Setter for <code>pengalaman_kerja.updated_at</code>.
-     */
-    public void setUpdatedAt(LocalDateTime value) {
-        set(5, value);
-    }
-
-    /**
-     * Getter for <code>pengalaman_kerja.updated_at</code>.
-     */
-    public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(5);
-    }
-
-    /**
-     * Setter for <code>pengalaman_kerja.updated_by</code>.
-     */
-    public void setUpdatedBy(String value) {
-        set(6, value);
-    }
-
-    /**
-     * Getter for <code>pengalaman_kerja.updated_by</code>.
-     */
-    public String getUpdatedBy() {
-        return (String) get(6);
-    }
-
-    /**
-     * Setter for <code>pengalaman_kerja.version</code>.
-     */
-    public void setVersion(Integer value) {
-        set(7, value);
-    }
-
-    /**
-     * Getter for <code>pengalaman_kerja.version</code>.
-     */
-    public Integer getVersion() {
-        return (Integer) get(7);
-    }
-
-    /**
      * Setter for <code>pengalaman_kerja.disetujui</code>.
      */
     public void setDisetujui(Byte value) {
-        set(8, value);
+        set(2, value);
     }
 
     /**
      * Getter for <code>pengalaman_kerja.disetujui</code>.
      */
     public Byte getDisetujui() {
-        return (Byte) get(8);
+        return (Byte) get(2);
     }
 
     /**
      * Setter for <code>pengalaman_kerja.disetujui_oleh</code>.
      */
     public void setDisetujuiOleh(String value) {
-        set(9, value);
+        set(3, value);
     }
 
     /**
      * Getter for <code>pengalaman_kerja.disetujui_oleh</code>.
      */
     public String getDisetujuiOleh() {
-        return (String) get(9);
+        return (String) get(3);
     }
 
     /**
      * Setter for <code>pengalaman_kerja.jabatan</code>.
      */
     public void setJabatan(String value) {
-        set(10, value);
+        set(4, value);
     }
 
     /**
      * Getter for <code>pengalaman_kerja.jabatan</code>.
      */
     public String getJabatan() {
-        return (String) get(10);
+        return (String) get(4);
     }
 
     /**
      * Setter for <code>pengalaman_kerja.lokasi</code>.
      */
     public void setLokasi(String value) {
-        set(11, value);
+        set(5, value);
     }
 
     /**
      * Getter for <code>pengalaman_kerja.lokasi</code>.
      */
     public String getLokasi() {
-        return (String) get(11);
+        return (String) get(5);
     }
 
     /**
      * Setter for <code>pengalaman_kerja.nama_perusahaan</code>.
      */
     public void setNamaPerusahaan(String value) {
-        set(12, value);
+        set(6, value);
     }
 
     /**
      * Getter for <code>pengalaman_kerja.nama_perusahaan</code>.
      */
     public String getNamaPerusahaan() {
-        return (String) get(12);
+        return (String) get(6);
     }
 
     /**
      * Setter for <code>pengalaman_kerja.notes</code>.
      */
     public void setNotes(String value) {
-        set(13, value);
+        set(7, value);
     }
 
     /**
      * Getter for <code>pengalaman_kerja.notes</code>.
      */
     public String getNotes() {
-        return (String) get(13);
+        return (String) get(7);
     }
 
     /**
      * Setter for <code>pengalaman_kerja.tahun_keluar</code>.
      */
     public void setTahunKeluar(Integer value) {
-        set(14, value);
+        set(8, value);
     }
 
     /**
      * Getter for <code>pengalaman_kerja.tahun_keluar</code>.
      */
     public Integer getTahunKeluar() {
-        return (Integer) get(14);
+        return (Integer) get(8);
     }
 
     /**
      * Setter for <code>pengalaman_kerja.tahun_masuk</code>.
      */
     public void setTahunMasuk(Integer value) {
-        set(15, value);
+        set(9, value);
     }
 
     /**
      * Getter for <code>pengalaman_kerja.tahun_masuk</code>.
      */
     public Integer getTahunMasuk() {
-        return (Integer) get(15);
+        return (Integer) get(9);
     }
 
     /**
      * Setter for <code>pengalaman_kerja.tanggal_disetujui</code>.
      */
     public void setTanggalDisetujui(LocalDateTime value) {
-        set(16, value);
+        set(10, value);
     }
 
     /**
      * Getter for <code>pengalaman_kerja.tanggal_disetujui</code>.
      */
     public LocalDateTime getTanggalDisetujui() {
-        return (LocalDateTime) get(16);
+        return (LocalDateTime) get(10);
     }
 
     /**
      * Setter for <code>pengalaman_kerja.tanggal_pengajuan</code>.
      */
     public void setTanggalPengajuan(LocalDateTime value) {
-        set(17, value);
+        set(11, value);
     }
 
     /**
      * Getter for <code>pengalaman_kerja.tanggal_pengajuan</code>.
      */
     public LocalDateTime getTanggalPengajuan() {
-        return (LocalDateTime) get(17);
+        return (LocalDateTime) get(11);
     }
 
     /**
      * Setter for <code>pengalaman_kerja.type_perusahaan</code>.
      */
     public void setTypePerusahaan(String value) {
-        set(18, value);
+        set(12, value);
     }
 
     /**
      * Getter for <code>pengalaman_kerja.type_perusahaan</code>.
      */
     public String getTypePerusahaan() {
-        return (String) get(18);
+        return (String) get(12);
     }
 
     /**
      * Setter for <code>pengalaman_kerja.biodata_id</code>.
      */
     public void setBiodataId(String value) {
-        set(19, value);
+        set(13, value);
     }
 
     /**
      * Getter for <code>pengalaman_kerja.biodata_id</code>.
      */
     public String getBiodataId() {
-        return (String) get(19);
+        return (String) get(13);
+    }
+
+    /**
+     * Setter for <code>pengalaman_kerja.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime value) {
+        set(14, value);
+    }
+
+    /**
+     * Getter for <code>pengalaman_kerja.created_at</code>.
+     */
+    public LocalDateTime getCreatedAt() {
+        return (LocalDateTime) get(14);
+    }
+
+    /**
+     * Setter for <code>pengalaman_kerja.created_by</code>.
+     */
+    public void setCreatedBy(String value) {
+        set(15, value);
+    }
+
+    /**
+     * Getter for <code>pengalaman_kerja.created_by</code>.
+     */
+    public String getCreatedBy() {
+        return (String) get(15);
+    }
+
+    /**
+     * Setter for <code>pengalaman_kerja.is_deleted</code>.
+     */
+    public void setIsDeleted(Boolean value) {
+        set(16, value);
+    }
+
+    /**
+     * Getter for <code>pengalaman_kerja.is_deleted</code>.
+     */
+    public Boolean getIsDeleted() {
+        return (Boolean) get(16);
+    }
+
+    /**
+     * Setter for <code>pengalaman_kerja.updated_at</code>.
+     */
+    public void setUpdatedAt(LocalDateTime value) {
+        set(17, value);
+    }
+
+    /**
+     * Getter for <code>pengalaman_kerja.updated_at</code>.
+     */
+    public LocalDateTime getUpdatedAt() {
+        return (LocalDateTime) get(17);
+    }
+
+    /**
+     * Setter for <code>pengalaman_kerja.updated_by</code>.
+     */
+    public void setUpdatedBy(String value) {
+        set(18, value);
+    }
+
+    /**
+     * Getter for <code>pengalaman_kerja.updated_by</code>.
+     */
+    public String getUpdatedBy() {
+        return (String) get(18);
+    }
+
+    /**
+     * Setter for <code>pengalaman_kerja.version</code>.
+     */
+    public void setVersion(Integer value) {
+        set(19, value);
+    }
+
+    /**
+     * Getter for <code>pengalaman_kerja.version</code>.
+     */
+    public Integer getVersion() {
+        return (Integer) get(19);
     }
 
     // -------------------------------------------------------------------------
@@ -323,17 +323,11 @@ public class PengalamanKerjaRecord extends UpdatableRecordImpl<PengalamanKerjaRe
     /**
      * Create a detached, initialised PengalamanKerjaRecord
      */
-    public PengalamanKerjaRecord(Long id_, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version, Byte disetujui, String disetujuiOleh, String jabatan, String lokasi, String namaPerusahaan, String notes, Integer tahunKeluar, Integer tahunMasuk, LocalDateTime tanggalDisetujui, LocalDateTime tanggalPengajuan, String typePerusahaan, String biodataId) {
+    public PengalamanKerjaRecord(Long id_, Byte changedStatus, Byte disetujui, String disetujuiOleh, String jabatan, String lokasi, String namaPerusahaan, String notes, Integer tahunKeluar, Integer tahunMasuk, LocalDateTime tanggalDisetujui, LocalDateTime tanggalPengajuan, String typePerusahaan, String biodataId, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version) {
         super(PengalamanKerja.PENGALAMAN_KERJA);
 
         setId(id_);
         setChangedStatus(changedStatus);
-        setCreatedAt(createdAt);
-        setCreatedBy(createdBy);
-        setIsDeleted(isDeleted);
-        setUpdatedAt(updatedAt);
-        setUpdatedBy(updatedBy);
-        setVersion(version);
         setDisetujui(disetujui);
         setDisetujuiOleh(disetujuiOleh);
         setJabatan(jabatan);
@@ -346,6 +340,12 @@ public class PengalamanKerjaRecord extends UpdatableRecordImpl<PengalamanKerjaRe
         setTanggalPengajuan(tanggalPengajuan);
         setTypePerusahaan(typePerusahaan);
         setBiodataId(biodataId);
+        setCreatedAt(createdAt);
+        setCreatedBy(createdBy);
+        setIsDeleted(isDeleted);
+        setUpdatedAt(updatedAt);
+        setUpdatedBy(updatedBy);
+        setVersion(version);
         resetChangedOnNotNull();
     }
 }

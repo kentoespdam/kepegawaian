@@ -72,6 +72,26 @@ public class DasarGaji extends TableImpl<DasarGajiRecord> {
     public final TableField<DasarGajiRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
+     * The column <code>dasar_gaji.aktif</code>.
+     */
+    public final TableField<DasarGajiRecord, Boolean> AKTIF = createField(DSL.name("aktif"), SQLDataType.BIT.nullable(false), this, "");
+
+    /**
+     * The column <code>dasar_gaji.deskripsi</code>.
+     */
+    public final TableField<DasarGajiRecord, String> DESKRIPSI = createField(DSL.name("deskripsi"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>dasar_gaji.tanggal_akhir</code>.
+     */
+    public final TableField<DasarGajiRecord, LocalDate> TANGGAL_AKHIR = createField(DSL.name("tanggal_akhir"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
+
+    /**
+     * The column <code>dasar_gaji.tanggal_awal</code>.
+     */
+    public final TableField<DasarGajiRecord, LocalDate> TANGGAL_AWAL = createField(DSL.name("tanggal_awal"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
+
+    /**
      * The column <code>dasar_gaji.created_at</code>.
      */
     public final TableField<DasarGajiRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
@@ -100,26 +120,6 @@ public class DasarGaji extends TableImpl<DasarGajiRecord> {
      * The column <code>dasar_gaji.version</code>.
      */
     public final TableField<DasarGajiRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>dasar_gaji.aktif</code>.
-     */
-    public final TableField<DasarGajiRecord, Boolean> AKTIF = createField(DSL.name("aktif"), SQLDataType.BIT.nullable(false), this, "");
-
-    /**
-     * The column <code>dasar_gaji.deskripsi</code>.
-     */
-    public final TableField<DasarGajiRecord, String> DESKRIPSI = createField(DSL.name("deskripsi"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>dasar_gaji.tanggal_akhir</code>.
-     */
-    public final TableField<DasarGajiRecord, LocalDate> TANGGAL_AKHIR = createField(DSL.name("tanggal_akhir"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
-
-    /**
-     * The column <code>dasar_gaji.tanggal_awal</code>.
-     */
-    public final TableField<DasarGajiRecord, LocalDate> TANGGAL_AWAL = createField(DSL.name("tanggal_awal"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     private DasarGaji(Name alias, Table<DasarGajiRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

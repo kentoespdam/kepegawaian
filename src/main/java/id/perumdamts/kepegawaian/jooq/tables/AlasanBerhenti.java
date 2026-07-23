@@ -66,9 +66,14 @@ public class AlasanBerhenti extends TableImpl<AlasanBerhentiRecord> {
     public final TableField<AlasanBerhentiRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>alasan_berhenti.changed_status</code>.
+     * The column <code>alasan_berhenti.nama</code>.
      */
-    public final TableField<AlasanBerhentiRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
+    public final TableField<AlasanBerhentiRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>alasan_berhenti.notes</code>.
+     */
+    public final TableField<AlasanBerhentiRecord, String> NOTES = createField(DSL.name("notes"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>alasan_berhenti.created_at</code>.
@@ -94,21 +99,6 @@ public class AlasanBerhenti extends TableImpl<AlasanBerhentiRecord> {
      * The column <code>alasan_berhenti.updated_by</code>.
      */
     public final TableField<AlasanBerhentiRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>alasan_berhenti.version</code>.
-     */
-    public final TableField<AlasanBerhentiRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>alasan_berhenti.nama</code>.
-     */
-    public final TableField<AlasanBerhentiRecord, String> NAMA = createField(DSL.name("nama"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>alasan_berhenti.notes</code>.
-     */
-    public final TableField<AlasanBerhentiRecord, String> NOTES = createField(DSL.name("notes"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     private AlasanBerhenti(Name alias, Table<AlasanBerhentiRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

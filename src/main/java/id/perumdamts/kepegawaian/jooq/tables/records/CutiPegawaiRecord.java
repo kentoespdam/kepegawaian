@@ -50,465 +50,465 @@ public class CutiPegawaiRecord extends UpdatableRecordImpl<CutiPegawaiRecord> {
     }
 
     /**
-     * Setter for <code>cuti_pegawai.created_at</code>.
-     */
-    public void setCreatedAt(LocalDateTime value) {
-        set(2, value);
-    }
-
-    /**
-     * Getter for <code>cuti_pegawai.created_at</code>.
-     */
-    public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(2);
-    }
-
-    /**
-     * Setter for <code>cuti_pegawai.created_by</code>.
-     */
-    public void setCreatedBy(String value) {
-        set(3, value);
-    }
-
-    /**
-     * Getter for <code>cuti_pegawai.created_by</code>.
-     */
-    public String getCreatedBy() {
-        return (String) get(3);
-    }
-
-    /**
-     * Setter for <code>cuti_pegawai.is_deleted</code>.
-     */
-    public void setIsDeleted(Boolean value) {
-        set(4, value);
-    }
-
-    /**
-     * Getter for <code>cuti_pegawai.is_deleted</code>.
-     */
-    public Boolean getIsDeleted() {
-        return (Boolean) get(4);
-    }
-
-    /**
-     * Setter for <code>cuti_pegawai.updated_at</code>.
-     */
-    public void setUpdatedAt(LocalDateTime value) {
-        set(5, value);
-    }
-
-    /**
-     * Getter for <code>cuti_pegawai.updated_at</code>.
-     */
-    public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(5);
-    }
-
-    /**
-     * Setter for <code>cuti_pegawai.updated_by</code>.
-     */
-    public void setUpdatedBy(String value) {
-        set(6, value);
-    }
-
-    /**
-     * Getter for <code>cuti_pegawai.updated_by</code>.
-     */
-    public String getUpdatedBy() {
-        return (String) get(6);
-    }
-
-    /**
-     * Setter for <code>cuti_pegawai.version</code>.
-     */
-    public void setVersion(Integer value) {
-        set(7, value);
-    }
-
-    /**
-     * Getter for <code>cuti_pegawai.version</code>.
-     */
-    public Integer getVersion() {
-        return (Integer) get(7);
-    }
-
-    /**
      * Setter for <code>cuti_pegawai.alasan</code>.
      */
     public void setAlasan(String value) {
-        set(8, value);
+        set(2, value);
     }
 
     /**
      * Getter for <code>cuti_pegawai.alasan</code>.
      */
     public String getAlasan() {
-        return (String) get(8);
+        return (String) get(2);
     }
 
     /**
      * Setter for <code>cuti_pegawai.approval_cuti_status</code>.
      */
     public void setApprovalCutiStatus(Byte value) {
-        set(9, value);
+        set(3, value);
     }
 
     /**
      * Getter for <code>cuti_pegawai.approval_cuti_status</code>.
      */
     public Byte getApprovalCutiStatus() {
-        return (Byte) get(9);
+        return (Byte) get(3);
     }
 
     /**
      * Setter for <code>cuti_pegawai.approval_level</code>.
      */
     public void setApprovalLevel(Integer value) {
-        set(10, value);
+        set(4, value);
     }
 
     /**
      * Getter for <code>cuti_pegawai.approval_level</code>.
      */
     public Integer getApprovalLevel() {
-        return (Integer) get(10);
+        return (Integer) get(4);
     }
 
     /**
      * Setter for <code>cuti_pegawai.is_claimed</code>.
      */
     public void setIsClaimed(Byte value) {
-        set(11, value);
+        set(5, value);
     }
 
     /**
      * Getter for <code>cuti_pegawai.is_claimed</code>.
      */
     public Byte getIsClaimed() {
-        return (Byte) get(11);
+        return (Byte) get(5);
     }
 
     /**
      * Setter for <code>cuti_pegawai.jenis_pengajuan_cuti</code>.
      */
     public void setJenisPengajuanCuti(Byte value) {
-        set(12, value);
+        set(6, value);
     }
 
     /**
      * Getter for <code>cuti_pegawai.jenis_pengajuan_cuti</code>.
      */
     public Byte getJenisPengajuanCuti() {
-        return (Byte) get(12);
+        return (Byte) get(6);
     }
 
     /**
      * Setter for <code>cuti_pegawai.jumlah_hari</code>.
      */
     public void setJumlahHari(Integer value) {
-        set(13, value);
+        set(7, value);
     }
 
     /**
      * Getter for <code>cuti_pegawai.jumlah_hari</code>.
      */
     public Integer getJumlahHari() {
-        return (Integer) get(13);
+        return (Integer) get(7);
     }
 
     /**
      * Setter for <code>cuti_pegawai.jumlah_hari_kerja</code>.
      */
     public void setJumlahHariKerja(Integer value) {
-        set(14, value);
+        set(8, value);
     }
 
     /**
      * Getter for <code>cuti_pegawai.jumlah_hari_kerja</code>.
      */
     public Integer getJumlahHariKerja() {
-        return (Integer) get(14);
+        return (Integer) get(8);
     }
 
     /**
      * Setter for <code>cuti_pegawai.kuota_akhir</code>.
      */
     public void setKuotaAkhir(Integer value) {
-        set(15, value);
+        set(9, value);
     }
 
     /**
      * Getter for <code>cuti_pegawai.kuota_akhir</code>.
      */
     public Integer getKuotaAkhir() {
-        return (Integer) get(15);
+        return (Integer) get(9);
     }
 
     /**
      * Setter for <code>cuti_pegawai.kuota_awal</code>.
      */
     public void setKuotaAwal(Integer value) {
-        set(16, value);
+        set(10, value);
     }
 
     /**
      * Getter for <code>cuti_pegawai.kuota_awal</code>.
      */
     public Integer getKuotaAwal() {
-        return (Integer) get(16);
+        return (Integer) get(10);
     }
 
     /**
      * Setter for <code>cuti_pegawai.nama</code>.
      */
     public void setNama(String value) {
-        set(17, value);
+        set(11, value);
     }
 
     /**
      * Getter for <code>cuti_pegawai.nama</code>.
      */
     public String getNama() {
-        return (String) get(17);
+        return (String) get(11);
     }
 
     /**
      * Setter for <code>cuti_pegawai.nipam</code>.
      */
     public void setNipam(String value) {
-        set(18, value);
+        set(12, value);
     }
 
     /**
      * Getter for <code>cuti_pegawai.nipam</code>.
      */
     public String getNipam() {
-        return (String) get(18);
+        return (String) get(12);
     }
 
     /**
      * Setter for <code>cuti_pegawai.pangkat_golongan</code>.
      */
     public void setPangkatGolongan(String value) {
-        set(19, value);
+        set(13, value);
     }
 
     /**
      * Getter for <code>cuti_pegawai.pangkat_golongan</code>.
      */
     public String getPangkatGolongan() {
-        return (String) get(19);
+        return (String) get(13);
     }
 
     /**
      * Setter for <code>cuti_pegawai.riwayat_kuota0</code>.
      */
     public void setRiwayatKuota0(Integer value) {
-        set(20, value);
+        set(14, value);
     }
 
     /**
      * Getter for <code>cuti_pegawai.riwayat_kuota0</code>.
      */
     public Integer getRiwayatKuota0() {
-        return (Integer) get(20);
+        return (Integer) get(14);
     }
 
     /**
      * Setter for <code>cuti_pegawai.riwayat_kuota1</code>.
      */
     public void setRiwayatKuota1(Integer value) {
-        set(21, value);
+        set(15, value);
     }
 
     /**
      * Getter for <code>cuti_pegawai.riwayat_kuota1</code>.
      */
     public Integer getRiwayatKuota1() {
-        return (Integer) get(21);
+        return (Integer) get(15);
     }
 
     /**
      * Setter for <code>cuti_pegawai.riwayat_pakai0</code>.
      */
     public void setRiwayatPakai0(Integer value) {
-        set(22, value);
+        set(16, value);
     }
 
     /**
      * Getter for <code>cuti_pegawai.riwayat_pakai0</code>.
      */
     public Integer getRiwayatPakai0() {
-        return (Integer) get(22);
+        return (Integer) get(16);
     }
 
     /**
      * Setter for <code>cuti_pegawai.riwayat_pakai1</code>.
      */
     public void setRiwayatPakai1(Integer value) {
-        set(23, value);
+        set(17, value);
     }
 
     /**
      * Getter for <code>cuti_pegawai.riwayat_pakai1</code>.
      */
     public Integer getRiwayatPakai1() {
-        return (Integer) get(23);
+        return (Integer) get(17);
     }
 
     /**
      * Setter for <code>cuti_pegawai.riwayat_sisa0</code>.
      */
     public void setRiwayatSisa0(Integer value) {
-        set(24, value);
+        set(18, value);
     }
 
     /**
      * Getter for <code>cuti_pegawai.riwayat_sisa0</code>.
      */
     public Integer getRiwayatSisa0() {
-        return (Integer) get(24);
+        return (Integer) get(18);
     }
 
     /**
      * Setter for <code>cuti_pegawai.riwayat_sisa1</code>.
      */
     public void setRiwayatSisa1(Integer value) {
-        set(25, value);
+        set(19, value);
     }
 
     /**
      * Getter for <code>cuti_pegawai.riwayat_sisa1</code>.
      */
     public Integer getRiwayatSisa1() {
-        return (Integer) get(25);
+        return (Integer) get(19);
     }
 
     /**
      * Setter for <code>cuti_pegawai.tanggal_mulai</code>.
      */
     public void setTanggalMulai(LocalDate value) {
-        set(26, value);
+        set(20, value);
     }
 
     /**
      * Getter for <code>cuti_pegawai.tanggal_mulai</code>.
      */
     public LocalDate getTanggalMulai() {
-        return (LocalDate) get(26);
+        return (LocalDate) get(20);
     }
 
     /**
      * Setter for <code>cuti_pegawai.tanggal_selesai</code>.
      */
     public void setTanggalSelesai(LocalDate value) {
-        set(27, value);
+        set(21, value);
     }
 
     /**
      * Getter for <code>cuti_pegawai.tanggal_selesai</code>.
      */
     public LocalDate getTanggalSelesai() {
-        return (LocalDate) get(27);
+        return (LocalDate) get(21);
     }
 
     /**
      * Setter for <code>cuti_pegawai.jabatan_id</code>.
      */
     public void setJabatanId(Long value) {
-        set(28, value);
+        set(22, value);
     }
 
     /**
      * Getter for <code>cuti_pegawai.jabatan_id</code>.
      */
     public Long getJabatanId() {
-        return (Long) get(28);
+        return (Long) get(22);
     }
 
     /**
      * Setter for <code>cuti_pegawai.jenis_cuti_id</code>.
      */
     public void setJenisCutiId(Long value) {
-        set(29, value);
+        set(23, value);
     }
 
     /**
      * Getter for <code>cuti_pegawai.jenis_cuti_id</code>.
      */
     public Long getJenisCutiId() {
-        return (Long) get(29);
+        return (Long) get(23);
     }
 
     /**
      * Setter for <code>cuti_pegawai.organisasi_id</code>.
      */
     public void setOrganisasiId(Long value) {
-        set(30, value);
+        set(24, value);
     }
 
     /**
      * Getter for <code>cuti_pegawai.organisasi_id</code>.
      */
     public Long getOrganisasiId() {
-        return (Long) get(30);
+        return (Long) get(24);
     }
 
     /**
      * Setter for <code>cuti_pegawai.pegawai_id</code>.
      */
     public void setPegawaiId(Long value) {
-        set(31, value);
+        set(25, value);
     }
 
     /**
      * Getter for <code>cuti_pegawai.pegawai_id</code>.
      */
     public Long getPegawaiId() {
-        return (Long) get(31);
+        return (Long) get(25);
     }
 
     /**
      * Setter for <code>cuti_pegawai.pic_saat_ini_id</code>.
      */
     public void setPicSaatIniId(Long value) {
-        set(32, value);
+        set(26, value);
     }
 
     /**
      * Getter for <code>cuti_pegawai.pic_saat_ini_id</code>.
      */
     public Long getPicSaatIniId() {
-        return (Long) get(32);
+        return (Long) get(26);
     }
 
     /**
      * Setter for <code>cuti_pegawai.ref_cuti_id</code>.
      */
     public void setRefCutiId(Long value) {
-        set(33, value);
+        set(27, value);
     }
 
     /**
      * Getter for <code>cuti_pegawai.ref_cuti_id</code>.
      */
     public Long getRefCutiId() {
-        return (Long) get(33);
+        return (Long) get(27);
     }
 
     /**
      * Setter for <code>cuti_pegawai.sub_jenis_cuti_id</code>.
      */
     public void setSubJenisCutiId(Long value) {
-        set(34, value);
+        set(28, value);
     }
 
     /**
      * Getter for <code>cuti_pegawai.sub_jenis_cuti_id</code>.
      */
     public Long getSubJenisCutiId() {
-        return (Long) get(34);
+        return (Long) get(28);
+    }
+
+    /**
+     * Setter for <code>cuti_pegawai.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime value) {
+        set(29, value);
+    }
+
+    /**
+     * Getter for <code>cuti_pegawai.created_at</code>.
+     */
+    public LocalDateTime getCreatedAt() {
+        return (LocalDateTime) get(29);
+    }
+
+    /**
+     * Setter for <code>cuti_pegawai.created_by</code>.
+     */
+    public void setCreatedBy(String value) {
+        set(30, value);
+    }
+
+    /**
+     * Getter for <code>cuti_pegawai.created_by</code>.
+     */
+    public String getCreatedBy() {
+        return (String) get(30);
+    }
+
+    /**
+     * Setter for <code>cuti_pegawai.is_deleted</code>.
+     */
+    public void setIsDeleted(Boolean value) {
+        set(31, value);
+    }
+
+    /**
+     * Getter for <code>cuti_pegawai.is_deleted</code>.
+     */
+    public Boolean getIsDeleted() {
+        return (Boolean) get(31);
+    }
+
+    /**
+     * Setter for <code>cuti_pegawai.updated_at</code>.
+     */
+    public void setUpdatedAt(LocalDateTime value) {
+        set(32, value);
+    }
+
+    /**
+     * Getter for <code>cuti_pegawai.updated_at</code>.
+     */
+    public LocalDateTime getUpdatedAt() {
+        return (LocalDateTime) get(32);
+    }
+
+    /**
+     * Setter for <code>cuti_pegawai.updated_by</code>.
+     */
+    public void setUpdatedBy(String value) {
+        set(33, value);
+    }
+
+    /**
+     * Getter for <code>cuti_pegawai.updated_by</code>.
+     */
+    public String getUpdatedBy() {
+        return (String) get(33);
+    }
+
+    /**
+     * Setter for <code>cuti_pegawai.version</code>.
+     */
+    public void setVersion(Integer value) {
+        set(34, value);
+    }
+
+    /**
+     * Getter for <code>cuti_pegawai.version</code>.
+     */
+    public Integer getVersion() {
+        return (Integer) get(34);
     }
 
     // -------------------------------------------------------------------------
@@ -534,17 +534,11 @@ public class CutiPegawaiRecord extends UpdatableRecordImpl<CutiPegawaiRecord> {
     /**
      * Create a detached, initialised CutiPegawaiRecord
      */
-    public CutiPegawaiRecord(Long id_, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version, String alasan, Byte approvalCutiStatus, Integer approvalLevel, Byte isClaimed, Byte jenisPengajuanCuti, Integer jumlahHari, Integer jumlahHariKerja, Integer kuotaAkhir, Integer kuotaAwal, String nama, String nipam, String pangkatGolongan, Integer riwayatKuota0, Integer riwayatKuota1, Integer riwayatPakai0, Integer riwayatPakai1, Integer riwayatSisa0, Integer riwayatSisa1, LocalDate tanggalMulai, LocalDate tanggalSelesai, Long jabatanId, Long jenisCutiId, Long organisasiId, Long pegawaiId, Long picSaatIniId, Long refCutiId, Long subJenisCutiId) {
+    public CutiPegawaiRecord(Long id_, Byte changedStatus, String alasan, Byte approvalCutiStatus, Integer approvalLevel, Byte isClaimed, Byte jenisPengajuanCuti, Integer jumlahHari, Integer jumlahHariKerja, Integer kuotaAkhir, Integer kuotaAwal, String nama, String nipam, String pangkatGolongan, Integer riwayatKuota0, Integer riwayatKuota1, Integer riwayatPakai0, Integer riwayatPakai1, Integer riwayatSisa0, Integer riwayatSisa1, LocalDate tanggalMulai, LocalDate tanggalSelesai, Long jabatanId, Long jenisCutiId, Long organisasiId, Long pegawaiId, Long picSaatIniId, Long refCutiId, Long subJenisCutiId, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version) {
         super(CutiPegawai.CUTI_PEGAWAI);
 
         setId(id_);
         setChangedStatus(changedStatus);
-        setCreatedAt(createdAt);
-        setCreatedBy(createdBy);
-        setIsDeleted(isDeleted);
-        setUpdatedAt(updatedAt);
-        setUpdatedBy(updatedBy);
-        setVersion(version);
         setAlasan(alasan);
         setApprovalCutiStatus(approvalCutiStatus);
         setApprovalLevel(approvalLevel);
@@ -572,6 +566,12 @@ public class CutiPegawaiRecord extends UpdatableRecordImpl<CutiPegawaiRecord> {
         setPicSaatIniId(picSaatIniId);
         setRefCutiId(refCutiId);
         setSubJenisCutiId(subJenisCutiId);
+        setCreatedAt(createdAt);
+        setCreatedBy(createdBy);
+        setIsDeleted(isDeleted);
+        setUpdatedAt(updatedAt);
+        setUpdatedBy(updatedBy);
+        setVersion(version);
         resetChangedOnNotNull();
     }
 }

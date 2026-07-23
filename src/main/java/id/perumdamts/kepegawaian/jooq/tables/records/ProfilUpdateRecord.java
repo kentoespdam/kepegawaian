@@ -35,157 +35,157 @@ public class ProfilUpdateRecord extends UpdatableRecordImpl<ProfilUpdateRecord> 
     }
 
     /**
-     * Setter for <code>profil_update.action_type</code>.
-     */
-    public void setActionType(Byte value) {
-        set(1, value);
-    }
-
-    /**
-     * Getter for <code>profil_update.action_type</code>.
-     */
-    public Byte getActionType() {
-        return (Byte) get(1);
-    }
-
-    /**
-     * Setter for <code>profil_update.approval_date</code>.
-     */
-    public void setApprovalDate(LocalDateTime value) {
-        set(2, value);
-    }
-
-    /**
-     * Getter for <code>profil_update.approval_date</code>.
-     */
-    public LocalDateTime getApprovalDate() {
-        return (LocalDateTime) get(2);
-    }
-
-    /**
-     * Setter for <code>profil_update.approval_pic</code>.
-     */
-    public void setApprovalPic(String value) {
-        set(3, value);
-    }
-
-    /**
-     * Getter for <code>profil_update.approval_pic</code>.
-     */
-    public String getApprovalPic() {
-        return (String) get(3);
-    }
-
-    /**
-     * Setter for <code>profil_update.approval_status</code>.
-     */
-    public void setApprovalStatus(Byte value) {
-        set(4, value);
-    }
-
-    /**
-     * Getter for <code>profil_update.approval_status</code>.
-     */
-    public Byte getApprovalStatus() {
-        return (Byte) get(4);
-    }
-
-    /**
-     * Setter for <code>profil_update.data_description</code>.
-     */
-    public void setDataDescription(String value) {
-        set(5, value);
-    }
-
-    /**
-     * Getter for <code>profil_update.data_description</code>.
-     */
-    public String getDataDescription() {
-        return (String) get(5);
-    }
-
-    /**
-     * Setter for <code>profil_update.jabatan</code>.
-     */
-    public void setJabatan(String value) {
-        set(6, value);
-    }
-
-    /**
-     * Getter for <code>profil_update.jabatan</code>.
-     */
-    public String getJabatan() {
-        return (String) get(6);
-    }
-
-    /**
-     * Setter for <code>profil_update.nama</code>.
-     */
-    public void setNama(String value) {
-        set(7, value);
-    }
-
-    /**
-     * Getter for <code>profil_update.nama</code>.
-     */
-    public String getNama() {
-        return (String) get(7);
-    }
-
-    /**
      * Setter for <code>profil_update.nipam</code>.
      */
     public void setNipam(String value) {
-        set(8, value);
+        set(1, value);
     }
 
     /**
      * Getter for <code>profil_update.nipam</code>.
      */
     public String getNipam() {
-        return (String) get(8);
+        return (String) get(1);
+    }
+
+    /**
+     * Setter for <code>profil_update.nama</code>.
+     */
+    public void setNama(String value) {
+        set(2, value);
+    }
+
+    /**
+     * Getter for <code>profil_update.nama</code>.
+     */
+    public String getNama() {
+        return (String) get(2);
+    }
+
+    /**
+     * Setter for <code>profil_update.jabatan</code>.
+     */
+    public void setJabatan(String value) {
+        set(3, value);
+    }
+
+    /**
+     * Getter for <code>profil_update.jabatan</code>.
+     */
+    public String getJabatan() {
+        return (String) get(3);
     }
 
     /**
      * Setter for <code>profil_update.req_date</code>.
      */
     public void setReqDate(LocalDateTime value) {
-        set(9, value);
+        set(4, value);
     }
 
     /**
      * Getter for <code>profil_update.req_date</code>.
      */
     public LocalDateTime getReqDate() {
-        return (LocalDateTime) get(9);
-    }
-
-    /**
-     * Setter for <code>profil_update.rev_id</code>.
-     */
-    public void setRevId(Long value) {
-        set(10, value);
-    }
-
-    /**
-     * Getter for <code>profil_update.rev_id</code>.
-     */
-    public Long getRevId() {
-        return (Long) get(10);
+        return (LocalDateTime) get(4);
     }
 
     /**
      * Setter for <code>profil_update.table_name</code>.
      */
     public void setTableName(Byte value) {
-        set(11, value);
+        set(5, value);
     }
 
     /**
      * Getter for <code>profil_update.table_name</code>.
      */
     public Byte getTableName() {
-        return (Byte) get(11);
+        return (Byte) get(5);
+    }
+
+    /**
+     * Setter for <code>profil_update.action_type</code>.
+     */
+    public void setActionType(Byte value) {
+        set(6, value);
+    }
+
+    /**
+     * Getter for <code>profil_update.action_type</code>.
+     */
+    public Byte getActionType() {
+        return (Byte) get(6);
+    }
+
+    /**
+     * Setter for <code>profil_update.data_description</code>.
+     */
+    public void setDataDescription(String value) {
+        set(7, value);
+    }
+
+    /**
+     * Getter for <code>profil_update.data_description</code>.
+     */
+    public String getDataDescription() {
+        return (String) get(7);
+    }
+
+    /**
+     * Setter for <code>profil_update.rev_id</code>.
+     */
+    public void setRevId(Long value) {
+        set(8, value);
+    }
+
+    /**
+     * Getter for <code>profil_update.rev_id</code>.
+     */
+    public Long getRevId() {
+        return (Long) get(8);
+    }
+
+    /**
+     * Setter for <code>profil_update.approval_status</code>.
+     */
+    public void setApprovalStatus(Byte value) {
+        set(9, value);
+    }
+
+    /**
+     * Getter for <code>profil_update.approval_status</code>.
+     */
+    public Byte getApprovalStatus() {
+        return (Byte) get(9);
+    }
+
+    /**
+     * Setter for <code>profil_update.approval_date</code>.
+     */
+    public void setApprovalDate(LocalDateTime value) {
+        set(10, value);
+    }
+
+    /**
+     * Getter for <code>profil_update.approval_date</code>.
+     */
+    public LocalDateTime getApprovalDate() {
+        return (LocalDateTime) get(10);
+    }
+
+    /**
+     * Setter for <code>profil_update.approval_pic</code>.
+     */
+    public void setApprovalPic(String value) {
+        set(11, value);
+    }
+
+    /**
+     * Getter for <code>profil_update.approval_pic</code>.
+     */
+    public String getApprovalPic() {
+        return (String) get(11);
     }
 
     // -------------------------------------------------------------------------
@@ -211,21 +211,21 @@ public class ProfilUpdateRecord extends UpdatableRecordImpl<ProfilUpdateRecord> 
     /**
      * Create a detached, initialised ProfilUpdateRecord
      */
-    public ProfilUpdateRecord(Long id_, Byte actionType, LocalDateTime approvalDate, String approvalPic, Byte approvalStatus, String dataDescription, String jabatan, String nama, String nipam, LocalDateTime reqDate, Long revId, Byte tableName) {
+    public ProfilUpdateRecord(Long id_, String nipam, String nama, String jabatan, LocalDateTime reqDate, Byte tableName, Byte actionType, String dataDescription, Long revId, Byte approvalStatus, LocalDateTime approvalDate, String approvalPic) {
         super(ProfilUpdate.PROFIL_UPDATE);
 
         setId(id_);
+        setNipam(nipam);
+        setNama(nama);
+        setJabatan(jabatan);
+        setReqDate(reqDate);
+        setTableName(tableName);
         setActionType(actionType);
+        setDataDescription(dataDescription);
+        setRevId(revId);
+        setApprovalStatus(approvalStatus);
         setApprovalDate(approvalDate);
         setApprovalPic(approvalPic);
-        setApprovalStatus(approvalStatus);
-        setDataDescription(dataDescription);
-        setJabatan(jabatan);
-        setNama(nama);
-        setNipam(nipam);
-        setReqDate(reqDate);
-        setRevId(revId);
-        setTableName(tableName);
         resetChangedOnNotNull();
     }
 }

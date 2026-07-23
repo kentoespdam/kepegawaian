@@ -49,129 +49,129 @@ public class RiwayatCutiRecord extends UpdatableRecordImpl<RiwayatCutiRecord> {
     }
 
     /**
-     * Setter for <code>riwayat_cuti.created_at</code>.
-     */
-    public void setCreatedAt(LocalDateTime value) {
-        set(2, value);
-    }
-
-    /**
-     * Getter for <code>riwayat_cuti.created_at</code>.
-     */
-    public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(2);
-    }
-
-    /**
-     * Setter for <code>riwayat_cuti.created_by</code>.
-     */
-    public void setCreatedBy(String value) {
-        set(3, value);
-    }
-
-    /**
-     * Getter for <code>riwayat_cuti.created_by</code>.
-     */
-    public String getCreatedBy() {
-        return (String) get(3);
-    }
-
-    /**
-     * Setter for <code>riwayat_cuti.is_deleted</code>.
-     */
-    public void setIsDeleted(Boolean value) {
-        set(4, value);
-    }
-
-    /**
-     * Getter for <code>riwayat_cuti.is_deleted</code>.
-     */
-    public Boolean getIsDeleted() {
-        return (Boolean) get(4);
-    }
-
-    /**
-     * Setter for <code>riwayat_cuti.updated_at</code>.
-     */
-    public void setUpdatedAt(LocalDateTime value) {
-        set(5, value);
-    }
-
-    /**
-     * Getter for <code>riwayat_cuti.updated_at</code>.
-     */
-    public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(5);
-    }
-
-    /**
-     * Setter for <code>riwayat_cuti.updated_by</code>.
-     */
-    public void setUpdatedBy(String value) {
-        set(6, value);
-    }
-
-    /**
-     * Getter for <code>riwayat_cuti.updated_by</code>.
-     */
-    public String getUpdatedBy() {
-        return (String) get(6);
-    }
-
-    /**
-     * Setter for <code>riwayat_cuti.version</code>.
-     */
-    public void setVersion(Integer value) {
-        set(7, value);
-    }
-
-    /**
-     * Getter for <code>riwayat_cuti.version</code>.
-     */
-    public Integer getVersion() {
-        return (Integer) get(7);
-    }
-
-    /**
      * Setter for <code>riwayat_cuti.nama</code>.
      */
     public void setNama(String value) {
-        set(8, value);
+        set(2, value);
     }
 
     /**
      * Getter for <code>riwayat_cuti.nama</code>.
      */
     public String getNama() {
-        return (String) get(8);
+        return (String) get(2);
     }
 
     /**
      * Setter for <code>riwayat_cuti.nipam</code>.
      */
     public void setNipam(String value) {
-        set(9, value);
+        set(3, value);
     }
 
     /**
      * Getter for <code>riwayat_cuti.nipam</code>.
      */
     public String getNipam() {
-        return (String) get(9);
+        return (String) get(3);
     }
 
     /**
      * Setter for <code>riwayat_cuti.pegawai_id</code>.
      */
     public void setPegawaiId(Long value) {
-        set(10, value);
+        set(4, value);
     }
 
     /**
      * Getter for <code>riwayat_cuti.pegawai_id</code>.
      */
     public Long getPegawaiId() {
-        return (Long) get(10);
+        return (Long) get(4);
+    }
+
+    /**
+     * Setter for <code>riwayat_cuti.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime value) {
+        set(5, value);
+    }
+
+    /**
+     * Getter for <code>riwayat_cuti.created_at</code>.
+     */
+    public LocalDateTime getCreatedAt() {
+        return (LocalDateTime) get(5);
+    }
+
+    /**
+     * Setter for <code>riwayat_cuti.created_by</code>.
+     */
+    public void setCreatedBy(String value) {
+        set(6, value);
+    }
+
+    /**
+     * Getter for <code>riwayat_cuti.created_by</code>.
+     */
+    public String getCreatedBy() {
+        return (String) get(6);
+    }
+
+    /**
+     * Setter for <code>riwayat_cuti.is_deleted</code>.
+     */
+    public void setIsDeleted(Boolean value) {
+        set(7, value);
+    }
+
+    /**
+     * Getter for <code>riwayat_cuti.is_deleted</code>.
+     */
+    public Boolean getIsDeleted() {
+        return (Boolean) get(7);
+    }
+
+    /**
+     * Setter for <code>riwayat_cuti.updated_at</code>.
+     */
+    public void setUpdatedAt(LocalDateTime value) {
+        set(8, value);
+    }
+
+    /**
+     * Getter for <code>riwayat_cuti.updated_at</code>.
+     */
+    public LocalDateTime getUpdatedAt() {
+        return (LocalDateTime) get(8);
+    }
+
+    /**
+     * Setter for <code>riwayat_cuti.updated_by</code>.
+     */
+    public void setUpdatedBy(String value) {
+        set(9, value);
+    }
+
+    /**
+     * Getter for <code>riwayat_cuti.updated_by</code>.
+     */
+    public String getUpdatedBy() {
+        return (String) get(9);
+    }
+
+    /**
+     * Setter for <code>riwayat_cuti.version</code>.
+     */
+    public void setVersion(Integer value) {
+        set(10, value);
+    }
+
+    /**
+     * Getter for <code>riwayat_cuti.version</code>.
+     */
+    public Integer getVersion() {
+        return (Integer) get(10);
     }
 
     // -------------------------------------------------------------------------
@@ -197,20 +197,20 @@ public class RiwayatCutiRecord extends UpdatableRecordImpl<RiwayatCutiRecord> {
     /**
      * Create a detached, initialised RiwayatCutiRecord
      */
-    public RiwayatCutiRecord(Long id_, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version, String nama, String nipam, Long pegawaiId) {
+    public RiwayatCutiRecord(Long id_, Byte changedStatus, String nama, String nipam, Long pegawaiId, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version) {
         super(RiwayatCuti.RIWAYAT_CUTI);
 
         setId(id_);
         setChangedStatus(changedStatus);
+        setNama(nama);
+        setNipam(nipam);
+        setPegawaiId(pegawaiId);
         setCreatedAt(createdAt);
         setCreatedBy(createdBy);
         setIsDeleted(isDeleted);
         setUpdatedAt(updatedAt);
         setUpdatedBy(updatedBy);
         setVersion(version);
-        setNama(nama);
-        setNipam(nipam);
-        setPegawaiId(pegawaiId);
         resetChangedOnNotNull();
     }
 }

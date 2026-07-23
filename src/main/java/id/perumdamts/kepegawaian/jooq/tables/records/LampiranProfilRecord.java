@@ -49,227 +49,227 @@ public class LampiranProfilRecord extends UpdatableRecordImpl<LampiranProfilReco
     }
 
     /**
-     * Setter for <code>lampiran_profil.created_at</code>.
-     */
-    public void setCreatedAt(LocalDateTime value) {
-        set(2, value);
-    }
-
-    /**
-     * Getter for <code>lampiran_profil.created_at</code>.
-     */
-    public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(2);
-    }
-
-    /**
-     * Setter for <code>lampiran_profil.created_by</code>.
-     */
-    public void setCreatedBy(String value) {
-        set(3, value);
-    }
-
-    /**
-     * Getter for <code>lampiran_profil.created_by</code>.
-     */
-    public String getCreatedBy() {
-        return (String) get(3);
-    }
-
-    /**
-     * Setter for <code>lampiran_profil.is_deleted</code>.
-     */
-    public void setIsDeleted(Boolean value) {
-        set(4, value);
-    }
-
-    /**
-     * Getter for <code>lampiran_profil.is_deleted</code>.
-     */
-    public Boolean getIsDeleted() {
-        return (Boolean) get(4);
-    }
-
-    /**
-     * Setter for <code>lampiran_profil.updated_at</code>.
-     */
-    public void setUpdatedAt(LocalDateTime value) {
-        set(5, value);
-    }
-
-    /**
-     * Getter for <code>lampiran_profil.updated_at</code>.
-     */
-    public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(5);
-    }
-
-    /**
-     * Setter for <code>lampiran_profil.updated_by</code>.
-     */
-    public void setUpdatedBy(String value) {
-        set(6, value);
-    }
-
-    /**
-     * Getter for <code>lampiran_profil.updated_by</code>.
-     */
-    public String getUpdatedBy() {
-        return (String) get(6);
-    }
-
-    /**
-     * Setter for <code>lampiran_profil.version</code>.
-     */
-    public void setVersion(Integer value) {
-        set(7, value);
-    }
-
-    /**
-     * Getter for <code>lampiran_profil.version</code>.
-     */
-    public Integer getVersion() {
-        return (Integer) get(7);
-    }
-
-    /**
      * Setter for <code>lampiran_profil.disetujui</code>.
      */
     public void setDisetujui(Boolean value) {
-        set(8, value);
+        set(2, value);
     }
 
     /**
      * Getter for <code>lampiran_profil.disetujui</code>.
      */
     public Boolean getDisetujui() {
-        return (Boolean) get(8);
+        return (Boolean) get(2);
     }
 
     /**
      * Setter for <code>lampiran_profil.disetujui_oleh</code>.
      */
     public void setDisetujuiOleh(String value) {
-        set(9, value);
+        set(3, value);
     }
 
     /**
      * Getter for <code>lampiran_profil.disetujui_oleh</code>.
      */
     public String getDisetujuiOleh() {
-        return (String) get(9);
+        return (String) get(3);
     }
 
     /**
      * Setter for <code>lampiran_profil.file_name</code>.
      */
     public void setFileName(String value) {
-        set(10, value);
+        set(4, value);
     }
 
     /**
      * Getter for <code>lampiran_profil.file_name</code>.
      */
     public String getFileName() {
-        return (String) get(10);
+        return (String) get(4);
     }
 
     /**
      * Setter for <code>lampiran_profil.hashed_file_name</code>.
      */
     public void setHashedFileName(String value) {
-        set(11, value);
+        set(5, value);
     }
 
     /**
      * Getter for <code>lampiran_profil.hashed_file_name</code>.
      */
     public String getHashedFileName() {
-        return (String) get(11);
+        return (String) get(5);
     }
 
     /**
      * Setter for <code>lampiran_profil.mime_type</code>.
      */
     public void setMimeType(String value) {
-        set(12, value);
+        set(6, value);
     }
 
     /**
      * Getter for <code>lampiran_profil.mime_type</code>.
      */
     public String getMimeType() {
-        return (String) get(12);
+        return (String) get(6);
     }
 
     /**
      * Setter for <code>lampiran_profil.notes</code>.
      */
     public void setNotes(String value) {
-        set(13, value);
+        set(7, value);
     }
 
     /**
      * Getter for <code>lampiran_profil.notes</code>.
      */
     public String getNotes() {
-        return (String) get(13);
+        return (String) get(7);
     }
 
     /**
      * Setter for <code>lampiran_profil.ref</code>.
      */
     public void setRef(Byte value) {
-        set(14, value);
+        set(8, value);
     }
 
     /**
      * Getter for <code>lampiran_profil.ref</code>.
      */
     public Byte getRef() {
-        return (Byte) get(14);
+        return (Byte) get(8);
     }
 
     /**
      * Setter for <code>lampiran_profil.ref_id</code>.
      */
     public void setRefId(Long value) {
-        set(15, value);
+        set(9, value);
     }
 
     /**
      * Getter for <code>lampiran_profil.ref_id</code>.
      */
     public Long getRefId() {
-        return (Long) get(15);
+        return (Long) get(9);
     }
 
     /**
      * Setter for <code>lampiran_profil.tanggal_disetujui</code>.
      */
     public void setTanggalDisetujui(LocalDateTime value) {
-        set(16, value);
+        set(10, value);
     }
 
     /**
      * Getter for <code>lampiran_profil.tanggal_disetujui</code>.
      */
     public LocalDateTime getTanggalDisetujui() {
-        return (LocalDateTime) get(16);
+        return (LocalDateTime) get(10);
     }
 
     /**
      * Setter for <code>lampiran_profil.tanggal_pengajuan</code>.
      */
     public void setTanggalPengajuan(LocalDateTime value) {
-        set(17, value);
+        set(11, value);
     }
 
     /**
      * Getter for <code>lampiran_profil.tanggal_pengajuan</code>.
      */
     public LocalDateTime getTanggalPengajuan() {
-        return (LocalDateTime) get(17);
+        return (LocalDateTime) get(11);
+    }
+
+    /**
+     * Setter for <code>lampiran_profil.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime value) {
+        set(12, value);
+    }
+
+    /**
+     * Getter for <code>lampiran_profil.created_at</code>.
+     */
+    public LocalDateTime getCreatedAt() {
+        return (LocalDateTime) get(12);
+    }
+
+    /**
+     * Setter for <code>lampiran_profil.created_by</code>.
+     */
+    public void setCreatedBy(String value) {
+        set(13, value);
+    }
+
+    /**
+     * Getter for <code>lampiran_profil.created_by</code>.
+     */
+    public String getCreatedBy() {
+        return (String) get(13);
+    }
+
+    /**
+     * Setter for <code>lampiran_profil.is_deleted</code>.
+     */
+    public void setIsDeleted(Boolean value) {
+        set(14, value);
+    }
+
+    /**
+     * Getter for <code>lampiran_profil.is_deleted</code>.
+     */
+    public Boolean getIsDeleted() {
+        return (Boolean) get(14);
+    }
+
+    /**
+     * Setter for <code>lampiran_profil.updated_at</code>.
+     */
+    public void setUpdatedAt(LocalDateTime value) {
+        set(15, value);
+    }
+
+    /**
+     * Getter for <code>lampiran_profil.updated_at</code>.
+     */
+    public LocalDateTime getUpdatedAt() {
+        return (LocalDateTime) get(15);
+    }
+
+    /**
+     * Setter for <code>lampiran_profil.updated_by</code>.
+     */
+    public void setUpdatedBy(String value) {
+        set(16, value);
+    }
+
+    /**
+     * Getter for <code>lampiran_profil.updated_by</code>.
+     */
+    public String getUpdatedBy() {
+        return (String) get(16);
+    }
+
+    /**
+     * Setter for <code>lampiran_profil.version</code>.
+     */
+    public void setVersion(Integer value) {
+        set(17, value);
+    }
+
+    /**
+     * Getter for <code>lampiran_profil.version</code>.
+     */
+    public Integer getVersion() {
+        return (Integer) get(17);
     }
 
     // -------------------------------------------------------------------------
@@ -295,17 +295,11 @@ public class LampiranProfilRecord extends UpdatableRecordImpl<LampiranProfilReco
     /**
      * Create a detached, initialised LampiranProfilRecord
      */
-    public LampiranProfilRecord(Long id_, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version, Boolean disetujui, String disetujuiOleh, String fileName, String hashedFileName, String mimeType, String notes, Byte ref, Long refId, LocalDateTime tanggalDisetujui, LocalDateTime tanggalPengajuan) {
+    public LampiranProfilRecord(Long id_, Byte changedStatus, Boolean disetujui, String disetujuiOleh, String fileName, String hashedFileName, String mimeType, String notes, Byte ref, Long refId, LocalDateTime tanggalDisetujui, LocalDateTime tanggalPengajuan, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version) {
         super(LampiranProfil.LAMPIRAN_PROFIL);
 
         setId(id_);
         setChangedStatus(changedStatus);
-        setCreatedAt(createdAt);
-        setCreatedBy(createdBy);
-        setIsDeleted(isDeleted);
-        setUpdatedAt(updatedAt);
-        setUpdatedBy(updatedBy);
-        setVersion(version);
         setDisetujui(disetujui);
         setDisetujuiOleh(disetujuiOleh);
         setFileName(fileName);
@@ -316,6 +310,12 @@ public class LampiranProfilRecord extends UpdatableRecordImpl<LampiranProfilReco
         setRefId(refId);
         setTanggalDisetujui(tanggalDisetujui);
         setTanggalPengajuan(tanggalPengajuan);
+        setCreatedAt(createdAt);
+        setCreatedBy(createdBy);
+        setIsDeleted(isDeleted);
+        setUpdatedAt(updatedAt);
+        setUpdatedBy(updatedBy);
+        setVersion(version);
         resetChangedOnNotNull();
     }
 }

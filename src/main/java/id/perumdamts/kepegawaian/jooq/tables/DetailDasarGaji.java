@@ -71,6 +71,26 @@ public class DetailDasarGaji extends TableImpl<DetailDasarGajiRecord> {
     public final TableField<DetailDasarGajiRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
+     * The column <code>detail_dasar_gaji.golongan_kode</code>.
+     */
+    public final TableField<DetailDasarGajiRecord, Integer> GOLONGAN_KODE = createField(DSL.name("golongan_kode"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>detail_dasar_gaji.mkg</code>.
+     */
+    public final TableField<DetailDasarGajiRecord, Integer> MKG = createField(DSL.name("mkg"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>detail_dasar_gaji.nominal</code>.
+     */
+    public final TableField<DetailDasarGajiRecord, Double> NOMINAL = createField(DSL.name("nominal"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
+
+    /**
+     * The column <code>detail_dasar_gaji.dasar_gaji_id</code>.
+     */
+    public final TableField<DetailDasarGajiRecord, Long> DASAR_GAJI_ID = createField(DSL.name("dasar_gaji_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
+
+    /**
      * The column <code>detail_dasar_gaji.created_at</code>.
      */
     public final TableField<DetailDasarGajiRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
@@ -99,26 +119,6 @@ public class DetailDasarGaji extends TableImpl<DetailDasarGajiRecord> {
      * The column <code>detail_dasar_gaji.version</code>.
      */
     public final TableField<DetailDasarGajiRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>detail_dasar_gaji.golongan_kode</code>.
-     */
-    public final TableField<DetailDasarGajiRecord, Integer> GOLONGAN_KODE = createField(DSL.name("golongan_kode"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>detail_dasar_gaji.mkg</code>.
-     */
-    public final TableField<DetailDasarGajiRecord, Integer> MKG = createField(DSL.name("mkg"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>detail_dasar_gaji.nominal</code>.
-     */
-    public final TableField<DetailDasarGajiRecord, Double> NOMINAL = createField(DSL.name("nominal"), SQLDataType.DOUBLE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DOUBLE)), this, "");
-
-    /**
-     * The column <code>detail_dasar_gaji.dasar_gaji_id</code>.
-     */
-    public final TableField<DetailDasarGajiRecord, Long> DASAR_GAJI_ID = createField(DSL.name("dasar_gaji_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     private DetailDasarGaji(Name alias, Table<DetailDasarGajiRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

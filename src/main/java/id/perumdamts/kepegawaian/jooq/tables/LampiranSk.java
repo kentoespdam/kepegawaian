@@ -66,36 +66,6 @@ public class LampiranSk extends TableImpl<LampiranSkRecord> {
     public final TableField<LampiranSkRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>lampiran_sk.created_at</code>.
-     */
-    public final TableField<LampiranSkRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>lampiran_sk.created_by</code>.
-     */
-    public final TableField<LampiranSkRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>lampiran_sk.is_deleted</code>.
-     */
-    public final TableField<LampiranSkRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
-
-    /**
-     * The column <code>lampiran_sk.updated_at</code>.
-     */
-    public final TableField<LampiranSkRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>lampiran_sk.updated_by</code>.
-     */
-    public final TableField<LampiranSkRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>lampiran_sk.version</code>.
-     */
-    public final TableField<LampiranSkRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
-
-    /**
      * The column <code>lampiran_sk.disetujui</code>.
      */
     public final TableField<LampiranSkRecord, Boolean> DISETUJUI = createField(DSL.name("disetujui"), SQLDataType.BIT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIT)), this, "");
@@ -144,6 +114,36 @@ public class LampiranSk extends TableImpl<LampiranSkRecord> {
      * The column <code>lampiran_sk.tanggal_pengajuan</code>.
      */
     public final TableField<LampiranSkRecord, LocalDateTime> TANGGAL_PENGAJUAN = createField(DSL.name("tanggal_pengajuan"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>lampiran_sk.created_at</code>.
+     */
+    public final TableField<LampiranSkRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>lampiran_sk.created_by</code>.
+     */
+    public final TableField<LampiranSkRecord, String> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>lampiran_sk.is_deleted</code>.
+     */
+    public final TableField<LampiranSkRecord, Boolean> IS_DELETED = createField(DSL.name("is_deleted"), SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
+     * The column <code>lampiran_sk.updated_at</code>.
+     */
+    public final TableField<LampiranSkRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>lampiran_sk.updated_by</code>.
+     */
+    public final TableField<LampiranSkRecord, String> UPDATED_BY = createField(DSL.name("updated_by"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>lampiran_sk.version</code>.
+     */
+    public final TableField<LampiranSkRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     private LampiranSk(Name alias, Table<LampiranSkRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
