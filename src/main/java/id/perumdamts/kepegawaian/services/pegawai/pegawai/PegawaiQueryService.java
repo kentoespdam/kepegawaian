@@ -4,6 +4,7 @@ import id.perumdamts.kepegawaian.dto.pegawai.pegawai.*;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.pegawai.jooq.PegawaiQueryRepository;
 import id.perumdamts.kepegawaian.repositories.pegawai.jooq.PegawaiRingkasanQueryRepository;
+import id.perumdamts.kepegawaian.repositories.pegawai.jooq.PegawaiSessionQueryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.List;
 public class PegawaiQueryService {
     private final PegawaiQueryRepository repository;
     private final PegawaiRingkasanQueryRepository ringkasanRepository;
+    private final PegawaiSessionQueryRepository sessionRepository;
 
     public Page<PegawaiResponse> findPage(PegawaiRequest request) {
         return repository.findPage(request);
@@ -38,6 +40,11 @@ public class PegawaiQueryService {
 
     public PegawaiResponseRingkasan findRingkasan(Long id) {
         return ringkasanRepository.findRingkasan(id)
+                .orElseThrow(() -> new NotFoundException("Unknown Pegawai"));
+    }
+
+    public PegawaiResponseSession findSession(Long id) {
+        return sessionRepository.findSession(id)
                 .orElseThrow(() -> new NotFoundException("Unknown Pegawai"));
     }
 

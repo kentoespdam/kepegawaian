@@ -26,8 +26,9 @@ Detail pegawai mengekspos tepat 7 slot SK, tiap slot = baris **Riwayat SK** terb
 **Riwayat SK**:
 Histori Surat Keputusan milik pegawai (entity `RiwayatSk`, domain `kepegawaian` — **modul terpisah** dari Pegawai). Tiap baris: nomor SK, tanggal, tmt berlaku, Jenis SK, golongan, gaji pokok, masa kerja golongan. Detail pegawai membacanya langsung dari **tabel** `riwayat_sk` (bukan via modul kepegawaian) supaya rewrite modul itu kelak tak membatalkan baca pegawai.
 
-**Ringkasan** vs **Detail**:
-Dua bentuk baca pegawai. **Detail** (`/{id}`) = agregat penuh + 7 slot SK terkini. **Ringkasan** (`/{id}/ringkasan`) = bentuk pipih siap-tampil, banyak field string hasil format Java (mis. `pangkatGolongan` = pangkat+"-"+golongan, `mkg` = "X Tahun Y Bulan") plus nomor kartu identitas (NPWP/JPn/BPJS/ID Card) yang difilter dari Kartu Identitas pegawai.
+**Session** vs **Ringkasan** vs **Detail**:
+Tiga tingkat baca pegawai, dari paling ringan ke paling berat. **Session** (`/{id}/session`) = payload **paling minim** untuk di-cache FE **sesaat setelah login** + jadi kunci shortcut-fetch ke page (dashboard, data-pegawai, terminasi): `id (Long)`, `nipam`, `nik`, `nama`, `jabatan{id,nama}`, `organisasi{id,nama}`. **Ringkasan** (`/{id}/ringkasan`) = bentuk pipih siap-tampil untuk halaman profil, banyak field string hasil format Java (mis. `pangkatGolongan` = pangkat+"-"+golongan, `mkg` = "X Tahun Y Bulan") plus nomor kartu identitas (NPWP/JPn/BPJS/ID Card) yang difilter dari Kartu Identitas pegawai. **Detail** (`/{id}`) = agregat penuh + 7 slot SK terkini.
+_Keputusan baca Session_: query JOOQ paling ramping — hanya JOIN `biodata` (nama+nik), `organisasi`, `jabatan`. **Tanpa** multiset, **tanpa** JOIN LEVEL, tanpa field gaji/SK. Objek bersarang pakai record generik `RefMiniResponse(id, nama)`. Prinsip tetap: pangkas ke `id`+label; tambah field hanya kalau FE nyata butuh (YAGNI).
 _Keputusan baca Ringkasan_: satu query JOOQ proyeksi field mentah, dengan **baca tabel lintas modul langsung** — `pendidikan` (baris `is_latest=true`) dan `kartu_identitas` (difilter per **nama jenis kartu**). Semua perakitan string tetap **di Java** pada layer mapper, bukan di SQL.
 
 **Masa Kerja Golongan** (mkg: mkgTahun + mkgBulan):

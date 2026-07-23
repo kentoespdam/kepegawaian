@@ -54,6 +54,11 @@ public class PegawaiController {
         return CustomResult.any(queryService.findRingkasan(id));
     }
 
+    @GetMapping("/{id}/session")
+    public ResponseEntity<SingleResult<PegawaiResponseSession>> findSession(@PathVariable Long id) {
+        return CustomResult.any(queryService.findSession(id));
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<SavedResult<Long>> save(@Valid @RequestBody PegawaiPostRequest request) {
