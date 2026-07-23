@@ -1,3 +1,4 @@
+SET FOREIGN_KEY_CHECKS = 0;
 -- Seed: gaji_komponen part 2/3 (records 111-220 of 280)
 
 INSERT INTO gaji_komponen (urut, profil_gaji_id, kode, nama, jenis_gaji, nilai, is_reference, formula, is_deleted, created_at, created_by, updated_at, updated_by) VALUES
@@ -111,3 +112,4 @@ INSERT INTO gaji_komponen (urut, profil_gaji_id, kode, nama, jenis_gaji, nilai, 
 (33, 7, 'PEMBULATAN', 'Pembulatan', 'NONE', 0, 0, '( CEIL( PENGHASILAN_BERSIH / 100 ) * 100 ) - PENGHASILAN_BERSIH ', 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM'),
 (34, 7, 'PENGHASILAN_BERSIH_FINAL', 'Penghasilan Bersih Final', 'NONE', 0, 0, 'PENGHASILAN_BERSIH + PEMBULATAN ', 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM'),
 (1, 8, 'GP', 'Gaji Pokok', 'PEMASUKAN', 0, 1, '#SYSTEM', 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM');
+SET FOREIGN_KEY_CHECKS = 1;

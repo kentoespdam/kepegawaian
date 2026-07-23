@@ -1,3 +1,4 @@
+SET FOREIGN_KEY_CHECKS = 0;
 -- Seed: detail_dasar_gaji part 5/6
 -- Records 421-525 of 545 (mkg 8-28, golKode 13-17)
 
@@ -107,3 +108,4 @@ INSERT INTO detail_dasar_gaji (dasar_gaji_id, mkg, golongan_kode, nominal, is_de
 (1, 28, 15, 4862300, 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM'),
 (1, 28, 16, 5068000, 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM'),
 (1, 28, 17, 5282300, 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM');
+SET FOREIGN_KEY_CHECKS = 1;

@@ -1,3 +1,4 @@
+SET FOREIGN_KEY_CHECKS = 0;
 -- Seed: rumah_dinas (8) and gaji_tunjangan (61)
 
 INSERT INTO rumah_dinas (nama, nilai, is_deleted, created_at, created_by, updated_at, updated_by) VALUES
@@ -70,3 +71,4 @@ INSERT INTO gaji_tunjangan (jenis_tunjangan, level_id, golongan_id, nominal, is_
 (3, 7, 10, 100000, 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM'),
 (3, 7, 11, 100000, 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM'),
 (3, 7, 12, 100000, 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM');
+SET FOREIGN_KEY_CHECKS = 1;

@@ -1,3 +1,4 @@
+SET FOREIGN_KEY_CHECKS = 0;
 -- Seed: pref_role (5) and cuti_jenis (18)
 
 INSERT INTO pref_role (id) VALUES
@@ -30,3 +31,4 @@ INSERT INTO cuti_jenis (id, parent_id, nama, max_hari, potong_kuota_tahunan, is_
 (18, 5, 'Saudara kandung/ipar/tiri/angkat meninggal dunia', 1, 0, 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM');
 
 SET FOREIGN_KEY_CHECKS=1;
+SET FOREIGN_KEY_CHECKS = 1;

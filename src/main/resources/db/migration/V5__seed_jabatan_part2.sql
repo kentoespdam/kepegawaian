@@ -1,3 +1,4 @@
+SET FOREIGN_KEY_CHECKS = 0;
 -- Seed: jabatan part 2/2 (IDs 71-130) + soft-delete cleanup
 SET FOREIGN_KEY_CHECKS=0;
 
@@ -68,3 +69,4 @@ UPDATE jabatan SET is_deleted = 1, updated_at = NOW(), updated_by = 'SYSTEM'
 WHERE id IN (23, 24, 33, 36, 58, 59, 60, 65, 68, 69, 73, 74, 82, 83, 91, 92, 100, 101, 109, 110, 115, 116, 117, 120, 122, 129);
 
 SET FOREIGN_KEY_CHECKS=1;
+SET FOREIGN_KEY_CHECKS = 1;

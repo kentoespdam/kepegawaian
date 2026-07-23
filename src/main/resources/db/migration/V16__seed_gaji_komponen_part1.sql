@@ -1,3 +1,4 @@
+SET FOREIGN_KEY_CHECKS = 0;
 -- Seed: gaji_komponen part 1/3 (records 1-110 of 280)
 
 INSERT INTO gaji_komponen (urut, profil_gaji_id, kode, nama, jenis_gaji, nilai, is_reference, formula, is_deleted, created_at, created_by, updated_at, updated_by) VALUES
@@ -111,3 +112,4 @@ INSERT INTO gaji_komponen (urut, profil_gaji_id, kode, nama, jenis_gaji, nilai, 
 (13, 4, 'TUNJ_JABATAN', 'Tunjangan Jabatan', 'PEMASUKAN', 0, 0, 'REF_TUNJ_JABATAN ', 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM'),
 (14, 4, 'TUNJ_BERAS', 'Tunjangan Beras', 'PEMASUKAN', 0, 0, 'JML_JIWA * REF_TUNJ_BERAS ', 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM'),
 (15, 4, 'TUNJ_KK', 'Tunjangan Kegiatan Kerja', 'PEMASUKAN', 0, 0, '', 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM');
+SET FOREIGN_KEY_CHECKS = 1;

@@ -1,3 +1,4 @@
+SET FOREIGN_KEY_CHECKS = 0;
 -- Seed: gaji_potongan_tkk (22) and gaji_parameter_setting (2)
 
 INSERT INTO gaji_potongan_tkk (status_pegawai, level_id, golongan_id, nominal, is_deleted, created_at, created_by, updated_at, updated_by) VALUES
@@ -26,3 +27,4 @@ INSERT INTO gaji_potongan_tkk (status_pegawai, level_id, golongan_id, nominal, i
 INSERT INTO gaji_parameter_setting (kode, nominal, is_deleted, created_at, created_by, updated_at, updated_by) VALUES
 ('maksimal_potongan_jpn', 100423, 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM'),
 ('maksimal_potongan_askes', 120000, 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM');
+SET FOREIGN_KEY_CHECKS = 1;

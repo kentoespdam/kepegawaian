@@ -1,3 +1,4 @@
+SET FOREIGN_KEY_CHECKS = 0;
 -- Seed: alasan_berhenti (5)
 
 INSERT INTO alasan_berhenti (id, nama, notes, is_deleted, created_at, created_by, updated_at, updated_by) VALUES
@@ -6,3 +7,4 @@ INSERT INTO alasan_berhenti (id, nama, notes, is_deleted, created_at, created_by
 (3, 'Kontrak Berakhir', '', 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM'),
 (4, 'Pensiun Normal', '', 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM'),
 (5, 'Meninggal Dunia', '', 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM');
+SET FOREIGN_KEY_CHECKS = 1;

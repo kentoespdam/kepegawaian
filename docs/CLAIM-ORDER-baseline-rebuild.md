@@ -28,7 +28,7 @@
 | 3 | ~~`kepegawaian-odb.3`~~ | ~~Fix 2 kolom camelCase → snake_case~~ | .2 | ✅ **SELESAI** — V5_0_8 fix `jmlTanggungan`, V5_0_9 fix `nomor→nomor_kartu` |
 | 4 | ~~`kepegawaian-odb.4`~~ | ~~Reconcile 3 ENUM native + urutan enum~~ | .3 | ✅ **SELESAI** — `golongan_darah` order fix di draft, `jenis_gaji` sudah cocok |
 | 5 | `kepegawaian-odb.5` | Preserve 23 seed `V3_*` + view `v_pegawai` | .4 | seed & view jadi migration terpisah, urut FK aman |
-| 6 | `kepegawaian-odb.6` | Squash → baseline bersih (V1 + seed + view) | .5 | flyway clean+migrate DB kosong SUKSES |
+| 6 | ~~`kepegawaian-odb.6`~~ | ~~Squash → baseline bersih (V1 + seed + view)~~ | .5 | ✅ **SELESAI** — 25 migrations, flyway clean+migrate SUKSES (23s) |
 | 7 | `kepegawaian-odb.7` | **GATE-1** `ddl-auto=validate` boot HIJAU | .6 | boot tanpa `SchemaManagementException` |
 | 8 | `kepegawaian-odb.8` | **GATE-2** `jooqCodegen` HIJAU tanpa drift | .7 | sources tergenerate, tipe/nama benar, di-commit |
 
@@ -39,7 +39,7 @@
 - [x] **odb.3** ✅ — `jml_tanggungan` (V5_0_8) & `nomor_kartu` (V5_0_9) snake_case · grep `[a-z][A-Z]` bersih · komentar V5_0_9 diperbaiki (copy-paste)
 - [x] **odb.4** ✅ — `golongan_darah` `('A','B','AB','O')` (draft fix) · `jenis_gaji` ×2 `('NONE','PEMASUKAN','POTONGAN')` ✅ · 29+ field ORDINAL bukan ENUM native — aman
 - [x] **odb.5** ✅ — 23 seed teridentifikasi & diurut per FK (lihat lampiran) · `v_pegawai` view diekstrak dari draft dump (disesuaikan `biodata_id`)
-- [ ] **odb.6** — baseline tunggal gantikan `V1..V5_1_0` · `V5_0_8`/`V5_0_9` dihapus · clean+migrate sukses
+- [x] **odb.6** ✅ — V1_0_0__baseline.sql (89 tabel) gantikan `V1..V5_1_0` · V5_0_8/V5_0_9 dihapus · seed wrapped FK_CHECKS=0 · flyway clean+migrate SUKSES (25 migrasi, 23s)
 - [ ] **odb.7** — GATE-1: boot `validate` HIJAU, semua entity cocok schema
 - [ ] **odb.8** — GATE-2: `jooqCodegen` sukses · ENUM→enum JOOQ · snake_case di generated · diff di-commit (ADR-0015) · status drift Testcontainers dicatat (ADR-0004)
 
@@ -48,6 +48,7 @@
 Seed tetap jadi migration terpisah pasca-baseline, urut berdasarkan FK:
 
 **Batch A — Master reference (tanpa FK ke seed lain)**
+
 | Urut | File | Isi |
 |:---:|---|---|
 | 1 | `V3_0_0` | `level`, `golongan`, `grade` |
@@ -57,6 +58,7 @@ Seed tetap jadi migration terpisah pasca-baseline, urut berdasarkan FK:
 | 5 | `V3_0_19` | `pref_role`, `cuti_jenis` |
 
 **Batch B — Master dengan FK**
+
 | Urut | File | Isi |
 |:---:|---|---|
 | 6 | `V3_0_2` | `jabatan` part1 (FK: organisasi, level, parent) |
@@ -65,6 +67,7 @@ Seed tetap jadi migration terpisah pasca-baseline, urut berdasarkan FK:
 | 9 | `V3_0_20` | `profesi` part2 |
 
 **Batch C — Penggajian master**
+
 | Urut | File | Isi |
 |:---:|---|---|
 | 10 | `V3_0_13` | `gaji_pendapatan_non_pajak`, `gaji_profil` |
@@ -74,6 +77,7 @@ Seed tetap jadi migration terpisah pasca-baseline, urut berdasarkan FK:
 | 14 | `V3_0_6_1` | `dasar_gaji` |
 
 **Batch D — Penggajian detail (FK: dasar_gaji)**
+
 | Urut | File | Isi |
 |:---:|---|---|
 | 15 | `V3_0_7` — `V3_0_12` | `detail_dasar_gaji` (6 part, 545 records) |

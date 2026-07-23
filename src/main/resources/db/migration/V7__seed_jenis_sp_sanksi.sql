@@ -1,3 +1,4 @@
+SET FOREIGN_KEY_CHECKS = 0;
 -- Seed: jenis_sp (4) and sanksi_sp (8)
 
 INSERT INTO jenis_sp (id, kode, nama, is_deleted, created_at, created_by, updated_at, updated_by) VALUES
@@ -15,3 +16,4 @@ INSERT INTO sanksi_sp (id, kode, keterangan, jenis_sp_id, pot_tkk, jml_pot_tkk, 
 (6, 'S6', 'Pemberhentian sementara sebagai pegawai', 4, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM'),
 (7, 'S7', 'Pemberhentian dengan hormat tidak atas permintaan sendiri sebagai pegawai', 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM'),
 (8, 'S8', 'Pemberhentian dengan tidak hormat sebagai pegawai', 4, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM');
+SET FOREIGN_KEY_CHECKS = 1;

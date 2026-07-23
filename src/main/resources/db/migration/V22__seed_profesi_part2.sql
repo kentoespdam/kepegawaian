@@ -1,3 +1,4 @@
+SET FOREIGN_KEY_CHECKS = 0;
 -- Seed: profesi part 2/2 (Staf, IDs 57-146)
 INSERT INTO profesi (id, nama, detail, resiko, organisasi_id, jabatan_id, level_id, grade_id, is_deleted, created_at, created_by, updated_at, updated_by) VALUES
 (57, 'Staf Sub Bag. Audit Intern', '-', '-', 61, 57, 7, 8, 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM'),
@@ -72,3 +73,4 @@ INSERT INTO profesi (id, nama, detail, resiko, organisasi_id, jabatan_id, level_
 (126, 'Mandor', '-', '-', 58, 22, 7, 8, 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM'),
 (127, 'Staf Sub Bag. Pengendalian Kehilangan Air', '-', '-', 64, 64, 7, 9, 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM'),
 (128, 'Staf Sub Bag. Penjaminan Mutu Air', '-', '-', 55, 13, 7, 9, 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM');
+SET FOREIGN_KEY_CHECKS = 1;

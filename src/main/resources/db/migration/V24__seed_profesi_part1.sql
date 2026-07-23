@@ -1,3 +1,4 @@
+SET FOREIGN_KEY_CHECKS = 0;
 -- Seed: profesi part 1/2 (Manajer + Supervisor, IDs 1-56)
 INSERT INTO profesi (id, nama, detail, resiko, organisasi_id, jabatan_id, level_id, grade_id, is_deleted, created_at, created_by, updated_at, updated_by) VALUES
 (1, 'Manajer Satuan Pengawas Intern', '-', '-', 5, 53, 5, 1, 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM'),
@@ -56,3 +57,4 @@ INSERT INTO profesi (id, nama, detail, resiko, organisasi_id, jabatan_id, level_
 (54, 'Supervisor Mekanikal & Elektrikal', '-', '-', 58, 20, 6, 4, 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM'),
 (55, 'Supervisor Pengendalian Kehilangan Air', '-', '-', 64, 63, 6, 4, 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM'),
 (56, 'Supervisor Penjaminan Mutu Air', '-', '-', 55, 12, 6, 4, 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM');
+SET FOREIGN_KEY_CHECKS = 1;

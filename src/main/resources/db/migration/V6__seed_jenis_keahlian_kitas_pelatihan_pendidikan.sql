@@ -1,3 +1,4 @@
+SET FOREIGN_KEY_CHECKS = 0;
 -- Seed: jenis_keahlian (16), jenis_kitas (12), jenis_pelatihan (8), jenjang_pendidikan (9)
 
 INSERT INTO jenis_keahlian (id, nama, is_deleted, created_at, created_by, updated_at, updated_by) VALUES
@@ -52,3 +53,4 @@ INSERT INTO jenjang_pendidikan (id, nama, short_name, seq, is_statistik, is_dele
 (7, 'S1', 'S1', 7, 1, 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM'),
 (8, 'S2', 'S2', 8, 1, 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM'),
 (9, 'S3', 'S3', 9, 0, 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM');
+SET FOREIGN_KEY_CHECKS = 1;

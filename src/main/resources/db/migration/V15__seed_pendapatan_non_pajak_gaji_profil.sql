@@ -1,3 +1,4 @@
+SET FOREIGN_KEY_CHECKS = 0;
 -- Seed: gaji_pendapatan_non_pajak (8) and gaji_profil (9)
 
 INSERT INTO gaji_pendapatan_non_pajak (kode, nominal, notes, is_deleted, created_at, created_by, updated_at, updated_by) VALUES
@@ -21,3 +22,4 @@ INSERT INTO gaji_profil (nama, is_deleted, created_at, created_by, updated_at, u
 ('Profil Komponen & Formula Gaji Capeg < UMK', 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM'),
 ('Profil Komponen dan Formula Gaji Direktur Utama', 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM');
 
+SET FOREIGN_KEY_CHECKS = 1;

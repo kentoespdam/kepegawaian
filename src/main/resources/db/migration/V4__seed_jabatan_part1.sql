@@ -1,3 +1,4 @@
+SET FOREIGN_KEY_CHECKS = 0;
 -- Seed: jabatan part 1/2 (IDs 1-70)
 -- Cross-ID FK refs: 37→125(part2), 44→118(part2)
 SET FOREIGN_KEY_CHECKS=0;
@@ -75,3 +76,4 @@ INSERT INTO jabatan (id, kode, parent_id, organisasi_id, level_id, nama, is_dele
 (70, '1.4', 2, 8, 5, 'Manajer Cabang Purwokerto 1', 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM');
 
 SET FOREIGN_KEY_CHECKS=1;
+SET FOREIGN_KEY_CHECKS = 1;

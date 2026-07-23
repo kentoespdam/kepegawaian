@@ -1,3 +1,4 @@
+SET FOREIGN_KEY_CHECKS = 0;
 -- Seed: organisasi (75 records, 15 soft-deleted)
 SET FOREIGN_KEY_CHECKS=0;
 
@@ -83,3 +84,4 @@ UPDATE organisasi SET is_deleted = 1, updated_at = NOW(), updated_by = 'SYSTEM'
 WHERE id IN (6, 7, 14, 22, 26, 30, 34, 38, 59, 62, 66, 67, 70, 71, 73);
 
 SET FOREIGN_KEY_CHECKS=1;
+SET FOREIGN_KEY_CHECKS = 1;

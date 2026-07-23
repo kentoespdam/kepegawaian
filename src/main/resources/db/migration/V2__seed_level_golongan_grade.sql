@@ -1,3 +1,4 @@
+SET FOREIGN_KEY_CHECKS = 0;
 -- Level reference data
 INSERT INTO level (id, nama, is_deleted, created_at, created_by, updated_at, updated_by) VALUES
 (1, 'DEWAS', 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM'),
@@ -42,3 +43,4 @@ INSERT INTO grade (id, level_id, grade, tukin, is_deleted, created_at, created_b
 (9, 7, 2, 1072500.00, 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM'),
 (10, 7, 3, 1430000.00, 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM'),
 (11, 7, 4, 1787500.00, 0, NOW(), 'SYSTEM', NOW(), 'SYSTEM');
+SET FOREIGN_KEY_CHECKS = 1;
