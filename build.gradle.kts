@@ -135,6 +135,7 @@ tasks.register<JooqCodegenTask>("jooqCodegen") {
     )
     dbUser.set(flyEnv("DB_USER", "test"))
     dbPassword.set(flyEnv("DB_PASSWORD", "test"))
+    outputDir.set(layout.projectDirectory.dir("src/main/java").asFile.absolutePath)
 }
 
 tasks.named<BootJar>("bootJar") {

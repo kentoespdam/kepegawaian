@@ -22,13 +22,16 @@ abstract class JooqCodegenTask : DefaultTask() {
     @get:Input
     abstract val dbPassword: Property<String>
 
+    @get:Input
+    abstract val outputDir: Property<String>
+
     @TaskAction
     fun generate() {
         val url = jdbcUrl.get()
         val user = dbUser.get()
         val password = dbPassword.get()
 
-        val outDir = project.projectDir.resolve("src/main/java").absolutePath
+        val outDir = outputDir.get()
 
         logger.lifecycle("Running Flyway migration against $url ...")
         Flyway.configure()
@@ -54,7 +57,7 @@ abstract class JooqCodegenTask : DefaultTask() {
                             .withName("org.jooq.meta.mariadb.MariaDBDatabase")
                             .withIncludes(".*")
                             .withExcludes("flyway_schema_history")
-                            .withInputSchema("kepegawaian")
+                            .withInputSchema("kepegawaian_dev_new")
                             .withOutputSchemaToDefault(true) // ponytail: schema-agnostic generated code, runtime reads from connection default (kepegawaian_dev_new)
                             .withForcedTypes(
                                 ForcedType()
