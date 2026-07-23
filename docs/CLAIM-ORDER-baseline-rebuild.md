@@ -26,7 +26,7 @@
 | 1 | `kepegawaian-odb.1` | Dump schema-only DB existing → draft | — | dump tersimpan, tabel ter-inventaris |
 | 2 | `kepegawaian-odb.2` | Drop 13 `_AUD` master (ADR-0003) | .1 | `_AUD` penggajian+kepegawaian & REVINFO tetap |
 | 3 | ~~`kepegawaian-odb.3`~~ | ~~Fix 2 kolom camelCase → snake_case~~ | .2 | ✅ **SELESAI** — V5_0_8 fix `jmlTanggungan`, V5_0_9 fix `nomor→nomor_kartu` |
-| 4 | `kepegawaian-odb.4` | Reconcile 3 ENUM native + urutan enum | .3 | ENUM native benar & urut konsisten |
+| 4 | ~~`kepegawaian-odb.4`~~ | ~~Reconcile 3 ENUM native + urutan enum~~ | .3 | ✅ **SELESAI** — `golongan_darah` order fix di draft, `jenis_gaji` sudah cocok |
 | 5 | `kepegawaian-odb.5` | Preserve 23 seed `V3_*` + view `v_pegawai` | .4 | seed & view jadi migration terpisah, urut FK aman |
 | 6 | `kepegawaian-odb.6` | Squash → baseline bersih (V1 + seed + view) | .5 | flyway clean+migrate DB kosong SUKSES |
 | 7 | `kepegawaian-odb.7` | **GATE-1** `ddl-auto=validate` boot HIJAU | .6 | boot tanpa `SchemaManagementException` |
@@ -37,11 +37,52 @@
 - [x] **odb.1** — Dump schema-only (`--no-data`), inventaris tabel & daftar `_AUD` ter-dump
 - [x] **odb.2** — 12 orphan master `_AUD` di-drop · `_AUD` penggajian+kepegawaian tetap · cuti_jenis_aud tetap (entity @Audited) · REVINFO akan ditambahkan di odb.6
 - [x] **odb.3** ✅ — `jml_tanggungan` (V5_0_8) & `nomor_kartu` (V5_0_9) snake_case · grep `[a-z][A-Z]` bersih · komentar V5_0_9 diperbaiki (copy-paste)
-- [ ] **odb.4** — 3 ENUM native ada · urutan konsisten `EGolonganDarah`/`EJenisGaji` · cek 29 field ORDINAL tak terlewat
-- [ ] **odb.5** — 23 seed `V3_*` teridentifikasi · `v_pegawai` ter-ekstrak · urut FK aman
+- [x] **odb.4** ✅ — `golongan_darah` `('A','B','AB','O')` (draft fix) · `jenis_gaji` ×2 `('NONE','PEMASUKAN','POTONGAN')` ✅ · 29+ field ORDINAL bukan ENUM native — aman
+- [x] **odb.5** ✅ — 23 seed teridentifikasi & diurut per FK (lihat lampiran) · `v_pegawai` view diekstrak dari draft dump (disesuaikan `biodata_id`)
 - [ ] **odb.6** — baseline tunggal gantikan `V1..V5_1_0` · `V5_0_8`/`V5_0_9` dihapus · clean+migrate sukses
 - [ ] **odb.7** — GATE-1: boot `validate` HIJAU, semua entity cocok schema
 - [ ] **odb.8** — GATE-2: `jooqCodegen` sukses · ENUM→enum JOOQ · snake_case di generated · diff di-commit (ADR-0015) · status drift Testcontainers dicatat (ADR-0004)
+
+## Lampiran: Urutan Seed pasca-squash (23 V3_*)
+
+Seed tetap jadi migration terpisah pasca-baseline, urut berdasarkan FK:
+
+**Batch A — Master reference (tanpa FK ke seed lain)**
+| Urut | File | Isi |
+|:---:|---|---|
+| 1 | `V3_0_0` | `level`, `golongan`, `grade` |
+| 2 | `V3_0_1` | `organisasi` |
+| 3 | `V3_0_5` | `jenis_keahlian`, `jenis_kitas`, `jenis_pelatihan`, `jenjang_pendidikan` |
+| 4 | `V3_0_6` | `jenis_sp`, `sanksi_sp` |
+| 5 | `V3_0_19` | `pref_role`, `cuti_jenis` |
+
+**Batch B — Master dengan FK**
+| Urut | File | Isi |
+|:---:|---|---|
+| 6 | `V3_0_2` | `jabatan` part1 (FK: organisasi, level, parent) |
+| 7 | `V3_0_4` | `jabatan` part2 |
+| 8 | `V3_0_22` | `profesi` part1 (FK: grade, jabatan, level, organisasi) |
+| 9 | `V3_0_20` | `profesi` part2 |
+
+**Batch C — Penggajian master**
+| Urut | File | Isi |
+|:---:|---|---|
+| 10 | `V3_0_13` | `gaji_pendapatan_non_pajak`, `gaji_profil` |
+| 11 | `V3_0_17` | `rumah_dinas`, `gaji_tunjangan` |
+| 12 | `V3_0_18` | `gaji_potongan_tkk`, `gaji_parameter_setting` |
+| 13 | `V3_0_21` | `alasan_berhenti` |
+| 14 | `V3_0_6_1` | `dasar_gaji` |
+
+**Batch D — Penggajian detail (FK: dasar_gaji)**
+| Urut | File | Isi |
+|:---:|---|---|
+| 15 | `V3_0_7` — `V3_0_12` | `detail_dasar_gaji` (6 part, 545 records) |
+| 21 | `V3_0_14` — `V3_0_16` | `gaji_komponen` (3 part, FK: gaji_profil) |
+
+**View v_pegawai** (ekstrak dari draft dump line 3230)
+- Bergabung setelah baseline DDL + seed (tergantung tabel: pegawai, biodata, organisasi, jabatan, golongan)
+- Perlu adaptasi: view saat ini pakai `peg.nik` → sesuaikan ke `biodata_id`
+- Ditempatkan sebagai migration terakhir setelah semua seed
 
 ## Catatan risiko
 
