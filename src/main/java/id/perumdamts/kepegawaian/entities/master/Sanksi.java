@@ -18,9 +18,7 @@ import org.hibernate.annotations.SQLDelete;
 @ToString
 @SQLDelete(sql = "UPDATE sanksi_sp SET is_deleted = TRUE WHERE id = ?")
 public class Sanksi extends MasterBaseEntity {
-    @Column(name = "kode", nullable = false, columnDefinition = "VARCHAR(10)")
     private String kode;
-    @Column(columnDefinition = "TEXT")
     private String keterangan;
     private Boolean potTkk = false;
     private Integer jmlPotTkk = 0;

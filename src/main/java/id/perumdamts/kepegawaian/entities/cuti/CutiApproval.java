@@ -38,7 +38,6 @@ public class CutiApproval extends IdsAbstract {
     private Integer approvalLevel;
     @Enumerated(EnumType.ORDINAL)
     private EApprovalCutiStatus approvalStatus;
-    @Column(columnDefinition = "TEXT")
     private String notes;
 
     @Override

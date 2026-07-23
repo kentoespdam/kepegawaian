@@ -2,7 +2,6 @@ package id.perumdamts.kepegawaian.entities.penggajian;
 
 
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
@@ -25,7 +24,6 @@ import org.hibernate.envers.Audited;
 
 @Audited
 public class GajiPhdp extends IdsAbstract {
-    @Column(unique = true)
     private Integer urut;
     private String kondisi;
     private String formula;

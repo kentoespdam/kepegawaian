@@ -60,7 +60,6 @@ public class RiwayatSp extends LampiranSp {
     @ManyToOne
     @JoinColumn(name = "sanksi_id", referencedColumnName = "id")
     private Sanksi sanksi;
-    @Column(columnDefinition = "TEXT")
     private String sanksiNotes;
     private LocalDate tanggalEksekusiSanksi;
     @JsonSerialize(using = LocalDateSerializer.class)

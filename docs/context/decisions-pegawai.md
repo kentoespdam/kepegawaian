@@ -69,3 +69,26 @@ Bagian dari [CONTEXT-MAP.md](../../CONTEXT-MAP.md). Baca file ini saat mengerjak
 - **Appwrite REST client extraction — `AppwriteClient` typed adapter** (grilling 2026-07-08): AuthService dan JwtTokenService sebelumnya memanggil REST API Appwrite langsung via RestClient dengan duplikasi header dan URL concatenation di 6 titik berbeda. Diekstrak ke `AppwriteClient` (`config/appwrite/AppwriteClient.java`) + `AppwriteProperties` (`@ConfigurationProperties`). Detail: [ADR-0029](../adr/0029-appwriteclient-typed-adapter.md).
 
 - **CustomResult.optional(Optional<T>) — type-safe handler untuk Optional return** (grilling 2026-07-08): `CustomResult.any(T data)` sebelumnya punya `instanceof Optional` hack yang tidak type-safe. Ditambahkan method `optional(Optional<T>)` yang clean tanpa `instanceof`, langsung `orElse(null)` → SingleResult otomatis return 404 untuk empty. `any()` diperbaiki pakai Java 21 pattern matching. Issue follow-up: [kepegawaian-vf5](../beads/issues/kepegawaian-vf5) untuk migrasi caller controller dari `.any()` ke `.optional()`.
+
+---
+
+## Entity Mapping Convention: @Column(name) Revisi
+
+**Keputusan (2026-07-23, issue `kepegawaian-kb7`)**: Field entity yang nama Java-nya sudah mengikuti camelCase → snake_case via Spring Boot default `CamelCaseToUnderscoresNamingStrategy` **tidak perlu** `@Column(name = "...")` eksplisit. Hapus `name` dari `@Column` kalau satu-satunya atribut adalah `name`.
+
+**Tetap pakai `@Column`** kalau ada metadata lain:
+- `nullable = false`
+- `unique = true`
+- `columnDefinition = "..."`
+
+**Entity yang sudah dibersihkan**: 18 entity files (~30 `@Column` DDL-only dihapus).
+- **Pegawai**: `Pegawai.java` (26 total — 22 name-only + 4 metadata-only)
+- **Penggajian**: `GajiBatchRoot.java`, `GajiBatchRootErrorLogs.java`, `GajiPhdp.java`
+- **Master**: `Sanksi.java`, `HariLibur.java`
+- **Kepegawaian**: `LampiranSk.java`, `RiwayatSk.java`, `RiwayatSp.java`
+- **Profil**: `KartuIdentitas.java`, `Keahlian.java`, `ProfilKeluarga.java`, `LampiranProfil.java`, `Pelatihan.java`, `PengalamanKerja.java`, `Pendidikan.java`
+- **Cuti**: `CutiApproval.java`, `CutiPegawai.java`
+
+**Pengecualian**: `@Column` dengan `updatable=false` (audit fields) tetap dipertahankan — ini runtime behavior JPA, bukan DDL.
+
+Alasan: boilerplate `@Column(name)` risk inconsistency (seperti `jmlTanggungan` vs `jml_tanggungan` sebelumnya) dan zero value added karena naming strategy sudah handle mapping otomatis.

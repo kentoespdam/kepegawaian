@@ -37,7 +37,6 @@ public class PengalamanKerja extends IdsAbstract {
     private Integer tahunMasuk;
     private Integer tahunKeluar;
     private String notes;
-    @Column(columnDefinition = "boolean default false")
     private Boolean disetujui;
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -46,6 +45,5 @@ public class PengalamanKerja extends IdsAbstract {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime tanggalDisetujui;
     private String disetujuiOleh;
-    @Column(columnDefinition = "boolean default false")
     private Boolean changedStatus;
 }

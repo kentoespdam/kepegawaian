@@ -28,6 +28,5 @@ public class GajiBatchRootErrorLogs implements Serializable {
     private GajiBatchRoot gajiBatchRoot;
     private String nipam;
     private String nama;
-    @Column(columnDefinition = "TEXT")
     private String notes;
 }

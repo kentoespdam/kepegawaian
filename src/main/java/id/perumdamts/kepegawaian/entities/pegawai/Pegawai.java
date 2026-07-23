@@ -42,13 +42,11 @@ import java.util.List;
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class Pegawai extends IdsAbstract {
     @NotEmpty
-    @Column(name = "nipam", unique = true, columnDefinition = "VARCHAR(32)", nullable = false)
     private String nipam;
     @JsonBackReference
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "biodata_id", referencedColumnName = "nik")
     private Biodata biodata;
-    @Column(name = "status_pegawai", nullable = false)
     @Enumerated(EnumType.ORDINAL)
     private EStatusPegawai statusPegawai;
     @JsonBackReference
@@ -75,60 +73,45 @@ public class Pegawai extends IdsAbstract {
     @JoinColumn(name = "grade_id", referencedColumnName = "id")
     private Grade grade;
 
-    @Column(name = "status_kerja", nullable = false)
     @Enumerated(EnumType.ORDINAL)
     private EStatusKerja statusKerja;
 
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "tmt_kerja")
     private LocalDate tmtKerja;
     @JsonSerialize(using = LocalDateSerializer.class)
 
-    @Column(name = "ref_sk_capeg_id")
     private Long refSkCapegId;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "tanggal_pengangkatan")
     private LocalDate tanggalPengangkatan;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "tmt_pensiun")
     private LocalDate tmtPensiun;
 
-    @Column(name = "ref_sk_pegawai_id")
     private Long refSkPegawaiId;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "tmt_pegawai")
     private LocalDate tmtPegawai;
 
-    @Column(name = "ref_sk_gol_id")
     private Long refSkGolId;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "tmt_golongan")
     private LocalDate tmtGolongan;
 
-    @Column(name = "ref_sk_jabatan_id")
     private Long refSkJabatanId;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "tmt_jabatan")
     private LocalDate tmtJabatan;
 
-    @Column(name = "ref_sk_mutasi_id")
     private Long refSkMutasiId;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "tmt_mutasi")
     private LocalDate tmtMutasi;
 
-    @Column(name = "ref_sk_gaji_berkala_id")
     private Long refSkGajiBerkalaId;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "tmt_gaji_berkala")
     private LocalDate tmtGajiBerkala;
 
     @JsonBackReference
@@ -143,25 +126,16 @@ public class Pegawai extends IdsAbstract {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rumah_dinas_id", referencedColumnName = "id")
     private RumahDinas rumahDinas;
-    @Column(name = "gaji_pokok")
     private Double gajiPokok;
-    @Column(name = "is_askes")
     private Boolean isAskes = false;
-    @Column(name = "phdp")
     private Double phdp;
-    @Column(name = "jmlTanggungan")
     private Integer jmlTanggungan;
 
-    @Column(name = "mkg_tahun")
     private Integer mkgTahun;
-    @Column(name = "mkg_bulan")
     private Integer mkgBulan;
 
-    @Column(name = "email")
     private String email;
-    @Column(name = "absensi_id")
     private Long absensiId;
-    @Column(name = "notes", columnDefinition = "TEXT")
     private String notes;
 
     @OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY)

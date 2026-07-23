@@ -45,7 +45,6 @@ public class Pendidikan extends IdsAbstract {
     private Boolean isLulus;
     private Integer tahunLulus;
     private Double gpa;
-    @Column(columnDefinition = "boolean default false")
     private Boolean isLatest;
     private Boolean changedStatus;
 }

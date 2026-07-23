@@ -45,7 +45,6 @@ public class ProfilKeluarga extends IdsAbstract {
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate tanggalLahir;
-    @Column(name = "tanggungan", columnDefinition = "boolean default false")
     private Boolean tanggungan = false;
     @ManyToOne
     @JoinColumn(name = "pendidikan_id", referencedColumnName = "id")
@@ -58,6 +57,5 @@ public class ProfilKeluarga extends IdsAbstract {
     @JoinColumn(name = "biodata_id", referencedColumnName = "nik")
     @JsonIgnore
     private Biodata biodata;
-    @Column(columnDefinition = "boolean default false")
     private Boolean changedStatus;
 }

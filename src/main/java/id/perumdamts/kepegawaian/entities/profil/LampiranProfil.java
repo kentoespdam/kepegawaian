@@ -30,9 +30,7 @@ import java.time.LocalDateTime;
 @Audited
 public class LampiranProfil extends IdsAbstract {
     @Enumerated(EnumType.ORDINAL)
-    @Column(nullable = false)
     private EJenisLampiranProfil ref;
-    @Column(nullable = false)
     private Long refId;
     private String mimeType;
     private String fileName;

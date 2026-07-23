@@ -23,6 +23,5 @@ public class HariLibur extends MasterBaseEntity {
     private LocalDate tanggal;
     @Enumerated(EnumType.ORDINAL)
     private EJenisLibur jenisLibur;
-    @Column(columnDefinition = "TEXT")
     private String notes;
 }

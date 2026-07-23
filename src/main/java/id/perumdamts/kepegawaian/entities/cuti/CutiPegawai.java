@@ -77,7 +77,6 @@ public class CutiPegawai extends IdsAbstract {
     private Integer riwayatPakai1 = 0;
     private Integer riwayatSisa0 = 0;
     private Integer riwayatSisa1 = 0;
-    @Column(columnDefinition = "boolean default false")
     private Boolean isClaimed = false;
 
     public CutiPegawai(long id) {

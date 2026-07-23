@@ -46,7 +46,6 @@ public class GajiBatchRoot implements Serializable {
     private String id;
     private String periode;
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 32)
     private EProsesGaji status;
     private Integer totalPegawai;
     @JsonSerialize(using = LocalDateTimeSerializer.class)
@@ -69,7 +68,6 @@ public class GajiBatchRoot implements Serializable {
     private LocalDateTime tanggalPersetujuan;
     private String diSetujuiOleh;
     private String jabatanPenyetuju;
-    @Column(columnDefinition = "TEXT")
     private String notes;
     @CreatedBy
     @Column(updatable = false)
@@ -87,7 +85,6 @@ public class GajiBatchRoot implements Serializable {
     @LastModifiedDate
     private LocalDateTime updatedAt;
     @Audited
-    @Column(columnDefinition = "boolean default false")
     private Boolean isDeleted = false;
 
     @JsonIgnore
