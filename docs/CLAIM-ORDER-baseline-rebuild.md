@@ -34,7 +34,7 @@
 
 ## Checklist monitoring
 
-- [ ] **odb.1** — Dump schema-only (`--no-data`), inventaris tabel & daftar `_AUD` ter-dump
+- [x] **odb.1** — Dump schema-only (`--no-data`), inventaris tabel & daftar `_AUD` ter-dump
 - [ ] **odb.2** — 13 `_AUD` master di-drop · `_AUD` penggajian+kepegawaian tetap · REVINFO tetap
 - [ ] **odb.3** — `jml_tanggungan` & `nomor_kartu` snake_case · grep `[a-z][A-Z]` bersih
 - [ ] **odb.4** — 3 ENUM native ada · urutan konsisten `EGolonganDarah`/`EJenisGaji` · cek 29 field ORDINAL tak terlewat
