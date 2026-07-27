@@ -7,6 +7,7 @@ import id.perumdamts.kepegawaian.entities.commons.EJenisKelamin;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKawin;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
+import org.jooq.Record;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -54,58 +55,60 @@ public class BiodataDashboardQuery {
                 .where(BIODATA.NIK.eq(nik))
                 .and(BIODATA.IS_DELETED.eq(false))
                 .fetchOptional()
-                .map(r -> {
-                    String jenisKelamin = null;
-                    Byte jkByte = r.get(BIODATA.JENIS_KELAMIN);
-                    if (jkByte != null) {
-                        jenisKelamin = EJenisKelamin.values()[jkByte] == EJenisKelamin.LAKI_LAKI
-                                ? "Laki-Laki" : "Perempuan";
-                    }
+                .map(BiodataDashboardQuery::mapRow);
+    }
 
-                    String agama = null;
-                    Byte agByte = r.get(BIODATA.AGAMA);
-                    if (agByte != null) {
-                        agama = EAgama.values()[agByte].toString();
-                    }
+    static BiodataDashboardResponse mapRow(Record r) {
+        String jenisKelamin = null;
+        Byte jkByte = r.get(BIODATA.JENIS_KELAMIN);
+        if (jkByte != null) {
+            jenisKelamin = EJenisKelamin.values()[jkByte] == EJenisKelamin.LAKI_LAKI
+                    ? "Laki-Laki" : "Perempuan";
+        }
 
-                    String statusKawin = null;
-                    Byte skByte = r.get(BIODATA.STATUS_KAWIN);
-                    if (skByte != null) {
-                        statusKawin = EStatusKawin.values()[skByte].toString();
-                    }
+        String agama = null;
+        Byte agByte = r.get(BIODATA.AGAMA);
+        if (agByte != null) {
+            agama = EAgama.values()[agByte].toString();
+        }
 
-                    String kodePajak = r.get(GAJI_PENDAPATAN_NON_PAJAK.KODE);
-                    String email = r.get(PEGAWAI.EMAIL);
-                    String noTelp = r.get(BIODATA.TELP);
-                    LocalDate tanggalLahir = r.get(BIODATA.TANGGAL_LAHIR);
-                    String tempatLahir = r.get(BIODATA.TEMPAT_LAHIR);
-                    String alamat = r.get(BIODATA.ALAMAT);
+        String statusKawin = null;
+        Byte skByte = r.get(BIODATA.STATUS_KAWIN);
+        if (skByte != null) {
+            statusKawin = EStatusKawin.values()[skByte].toString();
+        }
 
-                    String tingkat = r.get("tingkat", String.class);
-                    String jurusan = r.get(PENDIDIKAN.JURUSAN);
-                    String institusi = r.get(PENDIDIKAN.INSTITUSI);
-                    Integer tahunLulus = r.get(PENDIDIKAN.TAHUN_LULUS);
+        String kodePajak = r.get(GAJI_PENDAPATAN_NON_PAJAK.KODE);
+        String email = r.get(PEGAWAI.EMAIL);
+        String noTelp = r.get(BIODATA.TELP);
+        LocalDate tanggalLahir = r.get(BIODATA.TANGGAL_LAHIR);
+        String tempatLahir = r.get(BIODATA.TEMPAT_LAHIR);
+        String alamat = r.get(BIODATA.ALAMAT);
 
-                    PendidikanDashboard pendidikan = (tingkat != null || jurusan != null
-                            || institusi != null || tahunLulus != null)
-                            ? new PendidikanDashboard(tingkat, jurusan, institusi, tahunLulus)
-                            : null;
+        String tingkat = r.get("tingkat", String.class);
+        String jurusan = r.get(PENDIDIKAN.JURUSAN);
+        String institusi = r.get(PENDIDIKAN.INSTITUSI);
+        Integer tahunLulus = r.get(PENDIDIKAN.TAHUN_LULUS);
 
-                    return new BiodataDashboardResponse(
-                            r.get(BIODATA.NIK),
-                            r.get(BIODATA.NAMA),
-                            jenisKelamin,
-                            tempatLahir,
-                            tanggalLahir,
-                            agama,
-                            statusKawin,
-                            alamat,
-                            noTelp,
-                            email,
-                            kodePajak,
-                            r.get(BIODATA.IBU_KANDUNG),
-                            pendidikan
-                    );
-                });
+        PendidikanDashboard pendidikan = (tingkat != null || jurusan != null
+                || institusi != null || tahunLulus != null)
+                ? new PendidikanDashboard(tingkat, jurusan, institusi, tahunLulus)
+                : null;
+
+        return new BiodataDashboardResponse(
+                r.get(BIODATA.NIK),
+                r.get(BIODATA.NAMA),
+                jenisKelamin,
+                tempatLahir,
+                tanggalLahir,
+                agama,
+                statusKawin,
+                alamat,
+                noTelp,
+                email,
+                kodePajak,
+                r.get(BIODATA.IBU_KANDUNG),
+                pendidikan
+        );
     }
 }
