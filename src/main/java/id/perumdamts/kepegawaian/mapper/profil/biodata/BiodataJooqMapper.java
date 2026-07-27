@@ -10,8 +10,6 @@ import id.perumdamts.kepegawaian.jooq.enums.BiodataGolonganDarah;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
 
-import java.util.Objects;
-
 public final class BiodataJooqMapper implements RecordMapper<Record, BiodataQuery> {
     public static final BiodataJooqMapper INSTANCE = new BiodataJooqMapper();
 
@@ -27,7 +25,7 @@ public final class BiodataJooqMapper implements RecordMapper<Record, BiodataQuer
 
         Long ptId = record.get("pendidikan_terakhir_id", Long.class);
         Long selfPtId = record.get("self_pendidikan_terakhir_id", Long.class);
-        Long resolvedPtId = Objects.requireNonNullElse(selfPtId, ptId);
+        Long resolvedPtId = selfPtId != null ? selfPtId : ptId;
 
         JenjangPendidikanResponse pendidikanTerakhir = null;
         if (ptId != null) {

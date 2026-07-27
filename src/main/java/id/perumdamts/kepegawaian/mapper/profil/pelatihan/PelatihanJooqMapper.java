@@ -4,8 +4,6 @@ import id.perumdamts.kepegawaian.dto.profil.pelatihan.PelatihanQuery;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
 
-import java.util.Objects;
-
 public final class PelatihanJooqMapper implements RecordMapper<Record, PelatihanQuery> {
     public static final PelatihanJooqMapper INSTANCE = new PelatihanJooqMapper();
 
@@ -18,7 +16,7 @@ public final class PelatihanJooqMapper implements RecordMapper<Record, Pelatihan
                 record.get("biodata_id", String.class),
                 record.get("biodata_nik", String.class),
                 record.get("biodata_nama", String.class),
-                Objects.requireNonNullElse(record.get("self_jenis_pelatihan_id", Long.class), jenisPelatihanId),
+                record.get("self_jenis_pelatihan_id", Long.class) != null ? record.get("self_jenis_pelatihan_id", Long.class) : jenisPelatihanId,
                 record.get("jenis_pelatihan_nama", String.class),
                 record.get("nama", String.class),
                 record.get("lembaga", String.class),

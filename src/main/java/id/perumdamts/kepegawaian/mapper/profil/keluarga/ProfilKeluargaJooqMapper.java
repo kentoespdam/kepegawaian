@@ -9,8 +9,6 @@ import id.perumdamts.kepegawaian.entities.commons.EStatusPendidikan;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
 
-import java.util.Objects;
-
 public final class ProfilKeluargaJooqMapper implements RecordMapper<Record, ProfilKeluargaQuery> {
     public static final ProfilKeluargaJooqMapper INSTANCE = new ProfilKeluargaJooqMapper();
 
@@ -19,7 +17,8 @@ public final class ProfilKeluargaJooqMapper implements RecordMapper<Record, Prof
     @Override
     public ProfilKeluargaQuery map(Record record) {
         Long pendidikanId = record.get("pendidikan_id", Long.class);
-        Long resolvedPendidikanId = Objects.requireNonNullElse(record.get("self_pendidikan_id", Long.class), pendidikanId);
+        Long selfPendidikanId = record.get("self_pendidikan_id", Long.class);
+        Long resolvedPendidikanId = selfPendidikanId != null ? selfPendidikanId : pendidikanId;
 
         JenjangPendidikanResponse jenjang = null;
         if (pendidikanId != null) {
