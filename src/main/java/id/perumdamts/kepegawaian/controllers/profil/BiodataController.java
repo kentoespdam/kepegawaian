@@ -55,6 +55,11 @@ public class BiodataController {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.patchBiodata(id, request)));
     }
 
+    @GetMapping("/{id}/dashboard")
+    public ResponseEntity<SingleResult<BiodataDashboardResponse>> getDashboard(@PathVariable String id) {
+        return CustomResult.any(queryService.getDashboard(id));
+    }
+
     @GetMapping("/{id}/foto-profil")
     public ResponseEntity<?> getFotoProfil(@PathVariable String id) {
         return queryService.findFotoProfil(id);

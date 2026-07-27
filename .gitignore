@@ -50,3 +50,4 @@ graphify-out/cache/
 .beads-credential-key
 /dummy_prompt.md
 .antigravitycli/
+/src/main/resources/db/migration/V1__baseline.sql.bak

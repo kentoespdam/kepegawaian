@@ -1,12 +1,14 @@
 package id.perumdamts.kepegawaian.services.profil.biodata;
 
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
+import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataDashboardResponse;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataDetail;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataIndexQuery;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataQuery;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
+import id.perumdamts.kepegawaian.repositories.profil.jooq.BiodataDashboardQuery;
 import id.perumdamts.kepegawaian.repositories.profil.jooq.BiodataDetailQuery;
 import id.perumdamts.kepegawaian.repositories.profil.jooq.BiodataQueryRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
@@ -28,6 +30,7 @@ import java.util.List;
 public class BiodataQueryService {
     private final BiodataQueryRepository queries;
     private final BiodataDetailQuery detail;
+    private final BiodataDashboardQuery dashboard;
     private final BiodataRepository repository;
     private final FileUploadUtil fileUploadUtil;
 
@@ -38,6 +41,11 @@ public class BiodataQueryService {
     public BiodataDetail getById(String nik) {
         return detail.getById(nik)
                 .orElseThrow(() -> new NotFoundException("Biodata not found"));
+    }
+
+    public BiodataDashboardResponse getDashboard(String nik) {
+        return dashboard.getByNik(nik)
+                .orElseThrow(() -> new NotFoundException("Biodata not found or NIK bukan pegawai"));
     }
 
     public List<BiodataQuery> findAll(BiodataIndexQuery query) {
