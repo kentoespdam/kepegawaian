@@ -5,8 +5,8 @@ import id.perumdamts.kepegawaian.entities.profil.ProfileUpdate;
 
 public interface ProfileUpdateApprovalService {
     void changeHandler(ProfileUpdate profileUpdate, EProfileUpdateApproval approval);
-    void markAsStable(Long revId);
-    void resetEntityState(Long id);
-    void handleRejectedChange(ProfileUpdate profileUpdate, Long revId);
+    void markAsStable(String revId);
+    void resetEntityState(String id);
+    void handleRejectedChange(ProfileUpdate profileUpdate, String revId);
     void revertToPreviousRevision(ProfileUpdate profileUpdate);
 }

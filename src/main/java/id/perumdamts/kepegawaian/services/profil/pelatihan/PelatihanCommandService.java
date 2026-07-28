@@ -99,6 +99,6 @@ public class PelatihanCommandService {
 
     private void handleRevisionUpdate(Pelatihan saved, RevisionMetadata.RevisionType type) {
         if (Boolean.FALSE.equals(saved.getChangedStatus())) return;
-        profileUpdateService.create(saved.getId(), type, EProfileUpdateTable.PELATIHAN);
+        profileUpdateService.create(String.valueOf(saved.getId()), type, EProfileUpdateTable.PELATIHAN);
     }
 }

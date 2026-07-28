@@ -24,18 +24,32 @@ public class RevInfoService {
 
 
     public ProfilUpdateDetail<ProfilKeluargaResponse> findKeluargaRevision(ProfileUpdate profileUpdate) {
-        List<ProfilKeluargaResponse> froms = findLatestRevision(ProfilKeluarga.class, profileUpdate.getRevId()).stream()
+        List<ProfilKeluargaResponse> froms = findLatestRevision(ProfilKeluarga.class, Long.valueOf(profileUpdate.getRevId())).stream()
                 .map(ProfilKeluargaResponse::from).toList();
         return ProfilUpdateDetail.build(profileUpdate, froms);
     }
 
     public ProfilUpdateDetail<PendidikanResponse> findPendidikan(ProfileUpdate profileUpdate) {
-        List<PendidikanResponse> result = findLatestRevision(Pendidikan.class, profileUpdate.getRevId()).stream()
+        List<PendidikanResponse> result = findLatestRevision(Pendidikan.class, Long.valueOf(profileUpdate.getRevId())).stream()
                 .map(PendidikanResponse::from).toList();
         return ProfilUpdateDetail.build(profileUpdate, result);
     }
 
     public <T> List<T> findLatestRevision(Class<T> entityClass, Long entityId) {
+        AuditReader auditReader = AuditReaderFactory.get(entityManager);
+
+        @SuppressWarnings("unchecked")
+        List<Object[]> result = auditReader.createQuery()
+                .forRevisionsOfEntity(entityClass, false, true)
+                .add(AuditEntity.id().eq(entityId))
+                .addOrder(AuditEntity.revisionNumber().desc())
+                .setMaxResults(2)
+                .getResultList();
+
+        return extractEntities(result);
+    }
+
+    public <T> List<T> findLatestRevision(Class<T> entityClass, String entityId) {
         AuditReader auditReader = AuditReaderFactory.get(entityManager);
 
         @SuppressWarnings("unchecked")

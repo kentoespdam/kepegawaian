@@ -38,7 +38,7 @@ public class PengalamanKerjaCommandService {
         PengalamanKerja entity = PengalamanKerjaMapper.toEntity(request, biodata);
         entity.setChangedStatus(resolver.requiresApproval());
         PengalamanKerja save = repository.save(entity);
-        profileUpdateService.create(save.getId(), RevisionMetadata.RevisionType.INSERT, EProfileUpdateTable.PENGALAMAN_KERJA);
+        profileUpdateService.create(String.valueOf(save.getId()), RevisionMetadata.RevisionType.INSERT, EProfileUpdateTable.PENGALAMAN_KERJA);
         return save.getId();
     }
 
@@ -51,7 +51,7 @@ public class PengalamanKerjaCommandService {
         PengalamanKerja updated = PengalamanKerjaMapper.updateEntity(entity, request, biodata);
         updated.setChangedStatus(resolver.requiresApproval());
         PengalamanKerja save = repository.save(updated);
-        profileUpdateService.create(save.getId(), RevisionMetadata.RevisionType.UPDATE, EProfileUpdateTable.PENGALAMAN_KERJA);
+        profileUpdateService.create(String.valueOf(save.getId()), RevisionMetadata.RevisionType.UPDATE, EProfileUpdateTable.PENGALAMAN_KERJA);
         return save.getId();
     }
 
@@ -62,7 +62,7 @@ public class PengalamanKerjaCommandService {
         entity.setIsDeleted(true);
         entity.setChangedStatus(resolver.requiresApproval());
         repository.save(entity);
-        profileUpdateService.create(entity.getId(), RevisionMetadata.RevisionType.DELETE, EProfileUpdateTable.PENGALAMAN_KERJA);
+        profileUpdateService.create(String.valueOf(entity.getId()), RevisionMetadata.RevisionType.DELETE, EProfileUpdateTable.PENGALAMAN_KERJA);
         lampiranProfilCommandService.deleteByRefId(EJenisLampiranProfil.PROFIL_PENGALAMAN_KERJA, id);
         return true;
     }

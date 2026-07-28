@@ -34,7 +34,7 @@ public final class ProfileUpdateJooqMapper implements RecordMapper<Record, Profi
                 tableName,
                 actionType,
                 record.get(PROFIL_UPDATE.DATA_DESCRIPTION),
-                record.get(PROFIL_UPDATE.REV_ID),
+                record.get(PROFIL_UPDATE.REV_ID) != null ? String.valueOf(record.get(PROFIL_UPDATE.REV_ID)) : null,
                 approvalStatus,
                 record.get(PROFIL_UPDATE.APPROVAL_DATE),
                 record.get(PROFIL_UPDATE.APPROVAL_PIC)

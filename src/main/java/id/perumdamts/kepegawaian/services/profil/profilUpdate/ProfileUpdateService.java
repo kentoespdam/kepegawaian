@@ -27,12 +27,13 @@ import java.time.LocalDateTime;
 public class ProfileUpdateService {
     private final ProfileUpdateRepository repository;
     private final PegawaiRepository pegawaiRepository;
+    private final ProfileUpdateBiodataApprovalService approvalBiodataService;
     private final ProfileUpdateKeluargaApprovalService approvalKeluargaService;
     private final ProfileUpdatePendidikanApprovalService approvalPendidikanService;
 
 
 
-    public void create(Long revId, RevisionMetadata.RevisionType actionType, EProfileUpdateTable tableName) {
+    public void create(String revId, RevisionMetadata.RevisionType actionType, EProfileUpdateTable tableName) {
         AppwriteUser principal = (AppwriteUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Pegawai pegawai;
         if (principal.get$id().equals("DEV")) {
@@ -68,6 +69,9 @@ public class ProfileUpdateService {
                 .orElseThrow(() -> new NotFoundException("Unknown Profile Update"));
         EProfileUpdateTable tableName = profileUpdate.getTableName();
         switch (tableName) {
+            case BIODATA:
+                approvalBiodataService.changeHandler(profileUpdate, request.getApproval());
+                break;
             case KELUARGA:
                 approvalKeluargaService.changeHandler(profileUpdate, request.getApproval());
                 break;

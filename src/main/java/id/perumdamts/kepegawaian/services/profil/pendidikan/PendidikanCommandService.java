@@ -112,6 +112,6 @@ public class PendidikanCommandService {
 
     private void handleRevisionUpdate(Pendidikan save, RevisionMetadata.RevisionType type) {
         if (Boolean.FALSE.equals(save.getChangedStatus())) return;
-        profileUpdateService.create(save.getId(), type, EProfileUpdateTable.PENDIDIKAN);
+        profileUpdateService.create(String.valueOf(save.getId()), type, EProfileUpdateTable.PENDIDIKAN);
     }
 }

@@ -29,10 +29,11 @@ public class ProfileUpdatePendidikanApprovalService implements ProfileUpdateAppr
     }
 
     @Override
-    public void markAsStable(Long revId) {
+    public void markAsStable(String revId) {
         log.info("mark as Stable executed");
         try {
-            repository.findById(revId)
+            Long id = Long.valueOf(revId);
+            repository.findById(id)
                     .ifPresent(pendidikan -> {
                         pendidikan.setChangedStatus(false);
                         repository.save(pendidikan);
@@ -44,8 +45,9 @@ public class ProfileUpdatePendidikanApprovalService implements ProfileUpdateAppr
     }
 
     @Override
-    public void resetEntityState(Long id) {
-        repository.findById(id)
+    public void resetEntityState(String id) {
+        Long longId = Long.valueOf(id);
+        repository.findById(longId)
                 .ifPresent(entity -> {
                     entity.setChangedStatus(false);
                     entity.setIsDeleted(false);
@@ -54,9 +56,10 @@ public class ProfileUpdatePendidikanApprovalService implements ProfileUpdateAppr
     }
 
     @Override
-    public void handleRejectedChange(ProfileUpdate profileUpdate, Long revId) {
+    public void handleRejectedChange(ProfileUpdate profileUpdate, String revId) {
+        Long longId = Long.valueOf(revId);
         switch (profileUpdate.getActionType()) {
-            case INSERT -> repository.deleteById(revId);
+            case INSERT -> repository.deleteById(longId);
             case UPDATE -> revertToPreviousRevision(profileUpdate);
             case DELETE -> resetEntityState(revId);
             default -> throw new IllegalStateException("Unexpected value: " + profileUpdate.getActionType());
@@ -65,7 +68,7 @@ public class ProfileUpdatePendidikanApprovalService implements ProfileUpdateAppr
 
     @Override
     public void revertToPreviousRevision(ProfileUpdate profileUpdate) {
-        List<Pendidikan> latestRevision = service.findLatestRevision(Pendidikan.class, profileUpdate.getRevId());
+        List<Pendidikan> latestRevision = service.findLatestRevision(Pendidikan.class, Long.valueOf(profileUpdate.getRevId()));
         Pendidikan last = latestRevision.getLast();
         repository.rollbackPrevVersion(
                 last.getBiodata().getNik(),

@@ -94,6 +94,6 @@ public class KeahlianCommandService {
 
     private void handleRevisionUpdate(Keahlian save, RevisionMetadata.RevisionType type) {
         if (Boolean.FALSE.equals(save.getChangedStatus())) return;
-        profileUpdateService.create(save.getId(), type, EProfileUpdateTable.KEAHLIAN);
+        profileUpdateService.create(String.valueOf(save.getId()), type, EProfileUpdateTable.KEAHLIAN);
     }
 }

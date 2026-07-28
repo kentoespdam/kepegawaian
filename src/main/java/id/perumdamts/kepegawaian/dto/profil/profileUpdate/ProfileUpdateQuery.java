@@ -16,7 +16,7 @@ public record ProfileUpdateQuery(
         EProfileUpdateTable tableName,
         RevisionMetadata.RevisionType actionType,
         String dataDescription,
-        Long revId,
+        String revId,
         EProfileUpdateApproval approvalStatus,
         LocalDateTime approvalDate,
         String approvalPic

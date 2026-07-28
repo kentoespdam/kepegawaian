@@ -37,7 +37,7 @@ public class ProfileUpdate {
     @Enumerated(EnumType.ORDINAL)
     private RevisionMetadata.RevisionType actionType;
     private String dataDescription;
-    private Long revId;
+    private String revId;
     @Enumerated(EnumType.ORDINAL)
     private EProfileUpdateApproval approvalStatus;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

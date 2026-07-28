@@ -4,6 +4,7 @@ import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPatchRequest;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataPutRequest;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
+import id.perumdamts.kepegawaian.entities.commons.EProfileUpdateTable;
 import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
@@ -12,9 +13,11 @@ import id.perumdamts.kepegawaian.repositories.master.jpa.JenjangPendidikanReposi
 import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
 import id.perumdamts.kepegawaian.services.profil.kartuIdentitas.KartuIdentitasCommandService;
 import id.perumdamts.kepegawaian.services.profil.pendidikan.PendidikanCommandService;
+import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
 import id.perumdamts.kepegawaian.utils.FileUploadUtil;
 import id.perumdamts.kepegawaian.utils.UploadResultUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.history.RevisionMetadata;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,6 +32,7 @@ public class BiodataCommandService {
     private final JenjangPendidikanRepository jenjangPendidikanRepository;
     private final PendidikanCommandService pendidikanCommandService;
     private final KartuIdentitasCommandService kartuIdentitasCommandService;
+    private final ProfileUpdateService profileUpdateService;
     private final FileUploadUtil fileUploadUtil;
 
     @Transactional
@@ -77,12 +81,9 @@ public class BiodataCommandService {
         BiodataMapper.patchEntity(entity, request);
         entity.setChangedStatus(true);
         repository.save(entity);
+        profileUpdateService.create(nik, RevisionMetadata.RevisionType.UPDATE, EProfileUpdateTable.BIODATA);
         return entity.getNik();
     }
-
-    // ponytail: ProfileUpdateService.create() not called here because
-    // ProfileUpdate.revId is Long but Biodata pk is String (NIK).
-    // BIODATA approval handler + ProfileUpdateService integration = separate task.
 
     @Transactional
     public boolean deleteById(String nik) {

@@ -35,7 +35,7 @@ public class ProfileUpdateKeluargaApprovalService implements ProfileUpdateApprov
 
     @Override
     public void revertToPreviousRevision(ProfileUpdate profileUpdate) {
-        List<ProfilKeluarga> latestRevision = service.findLatestRevision(ProfilKeluarga.class, profileUpdate.getRevId());
+        List<ProfilKeluarga> latestRevision = service.findLatestRevision(ProfilKeluarga.class, Long.valueOf(profileUpdate.getRevId()));
         ProfilKeluarga last = latestRevision.getLast();
         repository.rollbackPrevVersion(
                 last.getNik(),
@@ -57,9 +57,10 @@ public class ProfileUpdateKeluargaApprovalService implements ProfileUpdateApprov
     }
 
     @Override
-    public void handleRejectedChange(ProfileUpdate profileUpdate, Long id) {
+    public void handleRejectedChange(ProfileUpdate profileUpdate, String id) {
+        Long longId = Long.valueOf(id);
         switch (profileUpdate.getActionType()) {
-            case INSERT -> repository.deleteById(id);
+            case INSERT -> repository.deleteById(longId);
             case UPDATE -> revertToPreviousRevision(profileUpdate);
             case DELETE -> resetEntityState(id);
             default -> throw new IllegalStateException("Unexpected value: " + profileUpdate.getActionType());
@@ -67,16 +68,19 @@ public class ProfileUpdateKeluargaApprovalService implements ProfileUpdateApprov
     }
 
     @Override
-    public void markAsStable(Long id) {
+    public void markAsStable(String id) {
+        Long longId = Long.valueOf(id);
         log.info("Marking entity as stable");
-        ProfilKeluarga entity = repository.findById(id)
+        ProfilKeluarga entity = repository.findById(longId)
                 .orElseThrow(() -> new IllegalArgumentException(UNKNOWN_PROFIL_KELUARGA));
         entity.setChangedStatus(false);
         repository.save(entity);
     }
 
-    public void resetEntityState(Long id) {
-        repository.findById(id)
+    @Override
+    public void resetEntityState(String id) {
+        Long longId = Long.valueOf(id);
+        repository.findById(longId)
                 .ifPresent(entity -> {
                     entity.setChangedStatus(false);
                     entity.setIsDeleted(false);
