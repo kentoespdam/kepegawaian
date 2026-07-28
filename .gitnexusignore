@@ -1,0 +1,7 @@
+.agents/
+.antigravitycli/
+.idea/
+.beads/
+.claude/
+build/
+graphify-out/
