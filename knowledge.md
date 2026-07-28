@@ -307,7 +307,7 @@ Full catalog: `.claude/skills/`. Key ones:
 
 | Skill | Use Case |
 |-------|----------|
-| `graphify` | Knowledge graph — eksplorasi/cluster project secara visual |
+| `graphify` | Knowledge graph — eksplorasi/cluster project secara visual (skill di `.agents/skills/graphify/SKILL.md`) |
 | `gitnexus-*` | Code intelligence (6 skills — exploring, impact, debugging, refactoring, guide, CLI) |
 | `tdd` | Test-first development |
 | `diagnose` / `diagnosing-bugs` | Debug / regression |
