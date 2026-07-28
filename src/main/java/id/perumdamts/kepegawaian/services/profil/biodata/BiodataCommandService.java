@@ -75,9 +75,14 @@ public class BiodataCommandService {
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
 
         BiodataMapper.patchEntity(entity, request);
+        entity.setChangedStatus(true);
         repository.save(entity);
         return entity.getNik();
     }
+
+    // ponytail: ProfileUpdateService.create() not called here because
+    // ProfileUpdate.revId is Long but Biodata pk is String (NIK).
+    // BIODATA approval handler + ProfileUpdateService integration = separate task.
 
     @Transactional
     public boolean deleteById(String nik) {

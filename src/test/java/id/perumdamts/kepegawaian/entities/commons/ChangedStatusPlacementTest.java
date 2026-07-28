@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.entities.commons;
 
+import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.KartuIdentitas;
 import id.perumdamts.kepegawaian.entities.profil.Keahlian;
 import id.perumdamts.kepegawaian.entities.profil.LampiranProfil;
@@ -40,6 +41,7 @@ class ChangedStatusPlacementTest {
 
     @Test
     void approvalEntitiesDeclareChangedStatus() {
+        assertTrue(hasDeclaredChangedStatus(Biodata.class));
         assertTrue(hasDeclaredChangedStatus(Keahlian.class));
         assertTrue(hasDeclaredChangedStatus(Pelatihan.class));
         assertTrue(hasDeclaredChangedStatus(PengalamanKerja.class));

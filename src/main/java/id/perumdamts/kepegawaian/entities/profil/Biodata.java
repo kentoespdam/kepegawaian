@@ -93,6 +93,7 @@ public class Biodata implements Serializable {
     @LastModifiedDate
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private LocalDateTime updatedAt;
+    private Boolean changedStatus = false;
     private Boolean isDeleted = false;
     @Version
     private Long version = 1L;
@@ -125,6 +126,7 @@ public class Biodata implements Serializable {
                 ", createdAt=" + createdAt +
                 ", updatedBy='" + updatedBy + '\'' +
                 ", updatedAt=" + updatedAt +
+                ", changedStatus=" + changedStatus +
                 ", isDeleted=" + isDeleted +
                 ", version=" + version +
                 '}';
