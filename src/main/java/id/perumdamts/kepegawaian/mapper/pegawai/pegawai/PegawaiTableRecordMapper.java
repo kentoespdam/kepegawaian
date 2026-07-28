@@ -40,7 +40,7 @@ public final class PegawaiTableRecordMapper {
         String pangkat = r.get("golongan_pangkat", String.class);
         String golonganNama = r.get("golongan_golongan", String.class);
         String pangkatGolongan = (Objects.nonNull(pangkat) && Objects.nonNull(golonganNama))
-                ? pangkat + "-" + golonganNama
+                ? golonganNama + " - " + pangkat
                 : null;
 
         Byte spByte = r.get(PEGAWAI.STATUS_PEGAWAI);

@@ -31,7 +31,7 @@ kedua gap itu dengan DTO khusus tabel.
 | **`tanggalLahir`** | `BIODATA.TANGGAL_LAHIR` (`LocalDate`). |
 | **`statusKawin`** | `BIODATA.STATUS_KAWIN` → `EStatusKawin.toString()`. |
 | **`kodePajak`** | `GAJI_PENDAPATAN_NON_PAJAK.KODE` (String). |
-| **`pangkatGolongan`** | gabungan `pangkat + '-' + golongan`. |
+| **`pangkatGolongan`** | gabungan `golongan + ' - ' + pangkat`. |
 | **Filter & sort** | **Reuse `PegawaiRequest` apa adanya** — `buildConditions()` & `ALLOWED_SORTS` yang sudah ada. Tak tambah param. |
 | **Path** | **Ganti di root** `GET /pegawai` → `Page<PegawaiTableResponse>`. Breaking change **terkoordinasi dgn FE**. |
 | **`findPage()` lama** | **Hapus** (service + repo). Sisakan `pegawaiResponseFields()` — masih dipakai `findByNipam`. |
@@ -51,7 +51,7 @@ public record PegawaiTableResponse(
     String statusKawin,      // label EStatusKawin
     String kodePajak,        // "K/1"
     Boolean isBpjs,          // = IS_ASKES
-    String pangkatGolongan,  // "Penata-III/c"
+    String pangkatGolongan,  // "III/c - Penata"
     String statusPegawai,    // label EStatusPegawai
     Organisasi organisasi,   // {id, nama}
     Jabatan jabatan,         // {id, nama}
@@ -63,7 +63,7 @@ Pola label reusable dari `PegawaiRingkasanMapper`:
 - `jenisKelamin`: `EJenisKelamin.values()[b] == LAKI_LAKI ? "Laki-Laki" : "Perempuan"`
 - `statusKawin`: `EStatusKawin.values()[b].toString()`
 - `statusPegawai`: `EStatusPegawai.values()[b].value`
-- `pangkatGolongan`: `pangkat + "-" + golongan`
+- `pangkatGolongan`: `golongan + " - " + pangkat`
 
 ---
 
