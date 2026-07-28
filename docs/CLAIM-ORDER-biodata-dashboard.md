@@ -16,6 +16,7 @@ Issue tracking: **kepegawaian-ws8**
 | `noTelp` | Alias dari `biodata.telp` |
 | `email` | `pegawai.email` (join `biodata.nik = pegawai.biodata_id`) |
 | `kodePajak` | `gaji_pendapatan_non_pajak.kode` via `pegawai.gaji_pendapatan_non_pajak_id` (String flat) |
+| `changedStatus` | `biodata.changed_status` (Boolean — status approval biodata) |
 | `tingkat` | `jenjang_pendidikan.nama` |
 | `institusi` | `pendidikan.institusi` (FE yang menyesuaikan label) |
 | Filter pendidikan | `is_latest = true AND changed_status = false` |
@@ -39,6 +40,7 @@ Issue tracking: **kepegawaian-ws8**
   "email": "...",
   "kodePajak": "...",
   "ibuKandung": "...",
+  "changedStatus": false,
   "detailPendidikanTerakhir": {
     "tingkat": "Sarjana",
     "jurusan": "...",
@@ -54,7 +56,7 @@ Issue tracking: **kepegawaian-ws8**
 
 ### 1. DTO
 - [x] Buat `BiodataDashboardResponse` record di `dto/profil/biodata/`
-  - Field: `nik`, `nama`, `jenisKelamin`, `tempatLahir`, `tanggalLahir`, `agama`, `statusKawin`, `alamat`, `noTelp`, `email`, `kodePajak`, `ibuKandung`, `detailPendidikanTerakhir`
+  - Field: `nik`, `nama`, `jenisKelamin`, `tempatLahir`, `tanggalLahir`, `agama`, `statusKawin`, `alamat`, `noTelp`, `email`, `kodePajak`, `ibuKandung`, `detailPendidikanTerakhir`, `changedStatus`
 - [x] Buat nested record `PendidikanDashboard` (inner record)
   - Field: `tingkat`, `jurusan`, `institusi`, `tahunLulus`
 

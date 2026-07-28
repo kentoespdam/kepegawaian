@@ -49,7 +49,7 @@ class BiodataQueryServiceDashboardTest {
         BiodataDashboardResponse expected = new BiodataDashboardResponse(
                 nik, "Budi", "Laki-Laki", "Jakarta", null,
                 null, null, null, null, "budi@company.com",
-                null, null, null);
+                null, null, null, null);
         when(dashboard.getByNik(nik)).thenReturn(Optional.of(expected));
 
         BiodataDashboardResponse result = service.getDashboard(nik);

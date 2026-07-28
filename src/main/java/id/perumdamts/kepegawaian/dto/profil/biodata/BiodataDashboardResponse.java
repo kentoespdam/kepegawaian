@@ -18,7 +18,8 @@ public record BiodataDashboardResponse(
         String email,
         String kodePajak,
         String ibuKandung,
-        PendidikanDashboard detailPendidikanTerakhir
+        PendidikanDashboard detailPendidikanTerakhir,
+        Boolean changedStatus
 ) {
     public record PendidikanDashboard(
             String tingkat,

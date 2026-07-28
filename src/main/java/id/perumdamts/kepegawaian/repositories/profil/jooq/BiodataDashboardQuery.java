@@ -41,7 +41,8 @@ public class BiodataDashboardQuery {
                         JENJANG_PENDIDIKAN.NAMA.as("tingkat"),
                         PENDIDIKAN.JURUSAN,
                         PENDIDIKAN.INSTITUSI,
-                        PENDIDIKAN.TAHUN_LULUS
+                        PENDIDIKAN.TAHUN_LULUS,
+                        BIODATA.field("changed_status", Boolean.class)
                 ).from(BIODATA)
                 .join(PEGAWAI).on(PEGAWAI.BIODATA_ID.eq(BIODATA.NIK))
                 .leftJoin(GAJI_PENDAPATAN_NON_PAJAK).on(PEGAWAI.GAJI_PENDAPATAN_NON_PAJAK_ID.eq(GAJI_PENDAPATAN_NON_PAJAK.ID)
@@ -95,6 +96,8 @@ public class BiodataDashboardQuery {
                 ? new PendidikanDashboard(tingkat, jurusan, institusi, tahunLulus)
                 : null;
 
+        Boolean changedStatus = r.get("changed_status", Boolean.class);
+
         return new BiodataDashboardResponse(
                 r.get(BIODATA.NIK),
                 r.get(BIODATA.NAMA),
@@ -108,7 +111,8 @@ public class BiodataDashboardQuery {
                 email,
                 kodePajak,
                 r.get(BIODATA.IBU_KANDUNG),
-                pendidikan
+                pendidikan,
+                changedStatus
         );
     }
 }

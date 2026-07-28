@@ -37,11 +37,12 @@ class BiodataDashboardQueryTest {
     private static final Field<String> JURUSAN = DSL.field("jurusan", String.class);
     private static final Field<String> INSTITUSI = DSL.field("institusi", String.class);
     private static final Field<Integer> TAHUN_LULUS = DSL.field("tahun_lulus", Integer.class);
+    private static final Field<Boolean> CHANGED_STATUS = DSL.field("changed_status", Boolean.class);
 
     private Record newRow() {
         return dsl.newRecord(NIK, NAMA, JENIS_KELAMIN, TEMPAT_LAHIR, TANGGAL_LAHIR,
                 AGAMA, STATUS_KAWIN, ALAMAT, TELP, EMAIL, KODE_PAJAK, IBU_KANDUNG,
-                TINGKAT, JURUSAN, INSTITUSI, TAHUN_LULUS);
+                TINGKAT, JURUSAN, INSTITUSI, TAHUN_LULUS, CHANGED_STATUS);
     }
 
     private BiodataDashboardResponse map(Record r) {
@@ -68,6 +69,8 @@ class BiodataDashboardQueryTest {
         row.set(INSTITUSI, "Universitas Indonesia");
         row.set(TAHUN_LULUS, 2015);
 
+        row.set(CHANGED_STATUS, true);
+
         BiodataDashboardResponse d = map(row);
 
         assertEquals("1234567890", d.nik());
@@ -82,6 +85,7 @@ class BiodataDashboardQueryTest {
         assertEquals("budi@company.com", d.email());
         assertEquals("TK0", d.kodePajak());
         assertEquals("Siti", d.ibuKandung());
+        assertTrue(d.changedStatus());
 
         assertNotNull(d.detailPendidikanTerakhir());
         assertEquals("Sarjana", d.detailPendidikanTerakhir().tingkat());
