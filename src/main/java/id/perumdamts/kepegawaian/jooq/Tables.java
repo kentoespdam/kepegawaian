@@ -23,6 +23,7 @@ import id.perumdamts.kepegawaian.jooq.tables.DasarGaji;
 import id.perumdamts.kepegawaian.jooq.tables.DasarGajiAud;
 import id.perumdamts.kepegawaian.jooq.tables.DetailDasarGaji;
 import id.perumdamts.kepegawaian.jooq.tables.DetailDasarGajiAud;
+import id.perumdamts.kepegawaian.jooq.tables.FlywaySchemaHistoryCopy1;
 import id.perumdamts.kepegawaian.jooq.tables.GajiBatchMaster;
 import id.perumdamts.kepegawaian.jooq.tables.GajiBatchMasterProses;
 import id.perumdamts.kepegawaian.jooq.tables.GajiBatchPotonganTkk;
@@ -196,6 +197,11 @@ public class Tables {
      * The table <code>detail_dasar_gaji_aud</code>.
      */
     public static final DetailDasarGajiAud DETAIL_DASAR_GAJI_AUD = DetailDasarGajiAud.DETAIL_DASAR_GAJI_AUD;
+
+    /**
+     * The table <code>flyway_schema_history_copy1</code>.
+     */
+    public static final FlywaySchemaHistoryCopy1 FLYWAY_SCHEMA_HISTORY_COPY1 = FlywaySchemaHistoryCopy1.FLYWAY_SCHEMA_HISTORY_COPY1;
 
     /**
      * The table <code>gaji_batch_master</code>.

@@ -330,6 +330,20 @@ public class BiodataAudRecord extends UpdatableRecordImpl<BiodataAudRecord> {
         return (Long) get(21);
     }
 
+    /**
+     * Setter for <code>biodata_aud.changed_status</code>.
+     */
+    public void setChangedStatus(Byte value) {
+        set(22, value);
+    }
+
+    /**
+     * Getter for <code>biodata_aud.changed_status</code>.
+     */
+    public Byte getChangedStatus() {
+        return (Byte) get(22);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -353,7 +367,7 @@ public class BiodataAudRecord extends UpdatableRecordImpl<BiodataAudRecord> {
     /**
      * Create a detached, initialised BiodataAudRecord
      */
-    public BiodataAudRecord(String nik, Integer rev, Byte revtype, Byte agama, String alamat, LocalDateTime createdAt, String createdBy, String fotoProfil, BiodataAudGolonganDarah golonganDarah, String ibuKandung, Boolean isDeleted, Boolean isPegawai, Byte jenisKelamin, String nama, String notes, Byte statusKawin, LocalDate tanggalLahir, String telp, String tempatLahir, LocalDateTime updatedAt, String updatedBy, Long pendidikanId) {
+    public BiodataAudRecord(String nik, Integer rev, Byte revtype, Byte agama, String alamat, LocalDateTime createdAt, String createdBy, String fotoProfil, BiodataAudGolonganDarah golonganDarah, String ibuKandung, Boolean isDeleted, Boolean isPegawai, Byte jenisKelamin, String nama, String notes, Byte statusKawin, LocalDate tanggalLahir, String telp, String tempatLahir, LocalDateTime updatedAt, String updatedBy, Long pendidikanId, Byte changedStatus) {
         super(BiodataAud.BIODATA_AUD);
 
         setNik(nik);
@@ -378,6 +392,7 @@ public class BiodataAudRecord extends UpdatableRecordImpl<BiodataAudRecord> {
         setUpdatedAt(updatedAt);
         setUpdatedBy(updatedBy);
         setPendidikanId(pendidikanId);
+        setChangedStatus(changedStatus);
         resetChangedOnNotNull();
     }
 }

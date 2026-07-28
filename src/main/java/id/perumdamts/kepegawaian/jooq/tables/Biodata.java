@@ -174,6 +174,11 @@ public class Biodata extends TableImpl<BiodataRecord> {
      */
     public final TableField<BiodataRecord, Long> VERSION = createField(DSL.name("version"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BIGINT)), this, "");
 
+    /**
+     * The column <code>biodata.changed_status</code>.
+     */
+    public final TableField<BiodataRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
+
     private Biodata(Name alias, Table<BiodataRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }

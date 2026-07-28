@@ -169,6 +169,11 @@ public class BiodataAud extends TableImpl<BiodataAudRecord> {
      */
     public final TableField<BiodataAudRecord, Long> PENDIDIKAN_ID = createField(DSL.name("pendidikan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
+    /**
+     * The column <code>biodata_aud.changed_status</code>.
+     */
+    public final TableField<BiodataAudRecord, Byte> CHANGED_STATUS = createField(DSL.name("changed_status"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
+
     private BiodataAud(Name alias, Table<BiodataAudRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }

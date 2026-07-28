@@ -316,6 +316,20 @@ public class BiodataRecord extends UpdatableRecordImpl<BiodataRecord> {
         return (Long) get(20);
     }
 
+    /**
+     * Setter for <code>biodata.changed_status</code>.
+     */
+    public void setChangedStatus(Byte value) {
+        set(21, value);
+    }
+
+    /**
+     * Getter for <code>biodata.changed_status</code>.
+     */
+    public Byte getChangedStatus() {
+        return (Byte) get(21);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -339,7 +353,7 @@ public class BiodataRecord extends UpdatableRecordImpl<BiodataRecord> {
     /**
      * Create a detached, initialised BiodataRecord
      */
-    public BiodataRecord(String nik, Byte agama, String alamat, String fotoProfil, BiodataGolonganDarah golonganDarah, String ibuKandung, Boolean isPegawai, Byte jenisKelamin, String nama, String notes, Byte statusKawin, LocalDate tanggalLahir, String telp, String tempatLahir, Long pendidikanId, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Long version) {
+    public BiodataRecord(String nik, Byte agama, String alamat, String fotoProfil, BiodataGolonganDarah golonganDarah, String ibuKandung, Boolean isPegawai, Byte jenisKelamin, String nama, String notes, Byte statusKawin, LocalDate tanggalLahir, String telp, String tempatLahir, Long pendidikanId, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Long version, Byte changedStatus) {
         super(Biodata.BIODATA);
 
         setNik(nik);
@@ -363,6 +377,7 @@ public class BiodataRecord extends UpdatableRecordImpl<BiodataRecord> {
         setUpdatedAt(updatedAt);
         setUpdatedBy(updatedBy);
         setVersion(version);
+        setChangedStatus(changedStatus);
         resetChangedOnNotNull();
     }
 }

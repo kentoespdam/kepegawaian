@@ -16,6 +16,7 @@ import id.perumdamts.kepegawaian.jooq.tables.CutiKuota;
 import id.perumdamts.kepegawaian.jooq.tables.CutiPegawai;
 import id.perumdamts.kepegawaian.jooq.tables.DasarGaji;
 import id.perumdamts.kepegawaian.jooq.tables.DetailDasarGaji;
+import id.perumdamts.kepegawaian.jooq.tables.FlywaySchemaHistoryCopy1;
 import id.perumdamts.kepegawaian.jooq.tables.GajiBatchMaster;
 import id.perumdamts.kepegawaian.jooq.tables.GajiBatchMasterProses;
 import id.perumdamts.kepegawaian.jooq.tables.GajiBatchPotonganTkk;
@@ -78,6 +79,7 @@ public class Indexes {
     // INDEX definitions
     // -------------------------------------------------------------------------
 
+    public static final Index FLYWAY_SCHEMA_HISTORY_COPY1_FLYWAY_SCHEMA_HISTORY_S_IDX = Internal.createIndex(DSL.name("flyway_schema_history_s_idx"), FlywaySchemaHistoryCopy1.FLYWAY_SCHEMA_HISTORY_COPY1, new OrderField[] { FlywaySchemaHistoryCopy1.FLYWAY_SCHEMA_HISTORY_COPY1.SUCCESS }, false);
     public static final Index KEAHLIAN_IDX_AHL_BIO_ID = Internal.createIndex(DSL.name("idx_ahl_bio_id"), Keahlian.KEAHLIAN, new OrderField[] { Keahlian.KEAHLIAN.BIODATA_ID }, false);
     public static final Index KEAHLIAN_IDX_AHL_DISETUJUI = Internal.createIndex(DSL.name("idx_ahl_disetujui"), Keahlian.KEAHLIAN, new OrderField[] { Keahlian.KEAHLIAN.DISETUJUI }, false);
     public static final Index KEAHLIAN_IDX_AHL_IS_DELETED = Internal.createIndex(DSL.name("idx_ahl_is_deleted"), Keahlian.KEAHLIAN, new OrderField[] { Keahlian.KEAHLIAN.IS_DELETED }, false);
