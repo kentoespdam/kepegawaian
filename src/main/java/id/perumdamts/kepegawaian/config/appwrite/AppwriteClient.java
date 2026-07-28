@@ -82,7 +82,7 @@ public class AppwriteClient {
     public AppwriteUser validateToken(String token) {
         try {
             return restClient.get()
-                    .uri(properties.getEndpoint() + "/account/jwt")
+                    .uri(properties.getEndpoint() + "/account")
                     .headers(headers -> {
                         addDefaultHeaders(headers, properties);
                         headers.set("X-Appwrite-JWT", token);

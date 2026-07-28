@@ -29,7 +29,7 @@ public class AuthController {
     @GetMapping("/session")
     public ResponseEntity<String> index(@RequestHeader(value = jwtHeader) String token) {
         String result = restClient.get()
-                .uri(appwriteUrl + "/account/jwt")
+                .uri(appwriteUrl + "/account")
                 .header("X-Appwrite-JWT", token)
                 .header("X-Appwrite-Project", appwriteProjectId)
                 .header("X-Appwrite-Key", appwriteApiKey)

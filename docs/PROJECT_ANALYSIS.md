@@ -229,7 +229,7 @@ Response wrapper classes:
 ### Alur JWT + Appwrite
 
 ```
-Client → Bearer Token → JwtAuthFilter → JwtTokenService → Appwrite API (/account/jwt)
+Client → Bearer Token → JwtAuthFilter → JwtTokenService → Appwrite API (GET /account)
        → AppwriteUser (roles) → Spring Security Authentication
 ```
 
