@@ -10,7 +10,7 @@ public final class DetailDasarGajiMapper {
     private DetailDasarGajiMapper() {}
 
     public static DetailDasarGaji toEntity(DetailDasarGajiPostRequest request, DasarGaji dasarGaji, Golongan golongan) {
-        Integer golonganKode = Integer.parseInt(golongan.getGolongan().split("\\.")[1]);
+        Integer golonganKode = Integer.parseInt(golongan.getGolongan().split("\\.")[1].replaceAll("\\D.*$", ""));
         DetailDasarGaji entity = new DetailDasarGaji();
         entity.setDasarGaji(dasarGaji);
         entity.setMkg(request.getMkg());
@@ -20,7 +20,7 @@ public final class DetailDasarGajiMapper {
     }
 
     public static void updateEntity(DetailDasarGaji entity, DetailDasarGajiPutRequest request, DasarGaji dasarGaji, Golongan golongan) {
-        Integer golonganKode = Integer.parseInt(golongan.getGolongan().split("\\.")[1]);
+        Integer golonganKode = Integer.parseInt(golongan.getGolongan().split("\\.")[1].replaceAll("\\D.*$", ""));
         entity.setDasarGaji(dasarGaji);
         entity.setGolonganKode(golonganKode);
         entity.setMkg(request.getMkg());

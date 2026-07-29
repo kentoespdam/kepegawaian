@@ -35,7 +35,7 @@ public class DetailDasarGajiQueryService {
     public DetailDasarGajiNominal findNominalByGolonganAndMasaKerja(Long golonganId, Integer masaKerja) {
         Golongan golongan = golonganRepository.findById(golonganId)
                 .orElseThrow(() -> new NotFoundException("Golongan not found: " + golonganId));
-        Integer golonganKode = Integer.parseInt(golongan.getGolongan().split("\\.")[1]);
+        Integer golonganKode = Integer.parseInt(golongan.getGolongan().split("\\.")[1].replaceAll("\\D.*$", ""));
         return queryRepository.getNominalByGolonganAndMasaKerja(golonganKode, masaKerja)
                 .orElseThrow(() -> new NotFoundException("Detail Dasar Gaji not found"));
     }
