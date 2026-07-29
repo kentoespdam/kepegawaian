@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.repositories.penggajian.jooq;
 
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji.DetailDasarGajiIndexQuery;
+import id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji.DetailDasarGajiNominal;
 import id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji.DetailDasarGajiResponse;
 import id.perumdamts.kepegawaian.mapper.penggajian.detailDasarGaji.DetailDasarGajiJooqMapper;
 import lombok.RequiredArgsConstructor;
@@ -100,6 +101,15 @@ public class DetailDasarGajiQueryRepository {
                 "golonganKode", DETAIL_DASAR_GAJI.GOLONGAN_KODE,
                 "nominal", DETAIL_DASAR_GAJI.NOMINAL
         );
+    }
+
+    public Optional<DetailDasarGajiNominal> getNominalByGolonganAndMasaKerja(Integer golonganKode, Integer masaKerja) {
+        return dsl.select(DETAIL_DASAR_GAJI.NOMINAL)
+                .from(DETAIL_DASAR_GAJI)
+                .where(DETAIL_DASAR_GAJI.GOLONGAN_KODE.eq(golonganKode))
+                .and(DETAIL_DASAR_GAJI.MKG.eq(masaKerja))
+                .and(DETAIL_DASAR_GAJI.IS_DELETED.eq(false))
+                .fetchOptional(record -> new DetailDasarGajiNominal(record.get(DETAIL_DASAR_GAJI.NOMINAL)));
     }
 
     private Condition baseWhere(DetailDasarGajiIndexQuery q) {

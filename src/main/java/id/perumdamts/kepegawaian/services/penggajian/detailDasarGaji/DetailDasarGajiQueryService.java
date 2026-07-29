@@ -1,7 +1,11 @@
 package id.perumdamts.kepegawaian.services.penggajian.detailDasarGaji;
 
 import id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji.DetailDasarGajiIndexQuery;
+import id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji.DetailDasarGajiNominal;
 import id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji.DetailDasarGajiResponse;
+import id.perumdamts.kepegawaian.entities.master.Golongan;
+import id.perumdamts.kepegawaian.exceptions.NotFoundException;
+import id.perumdamts.kepegawaian.repositories.master.jpa.GolonganRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.jooq.DetailDasarGajiQueryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,6 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class DetailDasarGajiQueryService {
     private final DetailDasarGajiQueryRepository queryRepository;
+    private final GolonganRepository golonganRepository;
 
     public Page<DetailDasarGajiResponse> findPage(DetailDasarGajiIndexQuery query) {
         return queryRepository.pageQuery(query);
@@ -25,5 +30,13 @@ public class DetailDasarGajiQueryService {
 
     public Optional<DetailDasarGajiResponse> findById(Long id) {
         return queryRepository.getById(id);
+    }
+
+    public DetailDasarGajiNominal findNominalByGolonganAndMasaKerja(Long golonganId, Integer masaKerja) {
+        Golongan golongan = golonganRepository.findById(golonganId)
+                .orElseThrow(() -> new NotFoundException("Golongan not found: " + golonganId));
+        Integer golonganKode = Integer.parseInt(golongan.getGolongan().split("\\.")[1]);
+        return queryRepository.getNominalByGolonganAndMasaKerja(golonganKode, masaKerja)
+                .orElseThrow(() -> new NotFoundException("Detail Dasar Gaji not found"));
     }
 }

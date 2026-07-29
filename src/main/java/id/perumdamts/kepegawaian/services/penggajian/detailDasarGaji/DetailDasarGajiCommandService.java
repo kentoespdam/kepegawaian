@@ -12,15 +12,12 @@ import id.perumdamts.kepegawaian.mapper.penggajian.detailDasarGaji.DetailDasarGa
 import id.perumdamts.kepegawaian.repositories.master.jpa.GolonganRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.jpa.DasarGajiRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.jpa.DetailDasarGajiRepository;
-import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,19 +25,6 @@ public class DetailDasarGajiCommandService {
     private final DetailDasarGajiRepository repository;
     private final DasarGajiRepository dasarGajiRepository;
     private final GolonganRepository golonganRepository;
-
-    public DetailDasarGaji findDetailDasarGajiByGolonganAndMasaKerja(Long golonganId, Integer masaKerja) {
-        Optional<Golongan> golongan = golonganRepository.findById(golonganId);
-        if (golongan.isEmpty())
-            throw new NotFoundException("Golongan not found: " + golonganId);
-        Integer golonganKode = Integer.parseInt(golongan.get().getGolongan().split("\\.")[1]);
-        Specification<DetailDasarGaji> specification = SpecificationBuilder.<DetailDasarGaji>of()
-                .addEqual(golonganKode, "golonganKode")
-                .addEqual(masaKerja, "mkg")
-                .build();
-        return repository.findOne(specification)
-                .orElseThrow(() -> new NotFoundException("Detail Dasar Gaji not found"));
-    }
 
     @Transactional
     public SavedStatus<Long> save(DetailDasarGajiPostRequest request) {

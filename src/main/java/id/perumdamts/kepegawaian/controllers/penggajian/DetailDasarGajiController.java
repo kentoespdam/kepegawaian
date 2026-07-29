@@ -4,8 +4,8 @@ import id.perumdamts.kepegawaian.dto.commons.*;
 import id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji.DetailDasarGajiIndexQuery;
 import id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji.DetailDasarGajiPostRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji.DetailDasarGajiPutRequest;
+import id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji.DetailDasarGajiNominal;
 import id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji.DetailDasarGajiResponse;
-import id.perumdamts.kepegawaian.entities.penggajian.DetailDasarGaji;
 import id.perumdamts.kepegawaian.services.penggajian.detailDasarGaji.DetailDasarGajiCommandService;
 import id.perumdamts.kepegawaian.services.penggajian.detailDasarGaji.DetailDasarGajiQueryService;
 import jakarta.validation.Valid;
@@ -41,8 +41,8 @@ public class DetailDasarGajiController {
     }
 
     @GetMapping("/{golonganId}/{masaKerja}")
-    public ResponseEntity<SingleResult<DetailDasarGaji>> findByGolonganIdAndMasaKerja(@PathVariable Long golonganId, @PathVariable Integer masaKerja) {
-        return CustomResult.any(commandService.findDetailDasarGajiByGolonganAndMasaKerja(golonganId, masaKerja));
+    public ResponseEntity<SingleResult<DetailDasarGajiNominal>> findByGolonganIdAndMasaKerja(@PathVariable Long golonganId, @PathVariable Integer masaKerja) {
+        return CustomResult.any(queryService.findNominalByGolonganAndMasaKerja(golonganId, masaKerja));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
