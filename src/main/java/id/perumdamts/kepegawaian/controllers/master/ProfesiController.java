@@ -34,6 +34,11 @@ public class ProfesiController {
         return CustomResult.any(query.getById(id));
     }
 
+    @GetMapping("/jabatan/{id}")
+    public ResponseEntity<ListResult<ProfesiListResponse>> findByJabatanId(@PathVariable Long id) {
+        return CustomResult.list(query.findByJabatanId(id));
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<SavedResult<Long>> save(@Valid @RequestBody ProfesiPostRequest request) {

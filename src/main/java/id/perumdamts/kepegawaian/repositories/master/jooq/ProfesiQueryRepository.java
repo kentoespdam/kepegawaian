@@ -82,6 +82,15 @@ public class ProfesiQueryRepository {
                 .fetchInto(ProfesiListResponse.class);
     }
 
+    public List<ProfesiListResponse> findByJabatanId(Long jabatanId) {
+        return dsl.select(PROFESI.ID, PROFESI.NAMA)
+                .from(PROFESI)
+                .where(PROFESI.JABATAN_ID.eq(jabatanId))
+                .and(PROFESI.IS_DELETED.eq(false))
+                .orderBy(PROFESI.NAMA.asc())
+                .fetchInto(ProfesiListResponse.class);
+    }
+
     private Condition baseWhere(ProfesiIndexQuery q) {
         return PROFESI.IS_DELETED.eq(false)
                 .and(q.getOrganisasiId() != null ? PROFESI.ORGANISASI_ID.eq(q.getOrganisasiId()) : DSL.noCondition())

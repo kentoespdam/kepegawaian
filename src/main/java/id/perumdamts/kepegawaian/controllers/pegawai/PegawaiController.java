@@ -59,6 +59,11 @@ public class PegawaiController {
         return CustomResult.any(queryService.findSession(id));
     }
 
+    @GetMapping("/{id}/mutasi-context")
+    public ResponseEntity<SingleResult<PegawaiResponseMutasiContext>> findMutasiContext(@PathVariable Long id) {
+        return CustomResult.any(queryService.findMutasiContext(id));
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<SavedResult<Long>> save(@Valid @RequestBody PegawaiPostRequest request) {

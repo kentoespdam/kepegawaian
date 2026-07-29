@@ -26,6 +26,10 @@ public class ProfesiQueryService {
         return queries.listQuery();
     }
 
+    public List<ProfesiListResponse> findByJabatanId(Long jabatanId) {
+        return queries.findByJabatanId(jabatanId);
+    }
+
     public ProfesiDetail getById(Long id) {
         return detailQuery.getById(id)
                 .orElseThrow(() -> new NotFoundException("Profesi not found"));
