@@ -4,6 +4,17 @@
     "CLAUDE_CODE_AUTO_COMPACT_WINDOW": "1000000"
   },
   "hooks": {
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "command": "bd prime",
+            "type": "command"
+          }
+        ],
+        "matcher": ""
+      }
+    ],
     "SessionStart": [
       {
         "hooks": [
