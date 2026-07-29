@@ -55,10 +55,7 @@ public class DetailDasarGajiQueryRepository {
         return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
     }
 
-    public List<DetailDasarGajiResponse> listQuery(DetailDasarGajiIndexQuery query) {
-        var sortOrder = SortParam.resolve(query.getSortBy(), query.getSortDirection(),
-                allowedSorts(), DETAIL_DASAR_GAJI.ID);
-        Condition where = baseWhere(query);
+    public List<DetailDasarGajiResponse> listQuery() {
         return dsl.select(
                         DETAIL_DASAR_GAJI.ID,
                         DETAIL_DASAR_GAJI.DASAR_GAJI_ID,
@@ -71,8 +68,8 @@ public class DetailDasarGajiQueryRepository {
                         DASAR_GAJI.AKTIF)
                 .from(DETAIL_DASAR_GAJI)
                 .leftJoin(DASAR_GAJI).on(DETAIL_DASAR_GAJI.DASAR_GAJI_ID.eq(DASAR_GAJI.ID))
-                .where(where)
-                .orderBy(sortOrder)
+                .where(DETAIL_DASAR_GAJI.IS_DELETED.eq(false))
+                .orderBy(DETAIL_DASAR_GAJI.ID.asc())
                 .fetch(DetailDasarGajiJooqMapper::mapToResponse);
     }
 

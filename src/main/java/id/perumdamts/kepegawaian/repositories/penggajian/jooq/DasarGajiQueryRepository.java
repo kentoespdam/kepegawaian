@@ -48,10 +48,7 @@ public class DasarGajiQueryRepository {
         return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
     }
 
-    public List<DasarGajiResponse> listQuery(DasarGajiIndexQuery query) {
-        var sortOrder = SortParam.resolve(query.getSortBy(), query.getSortDirection(),
-                allowedSorts(), DASAR_GAJI.ID);
-        Condition where = baseWhere(query);
+    public List<DasarGajiResponse> listQuery() {
         return dsl.select(
                         DASAR_GAJI.ID,
                         DASAR_GAJI.DESKRIPSI,
@@ -59,8 +56,8 @@ public class DasarGajiQueryRepository {
                         DASAR_GAJI.TANGGAL_AKHIR,
                         DASAR_GAJI.AKTIF)
                 .from(DASAR_GAJI)
-                .where(where)
-                .orderBy(sortOrder)
+                .where(DASAR_GAJI.IS_DELETED.eq(false))
+                .orderBy(DASAR_GAJI.ID.asc())
                 .fetch(DasarGajiJooqMapper::mapToResponse);
     }
 

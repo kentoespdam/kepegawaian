@@ -6,6 +6,7 @@ import id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji.DetailDasarGajiP
 import id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji.DetailDasarGajiPutRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji.DetailDasarGajiNominal;
 import id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji.DetailDasarGajiResponse;
+import id.perumdamts.kepegawaian.entities.penggajian.DetailDasarGaji;
 import id.perumdamts.kepegawaian.services.penggajian.detailDasarGaji.DetailDasarGajiCommandService;
 import id.perumdamts.kepegawaian.services.penggajian.detailDasarGaji.DetailDasarGajiQueryService;
 import jakarta.validation.Valid;
@@ -22,50 +23,55 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/penggajian/detail-dasar-gaji")
 public class DetailDasarGajiController {
-    private final DetailDasarGajiCommandService commandService;
-    private final DetailDasarGajiQueryService queryService;
+    private final DetailDasarGajiCommandService command;
+    private final DetailDasarGajiQueryService query;
 
     @GetMapping
-    public ResponseEntity<SingleResult<Page<DetailDasarGajiResponse>>> index(@ParameterObject @Valid DetailDasarGajiIndexQuery request) {
-        return CustomResult.any(queryService.findPage(request));
+    public ResponseEntity<PageResult<Page<DetailDasarGajiResponse>>> index(@ParameterObject @Valid DetailDasarGajiIndexQuery request) {
+        return CustomResult.page(query.pageQuery(request));
     }
 
     @GetMapping("/list")
-    public ResponseEntity<ListResult<DetailDasarGajiResponse>> list(@ParameterObject @Valid DetailDasarGajiIndexQuery request) {
-        return CustomResult.list(queryService.findList(request));
+    public ResponseEntity<ListResult<DetailDasarGajiResponse>> list() {
+        return CustomResult.list(query.listQuery());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<DetailDasarGajiResponse>> findById(@PathVariable Long id) {
-        return CustomResult.any(queryService.findById(id).orElse(null));
+        return CustomResult.any(query.getById(id));
     }
 
     @GetMapping("/{golonganId}/{masaKerja}")
-    public ResponseEntity<SingleResult<DetailDasarGajiNominal>> findByGolonganIdAndMasaKerja(@PathVariable Long golonganId, @PathVariable Integer masaKerja) {
-        return CustomResult.any(queryService.findNominalByGolonganAndMasaKerja(golonganId, masaKerja));
+    public ResponseEntity<SingleResult<DetailDasarGajiNominal>> findByGolonganIdAndMasaKerja(
+            @PathVariable Long golonganId, @PathVariable Integer masaKerja) {
+        return CustomResult.any(query.findNominalByGolonganAndMasaKerja(golonganId, masaKerja));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<SavedResult<Long>> save(@Valid @RequestBody DetailDasarGajiPostRequest request) {
-        return CustomResult.save(commandService.save(request));
+    public ResponseEntity<SavedResult<Long>> create(@Valid @RequestBody DetailDasarGajiPostRequest request) {
+        DetailDasarGaji entity = command.create(request);
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity.getId()));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/batch")
-    public ResponseEntity<SavedResult<String>> batch(@Valid @RequestBody List<DetailDasarGajiPostRequest> requests) {
-        return CustomResult.save(commandService.saveBatch(requests));
+    public ResponseEntity<SavedResult<List<Long>>> createBatch(@Valid @RequestBody List<@Valid DetailDasarGajiPostRequest> requests) {
+        List<DetailDasarGaji> entities = command.createBatch(requests);
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS,
+                entities.stream().map(DetailDasarGaji::getId).toList()));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<Long>> update(@PathVariable Long id, @Valid @RequestBody DetailDasarGajiPutRequest request) {
-        return CustomResult.save(commandService.update(id, request));
+        DetailDasarGaji entity = command.update(id, request);
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity.getId()));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<DeletedResult> deleteById(@PathVariable Long id) {
-        return CustomResult.delete(commandService.deleteById(id));
+    public ResponseEntity<DeletedResult> delete(@PathVariable Long id) {
+        return CustomResult.delete(command.delete(id));
     }
 }

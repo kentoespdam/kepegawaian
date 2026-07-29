@@ -1,7 +1,5 @@
 package id.perumdamts.kepegawaian.services.penggajian.detailDasarGaji;
 
-import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
-import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji.DetailDasarGajiPostRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji.DetailDasarGajiPutRequest;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
@@ -27,18 +25,17 @@ public class DetailDasarGajiCommandService {
     private final GolonganRepository golonganRepository;
 
     @Transactional
-    public SavedStatus<Long> save(DetailDasarGajiPostRequest request) {
+    public DetailDasarGaji create(DetailDasarGajiPostRequest request) {
         DasarGaji dasarGaji = dasarGajiRepository.findById(request.getDasarGajiId())
                 .orElseThrow(() -> new NotFoundException("Dasar Gaji not found"));
         Golongan golongan = golonganRepository.findById(request.getGolonganId())
                 .orElseThrow(() -> new NotFoundException("Golongan not found"));
         DetailDasarGaji entity = DetailDasarGajiMapper.toEntity(request, dasarGaji, golongan);
-        repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, entity.getId());
+        return repository.save(entity);
     }
 
     @Transactional
-    public SavedStatus<String> saveBatch(List<DetailDasarGajiPostRequest> requests) {
+    public List<DetailDasarGaji> createBatch(List<DetailDasarGajiPostRequest> requests) {
         List<DetailDasarGaji> entities = new ArrayList<>();
         for (DetailDasarGajiPostRequest request : requests) {
             DasarGaji dasarGaji = dasarGajiRepository.findById(request.getDasarGajiId())
@@ -48,12 +45,11 @@ public class DetailDasarGajiCommandService {
             DetailDasarGaji entity = DetailDasarGajiMapper.toEntity(request, dasarGaji, golongan);
             entities.add(entity);
         }
-        repository.saveAll(entities);
-        return SavedStatus.build(ESaveStatus.SUCCESS, entities.size() + " success");
+        return repository.saveAll(entities);
     }
 
     @Transactional
-    public SavedStatus<Long> update(Long id, DetailDasarGajiPutRequest request) {
+    public DetailDasarGaji update(Long id, DetailDasarGajiPutRequest request) {
         DasarGaji dasarGaji = dasarGajiRepository.findById(request.getDasarGajiId())
                 .orElseThrow(() -> new NotFoundException("Dasar Gaji not found"));
         Golongan golongan = golonganRepository.findById(request.getGolonganId())
@@ -61,16 +57,15 @@ public class DetailDasarGajiCommandService {
         DetailDasarGaji detailDasarGaji = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Detail Dasar Gaji not found"));
         DetailDasarGajiMapper.updateEntity(detailDasarGaji, request, dasarGaji, golongan);
-        repository.save(detailDasarGaji);
-        return SavedStatus.build(ESaveStatus.SUCCESS, detailDasarGaji.getId());
+        return repository.save(detailDasarGaji);
     }
 
     @Transactional
-    public boolean deleteById(Long id) {
-        boolean exists = repository.existsById(id);
-        if (!exists)
-            return false;
-        repository.deleteById(id);
+    public boolean delete(Long id) {
+        DetailDasarGaji entity = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Detail Dasar Gaji not found"));
+        entity.setIsDeleted(true);
+        repository.save(entity);
         return true;
     }
 }

@@ -1,7 +1,5 @@
 package id.perumdamts.kepegawaian.services.penggajian.dasarGaji;
 
-import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
-import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.penggajian.dasarGaji.DasarGajiPostRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.dasarGaji.DasarGajiPutRequest;
 import id.perumdamts.kepegawaian.entities.penggajian.DasarGaji;
@@ -14,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,36 +20,41 @@ public class DasarGajiCommandService {
     private final DasarGajiRepository repository;
 
     @Transactional
-    public SavedStatus<Long> save(DasarGajiPostRequest request) {
-        boolean exists = repository.exists(request.getSpecification());
-        if (exists)
-            throw new ConflictException("Dasar Gaji sudah ada");
+    public DasarGaji create(DasarGajiPostRequest request) {
+        Optional<DasarGaji> existing = repository.findOne(request.getSpecification());
+        if (existing.isPresent()) {
+            if (existing.get().getIsDeleted()) {
+                DasarGaji revived = existing.get();
+                revived.setIsDeleted(false);
+                return repository.save(revived);
+            } else {
+                throw new ConflictException("Dasar Gaji sudah ada");
+            }
+        }
         DasarGaji entity = DasarGajiMapper.toEntity(request);
-        repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, entity.getId());
+        return repository.save(entity);
     }
 
     @Transactional
-    public SavedStatus<String> saveBatch(List<DasarGajiPostRequest> requests) {
-        requests.stream().map(DasarGajiMapper::toEntity).forEach(repository::save);
-        return SavedStatus.build(ESaveStatus.SUCCESS, requests.size() + " success");
+    public List<DasarGaji> createBatch(List<DasarGajiPostRequest> requests) {
+        List<DasarGaji> entities = requests.stream().map(DasarGajiMapper::toEntity).toList();
+        return repository.saveAll(entities);
     }
 
     @Transactional
-    public SavedStatus<Long> update(Long id, DasarGajiPutRequest request) {
+    public DasarGaji update(Long id, DasarGajiPutRequest request) {
         DasarGaji entity = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Dasar Gaji not found"));
         DasarGajiMapper.updateEntity(entity, request);
-        repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, entity.getId());
+        return repository.save(entity);
     }
 
     @Transactional
-    public boolean deleteById(Long id) {
-        boolean exists = repository.existsById(id);
-        if (!exists)
-            return false;
-        repository.deleteById(id);
+    public boolean delete(Long id) {
+        DasarGaji entity = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Dasar Gaji not found"));
+        entity.setIsDeleted(true);
+        repository.save(entity);
         return true;
     }
 }

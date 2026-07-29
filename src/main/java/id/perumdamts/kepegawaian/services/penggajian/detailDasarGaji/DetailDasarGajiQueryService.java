@@ -12,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,16 +19,17 @@ public class DetailDasarGajiQueryService {
     private final DetailDasarGajiQueryRepository queryRepository;
     private final GolonganRepository golonganRepository;
 
-    public Page<DetailDasarGajiResponse> findPage(DetailDasarGajiIndexQuery query) {
+    public Page<DetailDasarGajiResponse> pageQuery(DetailDasarGajiIndexQuery query) {
         return queryRepository.pageQuery(query);
     }
 
-    public List<DetailDasarGajiResponse> findList(DetailDasarGajiIndexQuery query) {
-        return queryRepository.listQuery(query);
+    public List<DetailDasarGajiResponse> listQuery() {
+        return queryRepository.listQuery();
     }
 
-    public Optional<DetailDasarGajiResponse> findById(Long id) {
-        return queryRepository.getById(id);
+    public DetailDasarGajiResponse getById(Long id) {
+        return queryRepository.getById(id)
+                .orElseThrow(() -> new NotFoundException("Detail Dasar Gaji not found"));
     }
 
     public DetailDasarGajiNominal findNominalByGolonganAndMasaKerja(Long golonganId, Integer masaKerja) {
