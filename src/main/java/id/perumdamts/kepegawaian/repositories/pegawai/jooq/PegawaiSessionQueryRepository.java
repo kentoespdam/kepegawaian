@@ -2,8 +2,10 @@ package id.perumdamts.kepegawaian.repositories.pegawai.jooq;
 
 import id.perumdamts.kepegawaian.dto.commons.RefMiniResponse;
 import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiResponseSession;
+import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
+import org.jooq.Record;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -33,6 +35,7 @@ public class PegawaiSessionQueryRepository {
                         PEGAWAI.NIPAM.as("nipam"),
                         BIODATA.NIK.as("nik"),
                         BIODATA.NAMA.as("nama"),
+                        PEGAWAI.STATUS_PEGAWAI.as("status_pegawai"),
                         JABATAN.ID.as("jabatan_id"),
                         JABATAN.NAMA.as("jabatan_nama"),
                         ORGANISASI.ID.as("organisasi_id"),
@@ -43,14 +46,23 @@ public class PegawaiSessionQueryRepository {
                 .leftJoin(JABATAN).on(PEGAWAI.JABATAN_ID.eq(JABATAN.ID))
                 .leftJoin(ORGANISASI).on(PEGAWAI.ORGANISASI_ID.eq(ORGANISASI.ID))
                 .where(PEGAWAI.ID.eq(id).and(PEGAWAI.IS_DELETED.eq(false)))
-                .fetchOptional(r -> new PegawaiResponseSession(
-                        r.get(PEGAWAI.ID.as("id")),
-                        r.get(PEGAWAI.NIPAM.as("nipam")),
-                        r.get(BIODATA.NIK.as("nik")),
-                        r.get(BIODATA.NAMA.as("nama")),
-                        ref(r.get(JABATAN.ID.as("jabatan_id")), r.get(JABATAN.NAMA.as("jabatan_nama"))),
-                        ref(r.get(ORGANISASI.ID.as("organisasi_id")), r.get(ORGANISASI.NAMA.as("organisasi_nama")))
-                ));
+                .fetchOptional()
+                .map(PegawaiSessionQueryRepository::mapRow);
+    }
+
+    static PegawaiResponseSession mapRow(Record r) {
+        Byte spByte = r.get(PEGAWAI.STATUS_PEGAWAI.as("status_pegawai"));
+        String statusPegawai = spByte != null
+                ? EStatusPegawai.values()[spByte].name() : null;
+        return new PegawaiResponseSession(
+                r.get(PEGAWAI.ID.as("id")),
+                r.get(PEGAWAI.NIPAM.as("nipam")),
+                r.get(BIODATA.NIK.as("nik")),
+                r.get(BIODATA.NAMA.as("nama")),
+                statusPegawai,
+                ref(r.get(JABATAN.ID.as("jabatan_id")), r.get(JABATAN.NAMA.as("jabatan_nama"))),
+                ref(r.get(ORGANISASI.ID.as("organisasi_id")), r.get(ORGANISASI.NAMA.as("organisasi_nama")))
+        );
     }
 
     private static RefMiniResponse ref(Long id, String nama) {

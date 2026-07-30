@@ -12,6 +12,7 @@ public record PegawaiResponseSession(
         String nipam,
         String nik,
         String nama,
+        String statusPegawai,
         RefMiniResponse jabatan,
         RefMiniResponse organisasi
 ) {
