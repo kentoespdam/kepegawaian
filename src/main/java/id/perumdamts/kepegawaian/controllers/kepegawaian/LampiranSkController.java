@@ -10,6 +10,7 @@ import id.perumdamts.kepegawaian.services.kepegawaian.lampiran.LampiranSkCommand
 import id.perumdamts.kepegawaian.services.kepegawaian.lampiran.LampiranSkQueryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,7 +34,7 @@ public class LampiranSkController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<SavedResult<Long>> create(@Valid @ModelAttribute LampiranSkPostRequest request) {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.addLampiran(request).getId()));
     }
