@@ -4,6 +4,10 @@ server:
     # Tomcat's own limit (default 2MB) also caps multipart POST bodies, independent of
     # spring.servlet.multipart.* — raise it to match the 100MB upload limits below.
     max-http-form-post-size: 100MB
+    # Boot 4.0.3 hardens server.tomcat.max-part-count default to 10: any multipart
+    # request with more than 10 parts (fields + files) is rejected with a misleading
+    # 413 "Maximum upload size exceeded". The riwayat-sp form alone has 11+ fields.
+    max-part-count: 1000
 
 spring:
   devtools:

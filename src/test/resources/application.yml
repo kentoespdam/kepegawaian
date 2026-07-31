@@ -1,5 +1,8 @@
 server:
   port: ${SERVER_PORT:8080}
+  tomcat:
+    # Boot 4.0.3 default max-part-count is 10; keep in sync with main application.yml.
+    max-part-count: 1000
 
 spring:
   devtools:
