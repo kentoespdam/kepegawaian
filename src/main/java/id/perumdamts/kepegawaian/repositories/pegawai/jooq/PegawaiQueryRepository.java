@@ -269,6 +269,9 @@ public class PegawaiQueryRepository {
                             .or(BIODATA.NAMA.containsIgnoreCase(request.getSearch()))
             );
         }
+        if (request.getStatusKerja() != null) {
+            conditions = conditions.and(PEGAWAI.STATUS_KERJA.eq((byte) request.getStatusKerja().ordinal()));
+        }
 
         var sortOrder = SortParam.resolve(request.getSortBy(), request.getSortDirection(), ALLOWED_SORTS, PEGAWAI.ID);
 
