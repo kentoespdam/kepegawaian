@@ -10,6 +10,8 @@ Bagian dari [CONTEXT-MAP.md](../../CONTEXT-MAP.md). Baca file ini saat mengerjak
 
 - **SortParam**: pakai implementasi nyata `final class SortParam.resolve(sortBy, sortDir, Map<String,Field<?>> allowedSorts, Field<?> defaultColumn)` (di `dto/commons`), BUKAN bentuk `record`+`Map<String,String>` yang masih tertulis di guide (guide basi, perlu dikoreksi terpisah). `sortBy` tak dikenal/blank → `defaultColumn` (default kolom ID), tanpa error; hanya `"asc"` eksplisit (case-insensitive) yang ascending, selain itu descending.
 
+- **Request baca `/list` TIDAK extends `PagedRequest`** (refactor 2026-07-31): endpoint `GET /pegawai/list` memakai `PegawaiListRequest` = `{search, statusKerja}` saja — tanpa `page`/`size`/`sortBy`/`sortDirection`. Sort di-hardcode di `PegawaiQueryRepository.findAll(PegawaiListRequest)` → `.orderBy(BIODATA.NAMA.asc())`. Endpoint index (paged) tetap `PegawaiRequest extends PagedRequest`. Pola sama diterapkan ke `/list` modul lain (GajiProfil, GajiParameterSetting, GajiPendapatanNonPajak, CutiJenis, RiwayatSk) — masing-masing pakai `<Agg>ListRequest` filter-only; pengecualian **Biodata**: `listQuery` tidak memakai filter apa pun → `list()` jadi **no-arg** tanpa DTO. Lihat `docs/profil-cqrs-implementation-patterns.md` §1b.
+
 - **Endpoint PATCH dipertahankan apa adanya**: `patchGaji` (kodePajak, gajiProfil, rumahDinas) dan `patchProfil` (golongan, organisasi, jabatan, profesi) tetap endpoint PATCH parsial terpisah dari PUT `update`. Walau field `patchProfil ⊂ update`, FE punya **menu "update profil" tersendiri** → kontrak tak boleh diubah. Semua mengembalikan `{status,id}` tanpa re-read.
 
 ---

@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.services.penggajian.gajiProfil;
 
 import id.perumdamts.kepegawaian.dto.penggajian.gajiProfil.GajiProfilIndexQuery;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiProfil.GajiProfilListRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiProfil.GajiProfilResponse;
 import id.perumdamts.kepegawaian.repositories.penggajian.jooq.GajiProfilQueryRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class GajiProfilQueryService {
         return queryRepository.pageQuery(query);
     }
 
-    public List<GajiProfilResponse> list(GajiProfilIndexQuery query) {
+    public List<GajiProfilResponse> list(GajiProfilListRequest query) {
         return queryRepository.listQuery(query);
     }
 

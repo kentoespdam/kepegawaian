@@ -273,8 +273,6 @@ public class PegawaiQueryRepository {
             conditions = conditions.and(PEGAWAI.STATUS_KERJA.eq((byte) request.getStatusKerja().ordinal()));
         }
 
-        var sortOrder = SortParam.resolve(request.getSortBy(), request.getSortDirection(), ALLOWED_SORTS, PEGAWAI.ID);
-
         return dsl.select(pegawaiListResponseFields())
                 .from(PEGAWAI)
                 .leftJoin(BIODATA).on(PEGAWAI.BIODATA_ID.eq(BIODATA.NIK))
@@ -283,7 +281,7 @@ public class PegawaiQueryRepository {
                 .leftJoin(LEVEL).on(JABATAN.LEVEL_ID.eq(LEVEL.ID))
                 .leftJoin(GOLONGAN).on(PEGAWAI.GOLONGAN_ID.eq(GOLONGAN.ID))
                 .where(conditions)
-                .orderBy(sortOrder)
+                .orderBy(BIODATA.NAMA.asc())
                 .fetch(PegawaiRecordMapper::mapListResponse);
     }
 

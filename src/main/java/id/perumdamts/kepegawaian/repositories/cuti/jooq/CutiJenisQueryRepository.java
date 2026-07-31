@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.repositories.cuti.jooq;
 
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
+import id.perumdamts.kepegawaian.dto.cuti.jenis.CutiJenisListRequest;
 import id.perumdamts.kepegawaian.dto.cuti.jenis.CutiJenisRequest;
 import id.perumdamts.kepegawaian.dto.cuti.jenis.CutiJenisResponse;
 import id.perumdamts.kepegawaian.mapper.cuti.CutiJenisJooqMapper;
@@ -30,7 +31,7 @@ public class CutiJenisQueryRepository {
         var sortOrder = SortParam.resolve(query.getSortBy(), query.getSortDirection(),
                 allowedSorts(), CUTI_JENIS.ID);
                 
-        Condition where = baseWhere(query);
+        Condition where = baseWhere(query.getParentId(), query.getNama());
         var count = dsl.selectCount().from(CUTI_JENIS).where(where).fetchOptional(0, Long.class).orElse(0L);
 
         var data = dsl.select(
@@ -52,9 +53,9 @@ public class CutiJenisQueryRepository {
         return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
     }
 
-    public List<CutiJenisResponse> listQuery(CutiJenisRequest query) {
+    public List<CutiJenisResponse> listQuery(CutiJenisListRequest query) {
         var parent = CUTI_JENIS.as("parent");
-        Condition where = baseWhere(query);
+        Condition where = baseWhere(query.getParentId(), query.getNama());
         
         return dsl.select(
                         CUTI_JENIS.ID,
@@ -96,9 +97,9 @@ public class CutiJenisQueryRepository {
         );
     }
 
-    private Condition baseWhere(CutiJenisRequest q) {
+    private Condition baseWhere(Long parentId, String nama) {
         return CUTI_JENIS.IS_DELETED.eq(false)
-                .and(q.getParentId() != null ? CUTI_JENIS.PARENT_ID.eq(q.getParentId()) : DSL.noCondition())
-                .and(q.getNama() != null ? CUTI_JENIS.NAMA.likeIgnoreCase("%" + q.getNama() + "%") : DSL.noCondition());
+                .and(parentId != null ? CUTI_JENIS.PARENT_ID.eq(parentId) : DSL.noCondition())
+                .and(nama != null ? CUTI_JENIS.NAMA.likeIgnoreCase("%" + nama + "%") : DSL.noCondition());
     }
 }

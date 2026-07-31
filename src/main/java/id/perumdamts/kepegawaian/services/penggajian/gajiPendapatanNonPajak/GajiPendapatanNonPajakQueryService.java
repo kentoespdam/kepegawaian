@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.services.penggajian.gajiPendapatanNonPajak;
 
 import id.perumdamts.kepegawaian.dto.penggajian.gajiPendapatanNonPajak.GajiPendapatanNonPajakIndexQuery;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiPendapatanNonPajak.GajiPendapatanNonPajakListRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiPendapatanNonPajak.GajiPendapatanNonPajakResponse;
 import id.perumdamts.kepegawaian.repositories.penggajian.jooq.GajiPendapatanNonPajakQueryRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class GajiPendapatanNonPajakQueryService {
         return queryRepository.pageQuery(query);
     }
 
-    public List<GajiPendapatanNonPajakResponse> findAll(GajiPendapatanNonPajakIndexQuery query) {
+    public List<GajiPendapatanNonPajakResponse> findAll(GajiPendapatanNonPajakListRequest query) {
         return queryRepository.listQuery(query);
     }
 

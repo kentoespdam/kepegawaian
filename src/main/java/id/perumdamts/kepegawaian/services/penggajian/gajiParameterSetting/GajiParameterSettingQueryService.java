@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.services.penggajian.gajiParameterSetting;
 
 import id.perumdamts.kepegawaian.dto.penggajian.gajiParameterSetting.GajiParameterSettingIndexQuery;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiParameterSetting.GajiParameterSettingListRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiParameterSetting.GajiParameterSettingResponse;
 import id.perumdamts.kepegawaian.repositories.penggajian.jooq.GajiParameterSettingQueryRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class GajiParameterSettingQueryService {
         return queryRepository.pageQuery(query);
     }
 
-    public List<GajiParameterSettingResponse> findAll(GajiParameterSettingIndexQuery query) {
+    public List<GajiParameterSettingResponse> findAll(GajiParameterSettingListRequest query) {
         return queryRepository.listQuery(query);
     }
 

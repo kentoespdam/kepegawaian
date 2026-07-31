@@ -26,6 +26,8 @@
 `kepegawaian-ebt` (#10 now() cross-year), `kepegawaian-ciw` (#16 forNextYear −1),
 `kepegawaian-sfq` (#16 now() reject-gate), `kepegawaian-s5n` (#16 entity .equals).
 
+**Refactor `/list` (2026-07-31):** `GET /cuti/jenis/list` kini pakai `CutiJenisListRequest` = `{parentId, nama}` (filter-only, TIDAK extends `PagedRequest`); sort tetap hardcoded `.orderBy(CUTI_JENIS.NAMA.asc())` di `CutiJenisQueryRepository.listQuery`. `CutiJenisRequest extends PagedRequest` hanya dipakai endpoint index.
+
 ---
 
 ## STEP 0 — Sebelum kode apa pun (setiap klaim)

@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.controllers.penggajian;
 
 import id.perumdamts.kepegawaian.dto.commons.*;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiProfil.GajiProfilIndexQuery;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiProfil.GajiProfilListRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiProfil.GajiProfilPostRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiProfil.GajiProfilPutRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiProfil.GajiProfilResponse;
@@ -27,7 +28,7 @@ public class GajiProfilController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<ListResult<GajiProfilResponse>> list(@ParameterObject @Valid GajiProfilIndexQuery request) {
+    public ResponseEntity<ListResult<GajiProfilResponse>> list(@ParameterObject @Valid GajiProfilListRequest request) {
         return CustomResult.list(queryService.list(request));
     }
 

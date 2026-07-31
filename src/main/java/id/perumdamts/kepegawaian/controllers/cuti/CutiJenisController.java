@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.controllers.cuti;
 import id.perumdamts.kepegawaian.dto.commons.*;
 import id.perumdamts.kepegawaian.dto.cuti.jenis.CutiJenisPostRequest;
 import id.perumdamts.kepegawaian.dto.cuti.jenis.CutiJenisPutRequest;
+import id.perumdamts.kepegawaian.dto.cuti.jenis.CutiJenisListRequest;
 import id.perumdamts.kepegawaian.dto.cuti.jenis.CutiJenisRequest;
 import id.perumdamts.kepegawaian.dto.cuti.jenis.CutiJenisResponse;
 import id.perumdamts.kepegawaian.services.cuti.jenis.CutiJenisCommandService;
@@ -27,7 +28,7 @@ public class CutiJenisController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<ListResult<CutiJenisResponse>> list(@Valid @ParameterObject CutiJenisRequest request) {
+    public ResponseEntity<ListResult<CutiJenisResponse>> list(@Valid @ParameterObject CutiJenisListRequest request) {
         return CustomResult.list(queryService.findList(request));
     }
 

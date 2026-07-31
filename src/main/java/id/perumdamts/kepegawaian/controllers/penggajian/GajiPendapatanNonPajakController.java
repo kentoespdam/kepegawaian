@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.controllers.penggajian;
 
 import id.perumdamts.kepegawaian.dto.commons.*;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiPendapatanNonPajak.GajiPendapatanNonPajakIndexQuery;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiPendapatanNonPajak.GajiPendapatanNonPajakListRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiPendapatanNonPajak.GajiPendapatanNonPajakPostRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiPendapatanNonPajak.GajiPendapatanNonPajakPutRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiPendapatanNonPajak.GajiPendapatanNonPajakResponse;
@@ -27,7 +28,7 @@ public class GajiPendapatanNonPajakController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<ListResult<GajiPendapatanNonPajakResponse>> list(@ParameterObject @Valid GajiPendapatanNonPajakIndexQuery request) {
+    public ResponseEntity<ListResult<GajiPendapatanNonPajakResponse>> list(@ParameterObject @Valid GajiPendapatanNonPajakListRequest request) {
         return CustomResult.list(queryService.findAll(request));
     }
 

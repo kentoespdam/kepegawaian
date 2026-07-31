@@ -33,8 +33,8 @@ public class BiodataController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<ListResult<BiodataQuery>> list(@ParameterObject @Valid BiodataIndexQuery query) {
-        return CustomResult.list(queryService.findAll(query));
+    public ResponseEntity<ListResult<BiodataQuery>> list() {
+        return CustomResult.list(queryService.findAll());
     }
 
     @GetMapping("/{id}")

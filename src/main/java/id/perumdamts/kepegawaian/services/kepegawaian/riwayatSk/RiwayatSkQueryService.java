@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk;
 
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkQuery;
+import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkListRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkRequest;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.jooq.RiwayatSkQueryRepository;
@@ -15,7 +16,7 @@ import java.util.List;
 public class RiwayatSkQueryService {
     private final RiwayatSkQueryRepository queryRepository;
 
-    public List<RiwayatSkQuery> findAll(RiwayatSkRequest request) {
+    public List<RiwayatSkQuery> findAll(RiwayatSkListRequest request) {
         return queryRepository.listQuery(request);
     }
 
@@ -26,10 +27,6 @@ public class RiwayatSkQueryService {
     public RiwayatSkQuery findById(Long id) {
         return queryRepository.getById(id)
                 .orElseThrow(() -> new NotFoundException("Riwayat SK not found"));
-    }
-
-    public List<RiwayatSkQuery> findByIds(List<Long> riwayatIds) {
-        return queryRepository.findByIds(riwayatIds);
     }
 
     public List<RiwayatSkQuery> findByPegawai(Long pegawaiId) {

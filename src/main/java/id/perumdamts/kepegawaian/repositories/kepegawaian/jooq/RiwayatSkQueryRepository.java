@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.repositories.kepegawaian.jooq;
 
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkQuery;
+import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkListRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkRequest;
 import id.perumdamts.kepegawaian.dto.master.golongan.GolonganResponse;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
@@ -68,11 +69,8 @@ public class RiwayatSkQueryRepository {
         return new PageImpl<>(data, PageRequest.of(request.getPageNumber(), request.getSizeOrDefault()), count);
     }
 
-    public List<RiwayatSkQuery> listQuery(RiwayatSkRequest request) {
-        var sortOrder = SortParam.resolve(request.getSortBy(), request.getSortDirection(),
-                allowedSorts(), RIWAYAT_SK.TMT_BERLAKU);
-
-        var condition = getFilterCondition(request);
+    public List<RiwayatSkQuery> listQuery(RiwayatSkListRequest request) {
+        var condition = getFilterCondition(request.getPegawaiId(), request.getNomorSk(), request.getJenisSk(), request.getGolonganId());
 
         return dsl.select(
                         RIWAYAT_SK.ID,
@@ -97,7 +95,7 @@ public class RiwayatSkQueryRepository {
                 .from(RIWAYAT_SK)
                 .leftJoin(GOLONGAN).on(RIWAYAT_SK.GOLONGAN_ID.eq(GOLONGAN.ID))
                 .where(condition)
-                .orderBy(sortOrder)
+                .orderBy(RIWAYAT_SK.TMT_BERLAKU.asc())
                 .fetch(this::toQuery);
     }
 
@@ -201,18 +199,22 @@ public class RiwayatSkQueryRepository {
     }
 
     private org.jooq.Condition getFilterCondition(RiwayatSkRequest request) {
+        return getFilterCondition(request.getPegawaiId(), request.getNomorSk(), request.getJenisSk(), request.getGolonganId());
+    }
+
+    private org.jooq.Condition getFilterCondition(Long pegawaiId, String nomorSk, EJenisSk jenisSk, Long golonganId) {
         var condition = RIWAYAT_SK.IS_DELETED.eq(false);
-        if (request.getPegawaiId() != null) {
-            condition = condition.and(RIWAYAT_SK.PEGAWAI_ID.eq(request.getPegawaiId()));
+        if (pegawaiId != null) {
+            condition = condition.and(RIWAYAT_SK.PEGAWAI_ID.eq(pegawaiId));
         }
-        if (request.getNomorSk() != null) {
-            condition = condition.and(RIWAYAT_SK.NOMOR_SK.likeIgnoreCase("%" + request.getNomorSk() + "%"));
+        if (nomorSk != null) {
+            condition = condition.and(RIWAYAT_SK.NOMOR_SK.likeIgnoreCase("%" + nomorSk + "%"));
         }
-        if (request.getJenisSk() != null) {
-            condition = condition.and(RIWAYAT_SK.JENIS_SK.eq((byte) request.getJenisSk().ordinal()));
+        if (jenisSk != null) {
+            condition = condition.and(RIWAYAT_SK.JENIS_SK.eq((byte) jenisSk.ordinal()));
         }
-        if (request.getGolonganId() != null) {
-            condition = condition.and(RIWAYAT_SK.GOLONGAN_ID.eq(request.getGolonganId()));
+        if (golonganId != null) {
+            condition = condition.and(RIWAYAT_SK.GOLONGAN_ID.eq(golonganId));
         }
         return condition;
     }

@@ -48,8 +48,8 @@ public class BiodataQueryService {
                 .orElseThrow(() -> new NotFoundException("Biodata not found or NIK bukan pegawai"));
     }
 
-    public List<BiodataQuery> findAll(BiodataIndexQuery query) {
-        return queries.listQuery(query);
+    public List<BiodataQuery> findAll() {
+        return queries.listQuery();
     }
 
     public ResponseEntity<?> findFotoProfil(String id) {

@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.repositories.penggajian.jooq;
 
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiProfil.GajiProfilIndexQuery;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiProfil.GajiProfilListRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiProfil.GajiProfilResponse;
 import id.perumdamts.kepegawaian.mapper.penggajian.gajiProfil.GajiProfilJooqMapper;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,7 @@ public class GajiProfilQueryRepository {
     public Page<GajiProfilResponse> pageQuery(GajiProfilIndexQuery query) {
         var sortOrder = SortParam.resolve(query.getSortBy(), query.getSortDirection(),
                 allowedSorts(), GAJI_PROFIL.ID);
-        Condition where = baseWhere(query);
+        Condition where = baseWhere(query.getNama());
         var count = dsl.selectCount()
                 .from(GAJI_PROFIL)
                 .where(where)
@@ -45,15 +46,13 @@ public class GajiProfilQueryRepository {
         return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
     }
 
-    public List<GajiProfilResponse> listQuery(GajiProfilIndexQuery query) {
-        var sortOrder = SortParam.resolve(query.getSortBy(), query.getSortDirection(),
-                allowedSorts(), GAJI_PROFIL.NAMA);
+    public List<GajiProfilResponse> listQuery(GajiProfilListRequest query) {
         return dsl.select(
                         GAJI_PROFIL.ID,
                         GAJI_PROFIL.NAMA)
                 .from(GAJI_PROFIL)
-                .where(baseWhere(query))
-                .orderBy(sortOrder)
+                .where(baseWhere(query.getNama()))
+                .orderBy(GAJI_PROFIL.NAMA.asc())
                 .fetch(GajiProfilJooqMapper::mapToResponse);
     }
 
@@ -73,8 +72,8 @@ public class GajiProfilQueryRepository {
         );
     }
 
-    private Condition baseWhere(GajiProfilIndexQuery q) {
+    private Condition baseWhere(String nama) {
         return GAJI_PROFIL.IS_DELETED.eq(false)
-                .and(q.getNama() != null && !q.getNama().isBlank() ? GAJI_PROFIL.NAMA.likeIgnoreCase("%" + q.getNama() + "%") : DSL.noCondition());
+                .and(nama != null && !nama.isBlank() ? GAJI_PROFIL.NAMA.likeIgnoreCase("%" + nama + "%") : DSL.noCondition());
     }
 }

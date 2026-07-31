@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.repositories.penggajian.jooq;
 
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiPendapatanNonPajak.GajiPendapatanNonPajakIndexQuery;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiPendapatanNonPajak.GajiPendapatanNonPajakListRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiPendapatanNonPajak.GajiPendapatanNonPajakResponse;
 import id.perumdamts.kepegawaian.mapper.penggajian.gajiPendapatanNonPajak.GajiPendapatanNonPajakJooqMapper;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,7 @@ public class GajiPendapatanNonPajakQueryRepository {
     public Page<GajiPendapatanNonPajakResponse> pageQuery(GajiPendapatanNonPajakIndexQuery query) {
         var sortOrder = SortParam.resolve(query.getSortBy(), query.getSortDirection(),
                 allowedSorts(), GAJI_PENDAPATAN_NON_PAJAK.ID);
-        Condition where = baseWhere(query);
+        Condition where = baseWhere(query.getKode());
         var count = dsl.selectCount()
                 .from(GAJI_PENDAPATAN_NON_PAJAK)
                 .where(where)
@@ -47,17 +48,15 @@ public class GajiPendapatanNonPajakQueryRepository {
         return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
     }
 
-    public List<GajiPendapatanNonPajakResponse> listQuery(GajiPendapatanNonPajakIndexQuery query) {
-        var sortOrder = SortParam.resolve(query.getSortBy(), query.getSortDirection(),
-                allowedSorts(), GAJI_PENDAPATAN_NON_PAJAK.KODE);
+    public List<GajiPendapatanNonPajakResponse> listQuery(GajiPendapatanNonPajakListRequest query) {
         return dsl.select(
                         GAJI_PENDAPATAN_NON_PAJAK.ID,
                         GAJI_PENDAPATAN_NON_PAJAK.KODE,
                         GAJI_PENDAPATAN_NON_PAJAK.NOMINAL,
                         GAJI_PENDAPATAN_NON_PAJAK.NOTES)
                 .from(GAJI_PENDAPATAN_NON_PAJAK)
-                .where(baseWhere(query))
-                .orderBy(sortOrder)
+                .where(baseWhere(query.getKode()))
+                .orderBy(GAJI_PENDAPATAN_NON_PAJAK.KODE.asc())
                 .fetch(GajiPendapatanNonPajakJooqMapper::mapToResponse);
     }
 
@@ -80,8 +79,8 @@ public class GajiPendapatanNonPajakQueryRepository {
         );
     }
 
-    private Condition baseWhere(GajiPendapatanNonPajakIndexQuery q) {
+    private Condition baseWhere(String kode) {
         return GAJI_PENDAPATAN_NON_PAJAK.IS_DELETED.eq(false)
-                .and(q.getKode() != null && !q.getKode().isBlank() ? GAJI_PENDAPATAN_NON_PAJAK.KODE.likeIgnoreCase("%" + q.getKode() + "%") : DSL.noCondition());
+                .and(kode != null && !kode.isBlank() ? GAJI_PENDAPATAN_NON_PAJAK.KODE.likeIgnoreCase("%" + kode + "%") : DSL.noCondition());
     }
 }

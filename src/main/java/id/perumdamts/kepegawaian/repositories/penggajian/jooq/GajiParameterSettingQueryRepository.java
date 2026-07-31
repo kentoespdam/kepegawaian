@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.repositories.penggajian.jooq;
 
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiParameterSetting.GajiParameterSettingIndexQuery;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiParameterSetting.GajiParameterSettingListRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiParameterSetting.GajiParameterSettingResponse;
 import id.perumdamts.kepegawaian.mapper.penggajian.gajiParameterSetting.GajiParameterSettingJooqMapper;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,7 @@ public class GajiParameterSettingQueryRepository {
     public Page<GajiParameterSettingResponse> pageQuery(GajiParameterSettingIndexQuery query) {
         var sortOrder = SortParam.resolve(query.getSortBy(), query.getSortDirection(),
                 allowedSorts(), GAJI_PARAMETER_SETTING.ID);
-        Condition where = baseWhere(query);
+        Condition where = baseWhere(query.getKode());
         var count = dsl.selectCount()
                 .from(GAJI_PARAMETER_SETTING)
                 .where(where)
@@ -46,16 +47,14 @@ public class GajiParameterSettingQueryRepository {
         return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
     }
 
-    public List<GajiParameterSettingResponse> listQuery(GajiParameterSettingIndexQuery query) {
-        var sortOrder = SortParam.resolve(query.getSortBy(), query.getSortDirection(),
-                allowedSorts(), GAJI_PARAMETER_SETTING.KODE);
+    public List<GajiParameterSettingResponse> listQuery(GajiParameterSettingListRequest query) {
         return dsl.select(
                         GAJI_PARAMETER_SETTING.ID,
                         GAJI_PARAMETER_SETTING.KODE,
                         GAJI_PARAMETER_SETTING.NOMINAL)
                 .from(GAJI_PARAMETER_SETTING)
-                .where(baseWhere(query))
-                .orderBy(sortOrder)
+                .where(baseWhere(query.getKode()))
+                .orderBy(GAJI_PARAMETER_SETTING.KODE.asc())
                 .fetch(GajiParameterSettingJooqMapper::mapToResponse);
     }
 
@@ -77,8 +76,8 @@ public class GajiParameterSettingQueryRepository {
         );
     }
 
-    private Condition baseWhere(GajiParameterSettingIndexQuery q) {
+    private Condition baseWhere(String kode) {
         return GAJI_PARAMETER_SETTING.IS_DELETED.eq(false)
-                .and(q.getKode() != null && !q.getKode().isBlank() ? GAJI_PARAMETER_SETTING.KODE.likeIgnoreCase("%" + q.getKode() + "%") : DSL.noCondition());
+                .and(kode != null && !kode.isBlank() ? GAJI_PARAMETER_SETTING.KODE.likeIgnoreCase("%" + kode + "%") : DSL.noCondition());
     }
 }

@@ -14,6 +14,7 @@
 - File ≤ 120 baris (kecuali entity data-holder & pure-query repo). Rename `*ServiceImpl` → `*CommandService` via **`gitnexus_rename`** — JANGAN find/replace.
 - **`repositories/penggajian/` sekarang FLAT** → tiap issue memindah JPA repo ke `jpa/` dan menambah QueryRepository di `jooq/` (mirror `repositories/cuti/`).
 - **Soft-delete `is_deleted`** — lihat aturan filter per-grup di bawah. Never hard-delete.
+- **Request baca `/list` filter-only, TIDAK `PagedRequest`** (refactor 2026-07-31): `GajiProfilListRequest`/`GajiParameterSettingListRequest`/`GajiPendapatanNonPajakListRequest` = field filter (`nama`/`kode`) saja; sort di-hardcode di `listQuery` (NAMA/KODE asc). `*IndexQuery extends PagedRequest` TETAP untuk endpoint index.
 
 ### Aturan `IS_DELETED` per aggregate (WAJIB benar)
 

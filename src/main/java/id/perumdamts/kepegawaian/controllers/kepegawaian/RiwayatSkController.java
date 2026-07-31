@@ -30,7 +30,7 @@ public class RiwayatSkController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<ListResult<RiwayatSkQuery>> list(@Valid @ParameterObject RiwayatSkRequest request) {
+    public ResponseEntity<ListResult<RiwayatSkQuery>> list(@Valid @ParameterObject RiwayatSkListRequest request) {
         return CustomResult.list(queryService.findAll(request));
     }
 

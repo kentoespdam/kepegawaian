@@ -14,6 +14,7 @@ Urutan klaim mengikuti **dependency**, bukan nomor issue. Issue dalam wave yang 
 6. **Saga tulis** (ADR-0021): `save()` = satu `@Transactional`, helper privat per cabang status, `authService.createUser` (Appwrite) **dipanggil paling akhir**. `save()` versi Command **harus melempar** exception (jangan ditelan) agar `saveBatch` `@Transactional` bisa rollback.
 7. **`EXCLUDED_JABATAN_IDS` yang benar = `{1,2,3,25}`** (controller sudah benar; `{1,2,3,4}` di service lama = **BUG**). Externalisasi ke `application.yml` via `@ConfigurationProperties`.
 8. **Endpoint PATCH** (`patchGaji`, `patchProfil`) **dipertahankan apa adanya** — FE punya menu update-profil tersendiri.
+9. **`GET /pegawai/list` TIDAK memakai `PagedRequest`** (refactor 2026-07-31): `PegawaiListRequest` = `{search, statusKerja}` filter-only; sort di-hardcode di `PegawaiQueryRepository.findAll(PegawaiListRequest)` → `.orderBy(BIODATA.NAMA.asc())`. Endpoint index (paged) tetap `PegawaiRequest extends PagedRequest`.
 
 **Per-issue wajib:** `gitnexus_impact(direction:"upstream")` sebelum edit symbol · `detect_changes` sebelum commit · warn HIGH/CRITICAL · soft-delete dipertahankan · **jangan** rename via find/replace (pakai `gitnexus_rename`) · `./gradlew test` hijau.
 

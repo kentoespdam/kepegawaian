@@ -1,5 +1,6 @@
 package id.perumdamts.kepegawaian.services.cuti.jenis;
 
+import id.perumdamts.kepegawaian.dto.cuti.jenis.CutiJenisListRequest;
 import id.perumdamts.kepegawaian.dto.cuti.jenis.CutiJenisRequest;
 import id.perumdamts.kepegawaian.dto.cuti.jenis.CutiJenisResponse;
 import id.perumdamts.kepegawaian.repositories.cuti.jooq.CutiJenisQueryRepository;
@@ -18,7 +19,7 @@ public class CutiJenisQueryService {
         return queryRepository.pageQuery(request);
     }
 
-    public List<CutiJenisResponse> findList(CutiJenisRequest request) {
+    public List<CutiJenisResponse> findList(CutiJenisListRequest request) {
         return queryRepository.listQuery(request);
     }
 

@@ -56,6 +56,8 @@ Field paging/sort/filter: `page`, `size`, `sortBy`, `sortDirection`, plus filter
 
 > **Base class — modul baru WAJIB `<Agg>IndexQuery extends PagedRequest`** (base baru: `@Max(100)` clamp, `getPageNumber()`/`getSizeOrDefault()`, sort-whitelist type-safe; `@EqualsAndHashCode(callSuper = true) @Data`). Exemplar `GradeIndexQuery`/`GradeQueryRepository`. Cuplikan `CutiJenisRequest`/`CutiJenisQueryRepository` di §3b memakai `CommonPageRequest` (base lama, tanpa clamp/whitelist) — akurat secara historis untuk `cuti/`, TAPI **jangan disalin untuk aggregate baru** (mis. seluruh `penggajian/`). Pakai `getSizeOrDefault()`/`getPageNumber()`, bukan pola `getSize() != null ? … : 10`.
 
+> **Endpoint `/list` = DTO baca filter-only terpisah, TIDAK extends `PagedRequest`** (refactor 2026-07-31): bila controller punya `GET /list` (non-paged), request-nya `<Agg>ListRequest` = field filter domain saja (`@Data`, tanpa `page`/`size`/`sortBy`/`sortDirection`), dan sort di-hardcode di `listQuery`. `<Agg>IndexQuery extends PagedRequest` TETAP untuk endpoint index (paged). Exemplar: `PegawaiListRequest` (`{search, statusKerja}`), `CutiJenisListRequest` (`{parentId, nama}`), `GajiProfilListRequest` (`{nama}`), `RiwayatSkListRequest` (`{pegawaiId, nomorSk, jenisSk, golonganId}`).
+
 ### 1c. Response baca — `<Agg>Response` / `<Agg>Query`
 
 `@Data` POJO datar. Nested pakai `*MiniResponse`. Contoh `CutiJenisResponse` (factory `from(entity)` boleh ada untuk jalur non-JOOQ, tapi jalur JOOQ diisi via JooqMapper):
@@ -230,6 +232,8 @@ public class CutiJenisQueryRepository {
 
 > Kondisi opsional → `DSL.noCondition()` (bukan `null`). Filter kolom besar → pisahkan `SELECT` list ke `<Agg>Selects` bila repo mendekati 120 baris (pola profil: `BiodataSelects`, `PendidikanSelects`). Query repo **dikecualikan** batas 120 bila murni deklarasi query.
 
+> **`listQuery` (untuk `/list`) TIDAK pakai `SortParam.resolve`** — ambil `<Agg>ListRequest` (filter-only) dan hardcode sort-nya, mis. `.orderBy(GAJI_PROFIL.NAMA.asc())`, `.orderBy(BIODATA.NAMA.asc())`. `SortParam.resolve` hanya dipakai `pageQuery`. Bila `listQuery` tidak memakai filter apa pun (mis. `Biodata.listQuery`), hapus param-nya sama sekali (no-arg).
+
 ---
 
 ## 4. Service — pisah Command vs Query
@@ -296,6 +300,7 @@ public class CutiJenisCommandService {
 ## 5. Checklist penerapan (tiap aggregate)
 
 - [ ] DTO: PostRequest/PutRequest (`@Data`, validasi, `@JsonIgnore` di `getSpecification`); request baca **`<Agg>IndexQuery extends PagedRequest`** untuk aggregate baru (BUKAN `CommonPageRequest`; exemplar `GradeIndexQuery`); Response/Query datar
+- [ ] Endpoint `/list` (non-paged): request baca filter-only **`<Agg>ListRequest`** (TIDAK extends `PagedRequest`); `listQuery(<Agg>ListRequest)` hardcode `.orderBy(...)` di repo (exemplar `PegawaiListRequest`, `CutiJenisListRequest`); tanpa param bila listQuery tak pakai filter
 - [ ] Write mapper `<Agg>Mapper` — `final`, private ctor, static `toEntity`/`updateEntity`
 - [ ] Read mapper `<Agg>JooqMapper` — Pola A (`mapToResponse` static) ATAU Pola B (`implements RecordMapper` + `INSTANCE`); di `mapper/profil/<agg>/`, BUKAN di `repositories/`
 - [ ] JPA repo di `jpa/` (Specification + Revision); JOOQ repo di `jooq/` (`baseWhere` + `SortParam` + `IS_DELETED=false`)

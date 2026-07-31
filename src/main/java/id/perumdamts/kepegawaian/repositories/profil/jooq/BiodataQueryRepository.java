@@ -73,7 +73,7 @@ public class BiodataQueryRepository {
                 total != null ? total : 0L);
     }
 
-    public List<BiodataQuery> listQuery(BiodataIndexQuery query) {
+    public List<BiodataQuery> listQuery() {
         var conditions = DSL.trueCondition()
                 .and(BIODATA.IS_DELETED.eq(false));
 
