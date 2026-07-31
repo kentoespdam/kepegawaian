@@ -90,7 +90,7 @@ public class AppwriteClient {
                     .retrieve()
                     .body(AppwriteUser.class);
         } catch (Exception e) {
-            log.error("JWT Auth Error: {}", e.getMessage());
+            log.error("JWT Auth Error", e);
             return null;
         }
     }

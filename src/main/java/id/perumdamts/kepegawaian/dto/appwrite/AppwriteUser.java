@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.dto.appwrite;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -8,13 +10,22 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+// Real Appwrite responses contain fields absent from this DTO (labels, targets, accessedAt, mfa,
+// memberships, ...) — ignore them instead of failing deserialization under the strict mapper.
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AppwriteUser {
+    // Explicit $ field names: Jackson mangles getters like get$id() inconsistently across
+    // versions (Jackson 2 maps it, Jackson 3 does not). @JsonProperty pins the JSON key on
+    // the field AND the generated accessors so both Jackson 2 and 3 map the same property.
+    @JsonProperty("$id")
     @Setter
-    @Getter
+    @Getter(onMethod_ = @JsonProperty("$id"))
     private String $id;
-    @Getter
+    @JsonProperty("$createdAt")
+    @Getter(onMethod_ = @JsonProperty("$createdAt"))
     private String $createdAt;
-    @Getter
+    @JsonProperty("$updatedAt")
+    @Getter(onMethod_ = @JsonProperty("$updatedAt"))
     private String $updatedAt;
     private String name;
     private String registration;
