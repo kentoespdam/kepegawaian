@@ -3,6 +3,7 @@ server:
   tomcat:
     # Boot 4.0.3 default max-part-count is 10; keep in sync with main application.yml.
     max-part-count: 1000
+    max-swallow-size: 100MB
 
 spring:
   devtools:

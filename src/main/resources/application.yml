@@ -8,6 +8,9 @@ server:
     # request with more than 10 parts (fields + files) is rejected with a misleading
     # 413 "Maximum upload size exceeded". The riwayat-sp form alone has 11+ fields.
     max-part-count: 1000
+    # Default 2MB swallow cap resets the connection for uploads far exceeding the
+    # limits above; raise it so the client gets a clean 413 ProblemDetail instead.
+    max-swallow-size: 100MB
 
 spring:
   devtools:
