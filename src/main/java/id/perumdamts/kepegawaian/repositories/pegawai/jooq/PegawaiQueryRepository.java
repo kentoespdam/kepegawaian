@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.repositories.pegawai.jooq;
 
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkResponse;
+import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiListRequest;
 import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiListResponse;
 import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiRequest;
 import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiResponse;
@@ -245,6 +246,30 @@ public class PegawaiQueryRepository {
 
     public List<PegawaiListResponse> findAll(PegawaiRequest request) {
         var conditions = buildConditions(request);
+        var sortOrder = SortParam.resolve(request.getSortBy(), request.getSortDirection(), ALLOWED_SORTS, PEGAWAI.ID);
+
+        return dsl.select(pegawaiListResponseFields())
+                .from(PEGAWAI)
+                .leftJoin(BIODATA).on(PEGAWAI.BIODATA_ID.eq(BIODATA.NIK))
+                .leftJoin(ORGANISASI).on(PEGAWAI.ORGANISASI_ID.eq(ORGANISASI.ID))
+                .leftJoin(JABATAN).on(PEGAWAI.JABATAN_ID.eq(JABATAN.ID))
+                .leftJoin(LEVEL).on(JABATAN.LEVEL_ID.eq(LEVEL.ID))
+                .leftJoin(GOLONGAN).on(PEGAWAI.GOLONGAN_ID.eq(GOLONGAN.ID))
+                .where(conditions)
+                .orderBy(sortOrder)
+                .fetch(PegawaiRecordMapper::mapListResponse);
+    }
+
+    public List<PegawaiListResponse> findAll(PegawaiListRequest request) {
+        var conditions = DSL.trueCondition().and(PEGAWAI.IS_DELETED.eq(false));
+
+        if (request.getSearch() != null && !request.getSearch().isBlank()) {
+            conditions = conditions.and(
+                    PEGAWAI.NIPAM.containsIgnoreCase(request.getSearch())
+                            .or(BIODATA.NAMA.containsIgnoreCase(request.getSearch()))
+            );
+        }
+
         var sortOrder = SortParam.resolve(request.getSortBy(), request.getSortDirection(), ALLOWED_SORTS, PEGAWAI.ID);
 
         return dsl.select(pegawaiListResponseFields())

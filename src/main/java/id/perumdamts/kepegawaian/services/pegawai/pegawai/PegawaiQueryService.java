@@ -26,7 +26,7 @@ public class PegawaiQueryService {
         return repository.findTablePage(request);
     }
 
-    public List<PegawaiListResponse> findAll(PegawaiRequest request) {
+    public List<PegawaiListResponse> findAll(PegawaiListRequest request) {
         return repository.findAll(request);
     }
 

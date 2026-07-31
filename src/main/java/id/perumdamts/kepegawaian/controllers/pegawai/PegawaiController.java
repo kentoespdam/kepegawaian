@@ -35,7 +35,7 @@ public class PegawaiController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<ListResult<PegawaiListResponse>> list(@ParameterObject @Valid PegawaiRequest request) {
+    public ResponseEntity<ListResult<PegawaiListResponse>> list(@ParameterObject @Valid PegawaiListRequest request) {
         return CustomResult.list(queryService.findAll(request));
     }
 
