@@ -1,5 +1,9 @@
 server:
   port: ${SERVER_PORT:8080}
+  tomcat:
+    # Tomcat's own limit (default 2MB) also caps multipart POST bodies, independent of
+    # spring.servlet.multipart.* — raise it to match the 100MB upload limits below.
+    max-http-form-post-size: 100MB
 
 spring:
   devtools:
