@@ -18,6 +18,9 @@ import java.util.Set;
 @Component
 public class DevAuthFilter extends OncePerRequestFilter {
 
+    private static final String BEARER = "Bearer ";
+    private static final String AUTHORIZATION = "Authorization";
+
     @Value("${security.dev.roles:ADMIN,SYSTEM}")
     private String devRoles;
 
@@ -25,12 +28,19 @@ public class DevAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+        // Ada Bearer token: biarkan JwtAuthFilter yang memutuskan
+        // (valid -> user asli, invalid -> 401 strict). Jangan inject, jangan clear.
+        if (hasBearerToken(request)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         try {
             Set<String> roles = Set.of(devRoles.split(","));
             Prefs prefs = new Prefs();
             prefs.setRoles(roles);
 
-                        AppwriteUser devUser = new AppwriteUser(
+            AppwriteUser devUser = new AppwriteUser(
                     null, null, Boolean.FALSE, null, null,
                     null, Boolean.FALSE, Boolean.FALSE, prefs
             );
@@ -44,5 +54,12 @@ public class DevAuthFilter extends OncePerRequestFilter {
         } finally {
             SecurityContextHolder.clearContext();
         }
+    }
+
+    private boolean hasBearerToken(HttpServletRequest request) {
+        String header = request.getHeader(AUTHORIZATION);
+        return header != null
+                && header.startsWith(BEARER)
+                && !header.substring(BEARER.length()).isBlank();
     }
 }
