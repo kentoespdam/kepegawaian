@@ -1,12 +1,12 @@
 # Graph Report - kepegawaian  (2026-08-10)
 
 ## Corpus Check
-- 1233 files · ~373,817 words
+- 1231 files · ~373,342 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 14954 nodes · 43092 edges · 444 communities (399 shown, 45 thin omitted)
-- Extraction: 81% EXTRACTED · 19% INFERRED · 0% AMBIGUOUS · INFERRED: 8272 edges (avg confidence: 0.8)
+- 14895 nodes · 43029 edges · 440 communities (389 shown, 51 thin omitted)
+- Extraction: 81% EXTRACTED · 19% INFERRED · 0% AMBIGUOUS · INFERRED: 8158 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
@@ -134,7 +134,6 @@
 - RiwayatSpAud.java
 - PelatihanAudRecord
 - Profesi
-- PegawaiRecord
 - GajiKomponenAud.java
 - RiwayatKontrakAudRecord
 - Graph Report
@@ -164,7 +163,6 @@
 - ISSUE — kepegawaian-ag3 — Selaraskan schema jOOQ
 - Claim Order — Reformat Column Order V1baseline.sql
 - Profil Rewrite — Claim Order & Monitoring
-- Pattern Response/DTO Modul Master — Panduan Adopsi
 - Master Rewrite — Claim Order & Monitoring
 - ApiException
 - PegawaiController
@@ -193,7 +191,6 @@
 - Coding Rules
 - CONTEXT-MAP — Kepegawaian
 - Claim Order — GajiBatchRootServiceImpl (Kafka)
-- Claim Order — Analisis Bug GajiBatchRoot + Config + CQRS (2026-06-17)
 - Context — Relasi Antar Domain
 - 0031 — Batch/workflow endpoints return SavedResult<String> ("{n} success" / "success")
 - 0013 — Error path reuses the ApiResponse<T> envelope, not ProblemDetail
@@ -307,7 +304,6 @@
 - PengalamanKerjaCommandService.java
 - AlasanBerhentiQueryRepository.java
 - RiwayatSkAud.java
-- PelatihanCommandService.java
 - DetailDasarGajiRecord
 - GradeQuery
 - FileUploadUtil
@@ -362,7 +358,6 @@
 - CutiApprovalChain
 - ProfileUpdateService
 - GajiParameterSetting
-- GajiPhdp
 - .Jabatan
 - GajiPendapatanNonPajak
 - PRD: Penerapan CQRS, JOOQ, dan Flyway pada Kepegawaian
@@ -443,11 +438,7 @@
 - PendidikanAudRecord.java
 - RiwayatMutasiAudRecord.java
 - RiwayatSpAudRecord.java
-- RiwayatTerminasiAudRecord.java
 - ProfesiSelects.java
-- BiodataSelects.java
-- ProfilKeluargaSelects.java
-- .key
 - .key
 - .key
 - .key
@@ -469,16 +460,16 @@
 10. `Pegawai` - 106 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `Biodata PATCH changedStatus` --references--> `CLAUDE.md Canonical Guidance`  [INFERRED]
-  docs/claim-order-biodata-patch-changedstatus.md → CLAUDE.md
 - `Grilling Session: Kepegawaian CQRS + JOOQ + Flyway Migration` --cites--> `ADR-0001`  [EXTRACTED]
   grill/2026-05-05_cqrs-jooq-flyway-migration.md → docs/profil-rewrite-claim-order.md
-- `PRD: CQRS, JOOQ, and Flyway` --cites--> `ADR-0001`  [EXTRACTED]
-  grill/PRD-cqrs-jooq-flyway.md → docs/profil-rewrite-claim-order.md
-- `AuthService` --references--> `0029 Appwriteclient Typed Adapter`  [EXTRACTED]
-  GRAPH_REPORT.md → docs/adr/0029-appwriteclient-typed-adapter.md
 - `AuthService` --references--> `Decisions Pegawai`  [EXTRACTED]
   GRAPH_REPORT.md → docs/context/decisions-pegawai.md
+- `AuthService` --references--> `Language Security`  [EXTRACTED]
+  GRAPH_REPORT.md → docs/context/language-security.md
+- `RiwayatSp` --references--> `Typed Controller Result`  [EXTRACTED]
+  GRAPH_REPORT.md → docs/refactor/typed-controller-result.md
+- `CutiKlaimDetail` --references--> `Decisions Cuti`  [EXTRACTED]
+  GRAPH_REPORT.md → docs/context/decisions-cuti.md
 
 ## Import Cycles
 - None detected.
@@ -486,47 +477,47 @@
 ## Hyperedges (group relationships)
 - **Biodata changedStatus Flow** — biodata_dashboard_response_changedstatus, changed_status_server_resolved, profile_update_service [INFERRED 0.85]
 
-## Communities (444 total, 45 thin omitted)
+## Communities (440 total, 51 thin omitted)
 
 ### Community 0 - "Core Entities & Pagination"
-Cohesion: 0.02
-Nodes (171): ADR-0001, ADR-0005, ADR-0007, ADR-0008, ADR-0014, ADR-0018, ADR-0020, ADR-0022 (+163 more)
+Cohesion: 0.03
+Nodes (170): ADR-0007, ADR-0008, ADR-0022, ADR-0023, AlatKerja, Apd, ApplicationEvent, AuthServiceImpl (+162 more)
 
 ### Community 1 - "Many-to-Many & Base Entities"
-Cohesion: 0.05
-Nodes (43): RiwayatSkPutRequest, from(), getLastFromList(), PegawaiPostRequest, AllArgsConstructor, Entity, Getter, NoArgsConstructor (+35 more)
+Cohesion: 0.04
+Nodes (47): from(), from(), RiwayatSkPutRequest, from(), from(), from(), from(), PegawaiPostRequest (+39 more)
 
 ### Community 2 - "List & Java Collections"
-Cohesion: 0.04
-Nodes (61): PostMapping, PutMapping, ResponseEntity, PutMapping, PostMapping, PutMapping, ResponseEntity, PostMapping (+53 more)
+Cohesion: 0.05
+Nodes (33): PatchMapping, PostMapping, DeleteMapping, PostMapping, PostMapping, JabatanPostRequest, from(), getName() (+25 more)
 
 ### Community 3 - "DTO Patterns & Builders"
-Cohesion: 0.10
-Nodes (18): JabatanPath, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name (+10 more)
+Cohesion: 0.09
+Nodes (24): KenaikanBerkalaRequest, SingleResult, GetMapping, GetMapping, RequestMapping, RequiredArgsConstructor, ResponseEntity, RestController (+16 more)
 
 ### Community 4 - "Validation & Error Handling"
-Cohesion: 0.03
-Nodes (64): SelectField, SortField, Field, SuppressWarnings, SortParam, fromList(), HariLiburQuery, from() (+56 more)
+Cohesion: 0.05
+Nodes (43): SelectField, SuppressWarnings, from(), from(), build(), Field, Page, Page (+35 more)
 
 ### Community 5 - "Relation Mappings & DSL"
-Cohesion: 0.04
-Nodes (41): PostMapping, ResponseEntity, PostMapping, PutMapping, ResponseEntity, from(), CutiApprovalPostRequest, from() (+33 more)
+Cohesion: 0.03
+Nodes (45): PostMapping, ResponseEntity, PostMapping, PutMapping, from(), CutiApprovalPostRequest, from(), CutiPengajuanKlaimPostRequest (+37 more)
 
 ### Community 6 - "Pegawai Join Queries"
-Cohesion: 0.02
-Nodes (77): from(), from(), from(), from(), from(), from(), from(), from() (+69 more)
+Cohesion: 0.07
+Nodes (26): GolonganPostRequest, Data, JsonIgnore, Specification, from(), from(), from(), Golongan (+18 more)
 
 ### Community 7 - "Adapter & Config Mappers"
-Cohesion: 0.03
-Nodes (90): KenaikanBerkalaRequest, LaporanKepegawaianService, SingleResult, GetMapping, RequestMapping, RequiredArgsConstructor, ResponseEntity, RestController (+82 more)
+Cohesion: 0.07
+Nodes (42): LaporanKepegawaianService, GetMapping, RequestMapping, RequiredArgsConstructor, ResponseEntity, RestController, LaporanDnpController, GetMapping (+34 more)
 
 ### Community 8 - "Penggajian Payroll Entities"
-Cohesion: 0.08
-Nodes (10): from(), Override, Record1, SuppressWarnings, PendidikanRecord, LampiranSkMapper, Biodata, LampiranProfilMapper (+2 more)
+Cohesion: 0.12
+Nodes (5): from(), SuppressWarnings, PendidikanRecord, Pendidikan, PendidikanMapper
 
 ### Community 9 - "Kepegawaian SK & SP"
-Cohesion: 0.10
-Nodes (11): PostMapping, from(), from(), GajiBatchRootLampiranRecord, SuppressWarnings, LampiranSk, Override, LampiranProfil (+3 more)
+Cohesion: 0.08
+Nodes (11): GetMapping, ResponseEntity, from(), from(), LampiranSk, Override, LampiranProfil, PengalamanKerja (+3 more)
 
 ### Community 10 - "Enums & Constants"
 Cohesion: 0.07
@@ -537,40 +528,36 @@ Cohesion: 0.01
 Nodes (152): Communities, Community 0 - ".getId()", Community 100 - "OrganisasiRepository.java", Community 101 - "JenisPelatihanRepository.java", Community 102 - "JenisKeahlianRepository.java", Community 103 - "RumahDinasRepository.java", Community 104 - "JenisKitasRepository.java", Community 105 - "GradeRepository.java" (+144 more)
 
 ### Community 12 - "Profil Biodata & Pendidikan"
-Cohesion: 0.07
-Nodes (20): GajiTunjanganAud, GajiTunjanganAudPath, Condition, Field, ForeignKey, InverseForeignKey, Name, Override (+12 more)
+Cohesion: 0.09
+Nodes (4): GajiTunjanganAudRecord, Override, Record2, SuppressWarnings
 
 ### Community 13 - "Cuti Leave Module"
-Cohesion: 0.07
-Nodes (4): from(), GajiBatchRootRecord, SuppressWarnings, GajiBatchRoot
+Cohesion: 0.06
+Nodes (6): from(), GajiBatchRootRecord, Override, Record1, SuppressWarnings, GajiBatchRoot
 
 ### Community 14 - "Domain Context Docs"
 Cohesion: 0.04
-Nodes (73): AlasanBerhentiRepository, JabatanPostRequest, JpaRepository, JpaSpecificationExecutor, QueryByExampleExecutor, RevisionRepository, RumahDinasRepository, SanksiRepository (+65 more)
+Nodes (87): AlatKerjaRepository, ApdRepository, DetailDasarGajiRepository, Master Delete Guard Claim Order, GradeRepository, JabatanRepository, JenisSpPostRequest, JenisSpRepository (+79 more)
 
 ### Community 15 - "Claim Order & ADRs"
 Cohesion: 0.09
-Nodes (10): from(), CutiKuotaRecord, Override, Record1, SuppressWarnings, CutiKuotaMapper, CutiKuota, Condition (+2 more)
+Nodes (9): from(), CutiKuotaRecord, Override, Record1, SuppressWarnings, CutiKuotaMapper, CutiKuota, CutiKuota (+1 more)
 
 ### Community 16 - "PagedRequest"
-Cohesion: 0.03
-Nodes (96): Direction, PagedRequest, Getter, JsonIgnore, Pageable, Setter, PagedRequest, CutiApprovalRequest (+88 more)
+Cohesion: 0.04
+Nodes (85): Direction, PagedRequest, Getter, JsonIgnore, Pageable, Setter, PagedRequest, CutiApprovalRequest (+77 more)
 
 ### Community 17 - "PengalamanKerjaAudRecord"
 Cohesion: 0.05
 Nodes (20): Condition, Field, ForeignKey, InverseForeignKey, Name, Override, PlainSQL, Schema (+12 more)
 
 ### Community 19 - ".toQuery"
-Cohesion: 0.10
-Nodes (18): GradeQuery, SanksiQuery, JenisSpSimple, SanksiJenisSpList, GradeJooqMapper, SanksiJooqMapper, GradeSelects, Field (+10 more)
-
-### Community 20 - "GajiBatchMasterRecord"
-Cohesion: 0.05
-Nodes (3): from(), GajiBatchMasterRecord, SuppressWarnings
+Cohesion: 0.23
+Nodes (6): GradeJooqMapperTest, DSLContext, Field, Test, Test, SanksiJooqMapperTest
 
 ### Community 22 - "RecordMapper"
-Cohesion: 0.10
-Nodes (12): RecordMapper, KartuIdentitasQuery, BiodataDetailJooqMapper, Override, KartuIdentitasJooqMapper, Override, KartuIdentitasMultisetJooqMapper, PendidikanJooqMapper (+4 more)
+Cohesion: 0.05
+Nodes (29): EGolonganDarah, JenjangPendidikanResponse, RecordMapper, JenjangPendidikanResponse, BiodataQuery, KartuIdentitasQuery, ProfilKeluargaQuery, PelatihanQuery (+21 more)
 
 ### Community 23 - "KartuIdentitasAudRecord"
 Cohesion: 0.07
@@ -581,8 +568,12 @@ Cohesion: 0.14
 Nodes (24): Acceptance, Acceptance (final modul), Cuti CQRS Rewrite — Claim Order & Checklists, FASE 0 — Pra-implementasi (setup beads), FASE 10 — Pengajuan Command (Keputusan #1, #6, #8, #9), FASE 11 — Approval Command state-machine (Keputusan #6), FASE 12 — Klaim Command + allocator klaim 1:1 (Keputusan #16, #10), FASE 13 — Controllers (Keputusan #13) (+16 more)
 
 ### Community 25 - "DasarGaji"
-Cohesion: 0.10
-Nodes (22): DasarGaji, AllArgsConstructor, Audited, Entity, Getter, NoArgsConstructor, Setter, SQLDelete (+14 more)
+Cohesion: 0.13
+Nodes (17): DetailDasarGajiPostRequest, DetailDasarGajiPostRequest, Data, JsonIgnore, Specification, DetailDasarGajiPutRequest, DetailDasarGaji, AllArgsConstructor (+9 more)
+
+### Community 27 - "RiwayatSkRecord"
+Cohesion: 0.05
+Nodes (4): Override, Record1, SuppressWarnings, RiwayatSkRecord
 
 ### Community 28 - "Organisasi — Adopsi Pattern Response Publication — Claim Order & Monitoring"
 Cohesion: 0.29
@@ -590,18 +581,14 @@ Nodes (7): Acceptance ringkas per issue, Cara update checklist, Dependency map (
 
 ### Community 30 - "BiodataRecord"
 Cohesion: 0.05
-Nodes (10): BiodataGolonganDarah(), A, AB, B, O, SuppressWarnings, BiodataRecord, Override (+2 more)
+Nodes (10): BiodataGolonganDarah, A, AB, B, O, SuppressWarnings, BiodataRecord, Override (+2 more)
 
 ### Community 31 - "SanksiSpRecord"
-Cohesion: 0.10
-Nodes (5): Override, Record1, SuppressWarnings, SanksiSpRecord, SanksiMapper
-
-### Community 32 - "RiwayatTerminasiRecord"
-Cohesion: 0.06
-Nodes (4): Override, Record1, SuppressWarnings, RiwayatTerminasiRecord
+Cohesion: 0.12
+Nodes (3): SuppressWarnings, SanksiSpRecord, SanksiMapper
 
 ### Community 33 - "RevinfoPath"
-Cohesion: 0.07
+Cohesion: 0.06
 Nodes (21): Override, Record1, SuppressWarnings, RevinfoRecord, Condition, Field, ForeignKey, Identity (+13 more)
 
 ### Community 35 - "LampiranSkAudRecord"
@@ -618,7 +605,7 @@ Nodes (19): Condition, Field, Identity, Index, Name, Override, PlainSQL, Schema 
 
 ### Community 38 - "PegawaiPath"
 Cohesion: 0.10
-Nodes (18): Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name, Override (+10 more)
+Nodes (17): Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name, Override (+9 more)
 
 ### Community 39 - "VPegawaiRecord"
 Cohesion: 0.06
@@ -630,18 +617,18 @@ Nodes (20): CutiKuotaAud, CutiKuotaAudPath, Condition, Field, ForeignKey, Invers
 
 ### Community 41 - "DasarGajiAudRecord"
 Cohesion: 0.09
-Nodes (7): DasarGajiAudRecord, Override, Record2, SuppressWarnings, DasarGajiMapper, DasarGaji, Condition
+Nodes (6): DasarGajiAudRecord, Override, Record2, SuppressWarnings, DasarGajiMapper, DasarGaji
 
 ### Community 42 - "KartuIdentitasRecord"
 Cohesion: 0.08
 Nodes (4): Override, Record1, SuppressWarnings, KartuIdentitasRecord
 
 ### Community 43 - "JabatanMiniResponse"
-Cohesion: 0.03
-Nodes (64): AlasanBerhentiResponse, ApdRow, GolonganResponse, GradeMiniResponse, JabatanMiniResponse, JenisSpMiniResponse, LevelQueryRepository, LevelResponse (+56 more)
+Cohesion: 0.09
+Nodes (38): AlasanBerhentiResponse, CutiJenisMiniResponse, GolonganResponse, GradeMiniResponse, GradeResponse, JabatanMiniResponse, JenisSpMiniResponse, LocalDate (+30 more)
 
 ### Community 44 - "GajiPotonganTkkAudRecord"
-Cohesion: 0.06
+Cohesion: 0.07
 Nodes (20): GajiPotonganTkkAud, GajiPotonganTkkAudPath, Condition, Field, ForeignKey, InverseForeignKey, Name, Override (+12 more)
 
 ### Community 45 - "CutiJenisAudRecord"
@@ -654,7 +641,7 @@ Nodes (20): DetailDasarGajiAud, DetailDasarGajiAudPath, Condition, Field, Foreig
 
 ### Community 47 - ".getId"
 Cohesion: 0.02
-Nodes (135): ConstraintViolationException, PostMapping, PutMapping, PostMapping, PreAuthorize, ResponseEntity, PostMapping, PreAuthorize (+127 more)
+Nodes (156): ConstraintViolationException, PostMapping, PutMapping, PostMapping, PutMapping, ResponseEntity, PostMapping, PreAuthorize (+148 more)
 
 ### Community 48 - "DasarGajiRecord"
 Cohesion: 0.09
@@ -669,12 +656,12 @@ Cohesion: 0.07
 Nodes (20): Override, Record2, SuppressWarnings, RiwayatCutiAudRecord, Condition, Field, ForeignKey, InverseForeignKey (+12 more)
 
 ### Community 51 - "CutiPegawai"
-Cohesion: 0.12
-Nodes (17): CutiPegawai, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name (+9 more)
+Cohesion: 0.09
+Nodes (19): CutiJenisPath, CutiPegawai, CutiPegawaiPath, Condition, Field, ForeignKey, Identity, Index (+11 more)
 
 ### Community 52 - "Organisasi"
-Cohesion: 0.05
-Nodes (25): Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name, Override (+17 more)
+Cohesion: 0.06
+Nodes (22): Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name, Override (+14 more)
 
 ### Community 53 - "RiwayatCutiRecord"
 Cohesion: 0.06
@@ -685,36 +672,36 @@ Cohesion: 0.07
 Nodes (20): GajiParameterSettingAud, GajiParameterSettingAudPath, Condition, Field, ForeignKey, InverseForeignKey, Name, Override (+12 more)
 
 ### Community 55 - "Jabatan"
-Cohesion: 0.05
-Nodes (24): CutiPegawaiPath, Jabatan, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey (+16 more)
+Cohesion: 0.06
+Nodes (22): Jabatan, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name (+14 more)
 
 ### Community 56 - "GajiPendapatanNonPajakRecord"
-Cohesion: 0.10
-Nodes (4): GajiPendapatanNonPajakRecord, Override, Record1, SuppressWarnings
+Cohesion: 0.08
+Nodes (10): LevelResponse, GradeMiniResponse, GradeResponse, LevelResponse, JabatanJooqMapper, SuppressWarnings, SharedMappers, PegawaiDetailRecordMapper (+2 more)
 
 ### Community 57 - "Ringkasan Temuan"
 Cohesion: 0.08
 Nodes (26): ✅ Alive Selects (lengkap), Claim Order & Checklist, 🔵 Cross-Module DTO (Masih Dipakai — JANGAN Dihapus), [D1] Hapus Dead DTO — kepegawaian-0ox, [D2] Hapus Unused Import — kepegawaian-k29, [D3] Verifikasi Cross-Module — kepegawaian-5o6, [D4] Final Cleanup & Build — kepegawaian-aak, [D5] Cleanup Selects — Hapus Dead Field/Array + File — kepegawaian-aak (+18 more)
 
 ### Community 58 - "Analisis Project Kepegawaian"
-Cohesion: 0.08
-Nodes (26): 1. Pegawai (Data Utama Pegawai), 2. Profil (Data Pribadi), 3. Master Data (Referensi), 4. Cuti (Manajemen Cuti), 5. Kepegawaian (Administrasi Pegawai), 6. Penggajian (Payroll), Alur JWT + Appwrite, Analisis Project Kepegawaian (+18 more)
+Cohesion: 0.05
+Nodes (38): APPROVED, 1. Pegawai (Data Utama Pegawai), 2. Profil (Data Pribadi), 3. Master Data (Referensi), 4. Cuti (Manajemen Cuti), 5. Kepegawaian (Administrasi Pegawai), 6. Penggajian (Payroll), Alur JWT + Appwrite (+30 more)
 
 ### Community 59 - "Biodata"
 Cohesion: 0.13
 Nodes (16): Biodata, Condition, Field, ForeignKey, Index, InverseForeignKey, Name, Override (+8 more)
 
 ### Community 60 - "Tables"
-Cohesion: 0.06
-Nodes (24): SuppressWarnings, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name (+16 more)
+Cohesion: 0.09
+Nodes (19): LevelPath, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name (+11 more)
 
 ### Community 61 - "RiwayatTerminasi"
-Cohesion: 0.10
-Nodes (18): Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name, Override (+10 more)
+Cohesion: 0.05
+Nodes (38): JabatanPath, OrganisasiPath, PegawaiPath, Condition, Field, ForeignKey, Identity, Index (+30 more)
 
 ### Community 62 - "GajiParameterSettingRecord"
-Cohesion: 0.07
-Nodes (19): GajiParameterSetting, Condition, Field, Identity, Index, Name, Override, PlainSQL (+11 more)
+Cohesion: 0.17
+Nodes (15): GajiParameterSetting, Condition, Field, Identity, Index, Name, Override, PlainSQL (+7 more)
 
 ### Community 63 - "GajiPhdpRecord"
 Cohesion: 0.07
@@ -722,7 +709,7 @@ Nodes (19): GajiPhdp, Condition, Field, Identity, Index, Name, Override, PlainSQ
 
 ### Community 64 - "GajiProfilAudRecord"
 Cohesion: 0.07
-Nodes (20): GajiProfilAud, GajiProfilAudPath, Condition, Field, ForeignKey, InverseForeignKey, Name, Override (+12 more)
+Nodes (21): SELECT, GajiProfilAud, GajiProfilAudPath, Condition, Field, ForeignKey, InverseForeignKey, Name (+13 more)
 
 ### Community 65 - "FlywaySchemaHistoryCopy1Record"
 Cohesion: 0.07
@@ -734,11 +721,11 @@ Nodes (24): Checklist, Column Set Arrays — ✅ SELESAI, Common Mistakes, Depen
 
 ### Community 67 - "RiwayatSp"
 Cohesion: 0.10
-Nodes (18): Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name, Override (+10 more)
+Nodes (24): SchemaImpl, DefaultSchema, Catalog, Override, SuppressWarnings, Table, Condition, Field (+16 more)
 
 ### Community 68 - "Grade"
-Cohesion: 0.12
-Nodes (18): Grade, GradePath, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey (+10 more)
+Cohesion: 0.07
+Nodes (22): Grade, GradePath, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey (+14 more)
 
 ### Community 69 - "GajiProfilRecord"
 Cohesion: 0.11
@@ -746,58 +733,58 @@ Nodes (4): GajiProfilRecord, Override, Record1, SuppressWarnings
 
 ### Community 70 - "RiwayatKontrakRecord"
 Cohesion: 0.05
-Nodes (22): Override, Record1, SuppressWarnings, RiwayatKontrakRecord, Condition, Field, ForeignKey, Identity (+14 more)
+Nodes (21): Override, Record1, SuppressWarnings, RiwayatKontrakRecord, Condition, Field, ForeignKey, Identity (+13 more)
 
 ### Community 71 - "RiwayatSk"
-Cohesion: 0.12
-Nodes (18): Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name, Override (+10 more)
+Cohesion: 0.14
+Nodes (17): Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name, Override (+9 more)
 
 ### Community 72 - "Golongan"
-Cohesion: 0.12
-Nodes (18): Golongan, GolonganPath, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey (+10 more)
+Cohesion: 0.06
+Nodes (27): ForeignKey, SuppressWarnings, UniqueKey, Keys, Golongan, GolonganPath, Condition, Field (+19 more)
 
 ### Community 73 - "Profil Record Refactor — Claim Order & Checklist"
 Cohesion: 0.19
 Nodes (21): Analisis, Aturan Penting (dari master-query-optimization-pattern.md), Checklist, Claim Order, File, P10: Final Verification, P1: Pendidikan, P2: Keahlian (+13 more)
 
 ### Community 74 - "SanksiSp"
-Cohesion: 0.13
-Nodes (18): Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name, Override (+10 more)
+Cohesion: 0.14
+Nodes (17): Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name, Override (+9 more)
 
 ### Community 75 - "GajiBatchMaster"
-Cohesion: 0.13
-Nodes (18): GajiBatchMaster, GajiBatchMasterPath, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey (+10 more)
+Cohesion: 0.12
+Nodes (20): GajiBatchMaster, GajiBatchMasterPath, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey (+12 more)
 
 ### Community 76 - "ProfilKeluarga"
-Cohesion: 0.13
-Nodes (18): Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name, Override (+10 more)
-
-### Community 77 - "KartuIdentitas"
 Cohesion: 0.15
 Nodes (17): Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name, Override (+9 more)
+
+### Community 77 - "KartuIdentitas"
+Cohesion: 0.14
+Nodes (18): Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name, Override (+10 more)
 
 ### Community 78 - "RiwayatMutasi"
 Cohesion: 0.13
 Nodes (18): Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name, Override (+10 more)
 
 ### Community 79 - "AlasanBerhentiRecord"
-Cohesion: 0.08
-Nodes (22): AlasanBerhenti, AlasanBerhentiPath, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey (+14 more)
+Cohesion: 0.09
+Nodes (20): AlasanBerhenti, AlasanBerhentiPath, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey (+12 more)
 
 ### Community 80 - "RumahDinasRecord"
-Cohesion: 0.12
-Nodes (4): Override, Record1, SuppressWarnings, RumahDinasRecord
+Cohesion: 0.09
+Nodes (26): GajiProfilCommandService, GajiProfilController, GetMapping, Page, RequestMapping, RequiredArgsConstructor, ResponseEntity, RestController (+18 more)
 
 ### Community 81 - "JenisSpRecord"
 Cohesion: 0.12
 Nodes (4): Override, Record1, SuppressWarnings, JenisSpRecord
 
 ### Community 82 - "ApdRecord"
-Cohesion: 0.08
+Cohesion: 0.07
 Nodes (22): Apd, ApdPath, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey (+14 more)
 
 ### Community 83 - "GajiTunjangan"
-Cohesion: 0.13
+Cohesion: 0.15
 Nodes (18): GajiTunjangan, GajiTunjanganPath, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey (+10 more)
 
 ### Community 84 - "Keahlian"
@@ -805,19 +792,19 @@ Cohesion: 0.14
 Nodes (18): JenisKeahlianPath, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name (+10 more)
 
 ### Community 85 - "tables/Pelatihan.java"
-Cohesion: 0.14
-Nodes (18): JenisPelatihanPath, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name (+10 more)
+Cohesion: 0.13
+Nodes (18): Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name, Override (+10 more)
 
 ### Community 86 - "GajiPotonganTkk"
 Cohesion: 0.13
 Nodes (18): GajiPotonganTkk, GajiPotonganTkkPath, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey (+10 more)
 
 ### Community 87 - "JenisSp"
-Cohesion: 0.13
-Nodes (18): Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name, Override (+10 more)
+Cohesion: 0.12
+Nodes (19): Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name, Override (+11 more)
 
 ### Community 88 - "AlatKerjaRecord"
-Cohesion: 0.07
+Cohesion: 0.08
 Nodes (22): AlatKerja, AlatKerjaPath, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey (+14 more)
 
 ### Community 89 - "Pegawai Record Refactor — Claim Order & Checklist"
@@ -829,32 +816,32 @@ Cohesion: 0.11
 Nodes (19): A. Klaim berurutan (master list), B. Wave structure (urutan eksekusi + verifikasi), C. Pre-flight checklist (jalankan sekali sebelum mulai), Claim Order — Adopsi Pattern Publication ke Modul Master, D.1 Pre-flight per modul, D.2 Child paging/sort checklist, D.3 Child write-flow checklist, D.4 Sub-resource khusus (Apd/AlatKerja) (+11 more)
 
 ### Community 91 - "GajiBatchRoot"
-Cohesion: 0.13
+Cohesion: 0.12
 Nodes (17): GajiBatchRoot, GajiBatchRootPath, Condition, Field, ForeignKey, Index, InverseForeignKey, Name (+9 more)
 
 ### Community 92 - "tables/GajiBatchRootLampiran.java"
-Cohesion: 0.15
-Nodes (18): GajiBatchRootLampiran, GajiBatchRootLampiranPath, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey (+10 more)
+Cohesion: 0.13
+Nodes (20): GajiBatchRootLampiran, GajiBatchRootLampiranPath, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey (+12 more)
 
 ### Community 93 - "tables/GajiBatchRootErrorLogs.java"
 Cohesion: 0.15
 Nodes (18): GajiBatchRootErrorLogs, GajiBatchRootErrorLogsPath, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey (+10 more)
 
 ### Community 94 - "tables/PengalamanKerja.java"
-Cohesion: 0.15
+Cohesion: 0.14
 Nodes (18): Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name, Override (+10 more)
 
 ### Community 95 - "Specification"
-Cohesion: 0.03
-Nodes (92): GajiPendapatanNonPajakPostRequest, GajiPendapatanNonPajakRepository, JenisPelatihanRepository, RiwayatSkPostRequest, Specification, SpecificationBuilder, Data, EqualsAndHashCode (+84 more)
+Cohesion: 0.04
+Nodes (44): KeahlianPostRequest, AlasanBerhentiPostRequest, HariLiburPostRequest, Data, JsonIgnore, Specification, JenisKitasPostRequest, Data (+36 more)
 
 ### Community 96 - "tables/CutiApprovalChain.java"
-Cohesion: 0.14
-Nodes (18): CutiApprovalChain, CutiApprovalChainPath, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey (+10 more)
+Cohesion: 0.07
+Nodes (25): CutiApprovalChain, CutiApprovalChainPath, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey (+17 more)
 
 ### Community 97 - "tables/GajiProfil.java"
-Cohesion: 0.14
-Nodes (18): GajiKomponenPath, GajiProfil, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey (+10 more)
+Cohesion: 0.13
+Nodes (18): GajiProfil, GajiProfilPath, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey (+10 more)
 
 ### Community 98 - "tables/CutiKuota.java"
 Cohesion: 0.13
@@ -865,20 +852,20 @@ Cohesion: 0.10
 Nodes (22): CutiKlaimDetail, CutiKlaimDetailPath, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey (+14 more)
 
 ### Community 100 - "tables/DetailDasarGaji.java"
-Cohesion: 0.13
-Nodes (18): DetailDasarGaji, DetailDasarGajiPath, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey (+10 more)
+Cohesion: 0.14
+Nodes (18): DasarGajiPath, DetailDasarGaji, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey (+10 more)
 
 ### Community 101 - "Page"
-Cohesion: 0.03
-Nodes (95): CustomResult, CutiApprovalJooqMapper, CutiApprovalMiniResponse, CutiKuotaJooqMapper, CutiKuotaPegawaiResponse, CutiKuotaRequest, CutiKuotaResponse, CutiKuotaSisa (+87 more)
+Cohesion: 0.17
+Nodes (14): RequestMapping, RequiredArgsConstructor, RestController, Validator, ValidatorFactory, RiwayatMutasiController, DSLContext, Repository (+6 more)
 
 ### Community 102 - "JenisKitasRecord"
 Cohesion: 0.07
-Nodes (23): Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name, Override (+15 more)
+Nodes (22): Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name, Override (+14 more)
 
 ### Community 103 - "Level"
-Cohesion: 0.07
-Nodes (22): Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name, Override (+14 more)
+Cohesion: 0.08
+Nodes (21): Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name, Override (+13 more)
 
 ### Community 104 - "JenisPelatihanRecord"
 Cohesion: 0.13
@@ -889,28 +876,28 @@ Cohesion: 0.13
 Nodes (4): Override, Record1, SuppressWarnings, JenisKeahlianRecord
 
 ### Community 106 - "Decisions Cuti"
-Cohesion: 0.03
-Nodes (106): ADR-0021, ApprovalChain, ApprovalCutiCommand, CutiApprovalChainCustomRepositoryImpl, CutiApprovalChainIndexQuery, CutiApprovalChainRequest, CutiApprovalChainResponse, CutiApprovalChainService (+98 more)
+Cohesion: 0.02
+Nodes (113): ADR-0021, ApprovalChain, ApprovalCutiCommand, CutiApprovalChainCustomRepositoryImpl, CutiApprovalChainIndexQuery, CutiApprovalChainRequest, CutiApprovalChainResponse, CutiApprovalChainService (+105 more)
 
 ### Community 107 - "NotFoundException"
 Cohesion: 0.03
-Nodes (88): ADR-0011, ADR-0025, BiodataSelects, Byte, CATEGORY, CutiJenisJooqMapper, CutiJenisMapper, CutiJenisRepository (+80 more)
+Nodes (70): ApdRow, Byte, CATEGORY, DefaultRecordMapper, Aturan keputusan, Consequences, Considered Options, 0025 Fetchinto Flat Jooqmapper Join Nested Master (+62 more)
 
 ### Community 108 - "tables/JenisKeahlian.java"
 Cohesion: 0.14
 Nodes (18): Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name, Override (+10 more)
 
 ### Community 109 - "tables/RumahDinas.java"
-Cohesion: 0.14
-Nodes (18): Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name, Override (+10 more)
+Cohesion: 0.07
+Nodes (22): Override, Record1, SuppressWarnings, RumahDinasRecord, Condition, Field, ForeignKey, Identity (+14 more)
 
 ### Community 110 - "Profil CQRS — Pola Implementasi per Layer"
 Cohesion: 0.12
 Nodes (17): 1. DTO, 1a. Request tulis — <Agg>PostRequest / <Agg>PutRequest, 1b. Request baca — <Agg>Request, 1c. Response baca — <Agg>Response / <Agg>Query, 2. Mapper — final, private ctor, BUKAN @Component, 2a. Write mapper — <Agg>Mapper (dipakai CommandService), 2b. Read mapper Pola A (flat) — static mapToResponse(Record), 2c. Read mapper Pola B (implements RecordMapper) — dipakai profil (+9 more)
 
 ### Community 111 - "CutiApprovalAudRecord"
-Cohesion: 0.06
-Nodes (20): CutiApprovalAud, CutiApprovalAudPath, Condition, Field, ForeignKey, InverseForeignKey, Name, Override (+12 more)
+Cohesion: 0.09
+Nodes (4): CutiApprovalAudRecord, Override, Record2, SuppressWarnings
 
 ### Community 112 - "GajiPhdpAudRecord"
 Cohesion: 0.07
@@ -921,8 +908,8 @@ Cohesion: 0.16
 Nodes (16): Condition, Field, ForeignKey, InverseForeignKey, Name, Override, PlainSQL, Schema (+8 more)
 
 ### Community 114 - "JenjangPendidikanResponse"
-Cohesion: 0.04
-Nodes (50): Keluarga, ProfilKeluargaCommandService, ProfilKeluargaDetailQuery, ProfilKeluargaQueryRepository, GetMapping, Page, PutMapping, RequestMapping (+42 more)
+Cohesion: 0.08
+Nodes (30): Keluarga, ProfilKeluargaCommandService, ProfilKeluargaDetailQuery, ProfilKeluargaQueryRepository, DeleteMapping, GetMapping, Page, RequestMapping (+22 more)
 
 ### Community 115 - "CutiPegawaiAud.java"
 Cohesion: 0.16
@@ -937,36 +924,28 @@ Cohesion: 0.05
 Nodes (20): Condition, Field, ForeignKey, InverseForeignKey, Name, Override, PlainSQL, Schema (+12 more)
 
 ### Community 118 - "Profesi"
-Cohesion: 0.04
-Nodes (51): AlatKerjaRepository, ApdRepository, CutiKuotaCommandService, DeletedResult, Master Delete Guard Claim Order, GradeRepository, JabatanRepository, Kuota (+43 more)
-
-### Community 119 - "PegawaiRecord"
-Cohesion: 0.04
-Nodes (4): Override, Record1, SuppressWarnings, PegawaiRecord
+Cohesion: 0.22
+Nodes (8): Data, EqualsAndHashCode, ProfesiPutRequest, ActiveProfiles, AfterEach, JdbcTemplate, SpringBootTest, ProfesiAlatKerjaE2eTest
 
 ### Community 120 - "GajiKomponenAud.java"
-Cohesion: 0.15
-Nodes (16): GajiKomponenAud, GajiKomponenAudPath, Condition, Field, ForeignKey, InverseForeignKey, Name, Override (+8 more)
-
-### Community 121 - "RiwayatKontrakAudRecord"
-Cohesion: 0.05
-Nodes (20): Override, Record2, SuppressWarnings, RiwayatKontrakAudRecord, Condition, Field, ForeignKey, InverseForeignKey (+12 more)
+Cohesion: 0.07
+Nodes (20): GajiKomponenAud, GajiKomponenAudPath, Condition, Field, ForeignKey, InverseForeignKey, Name, Override (+12 more)
 
 ### Community 122 - "Graph Report"
 Cohesion: 0.03
-Nodes (66): Graph Report, AuditRevisionEntity, BiodataService, CutiApprovalChainCustomRepository, CutiApprovalServiceImplTest, CutiKuotaService, GajiBatchRootService, GajiSk (+58 more)
+Nodes (88): Graph Report, AuditRevisionEntity, BiodataRepository, BiodataService, CutiApprovalChainCustomRepository, CutiApprovalServiceImplTest, CutiKuotaService, GajiBatchRootService (+80 more)
 
 ### Community 123 - "LampiranSkRecord"
-Cohesion: 0.05
+Cohesion: 0.06
 Nodes (19): Condition, Field, Identity, Index, Name, Override, PlainSQL, Schema (+11 more)
 
 ### Community 124 - "UpdatableRecordImpl"
-Cohesion: 0.07
-Nodes (25): GajiBatchRootAud, GajiBatchRootAudPath, Condition, Field, ForeignKey, InverseForeignKey, Name, Override (+17 more)
+Cohesion: 0.09
+Nodes (20): GajiBatchRootAud, GajiBatchRootAudPath, Condition, Field, ForeignKey, InverseForeignKey, Name, Override (+12 more)
 
 ### Community 125 - "Organisasi"
-Cohesion: 0.05
-Nodes (55): LampiranSp, OrganisasiPostRequest, Audited, SQLDelete, SQLRestriction, AllArgsConstructor, Audited, Entity (+47 more)
+Cohesion: 0.04
+Nodes (73): GajiTunjanganCommandService, GajiTunjanganPostRequest, JabatanPostRequest, LevelRepository, Data, JsonIgnore, Specification, RiwayatKontrakPostRequest (+65 more)
 
 ### Community 126 - "KeahlianAud.java"
 Cohesion: 0.19
@@ -1009,16 +988,16 @@ Cohesion: 0.15
 Nodes (13): Aturan ISDELETED per aggregate (WAJIB benar), Claim order, Guardrails (semua issue), ISSUE 10 — kepegawaian-awf.10 GajiBatchMaster, ISSUE 11 — kepegawaian-awf.11 GajiBatchMasterProses, ISSUE 12 — kepegawaian-awf.12 GajiBatchRoot (4-file split), Penggajian CQRS/JOOQ Rewrite — Claim Order & Checklists, Prinsip modul (baca sekali di awal) (+5 more)
 
 ### Community 137 - "Organisasi Claim Order"
-Cohesion: 0.06
-Nodes (32): AuditConfig, Cara klaim & tutup (beads), Catatan per-issue, Claim Order — Epic kepegawaian-irt, Irt Claim Order, irt/1 — kepegawaian-9g0 (INDEPENDEN, mulai dulu), irt/2 — kepegawaian-j4a (INDEPENDEN, blok irt/3), irt/3 — kepegawaian-c2q (butuh irt/2) (+24 more)
+Cohesion: 0.15
+Nodes (13): AuditConfig, Cara klaim & tutup (beads), Catatan per-issue, Claim Order — Epic kepegawaian-irt, Irt Claim Order, irt/1 — kepegawaian-9g0 (INDEPENDEN, mulai dulu), irt/2 — kepegawaian-j4a (INDEPENDEN, blok irt/3), irt/3 — kepegawaian-c2q (butuh irt/2) (+5 more)
 
 ### Community 138 - "JwtAuthFilter"
-Cohesion: 0.15
-Nodes (17): OncePerRequestFilter, DevAuthFilter, Component, FilterChain, HttpServletRequest, HttpServletResponse, Override, Component (+9 more)
+Cohesion: 0.10
+Nodes (24): OncePerRequestFilter, DevAuthFilter, Component, FilterChain, HttpServletRequest, HttpServletResponse, Override, Component (+16 more)
 
 ### Community 139 - "Profil CQRS Cleanup — Claim Order & Checklists"
-Cohesion: 0.18
-Nodes (12): Acceptance, Acceptance (Wave 1), Acceptance (Wave 2), FASE 0 — Pra-implementasi (setup beads), FASE PU-1 — Buang interface ProfileUpdateService (decisions-cuti §11), FASE PU-2 — Migrasi read ProfileUpdate ke JOOQ + split (BLOCKED oleh PU-1), Guardrails (semua fase), Profil CQRS Cleanup — Claim Order & Checklists (+4 more)
+Cohesion: 0.10
+Nodes (8): Data, ProfesiPostRequest, Override, Record1, SuppressWarnings, ProfesiRecord, Profesi, ProfesiMapper
 
 ### Community 140 - "Kepegawaian — Rewrite CQRS (JPA-write / JOOQ-read) — Claim Order & Monitoring"
 Cohesion: 0.17
@@ -1037,16 +1016,16 @@ Cohesion: 0.17
 Nodes (12): 1 · penggajian (kepegawaian-51j.1) ✅, 2 · master (kepegawaian-51j.2) — + bug 200→201 ✅, 3 · profil (kepegawaian-51j.3) ✅, 4 · cuti (kepegawaian-51j.4) ✅, 4 Kriteria, 5 · kepegawaian + laporan (kepegawaian-51j.5) ✅, 6 · pegawai + auth + users + system (kepegawaian-51j.6) ✅, Checklist per Domain (+4 more)
 
 ### Community 144 - ".getBiodata"
-Cohesion: 0.17
-Nodes (8): from(), from(), from(), JenisKitas, BiodataMapper, Biodata, ProfilKeluarga, ProfilKeluargaMapper
+Cohesion: 0.08
+Nodes (15): PatchMapping, from(), from(), from(), JenisKitas, BiodataAudRecord, SuppressWarnings, PegawaiMapper (+7 more)
 
 ### Community 145 - "FileUploadUtilImpl"
-Cohesion: 0.08
-Nodes (15): JooqCodegenTask, DefaultTask, Property, FileUploadUtilImpl, MultipartFile, Override, RequiredArgsConstructor, Service (+7 more)
+Cohesion: 0.11
+Nodes (14): JooqCodegenTask, DefaultTask, Property, FileUploadUtilImpl, MultipartFile, Override, RequiredArgsConstructor, Service (+6 more)
 
 ### Community 146 - "ISSUE — kepegawaian-ag3 — Selaraskan schema jOOQ"
-Cohesion: 0.18
-Nodes (11): Catatan lanjutan (BUKAN bagian ag3), Fix codegen (file: buildSrc/src/main/kotlin/JooqCodegenTask.kt), Guardrails, ISSUE — kepegawaian-ag3 — Selaraskan schema jOOQ, jOOQ Split-Brain Schema — Claim Order & Checklist, Pre-commit, Regenerate & verifikasi generated code, Root cause (sudah dipastikan manager — JANGAN diulang buta) (+3 more)
+Cohesion: 0.08
+Nodes (28): JenjangPendidikanMiniResponse, Data, JsonIgnore, Specification, ProfilKeluargaPostRequest, ProfilKeluargaResponse, EHubunganKeluarga, ANAK (+20 more)
 
 ### Community 147 - "Claim Order — Reformat Column Order V1baseline.sql"
 Cohesion: 0.18
@@ -1055,10 +1034,6 @@ Nodes (11): Checklist, Claim Order — Reformat Column Order V1baseline.sql, Cla
 ### Community 148 - "Profil Rewrite — Claim Order & Monitoring"
 Cohesion: 0.18
 Nodes (11): Cara update checklist ini, Dependency map (ringkas), Issue terkait (bug), Keputusan desain yang dikunci (rujukan saat coding), Profil Rewrite — Claim Order & Monitoring, Referensi template (BACA DULU sebelum coding), WAVE 0 — Fondasi (1 issue, blokir semua write-side), WAVE 1 — Slice Referensi Pendidikan (2 issue, GERBANG) (+3 more)
-
-### Community 149 - "Pattern Response/DTO Modul Master — Panduan Adopsi"
-Cohesion: 0.18
-Nodes (11): 1. Keputusan terkunci (berlaku untuk semua master), 2.1 Base paging — PageRequest (abstract), 2.2 Sort whitelist — SortParam, 2.3 Typed ID (opsional, ditunda), 2.4 Controller — write-flow, 2. Komponen pattern (dari kode Publication), 3. Resep adopsi per modul master (langkah generik), 4. Checklist acceptance (salin per modul) (+3 more)
 
 ### Community 150 - "Master Rewrite — Claim Order & Monitoring"
 Cohesion: 0.18
@@ -1069,8 +1044,8 @@ Cohesion: 0.17
 Nodes (8): ApiException, RuntimeException, ApiException, Getter, HttpStatus, BadRequestException, ConflictException, NotFoundException
 
 ### Community 152 - "PegawaiController"
-Cohesion: 0.06
-Nodes (39): AlatKerjaQuery, CutiPegawaiSelects, Consequences, Considered Options, 0030 Hapus Seeding Imperatif Setupmaster, Hapus jalur seeding imperatif setupMaster/, seeding data via Flyway, Catatan bukan-prioritas, Claim Order — Temuan Grilling Arsitektur (2026-07-09) (+31 more)
+Cohesion: 0.11
+Nodes (20): AlatKerjaQuery, CutiPegawaiSelects, Consequences, Considered Options, 0030 Hapus Seeding Imperatif Setupmaster, Hapus jalur seeding imperatif setupMaster/, seeding data via Flyway, Catatan bukan-prioritas, Claim Order — Temuan Grilling Arsitektur (2026-07-09) (+12 more)
 
 ### Community 153 - "Worktree"
 Cohesion: 0.22
@@ -1085,20 +1060,20 @@ Cohesion: 0.22
 Nodes (9): §1 — Scope rewrite modul master, §2 — Enum-backed aggregate: no interface, rename ke QueryService, §3 — Write mapper: final class terpisah, bukan method di DTO, §4 — JOOQ mapping: fetchInto flat, JooqMapper join-nested, multiset one-to-many, §5 — CommandService return: entity JPA (bukan SavedStatus), §6 — FK attach: getReferenceById di CommandService, bukan di mapper, §7 — Revive-on-create: lewat Specification (tanpa @SQLRestriction di entity master), §8 — Delete parent: guard owned-child, JANGAN cascade (issue kepegawaian-15u) (+1 more)
 
 ### Community 156 - "Checklist Implementasi"
-Cohesion: 0.07
-Nodes (32): AGENTS.md Agent Config, BiodataDashboardResponse changedStatus field, changedStatus server-resolved by role, CLAUDE.md Canonical Guidance, Biodata Dashboard Endpoint, 1. DTO, 2. Repository — JOOQ Query, 3. Service (+24 more)
+Cohesion: 0.67
+Nodes (3): AGENTS.md Agent Config, CLAUDE.md Canonical Guidance, GitNexus Code Intelligence
 
 ### Community 157 - "OrganisasiQueryRepository.java"
-Cohesion: 0.06
-Nodes (41): Master Pattern Claim Order, Edit, JenisKontrak, JenisMutasi, JenisSk, OrganisasiCommandService, OrganisasiIndexQuery, OrganisasiListResponse (+33 more)
+Cohesion: 0.08
+Nodes (30): OrganisasiIndexQuery, OrganisasiListResponse, OrganisasiQuery, GetMapping, RequestMapping, RequiredArgsConstructor, ResponseEntity, RestController (+22 more)
 
 ### Community 158 - "GajiBatchMasterProsesRecord"
-Cohesion: 0.06
-Nodes (32): GajiBatchMasterProsesJenisGaji(), NONE, PEMASUKAN, POTONGAN, getCatalog(), getLiteral(), getName(), getSchema() (+24 more)
+Cohesion: 0.07
+Nodes (25): GajiBatchMasterProsesJenisGaji, NONE, PEMASUKAN, POTONGAN, SuppressWarnings, GajiBatchMasterProses, Condition, Field (+17 more)
 
 ### Community 159 - "BiodataAudGolonganDarah"
-Cohesion: 0.19
-Nodes (14): BiodataAudGolonganDarah(), A, AB, B, O, getCatalog(), getLiteral(), getName() (+6 more)
+Cohesion: 0.10
+Nodes (25): GetMapping, RequestMapping, RequiredArgsConstructor, ResponseEntity, RestController, LaporanKontrakController, GetMapping, RequestMapping (+17 more)
 
 ### Community 160 - "BiodataGolonganDarah.java"
 Cohesion: 0.36
@@ -1108,29 +1083,25 @@ Nodes (8): getCatalog(), getLiteral(), getName(), getSchema(), Catalog, Override
 Cohesion: 0.29
 Nodes (7): Bentuk DTO Target, Claim Order (kerjakan berurutan — tiap task blok task berikutnya), Definition of Done, Keputusan Grilling, Konteks, Optimasi GET /pegawai — DTO Tabel Ramping — Claim Order & Checklist, Yang TIDAK Boleh Disentuh
 
-### Community 162 - "Glossary"
-Cohesion: 0.29
-Nodes (7): ADR-0024, Batch pemrosesan gaji, Context — Modul Penggajian (Payroll & Batch Pemrosesan Gaji), Language Penggajian, Enum & konsep alur, Glossary, Referensi & parameter penggajian (master)
-
 ### Community 163 - "0008 Fk Via Getreference On Write"
 Cohesion: 0.29
 Nodes (7): DataIntegrityViolationException, Attach FK relasi via getReferenceById, bukan findById, Consequences, Considered Options, 0008 Fk Via Getreference On Write, DuplicateResourceException, ResourceNotFoundException
 
 ### Community 164 - "PrefRole"
-Cohesion: 0.13
-Nodes (17): Condition, Field, Name, Override, PlainSQL, Schema, Select, SQL (+9 more)
+Cohesion: 0.16
+Nodes (15): Condition, Field, Name, Override, PlainSQL, Schema, Select, SQL (+7 more)
 
 ### Community 165 - "GajiKomponenAudJenisGaji"
 Cohesion: 0.22
-Nodes (12): GajiKomponenAudJenisGaji(), NONE, PEMASUKAN, POTONGAN, getCatalog(), getLiteral(), getSchema(), Catalog (+4 more)
+Nodes (12): GajiKomponenAudJenisGaji, NONE, PEMASUKAN, POTONGAN, getCatalog(), getLiteral(), getSchema(), Catalog (+4 more)
 
 ### Community 166 - "PendidikanQueryService.java"
-Cohesion: 0.10
-Nodes (24): PendidikanCommandService, PendidikanDetailQuery, PendidikanJooqMapper, PendidikanLampiranCommandService, Page, RequestMapping, RequiredArgsConstructor, RestController (+16 more)
+Cohesion: 0.05
+Nodes (51): BiodataDetailRowMapper, BiodataRowMapper, Acceptance, Acceptance (Wave 1), Acceptance (Wave 2), Profil Cqrs Cleanup Claim Order, FASE 0 — Pra-implementasi (setup beads), FASE PU-1 — Buang interface ProfileUpdateService (decisions-cuti §11) (+43 more)
 
 ### Community 167 - "LampiranProfilController.java"
-Cohesion: 0.12
-Nodes (17): [ ] #4 — CUTOVER + hapus shim lama · kepegawaian-94u.3 (blocked by #3), Aturan wajib tiap langkah (CODINGRULES), Lampiranprofil Cqrs Claim Order, lampiranProfil CQRS — Claim Order & Checklist, Session close (setelah semua hijau), [x] #2 — READ side · kepegawaian-94u.1 (READY), [x] #3 — WRITE side · kepegawaian-94u.2 (blocked by #2), LampiranProfilCommandService (+9 more)
+Cohesion: 0.16
+Nodes (16): CutiApprovalAud, CutiApprovalAudPath, Condition, Field, ForeignKey, InverseForeignKey, Name, Override (+8 more)
 
 ### Community 168 - "ADR-0017 — Claim Order & Monitoring"
 Cohesion: 0.33
@@ -1141,24 +1112,24 @@ Cohesion: 0.33
 Nodes (6): beads conventions (default for task tracking), Issue Tracker, GitHub conventions (published issues / PRDs), Issue tracker: beads + GitHub, When a skill says "fetch the relevant ticket", When a skill says "publish to the issue tracker"
 
 ### Community 170 - "JOOQ mapping master: fetchInto flat, JooqMapper join-nested & multiset"
-Cohesion: 0.33
-Nodes (6): Aturan keputusan, Consequences, Considered Options, JOOQ mapping master: fetchInto flat, JooqMapper join-nested & multiset, Latar belakang, Pola multiset
+Cohesion: 0.16
+Nodes (16): GajiTunjanganAud, GajiTunjanganAudPath, Condition, Field, ForeignKey, InverseForeignKey, Name, Override (+8 more)
 
 ### Community 171 - "GajiBatchRoot"
-Cohesion: 0.07
-Nodes (28): EProsesGaji, Data, EProsesGaji(), FAILED, FINISHED, PENDING, PROSES, WAIT_APPROVAL (+20 more)
+Cohesion: 0.10
+Nodes (18): EProsesGaji, GajiBatchRootQueryService, ListResult, RequiredArgsConstructor, Data, EProsesGaji, FAILED, FINISHED (+10 more)
 
 ### Community 172 - "Level"
-Cohesion: 0.05
-Nodes (52): GajiPotonganTkkCommandService, GajiPotonganTkkPostRequest, GajiPotonganTkkRepository, GajiPotonganTkkController, RequestMapping, RequiredArgsConstructor, RestController, GajiPotonganTkkPostRequest (+44 more)
+Cohesion: 0.04
+Nodes (66): EStatusKerja, EStatusPegawai, GajiPotonganTkkCommandService, GajiPotonganTkkPostRequest, GajiPotonganTkkRepository, Component, ConfigurationProperties, Data (+58 more)
 
 ### Community 173 - "DefaultSchema"
-Cohesion: 0.14
-Nodes (11): CatalogImpl, SchemaImpl, DefaultCatalog, Override, Schema, SuppressWarnings, DefaultSchema, Catalog (+3 more)
+Cohesion: 0.07
+Nodes (20): CatalogImpl, List, Data, PegawaiBatchIdsRequest, DefaultCatalog, Override, Schema, SuppressWarnings (+12 more)
 
 ### Community 174 - "ProfesiController"
-Cohesion: 0.11
-Nodes (21): Consequences, Considered Options, 0001 Jpa Write Jooq Read Cqrs, Pemisahan jalur Command (JPA) dan Query (JOOQ), ProfesiCommandService, ProfesiQueryService, GetMapping, Page (+13 more)
+Cohesion: 0.09
+Nodes (22): Consequences, Considered Options, 0001 Jpa Write Jooq Read Cqrs, Pemisahan jalur Command (JPA) dan Query (JOOQ), ProfesiCommandService, ProfesiQueryService, GetMapping, Page (+14 more)
 
 ### Community 175 - "Coding Rules"
 Cohesion: 0.40
@@ -1172,10 +1143,6 @@ Nodes (5): Context Map, Cara Pakai, CONTEXT-MAP — Kepegawaian, Peta Sub-Contex
 Cohesion: 0.40
 Nodes (5): Catatan ketergantungan, Claim Order — GajiBatchRootServiceImpl (Kafka), Claim Order Gajibatchroot Kafka, Perintah claim, StringSerializer
 
-### Community 178 - "Claim Order — Analisis Bug GajiBatchRoot + Config + CQRS (2026-06-17)"
-Cohesion: 0.40
-Nodes (5): Catatan Ketergantungan, Claim Order — Analisis Bug GajiBatchRoot + Config + CQRS (2026-06-17), Perintah Claim (real ID, 2026-06-22), Status Realisasi (2026-06-22), Urutan Claim
-
 ### Community 179 - "Context — Relasi Antar Domain"
 Cohesion: 0.40
 Nodes (5): Arah Dependency Lintas-Modul, Context — Relasi Antar Domain, Relationships, Relasi, INSERT
@@ -1185,32 +1152,32 @@ Cohesion: 0.40
 Nodes (5): 0031 — Batch/workflow endpoints return SavedResult<String> ("{n} success" / "success"), Consequences, Considered Options, Context, Decision
 
 ### Community 181 - "0013 — Error path reuses the ApiResponse<T> envelope, not ProblemDetail"
-Cohesion: 0.40
-Nodes (5): 0013 — Error path reuses the ApiResponse<T> envelope, not ProblemDetail, Consequences, Considered Options, Context, Decision
+Cohesion: 0.11
+Nodes (4): GajiParameterSettingRecord, Override, Record1, SuppressWarnings
 
 ### Community 182 - "0014 — GET /master/x/{id} on a missing/soft-deleted row returns 404, not 200-null"
-Cohesion: 0.40
-Nodes (5): 0014 — GET /master/x/{id} on a missing/soft-deleted row returns 404, not 200-null, Consequences, Considered Options, Context, Decision
+Cohesion: 0.15
+Nodes (13): ApiResponse, Consequences, Considered Options, 0006 Layer First Package Layout, Tata letak paket: layer-first (bukan vertical slice), 0014 — GET /master/x/{id} on a missing/soft-deleted row returns 404, not 200-null, Consequences, Considered Options (+5 more)
 
 ### Community 184 - "DetailDasarGajiCommandService.java"
-Cohesion: 0.11
-Nodes (17): DetailDasarGajiPostRequest, DetailDasarGajiRepository, DetailDasarGajiController, DeleteMapping, GetMapping, Page, RequestMapping, RequiredArgsConstructor (+9 more)
+Cohesion: 0.15
+Nodes (12): DetailDasarGajiController, GetMapping, Page, RequestMapping, RequiredArgsConstructor, RestController, DasarGajiMiniResponse, DetailDasarGajiResponse (+4 more)
 
 ### Community 185 - "DasarGajiQueryRepository.java"
-Cohesion: 0.13
-Nodes (16): GetMapping, DasarGajiIndexQuery, Data, EqualsAndHashCode, DasarGajiResponse, DasarGajiJooqMapper, DasarGajiQueryRepository, DSLContext (+8 more)
+Cohesion: 0.14
+Nodes (16): DasarGajiIndexQuery, Data, EqualsAndHashCode, DasarGajiResponse, DasarGajiJooqMapper, DasarGajiQueryRepository, Condition, DSLContext (+8 more)
 
 ### Community 186 - "GajiProfilResponse"
-Cohesion: 0.05
-Nodes (48): GajiKomponenCommandService, GajiKomponenMiniProjection, GajiKomponenController, GetMapping, Page, RequestMapping, RequiredArgsConstructor, ResponseEntity (+40 more)
+Cohesion: 0.07
+Nodes (29): GajiKomponenMiniProjection, GajiKomponenController, DeleteMapping, GetMapping, Page, PutMapping, RequestMapping, RequiredArgsConstructor (+21 more)
 
 ### Community 187 - "GajiPhdpResponse"
-Cohesion: 0.13
-Nodes (17): GetMapping, GajiPhdpIndexQuery, Data, EqualsAndHashCode, GajiPhdpResponse, GajiPhdpJooqMapper, GajiPhdpQueryRepository, Condition (+9 more)
+Cohesion: 0.15
+Nodes (13): GajiPhdpResponse, GajiPhdpJooqMapper, GajiPhdpQueryRepository, Condition, DSLContext, Field, Page, Repository (+5 more)
 
 ### Community 188 - "SavedStatus"
-Cohesion: 0.07
-Nodes (28): PegawaiPatchGaji, PegawaiPatchProfil, PegawaiPostRequest, PegawaiPutRequest, Getter, Setter, SavedStatus, Data (+20 more)
+Cohesion: 0.14
+Nodes (9): PatchMapping, PostMapping, PreAuthorize, PutMapping, ResponseEntity, PegawaiPutRequest, Condition, Transactional (+1 more)
 
 ### Community 189 - "JenisKitasQueryRepository.java"
 Cohesion: 0.11
@@ -1221,8 +1188,8 @@ Cohesion: 0.10
 Nodes (27): GolonganCommandService, GolonganIndexQuery, GolonganQuery, GolonganQueryRepository, GolonganQueryService, GolonganController, GetMapping, Page (+19 more)
 
 ### Community 191 - "JenisSpQueryRepository.java"
-Cohesion: 0.09
-Nodes (24): JenisSpQueryRepository, SanksiRow, GetMapping, Page, RequestMapping, RequiredArgsConstructor, ResponseEntity, RestController (+16 more)
+Cohesion: 0.05
+Nodes (36): CriteriaBuilder, JenisSpQueryRepository, Root, SafeVarargs, SanksiRow, DeleteMapping, GetMapping, Page (+28 more)
 
 ### Community 192 - "RiwayatSpRecord"
 Cohesion: 0.05
@@ -1241,8 +1208,8 @@ Cohesion: 0.50
 Nodes (4): Aturan Bisnis Penting, Context — Modul Master (Data Referensi), Language Master, Glossary
 
 ### Community 196 - "APD & Alat Kerja: punya endpoint tulis sendiri, tapi tanpa endpoint baca standalone"
-Cohesion: 0.50
-Nodes (4): APD & Alat Kerja: punya endpoint tulis sendiri, tapi tanpa endpoint baca standalone, Consequences, Considered Options, Model APD & Alat Kerja di rewrite
+Cohesion: 0.13
+Nodes (13): LampiranSkQueryRepository, LampiranSkQuery, HashedFileInfo, DSLContext, Repository, RequiredArgsConstructor, LampiranSkQueryRepository, RequiredArgsConstructor (+5 more)
 
 ### Community 197 - "Flyway sebagai sumber kebenaran schema"
 Cohesion: 0.50
@@ -1254,19 +1221,19 @@ Nodes (3): EnableJpaRepositories, SpringBootApplication, KepegawaianApplication
 
 ### Community 201 - "KenaikanBerkalaRequest"
 Cohesion: 0.14
-Nodes (13): EFilterKenaikanBerkala, BULAN_INI, GTE_1, GTE_2, TAHUN_INI, EJenisKenaikanBerkala(), SK_KENAIKAN_GAJI_BERKALA, SK_KENAIKAN_PANGKAT_GOLONGAN (+5 more)
+Nodes (13): EFilterKenaikanBerkala, BULAN_INI, GTE_1, GTE_2, TAHUN_INI, EJenisKenaikanBerkala, SK_KENAIKAN_GAJI_BERKALA, SK_KENAIKAN_PANGKAT_GOLONGAN (+5 more)
 
 ### Community 202 - "DeletedResult"
 Cohesion: 0.06
-Nodes (26): DeleteMapping, DeleteMapping, DeleteMapping, DeleteMapping, DeleteMapping, DeleteMapping, DeleteMapping, DeleteMapping (+18 more)
+Nodes (34): DeleteMapping, DeleteMapping, DeleteMapping, DeleteMapping, DeleteMapping, DeleteMapping, DeleteMapping, DeleteMapping (+26 more)
 
 ### Community 203 - ".toEntity"
-Cohesion: 0.11
-Nodes (13): from(), from(), from(), from(), RumahDinas, RumahDinasMapper, GajiBatchMasterProsesMapper, GajiBatchMasterProses (+5 more)
+Cohesion: 0.05
+Nodes (40): from(), from(), from(), from(), from(), from(), from(), from() (+32 more)
 
 ### Community 204 - "GajiBatchRootCommandService.java"
-Cohesion: 0.15
-Nodes (15): GajiBatchMasterPostRequest, Data, MultipartFile, GajiBatchRootLampiranRepository, GajiBatchMasterCommandService, RequiredArgsConstructor, RestClient, Service (+7 more)
+Cohesion: 0.11
+Nodes (23): GajiBatchMasterPostRequest, Data, MultipartFile, GajiBatchRootLampiranRepository, GajiBatchRootRepository, Query, GajiBatchMasterCommandService, RequiredArgsConstructor (+15 more)
 
 ### Community 205 - "ProfilUpdateRecord"
 Cohesion: 0.07
@@ -1285,64 +1252,68 @@ Cohesion: 0.67
 Nodes (3): Context — Modul Cuti (Pengajuan & Approval Cuti), Language Cuti, Glossary
 
 ### Community 209 - "Profil Rewrite Claim Order"
-Cohesion: 0.04
-Nodes (51): ADR-0013, ADR-0017, ADR-0019, ADR-0026, ADR-0027, ADR-0028, ApiResponse, APPROVED (+43 more)
+Cohesion: 0.02
+Nodes (133): ADR-0001, ADR-0005, ADR-0011, ADR-0013, ADR-0017, ADR-0019, ADR-0025, ADR-0026 (+125 more)
 
 ### Community 211 - "HariLiburQueryRepository.java"
 Cohesion: 0.07
-Nodes (27): HariLiburController, GetMapping, Page, RequestMapping, RequiredArgsConstructor, ResponseEntity, RestController, HariLiburIndexQuery (+19 more)
+Nodes (26): HariLiburController, GetMapping, Page, RequestMapping, RequiredArgsConstructor, ResponseEntity, RestController, HariLiburIndexQuery (+18 more)
 
 ### Community 218 - "AppwriteUser"
 Cohesion: 0.15
 Nodes (12): SimpleGrantedAuthority, Component, RequiredArgsConstructor, Slf4j, JwtTokenService, AppwriteUser, AllArgsConstructor, Data (+4 more)
 
 ### Community 219 - "CutiJenisQueryRepository.java"
-Cohesion: 0.08
-Nodes (31): CutiJenisCommandService, CutiJenisQueryRepository, CutiJenisRequest, CutiJenisResponse, CutiJenisController, DeleteMapping, GetMapping, Page (+23 more)
+Cohesion: 0.09
+Nodes (29): CutiJenisCommandService, CutiJenisQueryRepository, CutiJenisRequest, CutiJenisResponse, CutiJenisController, GetMapping, Page, RequestMapping (+21 more)
 
 ### Community 220 - "GajiBatchMasterProsesResponse"
-Cohesion: 0.09
-Nodes (27): GajiBatchMasterProsesCommandService, GajiBatchMasterProsesJooqMapper, GajiBatchMasterProsesQueryService, GajiBatchMasterProsesController, DeleteMapping, GetMapping, Page, PostMapping (+19 more)
+Cohesion: 0.12
+Nodes (17): GajiBatchMasterProsesJooqMapper, GajiBatchMasterProsesIndexQuery, Data, EqualsAndHashCode, GajiBatchMasterProsesResponse, GajiBatchMasterProsesJooqMapper, GajiBatchMasterProsesQueryRepository, Condition (+9 more)
 
 ### Community 221 - "CutiKuotaDeductionResult"
 Cohesion: 0.27
 Nodes (6): CutiKuotaDeductionResult, Builder, Data, CutiKuotaDeductionAllocator, CutiKuotaDeductionAllocatorTest, Test
 
 ### Community 222 - "EApprovalCutiStatus"
-Cohesion: 0.04
-Nodes (105): CutiApprovalChainGenerator, CutiApprovalChainRepository, CutiApprovalPostRequest, CutiApprovalRepository, CutiKlaimDetailRepository, CutiKuotaAllocator, CutiKuotaQueryRepository, CutiKuotaRepository (+97 more)
+Cohesion: 0.06
+Nodes (65): CutiApprovalChainGenerator, CutiApprovalChainRepository, CutiApprovalPostRequest, CutiApprovalRepository, CutiKlaimDetailRepository, CutiKuotaAllocator, CutiKuotaRepository, CutiPegawai (+57 more)
 
 ### Community 223 - "ListResult"
 Cohesion: 0.06
-Nodes (19): GetMapping, Page, GetMapping, ResponseEntity, EnumOption, Data, EqualsAndHashCode, ListResult (+11 more)
+Nodes (36): GetMapping, GetMapping, GetMapping, GetMapping, GetMapping, ResponseEntity, Data, EqualsAndHashCode (+28 more)
+
+### Community 224 - "RiwayatTerminasiAudRecord"
+Cohesion: 0.06
+Nodes (4): Override, Record2, SuppressWarnings, RiwayatTerminasiAudRecord
 
 ### Community 225 - "JenjangPendidikan"
-Cohesion: 0.07
-Nodes (34): PendidikanPostRequest, PendidikanRepository, Data, JsonIgnore, Specification, PendidikanPostRequest, PendidikanPutRequest, AllArgsConstructor (+26 more)
+Cohesion: 0.04
+Nodes (74): ADR-0018, BiodataPostRequest, 0019 Profil Revive Archived Peek Native Query, Profil revive-on-create peeks the archived row via a native query, not a derived finder or JOOQ, JenisKitasRepository, KartuIdentitasPostRequest, KartuIdentitasRepository, LampiranProfilCommandService (+66 more)
 
 ### Community 226 - "GajiPendapatanNonPajakResponse"
 Cohesion: 0.09
-Nodes (26): GajiPendapatanNonPajakCommandService, GajiPendapatanNonPajakController, GetMapping, Page, RequestMapping, RequiredArgsConstructor, ResponseEntity, RestController (+18 more)
+Nodes (27): GajiPendapatanNonPajakCommandService, GajiPendapatanNonPajakController, DeleteMapping, GetMapping, Page, RequestMapping, RequiredArgsConstructor, ResponseEntity (+19 more)
 
 ### Community 227 - ".delete"
-Cohesion: 0.07
-Nodes (22): DeleteMapping, DeleteMapping, DeleteMapping, DeleteMapping, DeleteMapping, DeleteMapping, DeleteMapping, DeleteMapping (+14 more)
+Cohesion: 0.35
+Nodes (6): ActiveProfiles, AfterEach, JdbcTemplate, SpringBootTest, Test, ProfesiCommandServiceTest
 
 ### Community 228 - "ErrorCode"
 Cohesion: 0.33
-Nodes (6): ErrorCode(), DB_ERROR, DUPLICATE_BATCH, INTERNAL, UNKNOWN_BATCH, Getter
+Nodes (6): ErrorCode, DB_ERROR, DUPLICATE_BATCH, INTERNAL, UNKNOWN_BATCH, Getter
 
 ### Community 229 - "ProfileUpdate"
-Cohesion: 0.06
-Nodes (41): EntityManager, ProfileUpdate, ProfileUpdateApprovalService, Data, ProfilUpdateAcceptRequest, ProfilUpdateDetail, EProfileUpdateApproval, APPROVED (+33 more)
+Cohesion: 0.07
+Nodes (31): ProfileUpdate, Data, ProfilUpdateAcceptRequest, EProfileUpdateApproval, APPROVED, PENDING, REJECT, EProfileUpdateTable (+23 more)
 
 ### Community 230 - "AuthServiceImplTest.java"
-Cohesion: 0.29
-Nodes (9): AppwriteUserPostRequest, AppwriteUserPostRequest, Builder, Data, AuthServiceImplTest, ActiveProfiles, RestClient, Slf4j (+1 more)
+Cohesion: 0.11
+Nodes (21): LampiranSp, RiwayatSpPostRequest, Data, JsonIgnore, MultipartFile, Specification, RiwayatSpPostRequest, Data (+13 more)
 
 ### Community 231 - "AppwriteClient"
-Cohesion: 0.12
-Nodes (20): AppwriteProperties, Consequences, Considered Options, 0029 Appwriteclient Typed Adapter, Ekstraksi REST client Appwrite ke typed adapter AppwriteClient, Keputusan, Konteks, RestClient (+12 more)
+Cohesion: 0.11
+Nodes (23): AppwriteUserPostRequest, MockRestServiceServer, RestClient, AppwriteClient, Component, HttpHeaders, PrefRole, RequiredArgsConstructor (+15 more)
 
 ### Community 232 - "RiwayatKeluarRecord"
 Cohesion: 0.06
@@ -1353,84 +1324,84 @@ Cohesion: 0.22
 Nodes (8): AllArgsConstructor, Entity, Getter, NoArgsConstructor, Setter, Table, ToString, StatistikPegawai
 
 ### Community 235 - "ProcessPotonganTkkImpl.java"
-Cohesion: 0.09
-Nodes (27): GajiBatchPotonganTkkRepository, ProcessPotonganTkk, GajiBatchPotonganTkk, AllArgsConstructor, Entity, Getter, NoArgsConstructor, Setter (+19 more)
+Cohesion: 0.11
+Nodes (20): GajiBatchPotonganTkkRepository, ProcessPotonganTkk, GajiBatchPotonganTkk, AllArgsConstructor, Entity, Getter, NoArgsConstructor, Setter (+12 more)
 
 ### Community 236 - "RiwayatKontrakController.java"
-Cohesion: 0.14
-Nodes (14): RiwayatKontrakCommandService, RiwayatKontrakPostRequest, Data, JsonIgnore, Specification, RiwayatKontrakPostRequest, Data, EqualsAndHashCode (+6 more)
+Cohesion: 0.13
+Nodes (18): LevelQueryRepository, RequestMapping, RequiredArgsConstructor, RestController, LevelController, Data, EqualsAndHashCode, LevelIndexQuery (+10 more)
 
 ### Community 237 - "PageResult"
-Cohesion: 0.02
-Nodes (80): KartuIdentitasCommandService, LampiranProfilQuery, GetMapping, GetMapping, Page, GetMapping, GetMapping, Page (+72 more)
+Cohesion: 0.04
+Nodes (48): GetMapping, Page, Page, Page, GetMapping, Page, RequestMapping, RequiredArgsConstructor (+40 more)
 
 ### Community 238 - "GajiKomponen"
-Cohesion: 0.06
-Nodes (40): EJenisGaji, GajiKomponenPostRequest, GajiKomponenRepository, Data, EqualsAndHashCode, GajiBatchMasterProsesPostRequest, Data, JsonIgnore (+32 more)
+Cohesion: 0.04
+Nodes (52): EJenisGaji, GajiKomponenPostRequest, GajiKomponenRepository, GajiProfilRepository, GajiBatchMasterProsesPostRequest, Data, JsonIgnore, Specification (+44 more)
 
 ### Community 239 - "GajiBatchRootLampiran"
-Cohesion: 0.20
-Nodes (11): GajiBatchRootLampiranMiniResponse, EJenisPotonganGaji(), POTONGAN_TAMBAHAN, POTONGAN_TKK, GajiBatchRootLampiran, AllArgsConstructor, Entity, Getter (+3 more)
+Cohesion: 0.19
+Nodes (11): GajiBatchRootLampiranMiniResponse, EJenisPotonganGaji, POTONGAN_TAMBAHAN, POTONGAN_TKK, GajiBatchRootLampiran, AllArgsConstructor, Entity, Getter (+3 more)
 
 ### Community 240 - ".toString"
-Cohesion: 0.11
-Nodes (13): PutMapping, PutMapping, Override, Override, Result, PegawaiRingkasanMapper, PegawaiTableRecordMapper, ActiveProfiles (+5 more)
+Cohesion: 0.20
+Nodes (8): PutMapping, PutMapping, ActiveProfiles, AfterEach, JdbcTemplate, SpringBootTest, Test, OrganisasiCommandServiceTest
 
 ### Community 241 - "ConflictException"
 Cohesion: 0.03
-Nodes (101): AppwriteClient, AppwriteUser, AuthService, BiodataCommandService, ConflictException, CutiKuotaImportRequest, CutiKuotaPostRequest, EStatusKerja (+93 more)
+Nodes (99): ADR-0014, ADR-0031, AlatKerjaCommandService, AlatKerjaController, AlatKerjaQueryService, ApdCommandService, ApdController, ApdQueryService (+91 more)
 
 ### Community 242 - "ProfilKeluargaAudRecord"
 Cohesion: 0.06
 Nodes (4): Override, Record2, SuppressWarnings, ProfilKeluargaAudRecord
 
 ### Community 243 - "HariLibur"
-Cohesion: 0.18
-Nodes (12): EJenisLibur(), CUTI_BERSAMA, LIBUR_NASIONAL, HariLibur, AllArgsConstructor, Entity, Getter, NoArgsConstructor (+4 more)
+Cohesion: 0.13
+Nodes (16): Data, JsonIgnore, Specification, EJenisLibur, CUTI_BERSAMA, LIBUR_NASIONAL, Getter, HariLibur (+8 more)
 
 ### Community 244 - "EStatusCuti"
 Cohesion: 0.25
-Nodes (8): EStatusCuti(), APPROVED, CANCELLED, CONFIRMED, REJECTED, RETURNED, WAIT_APPROVAL, Getter
+Nodes (8): EStatusCuti, APPROVED, CANCELLED, CONFIRMED, REJECTED, RETURNED, WAIT_APPROVAL, Getter
 
 ### Community 245 - "EJenisTunjangan"
-Cohesion: 0.07
-Nodes (38): GajiTunjanganCommandService, GajiTunjanganPostRequest, GajiTunjanganController, GetMapping, RequestMapping, RequiredArgsConstructor, RestController, GajiTunjanganPostRequest (+30 more)
+Cohesion: 0.06
+Nodes (38): GajiTunjanganJooqMapper, GajiTunjanganController, GetMapping, RequestMapping, RequiredArgsConstructor, ResponseEntity, RestController, Data (+30 more)
 
 ### Community 246 - "List"
-Cohesion: 0.02
-Nodes (107): BiodataPostRequest, EGolonganDarah, EnumType, JenisKitasResponse, JenjangPendidikanResponse, KartuIdentitasMiniResponse, List, LocalDate (+99 more)
+Cohesion: 0.05
+Nodes (52): KartuIdentitasMiniResponse, JenisKitasResponse, Data, PegawaiPatchProfil, BiodataDetail, BiodataMiniResponse, BiodataPatchRequest, Data (+44 more)
 
 ### Community 247 - "EJenisSk"
-Cohesion: 0.05
-Nodes (55): LampiranSkAcceptRequest, LampiranSkCommandService, LampiranSkQueryRepository, LampiranSkQueryService, RequestMapping, RequiredArgsConstructor, RestController, LampiranSkController (+47 more)
+Cohesion: 0.03
+Nodes (79): FileUploadUtil, LampiranSkAcceptRequest, LampiranSkQueryService, RiwayatSkPostRequest, Specification, SpecificationBuilder, RequestMapping, RequiredArgsConstructor (+71 more)
 
 ### Community 248 - "JenisKontrakController.java"
-Cohesion: 0.07
-Nodes (35): EnumOption, JenisKontrakQueryService, ListResult, GetMapping, RequestMapping, RequiredArgsConstructor, ResponseEntity, RestController (+27 more)
+Cohesion: 0.05
+Nodes (51): CustomResult, 1. Keputusan terkunci (berlaku untuk semua master), 2.1 Base paging — PageRequest (abstract), 2.2 Sort whitelist — SortParam, 2.3 Typed ID (opsional, ditunda), 2.4 Controller — write-flow, 2. Komponen pattern (dari kode Publication), 3. Resep adopsi per modul master (langkah generik) (+43 more)
 
 ### Community 249 - "RiwayatSkQuery"
-Cohesion: 0.08
-Nodes (28): CutiKuotaController, GetMapping, RequestMapping, RequiredArgsConstructor, RestController, GetMapping, Page, RequestMapping (+20 more)
+Cohesion: 0.16
+Nodes (17): EntityManager, ProfileUpdateApprovalService, RevInfoService, RequiredArgsConstructor, Service, Slf4j, ProfileUpdateBiodataApprovalService, RequiredArgsConstructor (+9 more)
 
 ### Community 250 - "CutiPegawaiAudRecord"
 Cohesion: 0.07
 Nodes (4): CutiPegawaiAudRecord, Override, Record2, SuppressWarnings
 
 ### Community 254 - "GajiBatchPotonganTkkRecord"
-Cohesion: 0.10
-Nodes (19): GajiBatchPotonganTkk, Condition, Field, Identity, Index, Name, Override, PlainSQL (+11 more)
+Cohesion: 0.17
+Nodes (15): GajiBatchPotonganTkk, Condition, Field, Identity, Index, Name, Override, PlainSQL (+7 more)
 
 ### Community 255 - "PengalamanKerjaRecord"
 Cohesion: 0.07
 Nodes (4): Override, Record1, SuppressWarnings, PengalamanKerjaRecord
 
 ### Community 256 - "JabatanQueryRepository.java"
-Cohesion: 0.11
-Nodes (24): JabatanQuery, JabatanController, GetMapping, Page, RequestMapping, RequiredArgsConstructor, ResponseEntity, RestController (+16 more)
+Cohesion: 0.16
+Nodes (14): JabatanQueryRepository, JabatanController, GetMapping, Page, RequestMapping, RequiredArgsConstructor, ResponseEntity, RestController (+6 more)
 
 ### Community 257 - "BiodataPath"
-Cohesion: 0.09
-Nodes (19): BiodataPath, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name (+11 more)
+Cohesion: 0.08
+Nodes (21): BiodataPath, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name (+13 more)
 
 ### Community 258 - "KeahlianRecord"
 Cohesion: 0.07
@@ -1438,30 +1409,30 @@ Nodes (4): Override, Record1, SuppressWarnings, KeahlianRecord
 
 ### Community 259 - "GajiBatchMasterResponse"
 Cohesion: 0.10
-Nodes (27): GajiBatchMasterCommandService, GajiBatchMasterPostRequest, GajiBatchMasterQueryRepository, GajiBatchMasterQueryService, GajiBatchMasterController, GetMapping, Page, PatchMapping (+19 more)
+Nodes (27): GajiBatchMasterCommandService, GajiBatchMasterJooqMapper, GajiBatchMasterPostRequest, GajiBatchMasterQueryRepository, GajiBatchMasterQueryService, GajiBatchMasterController, GetMapping, Page (+19 more)
 
 ### Community 260 - "GajiProfil"
-Cohesion: 0.09
-Nodes (27): GajiProfilCommandService, GajiProfilPostRequest, GajiProfilRepository, GajiProfilController, Page, RequestMapping, RequiredArgsConstructor, RestController (+19 more)
+Cohesion: 0.23
+Nodes (10): GajiKomponenCommandService, GajiProfilPostRequest, GajiProfilPostRequest, Data, JsonIgnore, Specification, GajiProfilPutRequest, GajiProfilCommandService (+2 more)
 
 ### Community 261 - "JenisSp"
-Cohesion: 0.08
-Nodes (28): JenisSpRepository, SanksiPostRequest, from(), Data, JsonIgnore, Specification, SanksiPostRequest, Data (+20 more)
+Cohesion: 0.14
+Nodes (17): MasterBaseEntity, Entity, Getter, NoArgsConstructor, Setter, SQLDelete, Table, JenisSp (+9 more)
 
 ### Community 262 - "Pendidikan"
-Cohesion: 0.13
-Nodes (18): Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name, Override (+10 more)
+Cohesion: 0.15
+Nodes (17): Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name, Override (+9 more)
 
 ### Community 263 - "WebSecurity.java"
-Cohesion: 0.10
-Nodes (30): ADMIN, ADR-0029, AuthenticationEntryPoint, AuthenticationException, CorsConfigurationSource, DEV, 0016 Profile Conditional Auth, Profile-conditional authentication (+22 more)
+Cohesion: 0.14
+Nodes (21): ADMIN, ADR-0029, CorsConfigurationSource, DEV, 0016 Profile Conditional Auth, Profile-conditional authentication, Aturan Bisnis Penting, Context — Security (Autentikasi & Lingkungan) (+13 more)
 
 ### Community 264 - "PelatihanQueryService.java"
-Cohesion: 0.09
-Nodes (23): PelatihanQueryRepository, PelatihanDetail, PelatihanQuery, Override, SuppressWarnings, PelatihanDetailJooqMapper, Override, PelatihanJooqMapper (+15 more)
+Cohesion: 0.06
+Nodes (39): [ ] #4 — CUTOVER + hapus shim lama · kepegawaian-94u.3 (blocked by #3), Aturan wajib tiap langkah (CODINGRULES), Lampiranprofil Cqrs Claim Order, lampiranProfil CQRS — Claim Order & Checklist, Session close (setelah semua hijau), [x] #2 — READ side · kepegawaian-94u.1 (READY), [x] #3 — WRITE side · kepegawaian-94u.2 (blocked by #2), LampiranProfilQuery (+31 more)
 
 ### Community 265 - "SanksiQueryRepository.java"
-Cohesion: 0.10
+Cohesion: 0.11
 Nodes (24): SanksiQueryRepository, GetMapping, Page, RequestMapping, RequiredArgsConstructor, ResponseEntity, RestController, SanksiController (+16 more)
 
 ### Community 266 - ".between1JanAnd30Jun"
@@ -1469,40 +1440,40 @@ Cohesion: 0.17
 Nodes (5): CutiApproveKlaimCutiService, RequiredArgsConstructor, Service, CutiKuotaAllocatorTest, Test
 
 ### Community 267 - "GajiKomponenRecord"
-Cohesion: 0.08
-Nodes (10): GajiKomponenJenisGaji(), NONE, PEMASUKAN, POTONGAN, SuppressWarnings, lookupLiteral(), GajiKomponenRecord, Override (+2 more)
+Cohesion: 0.10
+Nodes (4): GajiKomponenRecord, Override, Record1, SuppressWarnings
 
 ### Community 268 - "Keys"
-Cohesion: 0.08
-Nodes (8): ForeignKey, SuppressWarnings, UniqueKey, Keys, Override, Record1, SuppressWarnings, ProfilKeluargaRecord
+Cohesion: 0.10
+Nodes (4): Override, Record1, SuppressWarnings, ProfilKeluargaRecord
 
 ### Community 269 - "tables/GajiPendapatanNonPajak.java"
-Cohesion: 0.13
-Nodes (18): GajiPendapatanNonPajak, GajiPendapatanNonPajakPath, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey (+10 more)
+Cohesion: 0.07
+Nodes (22): GajiPendapatanNonPajak, GajiPendapatanNonPajakPath, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey (+14 more)
 
 ### Community 270 - "tables/GajiKomponen.java"
-Cohesion: 0.13
-Nodes (18): GajiKomponen, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name (+10 more)
+Cohesion: 0.14
+Nodes (18): GajiKomponen, GajiKomponenPath, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey (+10 more)
 
 ### Community 271 - "ProfilUpdateController.java"
-Cohesion: 0.09
-Nodes (26): Profil Record Refactor Claim Order, PendidikanQueryRepository, ProfileUpdateQuery, ProfilUpdateAcceptRequest, ProfilUpdateDetail, RevInfoService, GetMapping, Page (+18 more)
+Cohesion: 0.08
+Nodes (27): Profil Record Refactor Claim Order, PendidikanQueryRepository, ProfileUpdateQuery, ProfilUpdateAcceptRequest, ProfilUpdateDetail, GetMapping, Page, RequestMapping (+19 more)
 
 ### Community 272 - "LampiranRow"
-Cohesion: 0.09
-Nodes (18): LampiranRow, KartuIdentitasDetail, LampiranRow, PengalamanKerjaDetail, Override, SuppressWarnings, KartuIdentitasDetailJooqMapper, Override (+10 more)
+Cohesion: 0.11
+Nodes (9): BiodataCommandService, MimeTypesUtils, BiodataController, MultipartFile, Page, RequestMapping, RequiredArgsConstructor, RestController (+1 more)
 
 ### Community 273 - "JenjangPendidikanRecord"
 Cohesion: 0.10
 Nodes (7): from(), Override, Record1, SuppressWarnings, JenjangPendidikanRecord, JenjangPendidikan, JenjangPendidikanMapper
 
 ### Community 274 - "GitNexus — Code Intelligence"
-Cohesion: 0.06
-Nodes (29): Always Do, Beads Issue Tracker, CLI, GitNexus — Code Intelligence, Graphify — Knowledge Graph, Never Do, Outputs, Quick Reference (+21 more)
+Cohesion: 0.19
+Nodes (11): Condition, Field, Override, PlainSQL, Schema, Select, SQL, SuppressWarnings (+3 more)
 
 ### Community 275 - "Keahlian"
-Cohesion: 0.09
-Nodes (21): JenisKeahlianResponse, KeahlianQuery, JenisKeahlianResponse, KeahlianResponse, EKualifikasi, BAIK, CUKUP, KURANG (+13 more)
+Cohesion: 0.07
+Nodes (28): EnumType, JenisKeahlianResponse, Data, JenisKeahlianResponse, Data, EqualsAndHashCode, Data, JsonIgnore (+20 more)
 
 ### Community 276 - "Knowledge — kepegawaian (PERUMDAMTS)"
 Cohesion: 0.06
@@ -1517,155 +1488,151 @@ Cohesion: 0.11
 Nodes (22): GetMapping, Page, RequestMapping, RequiredArgsConstructor, ResponseEntity, RestController, RumahDinasController, Data (+14 more)
 
 ### Community 279 - "TableImpl"
-Cohesion: 0.15
-Nodes (19): DasarGaji, DasarGajiPath, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey (+11 more)
+Cohesion: 0.14
+Nodes (18): DasarGaji, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name (+10 more)
 
 ### Community 280 - "tables/JenisPelatihan.java"
 Cohesion: 0.14
 Nodes (18): Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name, Override (+10 more)
 
 ### Community 281 - "PegawaiQueryService"
-Cohesion: 0.12
-Nodes (18): RefMiniResponse, RefMiniResponse, PegawaiResponseMutasiContext, PegawaiResponseSession, PegawaiTableResponse, DSLContext, Repository, RequiredArgsConstructor (+10 more)
+Cohesion: 0.09
+Nodes (14): GetMapping, Page, RequestMapping, RequiredArgsConstructor, RestController, Validator, PegawaiController, RefMiniResponse (+6 more)
 
 ### Community 282 - "JenisPelatihanQueryRepository.java"
 Cohesion: 0.11
 Nodes (22): GetMapping, Page, RequestMapping, RequiredArgsConstructor, ResponseEntity, RestController, JenisPelatihanController, Data (+14 more)
 
 ### Community 283 - "CutiJenis"
-Cohesion: 0.15
-Nodes (18): CutiJenis, CutiJenisPath, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey (+10 more)
+Cohesion: 0.07
+Nodes (21): CutiJenis, Condition, Field, ForeignKey, Identity, Index, InverseForeignKey, Name (+13 more)
 
 ### Community 284 - "GradeRecord"
-Cohesion: 0.10
-Nodes (7): from(), GradeRecord, Override, Record1, SuppressWarnings, GradeMapper, Grade
+Cohesion: 0.14
+Nodes (10): from(), GradePostRequest, Data, JsonIgnore, Specification, from(), GradeMapper, Grade (+2 more)
 
 ### Community 285 - "BiodataAud.java"
-Cohesion: 0.15
-Nodes (16): BiodataAud, BiodataAudPath, Condition, Field, ForeignKey, InverseForeignKey, Name, Override (+8 more)
+Cohesion: 0.08
+Nodes (32): BiodataAudGolonganDarah, A, AB, B, O, getCatalog(), getLiteral(), getName() (+24 more)
 
 ### Community 286 - "DasarGajiAud.java"
 Cohesion: 0.15
 Nodes (16): DasarGajiAud, DasarGajiAudPath, Condition, Field, ForeignKey, InverseForeignKey, Name, Override (+8 more)
 
 ### Community 287 - "PegawaiAud.java"
-Cohesion: 0.15
+Cohesion: 0.16
 Nodes (16): Condition, Field, ForeignKey, InverseForeignKey, Name, Override, PlainSQL, Schema (+8 more)
 
 ### Community 288 - "ProfilKeluargaAud.java"
-Cohesion: 0.15
+Cohesion: 0.17
 Nodes (16): Condition, Field, ForeignKey, InverseForeignKey, Name, Override, PlainSQL, Schema (+8 more)
 
 ### Community 289 - "PengalamanKerjaCommandService.java"
-Cohesion: 0.11
-Nodes (23): PengalamanKerjaPostRequest, PengalamanKerjaPutRequest, PengalamanKerjaRepository, Data, JsonIgnore, Specification, PengalamanKerjaPostRequest, PengalamanKerjaPutRequest (+15 more)
+Cohesion: 0.20
+Nodes (12): GajiBatchMasterProsesCommandService, GajiBatchMasterProsesQueryService, GajiBatchMasterProsesController, DeleteMapping, GetMapping, Page, PostMapping, PreAuthorize (+4 more)
 
 ### Community 290 - "AlasanBerhentiQueryRepository.java"
 Cohesion: 0.12
 Nodes (21): AlasanBerhentiController, GetMapping, Page, RequestMapping, RequiredArgsConstructor, ResponseEntity, RestController, AlasanBerhentiIndexQuery (+13 more)
 
 ### Community 291 - "RiwayatSkAud.java"
-Cohesion: 0.16
-Nodes (16): Condition, Field, ForeignKey, InverseForeignKey, Name, Override, PlainSQL, Schema (+8 more)
-
-### Community 292 - "PelatihanCommandService.java"
-Cohesion: 0.12
-Nodes (19): BiodataRepository, KartuIdentitasPostRequest, PelatihanPostRequest, Data, JsonIgnore, Specification, KartuIdentitasPostRequest, KartuIdentitasPutRequest (+11 more)
+Cohesion: 0.06
+Nodes (20): Override, Record2, SuppressWarnings, RiwayatSkAudRecord, Condition, Field, ForeignKey, InverseForeignKey (+12 more)
 
 ### Community 293 - "DetailDasarGajiRecord"
 Cohesion: 0.10
 Nodes (4): DetailDasarGajiRecord, Override, Record1, SuppressWarnings
 
 ### Community 294 - "GradeQuery"
-Cohesion: 0.13
-Nodes (20): GradeIndexQuery, GradeController, GetMapping, Page, RequestMapping, RequiredArgsConstructor, ResponseEntity, RestController (+12 more)
+Cohesion: 0.11
+Nodes (22): GradeIndexQuery, GradeController, GetMapping, Page, RequestMapping, RequiredArgsConstructor, ResponseEntity, RestController (+14 more)
 
 ### Community 295 - "FileUploadUtil"
-Cohesion: 0.11
-Nodes (16): DeleteMapping, GetMapping, Page, PreAuthorize, RequestMapping, RequiredArgsConstructor, ResponseEntity, RestController (+8 more)
+Cohesion: 0.06
+Nodes (30): GetMapping, RequestMapping, RequiredArgsConstructor, ResponseEntity, RestController, RiwayatSpController, CutiKuotaPegawaiResponse, Page (+22 more)
 
 ### Community 296 - "tables/HariLibur.java"
-Cohesion: 0.16
-Nodes (15): HariLibur, Condition, Field, Identity, Index, Name, Override, PlainSQL (+7 more)
+Cohesion: 0.08
+Nodes (19): HariLibur, Condition, Field, Identity, Index, Name, Override, PlainSQL (+11 more)
 
 ### Community 297 - "BiodataAudRecord"
-Cohesion: 0.11
-Nodes (4): BiodataAudRecord, Override, Record2, SuppressWarnings
+Cohesion: 0.16
+Nodes (5): GajiBatchPotonganTkkRecord, Override, Record1, SuppressWarnings, GajiBatchPotonganTkk
 
 ### Community 298 - "BiodataQueryService.java"
-Cohesion: 0.13
-Nodes (20): BiodataDetailQuery, BiodataQueryRepository, BiodataDashboardQuery, DSLContext, Repository, RequiredArgsConstructor, BiodataQueryRepository, DSLContext (+12 more)
+Cohesion: 0.09
+Nodes (28): BiodataDetailQuery, BiodataQueryRepository, KartuIdentitasMultisetJooqMapper, GetMapping, BiodataDashboardResponse, BiodataDashboardQuery, DSLContext, Repository (+20 more)
 
 ### Community 299 - "CutiKuota"
-Cohesion: 0.11
-Nodes (20): CutiKuotaImportRequest, Data, JsonIgnore, MultipartFile, Specification, CutiKuotaPostRequest, Data, JsonIgnore (+12 more)
+Cohesion: 0.04
+Nodes (50): CutiKuotaCommandService, CutiKuotaImportRequest, CutiKuotaPegawaiResponse, CutiKuotaPostRequest, CutiKuotaQueryRepository, CutiKuotaRequest, CutiKuotaResponse, CutiKuotaSisa (+42 more)
 
 ### Community 300 - "GajiKomponenAudRecord"
-Cohesion: 0.10
-Nodes (4): GajiKomponenAudRecord, Override, Record2, SuppressWarnings
+Cohesion: 0.18
+Nodes (8): SanksiQuery, JenisSpSimple, SanksiJenisSpList, SanksiJooqMapper, Field, SanksiSelects, DSLContext, Field
 
 ### Community 301 - "DetailDasarGajiQueryRepository.java"
-Cohesion: 0.15
-Nodes (15): DetailDasarGajiNominal, DetailDasarGajiQueryRepository, Condition, DSLContext, Field, Page, Repository, RequiredArgsConstructor (+7 more)
+Cohesion: 0.17
+Nodes (12): DetailDasarGajiNominal, DetailDasarGajiQueryRepository, Condition, DSLContext, Field, Page, Repository, RequiredArgsConstructor (+4 more)
 
 ### Community 302 - "GajiTunjanganRecord"
 Cohesion: 0.11
 Nodes (4): GajiTunjanganRecord, Override, Record1, SuppressWarnings
 
 ### Community 303 - "GajiParameterSettingCommandService.java"
-Cohesion: 0.15
-Nodes (16): GajiParameterSettingCommandService, GajiParameterSettingPostRequest, GajiParameterSettingRepository, GajiParameterSettingController, DeleteMapping, Page, RequestMapping, RequiredArgsConstructor (+8 more)
+Cohesion: 0.08
+Nodes (27): GajiParameterSettingCommandService, GajiParameterSettingController, DeleteMapping, GetMapping, Page, RequestMapping, RequiredArgsConstructor, ResponseEntity (+19 more)
 
 ### Community 304 - "LampiranProfilCommandService"
-Cohesion: 0.13
-Nodes (17): KartuIdentitasRepository, ProfilKeluargaRepository, RequiredArgsConstructor, Service, Transactional, KartuIdentitasLampiranCommandService, RequiredArgsConstructor, Service (+9 more)
+Cohesion: 0.21
+Nodes (10): DSLContext, Field, Page, Repository, RequiredArgsConstructor, JenjangPendidikanQueryRepository, Page, RequiredArgsConstructor (+2 more)
 
 ### Community 305 - "KeahlianQueryService.java"
-Cohesion: 0.12
-Nodes (16): KeahlianDetailQuery, KeahlianQueryRepository, KeahlianDetail, Override, SuppressWarnings, KeahlianDetailJooqMapper, LampiranProfilJooqMapper, DSLContext (+8 more)
+Cohesion: 0.09
+Nodes (24): KeahlianDetailQuery, KeahlianJooqMapper, KeahlianQuery, KeahlianQueryRepository, LampiranRow, KeahlianDetail, LampiranRow, Override (+16 more)
 
 ### Community 306 - "IdsAbstract"
-Cohesion: 0.11
-Nodes (20): IdsAbstract, AllArgsConstructor, Audited, EntityListeners, Getter, MappedSuperclass, Override, RequiredArgsConstructor (+12 more)
+Cohesion: 0.22
+Nodes (11): DasarGaji, AllArgsConstructor, Audited, Entity, Getter, NoArgsConstructor, Setter, SQLDelete (+3 more)
 
 ### Community 307 - "CutiJenisRecord"
-Cohesion: 0.11
-Nodes (4): CutiJenisRecord, Override, Record1, SuppressWarnings
+Cohesion: 0.17
+Nodes (12): #1 kepegawaian-33s — fix revive ADR-0005 (RISIKO TERTINGGI) — DONE, #2 kepegawaian-jow — kunci keunikan (BUTUH KEPUTUSAN, label needs-info) — DONE, #3 kepegawaian-5ft — hapus dead code (aman, mekanis) — DONE, #4 kepegawaian-9tf — test pengaman (murni tambah test) — DONE, 🔴 BUG SUDAH AKTIF — terverifikasi, bukan risiko masa depan, Cara klaim & tutup (beads), Checklist eksekusi per issue, Claim Order — Deepening Modul Organisasi (master) (+4 more)
 
 ### Community 309 - "CutiJenis"
-Cohesion: 0.13
-Nodes (16): CutiJenisPostRequest, CutiJenisPostRequest, Data, JsonIgnore, Specification, CutiJenisPutRequest, CutiJenis, AllArgsConstructor (+8 more)
+Cohesion: 0.08
+Nodes (28): BiodataSelects, CutiJenisJooqMapper, CutiJenisMapper, CutiJenisPostRequest, CutiJenisRepository, Profil Cqrs Implementation Patterns, PendidikanSelects, ProfileUpdateService (+20 more)
 
 ### Community 310 - "GajiPotonganTkkRecord"
 Cohesion: 0.12
 Nodes (4): GajiPotonganTkkRecord, Override, Record1, SuppressWarnings
 
 ### Community 311 - "HariLiburRecord"
-Cohesion: 0.12
-Nodes (4): HariLiburRecord, Override, Record1, SuppressWarnings
+Cohesion: 0.26
+Nodes (8): SanksiPostRequest, Data, JsonIgnore, Specification, SanksiPostRequest, Data, EqualsAndHashCode, SanksiPutRequest
 
 ### Community 312 - "SpecificationBuilder"
-Cohesion: 0.17
-Nodes (8): CriteriaBuilder, Root, SafeVarargs, JsonIgnore, Pegawai, Specification, Specification, SpecificationBuilder
+Cohesion: 0.31
+Nodes (9): AuthenticationEntryPoint, AuthenticationException, Component, HttpServletRequest, HttpServletResponse, Override, RequiredArgsConstructor, Slf4j (+1 more)
 
 ### Community 313 - "GajiPhdpCommandService.java"
-Cohesion: 0.15
-Nodes (17): GajiPhdpCommandService, GajiPhdpPostRequest, GajiPhdpRepository, GajiPhdpController, Page, RequestMapping, RequiredArgsConstructor, ResponseEntity (+9 more)
+Cohesion: 0.09
+Nodes (28): GajiPhdpCommandService, GajiPhdpPostRequest, GajiPhdpRepository, GajiPhdpController, Page, RequestMapping, RequiredArgsConstructor, ResponseEntity (+20 more)
 
 ### Community 314 - "PengalamanKerjaQueryService.java"
-Cohesion: 0.14
-Nodes (15): PengalamanKerjaQueryRepository, PengalamanKerjaQuery, Override, PengalamanKerjaJooqMapper, DSLContext, Field, Page, Repository (+7 more)
+Cohesion: 0.07
+Nodes (31): PengalamanKerjaQueryRepository, DeleteMapping, GetMapping, Page, RequestMapping, RequiredArgsConstructor, ResponseEntity, RestController (+23 more)
 
 ### Community 315 - "GajiBatchRootController.java"
-Cohesion: 0.14
-Nodes (18): GajiBatchRootController, RequestMapping, RequiredArgsConstructor, RestController, GajiBatchRootIndexQuery, Data, EqualsAndHashCode, GajiBatchRootQueryRepository (+10 more)
+Cohesion: 0.22
+Nodes (8): Biodata, Golongan, Grade, Jabatan, KodePajak, Organisasi, PegawaiResponse, Profesi
 
 ### Community 316 - "ProfilKeluargaJooqMapperTest"
 Cohesion: 0.21
 Nodes (8): DSLContext, Field, Test, ProfilKeluargaJooqMapperTest, DSLContext, Field, Test, PendidikanJooqMapperTest
 
 ### Community 317 - "DasarGajiController.java"
-Cohesion: 0.17
+Cohesion: 0.16
 Nodes (15): DasarGajiPostRequest, DasarGajiRepository, DasarGajiController, Page, RequestMapping, RequiredArgsConstructor, RestController, DasarGajiPostRequest (+7 more)
 
 ### Community 318 - "BE Requirement — Form Mutasi Pegawai (kondisional per `jenisMutasi`)"
@@ -1677,16 +1644,16 @@ Cohesion: 0.10
 Nodes (20): 1. Prinsip, 2. Lapisan Arsitektur, 3. Pola per Endpoint, 3a. List / Dropdown (GET /list), 3b. Index / Page (GET /), 3c. Detail (GET /{id}), 4. Aturan Penting, 4b. Kolom yang tidak dipakai DTO jangan di-select (+12 more)
 
 ### Community 320 - "JenjangPendidikanController.java"
-Cohesion: 0.16
-Nodes (15): JenjangPendidikanPostRequest, JenjangPendidikanRepository, Page, RequestMapping, RequiredArgsConstructor, RestController, JenjangPendidikanController, Data (+7 more)
+Cohesion: 0.10
+Nodes (24): JenjangPendidikanPostRequest, JenjangPendidikanRepository, Page, RequestMapping, RequiredArgsConstructor, RestController, JenjangPendidikanController, Data (+16 more)
 
 ### Community 321 - "AppwriteClientTest"
-Cohesion: 0.21
-Nodes (5): MockRestServiceServer, Override, getName(), AppwriteClientTest, Test
+Cohesion: 0.23
+Nodes (4): Override, getName(), AppwriteClientTest, Test
 
 ### Community 322 - "RiwayatKontrakQueryRepository.java"
-Cohesion: 0.16
-Nodes (15): RequestMapping, RequiredArgsConstructor, RestController, RiwayatKontrakController, RiwayatKontrakQuery, DSLContext, Field, Page (+7 more)
+Cohesion: 0.14
+Nodes (17): GetMapping, RequestMapping, RequiredArgsConstructor, ResponseEntity, RestController, RiwayatKontrakController, RiwayatKontrakQuery, DSLContext (+9 more)
 
 ### Community 323 - "PendidikanAud.java"
 Cohesion: 0.18
@@ -1697,36 +1664,32 @@ Cohesion: 0.11
 Nodes (20): ADR-0003, ADR-0004, Consequences, Considered Options, 0032 Squash Migration Baseline Bersih Dari Dump Db Existing, Konteks, Squash migration jadi baseline bersih, di-derive dari dump DB kepegawaian existing, Catatan risiko (+12 more)
 
 ### Community 325 - "IdsAbstract"
-Cohesion: 0.15
-Nodes (18): IdsAbstract, Audited, Getter, MappedSuperclass, Setter, ToString, LampiranSp, AllArgsConstructor (+10 more)
+Cohesion: 0.03
+Nodes (103): IdsAbstract, IdsAbstract, AllArgsConstructor, Audited, EntityListeners, Getter, MappedSuperclass, Override (+95 more)
 
 ### Community 326 - "BiodataDashboardQueryTest"
-Cohesion: 0.22
-Nodes (7): BiodataDashboardResponse, PendidikanDashboard, BiodataDashboardQueryTest, DSLContext, Field, Test, Test
+Cohesion: 0.32
+Nodes (5): PendidikanDashboard, BiodataDashboardQueryTest, DSLContext, Field, Test
 
 ### Community 327 - "RiwayatTerminasiAud.java"
-Cohesion: 0.19
-Nodes (11): Condition, Field, Override, PlainSQL, Schema, Select, SQL, SuppressWarnings (+3 more)
+Cohesion: 0.15
+Nodes (16): Condition, Field, ForeignKey, InverseForeignKey, Name, Override, PlainSQL, Schema (+8 more)
 
 ### Community 328 - "CutiKuotaTemplateBuilder.java"
-Cohesion: 0.18
-Nodes (12): ByteArrayResource, ByteArrayResource, Workbook, CutiKuotaTemplateBuilder, ByteArrayResource, CellStyle, RequiredArgsConstructor, ResponseEntity (+4 more)
+Cohesion: 0.06
+Nodes (27): ByteArrayResource, Font, Row, ECutiPeriod, JAN_JUN, JUL_DES, JUN_JUL, NEXT_YEAR (+19 more)
 
 ### Community 329 - "Claim Order — Security: Dev Chain Validasi Bearer Token + Fallback DevAuth (ADR-0033)"
 Cohesion: 0.11
 Nodes (17): Consequences, Considered Options, Dev chain memvalidasi Bearer token, fallback Dev User hanya saat tanpa Bearer, Keputusan, Konteks, A. Klaim berurutan (master list), B. Semantik target (acceptance semua child), C. Pre-flight checklist (sekali sebelum mulai) (+9 more)
 
-### Community 330 - "GlobalExceptionHandler.java"
-Cohesion: 0.18
-Nodes (12): ExceptionHandler, HttpStatusCode, MethodArgumentNotValidException, ResponseEntityExceptionHandler, RestControllerAdvice, GlobalExceptionHandler, HttpHeaders, Override (+4 more)
-
 ### Community 331 - "CutiApprovalChainRecord"
-Cohesion: 0.15
-Nodes (4): CutiApprovalChainRecord, Override, Record1, SuppressWarnings
+Cohesion: 0.36
+Nodes (5): ForeignKey, InverseForeignKey, Name, Table, RiwayatKontrakAudPath
 
 ### Community 332 - "GolonganRecord"
-Cohesion: 0.15
-Nodes (4): GolonganRecord, Override, Record1, SuppressWarnings
+Cohesion: 0.36
+Nodes (8): getCatalog(), getLiteral(), getName(), getSchema(), Catalog, Override, Schema, lookupLiteral()
 
 ### Community 333 - "📌 Issue Details"
 Cohesion: 0.11
@@ -1737,104 +1700,96 @@ Cohesion: 0.11
 Nodes (18): 0. How to read this document, 10. Confirmed pre-existing bugs (do NOT fix without a beads issue), 1. CQRS-lite: Command / Query split, 2. JOOQ read pattern — single-query pagination via window function, 3. Sqid opaque external IDs, 4. Pagination base classes, 4a. DIVERGENCE — two pagination response shapes, 5. Soft delete (+10 more)
 
 ### Community 335 - "LampiranProfil"
-Cohesion: 0.16
-Nodes (15): Data, JsonIgnore, Specification, LampiranProfilAcceptRequest, AllArgsConstructor, Audited, Entity, Getter (+7 more)
+Cohesion: 0.14
+Nodes (16): Data, JsonIgnore, Specification, LampiranProfilAcceptRequest, AllArgsConstructor, Audited, Entity, Getter (+8 more)
 
 ### Community 336 - "OpenApiConfig"
 Cohesion: 0.28
 Nodes (6): EnableWebMvc, GroupedOpenApi, OpenAPI, Bean, Configuration, OpenApiConfig
 
 ### Community 337 - "KartuIdentitasQueryService.java"
-Cohesion: 0.18
-Nodes (12): KartuIdentitasQueryRepository, DSLContext, Field, Page, Repository, RequiredArgsConstructor, KartuIdentitasQueryRepository, Page (+4 more)
+Cohesion: 0.08
+Nodes (28): KartuIdentitasCommandService, KartuIdentitasQueryRepository, GetMapping, Page, RequestMapping, RequiredArgsConstructor, ResponseEntity, RestController (+20 more)
 
 ### Community 338 - "Penggajian Cqrs Claim Order"
-Cohesion: 0.13
-Nodes (16): Consequences, Considered Options, 0024 Gajibatchroot Kafka Diisolasi Ke Eventpublisher, Publikasi Kafka GajiBatchRoot diisolasi ke GajiBatchRootEventPublisher, dipublish after-commit, Penggajian Cqrs Claim Order, ENDPOINT, GajiBatchMasterJooqMapper, GajiBatchMasterProsesServiceImpl (+8 more)
+Cohesion: 0.08
+Nodes (30): ADR-0024, Consequences, Considered Options, 0024 Gajibatchroot Kafka Diisolasi Ke Eventpublisher, Publikasi Kafka GajiBatchRoot diisolasi ke GajiBatchRootEventPublisher, dipublish after-commit, Batch pemrosesan gaji, Context — Modul Penggajian (Payroll & Batch Pemrosesan Gaji), Language Penggajian (+22 more)
 
 ### Community 339 - "JenisKitasPostRequest"
-Cohesion: 0.18
-Nodes (10): JenisKitasRepository, Data, JsonIgnore, Specification, JenisKitasPostRequest, JenisKitas, JenisKitasMapper, RequiredArgsConstructor (+2 more)
+Cohesion: 0.29
+Nodes (4): GradeQuery, GradeJooqMapper, GradeSelects, Field
 
 ### Community 340 - "JenisSpCommandServiceTest"
-Cohesion: 0.22
-Nodes (10): JenisSpPostRequest, Data, EqualsAndHashCode, JenisSpPutRequest, ActiveProfiles, AfterEach, JdbcTemplate, SpringBootTest (+2 more)
+Cohesion: 0.15
+Nodes (10): Override, Override, Result, PegawaiRingkasanMapper, ActiveProfiles, AfterEach, JdbcTemplate, SpringBootTest (+2 more)
 
 ### Community 341 - ".build"
-Cohesion: 0.25
-Nodes (10): ConstraintViolation, Errors, ErrorResult, Data, EqualsAndHashCode, NoArgsConstructor, ResponseEntity, Data (+2 more)
+Cohesion: 0.09
+Nodes (30): ConstraintViolation, 0013 — Error path reuses the ApiResponse<T> envelope, not ProblemDetail, Consequences, Considered Options, Context, Decision, 0013 Symmetric Apiresponse Error Envelope, EntityNotFoundException (+22 more)
 
 ### Community 342 - "MimeTypesUtilsImpl"
-Cohesion: 0.31
-Nodes (4): MimeTypesUtils, Override, Service, MimeTypesUtilsImpl
+Cohesion: 0.35
+Nodes (3): Override, Service, MimeTypesUtilsImpl
 
 ### Community 343 - "StatusPegawaiController.java"
-Cohesion: 0.21
+Cohesion: 0.23
 Nodes (11): GetMapping, RequestMapping, RequiredArgsConstructor, ResponseEntity, RestController, StatusPegawaiController, StatusPegawaiResponse, Service (+3 more)
 
 ### Community 344 - "CutiApprovalChain"
-Cohesion: 0.18
-Nodes (11): EReadWriteStatus, NONE, READ, WRITE, CutiApprovalChain, Entity, Getter, NoArgsConstructor (+3 more)
-
-### Community 345 - "ProfileUpdateService"
-Cohesion: 0.15
-Nodes (12): EProfileUpdateTable, BIODATA, KEAHLIAN, KELUARGA, PELATIHAN, PENDIDIKAN, PENGALAMAN_KERJA, RequiredArgsConstructor (+4 more)
+Cohesion: 0.06
+Nodes (26): PegawaiMiniResponse, CutiApprovalMiniResponse, fromList(), PegawaiMiniResponse, EApprovalCutiStatus, APPROVED, CANCELED, CONFIRMED (+18 more)
 
 ### Community 346 - "GajiParameterSetting"
-Cohesion: 0.20
-Nodes (11): GajiParameterSetting, AllArgsConstructor, Audited, Entity, Getter, NoArgsConstructor, Setter, SQLDelete (+3 more)
-
-### Community 347 - "GajiPhdp"
-Cohesion: 0.20
-Nodes (11): GajiPhdp, AllArgsConstructor, Audited, Entity, Getter, NoArgsConstructor, Setter, SQLDelete (+3 more)
+Cohesion: 0.11
+Nodes (21): GajiParameterSettingPostRequest, GajiParameterSettingRepository, GajiParameterSettingPostRequest, Data, JsonIgnore, Specification, GajiParameterSettingPutRequest, GajiParameterSetting (+13 more)
 
 ### Community 348 - ".Jabatan"
-Cohesion: 0.37
-Nodes (4): DSLContext, Field, Test, PegawaiSessionQueryRepositoryTest
+Cohesion: 0.21
+Nodes (5): CutiPegawaiJooqMapper, DSLContext, Field, Test, PegawaiSessionQueryRepositoryTest
 
 ### Community 349 - "GajiPendapatanNonPajak"
-Cohesion: 0.21
-Nodes (12): GajiPendapatanNonPajak, AllArgsConstructor, Audited, Entity, EntityListeners, Getter, NoArgsConstructor, Setter (+4 more)
+Cohesion: 0.12
+Nodes (18): GajiPendapatanNonPajakPostRequest, GajiPendapatanNonPajakPostRequest, Data, JsonIgnore, Specification, GajiPendapatanNonPajakPutRequest, GajiPendapatanNonPajak, AllArgsConstructor (+10 more)
 
 ### Community 350 - "PRD: Penerapan CQRS, JOOQ, dan Flyway pada Kepegawaian"
 Cohesion: 0.15
 Nodes (13): Architectural Decisions, Further Notes, Implementation Decisions, Modul yang Di-test, Out of Scope, PRD: Penerapan CQRS, JOOQ, dan Flyway pada Kepegawaian, Prinsip Testing, Prior Art (+5 more)
 
 ### Community 351 - "LampiranProfilQueryService"
-Cohesion: 0.24
-Nodes (10): LampiranProfilRepository, DSLContext, Repository, RequiredArgsConstructor, LampiranProfilQueryRepository, LampiranProfilRepository, RequiredArgsConstructor, ResponseEntity (+2 more)
+Cohesion: 0.40
+Nodes (5): ADR-0020, Consequences, Considered Options, 0021 Pegawai Saga Atomik Dengan Sistem Eksternal, Saga tulis Pegawai membungkus pemanggilan Appwrite di dalam satu transaksi DB
 
 ### Community 352 - "MasterBaseEntity"
-Cohesion: 0.18
-Nodes (11): MasterBaseEntity, AlatKerja, AllArgsConstructor, Entity, Getter, RequiredArgsConstructor, Setter, SQLDelete (+3 more)
+Cohesion: 0.20
+Nodes (9): Grade, AllArgsConstructor, Entity, Getter, RequiredArgsConstructor, Setter, SQLDelete, Table (+1 more)
 
 ### Community 353 - "Serializable"
-Cohesion: 0.22
-Nodes (9): Serializable, GajiBatchRootErrorLogsResponse, PegawaiProfilUpdate, GajiBatchRootErrorLogs, Entity, Getter, Setter, Table (+1 more)
+Cohesion: 0.12
+Nodes (19): Serializable, GajiBatchRootErrorLogsResponse, PegawaiProfilUpdate, GajiBatchRoot, AllArgsConstructor, Entity, EntityListeners, Getter (+11 more)
 
 ### Community 354 - "RumahDinas"
 Cohesion: 0.19
 Nodes (9): AllArgsConstructor, Entity, Getter, NoArgsConstructor, Setter, SQLDelete, Table, ToString (+1 more)
 
 ### Community 355 - "MasterBaseEntity"
-Cohesion: 0.23
-Nodes (9): AllArgsConstructor, EntityListeners, Getter, MappedSuperclass, NoArgsConstructor, Override, Setter, SQLRestriction (+1 more)
+Cohesion: 0.12
+Nodes (18): AllArgsConstructor, EntityListeners, Getter, MappedSuperclass, NoArgsConstructor, Override, Setter, SQLRestriction (+10 more)
 
 ### Community 356 - "CutiKlaimDetail"
 Cohesion: 0.18
 Nodes (9): CutiKlaimDetail, AllArgsConstructor, Entity, Getter, NoArgsConstructor, Setter, Table, ToString (+1 more)
 
 ### Community 357 - "DateHelper"
-Cohesion: 0.21
-Nodes (4): DateHelper, DateHelperTest, Slf4j, Test
+Cohesion: 0.40
+Nodes (5): Consequences, Considered Options, Ekstraksi REST client Appwrite ke typed adapter AppwriteClient, Keputusan, Konteks
 
 ### Community 358 - ".delete_withChildSubJabatan_throwsConflict"
-Cohesion: 0.32
-Nodes (6): JabatanCommandServiceTest, ActiveProfiles, AfterEach, JdbcTemplate, SpringBootTest, Test
+Cohesion: 0.29
+Nodes (7): JdbcTemplate, JabatanCommandServiceTest, ActiveProfiles, AfterEach, JdbcTemplate, SpringBootTest, Test
 
 ### Community 359 - "Claim Order 2026 06 17 Analisis Bug"
-Cohesion: 0.17
-Nodes (12): COMPLETED, DataAccessException, Claim Order 2026 06 17 Analisis Bug, Klaster A — sudah executed, DRAFT, ErrorCode, Integer, KafkaException (+4 more)
+Cohesion: 0.40
+Nodes (3): SortField, Field, SortParam
 
 ### Community 360 - "AlasanBerhenti"
 Cohesion: 0.21
@@ -1845,8 +1800,8 @@ Cohesion: 0.27
 Nodes (9): AllArgsConstructor, Entity, Getter, NoArgsConstructor, Override, Setter, SQLDelete, Table (+1 more)
 
 ### Community 362 - "Pelatihan"
-Cohesion: 0.21
-Nodes (11): AllArgsConstructor, Audited, Entity, Getter, NoArgsConstructor, Setter, SQLDelete, SQLRestriction (+3 more)
+Cohesion: 0.10
+Nodes (22): JenisPelatihanRepository, PelatihanPostRequest, Data, PelatihanPostRequest, PelatihanPutRequest, AllArgsConstructor, Audited, Entity (+14 more)
 
 ### Community 363 - "DownloadPenggajian"
 Cohesion: 0.27
@@ -1864,29 +1819,21 @@ Nodes (10): 1. `GET /pegawai/{id}/session` — tambah field `statusPegawai`, 2. 
 Cohesion: 0.18
 Nodes (11): M10: Penggajian Domain CQRS, M1: Flyway Infrastructure, M2: JOOQ Code Generation, M3: IdsAbstract Refactoring, M4: Entity Performance Hardening, M5: Master Domain CQRS (Pilot), M6: Profil Domain CQRS, M7: Pegawai Domain CQRS (+3 more)
 
-### Community 367 - "Prefs"
-Cohesion: 0.24
-Nodes (9): AllArgsConstructor, Getter, JsonIgnoreProperties, NoArgsConstructor, Setter, ToString, Prefs, Data (+1 more)
-
 ### Community 368 - ".save"
-Cohesion: 0.35
-Nodes (3): from(), CutiJenisMapper, CutiJenis
+Cohesion: 0.50
+Nodes (4): Consequences, Considered Options, Hubungan dengan ADR-0008, Profesi.level tetap denormalisasi — sisi tulis memuat Jabatan penuh
 
 ### Community 369 - "JenisKeahlianPostRequest"
-Cohesion: 0.25
-Nodes (6): Data, JsonIgnore, Specification, JenisKeahlianPostRequest, JenisKeahlian, JenisKeahlianMapper
+Cohesion: 0.83
+Nodes (3): Data, EqualsAndHashCode, JenisSpPutRequest
 
 ### Community 370 - "JenisKeahlian"
-Cohesion: 0.24
-Nodes (9): AllArgsConstructor, Entity, Getter, NoArgsConstructor, Setter, SQLDelete, Table, ToString (+1 more)
+Cohesion: 0.17
+Nodes (12): Data, JsonIgnore, Specification, AllArgsConstructor, Entity, Getter, NoArgsConstructor, Setter (+4 more)
 
 ### Community 371 - ".KeahlianAud"
 Cohesion: 0.36
 Nodes (5): ForeignKey, InverseForeignKey, Name, Table, KeahlianAudPath
-
-### Community 372 - ".RiwayatTerminasiAud"
-Cohesion: 0.36
-Nodes (5): ForeignKey, InverseForeignKey, Name, Table, RiwayatTerminasiAudPath
 
 ### Community 373 - ".handle"
 Cohesion: 0.33
@@ -1897,32 +1844,24 @@ Cohesion: 0.29
 Nodes (7): Configuration, DefConfig, Configuration, Getter, Bean, Configuration, ThreadPoolConfig
 
 ### Community 375 - "RedisHelperTest"
-Cohesion: 0.33
+Cohesion: 0.39
 Nodes (7): DataRedisTest, GenericContainer, Import, StringRedisTemplate, Test, RedisHelperTest, Testcontainers
 
 ### Community 376 - "Claim Order — `statusPegawai` di `GET /pegawai/{id}/session`"
 Cohesion: 0.20
 Nodes (9): 1. DTO — `PegawaiResponseSession.java`, 2. Repository — `PegawaiSessionQueryRepository.java`, 3. Verifikasi, Checklist Implementasi, Claim Order — `statusPegawai` di `GET /pegawai/{id}/session`, Format di berbagai endpoint, Konteks & Keputusan Desain, Referensi File (+1 more)
 
-### Community 377 - ".createStyle"
-Cohesion: 0.36
-Nodes (4): Font, Row, ExcelHelper, CellStyle
-
 ### Community 378 - "Keputusan yang Disepakati"
 Cohesion: 0.20
 Nodes (10): 1. CQRS Split, 2. JOOQ Code Generation, 3. Flyway Strategy, 4. Service Layer Pattern, 5. Repository Structure, 6. Migration Priority, 7. Envers Three-Tier Audit, 8. Performance Improvements (+2 more)
 
 ### Community 379 - "AuthController.java"
-Cohesion: 0.38
-Nodes (7): AuthController, GetMapping, RequestMapping, RequiredArgsConstructor, ResponseEntity, RestClient, RestController
+Cohesion: 0.25
+Nodes (11): AuthController, GetMapping, RequestMapping, RequiredArgsConstructor, ResponseEntity, RestClient, RestController, Component (+3 more)
 
 ### Community 380 - "PelatihanController"
-Cohesion: 0.24
-Nodes (7): DeleteMapping, Page, RequestMapping, RequiredArgsConstructor, ResponseEntity, RestController, PelatihanController
-
-### Community 381 - "RiwayatKeluar"
-Cohesion: 0.20
-Nodes (10): AllArgsConstructor, Entity, Getter, NoArgsConstructor, Setter, SQLDelete, SQLRestriction, Table (+2 more)
+Cohesion: 0.08
+Nodes (18): GetMapping, GetMapping, DeleteMapping, GetMapping, Page, RequestMapping, RequiredArgsConstructor, ResponseEntity (+10 more)
 
 ### Community 382 - "Apd"
 Cohesion: 0.22
@@ -1933,12 +1872,12 @@ Cohesion: 0.27
 Nodes (9): AllArgsConstructor, Entity, Getter, NoArgsConstructor, Setter, SQLDelete, Table, ToString (+1 more)
 
 ### Community 384 - ".PendidikanAud"
-Cohesion: 0.40
+Cohesion: 0.47
 Nodes (4): InverseForeignKey, Name, Table, PendidikanAudPath
 
 ### Community 385 - "GolonganWriteIT.java"
-Cohesion: 0.31
-Nodes (7): GolonganWriteIT, ActiveProfiles, AfterEach, JdbcTemplate, SpringBootTest, Test, Transactional
+Cohesion: 0.33
+Nodes (6): GolonganWriteIT, ActiveProfiles, AfterEach, JdbcTemplate, SpringBootTest, Transactional
 
 ### Community 386 - "AuditConfig.java"
 Cohesion: 0.39
@@ -1970,7 +1909,7 @@ Nodes (6): RedisConnectionFactory, RedisTemplate, Bean, Configuration, StringRed
 
 ### Community 393 - "Grilling Session: Kepegawaian CQRS + JOOQ + Flyway Migration"
 Cohesion: 0.32
-Nodes (7): ADR-0002, Domain, Dokumentasi yang Dibuat, Grilling Session: Kepegawaian CQRS + JOOQ + Flyway Migration, Next Steps, CQRS Migration Roadmap, PRD: CQRS, JOOQ, and Flyway
+Nodes (5): ADR-0002, Domain, Dokumentasi yang Dibuat, Grilling Session: Kepegawaian CQRS + JOOQ + Flyway Migration, Next Steps
 
 ### Community 394 - "Sumber JOOQ ter-generate di-commit ke git & di-regen manual, bukan di-generate tiap build"
 Cohesion: 0.25
@@ -1981,12 +1920,8 @@ Cohesion: 0.25
 Nodes (7): headers, type, url, Authorization, mcp, context7, $schema
 
 ### Community 396 - "GajiBatchRootPostRequest"
-Cohesion: 0.46
-Nodes (4): GajiBatchRootPostRequest, Data, JsonIgnore, MultipartFile
-
-### Community 397 - "BiodataDetailJooqMapperTest"
-Cohesion: 0.43
-Nodes (4): BiodataDetailJooqMapperTest, DSLContext, Field, Test
+Cohesion: 0.29
+Nodes (5): GajiBatchRootPostRequest, Data, JsonIgnore, MultipartFile, GajiBatchRootMapper
 
 ### Community 398 - "ArchUnitTest.java"
 Cohesion: 0.48
@@ -2009,8 +1944,12 @@ Cohesion: 0.48
 Nodes (5): NewTopic, Bean, Component, Slf4j, KafkaConfig
 
 ### Community 403 - "GajiKomponenJenisGaji.java"
-Cohesion: 0.48
-Nodes (6): getCatalog(), getLiteral(), getSchema(), Catalog, Override, Schema
+Cohesion: 0.22
+Nodes (12): GajiKomponenJenisGaji, NONE, PEMASUKAN, POTONGAN, getCatalog(), getLiteral(), getSchema(), Catalog (+4 more)
+
+### Community 406 - "Test"
+Cohesion: 0.36
+Nodes (3): MinimalCutiRule, Test, MinimalCutiRuleTest
 
 ### Community 407 - "0018 Changedstatus Server Resolved By Role"
 Cohesion: 0.33
@@ -2020,21 +1959,9 @@ Nodes (6): ADR-0016, CommandService, changedStatus is server-resolved by role, n
 Cohesion: 0.53
 Nodes (4): DefaultConfigurationCustomizer, Bean, Configuration, JooqConfig
 
-### Community 409 - "KafkaTemplate"
-Cohesion: 0.47
-Nodes (4): KafkaTemplate, JajalKafkaTest, KafkaTemplate, SpringBootTest
-
-### Community 410 - "SELECT"
-Cohesion: 0.53
-Nodes (5): SELECT, BiodataDetailQuery, DSLContext, Repository, RequiredArgsConstructor
-
 ### Community 411 - ".restClient"
 Cohesion: 0.53
 Nodes (4): Bean, Component, RestClient, WebClientConfig
-
-### Community 412 - "GajiBatchRootEventPublisher"
-Cohesion: 0.60
-Nodes (5): GajiBatchRootEventPublisher, Component, KafkaTemplate, RequiredArgsConstructor, Slf4j
 
 ### Community 413 - "Context — Keputusan Rewrite: Modul Pegawai & Kepegawaian"
 Cohesion: 0.40
@@ -2060,33 +1987,37 @@ Nodes (3): JabatanPutRequest, Data, EqualsAndHashCode
 Cohesion: 0.83
 Nodes (3): Data, EqualsAndHashCode, OrganisasiPutRequest
 
-### Community 419 - "ProfesiPutRequest"
-Cohesion: 0.83
-Nodes (3): Data, EqualsAndHashCode, ProfesiPutRequest
-
 ### Community 420 - "EReferensiPegawai"
 Cohesion: 0.50
 Nodes (3): EReferensiPegawai, BIODATA, PEGAWAI
 
+### Community 422 - "GajiBatchRootRecord.java"
+Cohesion: 0.67
+Nodes (3): BiodataDashboardResponse changedStatus field, changedStatus server-resolved by role, ProfileUpdateService approval queue
+
+### Community 436 - "CutiAllocationHelper.java"
+Cohesion: 0.25
+Nodes (5): CutiKuotaAllocationResult, Builder, Data, CutiKuotaAllocator, CutiAllocationHelper
+
 ## Knowledge Gaps
-- **1264 isolated node(s):** `build-dev.sh script`, `copy.sh script`, `npx`, `@upstash/context7-mcp`, `CONTEXT7_API_KEY` (+1259 more)
+- **1225 isolated node(s):** `build-dev.sh script`, `copy.sh script`, `npx`, `@upstash/context7-mcp`, `CONTEXT7_API_KEY` (+1220 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **45 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **51 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `List` connect `List` to `Core Entities & Pagination`, `DTO Patterns & Builders`, `Adapter & Config Mappers`, `Profil Biodata & Pendidikan`, `Domain Context Docs`, `PengalamanKerjaAudRecord`, `KartuIdentitasAudRecord`, `LampiranSkAudRecord`, `StatistikPegawaiRecord`, `LampiranProfilRecord`, `PegawaiPath`, `CutiKuotaAudRecord`, `JabatanMiniResponse`, `GajiPotonganTkkAudRecord`, `CutiJenisAudRecord`, `DetailDasarGajiAudRecord`, `GajiPendapatanNonPajakAudRecord`, `RiwayatCutiAudRecord`, `CutiPegawai`, `Organisasi`, `RiwayatCutiRecord`, `GajiParameterSettingAudRecord`, `Jabatan`, `Biodata`, `Tables`, `RiwayatTerminasi`, `GajiParameterSettingRecord`, `GajiPhdpRecord`, `GajiProfilAudRecord`, `FlywaySchemaHistoryCopy1Record`, `RiwayatSp`, `Grade`, `RiwayatKontrakRecord`, `RiwayatSk`, `Golongan`, `SanksiSp`, `GajiBatchMaster`, `ProfilKeluarga`, `KartuIdentitas`, `RiwayatMutasi`, `AlasanBerhentiRecord`, `ApdRecord`, `GajiTunjangan`, `Keahlian`, `tables/Pelatihan.java`, `GajiPotonganTkk`, `JenisSp`, `AlatKerjaRecord`, `GajiBatchRoot`, `tables/GajiBatchRootLampiran.java`, `tables/GajiBatchRootErrorLogs.java`, `tables/PengalamanKerja.java`, `tables/CutiApprovalChain.java`, `tables/GajiProfil.java`, `tables/CutiKuota.java`, `tables/CutiKlaimDetail.java`, `tables/DetailDasarGaji.java`, `Page`, `JenisKitasRecord`, `Level`, `NotFoundException`, `tables/JenisKeahlian.java`, `tables/RumahDinas.java`, `CutiApprovalAudRecord`, `GajiPhdpAudRecord`, `RiwayatMutasiAud.java`, `JenjangPendidikanResponse`, `CutiPegawaiAud.java`, `RiwayatSpAud.java`, `PelatihanAudRecord`, `Profesi`, `GajiKomponenAud.java`, `RiwayatKontrakAudRecord`, `Graph Report`, `LampiranSkRecord`, `UpdatableRecordImpl`, `Organisasi`, `KeahlianAud.java`, `LampiranProfilAudRecord`, `CutiApprovalRecord`, `PegawaiController`, `OrganisasiQueryRepository.java`, `GajiBatchMasterProsesRecord`, `PendidikanQueryService.java`, `DefaultSchema`, `DetailDasarGajiCommandService.java`, `DasarGajiQueryRepository.java`, `GajiProfilResponse`, `GajiPhdpResponse`, `SavedStatus`, `JenisKitasQueryRepository.java`, `GolonganQueryRepository.java`, `JenisSpQueryRepository.java`, `PrefRole`, `ProfilUpdateRecord`, `HariLiburQueryRepository.java`, `CutiJenisQueryRepository.java`, `GajiBatchMasterProsesResponse`, `EApprovalCutiStatus`, `ListResult`, `GajiPendapatanNonPajakResponse`, `.delete`, `ProfileUpdate`, `AuthServiceImplTest.java`, `AppwriteClient`, `ProcessPotonganTkkImpl.java`, `PageResult`, `.toString`, `ConflictException`, `EJenisTunjangan`, `EJenisSk`, `JenisKontrakController.java`, `RiwayatSkQuery`, `GajiBatchPotonganTkkRecord`, `JabatanQueryRepository.java`, `BiodataPath`, `GajiBatchMasterResponse`, `JenisSp`, `Pendidikan`, `WebSecurity.java`, `PelatihanQueryService.java`, `SanksiQueryRepository.java`, `tables/GajiPendapatanNonPajak.java`, `tables/GajiKomponen.java`, `LampiranRow`, `Keahlian`, `JenisKeahlianQueryRepository.java`, `RumahDinasQueryRepository.java`, `TableImpl`, `tables/JenisPelatihan.java`, `PegawaiQueryService`, `JenisPelatihanQueryRepository.java`, `CutiJenis`, `BiodataAud.java`, `DasarGajiAud.java`, `PegawaiAud.java`, `ProfilKeluargaAud.java`, `AlasanBerhentiQueryRepository.java`, `RiwayatSkAud.java`, `GradeQuery`, `tables/HariLibur.java`, `BiodataQueryService.java`, `DetailDasarGajiQueryRepository.java`, `KeahlianQueryService.java`, `SpecificationBuilder`, `PengalamanKerjaQueryService.java`, `GajiBatchRootController.java`, `DasarGajiController.java`, `JenjangPendidikanController.java`, `PendidikanAud.java`, `RiwayatTerminasiAud.java`, `CutiKuotaTemplateBuilder.java`, `OpenApiConfig`, `KartuIdentitasQueryService.java`, `JenisSpCommandServiceTest`, `.build`, `StatusPegawaiController.java`, `LampiranProfilQueryService`, `MasterBaseEntity`, `CutiKlaimDetail`, `.delete_withChildSubJabatan_throwsConflict`, `Prefs`, `BiodataSelects.java`, `ProfilKeluargaSelects.java`?**
-  _High betweenness centrality (0.166) - this node is a cross-community bridge._
-- **Why does `LocalDate` connect `List` to `Core Entities & Pagination`, `DTO Patterns & Builders`, `Validation & Error Handling`, `Relation Mappings & DSL`, `Domain Context Docs`, `PagedRequest`, `RecordMapper`, `KartuIdentitasAudRecord`, `DasarGaji`, `BiodataRecord`, `PegawaiPath`, `VPegawaiRecord`, `CutiKuotaAudRecord`, `DasarGajiAudRecord`, `JabatanMiniResponse`, `DasarGajiRecord`, `CutiPegawai`, `Biodata`, `RiwayatTerminasi`, `RiwayatSp`, `RiwayatKontrakRecord`, `RiwayatSk`, `ProfilKeluarga`, `KartuIdentitas`, `RiwayatMutasi`, `tables/Pelatihan.java`, `Specification`, `tables/CutiKuota.java`, `tables/CutiKlaimDetail.java`, `Page`, `Decisions Cuti`, `RiwayatMutasiAud.java`, `JenjangPendidikanResponse`, `CutiPegawaiAud.java`, `RiwayatSpAud.java`, `PelatihanAudRecord`, `RiwayatKontrakAudRecord`, `UpdatableRecordImpl`, `Organisasi`, `DasarGajiQueryRepository.java`, `SavedStatus`, `HariLiburQueryRepository.java`, `EApprovalCutiStatus`, `RiwayatKeluarRecord`, `RiwayatKontrakController.java`, `ConflictException`, `ProfilKeluargaAudRecord`, `HariLibur`, `EJenisSk`, `CutiPegawaiAudRecord`, `PelatihanQueryService.java`, `ProfilUpdateController.java`, `LampiranRow`, `TableImpl`, `PegawaiQueryService`, `BiodataAud.java`, `DasarGajiAud.java`, `PegawaiAud.java`, `ProfilKeluargaAud.java`, `RiwayatSkAud.java`, `PelatihanCommandService.java`, `tables/HariLibur.java`, `BiodataAudRecord`, `BiodataQueryService.java`, `CutiKuota`, `IdsAbstract`, `HariLiburRecord`, `DasarGajiController.java`, `BiodataDashboardQueryTest`, `RiwayatTerminasiAud.java`, `CutiKuotaTemplateBuilder.java`, `CutiKlaimDetail`, `DateHelper`, `Pelatihan`, `PegawaiAudRecord.java`, `RiwayatMutasiAudRecord.java`, `RiwayatSpAudRecord.java`, `RiwayatTerminasiAudRecord.java`?**
-  _High betweenness centrality (0.048) - this node is a cross-community bridge._
-- **Why does `Page` connect `Page` to `Core Entities & Pagination`, `JabatanQueryRepository.java`, `GajiBatchMasterResponse`, `GajiProfil`, `PelatihanQueryService.java`, `SanksiQueryRepository.java`, `Enums & Constants`, `ProfilUpdateController.java`, `JenisKeahlianQueryRepository.java`, `RumahDinasQueryRepository.java`, `PegawaiController`, `PegawaiQueryService`, `JenisPelatihanQueryRepository.java`, `OrganisasiQueryRepository.java`, `AlasanBerhentiQueryRepository.java`, `GradeQuery`, `FileUploadUtil`, `PendidikanQueryService.java`, `BiodataQueryService.java`, `JabatanMiniResponse`, `Level`, `DetailDasarGajiQueryRepository.java`, `ProfesiController`, `GajiParameterSettingCommandService.java`, `PengalamanKerjaQueryService.java`, `KeahlianQueryService.java`, `DetailDasarGajiCommandService.java`, `GajiPhdpCommandService.java`, `GajiProfilResponse`, `DasarGajiQueryRepository.java`, `GajiBatchRootController.java`, `JenisKitasQueryRepository.java`, `GolonganQueryRepository.java`, `JenisSpQueryRepository.java`, `JenjangPendidikanController.java`, `DasarGajiController.java`, `RiwayatKontrakQueryRepository.java`, `GajiPhdpResponse`, `KartuIdentitasQueryService.java`, `HariLiburQueryRepository.java`, `CutiJenisQueryRepository.java`, `GajiBatchMasterProsesResponse`, `GajiPendapatanNonPajakResponse`, `Decisions Cuti`, `NotFoundException`, `RiwayatKontrakController.java`, `PageResult`, `ConflictException`, `JenjangPendidikanResponse`, `EJenisTunjangan`, `RiwayatSkQuery`, `Graph Report`, `PelatihanController`?**
-  _High betweenness centrality (0.030) - this node is a cross-community bridge._
+- **Why does `List` connect `DefaultSchema` to `Core Entities & Pagination`, `DTO Patterns & Builders`, `Relation Mappings & DSL`, `Domain Context Docs`, `PengalamanKerjaAudRecord`, `RecordMapper`, `KartuIdentitasAudRecord`, `LampiranSkAudRecord`, `StatistikPegawaiRecord`, `LampiranProfilRecord`, `PegawaiPath`, `CutiKuotaAudRecord`, `JabatanMiniResponse`, `GajiPotonganTkkAudRecord`, `CutiJenisAudRecord`, `DetailDasarGajiAudRecord`, `GajiPendapatanNonPajakAudRecord`, `RiwayatCutiAudRecord`, `CutiPegawai`, `Organisasi`, `RiwayatCutiRecord`, `GajiParameterSettingAudRecord`, `Jabatan`, `Biodata`, `Tables`, `RiwayatTerminasi`, `GajiParameterSettingRecord`, `GajiPhdpRecord`, `GajiProfilAudRecord`, `FlywaySchemaHistoryCopy1Record`, `RiwayatSp`, `Grade`, `RiwayatKontrakRecord`, `RiwayatSk`, `Golongan`, `SanksiSp`, `GajiBatchMaster`, `ProfilKeluarga`, `KartuIdentitas`, `RiwayatMutasi`, `AlasanBerhentiRecord`, `RumahDinasRecord`, `ApdRecord`, `GajiTunjangan`, `Keahlian`, `tables/Pelatihan.java`, `GajiPotonganTkk`, `JenisSp`, `AlatKerjaRecord`, `GajiBatchRoot`, `tables/GajiBatchRootLampiran.java`, `tables/GajiBatchRootErrorLogs.java`, `tables/PengalamanKerja.java`, `tables/CutiApprovalChain.java`, `tables/GajiProfil.java`, `tables/CutiKuota.java`, `tables/CutiKlaimDetail.java`, `tables/DetailDasarGaji.java`, `JenisKitasRecord`, `Level`, `Decisions Cuti`, `NotFoundException`, `tables/JenisKeahlian.java`, `tables/RumahDinas.java`, `GajiPhdpAudRecord`, `RiwayatMutasiAud.java`, `JenjangPendidikanResponse`, `CutiPegawaiAud.java`, `RiwayatSpAud.java`, `PelatihanAudRecord`, `GajiKomponenAud.java`, `LampiranSkRecord`, `UpdatableRecordImpl`, `Organisasi`, `KeahlianAud.java`, `LampiranProfilAudRecord`, `CutiApprovalRecord`, `JwtAuthFilter`, `OrganisasiQueryRepository.java`, `GajiBatchMasterProsesRecord`, `PendidikanQueryService.java`, `LampiranProfilController.java`, `JOOQ mapping master: fetchInto flat, JooqMapper join-nested & multiset`, `DetailDasarGajiCommandService.java`, `DasarGajiQueryRepository.java`, `GajiProfilResponse`, `GajiPhdpResponse`, `JenisKitasQueryRepository.java`, `GolonganQueryRepository.java`, `JenisSpQueryRepository.java`, `PrefRole`, `APD & Alat Kerja: punya endpoint tulis sendiri, tapi tanpa endpoint baca standalone`, `GajiBatchRootCommandService.java`, `ProfilUpdateRecord`, `Profil Rewrite Claim Order`, `HariLiburQueryRepository.java`, `CutiJenisQueryRepository.java`, `GajiBatchMasterProsesResponse`, `EApprovalCutiStatus`, `ListResult`, `JenjangPendidikan`, `GajiPendapatanNonPajakResponse`, `.delete`, `ProfileUpdate`, `AppwriteClient`, `ProcessPotonganTkkImpl.java`, `RiwayatKontrakController.java`, `PageResult`, `GajiKomponen`, `GajiBatchRootLampiran`, `.toString`, `ConflictException`, `List`, `EJenisSk`, `JenisKontrakController.java`, `RiwayatSkQuery`, `GajiBatchPotonganTkkRecord`, `JabatanQueryRepository.java`, `BiodataPath`, `GajiBatchMasterResponse`, `JenisSp`, `Pendidikan`, `WebSecurity.java`, `PelatihanQueryService.java`, `SanksiQueryRepository.java`, `tables/GajiPendapatanNonPajak.java`, `tables/GajiKomponen.java`, `GitNexus — Code Intelligence`, `Keahlian`, `JenisKeahlianQueryRepository.java`, `RumahDinasQueryRepository.java`, `TableImpl`, `tables/JenisPelatihan.java`, `JenisPelatihanQueryRepository.java`, `CutiJenis`, `BiodataAud.java`, `DasarGajiAud.java`, `PegawaiAud.java`, `ProfilKeluargaAud.java`, `AlasanBerhentiQueryRepository.java`, `RiwayatSkAud.java`, `GradeQuery`, `FileUploadUtil`, `tables/HariLibur.java`, `BiodataQueryService.java`, `CutiKuota`, `DetailDasarGajiQueryRepository.java`, `GajiParameterSettingCommandService.java`, `LampiranProfilCommandService`, `KeahlianQueryService.java`, `PengalamanKerjaQueryService.java`, `DasarGajiController.java`, `JenjangPendidikanController.java`, `PendidikanAud.java`, `IdsAbstract`, `RiwayatTerminasiAud.java`, `CutiKuotaTemplateBuilder.java`, `OpenApiConfig`, `KartuIdentitasQueryService.java`, `JenisSpCommandServiceTest`, `.build`, `StatusPegawaiController.java`, `CutiApprovalChain`, `MasterBaseEntity`, `Serializable`, `CutiKlaimDetail`, `.delete_withChildSubJabatan_throwsConflict`?**
+  _High betweenness centrality (0.175) - this node is a cross-community bridge._
+- **Why does `LocalDate` connect `JabatanMiniResponse` to `Core Entities & Pagination`, `Relation Mappings & DSL`, `Domain Context Docs`, `Claim Order & ADRs`, `PagedRequest`, `RecordMapper`, `KartuIdentitasAudRecord`, `RiwayatSkRecord`, `BiodataRecord`, `PegawaiPath`, `VPegawaiRecord`, `CutiKuotaAudRecord`, `DasarGajiAudRecord`, `KartuIdentitasRecord`, `DasarGajiRecord`, `CutiPegawai`, `Biodata`, `RiwayatTerminasi`, `RiwayatSp`, `RiwayatKontrakRecord`, `RiwayatSk`, `ProfilKeluarga`, `KartuIdentitas`, `RiwayatMutasi`, `tables/Pelatihan.java`, `tables/CutiKuota.java`, `tables/CutiKlaimDetail.java`, `Decisions Cuti`, `RiwayatMutasiAud.java`, `CutiPegawaiAud.java`, `RiwayatSpAud.java`, `PelatihanAudRecord`, `Organisasi`, `ISSUE — kepegawaian-ag3 — Selaraskan schema jOOQ`, `Level`, `DasarGajiQueryRepository.java`, `RiwayatSpRecord`, `HariLiburQueryRepository.java`, `EApprovalCutiStatus`, `RiwayatTerminasiAudRecord`, `JenjangPendidikan`, `AuthServiceImplTest.java`, `RiwayatKeluarRecord`, `ProfilKeluargaAudRecord`, `HariLibur`, `List`, `EJenisSk`, `CutiPegawaiAudRecord`, `Keys`, `GitNexus — Code Intelligence`, `Keahlian`, `TableImpl`, `PegawaiQueryService`, `BiodataAud.java`, `DasarGajiAud.java`, `PegawaiAud.java`, `ProfilKeluargaAud.java`, `RiwayatSkAud.java`, `tables/HariLibur.java`, `BiodataQueryService.java`, `CutiKuota`, `KeahlianQueryService.java`, `IdsAbstract`, `DasarGajiController.java`, `IdsAbstract`, `BiodataDashboardQueryTest`, `RiwayatTerminasiAud.java`, `CutiKuotaTemplateBuilder.java`, `CutiApprovalChain`, `CutiKlaimDetail`, `Pelatihan`, `.createStyle`, `CutiPegawaiSelects`, `KafkaTemplate`, `PegawaiAudRecord.java`, `RiwayatMutasiAudRecord.java`, `RiwayatSpAudRecord.java`, `.key`, `.key`, `.key`?**
+  _High betweenness centrality (0.047) - this node is a cross-community bridge._
+- **Why does `Keys` connect `Golongan` to `Core Entities & Pagination`, `Penggajian Payroll Entities`, `Profil Biodata & Pendidikan`, `Cuti Leave Module`, `Claim Order & ADRs`, `PengalamanKerjaAudRecord`, `PegawaiAudRecord`, `GajiBatchMasterRecord`, `CutiPegawaiRecord`, `KartuIdentitasAudRecord`, `PendidikanAudRecord`, `RiwayatSkRecord`, `PelatihanRecord`, `BiodataRecord`, `SanksiSpRecord`, `RiwayatTerminasiRecord`, `RevinfoPath`, `KeahlianAudRecord`, `LampiranSkAudRecord`, `StatistikPegawaiRecord`, `LampiranProfilRecord`, `CutiKuotaAudRecord`, `DasarGajiAudRecord`, `KartuIdentitasRecord`, `GajiPotonganTkkAudRecord`, `CutiJenisAudRecord`, `DetailDasarGajiAudRecord`, `DasarGajiRecord`, `GajiPendapatanNonPajakAudRecord`, `RiwayatCutiAudRecord`, `Organisasi`, `RiwayatCutiRecord`, `GajiParameterSettingAudRecord`, `Jabatan`, `GajiPhdpRecord`, `GajiProfilAudRecord`, `FlywaySchemaHistoryCopy1Record`, `Grade`, `GajiProfilRecord`, `RiwayatKontrakRecord`, `AlasanBerhentiRecord`, `JenisSpRecord`, `ApdRecord`, `AlatKerjaRecord`, `tables/GajiBatchRootLampiran.java`, `tables/CutiApprovalChain.java`, `tables/CutiKlaimDetail.java`, `JenisKitasRecord`, `Level`, `JenisPelatihanRecord`, `JenisKeahlianRecord`, `tables/RumahDinas.java`, `CutiApprovalAudRecord`, `GajiPhdpAudRecord`, `PelatihanAudRecord`, `GajiKomponenAud.java`, `RiwayatKontrakAudRecord`, `LampiranSkRecord`, `UpdatableRecordImpl`, `LampiranProfilAudRecord`, `CutiApprovalRecord`, `RiwayatMutasiAudRecord`, `GajiBatchRootErrorLogsRecord`, `Profil CQRS Cleanup — Claim Order & Checklists`, `.getBiodata`, `GajiBatchMasterProsesRecord`, `Glossary`, `PrefRole`, `0013 — Error path reuses the ApiResponse<T> envelope, not ProblemDetail`, `RiwayatSpAudRecord`, `RiwayatSpRecord`, `RiwayatMutasiRecord`, `ProfilUpdateRecord`, `RiwayatTerminasiAudRecord`, `RiwayatKeluarRecord`, `ProfilKeluargaAudRecord`, `CutiPegawaiAudRecord`, `PengalamanKerjaRecord`, `KeahlianRecord`, `GajiKomponenRecord`, `Keys`, `tables/GajiPendapatanNonPajak.java`, `JenjangPendidikanRecord`, `CutiJenis`, `RiwayatSkAud.java`, `DetailDasarGajiRecord`, `tables/HariLibur.java`, `BiodataAudRecord`, `GajiTunjanganRecord`, `GajiPotonganTkkRecord`?**
+  _High betweenness centrality (0.028) - this node is a cross-community bridge._
 - **What connects `build-dev.sh script`, `copy.sh script`, `npx` to the rest of the system?**
-  _1264 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1225 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Core Entities & Pagination` be split into smaller, more focused modules?**
-  _Cohesion score 0.023826789599088367 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.02567739589016185 - nodes in this community are weakly interconnected._
 - **Should `Many-to-Many & Base Entities` be split into smaller, more focused modules?**
-  _Cohesion score 0.04980842911877394 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.043509789702683106 - nodes in this community are weakly interconnected._
 - **Should `List & Java Collections` be split into smaller, more focused modules?**
-  _Cohesion score 0.0376020209871745 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.0476582373185695 - nodes in this community are weakly interconnected._

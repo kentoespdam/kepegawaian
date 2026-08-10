@@ -252,7 +252,7 @@ git push
 
 ## 9. GitNexus — Code Intelligence
 
-Repo indexed as **kepegawaian** (18372 symbols, 44299 relationships, 300 flows).
+Repo indexed as **kepegawaian** (18385 symbols, 44325 relationships, 300 flows).
 
 ```bash
 npx gitnexus analyze          # Refresh if index stale
@@ -352,6 +352,8 @@ File di root repo (ter-commit). Sintaks **sama seperti `.gitignore`**: komentar 
 **Yang di-exclude di project ini:** `graphify-out/`, `backup.jsonl`, `.openclaude-profile.json`, `skills-lock.json` + dot-dir agen/tooling (`.beads/`, `.claude/`, `.agents/`, `.openclaude/`, `.antigravitycli/`, `.gitnexus/`, `.gradle/`, `.idea/`, `.vscode/`, `build/`).
 
 **Update graph:** `graphify update . --force` (wajib `--force` saat node count turun karena pengecualian — tanpa itu graphify menolak overwrite, "fewer nodes"). Full re-extraction (hapus `graphify-out/cache/`) untuk purge file yang sudah keluar dari corpus (fail-closed keep).
+
+> **Temuan (Agustus 2026):** ada **DUA instalasi graphify** — PATH `/home/dev/.local/bin/graphify` (v0.9.23, yang BENAR dipakai — punya subcommand `update`/`check-update`) vs uv-tool `graphifyy` (v0.5.2, yang DIPAKAI `.graphify_python` — format manifest LAMA `dict[str,float]`, tidak cocok dengan manifest baru ber-`ast_hash`/`semantic_hash`). Jangan pakai python dari `.graphify_python` untuk update — hasilnya `detect_incremental` salah lapor semua file "new". Selalu `graphify update . --force` via CLI PATH. Hasil update 2026-08-10: 14,902 nodes | 43,043 edges | 437 communities, fresh dari commit `a3cb2f41`, AST-only (no LLM cost). Catatan: 29 file `.sql` tidak berkontribusi karena `tree_sitter_sql` tidak terpasang (`pip install "graphifyy[sql]"`).
 
 > **Temuan (Agustus 2026):** corpus graphify sudah bersih dari dir noise bahkan sebelum `.graphifyignore` dibuat (dot-dir di-skip bawaan). Efek nyata ignore file: mem-purge `backup.jsonl` + 2 file zero-node (`.openclaude-profile.json`, `skills-lock.json`) dan mem-formalkan pengecualian utk portabilitas (`--no-gitignore`).
 

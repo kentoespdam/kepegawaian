@@ -5859,11 +5859,6 @@
     "ast_hash": "e1a22474128f84925d7fcac29fb55ee3",
     "semantic_hash": ""
   },
-  ".openclaude-profile.json": {
-    "mtime": 1781404761.0957763,
-    "ast_hash": "97ac034323e52001c8507778f040ee7b",
-    "semantic_hash": ""
-  },
   "build-dev.sh": {
     "mtime": 1773942711.0826042,
     "ast_hash": "b76eedec2387e69f937eb8fa89c9d1d8",
@@ -5907,11 +5902,6 @@
   "run.sh": {
     "mtime": 1773942711.0839756,
     "ast_hash": "88e13fe8afa0b3f2c8e1b079448cd2c1",
-    "semantic_hash": ""
-  },
-  "skills-lock.json": {
-    "mtime": 1784011892.6338928,
-    "ast_hash": "e84f406f6ac99249788703cbca55b9e9",
     "semantic_hash": ""
   },
   "src/main/java/id/perumdamts/kepegawaian/config/security/JwtTokenService.java": {
