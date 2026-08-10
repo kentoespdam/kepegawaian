@@ -1,0 +1,132 @@
+# Claim Order — Security: Dev Chain Validasi Bearer Token + Fallback DevAuth (ADR-0033)
+
+Urutan klaim eksekusi epic beads `kepegawaian-95h` (child: `.jxk`, `.0fn`, `.gbt`) agar alur kerja SecurityFilter dev/prod berubah dari "dev = tanpa autentikasi" menjadi "dev = validasi Bearer bila ada, fallback DEV bila tanpa Bearer". Referensi kebenaran desain: [ADR 0033](adr/0033-dev-chain-bearer-fallback-devauth.md) (baru) + [ADR 0016](adr/0016-profile-conditional-auth.md) (superseded sebagian).
+
+**Prinsip klaim**: 1 issue = 1 PR. Kerjakan berurutan sesuai kolom "Klaim" — child 1 dulu (logika filter), lalu child 2 (konfigurasi chain), lalu child 3 (log noise). Verifikasi tiap child dengan `./gradlew compileJava` + test.
+
+> **Cara pakai**: Buka file ini, klaim sesuai urutan di kolom "Klaim". Tandai checklist `[x]` setelah setiap child selesai di-PR.
+
+---
+
+## A. Klaim berurutan (master list)
+
+| # | Epic | Child | Judul | Tipe | Prioritas | Catatan |
+|---|------|-------|-------|------|-----------|---------|
+| 1 | `kepegawaian-95h` | `.jxk` | DevAuthFilter trigger tanpa-Bearer + clearContext hanya saat DEV di-inject | **PILOT** | P2 | Logika inti fallback DEV |
+| 2 | `kepegawaian-95h` | `.0fn` | dev chain `authenticated()` + `exceptionHandling` di WebSecurity | wave 1 | P2 | Mengubah devFilterChain |
+| 3 | `kepegawaian-95h` | `.gbt` | AppwriteClient 401 tanpa `log.error` + JwtAuthFilter short-circuit token blank | wave 1 | P2 | Menghilangkan noise log |
+
+**Urutan tidak boleh diputar**: child `.jxk` (logika filter) mendahului `.0fn` (konfigurasi chain) karena `.0fn` memasang `DevAuthFilter` + `JwtAuthFilter` di chain yang sama — trigger tanpa-Bearer harus sudah benar dulu supaya auth Appwrite tidak terhapus `clearContext()`.
+
+---
+
+## B. Semantik target (acceptance semua child)
+
+| Header `Authorization` di dev | Hasil |
+|---|---|
+| missing / blank / `Bearer ` kosong / `Basic xxx` | `DevAuthFilter` injek **DEV user** (fallback) |
+| `Bearer <token>` valid | `JwtAuthFilter` validasi ke Appwrite → **user asli** |
+| `Bearer <token>` invalid/expired | Tidak ada auth → **401 strict** |
+
+Di **prod** (`!development`): chain tidak berubah sama sekali — `JwtAuthFilter` saja, `authenticated()`, tanpa `DevAuthFilter`.
+
+---
+
+## C. Pre-flight checklist (sekali sebelum mulai)
+
+- [ ] `bd prime` jalan tanpa error
+- [ ] Branch `rewrite/master-cqrs` bersih dari noise (`git status`)
+- [ ] `docs/adr/0033-dev-chain-bearer-fallback-devauth.md` sudah dibaca & dipahami
+- [ ] `docs/context/language-security.md` sudah dibaca (glossary Lingkungan/Dev User sudah update)
+- [ ] File terkait dibaca:
+  - `src/main/java/id/perumdamts/kepegawaian/config/WebSecurity.java`
+  - `src/main/java/id/perumdamts/kepegawaian/config/security/JwtAuthFilter.java`
+  - `src/main/java/id/perumdamts/kepegawaian/config/security/DevAuthFilter.java`
+  - `src/main/java/id/perumdamts/kepegawaian/config/appwrite/AppwriteClient.java`
+  - `src/test/java/id/perumdamts/kepegawaian/config/appwrite/AppwriteClientTest.java`
+
+---
+
+## D. Per-child checklist
+
+### D.1 Child `.jxk` — DevAuthFilter: trigger tanpa-Bearer + clearContext terkondisi
+
+- [ ] Issue di-claim via `bd update kepegawaian-jxk --claim`
+- [ ] Baca `DevAuthFilter.java` — pahami struktur `try/finally` saat ini
+- [ ] Tambah helper `hasBearerToken(request)`: header != null && startsWith("Bearer ") && substring setelah "Bearer " tidak blank
+- [ ] Bila `hasBearerToken` = true → `filterChain.doFilter(request, response); return;` (skip total: TIDAK inject, TIDAK clear)
+- [ ] Bila `hasBearerToken` = false → inject DEV user (logika eksisting) di dalam `try`, `clearContext()` di `finally` **tetap jalan** (karena ini satu-satunya jalur yang inject)
+- [ ] Konfirmasi: `SecurityContextHolder.getContext().setAuthentication(...)` hanya dipanggil di jalur tanpa-Bearer
+- [ ] `./gradlew compileJava` hijau
+- [ ] `gitnexus_detect_changes` bersih: hanya menyentuh `DevAuthFilter.java`
+
+### D.2 Child `.0fn` — WebSecurity: dev chain `authenticated()` + `exceptionHandling`
+
+- [ ] Issue di-claim via `bd update kepegawaian-0fn --claim`
+- [ ] Baca `WebSecurity.java` — bandingkan `jwtFilterChain` vs `devFilterChain`
+- [ ] `devFilterChain`: tambah `.exceptionHandling(e -> e.authenticationEntryPoint(jwtAuthEntryPoint).accessDeniedHandler(deniedHandler))`
+- [ ] `devFilterChain`: ganti `.anyRequest().permitAll()` dengan daftar permitAll SAMA dengan prod chain (`/api-docs/**`, `/swagger-ui.html`, `/swagger-ui/**`, `/v3/api-docs/**`, `/auth/**`) + `.anyRequest().authenticated()`
+- [ ] `devFilterChain`: tambah `.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)` **sebelum** `.addFilterBefore(devAuthFilter, ...)` — JwtAuthFilter menangani Bearer, DevAuthFilter fallback
+- [ ] Konfirmasi filter order: `jwtAuthFilter` di-register sebelum `devAuthFilter` (dalam satu chain dev)
+- [ ] Pastikan `jwtFilterChain` (prod) TIDAK tersentuh
+- [ ] `./gradlew compileJava` hijau
+- [ ] `gitnexus_detect_changes` bersih: hanya menyentuh `WebSecurity.java`
+
+### D.3 Child `.gbt` — AppwriteClient 401 tanpa log.error + JwtAuthFilter short-circuit
+
+- [ ] Issue di-claim via `bd update kepegawaian-gbt --claim`
+- [ ] Baca `AppwriteClient.validateToken()` — saat ini `catch (Exception e) { log.error("JWT Auth Error", e); return null; }`
+- [ ] Ganti menjadi: `catch (HttpClientErrorException.Unauthorized e) { log.debug(...); return null; }` + `catch (Exception e) { log.error("JWT Auth Error", e); return null; }`
+- [ ] Cek import `org.springframework.web.client.HttpClientErrorException` ditambahkan
+- [ ] Baca `JwtAuthFilter.getAuthentication()` — setelah `String token = tokenString.substring(BEARER.length());` tambah: `if (token.isBlank()) return null;` (jangan panggil Appwrite dengan token kosong)
+- [ ] Cek test `AppwriteClientTest.java` — pastikan test `validateToken_shouldReturnNullOnBadRequest` (atau 401 case) masih hijau; update test bila meng-assert `log.error` (tidak seharusnya)
+- [ ] `./gradlew compileJava` + `./gradlew test --tests "*AppwriteClientTest*"` hijau
+- [ ] `gitnexus_detect_changes` bersih: hanya menyentuh `AppwriteClient.java`, `JwtAuthFilter.java`, dan file test terkait
+
+---
+
+## E. Verifikasi per epic
+
+- [ ] `./gradlew clean compileJava` hijau (gate tanpa DB)
+- [ ] `./gradlew test` hijau
+- [ ] Boot dev (`PROFILE=development`): 
+  - [ ] curl tanpa header → response sukses (DEV user), TIDAK ada `JWT Auth Error` di log
+  - [ ] curl `Authorization: Bearer <valid>` → principal user Appwrite asli
+  - [ ] curl `Authorization: Bearer <invalid>` → **401** (bukan fallback DEV)
+  - [ ] curl `Authorization: Basic xxx` → sukses sebagai DEV (bukan 401)
+  - [ ] curl `Authorization: Bearer ` (kosong) → sukses sebagai DEV, TIDAK ada panggilan Appwrite
+- [ ] Boot prod (`PROFILE=production` atau non-development): curl tanpa header → **401** (bukan DEV)
+- [ ] Tidak ada dependency Gradle baru
+- [ ] 1 PR per child (3 PR), commit message gaya repo (`git log --oneline -20`)
+- [ ] `bd close <child-id>` setelah PR merged
+- [ ] Setelah semua child closed → `bd close kepegawaian-95h`
+
+---
+
+## F. Pitfalls
+
+- [ ] **Jangan lupa filter order**: `jwtAuthFilter` harus di-register sebelum `devAuthFilter` di chain dev. Kalau `devAuthFilter` duluan, `clearContext()`-nya bisa menghapus auth hasil JwtAuthFilter (jika trigger tanpa-Bearer salah)
+- [ ] **`finally { clearContext() }`** di DevAuthFilter hanya boleh mengeksekusi saat DEV di-inject — jangan clear auth asli Appwrite
+- [ ] **Prod chain jangan tersentuh** — scope epic ini hanya dev chain + AppwriteClient + JwtAuthFilter short-circuit
+- [ ] **Post-mv re-Read**: kalau ada `git mv`, baca ulang path baru sebelum Edit
+- [ ] **Clean compileJava**: tutup epic dengan `./gradlew clean compileJava`
+
+---
+
+## G. Out-of-scope (JANGAN dikerjakan di claim-order ini)
+
+| Item | Alasan |
+|------|--------|
+| `JwtAuthEntryPoint` response format → `CustomResult` envelope | Di luar scope ADR-0033; dicatat di Consequences ADR sebagai catatan |
+| Merge `JwtTokenService` ke `JwtAuthFilter` | Sudah ditunda sejak ADR-0029 (Opsi B) |
+| Ubah mekanisme pemilihan environment (mis. 1 chain + cek runtime) | Ditolak di ADR-0033 Considered Options |
+| Token invalid di dev → fallback DEV | Ditolak (strict: 401) |
+
+---
+
+## REF
+
+- `docs/adr/0033-dev-chain-bearer-fallback-devauth.md` — sumber kebenaran desain (baru)
+- `docs/adr/0016-profile-conditional-auth.md` — ADR lama, superseded sebagian
+- `docs/context/language-security.md` — glossary Lingkungan/Dev User (sudah update)
+- Epic: `kepegawaian-95h`; children: `kepegawaian-jxk`, `kepegawaian-0fn`, `kepegawaian-gbt`
