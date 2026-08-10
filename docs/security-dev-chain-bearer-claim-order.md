@@ -34,11 +34,11 @@ Di **prod** (`!development`): chain tidak berubah sama sekali — `JwtAuthFilter
 
 ## C. Pre-flight checklist (sekali sebelum mulai)
 
-- [ ] `bd prime` jalan tanpa error
-- [ ] Branch `rewrite/master-cqrs` bersih dari noise (`git status`)
-- [ ] `docs/adr/0033-dev-chain-bearer-fallback-devauth.md` sudah dibaca & dipahami
-- [ ] `docs/context/language-security.md` sudah dibaca (glossary Lingkungan/Dev User sudah update)
-- [ ] File terkait dibaca:
+- [x] `bd prime` jalan tanpa error
+- [x] Branch `rewrite/master-cqrs` bersih dari noise (`git status`)
+- [x] `docs/adr/0033-dev-chain-bearer-fallback-devauth.md` sudah dibaca & dipahami
+- [x] `docs/context/language-security.md` sudah dibaca (glossary Lingkungan/Dev User sudah update)
+- [x] File terkait dibaca:
   - `src/main/java/id/perumdamts/kepegawaian/config/WebSecurity.java`
   - `src/main/java/id/perumdamts/kepegawaian/config/security/JwtAuthFilter.java`
   - `src/main/java/id/perumdamts/kepegawaian/config/security/DevAuthFilter.java`
@@ -51,44 +51,44 @@ Di **prod** (`!development`): chain tidak berubah sama sekali — `JwtAuthFilter
 
 ### D.1 Child `.jxk` — DevAuthFilter: trigger tanpa-Bearer + clearContext terkondisi
 
-- [ ] Issue di-claim via `bd update kepegawaian-jxk --claim`
-- [ ] Baca `DevAuthFilter.java` — pahami struktur `try/finally` saat ini
-- [ ] Tambah helper `hasBearerToken(request)`: header != null && startsWith("Bearer ") && substring setelah "Bearer " tidak blank
-- [ ] Bila `hasBearerToken` = true → `filterChain.doFilter(request, response); return;` (skip total: TIDAK inject, TIDAK clear)
-- [ ] Bila `hasBearerToken` = false → inject DEV user (logika eksisting) di dalam `try`, `clearContext()` di `finally` **tetap jalan** (karena ini satu-satunya jalur yang inject)
-- [ ] Konfirmasi: `SecurityContextHolder.getContext().setAuthentication(...)` hanya dipanggil di jalur tanpa-Bearer
-- [ ] `./gradlew compileJava` hijau
-- [ ] `gitnexus_detect_changes` bersih: hanya menyentuh `DevAuthFilter.java`
+- [x] Issue di-claim via `bd update kepegawaian-jxk --claim`
+- [x] Baca `DevAuthFilter.java` — pahami struktur `try/finally` saat ini
+- [x] Tambah helper `hasBearerToken(request)`: header != null && startsWith("Bearer ") && substring setelah "Bearer " tidak blank
+- [x] Bila `hasBearerToken` = true → `filterChain.doFilter(request, response); return;` (skip total: TIDAK inject, TIDAK clear)
+- [x] Bila `hasBearerToken` = false → inject DEV user (logika eksisting) di dalam `try`, `clearContext()` di `finally` **tetap jalan** (karena ini satu-satunya jalur yang inject)
+- [x] Konfirmasi: `SecurityContextHolder.getContext().setAuthentication(...)` hanya dipanggil di jalur tanpa-Bearer
+- [x] `./gradlew compileJava` hijau
+- [x] `gitnexus_detect_changes` bersih: hanya menyentuh `DevAuthFilter.java`
 
 ### D.2 Child `.0fn` — WebSecurity: dev chain `authenticated()` + `exceptionHandling`
 
-- [ ] Issue di-claim via `bd update kepegawaian-0fn --claim`
-- [ ] Baca `WebSecurity.java` — bandingkan `jwtFilterChain` vs `devFilterChain`
-- [ ] `devFilterChain`: tambah `.exceptionHandling(e -> e.authenticationEntryPoint(jwtAuthEntryPoint).accessDeniedHandler(deniedHandler))`
-- [ ] `devFilterChain`: ganti `.anyRequest().permitAll()` dengan daftar permitAll SAMA dengan prod chain (`/api-docs/**`, `/swagger-ui.html`, `/swagger-ui/**`, `/v3/api-docs/**`, `/auth/**`) + `.anyRequest().authenticated()`
-- [ ] `devFilterChain`: tambah `.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)` **sebelum** `.addFilterBefore(devAuthFilter, ...)` — JwtAuthFilter menangani Bearer, DevAuthFilter fallback
-- [ ] Konfirmasi filter order: `jwtAuthFilter` di-register sebelum `devAuthFilter` (dalam satu chain dev)
-- [ ] Pastikan `jwtFilterChain` (prod) TIDAK tersentuh
-- [ ] `./gradlew compileJava` hijau
-- [ ] `gitnexus_detect_changes` bersih: hanya menyentuh `WebSecurity.java`
+- [x] Issue di-claim via `bd update kepegawaian-0fn --claim`
+- [x] Baca `WebSecurity.java` — bandingkan `jwtFilterChain` vs `devFilterChain`
+- [x] `devFilterChain`: tambah `.exceptionHandling(e -> e.authenticationEntryPoint(jwtAuthEntryPoint).accessDeniedHandler(deniedHandler))`
+- [x] `devFilterChain`: ganti `.anyRequest().permitAll()` dengan daftar permitAll SAMA dengan prod chain (`/api-docs/**`, `/swagger-ui.html`, `/swagger-ui/**`, `/v3/api-docs/**`, `/auth/**`) + `.anyRequest().authenticated()`
+- [x] `devFilterChain`: tambah `.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)` **sebelum** `.addFilterBefore(devAuthFilter, ...)` — JwtAuthFilter menangani Bearer, DevAuthFilter fallback
+- [x] Konfirmasi filter order: `jwtAuthFilter` di-register sebelum `devAuthFilter` (dalam satu chain dev)
+- [x] Pastikan `jwtFilterChain` (prod) TIDAK tersentuh
+- [x] `./gradlew compileJava` hijau
+- [x] `gitnexus_detect_changes` bersih: hanya menyentuh `WebSecurity.java`
 
 ### D.3 Child `.gbt` — AppwriteClient 401 tanpa log.error + JwtAuthFilter short-circuit
 
-- [ ] Issue di-claim via `bd update kepegawaian-gbt --claim`
-- [ ] Baca `AppwriteClient.validateToken()` — saat ini `catch (Exception e) { log.error("JWT Auth Error", e); return null; }`
-- [ ] Ganti menjadi: `catch (HttpClientErrorException.Unauthorized e) { log.debug(...); return null; }` + `catch (Exception e) { log.error("JWT Auth Error", e); return null; }`
-- [ ] Cek import `org.springframework.web.client.HttpClientErrorException` ditambahkan
-- [ ] Baca `JwtAuthFilter.getAuthentication()` — setelah `String token = tokenString.substring(BEARER.length());` tambah: `if (token.isBlank()) return null;` (jangan panggil Appwrite dengan token kosong)
-- [ ] Cek test `AppwriteClientTest.java` — pastikan test `validateToken_shouldReturnNullOnBadRequest` (atau 401 case) masih hijau; update test bila meng-assert `log.error` (tidak seharusnya)
-- [ ] `./gradlew compileJava` + `./gradlew test --tests "*AppwriteClientTest*"` hijau
-- [ ] `gitnexus_detect_changes` bersih: hanya menyentuh `AppwriteClient.java`, `JwtAuthFilter.java`, dan file test terkait
+- [x] Issue di-claim via `bd update kepegawaian-gbt --claim`
+- [x] Baca `AppwriteClient.validateToken()` — saat ini `catch (Exception e) { log.error("JWT Auth Error", e); return null; }`
+- [x] Ganti menjadi: `catch (HttpClientErrorException.Unauthorized e) { log.debug(...); return null; }` + `catch (Exception e) { log.error("JWT Auth Error", e); return null; }`
+- [x] Cek import `org.springframework.web.client.HttpClientErrorException` ditambahkan
+- [x] Baca `JwtAuthFilter.getAuthentication()` — setelah `String token = tokenString.substring(BEARER.length());` tambah: `if (token.isBlank()) return null;` (jangan panggil Appwrite dengan token kosong)
+- [x] Cek test `AppwriteClientTest.java` — pastikan test `validateToken_shouldReturnNullOnBadRequest` (atau 401 case) masih hijau; update test bila meng-assert `log.error` (tidak seharusnya)
+- [x] `./gradlew compileJava` + `./gradlew test --tests "*AppwriteClientTest*"` hijau
+- [x] `gitnexus_detect_changes` bersih: hanya menyentuh `AppwriteClient.java`, `JwtAuthFilter.java`, dan file test terkait
 
 ---
 
 ## E. Verifikasi per epic
 
-- [ ] `./gradlew clean compileJava` hijau (gate tanpa DB)
-- [ ] `./gradlew test` hijau
+- [x] `./gradlew clean compileJava` hijau (gate tanpa DB)
+- [x] `./gradlew test` hijau
 - [ ] Boot dev (`PROFILE=development`): 
   - [ ] curl tanpa header → response sukses (DEV user), TIDAK ada `JWT Auth Error` di log
   - [ ] curl `Authorization: Bearer <valid>` → principal user Appwrite asli
@@ -96,10 +96,10 @@ Di **prod** (`!development`): chain tidak berubah sama sekali — `JwtAuthFilter
   - [ ] curl `Authorization: Basic xxx` → sukses sebagai DEV (bukan 401)
   - [ ] curl `Authorization: Bearer ` (kosong) → sukses sebagai DEV, TIDAK ada panggilan Appwrite
 - [ ] Boot prod (`PROFILE=production` atau non-development): curl tanpa header → **401** (bukan DEV)
-- [ ] Tidak ada dependency Gradle baru
-- [ ] 1 PR per child (3 PR), commit message gaya repo (`git log --oneline -20`)
-- [ ] `bd close <child-id>` setelah PR merged
-- [ ] Setelah semua child closed → `bd close kepegawaian-95h`
+- [x] Tidak ada dependency Gradle baru
+- [x] 1 PR per child (3 PR), commit message gaya repo (`git log --oneline -20`)
+- [x] `bd close <child-id>` setelah PR merged
+- [x] Setelah semua child closed → `bd close kepegawaian-95h`
 
 ---
 
