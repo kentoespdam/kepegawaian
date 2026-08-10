@@ -1,7 +1,34 @@
+# GitNexus ignore — sintaks gitignore-style (komentar #, ! negasi, trailing / utk dir)
+# Referensi: gitnexus/src/config/ignore-service.ts + README (env GITNEXUS_NO_GITIGNORE)
+#
+# Aturan yang berlaku (dari source ignore-service.ts):
+# - .gitignore + .git/info/exclude otomatis dihormati; file ini dievaluasi
+#   SETELAH .gitignore -> menang saat konflik (last-match-wins)
+# - !pattern bisa membatalkan hardcoded ignore GitNexus (mis. !__tests__/)
+#   sesuai semantik negasi .gitignore
+# - Dot-directory sudah di-skip glob (dot:false); entri dot-dir di sini
+#   bersifat defensif + dokumentasi
+
+# Agent / tooling config (ter-track di git, bukan source code)
 .agents/
 .antigravitycli/
-.idea/
 .beads/
 .claude/
-build/
+.openclaude/
+
+# Index/cache milik tool itu sendiri
+.gitnexus/
+.gradle/
+
+# Output knowledge-graph tool lain (graphify)
 graphify-out/
+
+# IDE & build (sudah di .gitignore; ditulis eksplisit utk portabilitas)
+.idea/
+.vscode/
+build/
+
+# Backup memory & file config tool (data dump / bukan source)
+backup.jsonl
+.openclaude-profile.json
+skills-lock.json

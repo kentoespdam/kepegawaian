@@ -1,0 +1,33 @@
+# Graphify ignore — sintaks sama seperti .gitignore (komentar #, ! negasi, trailing / utk dir)
+# Referensi: https://github.com/Graphify-Labs/graphify — bagian "Ignoring files"
+#
+# Aturan yang berlaku (dari dokumentasi resmi):
+# - .gitignore otomatis dihormati (per-direktori); file ini di-MERGE dengan
+#   .gitignore, pattern-nya dievaluasi TERAKHIR -> menang saat konflik
+#   (termasuk ! negasi)
+# - Hanya bisa MENAMBAH pengecualian; TIDAK bisa re-include file yang sudah
+#   di-exclude oleh .gitignore
+# - Scoping subdirektori sama seperti git (ignore file hanya berlaku utk subtree-nya)
+
+# Output graph itu sendiri (~99MB) — jangan di-index ulang
+graphify-out/
+
+# Issue tracker & config agen (ter-track di git, bukan source code)
+.beads/
+.claude/
+.agents/
+.openclaude/
+.antigravitycli/
+
+# Index & cache milik tool lain (di mesin ini sebagian hanya ada di
+# .git/info/exclude yang sifatnya lokal — tulis eksplisit utk portabilitas)
+.gitnexus/
+.gradle/
+.idea/
+.vscode/
+build/
+
+# Backup memory & file config tool (data dump / zero-node, bukan source)
+backup.jsonl
+.openclaude-profile.json
+skills-lock.json

@@ -252,7 +252,7 @@ git push
 
 ## 9. GitNexus — Code Intelligence
 
-Repo indexed as **kepegawaian** (18036 symbols, 47201 relationships, 300 flows).
+Repo indexed as **kepegawaian** (18372 symbols, 44299 relationships, 300 flows).
 
 ```bash
 npx gitnexus analyze          # Refresh if index stale
@@ -279,6 +279,22 @@ npx gitnexus analyze          # Refresh if index stale
 - `gitnexus://repo/kepegawaian/clusters` — all functional areas
 - `gitnexus://repo/kepegawaian/processes` — all execution flows
 - `.claude/skills/gitnexus/` — 6 skill files (exploring, impact-analysis, debugging, refactoring, guide, CLI)
+
+### Ignore Files — `.gitnexusignore`
+
+File di root repo (ter-commit). Sintaks gitignore-style: komentar `#`, `!` negasi, trailing `/` untuk dir.
+
+**Semantik** (source: `gitnexus/src/config/ignore-service.ts`):
+
+- `.gitignore` + `.git/info/exclude` **otomatis dihormati**; `.gitnexusignore` dievaluasi **SETELAH** `.gitignore` → **last-match-wins** saat konflik
+- `!pattern` bisa membatalkan **hardcoded ignore** GitNexus (mis. `!__tests__/`) — semantik negasi sama seperti `.gitignore`
+- `GITNEXUS_NO_GITIGNORE=1` → skip parsing `.gitignore`; `.gitnexusignore` **tetap berlaku**
+- GitNexus punya hardcoded default ignore: `.git`, `node_modules`, `dist`, `build`, `out`, `target`, `.idea`, `.vscode`, `.github`, `.husky`, `coverage`, `__tests__` + ekstensi (`.class`, `.jar`, `.pdf`, `.xlsx`, ...) + file tertentu (lockfiles, `.gitignore`, `LICENSE`, `.env*`, ...)
+- **Dot-directory sudah di-skip bawaan** oleh glob (`dot:false`) — `.beads/`, `.claude/`, `.agents/`, `.gitnexus/` dll TIDAK akan pernah ter-index meski tanpa ignore file; entri dot-dir di `.gitnexusignore` bersifat defensif + dokumentasi
+
+**Yang di-exclude di project ini:** `graphify-out/` (output graphify), `backup.jsonl` + `.openclaude-profile.json` + `skills-lock.json` (file non-dot yang tadinya lolos), dot-dir agen/tooling (`.agents/`, `.antigravitycli/`, `.beads/`, `.claude/`, `.openclaude/`, `.gitnexus/`, `.gradle/`), IDE/build (`.idea/`, `.vscode/`, `build/`).
+
+> **Temuan (Agustus 2026):** re-index dengan ignore baru hanya menghapus **2 file** (`deleted=2` — `backup.jsonl` + config tool); dir noise dot-dir memang sudah di-skip bawaan sejak awal. Verifikasi: 0 node dari `.beads`/`graphify-out`/`.gitnexus`/`.claude`/`backup.jsonl` di index (cypher `MATCH (n) WHERE n.filePath CONTAINS '...'`).
 
 ---
 
@@ -320,6 +336,24 @@ Full catalog: `.claude/skills/`. Key ones:
 | `handoff` | Compact session → handoff doc |
 | `ponytail` | Force simplest solution (YAGNI) |
 | `caveman` | Ultra-compressed mode |
+
+### Ignore Files — `.graphifyignore`
+
+File di root repo (ter-commit). Sintaks **sama seperti `.gitignore`**: komentar `#`, glob, `!` negasi.
+
+**Semantik** (dokumentasi resmi Graphify — bagian *"Ignoring files"*):
+
+- `.gitignore` otomatis dihormati (per-direktori); `.graphifyignore` di-**merge** dan dievaluasi **TERAKHIR** → menang saat konflik (termasuk `!` negasi)
+- Hanya bisa **menambah** pengecualian; **TIDAK bisa** re-include file yang sudah di-exclude `.gitignore`
+- Scoping subdirektori sama seperti git
+- `graphify extract --no-gitignore` → skip `.gitignore` + `.git/info/exclude`; `.graphifyignore` tetap berlaku
+- **Dot-directory sudah di-skip bawaan** graphify (`.beads/`, `.claude/`, `.agents/`, `.gitnexus/` dll tidak pernah masuk corpus); `graphify-out/` juga auto-excluded
+
+**Yang di-exclude di project ini:** `graphify-out/`, `backup.jsonl`, `.openclaude-profile.json`, `skills-lock.json` + dot-dir agen/tooling (`.beads/`, `.claude/`, `.agents/`, `.openclaude/`, `.antigravitycli/`, `.gitnexus/`, `.gradle/`, `.idea/`, `.vscode/`, `build/`).
+
+**Update graph:** `graphify update . --force` (wajib `--force` saat node count turun karena pengecualian — tanpa itu graphify menolak overwrite, "fewer nodes"). Full re-extraction (hapus `graphify-out/cache/`) untuk purge file yang sudah keluar dari corpus (fail-closed keep).
+
+> **Temuan (Agustus 2026):** corpus graphify sudah bersih dari dir noise bahkan sebelum `.graphifyignore` dibuat (dot-dir di-skip bawaan). Efek nyata ignore file: mem-purge `backup.jsonl` + 2 file zero-node (`.openclaude-profile.json`, `skills-lock.json`) dan mem-formalkan pengecualian utk portabilitas (`--no-gitignore`).
 
 ---
 
