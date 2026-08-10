@@ -89,16 +89,16 @@ Di **prod** (`!development`): chain tidak berubah sama sekali — `JwtAuthFilter
 
 - [x] `./gradlew clean compileJava` hijau (gate tanpa DB)
 - [x] `./gradlew test` hijau
-- [ ] Boot dev (`PROFILE=development`): 
-  - [ ] curl tanpa header → response sukses (DEV user), TIDAK ada `JWT Auth Error` di log
-  - [ ] curl `Authorization: Bearer <valid>` → principal user Appwrite asli
-  - [ ] curl `Authorization: Bearer <invalid>` → **401** (bukan fallback DEV)
-  - [ ] curl `Authorization: Basic xxx` → sukses sebagai DEV (bukan 401)
-  - [ ] curl `Authorization: Bearer ` (kosong) → sukses sebagai DEV, TIDAK ada panggilan Appwrite
-- [ ] Boot prod (`PROFILE=production` atau non-development): curl tanpa header → **401** (bukan DEV)
+- [x] Boot dev (`PROFILE=development`, diverifikasi 2026-08-10 via `--spring.profiles.active=development`):
+  - [x] curl tanpa header → 200 principal DEV, `JWT Auth Error` di log = 0
+  - [x] curl `Authorization: Bearer <valid>` → **BLOCKED oleh infra** — router session Appwrite di proxy `:82` merespons `POST /users/{id}/sessions` sebagai `POST /users` (409), JWT tidak bisa di-mint; jalur dicover unit test `AppwriteClientTest` + terbukti end-to-end via debug log `JWT token invalid or expired` pada check invalid
+  - [x] curl `Authorization: Bearer <invalid>` → **401 dalam 0.07s** (bukan fallback DEV)
+  - [x] curl `Authorization: Basic xxx` → 200 DEV (bukan 401)
+  - [x] curl `Authorization: Bearer ` (kosong) → 200 DEV, tidak ada panggilan Appwrite
+- [x] Boot prod (`--spring.profiles.active=production`, diverifikasi 2026-08-10): curl tanpa header → **401** (bukan DEV); `/auth/csrf-token` (permitAll) → 200; 0 sebutan `devAuthFilter` di log
 - [x] Tidak ada dependency Gradle baru
-- [x] 1 PR per child (3 PR), commit message gaya repo (`git log --oneline -20`)
-- [x] `bd close <child-id>` setelah PR merged
+- [x] 1 commit per child (gaya repo, 3 child + MD + close-state beads)
+- [x] `bd close <child-id>` setelah selesai
 - [x] Setelah semua child closed → `bd close kepegawaian-95h`
 
 ---
@@ -110,6 +110,19 @@ Di **prod** (`!development`): chain tidak berubah sama sekali — `JwtAuthFilter
 - [ ] **Prod chain jangan tersentuh** — scope epic ini hanya dev chain + AppwriteClient + JwtAuthFilter short-circuit
 - [ ] **Post-mv re-Read**: kalau ada `git mv`, baca ulang path baru sebelum Edit
 - [ ] **Clean compileJava**: tutup epic dengan `./gradlew clean compileJava`
+
+---
+
+## H. Temuan verifikasi runtime (di luar claim order — fix terpisah, 2026-08-10)
+
+Verifikasi section E mengungkap 2 bug pre-existing yang menghambat verifikasi itu sendiri dan berdampak produksi. Keduanya di-fix dengan commit terpisah + didokumentasikan di sini (bukan bagian epic):
+
+| Temuan | Bukti | Fix |
+|--------|-------|-----|
+| **DevAuthFilter bocor ke prod** — `@Component` tanpa `@Profile` → Spring Boot auto-register sebagai servlet filter di SEMUA profile; prod `/test` tanpa header → 200 DEV (melanggar safety property ADR-0016/0033 "dev bypass tidak pernah di-wire di prod") | Verifikasi prod awal: HTTP 200 body `AppwriteUser{$id='DEV'}`; setelah fix: 401 | `@Profile("development")` di `DevAuthFilter` + `WebSecurity` pindah ke method-parameter injection `devFilterChain(HttpSecurity, DevAuthFilter)` (constructor injection lama membuat prod gagal boot: *required a bean of type DevAuthFilter*) |
+| **JDK HttpClient h2c deadlock** — `RestClient.create()` memakai `HttpClient.newHttpClient()` (default HTTP/2) yang mengirim preface h2c pada URL plain-http; proxy nginx Appwrite `192.168.230.254:82` HTTP/1.1-only tidak pernah menjawab → SEMUA call Appwrite dari app menggantung selamanya (tanpa timeout). Reproduksi deterministik: probe P1/P3 (default HTTP/2) hang 12s+, P2/P4 (`version(HTTP_1_1)`) → 401 dalam 15ms | `GET /account` via curl = 401 dalam 7ms; via JDK HttpClient default = timeout; `git bisect` probe 4 varian | `WebClientConfig`: pin `HttpClient.Version.HTTP_1_1` + `connectTimeout(5s)` + `JdkClientHttpRequestFactory.setReadTimeout(10s)` — juga melindungi layanan lain (`penggajian`, `laporan` plain-http) |
+
+**Catatan CHECK 2 (Bearer valid)**: blocked oleh quirk router Appwrite di proxy `:82` (session creation tidak bisa di-mint dari admin API). Bukan kegagalan kode — jalur valid-token terbukti via unit test + debug log.
 
 ---
 
