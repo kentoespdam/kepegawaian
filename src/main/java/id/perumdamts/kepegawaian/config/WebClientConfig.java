@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -29,6 +30,11 @@ public class WebClientConfig {
         factory.setReadTimeout(Duration.ofSeconds(10));
         return RestClient.builder()
                 .requestFactory(factory)
+                // The JDK HttpClient stack sends Accept-Encoding: gzip and auto-decompresses; the Appwrite
+                // debug-fallback proxy at :82 replies Content-Encoding: gzip with a body that is NOT valid
+                // gzip -> ZipException "incorrect header check" -> validateToken() -> null -> 401
+                // "Full authentication is required". Force identity (verified 2026-08-10).
+                .defaultHeader(HttpHeaders.ACCEPT_ENCODING, "identity")
                 .build();
     }
 }

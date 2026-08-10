@@ -31,10 +31,7 @@ class AppwriteClientTest {
 
     @BeforeEach
     void setUp() {
-        AppwriteProperties properties = new AppwriteProperties();
-        properties.setEndpoint(ENDPOINT);
-        properties.setProjectId(PROJECT_ID);
-        properties.setApiKey(API_KEY);
+        AppwriteProperties properties = appwriteProperties();
 
         // Default RestClient converters use a strict mapper (FAIL_ON_UNKNOWN_PROPERTIES on), mirroring
         // production's RestClient.create(). Unknown fields in Appwrite responses are tolerated by the
@@ -44,6 +41,14 @@ class AppwriteClientTest {
         RestClient restClient = builder.build();
 
         client = new AppwriteClient(restClient, properties);
+    }
+
+    private static AppwriteProperties appwriteProperties() {
+        AppwriteProperties properties = new AppwriteProperties();
+        properties.setEndpoint(ENDPOINT);
+        properties.setProjectId(PROJECT_ID);
+        properties.setApiKey(API_KEY);
+        return properties;
     }
 
     @Test
@@ -198,6 +203,27 @@ class AppwriteClientTest {
         AppwriteUser result = client.validateToken(TOKEN);
         assertNull(result);
         server.verify();
+    }
+
+    @Test
+    void productionRestClientConfig_shouldSendAcceptEncodingIdentity() {
+        // Regression: the JDK HttpClient stack sends Accept-Encoding: gzip by default; the Appwrite
+        // debug-fallback proxy at :82 answers Content-Encoding: gzip with a non-gzip body (ZipException
+        // "incorrect header check") -> validateToken() null -> 401 "Full authentication is required".
+        // WebClientConfig forces identity on every request — mirror that builder chain here.
+        RestClient.Builder productionBuilder = RestClient.builder()
+                .defaultHeader(org.springframework.http.HttpHeaders.ACCEPT_ENCODING, "identity");
+        MockRestServiceServer productionServer = MockRestServiceServer.bindTo(productionBuilder).build();
+        RestClient productionClient = productionBuilder.build();
+
+        productionServer.expect(requestTo(ENDPOINT + "/account"))
+                .andExpect(method(HttpMethod.GET))
+                .andExpect(header("Accept-Encoding", "identity"))
+                .andRespond(withSuccess("{\"name\":\"test\"}", MediaType.APPLICATION_JSON));
+
+        AppwriteClient productionAppwrite = new AppwriteClient(productionClient, appwriteProperties());
+        assertNotNull(productionAppwrite.validateToken(TOKEN));
+        productionServer.verify();
     }
 
     @Test

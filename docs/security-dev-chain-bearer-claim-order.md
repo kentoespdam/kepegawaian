@@ -91,7 +91,7 @@ Di **prod** (`!development`): chain tidak berubah sama sekali — `JwtAuthFilter
 - [x] `./gradlew test` hijau
 - [x] Boot dev (`PROFILE=development`, diverifikasi 2026-08-10 via `--spring.profiles.active=development`):
   - [x] curl tanpa header → 200 principal DEV, `JWT Auth Error` di log = 0
-  - [x] curl `Authorization: Bearer <valid>` → **BLOCKED oleh infra** — router session Appwrite di proxy `:82` merespons `POST /users/{id}/sessions` sebagai `POST /users` (409), JWT tidak bisa di-mint; jalur dicover unit test `AppwriteClientTest` + terbukti end-to-end via debug log `JWT token invalid or expired` pada check invalid
+  - [x] curl `Authorization: Bearer <valid>` → **terbukti end-to-end setelah fix gzip (lihat H baris 3)**: `GET /master/level/list` → 200 + data, `userFromToken` = user asli (sebelumnya ter-blokir: session creation 409 di admin API + gzip rusak)
   - [x] curl `Authorization: Bearer <invalid>` → **401 dalam 0.07s** (bukan fallback DEV)
   - [x] curl `Authorization: Basic xxx` → 200 DEV (bukan 401)
   - [x] curl `Authorization: Bearer ` (kosong) → 200 DEV, tidak ada panggilan Appwrite
@@ -115,14 +115,15 @@ Di **prod** (`!development`): chain tidak berubah sama sekali — `JwtAuthFilter
 
 ## H. Temuan verifikasi runtime (di luar claim order — fix terpisah, 2026-08-10)
 
-Verifikasi section E mengungkap 2 bug pre-existing yang menghambat verifikasi itu sendiri dan berdampak produksi. Keduanya di-fix dengan commit terpisah + didokumentasikan di sini (bukan bagian epic):
+Verifikasi section E + debugging lanjutan jalur Bearer valid mengungkap 3 temuan pre-existing yang menghambat verifikasi itu sendiri dan berdampak produksi. Semuanya di-fix dengan commit terpisah + didokumentasikan di sini (bukan bagian epic):
 
 | Temuan | Bukti | Fix |
 |--------|-------|-----|
 | **DevAuthFilter bocor ke prod** — `@Component` tanpa `@Profile` → Spring Boot auto-register sebagai servlet filter di SEMUA profile; prod `/test` tanpa header → 200 DEV (melanggar safety property ADR-0016/0033 "dev bypass tidak pernah di-wire di prod") | Verifikasi prod awal: HTTP 200 body `AppwriteUser{$id='DEV'}`; setelah fix: 401 | `@Profile("development")` di `DevAuthFilter` + `WebSecurity` pindah ke method-parameter injection `devFilterChain(HttpSecurity, DevAuthFilter)` (constructor injection lama membuat prod gagal boot: *required a bean of type DevAuthFilter*) |
 | **JDK HttpClient h2c deadlock** — `RestClient.create()` memakai `HttpClient.newHttpClient()` (default HTTP/2) yang mengirim preface h2c pada URL plain-http; proxy nginx Appwrite `192.168.230.254:82` HTTP/1.1-only tidak pernah menjawab → SEMUA call Appwrite dari app menggantung selamanya (tanpa timeout). Reproduksi deterministik: probe P1/P3 (default HTTP/2) hang 12s+, P2/P4 (`version(HTTP_1_1)`) → 401 dalam 15ms | `GET /account` via curl = 401 dalam 7ms; via JDK HttpClient default = timeout; `git bisect` probe 4 varian | `WebClientConfig`: pin `HttpClient.Version.HTTP_1_1` + `connectTimeout(5s)` + `JdkClientHttpRequestFactory.setReadTimeout(10s)` — juga melindungi layanan lain (`penggajian`, `laporan` plain-http) |
+| **Proxy Appwrite `:82` kirim `Content-Encoding: gzip` dengan body bukan gzip** — JDK HttpClient stack (Java 25) mengirim `Accept-Encoding: gzip` otomatis + auto-decompress; proxy debug-fallback (`X-Debug-Fallback: true`, `Server: swoole-http-server`/`Appwrite`) membalas header gzip dengan body yang TIDAK valid → `ZipException: incorrect header check` → `validateToken()` null → anonymous → 401 **"Full authentication is required"** padahal token VALID (curl 200). Gejala menyesatkan: terlihat seperti masalah Authorization header | Token asli + JDK/Spring path → `Error while extracting response` dgn `Caused by: ZipException: incorrect header check`; echo server lokal → JDK 25 kirim `Accept-Encoding: gzip` otomatis; curl tanpa header itu → 200 JSON polos; test `AppwriteUser` strict Jackson 3 PASS (DTO bukan masalah) | `WebClientConfig`: `.defaultHeader(HttpHeaders.ACCEPT_ENCODING, "identity")` — proxy tak pernah compress → JSON polos. Terbukti end-to-end: Bearer valid → `GET /master/level/list` → 200 + data, log `userFromToken: AppwriteUser{...roles=[SYSTEM, ADMIN, USER]}`. Juga melindungi `penggajian`/`laporan`. Regression test: `AppwriteClientTest.productionRestClientConfig_shouldSendAcceptEncodingIdentity` |
 
-**Catatan CHECK 2 (Bearer valid)**: blocked oleh quirk router Appwrite di proxy `:82` (session creation tidak bisa di-mint dari admin API). Bukan kegagalan kode — jalur valid-token terbukti via unit test + debug log.
+**Catatan CHECK 2 (Bearer valid)**: awalnya ter-blokir oleh dua quirk infra di proxy `:82` — (a) session creation tidak bisa di-mint dari admin API (409), (b) gzip rusak (baris tabel ke-3). Setelah fix gzip (2026-08-10), jalur Bearer valid **terbukti end-to-end**: `GET /master/level/list` dengan token asli → HTTP 200 + data, `userFromToken` berisi user asli. Token JWT di-mint lewat jalur lain (bukan admin API) dan tetap divalidasi dengan benar oleh `JwtAuthFilter` → Appwrite `/account`.
 
 ---
 
