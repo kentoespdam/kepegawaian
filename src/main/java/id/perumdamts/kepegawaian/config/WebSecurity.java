@@ -71,11 +71,19 @@ public class WebSecurity {
                     .csrf(AbstractHttpConfigurer::disable)
                     .formLogin(AbstractHttpConfigurer::disable)
                     .httpBasic(AbstractHttpConfigurer::disable)
+                    .exceptionHandling(e -> e.authenticationEntryPoint(jwtAuthEntryPoint)
+                            .accessDeniedHandler(deniedHandler))
+                    .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                    .addFilterBefore(devAuthFilter, UsernamePasswordAuthenticationFilter.class)
                     .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                     .authorizeHttpRequests(authorization -> authorization
-                            .anyRequest().permitAll()
+                            .requestMatchers("/api-docs/**").permitAll()
+                            .requestMatchers("/swagger-ui.html").permitAll()
+                            .requestMatchers("/swagger-ui/**").permitAll()
+                            .requestMatchers("/v3/api-docs/**").permitAll()
+                            .requestMatchers("/auth/**").permitAll()
+                            .anyRequest().authenticated()
                     )
-                    .addFilterBefore(devAuthFilter, UsernamePasswordAuthenticationFilter.class)
                     .build();
         } catch (Exception e) {
             throw new RuntimeException(e);
