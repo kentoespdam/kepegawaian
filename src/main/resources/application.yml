@@ -87,17 +87,24 @@ spring:
 #              packages: id.perumdamts.kepegawaian
 
 logging:
+  # File logging bawaan Spring Boot (Logback): menulis ke file + console, rotasi otomatis.
+  # LOG_FILE di-override saat deploy prod (mis. /var/log/kepegawaian/kepegawaian.log).
+  file:
+    name: ${LOG_FILE:logs/kepegawaian.log}
+  logback:
+    rollingpolicy:
+      # Rotasi env-driven: ops bisa set tanpa rebuild. Default 50MB/file,
+      # total disk 500MB (~10 file), retensi 30 hari, bersihkan file lama saat start.
+      max-file-size: ${LOG_MAX_FILE_SIZE:50MB}
+      max-history: 30
+      total-size-cap: ${LOG_TOTAL_SIZE_CAP:500MB}
+      clean-history-on-start: true
   level:
     org:
       spring:
-        security: DEBUG
+        security: INFO
       hibernate:
-        sql: DEBUG
-        type:
-          descriptor:
-            sql:
-              BasicBinder: TRACE
-#      jooq: TRACE
+        sql: INFO
 
 appwrite:
   endpoint: ${APPWRITE_ENDPOINT:http://192.168.230.254:82/v1}
@@ -152,5 +159,27 @@ app:
     direktur-umum: ${JABATAN_DIREKTUR_UMUM:25}
     level-supervisor: ${LEVEL_SUPERVISOR:6}
     level-manager: ${LEVEL_MANAGER:5}
+
+---
+# Level DEBUG/TRACE (verbose + berisi parameter SQL/PII) hanya untuk development;
+# di prod log file bersih di level INFO.
+spring:
+  config:
+    activate:
+      on-profile: development
+logging:
+  level:
+    # Nama logger HARUS lengkap (org.springframework.security, org.hibernate.SQL) —
+    # kunci YAML terikat literal, versi singkat (org.spring.security) tidak pernah bekerja.
+    org:
+      springframework:
+        security: DEBUG
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+#      jooq: TRACE
 
 
