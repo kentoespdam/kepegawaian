@@ -9,6 +9,7 @@ import id.perumdamts.kepegawaian.dto.users.UserPatchStatusRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 
 import java.util.List;
@@ -89,6 +90,10 @@ public class AppwriteClient {
                     })
                     .retrieve()
                     .body(AppwriteUser.class);
+        } catch (HttpClientErrorException.Unauthorized e) {
+            // 401 = token invalid/expired, outcome yang diharapkan — bukan error infrastruktur
+            log.debug("JWT token invalid or expired: {}", e.getMessage());
+            return null;
         } catch (Exception e) {
             log.error("JWT Auth Error", e);
             return null;

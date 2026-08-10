@@ -83,6 +83,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         String token = tokenString.substring(BEARER.length());
+        if (token.isBlank()) {
+            return null;
+        }
         AppwriteUser userFromToken = service.getUserFromToken(token);
 
         if (Objects.isNull(userFromToken)) {
