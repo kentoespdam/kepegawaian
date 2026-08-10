@@ -30,7 +30,8 @@ public class WebSecurity {
     private final JwtAuthEntryPoint jwtAuthEntryPoint;
     private final DeniedHandler deniedHandler;
     private final JwtAuthFilter jwtAuthFilter;
-    private final DevAuthFilter devAuthFilter;
+    // DevAuthFilter TIDAK di-inject via constructor: bean-nya @Profile("development"),
+    // hanya di-resolve sebagai parameter method devFilterChain (injeksi per-@Bean).
 
     @Value("${custom.cors.allowed-origins:http://localhost:5173}")
     private String allowedOrigins;
@@ -64,7 +65,7 @@ public class WebSecurity {
 
     @Bean
     @Profile("development")
-    public SecurityFilterChain devFilterChain(HttpSecurity http) {
+    public SecurityFilterChain devFilterChain(HttpSecurity http, DevAuthFilter devAuthFilter) {
         try {
             return http
                     .cors(c -> c.configurationSource(corsConfigurationSource()))
