@@ -112,8 +112,8 @@ public class PendidikanCommandService {
     }
 
     /**
-     * ADR-0035: disetujui ditentukan server berdasarkan role. SDM → true + stamp;
-     * non-SDM → false (menunggu approve di antrian). Request tidak membawa field status.
+     * ADR-0035: disetujui ditentukan server berdasarkan role. HRD/ADMIN → true + stamp;
+     * selain itu → false (menunggu approve di antrian). Request tidak membawa field status.
      */
     private void applyApprovalState(Pendidikan pendidikan, boolean requiresApproval) {
         pendidikan.setTanggalPengajuan(LocalDateTime.now());

@@ -28,8 +28,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 /**
- * ADR-0035: disetujui ditentukan server berdasarkan role — SDM auto-approve + stamp,
- * non-SDM tetap false (masuk antrian). Unit test tanpa DB (Mockito).
+ * ADR-0035: disetujui ditentukan server berdasarkan role — HRD/ADMIN auto-approve + stamp,
+ * selain itu tetap false (masuk antrian). Unit test tanpa DB (Mockito).
  */
 @ExtendWith(MockitoExtension.class)
 class PendidikanCommandServiceTest {
@@ -66,31 +66,31 @@ class PendidikanCommandServiceTest {
     }
 
     @Test
-    void sdmWriteAutoApprovesAndStamps() {
+    void hrdWriteAutoApprovesAndStamps() {
         when(resolver.requiresApproval()).thenReturn(false);
-        when(resolver.currentUserId()).thenReturn("sdm-1");
+        when(resolver.currentUserId()).thenReturn("hrd-1");
         stubLookups();
 
         Pendidikan saved = saveAndCapture();
 
-        assertTrue(saved.getDisetujui(), "SDM write must auto-approve");
-        assertNotNull(saved.getTanggalDisetujui(), "SDM write must stamp approval date");
+        assertTrue(saved.getDisetujui(), "HRD write must auto-approve");
+        assertNotNull(saved.getTanggalDisetujui(), "HRD write must stamp approval date");
         assertNotNull(saved.getTanggalPengajuan(), "tanggalPengajuan must be set on create");
-        assertFalse(saved.getChangedStatus(), "SDM write is stable (no approval queue)");
-        assertEquals("sdm-1", saved.getDisetujuiOleh());
+        assertFalse(saved.getChangedStatus(), "HRD write is stable (no approval queue)");
+        assertEquals("hrd-1", saved.getDisetujuiOleh());
     }
 
     @Test
-    void nonSdmWriteStaysUnapproved() {
+    void selfServiceWriteStaysUnapproved() {
         when(resolver.requiresApproval()).thenReturn(true);
         stubLookups();
 
         Pendidikan saved = saveAndCapture();
 
-        assertFalse(saved.getDisetujui(), "non-SDM write must stay disetujui=false");
+        assertFalse(saved.getDisetujui(), "self-service write must stay disetujui=false");
         assertNull(saved.getTanggalDisetujui(), "no approval stamp while pending");
         assertNull(saved.getDisetujuiOleh(), "no approver while pending");
         assertNotNull(saved.getTanggalPengajuan(), "tanggalPengajuan must be set on create");
-        assertTrue(saved.getChangedStatus(), "non-SDM write enters approval queue");
+        assertTrue(saved.getChangedStatus(), "self-service write enters approval queue");
     }
 }

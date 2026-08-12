@@ -7,9 +7,9 @@ import id.perumdamts.kepegawaian.entities.profil.ProfileUpdate;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.PendidikanRepository;
 import id.perumdamts.kepegawaian.services.profil.ChangedStatusResolver;
 import id.perumdamts.kepegawaian.services.revInfo.RevInfoService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.history.RevisionMetadata;
@@ -27,8 +27,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * ADR-0035 approval flow: approve → disetujui=true + stamp approver;
- * reject (UPDATE) → kolom approval ikut dikembalikan ke revisi sebelumnya.
+ * ADR-0035/ADR-0036 approval flow via the generic engine + Pendidikan strategy:
+ * approve → disetujui=true + stamp approver; reject (UPDATE) → kolom approval ikut
+ * dikembalikan ke revisi sebelumnya.
  */
 @ExtendWith(MockitoExtension.class)
 class ProfileUpdatePendidikanApprovalServiceTest {
@@ -37,11 +38,19 @@ class ProfileUpdatePendidikanApprovalServiceTest {
     @Mock private PendidikanRepository repository;
     @Mock private ChangedStatusResolver resolver;
 
-    @InjectMocks private ProfileUpdatePendidikanApprovalService service;
+    private ProfileUpdateApprovalHandler handler;
+
+    @BeforeEach
+    void setUp() {
+        PendidikanProfileUpdateStrategy strategy =
+                new PendidikanProfileUpdateStrategy(revInfoService, repository, resolver);
+        handler = new ProfileUpdateApprovalHandler(List.of(strategy));
+    }
 
     private ProfileUpdate pendingUpdate() {
         return ProfileUpdate.builder()
                 .revId("42")
+                .tableName(id.perumdamts.kepegawaian.entities.commons.EProfileUpdateTable.PENDIDIKAN)
                 .actionType(RevisionMetadata.RevisionType.UPDATE)
                 .build();
     }
@@ -52,7 +61,7 @@ class ProfileUpdatePendidikanApprovalServiceTest {
         when(repository.findById(42L)).thenReturn(Optional.of(pendidikan));
         when(resolver.currentUserId()).thenReturn("approver-1");
 
-        service.changeHandler(pendingUpdate(), EProfileUpdateApproval.APPROVED);
+        handler.changeHandler(pendingUpdate(), EProfileUpdateApproval.APPROVED);
 
         assertTrue(pendidikan.getDisetujui());
         assertNotNull(pendidikan.getTanggalDisetujui());
@@ -71,13 +80,13 @@ class ProfileUpdatePendidikanApprovalServiceTest {
         prev.setDisetujui(true);
         prev.setTanggalPengajuan(pengajuan);
         prev.setTanggalDisetujui(disetujuiTgl);
-        prev.setDisetujuiOleh("sdm-orig");
+        prev.setDisetujuiOleh("hrd-orig");
         when(revInfoService.findLatestRevision(any(), any(Long.class))).thenReturn(List.of(prev));
 
-        service.changeHandler(pendingUpdate(), EProfileUpdateApproval.REJECT);
+        handler.changeHandler(pendingUpdate(), EProfileUpdateApproval.REJECT);
 
         verify(repository).rollbackPrevVersion(
                 any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(),
-                eq(Boolean.TRUE), eq(pengajuan), eq(disetujuiTgl), eq("sdm-orig"), any());
+                eq(Boolean.TRUE), eq(pengajuan), eq(disetujuiTgl), eq("hrd-orig"), any());
     }
 }
