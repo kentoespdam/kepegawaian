@@ -30,7 +30,6 @@ public class LampiranProfilPostRequest implements Serializable {
         return SpecificationBuilder.<LampiranProfil>of()
                 .addEqual(ref, "ref")
                 .addEqual(refId, "refId")
-                .addEqual(fileName, "fileName")
                 .build();
     }
 }

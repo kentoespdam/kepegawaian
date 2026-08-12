@@ -31,7 +31,6 @@ public class LampiranSkPostRequest implements Serializable {
         return SpecificationBuilder.<LampiranSk>of()
                 .addEqual(ref, "ref")
                 .addEqual(refId, "refId")
-                .addEqual(fileName.getName(), "fileName")
                 .build();
     }
 
