@@ -71,7 +71,11 @@ public class BiodataCommandService {
         }
 
         BiodataMapper.updateEntity(entity, request, jenjang);
+        entity.setChangedStatus(resolver.requiresApproval());
         repository.save(entity);
+        if (Boolean.TRUE.equals(entity.getChangedStatus())) {
+            profileUpdateService.create(nik, RevisionMetadata.RevisionType.UPDATE, EProfileUpdateTable.BIODATA);
+        }
         return entity.getNik();
     }
 
