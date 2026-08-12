@@ -40,6 +40,8 @@ Bagian dari [CONTEXT-MAP.md](../../CONTEXT-MAP.md). Baca file ini saat mengerjak
 
 - **Validasi jalur tulis SK + perbaikan bug legacy**: (1) **bug TMT banding-diri-sendiri** — legacy `tmtBerlaku.isBefore(tmtBerlaku)` (selalu `false`) **diperbaiki** jadi `tmtBerlaku.isBefore(tanggalSk)`. (2) **cek duplikat** dipertahankan saat create, tapi jalur update pakai spec yang **mengecualikan `id` sendiri**.
 
+- **Nomor SK bukan identitas unik Riwayat SK** (grilling 2026-08-12, [ADR-0034](../adr/0034-nomor-sk-bukan-identitas-unik-riwayat-sk.md)): nomor SK boleh terpakai ulang antar baris (kasus PLT berakhir → kembali ke jabatan semula). Tiga cek duplikat (`RiwayatSk`, `RiwayatMutasi`, `RiwayatTerminasi`) diseragamkan jadi **guard anti-duplikat eksak** `(pegawai, nomorSk, [jenisSk,] tanggalSk)`; `RiwayatKontrak` mendapat FK `riwayat_sk_id` (pola `RiwayatMutasi`) dan `delete()` kontrak memakai FK, bukan cocokkan nomor SK. PLT tidak dimodelkan sebagai entitas.
+
 - **Lookup master jalur tulis** ([ADR-0022](../adr/0022-label-snapshot-riwayat-findbyid.md)): buang `DetailFromList.findAll`-lalu-cari. Dua jalur: **FK murni → `getReferenceById`** (nol SELECT, patuh ADR-0008); **Snapshot label → `findById`** (entitas wajib ter-hidrasi, berlaku untuk Mutasi & Terminasi yang menyalin label master ke kolom denormalisasi).
 
 - **Penempatan mapper baca — dua pola**: **Pola A (flat/sederhana)**: `private toQuery(Record)` di dalam QueryRepository JOOQ. **Pola B (nested/berat)**: kelas statik `final` terpisah `*Mapper.map(Record, Result...)` di `mapper/<modul>/<aggregate>/`. Semua mapper = **kelas statik `final` + private ctor, BUKAN `@Component`**. Pembagian: `LampiranSk`/`RiwayatKontrak`/`RiwayatSp`/`RiwayatSk` → Pola A; `RiwayatMutasi`/`RiwayatTerminasi` → Pola B.
