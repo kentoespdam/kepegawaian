@@ -370,6 +370,20 @@ public class PendidikanAudRecord extends UpdatableRecordImpl<PendidikanAudRecord
         return (Long) get(24);
     }
 
+    /**
+     * Setter for <code>pendidikan_aud.jenjang_pendidikan_id</code>.
+     */
+    public void setJenjangPendidikanId(Long value) {
+        set(25, value);
+    }
+
+    /**
+     * Getter for <code>pendidikan_aud.jenjang_pendidikan_id</code>.
+     */
+    public Long getJenjangPendidikanId() {
+        return (Long) get(25);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -393,7 +407,7 @@ public class PendidikanAudRecord extends UpdatableRecordImpl<PendidikanAudRecord
     /**
      * Create a detached, initialised PendidikanAudRecord
      */
-    public PendidikanAudRecord(Long id_, Integer rev, Byte revtype, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Byte disetujui, String disetujuiOleh, String gelarBelakang, String gelarDepan, Double gpa, String institusi, Byte isLatest, Boolean isLulus, String jurusan, String kota, Integer tahunLulus, Integer tahunMasuk, LocalDateTime tanggalDisetujui, LocalDateTime tanggalPengajuan, String biodataId, Long jenjangId) {
+    public PendidikanAudRecord(Long id_, Integer rev, Byte revtype, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Byte disetujui, String disetujuiOleh, String gelarBelakang, String gelarDepan, Double gpa, String institusi, Byte isLatest, Boolean isLulus, String jurusan, String kota, Integer tahunLulus, Integer tahunMasuk, LocalDateTime tanggalDisetujui, LocalDateTime tanggalPengajuan, String biodataId, Long jenjangId, Long jenjangPendidikanId) {
         super(PendidikanAud.PENDIDIKAN_AUD);
 
         setId(id_);
@@ -421,6 +435,7 @@ public class PendidikanAudRecord extends UpdatableRecordImpl<PendidikanAudRecord
         setTanggalPengajuan(tanggalPengajuan);
         setBiodataId(biodataId);
         setJenjangId(jenjangId);
+        setJenjangPendidikanId(jenjangPendidikanId);
         resetChangedOnNotNull();
     }
 }

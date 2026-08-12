@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.config.security;
 
 import id.perumdamts.kepegawaian.dto.appwrite.AppwriteUser;
+import id.perumdamts.kepegawaian.repositories.PrefRoleRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,11 +9,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Component
@@ -20,6 +24,7 @@ import java.util.Objects;
 @Slf4j
 public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtTokenService service;
+    private final PrefRoleRepository prefRoleRepository;
     private static final String BEARER = "Bearer ";
     private static final String AUTHORIZATION = "Authorization";
 
@@ -92,9 +97,28 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return null;
         }
 
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>(userFromToken.getAuthorities());
+        authorities.addAll(inflatePermissions(userFromToken.getPrefs().getRoles()));
+
         return new UsernamePasswordAuthenticationToken(
                 userFromToken,
                 null,
-                userFromToken.getAuthorities());
+                authorities);
+    }
+
+    /**
+     * Permission inflation (ADR-0037): load semua permission dari DB untuk roles
+     * yang dimiliki user, lalu inject sebagai authority "ENTITY:ACTION" (tanpa prefix).
+     * Union semantics — role yang tidak ada di DB di-skip.
+     */
+    List<SimpleGrantedAuthority> inflatePermissions(List<String> roles) {
+        if (roles.isEmpty()) {
+            return List.of();
+        }
+        return prefRoleRepository.findAllById(roles).stream()
+                .flatMap(role -> role.getPermissions().stream())
+                .map(permission -> new SimpleGrantedAuthority(permission.getName()))
+                .distinct()
+                .toList();
     }
 }

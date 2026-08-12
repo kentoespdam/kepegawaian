@@ -49,19 +49,19 @@ CREATE TABLE pref_role_permission (
 ## Claim Order Checklist
 
 ### Step 1 — Flyway Migration
-- [ ] Buat `src/main/resources/db/migration/V{next}__rbac_permission_tables.sql`
-- [ ] SQL: `CREATE TABLE pref_permission` + `CREATE TABLE pref_role_permission`
-- [ ] Jalankan `./gradlew flywayMigrate` untuk verifikasi
+- [x] Buat `src/main/resources/db/migration/V{next}__rbac_permission_tables.sql`
+- [x] SQL: `CREATE TABLE pref_permission` + `CREATE TABLE pref_role_permission`
+- [x] Jalankan `./gradlew flywayMigrate` untuk verifikasi
 
 ### Step 2 — Entity JPA
-- [ ] Buat `id.perumdamts.kepegawaian.entities.system.PrefPermission`
+- [x] Buat `id.perumdamts.kepegawaian.entities.system.PrefPermission`
   ```java
   @Entity @Table(name = "pref_permission")
   public class PrefPermission {
       @Id String name; // "CUTI:APPROVE"
   }
   ```
-- [ ] Update `dto/appwrite/PrefRole.java` (sudah Entity JPA) — tambah relasi:
+- [x] Update `dto/appwrite/PrefRole.java` (sudah Entity JPA) — tambah relasi:
   ```java
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(name = "pref_role_permission",
@@ -69,58 +69,58 @@ CREATE TABLE pref_role_permission (
       inverseJoinColumns = @JoinColumn(name = "perm_name"))
   Set<PrefPermission> permissions;
   ```
-- [ ] **WAJIB** `gitnexus_impact({target: "PrefRole", direction: "upstream"})` sebelum edit
+- [x] **WAJIB** `gitnexus_impact({target: "PrefRole", direction: "upstream"})` sebelum edit
 
 ### Step 3 — Repository
-- [ ] Buat `repositories.PrefPermissionRepository` extends `JpaRepository<PrefPermission, String>`
+- [x] Buat `repositories.PrefPermissionRepository` extends `JpaRepository<PrefPermission, String>`
 
 ### Step 4 — Permission Inflation di JwtAuthFilter
-- [ ] **WAJIB** `gitnexus_impact({target: "JwtAuthFilter", direction: "upstream"})` sebelum edit
-- [ ] Di `JwtAuthFilter`, setelah load `AppwriteUser`:
+- [x] **WAJIB** `gitnexus_impact({target: "JwtAuthFilter", direction: "upstream"})` sebelum edit
+- [x] Di `JwtAuthFilter`, setelah load `AppwriteUser`:
   1. Ambil roles dari `appwriteUser.getPrefs().getRoles()`
   2. Query `PrefRoleRepository.findAllById(roles)` → `List<PrefRole>`
   3. Collect semua `PrefPermission.name` dari semua roles (union)
   4. Inject ke `UsernamePasswordAuthenticationToken`:
      - `ROLE_xxx` dari roles (existing behavior)
      - `ENTITY:ACTION` dari permissions (baru)
-- [ ] Perhatikan max 120 lines/file — pecah ke helper `PermissionInflater` jika perlu
+- [x] Perhatikan max 120 lines/file — pecah ke helper `PermissionInflater` jika perlu
 
 ### Step 5 — DevAuthFilter (semua permission hardcoded)
-- [ ] **WAJIB** `gitnexus_impact({target: "DevAuthFilter", direction: "upstream"})` sebelum edit
-- [ ] Di DevAuthFilter, selain inject `ROLE_ADMIN + ROLE_SYSTEM`, tambah inject semua permission
-- [ ] Ambil list semua permission dari `PrefPermissionRepository.findAll()` atau hardcode enum
+- [x] **WAJIB** `gitnexus_impact({target: "DevAuthFilter", direction: "upstream"})` sebelum edit
+- [x] Di DevAuthFilter, selain inject `ROLE_ADMIN + ROLE_SYSTEM`, tambah inject semua permission
+- [x] Ambil list semua permission dari `PrefPermissionRepository.findAll()` atau hardcode enum
 
   > **Pilihan**: query DB (selalu fresh) vs hardcode list (no DB dependency di dev). Direkomendasikan: **hardcode constant list** semua permission yang diketahui — sederhana, no DB coupling, cukup untuk dev.
 
 ### Step 5b — Fix bug default roles (`kepegawaian-qp0m`)
-- [ ] **WAJIB** `gitnexus_impact({target: "createUserWithDefaultRoles", direction: "upstream"})` sebelum edit
-- [ ] [`AppwriteClient.java:79`](../../src/main/java/id/perumdamts/kepegawaian/config/appwrite/AppwriteClient.java) — ubah:
+- [x] **WAJIB** `gitnexus_impact({target: "createUserWithDefaultRoles", direction: "upstream"})` sebelum edit
+- [x] [`AppwriteClient.java:79`](../../src/main/java/id/perumdamts/kepegawaian/config/appwrite/AppwriteClient.java) — ubah:
   ```diff
   - List<PrefRole> defaultRoles = List.of(new PrefRole("ADMIN"), new PrefRole("USER"));
   + List<PrefRole> defaultRoles = List.of(new PrefRole("USER"));
   ```
-- [ ] `bd close kepegawaian-qp0m`
+- [x] `bd close kepegawaian-qp0m`
 
 ### Step 6 — API Management Permission
-- [ ] Buat `controllers/system/PrefPermissionController`:
+- [x] Buat `controllers/system/PrefPermissionController`:
   - `GET /system/permissions` — list semua permission
   - `POST /system/roles/{roleId}/permissions/{permName}` — assign permission ke role
   - `DELETE /system/roles/{roleId}/permissions/{permName}` — revoke permission dari role
-- [ ] Proteksi semua endpoint dengan `@PreAuthorize("hasRole('SYSTEM')")`
+- [x] Proteksi semua endpoint dengan `@PreAuthorize("hasRole('SYSTEM')")`
 
 ### Step 7 — JOOQ Codegen
-- [ ] `./gradlew jooqCodegen` — regenerate JOOQ classes setelah schema change
-- [ ] Commit generated JOOQ files (ikuti convention repo)
+- [x] `./gradlew jooqCodegen` — regenerate JOOQ classes setelah schema change
+- [x] Commit generated JOOQ files (ikuti convention repo)
 
 ### Step 8 — Build & Test
-- [ ] `./gradlew clean compileJava` — zero error
-- [ ] `./gradlew test` — all green
-- [ ] `gitnexus_detect_changes()` — verify scope sesuai
-- [ ] `npx gitnexus analyze` — refresh index
-- [ ] `/graphify --update` — update knowledge graph
-- [ ] `bd close kepegawaian-9b6l`
-- [ ] Commit: `feat: RBAC permission granular per Role (kepegawaian-9b6l)`
-- [ ] `git pull --rebase` → `bd dolt push` → `git push`
+- [x] `./gradlew clean compileJava` — zero error
+- [x] `./gradlew test` — all green
+- [x] `gitnexus_detect_changes()` — verify scope sesuai
+- [x] `npx gitnexus analyze` — refresh index
+- [x] `/graphify --update` — update knowledge graph
+- [x] `bd close kepegawaian-9b6l`
+- [x] Commit: `feat: RBAC permission granular per Role (kepegawaian-9b6l)`
+- [x] `git pull --rebase` → `bd dolt push` → `git push`
 
 ---
 

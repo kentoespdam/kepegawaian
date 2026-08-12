@@ -356,6 +356,20 @@ public class PendidikanRecord extends UpdatableRecordImpl<PendidikanRecord> {
         return (Integer) get(23);
     }
 
+    /**
+     * Setter for <code>pendidikan.is_latest_biodata</code>.
+     */
+    public void setIsLatestBiodata(String value) {
+        set(24, value);
+    }
+
+    /**
+     * Getter for <code>pendidikan.is_latest_biodata</code>.
+     */
+    public String getIsLatestBiodata() {
+        return (String) get(24);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -379,7 +393,7 @@ public class PendidikanRecord extends UpdatableRecordImpl<PendidikanRecord> {
     /**
      * Create a detached, initialised PendidikanRecord
      */
-    public PendidikanRecord(Long id_, Byte changedStatus, Byte disetujui, String disetujuiOleh, String gelarBelakang, String gelarDepan, Double gpa, String institusi, Byte isLatest, Boolean isLulus, String jurusan, String kota, Integer tahunLulus, Integer tahunMasuk, LocalDateTime tanggalDisetujui, LocalDateTime tanggalPengajuan, String biodataId, Long jenjangId, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version) {
+    public PendidikanRecord(Long id_, Byte changedStatus, Byte disetujui, String disetujuiOleh, String gelarBelakang, String gelarDepan, Double gpa, String institusi, Byte isLatest, Boolean isLulus, String jurusan, String kota, Integer tahunLulus, Integer tahunMasuk, LocalDateTime tanggalDisetujui, LocalDateTime tanggalPengajuan, String biodataId, Long jenjangId, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version, String isLatestBiodata) {
         super(Pendidikan.PENDIDIKAN);
 
         setId(id_);
@@ -406,6 +420,7 @@ public class PendidikanRecord extends UpdatableRecordImpl<PendidikanRecord> {
         setUpdatedAt(updatedAt);
         setUpdatedBy(updatedBy);
         setVersion(version);
+        setIsLatestBiodata(isLatestBiodata);
         resetChangedOnNotNull();
     }
 }

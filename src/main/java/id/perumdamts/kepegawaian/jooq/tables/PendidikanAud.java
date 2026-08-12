@@ -182,6 +182,11 @@ public class PendidikanAud extends TableImpl<PendidikanAudRecord> {
      */
     public final TableField<PendidikanAudRecord, Long> JENJANG_ID = createField(DSL.name("jenjang_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
+    /**
+     * The column <code>pendidikan_aud.jenjang_pendidikan_id</code>.
+     */
+    public final TableField<PendidikanAudRecord, Long> JENJANG_PENDIDIKAN_ID = createField(DSL.name("jenjang_pendidikan_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
+
     private PendidikanAud(Name alias, Table<PendidikanAudRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }

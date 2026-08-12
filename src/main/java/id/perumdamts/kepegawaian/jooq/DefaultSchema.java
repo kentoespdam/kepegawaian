@@ -72,7 +72,9 @@ import id.perumdamts.kepegawaian.jooq.tables.Pendidikan;
 import id.perumdamts.kepegawaian.jooq.tables.PendidikanAud;
 import id.perumdamts.kepegawaian.jooq.tables.PengalamanKerja;
 import id.perumdamts.kepegawaian.jooq.tables.PengalamanKerjaAud;
+import id.perumdamts.kepegawaian.jooq.tables.PrefPermission;
 import id.perumdamts.kepegawaian.jooq.tables.PrefRole;
+import id.perumdamts.kepegawaian.jooq.tables.PrefRolePermission;
 import id.perumdamts.kepegawaian.jooq.tables.Profesi;
 import id.perumdamts.kepegawaian.jooq.tables.ProfilKeluarga;
 import id.perumdamts.kepegawaian.jooq.tables.ProfilKeluargaAud;
@@ -458,9 +460,19 @@ public class DefaultSchema extends SchemaImpl {
     public final PengalamanKerjaAud PENGALAMAN_KERJA_AUD = PengalamanKerjaAud.PENGALAMAN_KERJA_AUD;
 
     /**
+     * The table <code>pref_permission</code>.
+     */
+    public final PrefPermission PREF_PERMISSION = PrefPermission.PREF_PERMISSION;
+
+    /**
      * The table <code>pref_role</code>.
      */
     public final PrefRole PREF_ROLE = PrefRole.PREF_ROLE;
+
+    /**
+     * The table <code>pref_role_permission</code>.
+     */
+    public final PrefRolePermission PREF_ROLE_PERMISSION = PrefRolePermission.PREF_ROLE_PERMISSION;
 
     /**
      * The table <code>profesi</code>.
@@ -656,7 +668,9 @@ public class DefaultSchema extends SchemaImpl {
             PendidikanAud.PENDIDIKAN_AUD,
             PengalamanKerja.PENGALAMAN_KERJA,
             PengalamanKerjaAud.PENGALAMAN_KERJA_AUD,
+            PrefPermission.PREF_PERMISSION,
             PrefRole.PREF_ROLE,
+            PrefRolePermission.PREF_ROLE_PERMISSION,
             Profesi.PROFESI,
             ProfilKeluarga.PROFIL_KELUARGA,
             ProfilKeluargaAud.PROFIL_KELUARGA_AUD,

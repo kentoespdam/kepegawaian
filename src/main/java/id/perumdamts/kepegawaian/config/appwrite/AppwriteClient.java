@@ -76,7 +76,7 @@ public class AppwriteClient {
 
         createUser(user);
 
-        List<PrefRole> defaultRoles = List.of(new PrefRole("ADMIN"), new PrefRole("USER"));
+        List<PrefRole> defaultRoles = List.of(new PrefRole("USER"));
         updatePrefs(userId, defaultRoles);
     }
 

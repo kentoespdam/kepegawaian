@@ -181,6 +181,11 @@ public class Pendidikan extends TableImpl<PendidikanRecord> {
      */
     public final TableField<PendidikanRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
+    /**
+     * The column <code>pendidikan.is_latest_biodata</code>.
+     */
+    public final TableField<PendidikanRecord, String> IS_LATEST_BIODATA = createField(DSL.name("is_latest_biodata"), SQLDataType.VARCHAR(255), this, "");
+
     private Pendidikan(Name alias, Table<PendidikanRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }
@@ -265,7 +270,7 @@ public class Pendidikan extends TableImpl<PendidikanRecord> {
 
     @Override
     public List<UniqueKey<PendidikanRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.KEY_PENDIDIKAN_UK_DDK_BIO_ID_JJG_ID_TAHUN_MASUK);
+        return Arrays.asList(Keys.KEY_PENDIDIKAN_UK_DDK_BIO_ID_JJG_ID_TAHUN_MASUK, Keys.KEY_PENDIDIKAN_UK_DDK_ISLATEST_BIODATA);
     }
 
     @Override

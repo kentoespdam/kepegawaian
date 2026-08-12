@@ -72,7 +72,9 @@ import id.perumdamts.kepegawaian.jooq.tables.Pendidikan;
 import id.perumdamts.kepegawaian.jooq.tables.PendidikanAud;
 import id.perumdamts.kepegawaian.jooq.tables.PengalamanKerja;
 import id.perumdamts.kepegawaian.jooq.tables.PengalamanKerjaAud;
+import id.perumdamts.kepegawaian.jooq.tables.PrefPermission;
 import id.perumdamts.kepegawaian.jooq.tables.PrefRole;
+import id.perumdamts.kepegawaian.jooq.tables.PrefRolePermission;
 import id.perumdamts.kepegawaian.jooq.tables.Profesi;
 import id.perumdamts.kepegawaian.jooq.tables.ProfilKeluarga;
 import id.perumdamts.kepegawaian.jooq.tables.ProfilKeluargaAud;
@@ -444,9 +446,19 @@ public class Tables {
     public static final PengalamanKerjaAud PENGALAMAN_KERJA_AUD = PengalamanKerjaAud.PENGALAMAN_KERJA_AUD;
 
     /**
+     * The table <code>pref_permission</code>.
+     */
+    public static final PrefPermission PREF_PERMISSION = PrefPermission.PREF_PERMISSION;
+
+    /**
      * The table <code>pref_role</code>.
      */
     public static final PrefRole PREF_ROLE = PrefRole.PREF_ROLE;
+
+    /**
+     * The table <code>pref_role_permission</code>.
+     */
+    public static final PrefRolePermission PREF_ROLE_PERMISSION = PrefRolePermission.PREF_ROLE_PERMISSION;
 
     /**
      * The table <code>profesi</code>.

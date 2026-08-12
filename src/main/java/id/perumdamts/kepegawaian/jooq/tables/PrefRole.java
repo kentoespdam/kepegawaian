@@ -6,15 +6,21 @@ package id.perumdamts.kepegawaian.jooq.tables;
 
 import id.perumdamts.kepegawaian.jooq.DefaultSchema;
 import id.perumdamts.kepegawaian.jooq.Keys;
+import id.perumdamts.kepegawaian.jooq.tables.PrefPermission.PrefPermissionPath;
+import id.perumdamts.kepegawaian.jooq.tables.PrefRolePermission.PrefRolePermissionPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.PrefRoleRecord;
 
 import java.util.Collection;
 
 import org.jooq.Condition;
 import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.InverseForeignKey;
 import org.jooq.Name;
+import org.jooq.Path;
 import org.jooq.PlainSQL;
 import org.jooq.QueryPart;
+import org.jooq.Record;
 import org.jooq.SQL;
 import org.jooq.Schema;
 import org.jooq.Select;
@@ -83,6 +89,39 @@ public class PrefRole extends TableImpl<PrefRoleRecord> {
         this(DSL.name("pref_role"), null);
     }
 
+    public <O extends Record> PrefRole(Table<O> path, ForeignKey<O, PrefRoleRecord> childPath, InverseForeignKey<O, PrefRoleRecord> parentPath) {
+        super(path, childPath, parentPath, PREF_ROLE);
+    }
+
+    /**
+     * A subtype implementing {@link Path} for simplified path-based joins.
+     */
+    public static class PrefRolePath extends PrefRole implements Path<PrefRoleRecord> {
+
+        private static final long serialVersionUID = 1L;
+        public <O extends Record> PrefRolePath(Table<O> path, ForeignKey<O, PrefRoleRecord> childPath, InverseForeignKey<O, PrefRoleRecord> parentPath) {
+            super(path, childPath, parentPath);
+        }
+        private PrefRolePath(Name alias, Table<PrefRoleRecord> aliased) {
+            super(alias, aliased);
+        }
+
+        @Override
+        public PrefRolePath as(String alias) {
+            return new PrefRolePath(DSL.name(alias), this);
+        }
+
+        @Override
+        public PrefRolePath as(Name alias) {
+            return new PrefRolePath(alias, this);
+        }
+
+        @Override
+        public PrefRolePath as(Table<?> alias) {
+            return new PrefRolePath(alias.getQualifiedName(), this);
+        }
+    }
+
     @Override
     public Schema getSchema() {
         return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
@@ -91,6 +130,27 @@ public class PrefRole extends TableImpl<PrefRoleRecord> {
     @Override
     public UniqueKey<PrefRoleRecord> getPrimaryKey() {
         return Keys.KEY_PREF_ROLE_PRIMARY;
+    }
+
+    private transient PrefRolePermissionPath _prefRolePermission;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>pref_role_permission</code> table
+     */
+    public PrefRolePermissionPath prefRolePermission() {
+        if (_prefRolePermission == null)
+            _prefRolePermission = new PrefRolePermissionPath(this, null, Keys.FK_RP_RL_RL_ID.getInverseKey());
+
+        return _prefRolePermission;
+    }
+
+    /**
+     * Get the implicit many-to-many join path to the
+     * <code>pref_permission</code> table
+     */
+    public PrefPermissionPath prefPermission() {
+        return prefRolePermission().prefPermission();
     }
 
     @Override
