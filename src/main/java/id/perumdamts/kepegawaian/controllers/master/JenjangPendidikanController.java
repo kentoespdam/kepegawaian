@@ -40,28 +40,28 @@ public class JenjangPendidikanController {
         return CustomResult.any(queryService.getById(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:WRITE')")
     @PostMapping
     public ResponseEntity<SavedResult<Long>> save(@Valid @RequestBody JenjangPendidikanPostRequest request) {
         var entity = commandService.create(request);
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity.getId()));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:WRITE')")
     @PostMapping("/batch")
     public ResponseEntity<SavedResult<List<Long>>> saveBatch(@Valid @RequestBody List<@Valid JenjangPendidikanPostRequest> requests) {
         var entities = commandService.saveBatch(requests);
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entities.stream().map(MasterBaseEntity::getId).toList()));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:WRITE')")
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<Long>> update(@PathVariable Long id, @Valid @RequestBody JenjangPendidikanPutRequest request) {
         var entity = commandService.update(id, request);
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity.getId()));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:DELETE')")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> deleteById(@PathVariable Long id) {
         return CustomResult.delete(commandService.delete(id));

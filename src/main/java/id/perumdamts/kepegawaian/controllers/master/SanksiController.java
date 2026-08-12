@@ -39,28 +39,28 @@ public class SanksiController {
         return CustomResult.list(query.findJenisSpList(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:WRITE')")
     @PostMapping
     public ResponseEntity<SavedResult<Long>> save(@Valid @RequestBody SanksiPostRequest request) {
         var entity = command.create(request);
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity.getId()));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:WRITE')")
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<Long>> update(@PathVariable Long id, @Valid @RequestBody SanksiPutRequest request) {
         var entity = command.update(id, request);
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity.getId()));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:WRITE')")
     @PatchMapping("/{id}/jenis-sp")
     public ResponseEntity<SavedResult<Long>> updateJenisSp(@PathVariable Long id, @RequestBody PatchSanksiJenisSpRequest request) {
         var entity = command.updateJenisSp(id, request.getJenisSpId());
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity.getId()));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:DELETE')")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> deleteById(@PathVariable Long id) {
         return CustomResult.delete(command.delete(id));

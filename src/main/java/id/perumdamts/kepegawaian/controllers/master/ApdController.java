@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.*;
 public class ApdController {
     private final ApdCommandService command;
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:WRITE')")
     @PostMapping("/master/profesi/{profesiId}/apd")
     public ResponseEntity<SavedResult<Long>> save(@PathVariable Long profesiId,
                                                    @Valid @RequestBody ApdPostRequest request) {
         return CustomResult.save(command.create(profesiId, request));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:WRITE')")
     @PutMapping("/master/profesi/{profesiId}/apd/{id}")
     public ResponseEntity<SavedResult<Long>> update(@PathVariable Long profesiId,
                                                      @PathVariable Long id,
@@ -31,7 +31,7 @@ public class ApdController {
         return CustomResult.save(command.update(id, profesiId, request));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:DELETE')")
     @DeleteMapping("/master/profesi/{profesiId}/apd/{id}")
     public ResponseEntity<DeletedResult> delete(@PathVariable Long profesiId,
                                                  @PathVariable Long id) {

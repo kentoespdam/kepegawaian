@@ -168,6 +168,11 @@ Controller lama yang sudah pakai `hasRole('ADMIN')` **tidak perlu dimigrasi seka
 
 Migrasi per-modul dikerjakan di issue terpisah (tidak di scope issue ini).
 
+**Status migrasi per-modul:**
+
+- [x] **master** — 17 controller, 54 guard → dual-mode `hasRole('ADMIN') or hasAuthority('MASTER:WRITE'|'MASTER:DELETE')` (kepegawaian-rcpo)
+- [ ] pegawai, kepegawaian, profil, cuti, penggajian — belum dimigrasi
+
 ---
 
 ## Referensi
