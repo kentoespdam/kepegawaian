@@ -46,15 +46,18 @@ public final class BiodataMapper {
     }
 
     public static Biodata patchEntity(Biodata entity, BiodataPatchRequest request) {
-        entity.setNama(request.getNama());
-        entity.setAlamat(request.getAlamat());
-        entity.setJenisKelamin(request.getJenisKelamin());
-        entity.setStatusKawin(request.getStatusKawin());
-        entity.setAgama(request.getAgama());
-        entity.setTempatLahir(request.getTempatLahir());
-        entity.setTanggalLahir(request.getTanggalLahir());
-        entity.setIbuKandung(request.getIbuKandung());
-        entity.setTelp(request.getTelp());
+        // Guard null: field yang tidak dikirim pada PATCH parsial (null) tidak boleh
+        // menimpa nilai lama — hindari data loss (bd kepegawaian-g2ks).
+        // Konsekuensi: field tidak bisa di-reset ke NULL lewat PATCH (string: pakai "").
+        if (request.getNama() != null) entity.setNama(request.getNama());
+        if (request.getAlamat() != null) entity.setAlamat(request.getAlamat());
+        if (request.getJenisKelamin() != null) entity.setJenisKelamin(request.getJenisKelamin());
+        if (request.getStatusKawin() != null) entity.setStatusKawin(request.getStatusKawin());
+        if (request.getAgama() != null) entity.setAgama(request.getAgama());
+        if (request.getTempatLahir() != null) entity.setTempatLahir(request.getTempatLahir());
+        if (request.getTanggalLahir() != null) entity.setTanggalLahir(request.getTanggalLahir());
+        if (request.getIbuKandung() != null) entity.setIbuKandung(request.getIbuKandung());
+        if (request.getTelp() != null) entity.setTelp(request.getTelp());
         return entity;
     }
 }
