@@ -302,6 +302,19 @@ Semua field opsional (PATCH parsial); yang tidak dikirim tidak berubah. Nilai en
 5. `ADMIN` dan `HRD` (sejak seed V31, HRD punya `PROFIL:APPROVE`) bisa akses `/admin/profil/{id}`.
 6. Principal `DEV` (dev tanpa token) tidak bisa pakai `PATCH /profil` (tidak punya akun riil) — gunakan `/admin/profil/{id}` atau Bearer token asli untuk menguji alur approval.
 
+### 5.1 Modul profil lainnya (pendidikan, keluarga, keahlian, pelatihan, kartu-identitas, pengalaman-kerja, lampiran)
+
+> ⚠️ **Behavior change**: sejak split ini, endpoint self (`/profil/{entity}/...`) **selalu** memasukkan perubahan ke approval queue (`changedStatus=true`) — **termasuk untuk user ADMIN/HRD**. Admin yang mengedit data pegawai harus lewat endpoint admin di bawah, bukan endpoint self.
+
+| Konteks | Endpoint (pola per entity) | Perilaku |
+|---------|---------------------------|----------|
+| **Self** | `POST /profil/{entity}` · `PUT /profil/{entity}/{id}` · `DELETE /profil/{entity}/{id}` (+ `/lampiran` add/delete) — endpoint existing | **Selalu** `changedStatus=true` → approval queue. Request tetap membawa `biodataId`/`nik` di body. |
+| **Admin** | `POST /admin/profil/{entity}` · `PUT /admin/profil/{entity}/{id}` · `DELETE /admin/profil/{entity}/{id}` (+ `/lampiran` add/delete) — **baru** | **Selalu** `changedStatus=false` (langsung stable). Guard: `hasRole('ADMIN') or hasAuthority('PROFIL:APPROVE')` → 403 tanpa itu. |
+
+Path entity: `pendidikan`, `keluarga`, `keahlian`, `pelatihan`, `kartu-identitas`, `pengalaman-kerja`. Request body sama persis dengan endpoint self.
+
+> ⚠️ **Gap yang diketahui (issue follow-up)**: endpoint self **belum** memverifikasi bahwa `biodataId`/`nik` di body milik principal — user login bisa mengedit data profil milik orang lain lewat jalur self. Ownership enforcement direncanakan di issue terpisah. Sampai itu selesai, jangan andalkan endpoint self untuk isolasi data antar pegawai.
+
 ---
 
 ## 6. Envelope Respons Standar (referensi)
@@ -349,4 +362,5 @@ Semua endpoint memakai envelope berikut (kecuali error handler khusus):
 - [ ] Halaman **manajemen user**: user baru hanya role `USER`; pastikan ada UI assign role eksplisit via `PATCH /system/users/pref/{userId}` (section 3).
 - [ ] Halaman **approval profil**: tidak ada perubahan sekarang; siapkan logic sembunyikan tombol approve saat guard `PROFIL:APPROVE` aktif (section 4.1 note).
 - [x] **Routing split profil** (`/admin/profil/{id}` vs `/profil`) — **sudah LIVE**; `PATCH /profil/biodata/{id}` lama sudah dihapus (section 5).
+- [x] **Routing admin vs self untuk 6 modul profil lain** — admin pindah ke `/admin/profil/{entity}/...`, self tetap di `/profil/{entity}/...` (selalu approval) (section 5.1).
 - [x] **UI berbasis permission**: pakai `GET /account/me` (roles + permissions user login) — sudah live, lihat catatan di section 1.

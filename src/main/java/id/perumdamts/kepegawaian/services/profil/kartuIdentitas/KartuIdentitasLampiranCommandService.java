@@ -17,16 +17,16 @@ public class KartuIdentitasLampiranCommandService {
     private final LampiranProfilCommandService lampiranProfilCommandService;
 
     @Transactional
-    public Long addLampiran(KartuIdentitasLampiranPostRequest request) {
+    public Long addLampiran(KartuIdentitasLampiranPostRequest request, boolean requiresApproval) {
         if (!repository.existsById(request.getRefId()))
             throw new NotFoundException(UNKNOWN_KARTU_IDENTITAS);
-        lampiranProfilCommandService.addLampiran(request);
+        lampiranProfilCommandService.addLampiran(request, requiresApproval);
         return request.getRefId();
     }
 
     @Transactional
-    public boolean deleteLampiran(Long id) {
-        lampiranProfilCommandService.deleteById(id);
+    public boolean deleteLampiran(Long id, boolean requiresApproval) {
+        lampiranProfilCommandService.deleteById(id, requiresApproval);
         return true;
     }
 }

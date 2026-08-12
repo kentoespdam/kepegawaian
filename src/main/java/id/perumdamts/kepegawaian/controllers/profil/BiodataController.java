@@ -46,7 +46,7 @@ public class BiodataController {
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<String>> update(@PathVariable String id, @Valid @RequestBody BiodataPutRequest request) {
-        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.update(id, request)));
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.update(id, request, false)));
     }
 
     @GetMapping("/{id}/dashboard")

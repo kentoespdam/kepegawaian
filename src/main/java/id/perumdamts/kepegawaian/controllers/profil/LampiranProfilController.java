@@ -25,6 +25,6 @@ public class LampiranProfilController {
     // approval kini lewat antrian ProfileUpdate (PUT /profil/profil-update/{id}).
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<DeletedResult> delete(@PathVariable Long id) {
-        return CustomResult.delete(commandService.deleteById(id));
+        return CustomResult.delete(commandService.deleteById(id, true));
     }
 }

@@ -14,7 +14,6 @@ import id.perumdamts.kepegawaian.mapper.profil.keluarga.ProfilKeluargaMapper;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JenjangPendidikanRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.ProfilKeluargaRepository;
-import id.perumdamts.kepegawaian.services.profil.ChangedStatusResolver;
 import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.history.RevisionMetadata;
@@ -31,25 +30,24 @@ public class ProfilKeluargaCommandService {
     private final ProfilKeluargaRepository repository;
     private final BiodataRepository biodataRepository;
     private final JenjangPendidikanRepository jenjangPendidikanRepository;
-    private final ChangedStatusResolver resolver;
     private final ProfileUpdateService profileUpdateService;
 
     @Transactional
-    public SavedStatus<Long> create(ProfilKeluargaPostRequest request) {
+    public SavedStatus<Long> create(ProfilKeluargaPostRequest request, boolean requiresApproval) {
         Biodata biodata = biodataRepository.findById(request.getBiodataId()).orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
         repository.findActiveByBiodataIdAndNamaAndTanggalLahir(request.getBiodataId(), request.getNama(), request.getTanggalLahir())
                 .ifPresent(e -> { throw new ConflictException("Profil Keluarga aktif dengan nama dan tanggal lahir sama sudah ada"); });
 
         JenjangPendidikan jenjangPendidikan = resolveJenjangPendidikan(request.getPendidikanId());
         ProfilKeluarga entity = ProfilKeluargaMapper.toEntity(request, biodata, jenjangPendidikan);
-        entity.setChangedStatus(resolver.requiresApproval());
+        entity.setChangedStatus(requiresApproval);
         ProfilKeluarga saved = repository.save(entity);
         handleRevisionUpdate(saved, RevisionMetadata.RevisionType.INSERT);
         return SavedStatus.build(ESaveStatus.SUCCESS, saved.getId());
     }
 
     @Transactional
-    public SavedStatus<Long> update(Long id, ProfilKeluargaPutRequest request) {
+    public SavedStatus<Long> update(Long id, ProfilKeluargaPutRequest request, boolean requiresApproval) {
         ProfilKeluarga entity = repository.findById(id).orElseThrow(() -> new NotFoundException(UNKNOWN_KELUARGA));
         if (Boolean.TRUE.equals(entity.getChangedStatus())) {
             throw new ConflictException("Data Keluarga sedang dalam proses pengajuan");
@@ -71,17 +69,17 @@ public class ProfilKeluargaCommandService {
         JenjangPendidikan jenjangPendidikan = resolveJenjangPendidikan(request.getPendidikanId());
         ProfilKeluarga updated = ProfilKeluargaMapper.updateEntity(entity, request, jenjangPendidikan);
         updated.setBiodata(biodata);
-        updated.setChangedStatus(resolver.requiresApproval());
+        updated.setChangedStatus(requiresApproval);
         ProfilKeluarga saved = repository.save(updated);
         handleRevisionUpdate(saved, RevisionMetadata.RevisionType.UPDATE);
         return SavedStatus.build(ESaveStatus.SUCCESS, saved.getId());
     }
 
     @Transactional
-    public boolean delete(Long id) {
+    public boolean delete(Long id, boolean requiresApproval) {
         ProfilKeluarga entity = repository.findById(id).orElseThrow(() -> new NotFoundException(UNKNOWN_KELUARGA));
         entity.setIsDeleted(true);
-        entity.setChangedStatus(resolver.requiresApproval());
+        entity.setChangedStatus(requiresApproval);
         ProfilKeluarga saved = repository.save(entity);
         handleRevisionUpdate(saved, RevisionMetadata.RevisionType.DELETE);
         return true;

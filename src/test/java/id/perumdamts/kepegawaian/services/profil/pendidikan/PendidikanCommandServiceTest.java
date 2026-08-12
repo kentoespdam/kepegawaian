@@ -28,8 +28,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 /**
- * ADR-0035: disetujui ditentukan server berdasarkan role — HRD/ADMIN auto-approve + stamp,
- * selain itu tetap false (masuk antrian). Unit test tanpa DB (Mockito).
+ * ADR-0035 + ADR-0038: disetujui ditentukan konteks endpoint — admin (requiresApproval=false)
+ * auto-approve + stamp; self-service (true) tetap disetujui=false (masuk antrian).
+ * Unit test tanpa DB (Mockito).
  */
 @ExtendWith(MockitoExtension.class)
 class PendidikanCommandServiceTest {
@@ -58,34 +59,32 @@ class PendidikanCommandServiceTest {
         when(repository.findAnyByUniqueKey(any(), any(), any())).thenReturn(Optional.empty());
     }
 
-    private Pendidikan saveAndCapture() {
+    private Pendidikan saveAndCapture(boolean requiresApproval) {
         ArgumentCaptor<Pendidikan> captor = ArgumentCaptor.forClass(Pendidikan.class);
         when(repository.save(captor.capture())).thenAnswer(inv -> inv.getArgument(0));
-        service.create(request());
+        service.create(request(), requiresApproval);
         return captor.getValue();
     }
 
     @Test
-    void hrdWriteAutoApprovesAndStamps() {
-        when(resolver.requiresApproval()).thenReturn(false);
+    void adminWriteAutoApprovesAndStamps() {
         when(resolver.currentUserId()).thenReturn("hrd-1");
         stubLookups();
 
-        Pendidikan saved = saveAndCapture();
+        Pendidikan saved = saveAndCapture(false);
 
-        assertTrue(saved.getDisetujui(), "HRD write must auto-approve");
-        assertNotNull(saved.getTanggalDisetujui(), "HRD write must stamp approval date");
+        assertTrue(saved.getDisetujui(), "admin write must auto-approve");
+        assertNotNull(saved.getTanggalDisetujui(), "admin write must stamp approval date");
         assertNotNull(saved.getTanggalPengajuan(), "tanggalPengajuan must be set on create");
-        assertFalse(saved.getChangedStatus(), "HRD write is stable (no approval queue)");
+        assertFalse(saved.getChangedStatus(), "admin write is stable (no approval queue)");
         assertEquals("hrd-1", saved.getDisetujuiOleh());
     }
 
     @Test
     void selfServiceWriteStaysUnapproved() {
-        when(resolver.requiresApproval()).thenReturn(true);
         stubLookups();
 
-        Pendidikan saved = saveAndCapture();
+        Pendidikan saved = saveAndCapture(true);
 
         assertFalse(saved.getDisetujui(), "self-service write must stay disetujui=false");
         assertNull(saved.getTanggalDisetujui(), "no approval stamp while pending");

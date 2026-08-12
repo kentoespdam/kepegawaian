@@ -38,7 +38,7 @@ public class PendidikanCommandService {
     private final ChangedStatusResolver resolver;
 
     @Transactional
-    public Long create(PendidikanPostRequest request) {
+    public Long create(PendidikanPostRequest request, boolean requiresApproval) {
         Biodata biodata = biodataRepository.findById(request.getBiodataId()).orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
         JenjangPendidikan jenjangPendidikan = jenjangPendidikanRepository.findById(request.getJenjangPendidikanId()).orElseThrow(() -> new NotFoundException(UNKNOWN_JENJANG));
 
@@ -57,7 +57,6 @@ public class PendidikanCommandService {
         pendidikan.setGpa(request.getGpa());
         pendidikan.setIsLatest(request.getIsLatest());
         pendidikan.setIsDeleted(false);
-        boolean requiresApproval = resolver.requiresApproval();
         pendidikan.setChangedStatus(requiresApproval);
         applyApprovalState(pendidikan, requiresApproval);
 
@@ -68,13 +67,12 @@ public class PendidikanCommandService {
     }
 
     @Transactional
-    public Long update(Long id, PendidikanPutRequest request) {
+    public Long update(Long id, PendidikanPutRequest request, boolean requiresApproval) {
         Pendidikan pendidikan = repository.findById(id).orElseThrow(() -> new NotFoundException(UNKNOWN_PENDIDIKAN));
         Biodata biodata = biodataRepository.findById(request.getBiodataId()).orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
         JenjangPendidikan jenjangPendidikan = jenjangPendidikanRepository.findById(request.getJenjangPendidikanId()).orElseThrow(() -> new NotFoundException(UNKNOWN_JENJANG));
 
         Pendidikan entity = PendidikanMapper.updateEntity(pendidikan, request, biodata, jenjangPendidikan);
-        boolean requiresApproval = resolver.requiresApproval();
         entity.setChangedStatus(requiresApproval);
         applyApprovalState(entity, requiresApproval);
 
@@ -85,10 +83,10 @@ public class PendidikanCommandService {
     }
 
     @Transactional
-    public boolean delete(Long id) {
+    public boolean delete(Long id, boolean requiresApproval) {
         Pendidikan entity = repository.findById(id).orElseThrow(() -> new NotFoundException(UNKNOWN_PENDIDIKAN));
         entity.setIsDeleted(true);
-        entity.setChangedStatus(resolver.requiresApproval());
+        entity.setChangedStatus(requiresApproval);
         repository.save(entity);
 
         handleRevisionUpdate(entity, RevisionMetadata.RevisionType.DELETE);

@@ -13,7 +13,6 @@ import id.perumdamts.kepegawaian.mapper.profil.pelatihan.PelatihanMapper;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JenisPelatihanRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.PelatihanRepository;
-import id.perumdamts.kepegawaian.services.profil.ChangedStatusResolver;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilCommandService;
 import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
 import lombok.RequiredArgsConstructor;
@@ -33,10 +32,9 @@ public class PelatihanCommandService {
     private final JenisPelatihanRepository jenisPelatihanRepository;
     private final LampiranProfilCommandService lampiranProfilCommandService;
     private final ProfileUpdateService profileUpdateService;
-    private final ChangedStatusResolver resolver;
 
     @Transactional
-    public Long create(PelatihanPostRequest request) {
+    public Long create(PelatihanPostRequest request, boolean requiresApproval) {
         Biodata biodata = biodataRepository.findById(request.getBiodataId())
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
         JenisPelatihan jenisPelatihan = jenisPelatihanRepository
@@ -44,7 +42,7 @@ public class PelatihanCommandService {
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_JENIS_PELATIHAN));
 
         Pelatihan entity = PelatihanMapper.toEntity(request, biodata, jenisPelatihan);
-        entity.setChangedStatus(resolver.requiresApproval());
+        entity.setChangedStatus(requiresApproval);
 
         Pelatihan saved = repository.save(entity);
         handleRevisionUpdate(saved, RevisionMetadata.RevisionType.INSERT);
@@ -52,7 +50,7 @@ public class PelatihanCommandService {
     }
 
     @Transactional
-    public Long update(Long id, PelatihanPutRequest request) {
+    public Long update(Long id, PelatihanPutRequest request, boolean requiresApproval) {
         Pelatihan entity = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_PELATIHAN));
         Biodata biodata = biodataRepository.findById(request.getBiodataId())
@@ -62,7 +60,7 @@ public class PelatihanCommandService {
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_JENIS_PELATIHAN));
 
         Pelatihan updated = PelatihanMapper.updateEntity(entity, request, biodata, jenisPelatihan);
-        updated.setChangedStatus(resolver.requiresApproval());
+        updated.setChangedStatus(requiresApproval);
 
         Pelatihan saved = repository.save(updated);
         handleRevisionUpdate(saved, RevisionMetadata.RevisionType.UPDATE);
@@ -70,11 +68,11 @@ public class PelatihanCommandService {
     }
 
     @Transactional
-    public boolean delete(Long id) {
+    public boolean delete(Long id, boolean requiresApproval) {
         Pelatihan entity = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_PELATIHAN));
         entity.setIsDeleted(true);
-        entity.setChangedStatus(resolver.requiresApproval());
+        entity.setChangedStatus(requiresApproval);
         repository.save(entity);
         handleRevisionUpdate(entity, RevisionMetadata.RevisionType.DELETE);
         lampiranProfilCommandService.deleteByRefId(EJenisLampiranProfil.PROFIL_PELATIHAN, id);
@@ -84,16 +82,16 @@ public class PelatihanCommandService {
 
 
     @Transactional
-    public Long addLampiran(PelatihanLampiranPostRequest request) {
+    public Long addLampiran(PelatihanLampiranPostRequest request, boolean requiresApproval) {
         if (!repository.existsById(request.getRefId()))
             throw new NotFoundException(UNKNOWN_PELATIHAN);
-        lampiranProfilCommandService.addLampiran(request);
+        lampiranProfilCommandService.addLampiran(request, requiresApproval);
         return request.getRefId();
     }
 
     @Transactional
-    public boolean deleteLampiran(Long id) {
-        lampiranProfilCommandService.deleteById(id);
+    public boolean deleteLampiran(Long id, boolean requiresApproval) {
+        lampiranProfilCommandService.deleteById(id, requiresApproval);
         return true;
     }
 

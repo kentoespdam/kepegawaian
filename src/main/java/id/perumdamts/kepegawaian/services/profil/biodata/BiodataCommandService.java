@@ -60,7 +60,7 @@ public class BiodataCommandService {
     }
 
     @Transactional
-    public String update(String nik, BiodataPutRequest request) {
+    public String update(String nik, BiodataPutRequest request, boolean requiresApproval) {
         Biodata entity = repository.findById(nik)
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
 
@@ -71,9 +71,9 @@ public class BiodataCommandService {
         }
 
         BiodataMapper.updateEntity(entity, request, jenjang);
-        entity.setChangedStatus(resolver.requiresApproval());
+        entity.setChangedStatus(requiresApproval);
         repository.save(entity);
-        if (Boolean.TRUE.equals(entity.getChangedStatus())) {
+        if (requiresApproval) {
             profileUpdateService.create(nik, RevisionMetadata.RevisionType.UPDATE, EProfileUpdateTable.BIODATA);
         }
         return entity.getNik();

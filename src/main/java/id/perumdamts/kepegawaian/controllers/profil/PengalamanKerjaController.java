@@ -35,17 +35,17 @@ public class PengalamanKerjaController {
 
     @PostMapping
     public ResponseEntity<SavedResult<Long>> save(@Valid @RequestBody PengalamanKerjaPostRequest request) {
-        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.create(request)));
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.create(request, true)));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<Long>> update(@PathVariable Long id, @Valid @RequestBody PengalamanKerjaPutRequest request) {
-        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.update(id, request)));
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.update(id, request, true)));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> delete(@PathVariable Long id) {
-        return CustomResult.delete(command.delete(id));
+        return CustomResult.delete(command.delete(id, true));
     }
 
     // Lampiran
@@ -67,11 +67,11 @@ public class PengalamanKerjaController {
 
     @PostMapping(value = "/lampiran", consumes = "multipart/form-data")
     public ResponseEntity<SavedResult<Long>> saveLampiran(@Valid @ModelAttribute PengalamanLampiranPostRequest request) {
-        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.addLampiran(request)));
+        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.addLampiran(request, true)));
     }
 
     @DeleteMapping("/lampiran/{id}")
     public ResponseEntity<DeletedResult> deleteLampiran(@PathVariable Long id) {
-        return CustomResult.delete(command.deleteLampiran(id));
+        return CustomResult.delete(command.deleteLampiran(id, true));
     }
 }

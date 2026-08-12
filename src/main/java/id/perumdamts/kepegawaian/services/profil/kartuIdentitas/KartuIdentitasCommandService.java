@@ -12,7 +12,6 @@ import id.perumdamts.kepegawaian.mapper.profil.kartuIdentitas.KartuIdentitasMapp
 import id.perumdamts.kepegawaian.repositories.master.jpa.JenisKitasRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.KartuIdentitasRepository;
-import id.perumdamts.kepegawaian.services.profil.ChangedStatusResolver;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilCommandService;
 import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
 import lombok.RequiredArgsConstructor;
@@ -34,10 +33,9 @@ public class KartuIdentitasCommandService {
     private final JenisKitasRepository jenisKitasRepository;
     private final LampiranProfilCommandService lampiranProfilCommandService;
     private final ProfileUpdateService profileUpdateService;
-    private final ChangedStatusResolver resolver;
 
     @Transactional
-    public Long create(KartuIdentitasPostRequest request) {
+    public Long create(KartuIdentitasPostRequest request, boolean requiresApproval) {
         Biodata biodata = biodataRepository.findById(request.getNik()).orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
         JenisKitas jenisKartu = jenisKitasRepository.findById(request.getJenisKartuId()).orElseThrow(() -> new NotFoundException(UNKNOWN_JENIS_KARTU));
 
@@ -50,29 +48,29 @@ public class KartuIdentitasCommandService {
         entity.setTanggalTerima(request.getTanggalTerima());
         entity.setNotes(request.getNotes());
         entity.setIsDeleted(false);
-        entity.setChangedStatus(resolver.requiresApproval());
+        entity.setChangedStatus(requiresApproval);
         KartuIdentitas saved = repository.save(entity);
         handleRevisionUpdate(saved, RevisionMetadata.RevisionType.INSERT);
         return saved.getId();
     }
 
     @Transactional
-    public Long update(Long id, KartuIdentitasPutRequest request) {
+    public Long update(Long id, KartuIdentitasPutRequest request, boolean requiresApproval) {
         KartuIdentitas entity = repository.findById(id).orElseThrow(() -> new NotFoundException(UNKNOWN_KARTU_IDENTITAS));
         Biodata biodata = biodataRepository.findById(request.getNik()).orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
         JenisKitas jenisKartu = jenisKitasRepository.findById(request.getJenisKartuId()).orElseThrow(() -> new NotFoundException(UNKNOWN_JENIS_KARTU));
         KartuIdentitasMapper.updateEntity(entity, request, biodata, jenisKartu);
-        entity.setChangedStatus(resolver.requiresApproval());
+        entity.setChangedStatus(requiresApproval);
         KartuIdentitas saved = repository.save(entity);
         handleRevisionUpdate(saved, RevisionMetadata.RevisionType.UPDATE);
         return saved.getId();
     }
 
     @Transactional
-    public boolean delete(Long id) {
+    public boolean delete(Long id, boolean requiresApproval) {
         KartuIdentitas entity = repository.findById(id).orElseThrow(() -> new NotFoundException(UNKNOWN_KARTU_IDENTITAS));
         entity.setIsDeleted(true);
-        entity.setChangedStatus(resolver.requiresApproval());
+        entity.setChangedStatus(requiresApproval);
         KartuIdentitas saved = repository.save(entity);
         handleRevisionUpdate(saved, RevisionMetadata.RevisionType.DELETE);
         lampiranProfilCommandService.deleteByRefId(EJenisLampiranProfil.KARTU_IDENTITAS, id);

@@ -17,17 +17,17 @@ public class PendidikanLampiranCommandService {
     private final LampiranProfilCommandService lampiranProfilCommandService;
 
     @Transactional
-    public Long addLampiran(PendidikanLampiranPostRequest request) {
+    public Long addLampiran(PendidikanLampiranPostRequest request, boolean requiresApproval) {
         boolean exists = repository.existsById(request.getRefId());
         if (!exists)
             throw new NotFoundException(UNKNOWN_PENDIDIKAN);
-        lampiranProfilCommandService.addLampiran(request);
+        lampiranProfilCommandService.addLampiran(request, requiresApproval);
         return request.getRefId();
     }
 
     @Transactional
-    public boolean deleteLampiran(Long id) {
-        lampiranProfilCommandService.deleteById(id);
+    public boolean deleteLampiran(Long id, boolean requiresApproval) {
+        lampiranProfilCommandService.deleteById(id, requiresApproval);
         return true;
     }
 }

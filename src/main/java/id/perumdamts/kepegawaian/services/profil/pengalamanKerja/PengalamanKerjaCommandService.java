@@ -11,7 +11,6 @@ import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.mapper.profil.pengalamanKerja.PengalamanKerjaMapper;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.PengalamanKerjaRepository;
-import id.perumdamts.kepegawaian.services.profil.ChangedStatusResolver;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilCommandService;
 import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
 import lombok.RequiredArgsConstructor;
@@ -29,38 +28,37 @@ public class PengalamanKerjaCommandService {
     private final BiodataRepository biodataRepository;
     private final LampiranProfilCommandService lampiranProfilCommandService;
     private final ProfileUpdateService profileUpdateService;
-    private final ChangedStatusResolver resolver;
 
     @Transactional
-    public Long create(PengalamanKerjaPostRequest request) {
+    public Long create(PengalamanKerjaPostRequest request, boolean requiresApproval) {
         Biodata biodata = biodataRepository.findById(request.getBiodataId())
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
         PengalamanKerja entity = PengalamanKerjaMapper.toEntity(request, biodata);
-        entity.setChangedStatus(resolver.requiresApproval());
+        entity.setChangedStatus(requiresApproval);
         PengalamanKerja save = repository.save(entity);
         handleRevisionUpdate(save, RevisionMetadata.RevisionType.INSERT);
         return save.getId();
     }
 
     @Transactional
-    public Long update(Long id, PengalamanKerjaPutRequest request) {
+    public Long update(Long id, PengalamanKerjaPutRequest request, boolean requiresApproval) {
         PengalamanKerja entity = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_PENGALAMAN_KERJA));
         Biodata biodata = biodataRepository.findById(request.getBiodataId())
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
         PengalamanKerja updated = PengalamanKerjaMapper.updateEntity(entity, request, biodata);
-        updated.setChangedStatus(resolver.requiresApproval());
+        updated.setChangedStatus(requiresApproval);
         PengalamanKerja save = repository.save(updated);
         handleRevisionUpdate(save, RevisionMetadata.RevisionType.UPDATE);
         return save.getId();
     }
 
     @Transactional
-    public boolean delete(Long id) {
+    public boolean delete(Long id, boolean requiresApproval) {
         PengalamanKerja entity = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_PENGALAMAN_KERJA));
         entity.setIsDeleted(true);
-        entity.setChangedStatus(resolver.requiresApproval());
+        entity.setChangedStatus(requiresApproval);
         repository.save(entity);
         handleRevisionUpdate(entity, RevisionMetadata.RevisionType.DELETE);
         lampiranProfilCommandService.deleteByRefId(EJenisLampiranProfil.PROFIL_PENGALAMAN_KERJA, id);
@@ -70,16 +68,16 @@ public class PengalamanKerjaCommandService {
 
 
     @Transactional
-    public Long addLampiran(PengalamanLampiranPostRequest request) {
+    public Long addLampiran(PengalamanLampiranPostRequest request, boolean requiresApproval) {
         if (!repository.existsById(request.getRefId())) {
             throw new NotFoundException(UNKNOWN_PENGALAMAN_KERJA);
         }
-        lampiranProfilCommandService.addLampiran(request);
+        lampiranProfilCommandService.addLampiran(request, requiresApproval);
         return request.getRefId();
     }
 
-    public boolean deleteLampiran(Long id) {
-        lampiranProfilCommandService.deleteById(id);
+    public boolean deleteLampiran(Long id, boolean requiresApproval) {
+        lampiranProfilCommandService.deleteById(id, requiresApproval);
         return true;
     }
 

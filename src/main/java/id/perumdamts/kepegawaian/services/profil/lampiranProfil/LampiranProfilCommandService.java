@@ -9,7 +9,6 @@ import id.perumdamts.kepegawaian.entities.profil.LampiranProfil;
 import id.perumdamts.kepegawaian.exceptions.ConflictException;
 import id.perumdamts.kepegawaian.mapper.profil.lampiranProfil.LampiranProfilMapper;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.LampiranProfilRepository;
-import id.perumdamts.kepegawaian.services.profil.ChangedStatusResolver;
 import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
 import id.perumdamts.kepegawaian.utils.FileUploadUtil;
 import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
@@ -29,15 +28,13 @@ public class LampiranProfilCommandService {
     private final LampiranProfilRepository repository;
     private final FileUploadUtil fileUploadUtil;
     private final ProfileUpdateService profileUpdateService;
-    private final ChangedStatusResolver resolver;
 
     /**
-     * ADR-0036 §6: lampiran masuk antrian tanpa kolom changed_status — guard enqueue
-     * langsung {@code resolver.requiresApproval()}. HRD/ADMIN → disetujui=true langsung;
-     * self-service → disetujui=false + entri PENDING di antrian ProfileUpdate.
+     * ADR-0036 §6 + ADR-0038: lampiran masuk antrian tanpa kolom changed_status — guard enqueue
+     * via konteks endpoint (self-service → disetujui=false + entri PENDING; admin → langsung stabil).
      */
     @Transactional
-    public SavedStatus<Long> addLampiran(LampiranProfilPostRequest request) {
+    public SavedStatus<Long> addLampiran(LampiranProfilPostRequest request, boolean requiresApproval) {
         boolean exists = repository.exists(request.getSpecification());
         if (exists)
             throw new ConflictException("Lampiran Profil sudah ada");
@@ -54,7 +51,6 @@ public class LampiranProfilCommandService {
                 uploadedFile.getHashedFileName(),
                 uploadedFile.getMimeType()
         );
-        boolean requiresApproval = resolver.requiresApproval();
         if (requiresApproval) {
             entity.setDisetujui(false);
         }
@@ -67,13 +63,13 @@ public class LampiranProfilCommandService {
     }
 
     @Transactional
-    public boolean deleteById(Long id) {
+    public boolean deleteById(Long id, boolean requiresApproval) {
         Optional<LampiranProfil> byId = repository.findById(id);
         if (byId.isEmpty())
             return false;
         byId.get().setIsDeleted(true);
         repository.save(byId.get());
-        if (resolver.requiresApproval()) {
+        if (requiresApproval) {
             profileUpdateService.create(String.valueOf(id),
                     RevisionMetadata.RevisionType.DELETE, EProfileUpdateTable.LAMPIRAN);
         }
