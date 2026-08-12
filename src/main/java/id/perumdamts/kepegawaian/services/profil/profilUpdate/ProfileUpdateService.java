@@ -27,9 +27,7 @@ import java.time.LocalDateTime;
 public class ProfileUpdateService {
     private final ProfileUpdateRepository repository;
     private final PegawaiRepository pegawaiRepository;
-    private final ProfileUpdateBiodataApprovalService approvalBiodataService;
-    private final ProfileUpdateKeluargaApprovalService approvalKeluargaService;
-    private final ProfileUpdatePendidikanApprovalService approvalPendidikanService;
+    private final ProfileUpdateApprovalHandler approvalHandler;
 
 
 
@@ -67,18 +65,7 @@ public class ProfileUpdateService {
     public SavedStatus<String> approval(Long id, ProfilUpdateAcceptRequest request) {
         ProfileUpdate profileUpdate = repository.findByIdAndApprovalStatus(id, EProfileUpdateApproval.PENDING)
                 .orElseThrow(() -> new NotFoundException("Unknown Profile Update"));
-        EProfileUpdateTable tableName = profileUpdate.getTableName();
-        switch (tableName) {
-            case BIODATA:
-                approvalBiodataService.changeHandler(profileUpdate, request.getApproval());
-                break;
-            case KELUARGA:
-                approvalKeluargaService.changeHandler(profileUpdate, request.getApproval());
-                break;
-            case PENDIDIKAN:
-                approvalPendidikanService.changeHandler(profileUpdate, request.getApproval());
-                break;
-        }
+        approvalHandler.changeHandler(profileUpdate, request.getApproval());
         handleApproval(profileUpdate, request);
         return SavedStatus.build(ESaveStatus.SUCCESS, "success");
     }
@@ -101,6 +88,8 @@ public class ProfileUpdateService {
             case PENGALAMAN_KERJA -> "data pengalaman kerja";
             case PELATIHAN -> "data pelatihan";
             case KEAHLIAN -> "data keahlian";
+            case KARTU_IDENTITAS -> "data kartu identitas";
+            case LAMPIRAN -> "data lampiran";
         };
     }
 

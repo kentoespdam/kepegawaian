@@ -10,6 +10,7 @@ import org.springframework.data.repository.history.RevisionRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 public interface ProfilKeluargaRepository extends
         JpaRepository<ProfilKeluarga, Long>,
@@ -28,8 +29,15 @@ public interface ProfilKeluargaRepository extends
               and p.tanggalLahir = :tanggalLahir
               and p.isDeleted = false
             """)
-    java.util.Optional<ProfilKeluarga> findActiveByBiodataIdAndNamaAndTanggalLahir(
+    java.util.    Optional<ProfilKeluarga> findActiveByBiodataIdAndNamaAndTanggalLahir(
             String biodataId, String nama, LocalDate tanggalLahir);
+
+    /**
+     * Carcass finder — bypasses {@code @SQLRestriction("is_deleted = FALSE")} so
+     * DELETE-reject can reactivate a soft-deleted row (ADR-0036 §5).
+     */
+    @Query(value = "SELECT * FROM profil_keluarga WHERE id = ?1 LIMIT 1", nativeQuery = true)
+    Optional<ProfilKeluarga> findAnyById(Long id);
 
     @Transactional
     @Modifying

@@ -23,6 +23,13 @@ public interface PendidikanRepository extends JpaRepository<Pendidikan, Long>, J
             "LIMIT 1",
             nativeQuery = true)
     Optional<Pendidikan> findAnyByUniqueKey(String biodataId, Long jenjangPendidikanId, Integer tahunMasuk);
+
+    /**
+     * Carcass finder — bypasses {@code @SQLRestriction("is_deleted = FALSE")} so
+     * DELETE-reject can reactivate a soft-deleted row (ADR-0036 §5).
+     */
+    @Query(value = "SELECT * FROM pendidikan WHERE id = ?1 LIMIT 1", nativeQuery = true)
+    Optional<Pendidikan> findAnyById(Long id);
     @Modifying
     @Query("UPDATE Pendidikan p SET p.isLatest = FALSE WHERE p.id != :id AND p.biodata.nik = :nik")
     void updateIsLatest(@Param("id") Long id, @Param("nik") String nik);

@@ -1,6 +1,6 @@
 package id.perumdamts.kepegawaian.services.profil.profilUpdate;
 
-import id.perumdamts.kepegawaian.entities.commons.EProfileUpdateApproval;
+import id.perumdamts.kepegawaian.entities.commons.EProfileUpdateTable;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.ProfileUpdate;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
@@ -14,19 +14,13 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ProfileUpdateBiodataApprovalService implements ProfileUpdateApprovalService {
-    private static final String UNKNOWN_BIODATA = "Unknown Biodata";
-
-    private final RevInfoService service;
+public class BiodataProfileUpdateStrategy implements ProfileUpdateStrategy {
+    private final RevInfoService revInfoService;
     private final BiodataRepository repository;
 
     @Override
-    public void changeHandler(ProfileUpdate profileUpdate, EProfileUpdateApproval approval) {
-        if (approval == EProfileUpdateApproval.APPROVED) {
-            markAsStable(profileUpdate.getRevId());
-            return;
-        }
-        handleRejectedChange(profileUpdate, profileUpdate.getRevId());
+    public EProfileUpdateTable table() {
+        return EProfileUpdateTable.BIODATA;
     }
 
     @Override
@@ -40,8 +34,8 @@ public class ProfileUpdateBiodataApprovalService implements ProfileUpdateApprova
     }
 
     @Override
-    public void resetEntityState(String id) {
-        repository.findById(id)
+    public void resetEntityState(String revId) {
+        repository.findAnyByNik(revId)
                 .ifPresent(entity -> {
                     entity.setChangedStatus(false);
                     entity.setIsDeleted(false);
@@ -50,24 +44,18 @@ public class ProfileUpdateBiodataApprovalService implements ProfileUpdateApprova
     }
 
     @Override
-    public void handleRejectedChange(ProfileUpdate profileUpdate, String revId) {
-        switch (profileUpdate.getActionType()) {
-            case INSERT -> repository.deleteById(revId);
-            case UPDATE -> revertToPreviousRevision(profileUpdate);
-            case DELETE -> resetEntityState(revId);
-            default -> throw new IllegalStateException("Unexpected value: " + profileUpdate.getActionType());
-        }
+    public void handleRejectedInsert(String revId) {
+        repository.deleteById(revId);
     }
 
     @Override
     public void revertToPreviousRevision(ProfileUpdate profileUpdate) {
         String revId = profileUpdate.getRevId();
-        List<Biodata> latestRevision = service.findLatestRevision(Biodata.class, revId);
+        List<Biodata> latestRevision = revInfoService.findLatestRevision(Biodata.class, revId);
         if (latestRevision.isEmpty()) return;
         Biodata last = latestRevision.getLast();
-        // Rollback biodata fields from Envers revision
         Biodata entity = repository.findById(revId)
-                .orElseThrow(() -> new IllegalArgumentException(UNKNOWN_BIODATA));
+                .orElseThrow(() -> new IllegalArgumentException("Unknown Biodata"));
         entity.setNama(last.getNama());
         entity.setJenisKelamin(last.getJenisKelamin());
         entity.setTempatLahir(last.getTempatLahir());
