@@ -125,9 +125,9 @@
     "semantic_hash": "03ef00eb53ae508c957a10751380a520"
   },
   "src/main/java/id/perumdamts/kepegawaian/config/appwrite/AppwriteClient.java": {
-    "mtime": 1786494325.2616153,
-    "ast_hash": "2368daf913953354b1dc1e55b73f54b6",
-    "semantic_hash": "2368daf913953354b1dc1e55b73f54b6"
+    "mtime": 1786518906.3085132,
+    "ast_hash": "96d889676f3f468353216cad94bbf7aa",
+    "semantic_hash": ""
   },
   "src/main/java/id/perumdamts/kepegawaian/config/audit/AuditAwareImpl.java": {
     "mtime": 1784101482.0777662,
@@ -150,9 +150,9 @@
     "semantic_hash": "638d7bd240e0bccbf7b83c6cbcbe0ed3"
   },
   "src/main/java/id/perumdamts/kepegawaian/config/security/DevAuthFilter.java": {
-    "mtime": 1786494325.2626154,
-    "ast_hash": "4abfcea0600f367b055e005380e02c86",
-    "semantic_hash": "4abfcea0600f367b055e005380e02c86"
+    "mtime": 1786518903.283581,
+    "ast_hash": "eb6aae15a298ab09f305f3a7af5771d9",
+    "semantic_hash": ""
   },
   "src/main/java/id/perumdamts/kepegawaian/config/security/JwtAuthEntryPoint.java": {
     "mtime": 1784101482.0777662,
@@ -160,9 +160,9 @@
     "semantic_hash": "e9f3f59f9b61c9d0f9336dc09ddcbd58"
   },
   "src/main/java/id/perumdamts/kepegawaian/config/security/JwtAuthFilter.java": {
-    "mtime": 1786494325.2626154,
-    "ast_hash": "929ff46e83f74233f0e3c6a848e1d0d4",
-    "semantic_hash": "929ff46e83f74233f0e3c6a848e1d0d4"
+    "mtime": 1786518896.8297281,
+    "ast_hash": "d8e7feb52ab6026897f33db95f021711",
+    "semantic_hash": ""
   },
   "src/main/java/id/perumdamts/kepegawaian/config/security/JwtTokenService.java": {
     "mtime": 1784101482.0777662,
@@ -510,9 +510,9 @@
     "semantic_hash": "c3a96334cc56a1fff78ecafa51c649da"
   },
   "src/main/java/id/perumdamts/kepegawaian/dto/appwrite/PrefRole.java": {
-    "mtime": 1784101482.0807662,
-    "ast_hash": "2bc6f1fdf4625863d75bf066973ca611",
-    "semantic_hash": "2bc6f1fdf4625863d75bf066973ca611"
+    "mtime": 1786518884.9890056,
+    "ast_hash": "258111f45d88538dd34126b64c35b435",
+    "semantic_hash": ""
   },
   "src/main/java/id/perumdamts/kepegawaian/dto/appwrite/Prefs.java": {
     "mtime": 1785487011.862636,
@@ -2535,9 +2535,9 @@
     "semantic_hash": "b04d7098f3540fe4d9a1a639bf4684eb"
   },
   "src/main/java/id/perumdamts/kepegawaian/jooq/DefaultSchema.java": {
-    "mtime": 1785213304.0006614,
-    "ast_hash": "fbfab28d450f885919b742509ea0b248",
-    "semantic_hash": "fbfab28d450f885919b742509ea0b248"
+    "mtime": 1786518962.6633658,
+    "ast_hash": "e96c0f04a5c588a6f70a84a20d21e7f1",
+    "semantic_hash": ""
   },
   "src/main/java/id/perumdamts/kepegawaian/jooq/Indexes.java": {
     "mtime": 1785213304.0006614,
@@ -2545,14 +2545,14 @@
     "semantic_hash": "0294e62a7d7f74c7905ad565edbc0b50"
   },
   "src/main/java/id/perumdamts/kepegawaian/jooq/Keys.java": {
-    "mtime": 1786499867.464468,
-    "ast_hash": "2f0bd45efaab245106e91ff492ca4bbc",
-    "semantic_hash": "2f0bd45efaab245106e91ff492ca4bbc"
+    "mtime": 1786518967.3192806,
+    "ast_hash": "1a0714ca6f33706ad8f34b33a9e14e97",
+    "semantic_hash": ""
   },
   "src/main/java/id/perumdamts/kepegawaian/jooq/Tables.java": {
-    "mtime": 1785213304.0016613,
-    "ast_hash": "d38a4c223091e42748a10566a9e32774",
-    "semantic_hash": "d38a4c223091e42748a10566a9e32774"
+    "mtime": 1786518967.2742815,
+    "ast_hash": "abdc7dc271faca99df3b7170456f76d1",
+    "semantic_hash": ""
   },
   "src/main/java/id/perumdamts/kepegawaian/jooq/enums/BiodataAudGolonganDarah.java": {
     "mtime": 1784797160.0518157,
@@ -2900,14 +2900,14 @@
     "semantic_hash": "d6b9dcac09683d404b4bd8cf9253eadc"
   },
   "src/main/java/id/perumdamts/kepegawaian/jooq/tables/Pendidikan.java": {
-    "mtime": 1784797160.057816,
-    "ast_hash": "384f231a9be87172326190b068b0839b",
-    "semantic_hash": "384f231a9be87172326190b068b0839b"
+    "mtime": 1786518966.8322895,
+    "ast_hash": "13b55367fa7a0a7fc5290a22fb38b04e",
+    "semantic_hash": ""
   },
   "src/main/java/id/perumdamts/kepegawaian/jooq/tables/PendidikanAud.java": {
-    "mtime": 1786500081.4076064,
-    "ast_hash": "55c180e738caa7eb6b2b14ed22409a80",
-    "semantic_hash": "55c180e738caa7eb6b2b14ed22409a80"
+    "mtime": 1786518966.8372893,
+    "ast_hash": "481873c20fae72858f781372ce3585ae",
+    "semantic_hash": ""
   },
   "src/main/java/id/perumdamts/kepegawaian/jooq/tables/PengalamanKerja.java": {
     "mtime": 1784797160.057816,
@@ -2920,9 +2920,9 @@
     "semantic_hash": "a8cde159ec71bae023e15e5679614f1b"
   },
   "src/main/java/id/perumdamts/kepegawaian/jooq/tables/PrefRole.java": {
-    "mtime": 1784534915.9500206,
-    "ast_hash": "be2602a50d68fb8f8a8b91b9d1ba0d71",
-    "semantic_hash": "be2602a50d68fb8f8a8b91b9d1ba0d71"
+    "mtime": 1786518966.852289,
+    "ast_hash": "21f7f9e0030faac45f24e1f5854a3bc0",
+    "semantic_hash": ""
   },
   "src/main/java/id/perumdamts/kepegawaian/jooq/tables/Profesi.java": {
     "mtime": 1784797160.057816,
@@ -3355,14 +3355,14 @@
     "semantic_hash": "a0bc10d3dfce9e97dc56c9a1919604a2"
   },
   "src/main/java/id/perumdamts/kepegawaian/jooq/tables/records/PendidikanAudRecord.java": {
-    "mtime": 1786500081.4076064,
-    "ast_hash": "19cdef099a276c030c5270b454485aac",
-    "semantic_hash": "19cdef099a276c030c5270b454485aac"
+    "mtime": 1786518967.2202823,
+    "ast_hash": "2ef3ff6b5ff7437c2f7333766df93299",
+    "semantic_hash": ""
   },
   "src/main/java/id/perumdamts/kepegawaian/jooq/tables/records/PendidikanRecord.java": {
-    "mtime": 1784797160.0628161,
-    "ast_hash": "909d01a81aec59a69d28d53f53102307",
-    "semantic_hash": "909d01a81aec59a69d28d53f53102307"
+    "mtime": 1786518967.2162824,
+    "ast_hash": "88e5d43874ec91474463f17e93bf6fb3",
+    "semantic_hash": ""
   },
   "src/main/java/id/perumdamts/kepegawaian/jooq/tables/records/PengalamanKerjaAudRecord.java": {
     "mtime": 1784534915.9580207,
@@ -6025,9 +6025,9 @@
     "semantic_hash": "267e9cffb34e86e0b95159861c645dc5"
   },
   "docs/context/language-security.md": {
-    "mtime": 1786494325.0816202,
-    "ast_hash": "761d912c45b885f87c65c95e4b55daa8",
-    "semantic_hash": "761d912c45b885f87c65c95e4b55daa8"
+    "mtime": 1786517746.259676,
+    "ast_hash": "2f84934c34cf8239b3d3375f39c1844d",
+    "semantic_hash": ""
   },
   "docs/context/relationships.md": {
     "mtime": 1784101482.0307653,
@@ -6185,9 +6185,9 @@
     "semantic_hash": "e8cbd85bde75d859a88ae92e2e4e10e0"
   },
   "knowledge.md": {
-    "mtime": 1786494325.2616153,
-    "ast_hash": "8c04291bddddf12c44031a351a7f4002",
-    "semantic_hash": "8c04291bddddf12c44031a351a7f4002"
+    "mtime": 1786517458.6512086,
+    "ast_hash": "3ca457c35230eb598c3f0a8deafc8b2a",
+    "semantic_hash": ""
   },
   "qodana.yaml": {
     "mtime": 1784101482.076766,
@@ -6298,5 +6298,70 @@
     "mtime": 1786515096.4105346,
     "ast_hash": "9afb0262b4f2a26cbfd853558b52bf3e",
     "semantic_hash": "9afb0262b4f2a26cbfd853558b52bf3e"
+  },
+  "scripts/graphify-semantic-seed.py": {
+    "mtime": 1786517519.1731138,
+    "ast_hash": "f90c5e3b713bb23ac2ecb07a47585818",
+    "semantic_hash": ""
+  },
+  "src/main/java/id/perumdamts/kepegawaian/controllers/system/PrefPermissionController.java": {
+    "mtime": 1786518917.6562645,
+    "ast_hash": "09fd67622fac696b401843c12e13c738",
+    "semantic_hash": ""
+  },
+  "src/main/java/id/perumdamts/kepegawaian/entities/system/PrefPermission.java": {
+    "mtime": 1786518880.446115,
+    "ast_hash": "40ed3e526c5c97093b594ecf81d269ca",
+    "semantic_hash": ""
+  },
+  "src/main/java/id/perumdamts/kepegawaian/jooq/tables/PrefPermission.java": {
+    "mtime": 1786518966.850289,
+    "ast_hash": "f3085f2e05b1ddef96ec2ce6bada06a6",
+    "semantic_hash": ""
+  },
+  "src/main/java/id/perumdamts/kepegawaian/jooq/tables/PrefRolePermission.java": {
+    "mtime": 1786518966.855289,
+    "ast_hash": "37067ab9d8430d7a1388f29ba8a14dc3",
+    "semantic_hash": ""
+  },
+  "src/main/java/id/perumdamts/kepegawaian/jooq/tables/records/PrefPermissionRecord.java": {
+    "mtime": 1786518967.2252822,
+    "ast_hash": "ee3de10062836c1a76795ab4d5712316",
+    "semantic_hash": ""
+  },
+  "src/main/java/id/perumdamts/kepegawaian/jooq/tables/records/PrefRolePermissionRecord.java": {
+    "mtime": 1786518967.2262824,
+    "ast_hash": "0ac04bf2313785b0e70498a77027de0e",
+    "semantic_hash": ""
+  },
+  "src/main/java/id/perumdamts/kepegawaian/repositories/PrefPermissionRepository.java": {
+    "mtime": 1786518888.2269287,
+    "ast_hash": "79dccb4208201bf26d0e8109381e3dc7",
+    "semantic_hash": ""
+  },
+  "src/main/resources/db/migration/V30__rbac_permission_tables.sql": {
+    "mtime": 1786518876.4422126,
+    "ast_hash": "2db42d181d32d232f562f330986bb089",
+    "semantic_hash": ""
+  },
+  "src/test/java/id/perumdamts/kepegawaian/config/security/JwtAuthFilterPermissionInflationTest.java": {
+    "mtime": 1786518934.8599048,
+    "ast_hash": "e150c99526befc9b35132b8b904b144e",
+    "semantic_hash": ""
+  },
+  "docs/adr/0037-rbac-permission-per-role-didb-mariadb.md": {
+    "mtime": 1786517775.3924632,
+    "ast_hash": "2692240b1cb2e83146ee0c108d7e793d",
+    "semantic_hash": ""
+  },
+  "docs/adr/0038-profil-endpoint-split-admin-vs-selfservice.md": {
+    "mtime": 1786517788.5928166,
+    "ast_hash": "5179f219fe076d60fee7276d3b439ba4",
+    "semantic_hash": ""
+  },
+  "docs/plans/rbac-permission-per-role.md": {
+    "mtime": 1786519282.3301702,
+    "ast_hash": "9e9593e4cd1eef2e301e65d881f849dc",
+    "semantic_hash": ""
   }
 }
