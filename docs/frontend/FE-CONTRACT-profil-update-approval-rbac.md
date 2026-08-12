@@ -19,12 +19,12 @@
 | RBAC infrastructure: permission granular per role | ✅ **LIVE** | Role management API baru + field `permissions` di respons role |
 | User provisioning: role default `[ADMIN, USER]` → `[USER]` | ✅ **LIVE** | User baru **tidak lagi** dapat role `ADMIN` |
 | Dev User: dapat semua permission | ✅ **LIVE** | Hanya untuk environment dev, tidak relevan di prod |
-| Enforcement permission di controller (`hasAuthority`) | 🕐 **SEBAGIAN** (dual-mode) | Modul **master** + **admin-profil** sudah dual-mode; modul lain masih `hasRole('ADMIN')`. Dual-mode = izin lama tetap jalan → **tidak ada endpoint yang menyempit** |
+| Enforcement permission di controller (`hasAuthority`) | 🕐 **SEBAGIAN** (dual-mode) | Modul **master** + **pegawai** + **admin-profil** sudah dual-mode; modul lain masih `hasRole('ADMIN')`. Dual-mode = izin lama tetap jalan → **tidak ada endpoint yang menyempit** |
 | Endpoint split profil — biodata + 6 modul lain | ✅ **LIVE** (kepegawaian-huis) | **BREAKING**: `PATCH /profil/biodata/{id}` lama DIHAPUS — FE wajib routing per halaman (section 5) |
 | Seed permission matrix (V31) | ✅ **LIVE** (kepegawaian-y5vt) | `ADMIN`=20, `HRD`=15 — HRD kini bisa write/delete master + `PATCH /admin/profil/{id}` (section 2.4) |
 | `GET /account/me` | ✅ **LIVE** (kepegawaian-nilt) | Endpoint baru: roles + permissions user login untuk UI berbasis permission (section 1) |
 
-> ⚠️ **Poin kunci**: migrasi ke `hasAuthority` dilakukan bertahap per modul dengan pola **dual-mode** (`hasRole('ADMIN') or hasAuthority('...')`) — izin lama tidak pernah dicabut. Modul **master** (write/delete) dan **admin-profil** sudah dual-mode; modul lain menyusul. Untuk endpoint existing FE tidak perlu mengubah guard UI — satu-satunya **breaking change** adalah pemisahan endpoint self vs admin profil (section 5).
+> ⚠️ **Poin kunci**: migrasi ke `hasAuthority` dilakukan bertahap per modul dengan pola **dual-mode** (`hasRole('ADMIN') or hasAuthority('...')`) — izin lama tidak pernah dicabut. Modul **master** (write/delete), **pegawai** (write/delete) dan **admin-profil** sudah dual-mode; modul lain menyusul. Untuk endpoint existing FE tidak perlu mengubah guard UI — satu-satunya **breaking change** adalah pemisahan endpoint self vs admin profil (section 5).
 
 ---
 
@@ -140,7 +140,7 @@ Endpoint role yang **sudah ada** (`GET /system/roles`, `GET /system/roles/list`,
 - Ini perubahan **additive** — FE lama tetap jalan, tapi halaman manajemen role sebaiknya menampilkan list permission ini.
 
 > **Seed matrix (V31, sudah live):** role `ADMIN` ter-seed **20 permission** (semua), role `HRD` ter-seed **15** (operasional minus `SYSTEM:*`, `CUTI:CREATE`, `PENGGAJIAN:WRITE/PROCESS`). Implikasi:
-> - HRD kini bisa akses **write/delete master** (dual-mode `MASTER:WRITE`/`MASTER:DELETE` di controller master) dan **`PATCH /admin/profil/{id}`** (punya `PROFIL:APPROVE`).
+> - HRD kini bisa akses **write/delete master** (dual-mode `MASTER:WRITE`/`MASTER:DELETE` di controller master), **write/delete pegawai** (dual-mode `PEGAWAI:WRITE`/`PEGAWAI:DELETE`) dan **`PATCH /admin/profil/{id}`** (punya `PROFIL:APPROVE`).
 > - `CUTI:CREATE` tetap milik pegawai (`USER`) — HRD hanya approve.
 > - Matrix bisa diubah runtime via API assign/revoke (section 2.2–2.3).
 
@@ -375,6 +375,6 @@ Semua endpoint memakai envelope berikut (kecuali error handler khusus):
 - [x] **Routing split profil** (`/admin/profil/{id}` vs `/profil`) — **sudah LIVE**; `PATCH /profil/biodata/{id}` lama sudah dihapus (section 5).
 - [x] **Routing admin vs self untuk 6 modul profil lain** — admin pindah ke `/admin/profil/{entity}/...`, self tetap di `/profil/{entity}/...` (selalu approval) (section 5.1).
 - [x] **UI berbasis permission**: pakai `GET /account/me` (roles + permissions user login) — sudah live, lihat catatan di section 1.
-- [x] **Seed matrix (V31)**: `ADMIN`=20 / `HRD`=15 sudah live — HRD punya write/delete master + admin-profil (section 2.4).
+- [x] **Seed matrix (V31)**: `ADMIN`=20 / `HRD`=15 sudah live — HRD punya write/delete master + pegawai + admin-profil (section 2.4).
 - [x] **Ownership self-endpoint**: endpoint self verifikasi kepemilikan `biodataId`/`nik` — **sudah LIVE** (kepegawaian-3blf); target bukan milik principal → 404 (section 5.1).
 - [x] **Ownership read self**: jalur read profil dibatasi ke data sendiri (force NIK di list, 404 di detail/file) — **sudah LIVE** (kepegawaian-jiv4); HRD/ADMIN bebas via `PROFIL:READ` (section 5.1).
