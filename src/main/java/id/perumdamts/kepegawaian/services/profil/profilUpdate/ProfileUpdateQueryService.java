@@ -29,8 +29,16 @@ public class ProfileUpdateQueryService {
     public ProfilUpdateDetail<?> findById(Long id) {
         Optional<ProfileUpdate> byId = repository.findById(id);
         if (byId.isEmpty() || !byId.get().getApprovalStatus().equals(EProfileUpdateApproval.PENDING)) return null;
-        if (byId.get().getTableName().equals(EProfileUpdateTable.KELUARGA))
-            return byId.map(revInfoService::findKeluargaRevision).orElse(null);
-        return byId.map(revInfoService::findPendidikan).orElse(null);
+        ProfileUpdate profileUpdate = byId.get();
+        return switch (profileUpdate.getTableName()) {
+            case BIODATA -> revInfoService.findBiodataRevision(profileUpdate);
+            case KELUARGA -> revInfoService.findKeluargaRevision(profileUpdate);
+            case PENDIDIKAN -> revInfoService.findPendidikan(profileUpdate);
+            case KEAHLIAN -> revInfoService.findKeahlianRevision(profileUpdate);
+            case PELATIHAN -> revInfoService.findPelatihanRevision(profileUpdate);
+            case PENGALAMAN_KERJA -> revInfoService.findPengalamanKerjaRevision(profileUpdate);
+            case KARTU_IDENTITAS -> revInfoService.findKartuIdentitasRevision(profileUpdate);
+            case LAMPIRAN -> revInfoService.findLampiranRevision(profileUpdate);
+        };
     }
 }
