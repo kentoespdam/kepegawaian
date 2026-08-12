@@ -51,6 +51,7 @@ public class ProfilKeluargaProfileUpdateStrategy implements ProfileUpdateStrateg
     @Override
     public void revertToPreviousRevision(ProfileUpdate profileUpdate) {
         List<ProfilKeluarga> latestRevision = revInfoService.findLatestRevision(ProfilKeluarga.class, Long.valueOf(profileUpdate.getRevId()));
+        if (latestRevision.isEmpty()) return;
         ProfilKeluarga last = latestRevision.getLast();
         repository.rollbackPrevVersion(
                 last.getNik(),

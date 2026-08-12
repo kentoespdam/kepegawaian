@@ -31,6 +31,9 @@ public class ProfileUpdateApprovalHandler {
      */
     public void changeHandler(ProfileUpdate profileUpdate, EProfileUpdateApproval approval) {
         ProfileUpdateStrategy strategy = strategies.get(profileUpdate.getTableName());
+        if (strategy == null) {
+            throw new IllegalStateException("No approval strategy for table: " + profileUpdate.getTableName());
+        }
         if (approval == EProfileUpdateApproval.APPROVED) {
             strategy.markAsStable(profileUpdate.getRevId());
             return;

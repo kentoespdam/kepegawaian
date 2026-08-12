@@ -58,6 +58,7 @@ public class PendidikanProfileUpdateStrategy implements ProfileUpdateStrategy {
     @Override
     public void revertToPreviousRevision(ProfileUpdate profileUpdate) {
         List<Pendidikan> latestRevision = revInfoService.findLatestRevision(Pendidikan.class, Long.valueOf(profileUpdate.getRevId()));
+        if (latestRevision.isEmpty()) return;
         Pendidikan last = latestRevision.getLast();
         repository.rollbackPrevVersion(
                 last.getBiodata().getNik(),

@@ -48,7 +48,9 @@ public class LampiranProfilProfileUpdateStrategy implements ProfileUpdateStrateg
 
     @Override
     public void handleRejectedInsert(String revId) {
-        repository.findById(Long.valueOf(revId))
+        // Carcass finder: INSERT-reject wajib hapus file fisik bahkan bila baris sudah
+        // ter-soft-delete (mis. add → DELETE susulan sebelum INSERT di-reject).
+        repository.findAnyById(Long.valueOf(revId))
                 .ifPresent(lampiranProfil -> {
                     fileUploadUtil.deleteOldFile(lampiranProfil.getHashedFileName(),
                             lampiranProfil.getRef(), String.valueOf(lampiranProfil.getRefId()));
