@@ -9,6 +9,7 @@ import id.perumdamts.kepegawaian.entities.profil.LampiranProfil;
 import id.perumdamts.kepegawaian.exceptions.ConflictException;
 import id.perumdamts.kepegawaian.mapper.profil.lampiranProfil.LampiranProfilMapper;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.LampiranProfilRepository;
+import id.perumdamts.kepegawaian.services.profil.OwnershipGuard;
 import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
 import id.perumdamts.kepegawaian.utils.FileUploadUtil;
 import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
@@ -28,6 +29,7 @@ public class LampiranProfilCommandService {
     private final LampiranProfilRepository repository;
     private final FileUploadUtil fileUploadUtil;
     private final ProfileUpdateService profileUpdateService;
+    private final OwnershipGuard ownershipGuard;
 
     /**
      * ADR-0036 §6 + ADR-0038: lampiran masuk antrian tanpa kolom changed_status — guard enqueue
@@ -35,6 +37,7 @@ public class LampiranProfilCommandService {
      */
     @Transactional
     public SavedStatus<Long> addLampiran(LampiranProfilPostRequest request, boolean requiresApproval) {
+        if (requiresApproval) ownershipGuard.assertSelfOwnsLampiran(request.getRef(), request.getRefId());
         boolean exists = repository.exists(request.getSpecification());
         if (exists)
             throw new ConflictException("Lampiran Profil sudah ada");
@@ -67,6 +70,7 @@ public class LampiranProfilCommandService {
         Optional<LampiranProfil> byId = repository.findById(id);
         if (byId.isEmpty())
             return false;
+        if (requiresApproval) ownershipGuard.assertSelfOwnsLampiran(byId.get().getRef(), byId.get().getRefId());
         byId.get().setIsDeleted(true);
         repository.save(byId.get());
         if (requiresApproval) {

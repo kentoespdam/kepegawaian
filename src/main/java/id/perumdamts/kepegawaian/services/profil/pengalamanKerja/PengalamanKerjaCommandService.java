@@ -11,6 +11,7 @@ import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.mapper.profil.pengalamanKerja.PengalamanKerjaMapper;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.PengalamanKerjaRepository;
+import id.perumdamts.kepegawaian.services.profil.OwnershipGuard;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilCommandService;
 import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
 import lombok.RequiredArgsConstructor;
@@ -28,9 +29,11 @@ public class PengalamanKerjaCommandService {
     private final BiodataRepository biodataRepository;
     private final LampiranProfilCommandService lampiranProfilCommandService;
     private final ProfileUpdateService profileUpdateService;
+    private final OwnershipGuard ownershipGuard;
 
     @Transactional
     public Long create(PengalamanKerjaPostRequest request, boolean requiresApproval) {
+        if (requiresApproval) ownershipGuard.assertSelfOwns(request.getBiodataId());
         Biodata biodata = biodataRepository.findById(request.getBiodataId())
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
         PengalamanKerja entity = PengalamanKerjaMapper.toEntity(request, biodata);
@@ -44,6 +47,7 @@ public class PengalamanKerjaCommandService {
     public Long update(Long id, PengalamanKerjaPutRequest request, boolean requiresApproval) {
         PengalamanKerja entity = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_PENGALAMAN_KERJA));
+        if (requiresApproval) ownershipGuard.assertSelfOwns(entity.getBiodata().getNik(), request.getBiodataId());
         Biodata biodata = biodataRepository.findById(request.getBiodataId())
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
         PengalamanKerja updated = PengalamanKerjaMapper.updateEntity(entity, request, biodata);
@@ -57,6 +61,7 @@ public class PengalamanKerjaCommandService {
     public boolean delete(Long id, boolean requiresApproval) {
         PengalamanKerja entity = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_PENGALAMAN_KERJA));
+        if (requiresApproval) ownershipGuard.assertSelfOwns(entity.getBiodata().getNik());
         entity.setIsDeleted(true);
         entity.setChangedStatus(requiresApproval);
         repository.save(entity);

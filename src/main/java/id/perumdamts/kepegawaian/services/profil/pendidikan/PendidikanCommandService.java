@@ -13,6 +13,7 @@ import id.perumdamts.kepegawaian.repositories.master.jpa.JenjangPendidikanReposi
 import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.PendidikanRepository;
 import id.perumdamts.kepegawaian.services.profil.ChangedStatusResolver;
+import id.perumdamts.kepegawaian.services.profil.OwnershipGuard;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilCommandService;
 import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
 import lombok.RequiredArgsConstructor;
@@ -36,9 +37,11 @@ public class PendidikanCommandService {
     private final LampiranProfilCommandService lampiranProfilCommandService;
     private final ProfileUpdateService profileUpdateService;
     private final ChangedStatusResolver resolver;
+    private final OwnershipGuard ownershipGuard;
 
     @Transactional
     public Long create(PendidikanPostRequest request, boolean requiresApproval) {
+        if (requiresApproval) ownershipGuard.assertSelfOwns(request.getBiodataId());
         Biodata biodata = biodataRepository.findById(request.getBiodataId()).orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
         JenjangPendidikan jenjangPendidikan = jenjangPendidikanRepository.findById(request.getJenjangPendidikanId()).orElseThrow(() -> new NotFoundException(UNKNOWN_JENJANG));
 
@@ -69,6 +72,7 @@ public class PendidikanCommandService {
     @Transactional
     public Long update(Long id, PendidikanPutRequest request, boolean requiresApproval) {
         Pendidikan pendidikan = repository.findById(id).orElseThrow(() -> new NotFoundException(UNKNOWN_PENDIDIKAN));
+        if (requiresApproval) ownershipGuard.assertSelfOwns(pendidikan.getBiodata().getNik(), request.getBiodataId());
         Biodata biodata = biodataRepository.findById(request.getBiodataId()).orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
         JenjangPendidikan jenjangPendidikan = jenjangPendidikanRepository.findById(request.getJenjangPendidikanId()).orElseThrow(() -> new NotFoundException(UNKNOWN_JENJANG));
 
@@ -85,6 +89,7 @@ public class PendidikanCommandService {
     @Transactional
     public boolean delete(Long id, boolean requiresApproval) {
         Pendidikan entity = repository.findById(id).orElseThrow(() -> new NotFoundException(UNKNOWN_PENDIDIKAN));
+        if (requiresApproval) ownershipGuard.assertSelfOwns(entity.getBiodata().getNik());
         entity.setIsDeleted(true);
         entity.setChangedStatus(requiresApproval);
         repository.save(entity);

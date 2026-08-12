@@ -8,6 +8,7 @@ import id.perumdamts.kepegawaian.repositories.master.jpa.JenjangPendidikanReposi
 import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.PendidikanRepository;
 import id.perumdamts.kepegawaian.services.profil.ChangedStatusResolver;
+import id.perumdamts.kepegawaian.services.profil.OwnershipGuard;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilCommandService;
 import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
 import org.junit.jupiter.api.Test;
@@ -41,6 +42,7 @@ class PendidikanCommandServiceTest {
     @Mock private LampiranProfilCommandService lampiranProfilCommandService;
     @Mock private ProfileUpdateService profileUpdateService;
     @Mock private ChangedStatusResolver resolver;
+    @Mock private OwnershipGuard ownershipGuard;
 
     @InjectMocks private PendidikanCommandService service;
 

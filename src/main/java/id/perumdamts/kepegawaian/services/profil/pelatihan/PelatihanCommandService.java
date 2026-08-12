@@ -13,6 +13,7 @@ import id.perumdamts.kepegawaian.mapper.profil.pelatihan.PelatihanMapper;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JenisPelatihanRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.PelatihanRepository;
+import id.perumdamts.kepegawaian.services.profil.OwnershipGuard;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilCommandService;
 import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
 import lombok.RequiredArgsConstructor;
@@ -32,9 +33,11 @@ public class PelatihanCommandService {
     private final JenisPelatihanRepository jenisPelatihanRepository;
     private final LampiranProfilCommandService lampiranProfilCommandService;
     private final ProfileUpdateService profileUpdateService;
+    private final OwnershipGuard ownershipGuard;
 
     @Transactional
     public Long create(PelatihanPostRequest request, boolean requiresApproval) {
+        if (requiresApproval) ownershipGuard.assertSelfOwns(request.getBiodataId());
         Biodata biodata = biodataRepository.findById(request.getBiodataId())
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
         JenisPelatihan jenisPelatihan = jenisPelatihanRepository
@@ -53,6 +56,7 @@ public class PelatihanCommandService {
     public Long update(Long id, PelatihanPutRequest request, boolean requiresApproval) {
         Pelatihan entity = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_PELATIHAN));
+        if (requiresApproval) ownershipGuard.assertSelfOwns(entity.getBiodata().getNik(), request.getBiodataId());
         Biodata biodata = biodataRepository.findById(request.getBiodataId())
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
         JenisPelatihan jenisPelatihan = jenisPelatihanRepository
@@ -71,6 +75,7 @@ public class PelatihanCommandService {
     public boolean delete(Long id, boolean requiresApproval) {
         Pelatihan entity = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_PELATIHAN));
+        if (requiresApproval) ownershipGuard.assertSelfOwns(entity.getBiodata().getNik());
         entity.setIsDeleted(true);
         entity.setChangedStatus(requiresApproval);
         repository.save(entity);

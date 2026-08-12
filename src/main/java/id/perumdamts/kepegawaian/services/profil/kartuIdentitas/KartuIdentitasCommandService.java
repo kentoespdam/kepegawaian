@@ -12,6 +12,7 @@ import id.perumdamts.kepegawaian.mapper.profil.kartuIdentitas.KartuIdentitasMapp
 import id.perumdamts.kepegawaian.repositories.master.jpa.JenisKitasRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.KartuIdentitasRepository;
+import id.perumdamts.kepegawaian.services.profil.OwnershipGuard;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilCommandService;
 import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
 import lombok.RequiredArgsConstructor;
@@ -33,9 +34,11 @@ public class KartuIdentitasCommandService {
     private final JenisKitasRepository jenisKitasRepository;
     private final LampiranProfilCommandService lampiranProfilCommandService;
     private final ProfileUpdateService profileUpdateService;
+    private final OwnershipGuard ownershipGuard;
 
     @Transactional
     public Long create(KartuIdentitasPostRequest request, boolean requiresApproval) {
+        if (requiresApproval) ownershipGuard.assertSelfOwns(request.getNik());
         Biodata biodata = biodataRepository.findById(request.getNik()).orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
         JenisKitas jenisKartu = jenisKitasRepository.findById(request.getJenisKartuId()).orElseThrow(() -> new NotFoundException(UNKNOWN_JENIS_KARTU));
 
@@ -57,6 +60,7 @@ public class KartuIdentitasCommandService {
     @Transactional
     public Long update(Long id, KartuIdentitasPutRequest request, boolean requiresApproval) {
         KartuIdentitas entity = repository.findById(id).orElseThrow(() -> new NotFoundException(UNKNOWN_KARTU_IDENTITAS));
+        if (requiresApproval) ownershipGuard.assertSelfOwns(entity.getBiodata().getNik(), request.getNik());
         Biodata biodata = biodataRepository.findById(request.getNik()).orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
         JenisKitas jenisKartu = jenisKitasRepository.findById(request.getJenisKartuId()).orElseThrow(() -> new NotFoundException(UNKNOWN_JENIS_KARTU));
         KartuIdentitasMapper.updateEntity(entity, request, biodata, jenisKartu);
@@ -69,6 +73,7 @@ public class KartuIdentitasCommandService {
     @Transactional
     public boolean delete(Long id, boolean requiresApproval) {
         KartuIdentitas entity = repository.findById(id).orElseThrow(() -> new NotFoundException(UNKNOWN_KARTU_IDENTITAS));
+        if (requiresApproval) ownershipGuard.assertSelfOwns(entity.getBiodata().getNik());
         entity.setIsDeleted(true);
         entity.setChangedStatus(requiresApproval);
         KartuIdentitas saved = repository.save(entity);

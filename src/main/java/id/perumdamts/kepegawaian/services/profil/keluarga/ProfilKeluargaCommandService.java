@@ -14,6 +14,7 @@ import id.perumdamts.kepegawaian.mapper.profil.keluarga.ProfilKeluargaMapper;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JenjangPendidikanRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.ProfilKeluargaRepository;
+import id.perumdamts.kepegawaian.services.profil.OwnershipGuard;
 import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.history.RevisionMetadata;
@@ -31,9 +32,11 @@ public class ProfilKeluargaCommandService {
     private final BiodataRepository biodataRepository;
     private final JenjangPendidikanRepository jenjangPendidikanRepository;
     private final ProfileUpdateService profileUpdateService;
+    private final OwnershipGuard ownershipGuard;
 
     @Transactional
     public SavedStatus<Long> create(ProfilKeluargaPostRequest request, boolean requiresApproval) {
+        if (requiresApproval) ownershipGuard.assertSelfOwns(request.getBiodataId());
         Biodata biodata = biodataRepository.findById(request.getBiodataId()).orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
         repository.findActiveByBiodataIdAndNamaAndTanggalLahir(request.getBiodataId(), request.getNama(), request.getTanggalLahir())
                 .ifPresent(e -> { throw new ConflictException("Profil Keluarga aktif dengan nama dan tanggal lahir sama sudah ada"); });
@@ -49,6 +52,7 @@ public class ProfilKeluargaCommandService {
     @Transactional
     public SavedStatus<Long> update(Long id, ProfilKeluargaPutRequest request, boolean requiresApproval) {
         ProfilKeluarga entity = repository.findById(id).orElseThrow(() -> new NotFoundException(UNKNOWN_KELUARGA));
+        if (requiresApproval) ownershipGuard.assertSelfOwns(entity.getBiodata().getNik(), request.getBiodataId());
         if (Boolean.TRUE.equals(entity.getChangedStatus())) {
             throw new ConflictException("Data Keluarga sedang dalam proses pengajuan");
         }
@@ -78,6 +82,7 @@ public class ProfilKeluargaCommandService {
     @Transactional
     public boolean delete(Long id, boolean requiresApproval) {
         ProfilKeluarga entity = repository.findById(id).orElseThrow(() -> new NotFoundException(UNKNOWN_KELUARGA));
+        if (requiresApproval) ownershipGuard.assertSelfOwns(entity.getBiodata().getNik());
         entity.setIsDeleted(true);
         entity.setChangedStatus(requiresApproval);
         ProfilKeluarga saved = repository.save(entity);
