@@ -24,6 +24,11 @@ _Query layer_: `BiodataDashboardQuery` di repositori JOOQ — query terpisah dar
 **Pendidikan Terlatest** (`isLatest`) & **Pendidikan Terakhir** (`pendidikanTerakhir`):
 Seorang pegawai punya banyak baris **Pendidikan**; tepat satu ditandai sebagai yang terkini (`isLatest=true`). **Pendidikan Terakhir** adalah field turunan (denormalisasi) di **Biodata** — jenjang dari Pendidikan yang `isLatest`-nya `true`. Disimpan di Biodata sebagai jalan pintas baca, bukan sumber kebenaran tersendiri.
 _Catatan domain_: nilai ini **diturunkan**, bukan diinput bebas. Menandai satu Pendidikan `isLatest=true` otomatis menyingkirkan tanda itu dari baris lain milik pegawai yang sama, lalu menyalin jenjangnya ke `Biodata.pendidikanTerakhir`.
+_Catatan guard (ADR-0035)_: invarian "tepat satu `true` per pegawai" dijamin **dua lapis** — normalisasi aplikasi (`handleUpdateIsLatest`, transaksional) **dan** generated column `is_latest_biodata` + `UNIQUE` di level DB. Saat baris `true` dihapus/di-set `false`, pointer `pendidikanTerakhir` **dibiarkan** (tidak di-clear); sinkron hanya terjadi saat `isLatest=true` di-set.
+
+**Status Disetujui** (`disetujui` di baris Profil):
+Boolean di baris data (mis. `pendidikan.disetujui`) yang menandai data **sudah diverifikasi/disetujui SDM** — disertai `tanggalDisetujui` dan `disetujuiOleh` (stamp sekali, tidak berubah-ubah). _Jangan disamakan dengan_: (a) **Status Berubah** (`changedStatus`) — menggerbang antrian persetujuan dan bisa berubah-ubah per perubahan; (b) keputusan **"Disetujui / Ditolak"** atas **Pengajuan Perubahan** — itu keputusan admin di antrian, ini status permanen baris.
+_Catatan domain (Pendidikan, ADR-0035)_: nilainya **ditentukan server berdasarkan role**, bukan dari request — penulis **SDM** → `true` + stamp; penulis **pegawai/self-service** → `false` sampai SDM menyetujui di antrian (approve → `true` + stamp oleh approver; reject → tetap `false`).
 
 **Status Berubah** (changedStatus):
 Penanda pada baris data Profil bahwa ada perubahan yang **belum disetujui**. `true` = menunggu keputusan; `false` = stabil/disetujui. Hanya perubahan dengan `changedStatus=true` yang memunculkan Pengajuan Perubahan.
