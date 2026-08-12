@@ -8,6 +8,8 @@ import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -44,6 +46,10 @@ class PendidikanJooqMapperTest {
     private static final Field<Integer> TAHUN_LULUS = DSL.field("tahun_lulus", Integer.class);
     private static final Field<Double> GPA = DSL.field("gpa", Double.class);
     private static final Field<Byte> IS_LATEST = DSL.field("is_latest", Byte.class);
+    private static final Field<Byte> DISETUJUI = DSL.field("disetujui", Byte.class);
+    private static final Field<LocalDateTime> TANGGAL_PENGAJUAN = DSL.field("tanggal_pengajuan", LocalDateTime.class);
+    private static final Field<LocalDateTime> TANGGAL_DISETUJUI = DSL.field("tanggal_disetujui", LocalDateTime.class);
+    private static final Field<String> DISETUJUI_OLEH = DSL.field("disetujui_oleh", String.class);
     private static final Field<Byte> CHANGED_STATUS = DSL.field("changed_status", Byte.class);
 
     private Record newRow() {
@@ -51,7 +57,7 @@ class PendidikanJooqMapperTest {
                 ID, BIODATA_ID, BIODATA_NIK, BIODATA_NAMA,
                 SELF_JENJANG_ID, JENJANG_ID, JENJANG_NAMA, JENJANG_SHORT_NAME, JENJANG_SEQ, JENJANG_IS_STATISTIK,
                 GELAR_DEPAN, GELAR_BELAKANG, JURUSAN, INSTITUSI, KOTA,
-                TAHUN_MASUK, IS_LULUS, TAHUN_LULUS, GPA, IS_LATEST, CHANGED_STATUS);
+                TAHUN_MASUK, IS_LULUS, TAHUN_LULUS, GPA, IS_LATEST, DISETUJUI, TANGGAL_PENGAJUAN, TANGGAL_DISETUJUI, DISETUJUI_OLEH, CHANGED_STATUS);
     }
 
     @Test
@@ -93,6 +99,38 @@ class PendidikanJooqMapperTest {
         assertEquals(5, q.jenjangPendidikan().seq());
         assertEquals(Boolean.TRUE, q.jenjangPendidikan().isStatistik());
         assertEquals(Boolean.FALSE, q.isLatest());
+    }
+
+    @Test
+    void mapsApprovalFieldsNullSafely() {
+        Record row = newRow();
+        row.set(ID, 4L);
+        row.set(BIODATA_ID, "1234567890");
+
+        PendidikanQuery q = mapper.map(row);
+        assertEquals(Boolean.FALSE, q.disetujui(), "unset disetujui maps to false (pattern isLatest)");
+        assertNull(q.tanggalPengajuan());
+        assertNull(q.tanggalDisetujui());
+        assertNull(q.disetujuiOleh());
+    }
+
+    @Test
+    void mapsApprovalFieldsWhenSet() {
+        LocalDateTime pengajuan = LocalDateTime.of(2026, 8, 12, 10, 0);
+        LocalDateTime disetujui = LocalDateTime.of(2026, 8, 12, 11, 30);
+        Record row = newRow();
+        row.set(ID, 5L);
+        row.set(BIODATA_ID, "1234567890");
+        row.set(DISETUJUI, (byte) 1);
+        row.set(TANGGAL_PENGAJUAN, pengajuan);
+        row.set(TANGGAL_DISETUJUI, disetujui);
+        row.set(DISETUJUI_OLEH, "user-42");
+
+        PendidikanQuery q = mapper.map(row);
+        assertEquals(Boolean.TRUE, q.disetujui());
+        assertEquals(pengajuan, q.tanggalPengajuan());
+        assertEquals(disetujui, q.tanggalDisetujui());
+        assertEquals("user-42", q.disetujuiOleh());
     }
 
     @Test

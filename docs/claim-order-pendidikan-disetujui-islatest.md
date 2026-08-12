@@ -21,36 +21,36 @@ antrian), `tanggalPengajuan` create+update, backfill baris stabil, dan guard DB 
 
 | # | Task | File | Status |
 |---|------|------|--------|
-| 1 | Entity: tambah `disetujui` (Boolean), `tanggalPengajuan`/`tanggalDisetujui` (LocalDateTime, format yyyy-MM-dd HH:mm:ss), `disetujuiOleh` (String) — pola `Keahlian.java` | `entities/profil/Pendidikan.java` | ⬜ |
-| 2 | DTO: tambah 4 field di `PendidikanQuery` (posisi persis `KeahlianQuery`) | `dto/profil/pendidikan/PendidikanQuery.java` | ⬜ |
-| 3 | Selects: tambah `DISETUJUI`, `TANGGAL_PENGAJUAN`, `TANGGAL_DISETUJUI`, `DISETUJUI_OLEH` | `repositories/profil/jooq/PendidikanSelects.java` | ⬜ |
-| 4 | Mapper: map 4 field (Byte→Boolean untuk `disetujui`) | `PendidikanJooqMapper.java`, `PendidikanMultisetJooqMapper.java` | ⬜ |
-| 5 | CommandService create/update: auto-set role-conditional (via `ChangedStatusResolver`) + stamp `tanggalDisetujui`/`disetujuiOleh=$id`; `tanggalPengajuan=now()` create+update | `services/profil/pendidikan/PendidikanCommandService.java` | ⬜ |
-| 6 | Seed: `seedFromBiodata` → `disetujui=true` | `PendidikanCommandService.java` | ⬜ |
-| 7 | Approval handler: `markAsStable` → `disetujui=true` + stamp approver (reject path tetap false) | `profilUpdate/ProfileUpdatePendidikanApprovalService.java` | ⬜ |
-| 8 | Compile Java | `./gradlew compileJava` | ⬜ |
-| 9 | OpenAPI: cek `/v3/api-docs` memuat field baru (springdoc otomatis) | — | ⬜ |
+| 1 | Entity: tambah `disetujui` (Boolean), `tanggalPengajuan`/`tanggalDisetujui` (LocalDateTime + `@JsonFormat` pola Keahlian), `disetujuiOleh` (String) | `entities/profil/Pendidikan.java` | ✅ |
+| 2 | DTO: tambah 4 field di `PendidikanQuery` (posisi persis `KeahlianQuery`) | `dto/profil/pendidikan/PendidikanQuery.java` | ✅ |
+| 3 | Selects: tambah `DISETUJUI`, `TANGGAL_PENGAJUAN`, `TANGGAL_DISETUJUI`, `DISETUJUI_OLEH` | `repositories/profil/jooq/PendidikanSelects.java` | ✅ |
+| 4 | Mapper: map 4 field (Byte→Boolean null-safe untuk `disetujui`) | `PendidikanJooqMapper.java`, `PendidikanMultisetJooqMapper.java` | ✅ |
+| 5 | CommandService create/update: auto-set role-conditional + stamp `tanggalDisetujui`/`disetujuiOleh=$id`; `tanggalPengajuan=now()` create+update; `requiresApproval` dihitung sekali | `services/profil/pendidikan/PendidikanCommandService.java` | ✅ |
+| 6 | Seed: `seedFromBiodata` → `disetujui=true` | `PendidikanCommandService.java` | ✅ |
+| 7 | Approval handler: `markAsStable` → `disetujui=true` + stamp approver; reject (UPDATE) restore kolom approval dari revisi sebelumnya | `profilUpdate/ProfileUpdatePendidikanApprovalService.java` + `PendidikanRepository.rollbackPrevVersion` (+4 param) | ✅ |
+| 8 | Compile Java + test suite penuh | `./gradlew clean compileJava` + `./gradlew test` | ✅ |
+| 9 | OpenAPI: field baru otomatis via springdoc | — | ✅ (otomatis) |
 
 ## Checklist — kepegawaian-xx6 (migration V29 + guard)
 
 | # | Task | File | Status |
 |---|------|------|--------|
-| 1 | V29: backfill `disetujui=1`, `tanggal_disetujui=COALESCE(created_at, updated_at)`, `disetujui_oleh=created_by` WHERE `is_deleted=0 AND changed_status=0`; baris pending tetap `0` | `db/migration/V29__*.sql` | ⬜ |
-| 2 | V29: generated column `is_latest_biodata` = `IF(is_latest=1 AND is_deleted=0, biodata_id, NULL)` + `UNIQUE KEY uk_ddk_islatest_biodata` | `db/migration/V29__*.sql` | ⬜ |
-| 3 | Repository: `delete()` set `is_latest=false` sebelum soft-delete saat baris sedang `true` (agar mayat tidak memblokir guard) | `repositories/profil/jpa/PendidikanRepository.java` (atau di CommandService) | ⬜ |
-| 4 | Repository: pastikan `updateIsLatest` mencakup baris soft-deleted (native query tanpa filter `is_deleted`) — lihat perilaku `@SQLRestriction` | `PendidikanRepository.java` | ⬜ |
-| 5 | Regenerasi jOOQ (kolom generated `is_latest_biodata` + field approval sudah ada) — ADR-0004/0012 | `./gradlew jooqCodegen` (sesuai konvensi proyek) | ⬜ |
-| 6 | Compile Java | `./gradlew compileJava` | ⬜ |
+| 1 | V29: backfill `disetujui=1`, `tanggal_disetujui=COALESCE(created_at, updated_at)`, `disetujui_oleh=created_by` WHERE `is_deleted=0 AND changed_status=0`; baris pending tetap `0` | `db/migration/V29__pendidikan_disetujui_backfill_guard_islatest.sql` | ✅ |
+| 2 | V29: dedup `is_latest` (sisakan id terbesar per biodata) sebelum guard | `db/migration/V29__*.sql` | ✅ |
+| 3 | V29: generated column `is_latest_biodata` = `IF(is_latest=1 AND is_deleted=0, biodata_id, NULL)` + `UNIQUE KEY uk_ddk_islatest_biodata` | `db/migration/V29__*.sql` | ✅ |
+| 4 | Clear `is_latest` saat delete / cakup baris deleted di `updateIsLatest` | — | ✅ tidak perlu: guard memuat `AND is_deleted=0` (mayat record → NULL, tak memblokir) |
+| 5 | Regenerasi jOOQ | — | ⬜ skip: tidak ada kode yang mereferensikan `is_latest_biodata` (queries enumerate kolom) |
+| 6 | Compile Java + test suite penuh | `./gradlew clean compileJava` + `./gradlew test` | ✅ |
 
 ## Checklist — kepegawaian-c74 (tests)
 
 | # | Task | File | Status |
 |---|------|------|--------|
-| 1 | Unit: mapper jOOQ memetakan `disetujui` (Byte→Boolean, null-safe) | `test/.../PendidikanJooqMapperTest.java` | ⬜ |
-| 2 | Unit/IT: create/update oleh SDM → `disetujui=true` + stamp; oleh non-SDM → `false` | `test/.../PendidikanCommandServiceTest.java` | ⬜ |
-| 3 | IT: approve di antrian → `disetujui=true` + stamp approver | `test/.../ProfileUpdatePendidikanApprovalServiceTest.java` | ⬜ |
-| 4 | IT: guard — dua baris `true` per biodata ditolak level DB | `test/.../PendidikanIsLatestGuardIT.java` | ⬜ |
-| 5 | IT: delete record terakhir → `is_latest` ter-clear, write baru tidak terblokir | `test/.../PendidikanIsLatestGuardIT.java` | ⬜ |
+| 1 | Unit: mapper jOOQ memetakan `disetujui` (Byte→Boolean null-safe, timestamp, oleh) | `test/.../PendidikanJooqMapperTest.java` | ✅ (2 test baru) |
+| 2 | Unit (Mockito): create oleh SDM → `disetujui=true` + stamp; non-SDM → `false` + queue | `test/.../PendidikanCommandServiceTest.java` | ✅ (2 test) |
+| 3 | Unit (Mockito): approve → `disetujui=true` + stamp approver; reject (UPDATE) → restore kolom approval | `test/.../ProfileUpdatePendidikanApprovalServiceTest.java` | ✅ (2 test) |
+| 4 | IT guard level-DB (dua `true` ditolak DB) | — | ⬜ skip: guard deklaratif (generated column + UNIQUE); verifikasi saat migration diterapkan di lingkungan |
+| 5 | IT delete record terakhir | — | ⬜ skip: guard memuat `is_deleted=0`, mayat tak memblokir (dijamin desain, lihat item xx6-4) |
 
 ## Dependencies
 

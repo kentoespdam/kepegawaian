@@ -1,6 +1,9 @@
 package id.perumdamts.kepegawaian.entities.profil;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
 import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
 import jakarta.persistence.*;
@@ -9,6 +12,8 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
+
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -46,5 +51,13 @@ public class Pendidikan extends IdsAbstract {
     private Integer tahunLulus;
     private Double gpa;
     private Boolean isLatest;
+    private Boolean disetujui;
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime tanggalPengajuan;
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime tanggalDisetujui;
+    private String disetujuiOleh;
     private Boolean changedStatus;
 }

@@ -35,7 +35,10 @@ FE (`kepegawaian-fe`) membangun konsol **Data Pendukung — Pendidikan** (`/prof
 ## Consequences
 
 - **FE**: regenerate tipe (`node docs/api/extract-types.js`) → `disetujui`, `tanggalPengajuan`, `tanggalDisetujui`, `disetujuiOleh` masuk `PendidikanQuery`; badge jujur untuk semua status.
-- **BE — implementasi butuh**: tambah 4 field di entity `Pendidikan`; tambah field di `PendidikanQuery` + `PendidikanSelects` + `PendidikanJooqMapper` + `PendidikanMultisetJooqMapper`; auto-set + stamp di `PendidikanCommandService` (create/update/seed) & `ProfileUpdatePendidikanApprovalService` (approve/reject); migration V29 (backfill + generated column guard); penyesuaian `PendidikanRepository` (clear `is_latest` saat delete / cakup baris deleted); regenerasi jOOQ (ADR-0004/0012).
+- **BE — implementasi butuh**: tambah 4 field di entity `Pendidikan`; tambah field di `PendidikanQuery` + `PendidikanSelects` + `PendidikanJooqMapper` + `PendidikanMultisetJooqMapper`; auto-set + stamp di `PendidikanCommandService` (create/update/seed) & `ProfileUpdatePendidikanApprovalService` (approve/reject); migration V29 (backfill + generated column guard); regenerasi jOOQ (ADR-0004/0012).
+- **Reject (UPDATE) ikut mengembalikan kolom approval** — `rollbackPrevVersion` diperluas untuk merestore `disetujui`/`tanggal_pengajuan`/`tanggal_disetujui`/`disetujui_oleh` dari revisi sebelumnya, sehingga data yang ditolak kembali tampil sesuai status lamanya (bukan "Belum").
+- **Guard `is_latest` tidak butuh clear saat delete** — ekspresi generated column memuat `AND is_deleted = 0`, jadi mayat record (soft-deleted) menghasilkan NULL dan tidak memblokir write baru; `updateIsLatest` juga tidak perlu mencakup baris deleted.
+- **Dedup migration mempertahankan baris ber-`id` terbesar** per biodata; pointer `biodata.pendidikanTerakhir` tidak disinkronkan ulang pada data duplikat (anomali pre-existing; normalisasi aplikasi seharusnya mencegahnya sejak awal).
 - **Tidak ada perubahan skema untuk kolom `disetujui`** — sudah ada sejak baseline.
 - **`isLatest`**: guard hanya membatasi baris **aktif** (`is_deleted=0`); mayat record bebas mempertahankan nilai lamanya asalkan `is_latest`-nya di-clear saat dihapus.
 - **Keahlian dkk**: tetap berperilaku lama; issue tech debt terpisah.

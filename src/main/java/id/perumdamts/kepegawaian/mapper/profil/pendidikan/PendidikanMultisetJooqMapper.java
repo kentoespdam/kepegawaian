@@ -4,6 +4,8 @@ import id.perumdamts.kepegawaian.dto.profil.pendidikan.PendidikanQuery;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
 
+import java.time.LocalDateTime;
+
 public final class PendidikanMultisetJooqMapper implements RecordMapper<Record, PendidikanQuery> {
     public static final PendidikanMultisetJooqMapper INSTANCE = new PendidikanMultisetJooqMapper();
 
@@ -12,6 +14,7 @@ public final class PendidikanMultisetJooqMapper implements RecordMapper<Record, 
     @Override
     public PendidikanQuery map(Record record) {
         Byte isLatestRaw = record.get("is_latest", Byte.class);
+        Byte disetujuiRaw = record.get("disetujui", Byte.class);
         return new PendidikanQuery(
                 record.get("id", Long.class),
                 record.get("biodata_id", String.class),
@@ -29,6 +32,10 @@ public final class PendidikanMultisetJooqMapper implements RecordMapper<Record, 
                 record.get("tahun_lulus", Integer.class),
                 record.get("gpa", Double.class),
                 isLatestRaw != null && isLatestRaw == 1,
+                disetujuiRaw != null && disetujuiRaw == 1,
+                record.get("tanggal_pengajuan", LocalDateTime.class),
+                record.get("tanggal_disetujui", LocalDateTime.class),
+                record.get("disetujui_oleh", String.class),
                 record.get("changed_status", Byte.class)
         );
     }

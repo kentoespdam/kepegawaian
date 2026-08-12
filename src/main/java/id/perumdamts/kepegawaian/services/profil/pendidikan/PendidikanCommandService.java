@@ -20,6 +20,7 @@ import org.springframework.data.history.RevisionMetadata;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -56,7 +57,9 @@ public class PendidikanCommandService {
         pendidikan.setGpa(request.getGpa());
         pendidikan.setIsLatest(request.getIsLatest());
         pendidikan.setIsDeleted(false);
-        pendidikan.setChangedStatus(resolver.requiresApproval());
+        boolean requiresApproval = resolver.requiresApproval();
+        pendidikan.setChangedStatus(requiresApproval);
+        applyApprovalState(pendidikan, requiresApproval);
 
         Pendidikan save = repository.save(pendidikan);
         handleUpdateIsLatest(request.getIsLatest(), save.getId(), biodata, jenjangPendidikan);
@@ -71,7 +74,9 @@ public class PendidikanCommandService {
         JenjangPendidikan jenjangPendidikan = jenjangPendidikanRepository.findById(request.getJenjangPendidikanId()).orElseThrow(() -> new NotFoundException(UNKNOWN_JENJANG));
 
         Pendidikan entity = PendidikanMapper.updateEntity(pendidikan, request, biodata, jenjangPendidikan);
-        entity.setChangedStatus(resolver.requiresApproval());
+        boolean requiresApproval = resolver.requiresApproval();
+        entity.setChangedStatus(requiresApproval);
+        applyApprovalState(entity, requiresApproval);
 
         Pendidikan save = repository.save(entity);
         handleUpdateIsLatest(request.getIsLatest(), save.getId(), biodata, jenjangPendidikan);
@@ -98,9 +103,27 @@ public class PendidikanCommandService {
         entity.setJenjangPendidikan(jenjang);
         entity.setIsLatest(true);
         entity.setChangedStatus(false);
+        entity.setDisetujui(true);
+        entity.setTanggalPengajuan(LocalDateTime.now());
+        entity.setTanggalDisetujui(LocalDateTime.now());
         Pendidikan saved = repository.save(entity);
         handleUpdateIsLatest(true, saved.getId(), biodata, jenjang);
         return saved;
+    }
+
+    /**
+     * ADR-0035: disetujui ditentukan server berdasarkan role. SDM → true + stamp;
+     * non-SDM → false (menunggu approve di antrian). Request tidak membawa field status.
+     */
+    private void applyApprovalState(Pendidikan pendidikan, boolean requiresApproval) {
+        pendidikan.setTanggalPengajuan(LocalDateTime.now());
+        if (requiresApproval) {
+            pendidikan.setDisetujui(false);
+            return;
+        }
+        pendidikan.setDisetujui(true);
+        pendidikan.setTanggalDisetujui(LocalDateTime.now());
+        pendidikan.setDisetujuiOleh(resolver.currentUserId());
     }
 
     private void handleUpdateIsLatest(Boolean isLatest, Long id, Biodata biodata, JenjangPendidikan jenjangPendidikan) {

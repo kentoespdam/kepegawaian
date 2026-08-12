@@ -4,11 +4,13 @@ import id.perumdamts.kepegawaian.entities.commons.EProfileUpdateApproval;
 import id.perumdamts.kepegawaian.entities.profil.Pendidikan;
 import id.perumdamts.kepegawaian.entities.profil.ProfileUpdate;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.PendidikanRepository;
+import id.perumdamts.kepegawaian.services.profil.ChangedStatusResolver;
 import id.perumdamts.kepegawaian.services.revInfo.RevInfoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -18,6 +20,7 @@ public class ProfileUpdatePendidikanApprovalService implements ProfileUpdateAppr
     private static final String UNKNOWN_PROFIL_PENDIDIKAN = "Unknown Profil Pendidikan";
     private final RevInfoService service;
     private final PendidikanRepository repository;
+    private final ChangedStatusResolver resolver;
 
     @Override
     public void changeHandler(ProfileUpdate profileUpdate, EProfileUpdateApproval approval) {
@@ -36,6 +39,10 @@ public class ProfileUpdatePendidikanApprovalService implements ProfileUpdateAppr
             repository.findById(id)
                     .ifPresent(pendidikan -> {
                         pendidikan.setChangedStatus(false);
+                        // ADR-0035: approve di antrian = disetujui + stamp oleh approver
+                        pendidikan.setDisetujui(true);
+                        pendidikan.setTanggalDisetujui(LocalDateTime.now());
+                        pendidikan.setDisetujuiOleh(resolver.currentUserId());
                         repository.save(pendidikan);
                     });
         } catch (Exception e) {
@@ -84,6 +91,10 @@ public class ProfileUpdatePendidikanApprovalService implements ProfileUpdateAppr
                 last.getGpa(),
                 last.getIsLatest(),
                 false,
+                last.getDisetujui(),
+                last.getTanggalPengajuan(),
+                last.getTanggalDisetujui(),
+                last.getDisetujuiOleh(),
                 last.getId()
         );
     }

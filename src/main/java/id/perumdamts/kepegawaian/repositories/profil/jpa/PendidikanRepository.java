@@ -32,8 +32,9 @@ public interface PendidikanRepository extends JpaRepository<Pendidikan, Long>, J
     @Query(value = """
             update pendidikan p set
                     p.biodata_id = ?1, p.jenjang_pendidikan_id = ?2, p.gelar_depan = ?3, p.gelar_belakang = ?4, p.jurusan = ?5, p.institusi = ?6,
-                    p.kota = ?7, p.tahun_masuk = ?8, p.is_lulus = ?9, p.tahun_lulus = ?10, p.gpa = ?11, p.is_latest = ?12, p.changed_status = ?13
-            where p.id = ?14
+                    p.kota = ?7, p.tahun_masuk = ?8, p.is_lulus = ?9, p.tahun_lulus = ?10, p.gpa = ?11, p.is_latest = ?12, p.changed_status = ?13,
+                    p.disetujui = ?14, p.tanggal_pengajuan = ?15, p.tanggal_disetujui = ?16, p.disetujui_oleh = ?17
+            where p.id = ?18
             """, nativeQuery = true)
     void rollbackPrevVersion(
             String nik,
@@ -49,6 +50,10 @@ public interface PendidikanRepository extends JpaRepository<Pendidikan, Long>, J
             Double gpa,
             Boolean isLatest,
             Boolean changedStatus,
+            Boolean disetujui,
+            java.time.LocalDateTime tanggalPengajuan,
+            java.time.LocalDateTime tanggalDisetujui,
+            String disetujuiOleh,
             Long id
     );
 
