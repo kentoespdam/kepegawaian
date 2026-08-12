@@ -92,6 +92,15 @@ CREATE TABLE pref_role_permission (
 
   > **Pilihan**: query DB (selalu fresh) vs hardcode list (no DB dependency di dev). Direkomendasikan: **hardcode constant list** semua permission yang diketahui — sederhana, no DB coupling, cukup untuk dev.
 
+### Step 5b — Fix bug default roles (`kepegawaian-qp0m`)
+- [ ] **WAJIB** `gitnexus_impact({target: "createUserWithDefaultRoles", direction: "upstream"})` sebelum edit
+- [ ] [`AppwriteClient.java:79`](../../src/main/java/id/perumdamts/kepegawaian/config/appwrite/AppwriteClient.java) — ubah:
+  ```diff
+  - List<PrefRole> defaultRoles = List.of(new PrefRole("ADMIN"), new PrefRole("USER"));
+  + List<PrefRole> defaultRoles = List.of(new PrefRole("USER"));
+  ```
+- [ ] `bd close kepegawaian-qp0m`
+
 ### Step 6 — API Management Permission
 - [ ] Buat `controllers/system/PrefPermissionController`:
   - `GET /system/permissions` — list semua permission
@@ -179,3 +188,4 @@ Migrasi per-modul dikerjakan di issue terpisah (tidak di scope issue ini).
 |-------|-------|----------|
 | `kepegawaian-9b6l` | **Issue ini** — RBAC infrastruktur | — |
 | `kepegawaian-huis` | Pisah endpoint profil admin vs self-service | Blocked by issue ini |
+| `kepegawaian-qp0m` | Bug: hardcoded `ADMIN` di `createUserWithDefaultRoles` — ganti ke `USER` saja | Independen, dikerjakan di Step 5b |
