@@ -10,6 +10,7 @@ import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.Jabatan.JabatanPath;
 import id.perumdamts.kepegawaian.jooq.tables.Organisasi.OrganisasiPath;
 import id.perumdamts.kepegawaian.jooq.tables.Pegawai.PegawaiPath;
+import id.perumdamts.kepegawaian.jooq.tables.RiwayatSk.RiwayatSkPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.RiwayatKontrakRecord;
 
 import java.time.LocalDate;
@@ -134,6 +135,11 @@ public class RiwayatKontrak extends TableImpl<RiwayatKontrakRecord> {
     public final TableField<RiwayatKontrakRecord, Long> PEGAWAI_ID = createField(DSL.name("pegawai_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
     /**
+     * The column <code>riwayat_kontrak.riwayat_sk_id</code>.
+     */
+    public final TableField<RiwayatKontrakRecord, Long> RIWAYAT_SK_ID = createField(DSL.name("riwayat_sk_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
+
+    /**
      * The column <code>riwayat_kontrak.created_at</code>.
      */
     public final TableField<RiwayatKontrakRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
@@ -247,12 +253,12 @@ public class RiwayatKontrak extends TableImpl<RiwayatKontrakRecord> {
 
     @Override
     public List<UniqueKey<RiwayatKontrakRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.KEY_RIWAYAT_KONTRAK_UK_RWT_KTRK_PGW_ID_NOMOR_KTRK);
+        return Arrays.asList(Keys.KEY_RIWAYAT_KONTRAK_UK_RWT_KTRK_PGW_ID_NOMOR_KTRK, Keys.KEY_RIWAYAT_KONTRAK_UK_RWT_KTRK_PGW_ID_RWT_SK_ID);
     }
 
     @Override
     public List<ForeignKey<RiwayatKontrakRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK_RWT_KTRK_JBT_JBT_ID, Keys.FK_RWT_KTRK_ORG_ORG_ID, Keys.FK_RWT_KTRK_PGW_PGW_ID);
+        return Arrays.asList(Keys.FK_RWT_KTRK_JBT_JBT_ID, Keys.FK_RWT_KTRK_ORG_ORG_ID, Keys.FK_RWT_KTRK_PGW_PGW_ID, Keys.FK_RWT_KTRK_RWT_SK_RWT_SK_ID);
     }
 
     private transient JabatanPath _jabatan;
@@ -289,6 +295,18 @@ public class RiwayatKontrak extends TableImpl<RiwayatKontrakRecord> {
             _pegawai = new PegawaiPath(this, Keys.FK_RWT_KTRK_PGW_PGW_ID, null);
 
         return _pegawai;
+    }
+
+    private transient RiwayatSkPath _riwayatSk;
+
+    /**
+     * Get the implicit join path to the <code>riwayat_sk</code> table.
+     */
+    public RiwayatSkPath riwayatSk() {
+        if (_riwayatSk == null)
+            _riwayatSk = new RiwayatSkPath(this, Keys.FK_RWT_KTRK_RWT_SK_RWT_SK_ID, null);
+
+        return _riwayatSk;
     }
 
     @Override

@@ -163,6 +163,11 @@ public class RiwayatKontrakAud extends TableImpl<RiwayatKontrakAudRecord> {
      */
     public final TableField<RiwayatKontrakAudRecord, Long> PEGAWAI_ID = createField(DSL.name("pegawai_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
+    /**
+     * The column <code>riwayat_kontrak_aud.riwayat_sk_id</code>.
+     */
+    public final TableField<RiwayatKontrakAudRecord, Long> RIWAYAT_SK_ID = createField(DSL.name("riwayat_sk_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
+
     private RiwayatKontrakAud(Name alias, Table<RiwayatKontrakAudRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }

@@ -315,6 +315,20 @@ public class RiwayatKontrakAudRecord extends UpdatableRecordImpl<RiwayatKontrakA
         return (Long) get(20);
     }
 
+    /**
+     * Setter for <code>riwayat_kontrak_aud.riwayat_sk_id</code>.
+     */
+    public void setRiwayatSkId(Long value) {
+        set(21, value);
+    }
+
+    /**
+     * Getter for <code>riwayat_kontrak_aud.riwayat_sk_id</code>.
+     */
+    public Long getRiwayatSkId() {
+        return (Long) get(21);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -338,7 +352,7 @@ public class RiwayatKontrakAudRecord extends UpdatableRecordImpl<RiwayatKontrakA
     /**
      * Create a detached, initialised RiwayatKontrakAudRecord
      */
-    public RiwayatKontrakAudRecord(Long id_, Integer rev, Byte revtype, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Boolean isLatest, Byte jenisKontrak, String nama, String nipam, String nomorKontrak, String notes, LocalDate tanggalMulai, LocalDate tanggalSelesai, LocalDate tanggalSk, Long jabatanId, Long organisasiId, Long pegawaiId) {
+    public RiwayatKontrakAudRecord(Long id_, Integer rev, Byte revtype, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Boolean isLatest, Byte jenisKontrak, String nama, String nipam, String nomorKontrak, String notes, LocalDate tanggalMulai, LocalDate tanggalSelesai, LocalDate tanggalSk, Long jabatanId, Long organisasiId, Long pegawaiId, Long riwayatSkId) {
         super(RiwayatKontrakAud.RIWAYAT_KONTRAK_AUD);
 
         setId(id_);
@@ -362,6 +376,7 @@ public class RiwayatKontrakAudRecord extends UpdatableRecordImpl<RiwayatKontrakA
         setJabatanId(jabatanId);
         setOrganisasiId(organisasiId);
         setPegawaiId(pegawaiId);
+        setRiwayatSkId(riwayatSkId);
         resetChangedOnNotNull();
     }
 }

@@ -9,6 +9,7 @@ import id.perumdamts.kepegawaian.jooq.Indexes;
 import id.perumdamts.kepegawaian.jooq.Keys;
 import id.perumdamts.kepegawaian.jooq.tables.Golongan.GolonganPath;
 import id.perumdamts.kepegawaian.jooq.tables.Pegawai.PegawaiPath;
+import id.perumdamts.kepegawaian.jooq.tables.RiwayatKontrak.RiwayatKontrakPath;
 import id.perumdamts.kepegawaian.jooq.tables.RiwayatMutasi.RiwayatMutasiPath;
 import id.perumdamts.kepegawaian.jooq.tables.RiwayatTerminasi.RiwayatTerminasiPath;
 import id.perumdamts.kepegawaian.jooq.tables.records.RiwayatSkRecord;
@@ -295,6 +296,19 @@ public class RiwayatSk extends TableImpl<RiwayatSkRecord> {
         return _pegawai;
     }
 
+    private transient RiwayatKontrakPath _riwayatKontrak;
+
+    /**
+     * Get the implicit to-many join path to the <code>riwayat_kontrak</code>
+     * table
+     */
+    public RiwayatKontrakPath riwayatKontrak() {
+        if (_riwayatKontrak == null)
+            _riwayatKontrak = new RiwayatKontrakPath(this, null, Keys.FK_RWT_KTRK_RWT_SK_RWT_SK_ID.getInverseKey());
+
+        return _riwayatKontrak;
+    }
+
     private transient RiwayatMutasiPath _riwayatMutasi;
 
     /**
@@ -319,6 +333,22 @@ public class RiwayatSk extends TableImpl<RiwayatSkRecord> {
             _riwayatTerminasi = new RiwayatTerminasiPath(this, null, Keys.FK_RWT_TRM_RWT_SK_RWT_SK_ID.getInverseKey());
 
         return _riwayatTerminasi;
+    }
+
+    /**
+     * Get the implicit many-to-many join path to the <code>pegawai</code>
+     * table, via the <code>fk_rwt_ktrk_pgw_pgw_id</code> key
+     */
+    public PegawaiPath fkRwtKtrkPgwPgwId() {
+        return riwayatKontrak().pegawai();
+    }
+
+    /**
+     * Get the implicit many-to-many join path to the <code>pegawai</code>
+     * table, via the <code>fk_rwt_mts_pgw_pgw_id</code> key
+     */
+    public PegawaiPath fkRwtMtsPgwPgwId() {
+        return riwayatMutasi().pegawai();
     }
 
     @Override

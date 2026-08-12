@@ -15,6 +15,7 @@ import id.perumdamts.kepegawaian.repositories.kepegawaian.jpa.RiwayatKontrakRepo
 import id.perumdamts.kepegawaian.repositories.kepegawaian.jpa.RiwayatSkRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.GolonganRepository;
 import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
+import id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk.RiwayatSkCommandService;
 import id.perumdamts.kepegawaian.services.pegawai.pegawai.PegawaiWriteback;
 import id.perumdamts.kepegawaian.services.pegawai.port.KontrakBootstrapPort;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ public class RiwayatKontrakCommandService implements KontrakBootstrapPort {
     private final PegawaiRepository pegawaiRepository;
     private final GolonganRepository golonganRepository;
     private final RiwayatSkRepository skRepository;
+    private final RiwayatSkCommandService skCommandService;
     private final PegawaiWriteback pegawaiWriteback;
 
     @Override
@@ -47,6 +49,7 @@ public class RiwayatKontrakCommandService implements KontrakBootstrapPort {
         skRepository.save(sk);
 
         RiwayatKontrak entity = RiwayatKontrakMapper.toEntity(request, pegawai);
+        entity.setRiwayatSk(sk);
         entity.setIsLatest(true);
         RiwayatKontrak saved = repository.save(entity);
         updateLatest(saved);
@@ -77,6 +80,7 @@ public class RiwayatKontrakCommandService implements KontrakBootstrapPort {
                 sk.setGajiPokok(request.getGajiPokok());
                 sk.setNotes(request.getNotes());
                 RiwayatSk savedSk = skRepository.save(sk);
+                entity.setRiwayatSk(savedSk);
                 pegawaiWriteback.writebackKontrak(pegawai, savedSk, request.getTanggalSelesai());
                 break;
             }
@@ -98,6 +102,7 @@ public class RiwayatKontrakCommandService implements KontrakBootstrapPort {
                 sk.setGajiPokok(request.getGajiPokok());
                 sk.setNotes(request.getNotes());
                 RiwayatSk savedSk = skRepository.save(sk);
+                entity.setRiwayatSk(savedSk);
                 pegawaiWriteback.writebackGolonganPensiun(pegawai, savedSk, request.getTanggalSelesai());
                 break;
             }
@@ -132,6 +137,7 @@ public class RiwayatKontrakCommandService implements KontrakBootstrapPort {
                 sk.setGajiPokok(request.getGajiPokok());
                 sk.setNotes(request.getNotes());
                 RiwayatSk savedSk = skRepository.save(sk);
+                entity.setRiwayatSk(savedSk);
                 pegawaiWriteback.writebackKontrak(pegawai, savedSk, request.getTanggalSelesai());
                 break;
             }
@@ -152,6 +158,7 @@ public class RiwayatKontrakCommandService implements KontrakBootstrapPort {
                 sk.setGajiPokok(request.getGajiPokok());
                 sk.setNotes(request.getNotes());
                 RiwayatSk savedSk = skRepository.save(sk);
+                entity.setRiwayatSk(savedSk);
                 pegawaiWriteback.writebackGolonganPensiun(pegawai, savedSk, request.getTanggalSelesai());
                 break;
             }
@@ -168,17 +175,11 @@ public class RiwayatKontrakCommandService implements KontrakBootstrapPort {
     public boolean delete(Long id) {
         RiwayatKontrak byId = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Riwayat Kontrak not found"));
+        if (byId.getRiwayatSk() != null) {
+            skCommandService.delete(byId.getRiwayatSk().getId());
+        }
         byId.setIsDeleted(true);
         repository.save(byId);
-
-        Specification<RiwayatSk> specification = (root, query, cb) -> cb.and(
-                cb.equal(root.get("pegawai").get("id"), byId.getPegawai().getId()),
-                cb.equal(root.get("nomorSk"), byId.getNomorKontrak())
-        );
-        skRepository.findAll(specification).forEach(sk -> {
-            sk.setIsDeleted(true);
-            skRepository.save(sk);
-        });
         return true;
     }
 

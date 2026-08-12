@@ -55,6 +55,11 @@ public class RiwayatSkCommandService implements SkBootstrapPort {
 
     @Transactional(rollbackFor = Exception.class)
     public RiwayatSk update(Long id, RiwayatSkPutRequest request) {
+        boolean exists = repository.exists(request.getSpecification()
+                .and((root, query, cb) -> cb.notEqual(root.get("id"), id)));
+        if (exists) {
+            throw new ConflictException("Riwayat SK is Exists");
+        }
         RiwayatSk riwayatSk = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Unknown Riwayat SK"));
         Pegawai pegawai = pegawaiRepository.findById(request.getPegawaiId())

@@ -96,6 +96,7 @@ public class RiwayatTerminasiCommandService {
         // 4. Save Kontrak if pegawai status is KONTRAK
         if (pegawai.getStatusPegawai() == EStatusPegawai.KONTRAK) {
             RiwayatKontrak kontrakEntity = RiwayatKontrakMapper.toEntity(request, pegawai);
+            kontrakEntity.setRiwayatSk(savedSk);
             RiwayatKontrak savedKontrak = kontrakRepository.save(kontrakEntity);
             updateKontrakLatest(savedKontrak);
         }
@@ -105,6 +106,11 @@ public class RiwayatTerminasiCommandService {
 
     @Transactional(rollbackFor = Exception.class)
     public RiwayatTerminasi update(Long id, RiwayatTerminasiPutRequest request) {
+        boolean exists = repository.exists(request.getTerminasiSpecification()
+                .and((root, query, cb) -> cb.notEqual(root.get("id"), id)));
+        if (exists) {
+            throw new ConflictException("Terminasi is already exist");
+        }
         RiwayatTerminasi terminasi = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Unknown Riwayat Terminasi"));
         AlasanBerhenti alasanTerminasi = alasanBerhentiRepository.findById(request.getAlasanTerminasiId())

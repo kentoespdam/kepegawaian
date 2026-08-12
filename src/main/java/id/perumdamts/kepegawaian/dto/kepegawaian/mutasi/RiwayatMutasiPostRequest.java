@@ -49,6 +49,7 @@ public class RiwayatMutasiPostRequest extends RiwayatSkPostRequest {
         return SpecificationBuilder.<RiwayatMutasi>of()
                 .addEqual(getNomorSk(), "riwayatSk", "nomorSk")
                 .addEqual(getPegawaiId(), "pegawai", "id")
+                .addEqual(getTanggalSk(), "riwayatSk", "tanggalSk")
                 .build();
     }
 

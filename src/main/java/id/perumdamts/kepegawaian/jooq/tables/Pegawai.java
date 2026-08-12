@@ -633,6 +633,22 @@ public class Pegawai extends TableImpl<PegawaiRecord> {
         return _riwayatTerminasi;
     }
 
+    /**
+     * Get the implicit many-to-many join path to the <code>riwayat_sk</code>
+     * table, via the <code>fk_rwt_ktrk_rwt_sk_rwt_sk_id</code> key
+     */
+    public RiwayatSkPath fkRwtKtrkRwtSkRwtSkId() {
+        return riwayatKontrak().riwayatSk();
+    }
+
+    /**
+     * Get the implicit many-to-many join path to the <code>riwayat_sk</code>
+     * table, via the <code>fk_rwt_mts_rwt_sk_rwt_sk_id</code> key
+     */
+    public RiwayatSkPath fkRwtMtsRwtSkRwtSkId() {
+        return riwayatMutasi().riwayatSk();
+    }
+
     @Override
     public Pegawai as(String alias) {
         return new Pegawai(DSL.name(alias), this);

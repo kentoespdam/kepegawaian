@@ -218,87 +218,101 @@ public class RiwayatKontrakRecord extends UpdatableRecordImpl<RiwayatKontrakReco
     }
 
     /**
+     * Setter for <code>riwayat_kontrak.riwayat_sk_id</code>.
+     */
+    public void setRiwayatSkId(Long value) {
+        set(14, value);
+    }
+
+    /**
+     * Getter for <code>riwayat_kontrak.riwayat_sk_id</code>.
+     */
+    public Long getRiwayatSkId() {
+        return (Long) get(14);
+    }
+
+    /**
      * Setter for <code>riwayat_kontrak.created_at</code>.
      */
     public void setCreatedAt(LocalDateTime value) {
-        set(14, value);
+        set(15, value);
     }
 
     /**
      * Getter for <code>riwayat_kontrak.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(14);
+        return (LocalDateTime) get(15);
     }
 
     /**
      * Setter for <code>riwayat_kontrak.created_by</code>.
      */
     public void setCreatedBy(String value) {
-        set(15, value);
+        set(16, value);
     }
 
     /**
      * Getter for <code>riwayat_kontrak.created_by</code>.
      */
     public String getCreatedBy() {
-        return (String) get(15);
+        return (String) get(16);
     }
 
     /**
      * Setter for <code>riwayat_kontrak.is_deleted</code>.
      */
     public void setIsDeleted(Boolean value) {
-        set(16, value);
+        set(17, value);
     }
 
     /**
      * Getter for <code>riwayat_kontrak.is_deleted</code>.
      */
     public Boolean getIsDeleted() {
-        return (Boolean) get(16);
+        return (Boolean) get(17);
     }
 
     /**
      * Setter for <code>riwayat_kontrak.updated_at</code>.
      */
     public void setUpdatedAt(LocalDateTime value) {
-        set(17, value);
+        set(18, value);
     }
 
     /**
      * Getter for <code>riwayat_kontrak.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(17);
+        return (LocalDateTime) get(18);
     }
 
     /**
      * Setter for <code>riwayat_kontrak.updated_by</code>.
      */
     public void setUpdatedBy(String value) {
-        set(18, value);
+        set(19, value);
     }
 
     /**
      * Getter for <code>riwayat_kontrak.updated_by</code>.
      */
     public String getUpdatedBy() {
-        return (String) get(18);
+        return (String) get(19);
     }
 
     /**
      * Setter for <code>riwayat_kontrak.version</code>.
      */
     public void setVersion(Integer value) {
-        set(19, value);
+        set(20, value);
     }
 
     /**
      * Getter for <code>riwayat_kontrak.version</code>.
      */
     public Integer getVersion() {
-        return (Integer) get(19);
+        return (Integer) get(20);
     }
 
     // -------------------------------------------------------------------------
@@ -324,7 +338,7 @@ public class RiwayatKontrakRecord extends UpdatableRecordImpl<RiwayatKontrakReco
     /**
      * Create a detached, initialised RiwayatKontrakRecord
      */
-    public RiwayatKontrakRecord(Long id_, Byte changedStatus, Boolean isLatest, Byte jenisKontrak, String nama, String nipam, String nomorKontrak, String notes, LocalDate tanggalMulai, LocalDate tanggalSelesai, LocalDate tanggalSk, Long jabatanId, Long organisasiId, Long pegawaiId, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version) {
+    public RiwayatKontrakRecord(Long id_, Byte changedStatus, Boolean isLatest, Byte jenisKontrak, String nama, String nipam, String nomorKontrak, String notes, LocalDate tanggalMulai, LocalDate tanggalSelesai, LocalDate tanggalSk, Long jabatanId, Long organisasiId, Long pegawaiId, Long riwayatSkId, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Integer version) {
         super(RiwayatKontrak.RIWAYAT_KONTRAK);
 
         setId(id_);
@@ -341,6 +355,7 @@ public class RiwayatKontrakRecord extends UpdatableRecordImpl<RiwayatKontrakReco
         setJabatanId(jabatanId);
         setOrganisasiId(organisasiId);
         setPegawaiId(pegawaiId);
+        setRiwayatSkId(riwayatSkId);
         setCreatedAt(createdAt);
         setCreatedBy(createdBy);
         setIsDeleted(isDeleted);

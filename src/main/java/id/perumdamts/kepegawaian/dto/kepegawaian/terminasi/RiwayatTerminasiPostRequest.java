@@ -37,6 +37,7 @@ public class RiwayatTerminasiPostRequest extends RiwayatSkPostRequest {
         return SpecificationBuilder.<RiwayatTerminasi>of()
                 .addEqual(getPegawaiId(), "pegawai", "id")
                 .addEqual(getNomorSk(), "skTerminasi", "nomorSk")
+                .addEqual(getTanggalSk(), "skTerminasi", "tanggalSk")
                 .build();
     }
 

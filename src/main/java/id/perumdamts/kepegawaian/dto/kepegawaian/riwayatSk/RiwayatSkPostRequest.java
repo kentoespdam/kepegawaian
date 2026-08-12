@@ -66,7 +66,7 @@ public class RiwayatSkPostRequest {
                 .addEqual(pegawaiId, "pegawai", "id")
                 .addEqual(nomorSk, "nomorSk")
                 .addEqual(jenisSk, "jenisSk")
-                .addEqual(golonganId, "golongan", "id")
+                .addEqual(tanggalSk, "tanggalSk")
                 .build();
     }
 

@@ -82,6 +82,11 @@ public class RiwayatMutasiCommandService {
     @Transactional(rollbackFor = Exception.class)
     public RiwayatMutasi update(Long id, RiwayatMutasiPutRequest request) {
         request.setJenisSk(resolveJenisSk(request.getJenisMutasi()));
+        boolean exists = repository.exists(request.getSpecificationMutasi()
+                .and((root, query, cb) -> cb.notEqual(root.get("id"), id)));
+        if (exists) {
+            throw new ConflictException("Riwayat Mutasi is already Exists");
+        }
         RiwayatMutasi riwayatMutasi = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Unknown Riwayat Mutasi"));
 

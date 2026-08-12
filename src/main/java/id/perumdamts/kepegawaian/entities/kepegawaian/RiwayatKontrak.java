@@ -24,7 +24,8 @@ import java.time.LocalDate;
         @Index(columnList = "tanggal_mulai"),
         @Index(columnList = "is_deleted")
 }, uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"pegawai_id", "nomor_kontrak"})
+        @UniqueConstraint(columnNames = {"pegawai_id", "nomor_kontrak"}),
+        @UniqueConstraint(columnNames = {"pegawai_id", "riwayat_sk_id"})
 })
 @Getter
 @Setter
@@ -60,6 +61,10 @@ public class RiwayatKontrak extends IdsAbstract {
     @ManyToOne
     @JoinColumn(name = "jabatan_id", referencedColumnName = "id")
     private Jabatan jabatan;
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "riwayat_sk_id", referencedColumnName = "id")
+    private RiwayatSk riwayatSk;
     private Boolean isLatest = false;
     private String notes;
 }
