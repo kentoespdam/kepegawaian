@@ -39,6 +39,23 @@ FE (`kepegawaian-fe`) membangun konsol **Data Pendukung — Pendidikan** (`/prof
 - **Reject (UPDATE) ikut mengembalikan kolom approval** — `rollbackPrevVersion` diperluas untuk merestore `disetujui`/`tanggal_pengajuan`/`tanggal_disetujui`/`disetujui_oleh` dari revisi sebelumnya, sehingga data yang ditolak kembali tampil sesuai status lamanya (bukan "Belum").
 - **Guard `is_latest` tidak butuh clear saat delete** — ekspresi generated column memuat `AND is_deleted = 0`, jadi mayat record (soft-deleted) menghasilkan NULL dan tidak memblokir write baru; `updateIsLatest` juga tidak perlu mencakup baris deleted.
 - **Dedup migration mempertahankan baris ber-`id` terbesar** per biodata; pointer `biodata.pendidikanTerakhir` tidak disinkronkan ulang pada data duplikat (anomali pre-existing; normalisasi aplikasi seharusnya mencegahnya sejak awal).
+
+## Verifikasi staging (2026-08-12)
+
+Diuji terhadap `kepegawaian_dev_new` (MariaDB 11.1.5, host staging) sebelum deploy:
+
+| Pemeriksaan | Hasil |
+|-------------|-------|
+| Status V29 di staging | Ter-apply (success=1, checksum 1370411680) |
+| **Checksum file commit vs applied** | Identik — migrate fresh ke scratch DB (`kepegawaian_v29check`, lalu di-drop) dari file commit menghasilkan checksum yang sama (1370411680) → `flyway validate` saat deploy aman |
+| Dedup `is_latest` | 0 biodata berduplikat tersisa; tepat 1 `is_latest=true` per 481 biodata |
+| Backfill `disetujui` | 1.246 baris stabil → `disetujui=1` + `tanggal_disetujui` + `disetujui_oleh=SYSTEM` |
+| Generated column + UNIQUE | `is_latest_biodata` STORED GENERATED + `uk_ddk_islatest_biodata` (UNI) ada |
+| **Guard fungsional** | Insert baris kedua `is_latest=1` per biodata → `ERROR 1062 Duplicate entry ... uk_ddk_islatest_biodata`; rollback bersih (data tak berubah) |
+| Chain migrasi dari kosong | 29 migration apply bersih, 0 failed (scratch DB) |
+
+Catatan: staging tidak memiliki baris pending (`changed_status=1`), jadi cabang "pending tetap `disetujui=0`"
+belum ter-exercise di data nyata (murni filter `WHERE changed_status=0`, risiko rendah).
 - **Tidak ada perubahan skema untuk kolom `disetujui`** — sudah ada sejak baseline.
 - **`isLatest`**: guard hanya membatasi baris **aktif** (`is_deleted=0`); mayat record bebas mempertahankan nilai lamanya asalkan `is_latest`-nya di-clear saat dihapus.
 - **Keahlian dkk**: tetap berperilaku lama; issue tech debt terpisah.

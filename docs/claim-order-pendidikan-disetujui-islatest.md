@@ -41,6 +41,7 @@ antrian), `tanggalPengajuan` create+update, backfill baris stabil, dan guard DB 
 | 4 | Clear `is_latest` saat delete / cakup baris deleted di `updateIsLatest` | — | ✅ tidak perlu: guard memuat `AND is_deleted=0` (mayat record → NULL, tak memblokir) |
 | 5 | Regenerasi jOOQ | — | ⬜ skip: tidak ada kode yang mereferensikan `is_latest_biodata` (queries enumerate kolom) |
 | 6 | Compile Java + test suite penuh | `./gradlew clean compileJava` + `./gradlew test` | ✅ |
+| 7 | **Verifikasi staging** (checksum/backfill/guard) — hasil: checksum V29 identik (1370411680), 1.246 baris ter-backfill, guard tolak duplikat (1062), lihat ADR-0035 §Verifikasi | `kepegawaian_dev_new` | ✅ (2026-08-12) |
 
 ## Checklist — kepegawaian-c74 (tests)
 
