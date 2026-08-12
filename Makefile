@@ -1,6 +1,12 @@
 .PHONY: build-dev
-build-dev:
+build-dev: bootJar
 	docker buildx bake -f docker/development/docker-compose.yml
+
+# Dockerfile meng-COPY build/libs/*.jar ke image — jar WAJIB fresh sebelum bake,
+# kalau tidak layer COPY memakai cache jar lama (trappot stale-jar).
+.PHONY: bootJar
+bootJar:
+	./gradlew bootJar
 
 .PHONY: start-dev
 start-dev:
