@@ -1,7 +1,8 @@
-# Graph Report - .  (2026-08-12)
+# Graph Report - kepegawaian  (2026-08-12)
 
 ## Corpus Check
-- cluster-only mode — file stats not available
+- 1252 files · ~384,538 words
+- Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
 - 12097 nodes · 35576 edges · 425 communities (327 shown, 98 thin omitted)
