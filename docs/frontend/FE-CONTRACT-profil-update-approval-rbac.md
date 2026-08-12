@@ -45,7 +45,21 @@
 | `PENGGAJIAN:READ` / `PENGGAJIAN:WRITE` / `PENGGAJIAN:PROCESS` | Penggajian |
 | `SYSTEM:MANAGE_USER` / `SYSTEM:MANAGE_ROLE` | Manajemen user & role |
 
-> **Catatan untuk FE**: saat ini BE **belum mengekspos** permission milik user login (belum ada endpoint `/account/me` / profil principal). Jika FE butuh menampilkan/menyembunyikan menu berbasis permission, BE perlu endpoint baru — koordinasikan dulu.
+> **Sudah tersedia — `GET /account/me`** (envelope `SingleResult`):
+> ```json
+> {
+>   "status": 200, "statusText": "OK", "errors": [], "message": "Data Found",
+>   "data": {
+>     "id": "123",
+>     "name": "Budi Santoso",
+>     "roles": ["ADMIN", "HRD"],
+>     "permissions": ["MASTER:DELETE", "PEGAWAI:READ", "PROFIL:APPROVE"]
+>   },
+>   "timestamp": "2026-08-12 14:30:00"
+> }
+> ```
+> - `roles` dan `permissions` sudah ter-sort. `permissions` = union dari semua role user (hasil inflation per request, sesuai matrix DB saat itu).
+> - Endpoint ini butuh login (Bearer token / DevUser di dev). Pakai untuk show/hide menu berbasis permission.
 
 ---
 
@@ -335,4 +349,4 @@ Semua endpoint memakai envelope berikut (kecuali error handler khusus):
 - [ ] Halaman **manajemen user**: user baru hanya role `USER`; pastikan ada UI assign role eksplisit via `PATCH /system/users/pref/{userId}` (section 3).
 - [ ] Halaman **approval profil**: tidak ada perubahan sekarang; siapkan logic sembunyikan tombol approve saat guard `PROFIL:APPROVE` aktif (section 4.1 note).
 - [x] **Routing split profil** (`/admin/profil/{id}` vs `/profil`) — **sudah LIVE**; `PATCH /profil/biodata/{id}` lama sudah dihapus (section 5).
-- [ ] (Opsional) Jika FE ingin UI berbasis permission: minta BE buat endpoint principal (`/account/me`) yang mengembalikan roles + permissions user login — saat ini belum ada.
+- [x] **UI berbasis permission**: pakai `GET /account/me` (roles + permissions user login) — sudah live, lihat catatan di section 1.
