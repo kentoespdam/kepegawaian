@@ -5,10 +5,10 @@
 | Item | Nilai |
 |------|-------|
 | Branch | `rewrite/master-cqrs` |
-| Commit RBAC | `5ef7ef54` (feat) + `6c8417cc` (chore graph) — sudah ter-push |
+| Commit | `221f497e` (HEAD — self/admin 6 modul profil) — semua seri RBAC/profil ter-push |
 | Tanggal | 2026-08-12 |
 | ADR | [ADR-0037](../adr/0037-rbac-permission-per-role-didb-mariadb.md), [ADR-0038](../adr/0038-profil-endpoint-split-admin-vs-selfservice.md) |
-| Issue | `kepegawaian-9b6l` (RBAC — ✅ closed), `kepegawaian-qp0m` (default roles — ✅ closed), `kepegawaian-huis` (endpoint split profil — 🚧 masih OPEN/blocked) |
+| Issue | `kepegawaian-9b6l` (RBAC — ✅ closed) · `kepegawaian-qp0m` (default roles — ✅ closed) · `kepegawaian-huis` (split profil — ✅ closed) · `kepegawaian-y5vt` (seed V31 — ✅ closed) · `kepegawaian-nilt` (`GET /account/me` — ✅ closed) · `kepegawaian-3blf` (ownership check — ⏳ OPEN, follow-up) |
 
 ---
 
@@ -19,10 +19,12 @@
 | RBAC infrastructure: permission granular per role | ✅ **LIVE** | Role management API baru + field `permissions` di respons role |
 | User provisioning: role default `[ADMIN, USER]` → `[USER]` | ✅ **LIVE** | User baru **tidak lagi** dapat role `ADMIN` |
 | Dev User: dapat semua permission | ✅ **LIVE** | Hanya untuk environment dev, tidak relevan di prod |
-| Enforcement permission di controller (`hasAuthority`) | 🕐 **BELUM** (transisi dual-mode) | **Tidak ada perubahan perilaku endpoint existing** — FE aman |
-| Endpoint split profil `/admin/profil/{id}` vs `/profil` | ✅ **LIVE** (kepegawaian-huis) | **BREAKING**: `PATCH /profil/biodata/{id}` lama DIHAPUS — FE wajib routing per halaman |
+| Enforcement permission di controller (`hasAuthority`) | 🕐 **SEBAGIAN** (dual-mode) | Modul **master** + **admin-profil** sudah dual-mode; modul lain masih `hasRole('ADMIN')`. Dual-mode = izin lama tetap jalan → **tidak ada endpoint yang menyempit** |
+| Endpoint split profil — biodata + 6 modul lain | ✅ **LIVE** (kepegawaian-huis) | **BREAKING**: `PATCH /profil/biodata/{id}` lama DIHAPUS — FE wajib routing per halaman (section 5) |
+| Seed permission matrix (V31) | ✅ **LIVE** (kepegawaian-y5vt) | `ADMIN`=20, `HRD`=15 — HRD kini bisa write/delete master + `PATCH /admin/profil/{id}` (section 2.4) |
+| `GET /account/me` | ✅ **LIVE** (kepegawaian-nilt) | Endpoint baru: roles + permissions user login untuk UI berbasis permission (section 1) |
 
-> ⚠️ **Poin kunci**: semua controller existing masih memakai `hasRole('ADMIN')` (dual-mode). Migrasi per-modul ke permission dikerjakan bertahap di issue terpisah. Jadi **belum ada endpoint yang berubah izin aksesnya** — FE tidak perlu buru-buru menyesuaikan guard di sisi UI, kecuali untuk halaman manajemen role baru.
+> ⚠️ **Poin kunci**: migrasi ke `hasAuthority` dilakukan bertahap per modul dengan pola **dual-mode** (`hasRole('ADMIN') or hasAuthority('...')`) — izin lama tidak pernah dicabut. Modul **master** (write/delete) dan **admin-profil** sudah dual-mode; modul lain menyusul. Untuk endpoint existing FE tidak perlu mengubah guard UI — satu-satunya **breaking change** adalah pemisahan endpoint self vs admin profil (section 5).
 
 ---
 
@@ -263,13 +265,15 @@ Nilai enum yang mungkin:
 
 ### 4.6 Mekanisme `changedStatus` (konteks)
 
-- Setiap update data profil oleh **pegawai biasa** → `changedStatus=true` → masuk antrian approval (`PENDING`).
-- Update oleh **SDM/ADMIN** → `changedStatus=false` → langsung stabil, tidak masuk antrian.
-- Keputusan ini diambil **server** berdasarkan principal (role penulis), bukan dari body request — FE tidak mengirim/mengatur field status.
+> ⚠️ **Diperbarui (ADR-0038)**: sejak split self/admin, keputusan `changedStatus` **tidak lagi berbasis role principal**, melainkan **berbasis konteks endpoint**:
+
+- Update lewat endpoint **self** (`/profil/...`) → `changedStatus=true` → masuk antrian approval (`PENDING`), **untuk semua user termasuk ADMIN/HRD**.
+- Update lewat endpoint **admin** (`/admin/profil/...`) → `changedStatus=false` → langsung stabil, tidak masuk antrian.
+- Keputusan diambil **server** berdasarkan endpoint yang dipanggil (bukan dari body request) — FE tidak mengirim/mengatur field status, cukup pilih endpoint yang benar per konteks halaman (tabel routing di section 5 & 5.1).
 
 ---
 
-## 5. LIVE — Endpoint Split Profil (ADR-0038 / `kepegawaian-huis`)
+## 5. LIVE — Endpoint Split Profil (ADR-0038): Self vs Admin
 
 > ⚠️ **BREAKING CHANGE**: `PATCH /profil/biodata/{id}` (routing changedStatus berbasis role) **telah DIHAPUS**. FE wajib migrasi ke 2 endpoint di bawah ini (routing per halaman).
 
@@ -360,7 +364,9 @@ Semua endpoint memakai envelope berikut (kecuali error handler khusus):
 
 - [ ] Halaman **manajemen role**: render list permission per role (field `permissions` di `GET /system/roles/list`), plus UI assign/revoke via endpoint baru (section 2.2–2.3) — khusus role `SYSTEM`.
 - [ ] Halaman **manajemen user**: user baru hanya role `USER`; pastikan ada UI assign role eksplisit via `PATCH /system/users/pref/{userId}` (section 3).
-- [ ] Halaman **approval profil**: tidak ada perubahan sekarang; siapkan logic sembunyikan tombol approve saat guard `PROFIL:APPROVE` aktif (section 4.1 note).
+- [ ] Halaman **approval profil**: siapkan logic sembunyikan tombol approve saat guard `PROFIL:APPROVE` aktif di `PUT /profil/profil-update/{id}` (section 4.1 note — belum aktif).
 - [x] **Routing split profil** (`/admin/profil/{id}` vs `/profil`) — **sudah LIVE**; `PATCH /profil/biodata/{id}` lama sudah dihapus (section 5).
 - [x] **Routing admin vs self untuk 6 modul profil lain** — admin pindah ke `/admin/profil/{entity}/...`, self tetap di `/profil/{entity}/...` (selalu approval) (section 5.1).
 - [x] **UI berbasis permission**: pakai `GET /account/me` (roles + permissions user login) — sudah live, lihat catatan di section 1.
+- [x] **Seed matrix (V31)**: `ADMIN`=20 / `HRD`=15 sudah live — HRD punya write/delete master + admin-profil (section 2.4).
+- [ ] **Ownership self-endpoint**: endpoint self **belum** verifikasi kepemilikan `biodataId`/`nik` (issue `kepegawaian-3blf`, OPEN) — jangan andalkan isolasi data antar pegawai lewat jalur self (section 5.1).
