@@ -18,7 +18,20 @@ Typed adapter `@Component` yang meng-enkapsulasi semua komunikasi REST ke Appwri
 `@ConfigurationProperties(prefix="appwrite")` bean untuk konfigurasi endpoint, projectId, dan apiKey — menggantikan 3 `@Value` yang tersebar di AuthService dan JwtTokenService.
 
 **Role**:
-Hak akses pada principal (mis. `ADMIN`, `SYSTEM`). Menentukan endpoint mana yang boleh diakses (`@PreAuthorize`). Di Spring di-prefix `ROLE_`.
+Label hak akses yang di-assign ke Appwrite User via `prefs.roles` (mis. `ADMIN`, `HRD`, `SYSTEM`). Di Spring di-prefix `ROLE_`. Satu user bisa punya lebih dari satu Role; permission-nya adalah union dari semua role yang dimiliki. Role itu sendiri tidak memiliki makna akses — akses ditentukan oleh Permission yang terikat ke Role di database.
+_Avoid_: "privilege", "level akses"
+
+**Permission**:
+Atomic unit akses dengan format `{ENTITY}:{ACTION}` (mis. `CUTI:APPROVE`, `PEGAWAI:WRITE`, `MASTER:DELETE`). Disimpan di tabel `pref_permission` MariaDB dan terikat ke Role via `pref_role_permission`. Di-inject ke `GrantedAuthority` Spring sebagai string literal (tanpa prefix). Di-enforce via `@PreAuthorize("hasAuthority('CUTI:APPROVE')")`. Tidak bisa di-assign langsung ke user — hanya bisa via Role.
+_Avoid_: "izin", "hak", "access right"
+
+**Permission Matrix**:
+Mapping deklaratif Role → Set\<Permission\> yang menjadi data seed. Didefinisikan secara terpisah dari infrastruktur RBAC; bisa diubah via API tanpa deploy ulang.
+_Avoid_: "ACL", "access table"
+
+**Permission Inflation**:
+Proses di `JwtAuthFilter` saat JWT masuk: baca roles dari Appwrite prefs → load permission set dari MariaDB → inject keduanya (`ROLE_xxx` + `ENTITY:ACTION`) ke `GrantedAuthority` Spring untuk satu request. Dilakukan setiap request; tidak di-cache.
+_Avoid_: "permission loading", "role expansion"
 
 ## Aturan Bisnis Penting
 
