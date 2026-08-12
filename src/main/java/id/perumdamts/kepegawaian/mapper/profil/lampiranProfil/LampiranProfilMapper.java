@@ -21,10 +21,4 @@ public final class LampiranProfilMapper {
         return entity;
     }
 
-    public static LampiranProfil accept(LampiranProfil entity, String oleh) {
-        entity.setDisetujui(true);
-        entity.setDisetujuiOleh(oleh);
-        entity.setTanggalDisetujui(LocalDateTime.now());
-        return entity;
-    }
 }

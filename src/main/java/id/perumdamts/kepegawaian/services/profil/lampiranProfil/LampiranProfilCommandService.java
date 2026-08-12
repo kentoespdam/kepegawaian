@@ -2,18 +2,20 @@ package id.perumdamts.kepegawaian.services.profil.lampiranProfil;
 
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
-import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilAcceptRequest;
 import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilPostRequest;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
+import id.perumdamts.kepegawaian.entities.commons.EProfileUpdateTable;
 import id.perumdamts.kepegawaian.entities.profil.LampiranProfil;
 import id.perumdamts.kepegawaian.exceptions.ConflictException;
-import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.mapper.profil.lampiranProfil.LampiranProfilMapper;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.LampiranProfilRepository;
+import id.perumdamts.kepegawaian.services.profil.ChangedStatusResolver;
+import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
 import id.perumdamts.kepegawaian.utils.FileUploadUtil;
 import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import id.perumdamts.kepegawaian.utils.UploadResultUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.history.RevisionMetadata;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +28,14 @@ import java.util.Optional;
 public class LampiranProfilCommandService {
     private final LampiranProfilRepository repository;
     private final FileUploadUtil fileUploadUtil;
+    private final ProfileUpdateService profileUpdateService;
+    private final ChangedStatusResolver resolver;
 
+    /**
+     * ADR-0036 §6: lampiran masuk antrian tanpa kolom changed_status — guard enqueue
+     * langsung {@code resolver.requiresApproval()}. HRD/ADMIN → disetujui=true langsung;
+     * self-service → disetujui=false + entri PENDING di antrian ProfileUpdate.
+     */
     @Transactional
     public SavedStatus<Long> addLampiran(LampiranProfilPostRequest request) {
         boolean exists = repository.exists(request.getSpecification());
@@ -45,8 +54,16 @@ public class LampiranProfilCommandService {
                 uploadedFile.getHashedFileName(),
                 uploadedFile.getMimeType()
         );
-        repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, entity.getId());
+        boolean requiresApproval = resolver.requiresApproval();
+        if (requiresApproval) {
+            entity.setDisetujui(false);
+        }
+        LampiranProfil saved = repository.save(entity);
+        if (requiresApproval) {
+            profileUpdateService.create(String.valueOf(saved.getId()),
+                    RevisionMetadata.RevisionType.INSERT, EProfileUpdateTable.LAMPIRAN);
+        }
+        return SavedStatus.build(ESaveStatus.SUCCESS, saved.getId());
     }
 
     @Transactional
@@ -56,16 +73,11 @@ public class LampiranProfilCommandService {
             return false;
         byId.get().setIsDeleted(true);
         repository.save(byId.get());
+        if (resolver.requiresApproval()) {
+            profileUpdateService.create(String.valueOf(id),
+                    RevisionMetadata.RevisionType.DELETE, EProfileUpdateTable.LAMPIRAN);
+        }
         return true;
-    }
-
-    @Transactional
-    public SavedStatus<Long> acceptLampiran(LampiranProfilAcceptRequest request, String oleh) {
-        LampiranProfil lampiranProfil = repository.findOne(request.getSpecification())
-                .orElseThrow(() -> new NotFoundException("Lampiran Profil accept not found!"));
-        LampiranProfil entity = LampiranProfilMapper.accept(lampiranProfil, oleh);
-        repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, entity.getId());
     }
 
     @Transactional
