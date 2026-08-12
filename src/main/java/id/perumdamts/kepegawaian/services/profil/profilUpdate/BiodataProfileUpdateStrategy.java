@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.services.profil.profilUpdate;
 import id.perumdamts.kepegawaian.entities.commons.EProfileUpdateTable;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.ProfileUpdate;
+import id.perumdamts.kepegawaian.repositories.master.jpa.JenjangPendidikanRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
 import id.perumdamts.kepegawaian.services.revInfo.RevInfoService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.List;
 public class BiodataProfileUpdateStrategy implements ProfileUpdateStrategy {
     private final RevInfoService revInfoService;
     private final BiodataRepository repository;
+    private final JenjangPendidikanRepository jenjangPendidikanRepository;
 
     @Override
     public EProfileUpdateTable table() {
@@ -65,7 +67,11 @@ public class BiodataProfileUpdateStrategy implements ProfileUpdateStrategy {
         entity.setAlamat(last.getAlamat());
         entity.setTelp(last.getTelp());
         entity.setIbuKandung(last.getIbuKandung());
-        entity.setPendidikanTerakhir(last.getPendidikanTerakhir());
+        // Salin hanya id relasi dari entity audit (session Envers), re-attach via
+        // getReferenceById di session saat ini — hindari proxy lintas session (bd kepegawaian-yu5j).
+        entity.setPendidikanTerakhir(last.getPendidikanTerakhir() != null
+                ? jenjangPendidikanRepository.getReferenceById(last.getPendidikanTerakhir().getId())
+                : null);
         entity.setChangedStatus(false);
         repository.save(entity);
     }

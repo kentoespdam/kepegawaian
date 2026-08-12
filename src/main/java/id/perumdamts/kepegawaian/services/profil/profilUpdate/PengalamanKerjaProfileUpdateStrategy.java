@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.services.profil.profilUpdate;
 import id.perumdamts.kepegawaian.entities.commons.EProfileUpdateTable;
 import id.perumdamts.kepegawaian.entities.profil.PengalamanKerja;
 import id.perumdamts.kepegawaian.entities.profil.ProfileUpdate;
+import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.PengalamanKerjaRepository;
 import id.perumdamts.kepegawaian.services.profil.ChangedStatusResolver;
 import id.perumdamts.kepegawaian.services.revInfo.RevInfoService;
@@ -20,6 +21,7 @@ public class PengalamanKerjaProfileUpdateStrategy implements ProfileUpdateStrate
     private final RevInfoService revInfoService;
     private final PengalamanKerjaRepository repository;
     private final ChangedStatusResolver resolver;
+    private final BiodataRepository biodataRepository;
 
     @Override
     public EProfileUpdateTable table() {
@@ -61,7 +63,11 @@ public class PengalamanKerjaProfileUpdateStrategy implements ProfileUpdateStrate
         PengalamanKerja last = latestRevision.getLast();
         PengalamanKerja entity = repository.findById(Long.valueOf(profileUpdate.getRevId()))
                 .orElseThrow(() -> new IllegalArgumentException("Unknown Pengalaman Kerja"));
-        entity.setBiodata(last.getBiodata());
+        // Salin hanya id relasi dari entity audit (session Envers), re-attach via
+        // getReferenceById di session saat ini — hindari proxy lintas session (bd kepegawaian-yu5j).
+        entity.setBiodata(last.getBiodata() != null
+                ? biodataRepository.getReferenceById(last.getBiodata().getNik())
+                : null);
         entity.setNamaPerusahaan(last.getNamaPerusahaan());
         entity.setTypePerusahaan(last.getTypePerusahaan());
         entity.setJabatan(last.getJabatan());

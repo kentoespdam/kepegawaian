@@ -3,6 +3,8 @@ package id.perumdamts.kepegawaian.services.profil.profilUpdate;
 import id.perumdamts.kepegawaian.entities.commons.EProfileUpdateTable;
 import id.perumdamts.kepegawaian.entities.profil.KartuIdentitas;
 import id.perumdamts.kepegawaian.entities.profil.ProfileUpdate;
+import id.perumdamts.kepegawaian.repositories.master.jpa.JenisKitasRepository;
+import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.KartuIdentitasRepository;
 import id.perumdamts.kepegawaian.services.revInfo.RevInfoService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,8 @@ import java.util.List;
 public class KartuIdentitasProfileUpdateStrategy implements ProfileUpdateStrategy {
     private final RevInfoService revInfoService;
     private final KartuIdentitasRepository repository;
+    private final BiodataRepository biodataRepository;
+    private final JenisKitasRepository jenisKitasRepository;
 
     @Override
     public EProfileUpdateTable table() {
@@ -55,8 +59,14 @@ public class KartuIdentitasProfileUpdateStrategy implements ProfileUpdateStrateg
         KartuIdentitas last = latestRevision.getLast();
         KartuIdentitas entity = repository.findById(Long.valueOf(profileUpdate.getRevId()))
                 .orElseThrow(() -> new IllegalArgumentException("Unknown Kartu Identitas"));
-        entity.setBiodata(last.getBiodata());
-        entity.setJenisKartu(last.getJenisKartu());
+        // Salin hanya id relasi dari entity audit (session Envers), re-attach via
+        // getReferenceById di session saat ini — hindari proxy lintas session (bd kepegawaian-yu5j).
+        entity.setBiodata(last.getBiodata() != null
+                ? biodataRepository.getReferenceById(last.getBiodata().getNik())
+                : null);
+        entity.setJenisKartu(last.getJenisKartu() != null
+                ? jenisKitasRepository.getReferenceById(last.getJenisKartu().getId())
+                : null);
         entity.setNomorKartu(last.getNomorKartu());
         entity.setTanggalExpired(last.getTanggalExpired());
         entity.setTanggalTerima(last.getTanggalTerima());

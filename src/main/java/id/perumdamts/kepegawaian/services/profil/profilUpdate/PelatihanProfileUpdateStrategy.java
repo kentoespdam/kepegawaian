@@ -3,6 +3,8 @@ package id.perumdamts.kepegawaian.services.profil.profilUpdate;
 import id.perumdamts.kepegawaian.entities.commons.EProfileUpdateTable;
 import id.perumdamts.kepegawaian.entities.profil.Pelatihan;
 import id.perumdamts.kepegawaian.entities.profil.ProfileUpdate;
+import id.perumdamts.kepegawaian.repositories.master.jpa.JenisPelatihanRepository;
+import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.PelatihanRepository;
 import id.perumdamts.kepegawaian.services.profil.ChangedStatusResolver;
 import id.perumdamts.kepegawaian.services.revInfo.RevInfoService;
@@ -20,6 +22,8 @@ public class PelatihanProfileUpdateStrategy implements ProfileUpdateStrategy {
     private final RevInfoService revInfoService;
     private final PelatihanRepository repository;
     private final ChangedStatusResolver resolver;
+    private final BiodataRepository biodataRepository;
+    private final JenisPelatihanRepository jenisPelatihanRepository;
 
     @Override
     public EProfileUpdateTable table() {
@@ -61,8 +65,14 @@ public class PelatihanProfileUpdateStrategy implements ProfileUpdateStrategy {
         Pelatihan last = latestRevision.getLast();
         Pelatihan entity = repository.findById(Long.valueOf(profileUpdate.getRevId()))
                 .orElseThrow(() -> new IllegalArgumentException("Unknown Pelatihan"));
-        entity.setBiodata(last.getBiodata());
-        entity.setJenisPelatihan(last.getJenisPelatihan());
+        // Salin hanya id relasi dari entity audit (session Envers), re-attach via
+        // getReferenceById di session saat ini — hindari proxy lintas session (bd kepegawaian-yu5j).
+        entity.setBiodata(last.getBiodata() != null
+                ? biodataRepository.getReferenceById(last.getBiodata().getNik())
+                : null);
+        entity.setJenisPelatihan(last.getJenisPelatihan() != null
+                ? jenisPelatihanRepository.getReferenceById(last.getJenisPelatihan().getId())
+                : null);
         entity.setNama(last.getNama());
         entity.setLembaga(last.getLembaga());
         entity.setTanggalMulai(last.getTanggalMulai());
