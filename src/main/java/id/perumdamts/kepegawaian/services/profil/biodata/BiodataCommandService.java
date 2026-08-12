@@ -79,15 +79,20 @@ public class BiodataCommandService {
         return entity.getNik();
     }
 
+    /**
+     * ADR-0038: changedStatus ditentukan oleh konteks endpoint, bukan role principal.
+     * Self-service (PATCH /profil) -> selalu true (approval queue);
+     * admin (PATCH /admin/profil/{id}) -> selalu false (langsung stable).
+     */
     @Transactional
-    public String patchBiodata(String nik, BiodataPatchRequest request) {
+    public String patchBiodata(String nik, BiodataPatchRequest request, boolean requiresApproval) {
         Biodata entity = repository.findById(nik)
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
 
         BiodataMapper.patchEntity(entity, request);
-        entity.setChangedStatus(resolver.requiresApproval());
+        entity.setChangedStatus(requiresApproval);
         repository.save(entity);
-        if (Boolean.TRUE.equals(entity.getChangedStatus())) {
+        if (requiresApproval) {
             profileUpdateService.create(nik, RevisionMetadata.RevisionType.UPDATE, EProfileUpdateTable.BIODATA);
         }
         return entity.getNik();

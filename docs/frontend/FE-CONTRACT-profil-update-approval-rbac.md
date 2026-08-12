@@ -20,7 +20,7 @@
 | User provisioning: role default `[ADMIN, USER]` → `[USER]` | ✅ **LIVE** | User baru **tidak lagi** dapat role `ADMIN` |
 | Dev User: dapat semua permission | ✅ **LIVE** | Hanya untuk environment dev, tidak relevan di prod |
 | Enforcement permission di controller (`hasAuthority`) | 🕐 **BELUM** (transisi dual-mode) | **Tidak ada perubahan perilaku endpoint existing** — FE aman |
-| Endpoint split profil `/admin/profil/{id}` vs `/profil` | 🚧 **BELUM DIKERJAKAN** (kepegawaian-huis) | Persiapan routing — lihat section 4 |
+| Endpoint split profil `/admin/profil/{id}` vs `/profil` | ✅ **LIVE** (kepegawaian-huis) | **BREAKING**: `PATCH /profil/biodata/{id}` lama DIHAPUS — FE wajib routing per halaman |
 
 > ⚠️ **Poin kunci**: semua controller existing masih memakai `hasRole('ADMIN')` (dual-mode). Migrasi per-modul ke permission dikerjakan bertahap di issue terpisah. Jadi **belum ada endpoint yang berubah izin aksesnya** — FE tidak perlu buru-buru menyesuaikan guard di sisi UI, kecuali untuk halaman manajemen role baru.
 
@@ -250,19 +250,38 @@ Nilai enum yang mungkin:
 
 ---
 
-## 5. Rencana Belum Live — Endpoint Split Profil (ADR-0038 / `kepegawaian-huis`)
+## 5. LIVE — Endpoint Split Profil (ADR-0038 / `kepegawaian-huis`)
 
-Issue `kepegawaian-huis` masih OPEN (blocked oleh RBAC yang baru selesai). **Saat dikerjakan**, akan ada perubahan breaking pada PATCH biodata/profil:
+> ⚠️ **BREAKING CHANGE**: `PATCH /profil/biodata/{id}` (routing changedStatus berbasis role) **telah DIHAPUS**. FE wajib migrasi ke 2 endpoint di bawah ini (routing per halaman).
 
-| Endpoint (rencana) | Perilaku | Diproteksi |
-|--------------------|----------|------------|
-| `PATCH /admin/profil/{id}` | Edit profil siapa pun oleh HRD/ADMIN — **tidak** trigger approval queue (langsung stable) | `hasAuthority('PROFIL:APPROVE')` |
-| `PATCH /profil` | Edit profil **diri sendiri** oleh pegawai — **selalu** masuk approval queue (`changedStatus=true`) | Login (self) |
+| Endpoint | Perilaku | Diproteksi |
+|----------|----------|------------|
+| `PATCH /admin/profil/{id}` | Edit profil siapa pun oleh HRD/ADMIN — **tidak pernah** trigger approval queue (langsung stable, `changedStatus=false`) | `hasRole('ADMIN') or hasAuthority('PROFIL:APPROVE')` |
+| `PATCH /profil` | Edit profil **diri sendiri** oleh pegawai — **selalu** masuk approval queue (`changedStatus=true`); NIK diambil dari token, **tidak ada** id di path/body | Login (self) |
 
-**Aksi FE yang perlu disiapkan (belum perlu dikerjakan sekarang):**
-1. Routing halaman → endpoint yang tepat: halaman admin/HRD → `/admin/profil/{id}`; halaman self-service pegawai → `/profil`.
-2. Jangan pakai mekanisme `X-Acting-As` header / flag `asAdmin` di body — sengaja **tidak** didukung (bisa di-bypass).
-3. Pegawai biasa yang memanggil `/admin/profil/{id}` akan dapat **403** (karena tidak punya `PROFIL:APPROVE`).
+**Body kedua endpoint** (sama dengan yang lama) — `BiodataPatchRequest`:
+```json
+{
+  "nama": "Budi Santoso",
+  "alamat": "Jl. Merdeka No. 1",
+  "jenisKelamin": "LAKI_LAKI",
+  "statusKawin": "KAWIN",
+  "agama": "ISLAM",
+  "tempatLahir": "Surabaya",
+  "tanggalLahir": "1995-01-01",
+  "ibuKandung": "Siti",
+  "telp": "081234567890"
+}
+```
+Semua field opsional (PATCH parsial); yang tidak dikirim tidak berubah. Nilai enum dikirim sebagai **string nama** (Jackson by name): `jenisKelamin`: `LAKI_LAKI`/`PEREMPUAN`; `statusKawin`: `BELUM_KAWIN`/`KAWIN`/`JANDA_DUDA`/`MENIKAH_SEKANTOR`/`TIDAK_TAHU`; `agama`: `TIDAK_TAHU`/`ISLAM`/`KRISTEN`/`KATOLIK`/`HINDU`/`BUDHA`/`KONGHUCHU`/`ALIRAN_KEPERCAYAAN`/`LAINNYA`.
+
+**Aturan main FE:**
+1. Halaman admin/HRD → panggil `PATCH /admin/profil/{id}` (`id` = NIK target).
+2. Halaman self-service pegawai → panggil `PATCH /profil` (tanpa id — NIK dari token).
+3. Jangan pakai mekanisme `X-Acting-As` header / flag `asAdmin` di body — sengaja **tidak** didukung (bisa di-bypass).
+4. Pegawai biasa yang memanggil `/admin/profil/{id}` → **403** (tidak punya `PROFIL:APPROVE`).
+5. `ADMIN` masih bisa akses `/admin/profil/{id}` via dual-mode role — jalur lama tidak hilang untuk ADMIN.
+6. Principal `DEV` (dev tanpa token) tidak bisa pakai `PATCH /profil` (tidak punya akun riil) — gunakan `/admin/profil/{id}` atau Bearer token asli untuk menguji alur approval.
 
 ---
 
@@ -310,5 +329,5 @@ Semua endpoint memakai envelope berikut (kecuali error handler khusus):
 - [ ] Halaman **manajemen role**: render list permission per role (field `permissions` di `GET /system/roles/list`), plus UI assign/revoke via endpoint baru (section 2.2–2.3) — khusus role `SYSTEM`.
 - [ ] Halaman **manajemen user**: user baru hanya role `USER`; pastikan ada UI assign role eksplisit via `PATCH /system/users/pref/{userId}` (section 3).
 - [ ] Halaman **approval profil**: tidak ada perubahan sekarang; siapkan logic sembunyikan tombol approve saat guard `PROFIL:APPROVE` aktif (section 4.1 note).
-- [ ] Siapkan **routing split profil** (`/admin/profil` vs `/profil`) — aktif saat `kepegawaian-huis` selesai (section 5).
+- [x] **Routing split profil** (`/admin/profil/{id}` vs `/profil`) — **sudah LIVE**; `PATCH /profil/biodata/{id}` lama sudah dihapus (section 5).
 - [ ] (Opsional) Jika FE ingin UI berbasis permission: minta BE buat endpoint principal (`/account/me`) yang mengembalikan roles + permissions user login — saat ini belum ada.

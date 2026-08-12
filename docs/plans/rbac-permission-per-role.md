@@ -192,5 +192,5 @@ Migrasi per-modul dikerjakan di issue terpisah (tidak di scope issue ini).
 | Issue | Judul | Blocker? |
 |-------|-------|----------|
 | `kepegawaian-9b6l` | **Issue ini** — RBAC infrastruktur | — |
-| `kepegawaian-huis` | Pisah endpoint profil admin vs self-service | Blocked by issue ini |
+| `kepegawaian-huis` | Pisah endpoint profil admin vs self-service | ✓ Selesai (ADR-0038, lihat FE contract section 5) |
 | `kepegawaian-qp0m` | Bug: hardcoded `ADMIN` di `createUserWithDefaultRoles` — ganti ke `USER` saja | Independen, dikerjakan di Step 5b |

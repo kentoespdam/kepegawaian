@@ -1,10 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.profil;
 
-import id.perumdamts.kepegawaian.dto.appwrite.AppwriteUser;
 import id.perumdamts.kepegawaian.dto.commons.*;
 import id.perumdamts.kepegawaian.dto.profil.biodata.*;
-import id.perumdamts.kepegawaian.exceptions.NotFoundException;
-import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
 import id.perumdamts.kepegawaian.services.profil.biodata.BiodataCommandService;
 import id.perumdamts.kepegawaian.services.profil.biodata.BiodataQueryService;
 import id.perumdamts.kepegawaian.utils.MimeTypesUtils;
@@ -14,7 +11,6 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,7 +21,6 @@ public class BiodataController {
     private final BiodataQueryService queryService;
     private final BiodataCommandService commandService;
     private final MimeTypesUtils mimeTypesUtils;
-    private final PegawaiRepository pegawaiRepository;
 
     @GetMapping
     public ResponseEntity<PageResult<Page<BiodataQuery>>> index(@Valid @ParameterObject BiodataIndexQuery query) {
@@ -52,20 +47,6 @@ public class BiodataController {
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<String>> update(@PathVariable String id, @Valid @RequestBody BiodataPutRequest request) {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.update(id, request)));
-    }
-
-    @PatchMapping("/{id}")
-    public ResponseEntity<SavedResult<String>> patchBiodata(@PathVariable String id, @Valid @RequestBody BiodataPatchRequest request) {
-        AppwriteUser principal = (AppwriteUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        var isAdmin = principal.getAuthorities().stream().anyMatch(a -> "ROLE_ADMIN".equals(a.getAuthority()));
-        if (!isAdmin && !"DEV".equals(principal.get$id())) {
-            var pegawai = pegawaiRepository.findById(Long.valueOf(principal.get$id()))
-                    .orElseThrow(() -> new NotFoundException("Unknown Pegawai"));
-            String ownNik = pegawai.getBiodata().getNik();
-            if (!ownNik.equals(id))
-                throw new NotFoundException("Biodata not found");
-        }
-        return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.patchBiodata(id, request)));
     }
 
     @GetMapping("/{id}/dashboard")
