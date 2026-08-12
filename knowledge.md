@@ -353,9 +353,42 @@ File di root repo (ter-commit). Sintaks **sama seperti `.gitignore`**: komentar 
 
 **Update graph:** `graphify update . --force` (wajib `--force` saat node count turun karena pengecualian — tanpa itu graphify menolak overwrite, "fewer nodes"). Full re-extraction (hapus `graphify-out/cache/`) untuk purge file yang sudah keluar dari corpus (fail-closed keep).
 
-> **Temuan (Agustus 2026):** ada **DUA instalasi graphify** — PATH `/home/dev/.local/bin/graphify` (v0.9.23, yang BENAR dipakai — punya subcommand `update`/`check-update`) vs uv-tool `graphifyy` (v0.5.2, yang DIPAKAI `.graphify_python` — format manifest LAMA `dict[str,float]`, tidak cocok dengan manifest baru ber-`ast_hash`/`semantic_hash`). Jangan pakai python dari `.graphify_python` untuk update — hasilnya `detect_incremental` salah lapor semua file "new". Selalu `graphify update . --force` via CLI PATH. Hasil update 2026-08-10: 14,902 nodes | 43,043 edges | 437 communities, fresh dari commit `a3cb2f41`, AST-only (no LLM cost). Catatan: 29 file `.sql` tidak berkontribusi karena `tree_sitter_sql` tidak terpasang (`pip install "graphifyy[sql]"`).
+> **Temuan (Agustus 2026):** ada **DUA instalasi graphify** — PATH `/home/dev/.local/bin/graphify` (v0.9.35 via uv tool `graphifyy`, yang BENAR dipakai — punya subcommand `update`/`check-update`) vs python dari `.graphify_python` (format manifest LAMA `dict[str,float]`, tidak cocok dengan manifest baru ber-`ast_hash`/`semantic_hash`). Jangan pakai python dari `.graphify_python` untuk update — hasilnya `detect_incremental` salah lapor semua file "new". Selalu `graphify update . --force` via CLI PATH.
 
 > **Temuan (Agustus 2026):** corpus graphify sudah bersih dari dir noise bahkan sebelum `.graphifyignore` dibuat (dot-dir di-skip bawaan). Efek nyata ignore file: mem-purge `backup.jsonl` + 2 file zero-node (`.openclaude-profile.json`, `skills-lock.json`) dan mem-formalkan pengecualian utk portabilitas (`--no-gitignore`).
+
+> **Temuan (Agustus 2026):** 31 file `.sql` (migration V1–V29 + draft) sudah masuk graph setelah `uv tool install 'graphifyy[sql]'` (tree-sitter-sql 0.3.11). Trik re-extract file yang kontennya tidak berubah: kosongkan `ast_hash` mereka di `graphify-out/manifest.json`, lalu `graphify update .` (AST-only rebuild, tanpa LLM). Hasil: 222 node SQL (tabel/kolom, e.g. `biodata`, `biodata_aud`, view `v_pegawai`).
+
+### Graphify semantic enrichment TANPA LLM (kuota Gemini 429)
+
+Pipeline graphify default memanggil LLM (Gemini) untuk **semantic extraction** (docs) dan **community labeling**. Saat kuota habis (429), `graphify . --update` **menolak menimpa** graph lengkap dengan hasil parsial. Solusi yang terbukti (Agustus 2026): **isi semantic cache sendiri** — graphify membaca cache dan melewati LLM untuk file HIT.
+
+**Script reusable: `scripts/graphify-semantic-seed.py`** (murni stdlib, tanpa LLM, tanpa import graphify):
+
+```bash
+# 1. Daftar docs yang MISS cache semantic (perlu dianalisis)
+python3 scripts/graphify-semantic-seed.py --check
+
+# 2. Baca file tsb → tulis analysis JSON → seed
+python3 scripts/graphify-semantic-seed.py --seed docs/adr/0001-xxx.md analysis.json
+python3 scripts/graphify-semantic-seed.py --seed <file> <json> --dry-run   # cek hash dulu
+
+# 3. Pastikan 0 miss, lalu jalankan pipeline penuh (semantic 100% cache hit, tanpa Gemini)
+python3 scripts/graphify-semantic-seed.py --verify
+graphify . --update
+GRAPHIFY_VIZ_NODE_LIMIT=20000 graphify cluster-only .   # graph.html + GRAPH_REPORT.md
+```
+
+**Mekanik cache yang direplikasi script** (biar entry langsung dibaca graphify):
+- Hash entry = `sha256(content + \x00 + salt)`; salt = path relatif lowercase; untuk `.md` content = body **tanpa** YAML frontmatter
+- Lokasi: `graphify-out/cache/semantic/pf{fingerprint}/{hash}.json` (subdir `pf*` dipilih otomatis)
+- Format: `{nodes, edges, hyperedges}`; node wajib punya `source_file`; id node = `normalize_id(rel_path)` (casefold, non-word → `_`)
+- Node konsep boleh id baru (graphify menambahkannya); edge ke node yang sudah ada menyambung graph
+
+**Catatan penting:**
+- Semantic cache TIDAK di-commit (git-ignored) — entry yang dianalisis manual bisa diregenerasi dari `scripts/` + analysis JSON, atau backup entry ke repo jika perlu di-commit
+- `graphify . --update` (incremental) memakai `semantic_hash`; `graphify update .` memakai `ast_hash` — beda sumber, keduanya di `graphify-out/manifest.json`
+- Label komunitas: kalau `.graphify_labels.json` + `.sig` ada, update **reuse + hub-fill** tanpa LLM (hanya komunitas berubah yang di-rename by hub). Untuk nama kaya: `graphify label --backend <ollama|deepseek|openrouter>` (OPENROUTER_API_KEY tersedia di env)
 
 ---
 
