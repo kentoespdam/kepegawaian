@@ -124,7 +124,7 @@ CREATE TABLE pref_role_permission (
 
 ---
 
-## Permission Catalogue (seed awal — isi setelah infrastruktur jadi)
+## Permission Catalogue (✅ di-seed via V31 — ADMIN=20, HRD=15; matrix diubah runtime via API)
 
 | Permission | Deskripsi |
 |------------|-----------|

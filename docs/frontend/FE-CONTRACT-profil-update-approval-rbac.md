@@ -123,6 +123,11 @@ Endpoint role yang **sudah ada** (`GET /system/roles`, `GET /system/roles/list`,
 - Field `permissions` bisa kosong (`[]`) jika role belum punya permission.
 - Ini perubahan **additive** — FE lama tetap jalan, tapi halaman manajemen role sebaiknya menampilkan list permission ini.
 
+> **Seed matrix (V31, sudah live):** role `ADMIN` ter-seed **20 permission** (semua), role `HRD` ter-seed **15** (operasional minus `SYSTEM:*`, `CUTI:CREATE`, `PENGGAJIAN:WRITE/PROCESS`). Implikasi:
+> - HRD kini bisa akses **write/delete master** (dual-mode `MASTER:WRITE`/`MASTER:DELETE` di controller master) dan **`PATCH /admin/profil/{id}`** (punya `PROFIL:APPROVE`).
+> - `CUTI:CREATE` tetap milik pegawai (`USER`) — HRD hanya approve.
+> - Matrix bisa diubah runtime via API assign/revoke (section 2.2–2.3).
+
 ---
 
 ## 3. User Provisioning — Role Default Berubah (✅ LIVE)
@@ -280,7 +285,7 @@ Semua field opsional (PATCH parsial); yang tidak dikirim tidak berubah. Nilai en
 2. Halaman self-service pegawai → panggil `PATCH /profil` (tanpa id — NIK dari token).
 3. Jangan pakai mekanisme `X-Acting-As` header / flag `asAdmin` di body — sengaja **tidak** didukung (bisa di-bypass).
 4. Pegawai biasa yang memanggil `/admin/profil/{id}` → **403** (tidak punya `PROFIL:APPROVE`).
-5. `ADMIN` masih bisa akses `/admin/profil/{id}` via dual-mode role — jalur lama tidak hilang untuk ADMIN.
+5. `ADMIN` dan `HRD` (sejak seed V31, HRD punya `PROFIL:APPROVE`) bisa akses `/admin/profil/{id}`.
 6. Principal `DEV` (dev tanpa token) tidak bisa pakai `PATCH /profil` (tidak punya akun riil) — gunakan `/admin/profil/{id}` atau Bearer token asli untuk menguji alur approval.
 
 ---
