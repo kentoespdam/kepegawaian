@@ -8,6 +8,7 @@ import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.profil.jooq.KeahlianDetailQuery;
 import id.perumdamts.kepegawaian.repositories.profil.jooq.KeahlianQueryRepository;
+import id.perumdamts.kepegawaian.services.profil.OwnershipGuard;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,14 +23,19 @@ public class KeahlianQueryService {
     private final KeahlianQueryRepository queries;
     private final KeahlianDetailQuery detail;
     private final LampiranProfilQueryService lampiranProfilQueryService;
+    private final OwnershipGuard ownershipGuard;
 
     public Page<KeahlianQuery> pageQuery(KeahlianIndexQuery query) {
+        String scope = ownershipGuard.readScopeNik();
+        if (scope != null) query.setBiodataId(scope);
         return queries.pageQuery(query);
     }
 
     public KeahlianDetail getById(Long id) {
-        return detail.getById(id)
+        KeahlianDetail result = detail.getById(id)
                 .orElseThrow(() -> new NotFoundException("Keahlian not found"));
+        ownershipGuard.assertSelfRead(result.query().biodataId());
+        return result;
     }
 
     public List<LampiranProfilQuery> getLampiran(Long id) {

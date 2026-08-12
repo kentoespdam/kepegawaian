@@ -7,6 +7,7 @@ import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.profil.jooq.PendidikanDetailQuery;
 import id.perumdamts.kepegawaian.repositories.profil.jooq.PendidikanQueryRepository;
+import id.perumdamts.kepegawaian.services.profil.OwnershipGuard;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,14 +22,19 @@ public class PendidikanQueryService {
     private final PendidikanQueryRepository queries;
     private final PendidikanDetailQuery detail;
     private final LampiranProfilQueryService lampiranProfilQueryService;
+    private final OwnershipGuard ownershipGuard;
 
     public Page<PendidikanQuery> pageQuery(PendidikanIndexQuery query) {
+        String scope = ownershipGuard.readScopeNik();
+        if (scope != null) query.setBiodataId(scope);
         return queries.pageQuery(query);
     }
 
     public PendidikanQuery getById(Long id) {
-        return detail.getById(id)
+        PendidikanQuery result = detail.getById(id)
                 .orElseThrow(() -> new NotFoundException("Pendidikan not found"));
+        ownershipGuard.assertSelfRead(result.biodataId());
+        return result;
     }
 
     public List<LampiranProfilQuery> getLampiran(Long id) {

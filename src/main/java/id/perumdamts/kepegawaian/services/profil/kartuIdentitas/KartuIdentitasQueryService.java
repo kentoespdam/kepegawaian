@@ -8,6 +8,7 @@ import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.profil.jooq.KartuIdentitasDetailQuery;
 import id.perumdamts.kepegawaian.repositories.profil.jooq.KartuIdentitasQueryRepository;
+import id.perumdamts.kepegawaian.services.profil.OwnershipGuard;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,14 +23,19 @@ public class KartuIdentitasQueryService {
     private final KartuIdentitasQueryRepository queries;
     private final KartuIdentitasDetailQuery detail;
     private final LampiranProfilQueryService lampiranProfilQueryService;
+    private final OwnershipGuard ownershipGuard;
 
     public Page<KartuIdentitasQuery> pageQuery(KartuIdentitasIndexQuery query) {
+        String scope = ownershipGuard.readScopeNik();
+        if (scope != null) query.setBiodataId(scope);
         return queries.pageQuery(query);
     }
 
     public KartuIdentitasDetail getById(Long id) {
-        return detail.getById(id)
+        KartuIdentitasDetail result = detail.getById(id)
                 .orElseThrow(() -> new NotFoundException("Kartu Identitas not found"));
+        ownershipGuard.assertSelfRead(result.biodataId());
+        return result;
     }
 
     public List<LampiranProfilQuery> getLampiran(Long id) {

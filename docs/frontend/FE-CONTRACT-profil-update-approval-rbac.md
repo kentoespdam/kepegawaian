@@ -8,7 +8,7 @@
 | Commit | `221f497e` (HEAD — self/admin 6 modul profil) — semua seri RBAC/profil ter-push |
 | Tanggal | 2026-08-12 |
 | ADR | [ADR-0037](../adr/0037-rbac-permission-per-role-didb-mariadb.md), [ADR-0038](../adr/0038-profil-endpoint-split-admin-vs-selfservice.md) |
-| Issue | `kepegawaian-9b6l` (RBAC — ✅ closed) · `kepegawaian-qp0m` (default roles — ✅ closed) · `kepegawaian-huis` (split profil — ✅ closed) · `kepegawaian-y5vt` (seed V31 — ✅ closed) · `kepegawaian-nilt` (`GET /account/me` — ✅ closed) · `kepegawaian-3blf` (ownership check self — ✅ closed) |
+| Issue | `kepegawaian-9b6l` (RBAC — ✅ closed) · `kepegawaian-qp0m` (default roles — ✅ closed) · `kepegawaian-huis` (split profil — ✅ closed) · `kepegawaian-y5vt` (seed V31 — ✅ closed) · `kepegawaian-nilt` (`GET /account/me` — ✅ closed) · `kepegawaian-3blf` (ownership check self — ✅ closed) · `kepegawaian-jiv4` (ownership read self — ✅ closed) · `kepegawaian-t3s3` (antrian approval — ⏳ OPEN) |
 
 ---
 
@@ -319,7 +319,12 @@ Path entity: `pendidikan`, `keluarga`, `keahlian`, `pelatihan`, `kartu-identitas
 
 > ✅ **Ownership check (kepegawaian-3blf, sudah LIVE)**: endpoint self kini memverifikasi bahwa `biodataId`/`nik` di body **milik principal** — user login **tidak bisa** lagi create/update/delete data profil milik orang lain lewat jalur self (termasuk lampiran: ownership di-resolve dari `ref`+`refId`). Bila target bukan miliknya → **404** (sengaja sama seperti data tidak ada, hindari info leak). Endpoint admin (`/admin/profil/...`) tidak dibatasi. Perilaku normal self-service tidak berubah.
 >
-> ⚠️ **Batas yang diketahui (`kepegawaian-jiv4`, OPEN)**: jalur **read** self (`GET /profil/{entity}?biodataId=...`, `GET /profil/lampiran/file/...`) masih bisa membaca data orang lain — ownership baru diterapkan di jalur **write**. Rencana di issue follow-up.
+> ✅ **Ownership read (kepegawaian-jiv4, sudah LIVE)**: jalur **read** self kini dibatasi — user tanpa `PROFIL:READ`/`ROLE_ADMIN` hanya bisa baca data profil **miliknya sendiri**:
+> - `GET /profil/{entity}?biodataId=...` — biodataId yang dikirim **di-force ke NIK sendiri** (bukan 404), data orang lain tidak pernah muncul.
+> - `GET /profil/{entity}/{id}` · `GET /profil/{entity}/lampiran/...` · `GET /profil/lampiran/file/...` · biodata detail/dashboard/foto — target bukan milik sendiri → **404**.
+> - **HRD/ADMIN bebas baca semua** (dual-mode `PROFIL:READ`, sudah ter-seed V31). FE tidak perlu pindah endpoint — pembeda konteks otomatis di server.
+>
+> ⚠️ **Batas yang diketahui (`kepegawaian-t3s3`, OPEN)**: `GET /profil/profil-update` (antrian approval) masih terbuka untuk semua user login — akan di-split approver (`PROFIL:APPROVE`) vs self (antrian sendiri).
 
 ---
 
@@ -372,3 +377,4 @@ Semua endpoint memakai envelope berikut (kecuali error handler khusus):
 - [x] **UI berbasis permission**: pakai `GET /account/me` (roles + permissions user login) — sudah live, lihat catatan di section 1.
 - [x] **Seed matrix (V31)**: `ADMIN`=20 / `HRD`=15 sudah live — HRD punya write/delete master + admin-profil (section 2.4).
 - [x] **Ownership self-endpoint**: endpoint self verifikasi kepemilikan `biodataId`/`nik` — **sudah LIVE** (kepegawaian-3blf); target bukan milik principal → 404 (section 5.1).
+- [x] **Ownership read self**: jalur read profil dibatasi ke data sendiri (force NIK di list, 404 di detail/file) — **sudah LIVE** (kepegawaian-jiv4); HRD/ADMIN bebas via `PROFIL:READ` (section 5.1).

@@ -6,6 +6,7 @@ import id.perumdamts.kepegawaian.repositories.profil.jooq.BiodataDashboardQuery;
 import id.perumdamts.kepegawaian.repositories.profil.jooq.BiodataDetailQuery;
 import id.perumdamts.kepegawaian.repositories.profil.jooq.BiodataQueryRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
+import id.perumdamts.kepegawaian.services.profil.OwnershipGuard;
 import id.perumdamts.kepegawaian.utils.FileUploadUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,12 +36,14 @@ class BiodataQueryServiceDashboardTest {
     private BiodataRepository repository;
     @Mock
     private FileUploadUtil fileUploadUtil;
+    @Mock
+    private OwnershipGuard ownershipGuard;
 
     private BiodataQueryService service;
 
     @BeforeEach
     void setUp() {
-        service = new BiodataQueryService(queries, detail, dashboard, repository, fileUploadUtil);
+        service = new BiodataQueryService(queries, detail, dashboard, repository, fileUploadUtil, ownershipGuard);
     }
 
     @Test

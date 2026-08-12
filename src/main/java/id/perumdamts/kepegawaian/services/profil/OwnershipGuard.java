@@ -93,7 +93,58 @@ public class OwnershipGuard {
      * self) → 404.
      */
     public void assertSelfOwnsLampiran(EJenisLampiranProfil ref, Long refId) {
-        Optional<String> ownerNik = switch (ref) {
+        assertSelfOwns(resolveLampiranOwner(ref, refId)
+                .orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA)));
+    }
+
+    /**
+     * NIK principal saat ini bila konteks READ adalah SELF; {@code null} bila konteks
+     * admin (punya {@code PROFIL:READ} atau {@code ROLE_ADMIN}) — bebas baca semua.
+     * Jalur read memakai endpoint yang sama untuk admin & self (beda dengan write yang
+     * sudah di-split), jadi pembedanya principal, bukan endpoint.
+     */
+    public String readScopeNik() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !(auth.getPrincipal() instanceof AppwriteUser user)) {
+            throw new NotFoundException(UNKNOWN_BIODATA); // fail closed, konsisten dengan jalur write
+        }
+        // authorities = ROLE_* (dari prefs) + permission ENTITY:ACTION (inject JwtAuthFilter/
+        // DevAuthFilter per request). Baca dari auth, bukan user.getAuthorities() yang cuma ROLE_.
+        boolean adminScope = auth.getAuthorities().stream()
+                .anyMatch(a -> "ROLE_ADMIN".equals(a.getAuthority()) || "PROFIL:READ".equals(a.getAuthority()));
+        return adminScope ? null : selfNik();
+    }
+
+    /**
+     * Lempar 404 bila konteks read adalah SELF dan NIK bukan milik principal.
+     * Admin (readScope {@code null}) tidak dibatasi.
+     */
+    public void assertSelfRead(String nik) {
+        String selfNik = readScopeNik();
+        if (selfNik != null && !selfNik.equals(nik)) {
+            throw new NotFoundException(UNKNOWN_BIODATA);
+        }
+    }
+
+    /**
+     * Lempar 404 bila konteks read adalah SELF dan lampiran (ref+refId) bukan milik
+     * principal. Admin tidak dibatasi.
+     */
+    public void assertSelfReadLampiran(EJenisLampiranProfil ref, Long refId) {
+        String selfNik = readScopeNik();
+        if (selfNik == null) {
+            return;
+        }
+        String ownerNik = resolveLampiranOwner(ref, refId)
+                .orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
+        if (!selfNik.equals(ownerNik)) {
+            throw new NotFoundException(UNKNOWN_BIODATA);
+        }
+    }
+
+    /** NIK pemilik dari entity referensi lampiran; kosong bila ref tak dikenal / tak ditemukan. */
+    private Optional<String> resolveLampiranOwner(EJenisLampiranProfil ref, Long refId) {
+        return switch (ref) {
             case PROFIL_KELUARGA -> profilKeluargaRepository.findById(refId).map(e -> e.getBiodata().getNik());
             case PROFIL_PENDIDIKAN -> pendidikanRepository.findById(refId).map(e -> e.getBiodata().getNik());
             case PROFIL_PELATIHAN -> pelatihanRepository.findById(refId).map(e -> e.getBiodata().getNik());
@@ -102,6 +153,5 @@ public class OwnershipGuard {
             case PROFIL_PENGALAMAN_KERJA -> pengalamanKerjaRepository.findById(refId).map(e -> e.getBiodata().getNik());
             case FOTO_PROFIL -> Optional.empty(); // foto profil bukan entity — tidak lewat jalur lampiran self
         };
-        assertSelfOwns(ownerNik.orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA)));
     }
 }

@@ -55,10 +55,7 @@ class OwnershipGuardTest {
     }
 
     private void loginAs(String $id) {
-        AppwriteUser user = new AppwriteUser();
-        user.set$id($id);
-        SecurityContextHolder.getContext().setAuthentication(
-                new UsernamePasswordAuthenticationToken(user, null, List.of()));
+        loginWithAuthorities($id);
     }
 
     private void stubSelfPegawai() {
@@ -147,5 +144,54 @@ class OwnershipGuardTest {
                 () -> guard.assertSelfOwnsLampiran(EJenisLampiranProfil.FOTO_PROFIL, 99L), "FOTO_PROFIL tidak punya entity");
         assertThrows(NotFoundException.class,
                 () -> guard.assertSelfOwnsLampiran(EJenisLampiranProfil.PROFIL_KEAHLIAN, 99L), "refId tak ditemukan");
+    }
+
+    // --- read scope (kepegawaian-jiv4) ---
+
+    private void loginWithAuthorities(String $id, String... authorities) {
+        AppwriteUser user = new AppwriteUser();
+        user.set$id($id);
+        id.perumdamts.kepegawaian.dto.appwrite.Prefs prefs = new id.perumdamts.kepegawaian.dto.appwrite.Prefs();
+        prefs.setRoles(java.util.Set.of("USER"));
+        user.setPrefs(prefs);
+        List<org.springframework.security.core.GrantedAuthority> list = java.util.Arrays.stream(authorities)
+                .map(org.springframework.security.core.authority.SimpleGrantedAuthority::new)
+                .map(a -> (org.springframework.security.core.GrantedAuthority) a)
+                .toList();
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken(user, null, list));
+    }
+
+    @Test
+    void readScopeNik_selfUserReturnsSelfNik() {
+        loginAs("5");
+        stubSelfPegawai();
+
+        assertEquals(SELF_NIK, guard.readScopeNik());
+    }
+
+    @Test
+    void readScopeNik_adminOrProfilReadReturnsNull() {
+        loginWithAuthorities("5", "ROLE_ADMIN");
+        assertEquals(null, guard.readScopeNik(), "ROLE_ADMIN bebas baca semua");
+
+        loginWithAuthorities("5", "PROFIL:READ");
+        assertEquals(null, guard.readScopeNik(), "PROFIL:READ bebas baca semua");
+    }
+
+    @Test
+    void assertSelfRead_selfCanReadOwnOnly() {
+        loginAs("5");
+        stubSelfPegawai();
+
+        guard.assertSelfRead(SELF_NIK); // NIK sendiri → ok
+        assertThrows(NotFoundException.class, () -> guard.assertSelfRead("1234567890123456"));
+    }
+
+    @Test
+    void assertSelfRead_adminCanReadAnyone() {
+        loginWithAuthorities("5", "PROFIL:READ");
+
+        guard.assertSelfRead("1234567890123456"); // bebas — tanpa stub pegawai pun lolos
     }
 }

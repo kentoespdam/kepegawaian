@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.services.profil.lampiranProfil;
 import id.perumdamts.kepegawaian.dto.commons.ErrorResult;
 import id.perumdamts.kepegawaian.dto.profil.lampiranProfil.LampiranProfilQuery;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
+import id.perumdamts.kepegawaian.services.profil.OwnershipGuard;
 import id.perumdamts.kepegawaian.entities.profil.LampiranProfil;
 import id.perumdamts.kepegawaian.repositories.profil.jooq.LampiranProfilQueryRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.LampiranProfilRepository;
@@ -24,19 +25,26 @@ public class LampiranProfilQueryService {
     private final LampiranProfilQueryRepository queryRepo;
     private final LampiranProfilRepository jpaRepository;
     private final FileUploadUtil fileUploadUtil;
+    private final OwnershipGuard ownershipGuard;
 
     public List<LampiranProfilQuery> getLampiran(EJenisLampiranProfil jenis, Long id) {
+        ownershipGuard.assertSelfReadLampiran(jenis, id);
         return queryRepo.findByRefAndRefId(jenis, id);
     }
 
     public LampiranProfilQuery getLampiranById(Long id) {
-        return queryRepo.getById(id).orElse(null);
+        LampiranProfilQuery result = queryRepo.getById(id).orElse(null);
+        if (result != null) {
+            ownershipGuard.assertSelfReadLampiran(result.ref(), result.refId());
+        }
+        return result;
     }
 
     public ResponseEntity<?> getFileLampiranById(EJenisLampiranProfil jenis, Long id) {
         LampiranProfil lampiranProfil = jpaRepository.findById(id).orElse(null);
         if (Objects.isNull(lampiranProfil))
             return ErrorResult.build("File Not Found!");
+        ownershipGuard.assertSelfReadLampiran(lampiranProfil.getRef(), lampiranProfil.getRefId());
         try {
             Path path = fileUploadUtil.generatePath(
                     jenis, String.valueOf(lampiranProfil.getRefId()),

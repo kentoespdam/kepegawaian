@@ -8,6 +8,7 @@ import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.profil.jooq.ProfilKeluargaDetailQuery;
 import id.perumdamts.kepegawaian.repositories.profil.jooq.ProfilKeluargaQueryRepository;
+import id.perumdamts.kepegawaian.services.profil.OwnershipGuard;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,14 +23,19 @@ public class ProfilKeluargaQueryService {
     private final ProfilKeluargaQueryRepository queries;
     private final ProfilKeluargaDetailQuery detail;
     private final LampiranProfilQueryService lampiranProfilQueryService;
+    private final OwnershipGuard ownershipGuard;
 
     public Page<ProfilKeluargaQuery> pageQuery(ProfilKeluargaIndexQuery query) {
+        String scope = ownershipGuard.readScopeNik();
+        if (scope != null) query.setBiodataId(scope);
         return queries.pageQuery(query);
     }
 
     public ProfilKeluargaDetail getById(Long id) {
-        return detail.getById(id)
+        ProfilKeluargaDetail result = detail.getById(id)
                 .orElseThrow(() -> new NotFoundException("Profil Keluarga not found"));
+        ownershipGuard.assertSelfRead(result.query().biodataId());
+        return result;
     }
 
     public List<LampiranProfilQuery> getLampiran(Long id) {

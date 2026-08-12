@@ -8,6 +8,7 @@ import id.perumdamts.kepegawaian.dto.profil.biodata.BiodataQuery;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
+import id.perumdamts.kepegawaian.services.profil.OwnershipGuard;
 import id.perumdamts.kepegawaian.repositories.profil.jooq.BiodataDashboardQuery;
 import id.perumdamts.kepegawaian.repositories.profil.jooq.BiodataDetailQuery;
 import id.perumdamts.kepegawaian.repositories.profil.jooq.BiodataQueryRepository;
@@ -33,26 +34,40 @@ public class BiodataQueryService {
     private final BiodataDashboardQuery dashboard;
     private final BiodataRepository repository;
     private final FileUploadUtil fileUploadUtil;
+    private final OwnershipGuard ownershipGuard;
 
     public Page<BiodataQuery> pageQuery(BiodataIndexQuery query) {
+        String scope = ownershipGuard.readScopeNik();
+        if (scope != null) query.setNik(scope);
         return queries.pageQuery(query);
     }
 
     public BiodataDetail getById(String nik) {
-        return detail.getById(nik)
+        BiodataDetail result = detail.getById(nik)
                 .orElseThrow(() -> new NotFoundException("Biodata not found"));
+        ownershipGuard.assertSelfRead(nik);
+        return result;
     }
 
     public BiodataDashboardResponse getDashboard(String nik) {
-        return dashboard.getByNik(nik)
+        BiodataDashboardResponse result = dashboard.getByNik(nik)
                 .orElseThrow(() -> new NotFoundException("Biodata not found or NIK bukan pegawai"));
+        ownershipGuard.assertSelfRead(nik);
+        return result;
     }
 
     public List<BiodataQuery> findAll() {
-        return queries.listQuery();
+        String scope = ownershipGuard.readScopeNik();
+        if (scope == null) {
+            return queries.listQuery();
+        }
+        BiodataIndexQuery query = new BiodataIndexQuery();
+        query.setNik(scope);
+        return queries.pageQuery(query).getContent();
     }
 
     public ResponseEntity<?> findFotoProfil(String id) {
+        ownershipGuard.assertSelfRead(id);
         Biodata biodata = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Unknown Biodata"));
 

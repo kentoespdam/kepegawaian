@@ -8,6 +8,7 @@ import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.profil.jooq.PengalamanKerjaDetailQuery;
 import id.perumdamts.kepegawaian.repositories.profil.jooq.PengalamanKerjaQueryRepository;
+import id.perumdamts.kepegawaian.services.profil.OwnershipGuard;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,14 +23,19 @@ public class PengalamanKerjaQueryService {
     private final PengalamanKerjaQueryRepository queries;
     private final PengalamanKerjaDetailQuery detail;
     private final LampiranProfilQueryService lampiranProfilQueryService;
+    private final OwnershipGuard ownershipGuard;
 
     public Page<PengalamanKerjaQuery> pageQuery(PengalamanKerjaIndexQuery query) {
+        String scope = ownershipGuard.readScopeNik();
+        if (scope != null) query.setBiodataId(scope);
         return queries.pageQuery(query);
     }
 
     public PengalamanKerjaDetail getById(Long id) {
-        return detail.getById(id)
+        PengalamanKerjaDetail result = detail.getById(id)
                 .orElseThrow(() -> new NotFoundException("Pengalaman Kerja not found"));
+        ownershipGuard.assertSelfRead(result.biodataId());
+        return result;
     }
 
     public List<LampiranProfilQuery> getLampiran(Long id) {
