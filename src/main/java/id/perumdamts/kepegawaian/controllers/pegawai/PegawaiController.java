@@ -64,7 +64,7 @@ public class PegawaiController {
         return CustomResult.any(queryService.findMutasiContext(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PEGAWAI:WRITE')")
     @PostMapping
     public ResponseEntity<SavedResult<Long>> save(@Valid @RequestBody PegawaiPostRequest request) {
         if (request.getStatusPegawai().equals(EStatusPegawai.PEGAWAI)
@@ -82,27 +82,27 @@ public class PegawaiController {
         return CustomResult.list(queryService.findByIds(request.getIds()));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PEGAWAI:WRITE')")
     @PostMapping("/batch")
     public ResponseEntity<SavedResult<String>> saveBatch(@Valid @RequestBody List<PegawaiPostRequest> requests) {
         return CustomResult.save(commandService.saveBatch(requests));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PEGAWAI:WRITE')")
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<Long>> update(@PathVariable Long id,
                                                      @Valid @RequestBody PegawaiPutRequest request) {
         return CustomResult.save(commandService.update(id, request));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PEGAWAI:WRITE')")
     @PatchMapping("/{id}/gaji")
     public ResponseEntity<SavedResult<Long>> patchGaji(@PathVariable Long id,
                                                         @Valid @RequestBody PegawaiPatchGaji request) {
         return CustomResult.save(commandService.patchGaji(id, request));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PEGAWAI:WRITE')")
     @PatchMapping("/{id}/profil")
     public ResponseEntity<SavedResult<Long>> patchProfil(@PathVariable Long id,
                                                           @Valid @RequestBody PegawaiPatchProfil request) {
@@ -112,7 +112,7 @@ public class PegawaiController {
         return CustomResult.save(commandService.patchProfil(id, request));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PEGAWAI:DELETE')")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> deleteById(@PathVariable Long id) {
         return CustomResult.delete(commandService.deleteById(id));

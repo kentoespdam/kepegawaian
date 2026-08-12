@@ -171,7 +171,9 @@ Migrasi per-modul dikerjakan di issue terpisah (tidak di scope issue ini).
 **Status migrasi per-modul:**
 
 - [x] **master** — 17 controller, 54 guard → dual-mode `hasRole('ADMIN') or hasAuthority('MASTER:WRITE'|'MASTER:DELETE')` (kepegawaian-rcpo)
-- [ ] pegawai, kepegawaian, profil, cuti, penggajian — belum dimigrasi
+- [x] **pegawai** — 1 controller, 6 guard (5 WRITE + 1 DELETE) → dual-mode `hasRole('ADMIN') or hasAuthority('PEGAWAI:WRITE'|'PEGAWAI:DELETE')`
+- [x] **profil** — endpoint admin: 7 controller, guard dual-mode `PROFIL:APPROVE` (biodata + 6 entity) + read-path `PROFIL:READ` (ADR-0038 split, kepegawaian-huis/3blf/jiv4)
+- [ ] kepegawaian, cuti, penggajian — belum dimigrasi
 
 ---
 
