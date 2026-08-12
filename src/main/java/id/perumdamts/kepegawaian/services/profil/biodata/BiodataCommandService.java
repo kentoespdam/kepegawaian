@@ -11,6 +11,7 @@ import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.mapper.profil.biodata.BiodataMapper;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JenjangPendidikanRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
+import id.perumdamts.kepegawaian.services.profil.ChangedStatusResolver;
 import id.perumdamts.kepegawaian.services.profil.kartuIdentitas.KartuIdentitasCommandService;
 import id.perumdamts.kepegawaian.services.profil.pendidikan.PendidikanCommandService;
 import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
@@ -33,6 +34,7 @@ public class BiodataCommandService {
     private final PendidikanCommandService pendidikanCommandService;
     private final KartuIdentitasCommandService kartuIdentitasCommandService;
     private final ProfileUpdateService profileUpdateService;
+    private final ChangedStatusResolver resolver;
     private final FileUploadUtil fileUploadUtil;
 
     @Transactional
@@ -79,9 +81,11 @@ public class BiodataCommandService {
                 .orElseThrow(() -> new NotFoundException(UNKNOWN_BIODATA));
 
         BiodataMapper.patchEntity(entity, request);
-        entity.setChangedStatus(true);
+        entity.setChangedStatus(resolver.requiresApproval());
         repository.save(entity);
-        profileUpdateService.create(nik, RevisionMetadata.RevisionType.UPDATE, EProfileUpdateTable.BIODATA);
+        if (Boolean.TRUE.equals(entity.getChangedStatus())) {
+            profileUpdateService.create(nik, RevisionMetadata.RevisionType.UPDATE, EProfileUpdateTable.BIODATA);
+        }
         return entity.getNik();
     }
 

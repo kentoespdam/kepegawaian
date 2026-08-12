@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.services.profil.keluarga;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaPostRequest;
+import id.perumdamts.kepegawaian.entities.commons.EProfileUpdateTable;
 import id.perumdamts.kepegawaian.dto.profil.keluarga.ProfilKeluargaPutRequest;
 import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
@@ -14,7 +15,9 @@ import id.perumdamts.kepegawaian.repositories.master.jpa.JenjangPendidikanReposi
 import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.ProfilKeluargaRepository;
 import id.perumdamts.kepegawaian.services.profil.ChangedStatusResolver;
+import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.history.RevisionMetadata;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +32,7 @@ public class ProfilKeluargaCommandService {
     private final BiodataRepository biodataRepository;
     private final JenjangPendidikanRepository jenjangPendidikanRepository;
     private final ChangedStatusResolver resolver;
+    private final ProfileUpdateService profileUpdateService;
 
     @Transactional
     public SavedStatus<Long> create(ProfilKeluargaPostRequest request) {
@@ -39,8 +43,9 @@ public class ProfilKeluargaCommandService {
         JenjangPendidikan jenjangPendidikan = resolveJenjangPendidikan(request.getPendidikanId());
         ProfilKeluarga entity = ProfilKeluargaMapper.toEntity(request, biodata, jenjangPendidikan);
         entity.setChangedStatus(resolver.requiresApproval());
-        repository.save(entity);
-        return SavedStatus.build(ESaveStatus.SUCCESS, entity.getId());
+        ProfilKeluarga saved = repository.save(entity);
+        handleRevisionUpdate(saved, RevisionMetadata.RevisionType.INSERT);
+        return SavedStatus.build(ESaveStatus.SUCCESS, saved.getId());
     }
 
     @Transactional
@@ -67,15 +72,24 @@ public class ProfilKeluargaCommandService {
         ProfilKeluarga updated = ProfilKeluargaMapper.updateEntity(entity, request, jenjangPendidikan);
         updated.setBiodata(biodata);
         updated.setChangedStatus(resolver.requiresApproval());
-        repository.save(updated);
-        return SavedStatus.build(ESaveStatus.SUCCESS, updated.getId());
+        ProfilKeluarga saved = repository.save(updated);
+        handleRevisionUpdate(saved, RevisionMetadata.RevisionType.UPDATE);
+        return SavedStatus.build(ESaveStatus.SUCCESS, saved.getId());
     }
 
     @Transactional
     public boolean delete(Long id) {
         ProfilKeluarga entity = repository.findById(id).orElseThrow(() -> new NotFoundException(UNKNOWN_KELUARGA));
-        repository.delete(entity);
+        entity.setIsDeleted(true);
+        entity.setChangedStatus(resolver.requiresApproval());
+        ProfilKeluarga saved = repository.save(entity);
+        handleRevisionUpdate(saved, RevisionMetadata.RevisionType.DELETE);
         return true;
+    }
+
+    private void handleRevisionUpdate(ProfilKeluarga saved, RevisionMetadata.RevisionType type) {
+        if (Boolean.FALSE.equals(saved.getChangedStatus())) return;
+        profileUpdateService.create(String.valueOf(saved.getId()), type, EProfileUpdateTable.KELUARGA);
     }
 
     private JenjangPendidikan resolveJenjangPendidikan(Long pendidikanId) {

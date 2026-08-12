@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.services.profil.kartuIdentitas;
 import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasPostRequest;
 import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.KartuIdentitasPutRequest;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
+import id.perumdamts.kepegawaian.entities.commons.EProfileUpdateTable;
 import id.perumdamts.kepegawaian.entities.master.JenisKitas;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import id.perumdamts.kepegawaian.entities.profil.KartuIdentitas;
@@ -13,7 +14,9 @@ import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.KartuIdentitasRepository;
 import id.perumdamts.kepegawaian.services.profil.ChangedStatusResolver;
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilCommandService;
+import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.history.RevisionMetadata;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +33,7 @@ public class KartuIdentitasCommandService {
     private final BiodataRepository biodataRepository;
     private final JenisKitasRepository jenisKitasRepository;
     private final LampiranProfilCommandService lampiranProfilCommandService;
+    private final ProfileUpdateService profileUpdateService;
     private final ChangedStatusResolver resolver;
 
     @Transactional
@@ -47,7 +51,9 @@ public class KartuIdentitasCommandService {
         entity.setNotes(request.getNotes());
         entity.setIsDeleted(false);
         entity.setChangedStatus(resolver.requiresApproval());
-        return repository.save(entity).getId();
+        KartuIdentitas saved = repository.save(entity);
+        handleRevisionUpdate(saved, RevisionMetadata.RevisionType.INSERT);
+        return saved.getId();
     }
 
     @Transactional
@@ -57,7 +63,9 @@ public class KartuIdentitasCommandService {
         JenisKitas jenisKartu = jenisKitasRepository.findById(request.getJenisKartuId()).orElseThrow(() -> new NotFoundException(UNKNOWN_JENIS_KARTU));
         KartuIdentitasMapper.updateEntity(entity, request, biodata, jenisKartu);
         entity.setChangedStatus(resolver.requiresApproval());
-        return repository.save(entity).getId();
+        KartuIdentitas saved = repository.save(entity);
+        handleRevisionUpdate(saved, RevisionMetadata.RevisionType.UPDATE);
+        return saved.getId();
     }
 
     @Transactional
@@ -65,9 +73,15 @@ public class KartuIdentitasCommandService {
         KartuIdentitas entity = repository.findById(id).orElseThrow(() -> new NotFoundException(UNKNOWN_KARTU_IDENTITAS));
         entity.setIsDeleted(true);
         entity.setChangedStatus(resolver.requiresApproval());
-        repository.save(entity);
+        KartuIdentitas saved = repository.save(entity);
+        handleRevisionUpdate(saved, RevisionMetadata.RevisionType.DELETE);
         lampiranProfilCommandService.deleteByRefId(EJenisLampiranProfil.KARTU_IDENTITAS, id);
         return true;
+    }
+
+    private void handleRevisionUpdate(KartuIdentitas saved, RevisionMetadata.RevisionType type) {
+        if (Boolean.FALSE.equals(saved.getChangedStatus())) return;
+        profileUpdateService.create(String.valueOf(saved.getId()), type, EProfileUpdateTable.KARTU_IDENTITAS);
     }
 
     @Transactional

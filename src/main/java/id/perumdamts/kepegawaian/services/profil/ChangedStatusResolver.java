@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 public class ChangedStatusResolver {
 
     /**
-     * Returns true when the current principal does NOT hold ROLE_SDM,
+     * Returns true when the current principal does NOT hold ROLE_ADMIN nor ROLE_HRD,
      * meaning the change must enter the approval queue.
-     * Returns false for SDM users (stable, no approval queue).
+     * Returns false for ADMIN/HRD users (stable, no approval queue) — ADR-0036 §2.
      */
     public boolean requiresApproval() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -19,7 +19,7 @@ public class ChangedStatusResolver {
             return true;
         }
         return user.getAuthorities().stream()
-                .noneMatch(a -> "ROLE_SDM".equals(a.getAuthority()));
+                .noneMatch(a -> "ROLE_ADMIN".equals(a.getAuthority()) || "ROLE_HRD".equals(a.getAuthority()));
     }
 
     /**

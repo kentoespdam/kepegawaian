@@ -38,7 +38,7 @@ public class PengalamanKerjaCommandService {
         PengalamanKerja entity = PengalamanKerjaMapper.toEntity(request, biodata);
         entity.setChangedStatus(resolver.requiresApproval());
         PengalamanKerja save = repository.save(entity);
-        profileUpdateService.create(String.valueOf(save.getId()), RevisionMetadata.RevisionType.INSERT, EProfileUpdateTable.PENGALAMAN_KERJA);
+        handleRevisionUpdate(save, RevisionMetadata.RevisionType.INSERT);
         return save.getId();
     }
 
@@ -51,7 +51,7 @@ public class PengalamanKerjaCommandService {
         PengalamanKerja updated = PengalamanKerjaMapper.updateEntity(entity, request, biodata);
         updated.setChangedStatus(resolver.requiresApproval());
         PengalamanKerja save = repository.save(updated);
-        profileUpdateService.create(String.valueOf(save.getId()), RevisionMetadata.RevisionType.UPDATE, EProfileUpdateTable.PENGALAMAN_KERJA);
+        handleRevisionUpdate(save, RevisionMetadata.RevisionType.UPDATE);
         return save.getId();
     }
 
@@ -62,7 +62,7 @@ public class PengalamanKerjaCommandService {
         entity.setIsDeleted(true);
         entity.setChangedStatus(resolver.requiresApproval());
         repository.save(entity);
-        profileUpdateService.create(String.valueOf(entity.getId()), RevisionMetadata.RevisionType.DELETE, EProfileUpdateTable.PENGALAMAN_KERJA);
+        handleRevisionUpdate(entity, RevisionMetadata.RevisionType.DELETE);
         lampiranProfilCommandService.deleteByRefId(EJenisLampiranProfil.PROFIL_PENGALAMAN_KERJA, id);
         return true;
     }
@@ -81,5 +81,10 @@ public class PengalamanKerjaCommandService {
     public boolean deleteLampiran(Long id) {
         lampiranProfilCommandService.deleteById(id);
         return true;
+    }
+
+    private void handleRevisionUpdate(PengalamanKerja save, RevisionMetadata.RevisionType type) {
+        if (Boolean.FALSE.equals(save.getChangedStatus())) return;
+        profileUpdateService.create(String.valueOf(save.getId()), type, EProfileUpdateTable.PENGALAMAN_KERJA);
     }
 }
