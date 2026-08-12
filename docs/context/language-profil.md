@@ -8,7 +8,8 @@ Bagian dari [CONTEXT-MAP.md](../../CONTEXT-MAP.md). Baca file ini saat mengerjak
 Data pribadi yang dimiliki & dikelola pegawai sendiri — biodata, pendidikan, keahlian, keluarga, pelatihan, pengalaman kerja, kartu identitas, beserta lampiran. Berbeda dari Master (data referensi milik admin): Profil dimiliki pegawai dan perubahannya melewati persetujuan.
 
 **Pengajuan Perubahan** (ProfileUpdate):
-Catatan bahwa pegawai mengubah salah satu data Profil-nya dan menunggu keputusan admin. Setiap pengajuan menunjuk satu baris data (`revId`), satu **Jenis Aksi** (tambah/ubah/hapus), dan satu tabel Profil yang terkena.
+Catatan bahwa pegawai mengubah salah satu data Profil-nya dan menunggu keputusan petugas kepegawaian. Setiap pengajuan menunjuk satu baris data (`revId`), satu **Jenis Aksi** (tambah/ubah/hapus), dan satu tabel Profil yang terkena.
+_Cakupan (keputusan grill 2026-08-12)_: **8 entity** — Biodata, Keluarga (ProfilKeluarga), Pendidikan, Keahlian, Pelatihan, PengalamanKerja, KartuIdentitas, LampiranProfil.
 _Avoid_: "audit", "log" — ini bukan jejak pasif, melainkan antrian persetujuan yang menggerakkan revert.
 
 **Jenis Aksi** (actionType): tambah (INSERT), ubah (UPDATE), atau hapus (DELETE) — menentukan perilaku saat **ditolak**.
@@ -27,12 +28,13 @@ _Catatan domain_: nilai ini **diturunkan**, bukan diinput bebas. Menandai satu P
 _Catatan guard (ADR-0035)_: invarian "tepat satu `true` per pegawai" dijamin **dua lapis** — normalisasi aplikasi (`handleUpdateIsLatest`, transaksional) **dan** generated column `is_latest_biodata` + `UNIQUE` di level DB. Saat baris `true` dihapus/di-set `false`, pointer `pendidikanTerakhir` **dibiarkan** (tidak di-clear); sinkron hanya terjadi saat `isLatest=true` di-set.
 
 **Status Disetujui** (`disetujui` di baris Profil):
-Boolean di baris data (mis. `pendidikan.disetujui`) yang menandai data **sudah diverifikasi/disetujui SDM** — disertai `tanggalDisetujui` dan `disetujuiOleh` (stamp sekali, tidak berubah-ubah). _Jangan disamakan dengan_: (a) **Status Berubah** (`changedStatus`) — menggerbang antrian persetujuan dan bisa berubah-ubah per perubahan; (b) keputusan **"Disetujui / Ditolak"** atas **Pengajuan Perubahan** — itu keputusan admin di antrian, ini status permanen baris.
-_Catatan domain (Pendidikan, ADR-0035)_: nilainya **ditentukan server berdasarkan role**, bukan dari request — penulis **SDM** → `true` + stamp; penulis **pegawai/self-service** → `false` sampai SDM menyetujui di antrian (approve → `true` + stamp oleh approver; reject → tetap `false`).
+Boolean di baris data (mis. `pendidikan.disetujui`) yang menandai data **sudah diverifikasi/disetujui petugas kepegawaian** — disertai `tanggalDisetujui` dan `disetujuiOleh` (stamp sekali, tidak berubah-ubah). _Jangan disamakan dengan_: (a) **Status Berubah** (`changedStatus`) — menggerbang antrian persetujuan dan bisa berubah-ubah per perubahan; (b) keputusan **"Disetujui / Ditolak"** atas **Pengajuan Perubahan** — itu keputusan petugas kepegawaian di antrian, ini status permanen baris.
+_Catatan domain (Pendidikan, ADR-0035)_: nilainya **ditentukan server berdasarkan role**, bukan dari request — penulis **HRD/ADMIN** → `true` + stamp; penulis **pegawai/self-service** → `false` sampai HRD menyetujui di antrian (approve → `true` + stamp oleh approver; reject → tetap `false`).
 
 **Status Berubah** (changedStatus):
 Penanda pada baris data Profil bahwa ada perubahan yang **belum disetujui**. `true` = menunggu keputusan; `false` = stabil/disetujui. Hanya perubahan dengan `changedStatus=true` yang memunculkan Pengajuan Perubahan.
-Nilainya **ditentukan server berdasarkan role**, bukan dikirim client: edit oleh **SDM** (petugas kepegawaian) langsung stabil (`changedStatus=false`, tanpa Pengajuan Perubahan); edit oleh **pegawai** menjadi menunggu (`changedStatus=true`, memunculkan Pengajuan Perubahan).
+Nilainya **ditentukan server berdasarkan role**, bukan dikirim client: edit oleh **HRD/ADMIN** (petugas kepegawaian) langsung stabil (`changedStatus=false`, tanpa Pengajuan Perubahan); edit oleh **pegawai** menjadi menunggu (`changedStatus=true`, memunculkan Pengajuan Perubahan). Guard pemanggilan `create()` di CommandService **seragam**: hanya dipanggil saat `changedStatus=true`.
+_Pengecualian LampiranProfil (keputusan grill 2026-08-12)_: lampiran hanya punya operasi **Insert/Delete** dan `LampiranProfil` **tidak memiliki kolom `changedStatus`**. Ia tetap masuk antrian, tetapi guard enqueue memakai `resolver.requiresApproval()` langsung, dan status menunggu dibaca dari `disetujui=false` + adanya entri Pengajuan Perubahan ber-status PENDING. (7 entity lain tetap memakai kolom `changedStatus`.)
 _Avoid_: menyamakan `changedStatus` dengan riwayat. `changedStatus` hanya menggerbang **Antrian Persetujuan**, bukan **Riwayat Perubahan** — riwayat selalu dicatat di setiap tulis, apa pun nilai `changedStatus`.
 
 **Riwayat Perubahan** (Envers) vs **Antrian Persetujuan** (ProfileUpdate) — dua lapis terpisah:
@@ -42,11 +44,11 @@ _Avoid_: menyamakan `changedStatus` dengan riwayat. `changedStatus` hanya mengge
 - Itu sebabnya `changed_status` dari body client adalah **bug keamanan**: membiarkan pegawai menyelundupkan perubahan langsung ke status stabil tanpa di-acc SDM (bypass persetujuan).
 
 **Disetujui / Ditolak**:
-Keputusan admin atas Pengajuan Perubahan.
-- **Disetujui**: baris ditandai stabil (`changedStatus=false`); nilai yang diajukan dipertahankan.
+Keputusan petugas kepegawaian atas Pengajuan Perubahan.
+- **Disetujui**: baris ditandai stabil (`changedStatus=false`); nilai yang diajukan dipertahankan. Untuk entity ber-`disetujui` (Pendidikan, Keahlian, Pelatihan, PengalamanKerja, LampiranProfil) → `disetujui=true` + stamp oleh approver (pola ADR-0035); KartuIdentitas cukup `changedStatus=false`.
 - **Ditolak**: dikembalikan menurut Jenis Aksi —
-  - tambah ditolak → baris dihapus (tak pernah sah ada);
-  - ubah ditolak → **dikembalikan ke revisi sebelumnya** (dua revisi Envers terakhir dibaca, nilai revisi lama ditulis ulang);
+  - tambah ditolak → baris dihapus (tak pernah sah ada); lampiran: file fisik ikut dihapus;
+  - ubah ditolak → **dikembalikan ke revisi sebelumnya** (revisi Envers sebelumnya dibaca, nilai lama ditulis ulang via setter eksplisit — pola load-and-set-and-save, bukan refleksi blind maupun bulk JPQL, lihat ADR-0036);
   - hapus ditolak → batal hapus (baris diaktifkan kembali).
 
 ## Aturan Bisnis Penting
