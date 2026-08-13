@@ -47,10 +47,12 @@ public class PengajuanCutiCommand {
         if (redisHelper.isTokenAlreadyUsed(request.getCsrfToken())) {
             throw new ConflictException("Duplicate request detected");
         }
-        cutiPengajuanValidator.validate(request);
-
-        // ADR-0038: identitas di-resolve dari principal (non-ADMIN/HRD wajib atas nama sendiri)
+        // ADR-0038 + kepegawaian-p6np: ownership di-resolve PERTAMA dari principal
+        // (non-ADMIN/HRD wajib atas nama sendiri -> 403 di sini), baru validator jalan.
+        // Urutan ini mencegah error validator membocorkan status cuti pegawai lain.
         var pegawai = ownershipService.resolvePemohon(request.getPegawaiId());
+        cutiPengajuanValidator.validate(request, pegawai.getId());
+
         var jenisCuti = cutiJenisRepository.getReferenceById(request.getJenisCutiId());
         var subJenisCuti = request.getSubJenisCutiId() != null ? cutiJenisRepository.getReferenceById(request.getSubJenisCutiId()) : null;
 

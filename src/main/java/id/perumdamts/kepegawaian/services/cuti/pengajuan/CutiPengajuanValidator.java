@@ -22,9 +22,14 @@ public class CutiPengajuanValidator {
     private final CutiKuotaQueryRepository cutiKuotaQueryRepository;
     private final CutiProperties cutiProperties;
 
-    public void validate(CutiPengajuanPostRequest request) {
+    /**
+     * Validasi pengajuan cuti. {@code pegawaiId} WAJIB berasal dari hasil resolve
+     * ownership (principal), bukan dari body request — supaya error validator tidak
+     * membocorkan status cuti pegawai lain sebelum ownership dicek (kepegawaian-p6np).
+     */
+    public void validate(CutiPengajuanPostRequest request, Long pegawaiId) {
         boolean existsPendingPengajuan = repository.existsPending(
-                request.getPegawaiId(), request.getTanggalMulai().getYear(), EApprovalCutiStatus.PENDING
+                pegawaiId, request.getTanggalMulai().getYear(), EApprovalCutiStatus.PENDING
         );
         if (existsPendingPengajuan) {
             throw new RuntimeException("Masih ada pengajuan cuti yang belum diapprove");
@@ -36,7 +41,7 @@ public class CutiPengajuanValidator {
         );
 
         boolean existBesar = repository.existsByJenisCutiAndYear(
-                request.getPegawaiId(), cutiProperties.getJenisCutiBesar(),
+                pegawaiId, cutiProperties.getJenisCutiBesar(),
                 request.getTanggalMulai().getYear(), activeStatuses
         );
         if (existBesar) {
@@ -44,7 +49,7 @@ public class CutiPengajuanValidator {
         }
 
         boolean existIbadah = repository.existsByPegawai_IdAndJenisCuti_IdAndApprovalCutiStatusIn(
-                request.getPegawaiId(), cutiProperties.getJenisCutiIbadah(), activeStatuses
+                pegawaiId, cutiProperties.getJenisCutiIbadah(), activeStatuses
         );
         if (existIbadah) {
             throw new RuntimeException("Anda tidak berhak cuti tahunan karena telah mengambil cuti melaksanakan ibadah");
@@ -53,7 +58,7 @@ public class CutiPengajuanValidator {
         CutiJenis cutiJenis = cutiJenisRepository.findById(request.getJenisCutiId())
                 .orElseThrow(() -> new RuntimeException("Unknown Jenis Cuti"));
 
-        CutiKuotaSisa kuotaSisa = cutiKuotaQueryRepository.findByPegawai(request.getPegawaiId(), request.getTanggalMulai().getYear());
+        CutiKuotaSisa kuotaSisa = cutiKuotaQueryRepository.findByPegawai(pegawaiId, request.getTanggalMulai().getYear());
         int totalSisaKuota = kuotaSisa.sisaCutiTahunIni() + kuotaSisa.sisaCutiTahunLalu();
 
         if (Boolean.TRUE.equals(cutiJenis.getPotongKuotaTahunan())) {
