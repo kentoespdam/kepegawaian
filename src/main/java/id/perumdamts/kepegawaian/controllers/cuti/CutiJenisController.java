@@ -23,19 +23,17 @@ public class CutiJenisController {
     private final CutiJenisQueryService queryService;
     private final CutiJenisCommandService commandService;
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:READ')")
+    // cuti_jenis = data referensi (katalog jenis cuti) — login-only, seperti read master
     @GetMapping
     public ResponseEntity<PageResult<Page<CutiJenisResponse>>> index(@Valid @ParameterObject CutiJenisRequest request) {
         return CustomResult.page(queryService.findPage(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:READ')")
     @GetMapping("/list")
     public ResponseEntity<ListResult<CutiJenisResponse>> list(@Valid @ParameterObject CutiJenisListRequest request) {
         return CustomResult.list(queryService.findList(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:READ')")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<CutiJenisResponse>> show(@PathVariable Long id) {
         return CustomResult.any(queryService.findById(id));

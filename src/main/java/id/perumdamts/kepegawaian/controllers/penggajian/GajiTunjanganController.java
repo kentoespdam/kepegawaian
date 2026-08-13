@@ -28,7 +28,7 @@ public class GajiTunjanganController {
     private final GajiTunjanganCommandService commandService;
     private final GajiTunjanganQueryService queryService;
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
+    // Daftar jenis tunjangan = enum (EJenisTunjangan) tanpa data nominal — login-only
     @GetMapping
     public ResponseEntity<ListResult<Map<String, Object>>> index() {
         List<Map<String, Object>> list = Arrays.stream(EJenisTunjangan.values())

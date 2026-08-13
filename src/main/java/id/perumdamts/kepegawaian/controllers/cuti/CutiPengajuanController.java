@@ -54,7 +54,7 @@ public class CutiPengajuanController {
         return CustomResult.any(queryService.findById(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:READ')")
+    // Kalkulator jumlah hari kerja — murni perhitungan, tanpa data — login-only
     @GetMapping("/{tanggalMulai}/{tanggalSelesai}/total-hari-kerja")
     public ResponseEntity<SingleResult<Integer>> findTotalHariKerja(@PathVariable LocalDate tanggalMulai, @PathVariable LocalDate tanggalSelesai) {
         if (Objects.isNull(tanggalMulai) || Objects.isNull(tanggalSelesai))

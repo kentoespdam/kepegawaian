@@ -185,6 +185,7 @@ DELETE /api/system/roles/HRD
 > - HRD bisa akses **write/delete master** (`MASTER:WRITE/DELETE`), **write/delete pegawai** (`PEGAWAI:WRITE/DELETE`), **`PATCH /admin/profil/{id}`** (`PROFIL:APPROVE`), kelola **jenis/kuota cuti** (`CUTI:WRITE`), **laporan** (`LAPORAN:READ`).
 > - `USER` (pegawai biasa) bisa **baca modul bisnis** (READ yang dimiliki), **update profil sendiri** (`PROFIL:UPDATE`) dan **ajukan cuti** (`CUTI:CREATE`).
 > - ✅ **Read master (jabatan, organisasi, golongan, jenis-*, dll) = login-only** — TANPA guard permission, cukup sesi aktif (pola `/account/me`). FE bisa pakai dropdown master dari sesi user mana pun. `MASTER:READ` dihapus dari katalog (V34).
+> - ✅ **Referensi lintas modul = login-only juga**: `GET /cuti/jenis*` (katalog jenis cuti), `GET /penggajian/tunjangan` (daftar enum jenis tunjangan, tanpa nominal), `GET /cuti/pengajuan/{tgl}/{tgl}/total-hari-kerja` (kalkulator hari kerja) — cukup sesi aktif, tanpa permission.
 > - ⚠️ **Read-path modul bisnis** (`PEGAWAI:READ`, `PROFIL:READ`, `KEPEGAWAIAN:READ`, `CUTI:READ`, `PENGGAJIAN:READ`, `LAPORAN:READ`) di-guard dual-mode (`hasRole('ADMIN') or hasAuthority('X:READ')`).
 > - ⚠️ **Antrian approval profil** (`GET /profil/profil-update*`) di-guard `PROFIL:APPROVE` — **menyempit** (sebelumnya terbuka semua user login; perbaikan keamanan kepegawaian-t3s3).
 > - Matrix bisa diubah runtime via API assign/revoke (section 2.2–2.3).
