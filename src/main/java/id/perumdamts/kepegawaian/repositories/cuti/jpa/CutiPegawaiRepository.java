@@ -25,6 +25,14 @@ public interface CutiPegawaiRepository extends JpaRepository<CutiPegawai, Long>,
     @Query("select count(c) > 0 from CutiPegawai c where c.pegawai.id = :pegawaiId and year(c.tanggalMulai) = :year and c.approvalCutiStatus = :status")
     boolean existsPending(@Param("pegawaiId") Long pegawaiId, @Param("year") int year, @Param("status") EApprovalCutiStatus status);
 
+    /**
+     * Varian existsPending yang meng-exclude satu cuti (dipakai saat UPDATE: cuti yang
+     * sedang di-update itu sendiri berstatus PENDING, tidak boleh dihitung sebagai
+     * duplikat — kepegawaian-3o6c).
+     */
+    @Query("select count(c) > 0 from CutiPegawai c where c.id <> :cutiId and c.pegawai.id = :pegawaiId and year(c.tanggalMulai) = :year and c.approvalCutiStatus = :status")
+    boolean existsPendingExcluding(@Param("cutiId") Long cutiId, @Param("pegawaiId") Long pegawaiId, @Param("year") int year, @Param("status") EApprovalCutiStatus status);
+
     @Query("select count(c) > 0 from CutiPegawai c where c.pegawai.id = :pegawaiId and c.jenisCuti.id = :jenisCutiId and year(c.tanggalMulai) = :year and c.approvalCutiStatus in :statuses")
     boolean existsByJenisCutiAndYear(@Param("pegawaiId") Long pegawaiId, @Param("jenisCutiId") Long jenisCutiId, @Param("year") int year, @Param("statuses") List<EApprovalCutiStatus> statuses);
 }

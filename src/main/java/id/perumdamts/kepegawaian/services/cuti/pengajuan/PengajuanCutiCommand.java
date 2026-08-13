@@ -86,9 +86,17 @@ public class PengajuanCutiCommand {
         if (redisHelper.isTokenAlreadyUsed(request.getCsrfToken())) {
             throw new ConflictException("Duplicate request detected");
         }
-        var cutiPegawai = repository.findById(id).orElseThrow(() -> new RuntimeException("Unknown Cuti Pengajuan"));
-        // ADR-0038: identitas di-resolve dari principal (non-ADMIN/HRD wajib atas nama sendiri)
+        // kepegawaian-3o6c: hanya cuti PENDING yang boleh di-update (konsisten dgn pembatalan)
+        var cutiPegawai = repository.findByIdAndApprovalCutiStatus(id, EApprovalCutiStatus.PENDING)
+                .orElseThrow(() -> new RuntimeException("Unknown Cuti Pengajuan"));
+        // kepegawaian-hyq0: ownership WAJIB cek pemilik ENTITY, bukan hanya request pegawaiId
+        // (updateEntity mempertahankan pegawai asli — tanpa ini USER bisa mengubah cuti orang lain)
+        ownershipService.assertOwns(cutiPegawai.getPegawai().getId());
+        // ADR-0038: request pegawaiId juga wajib milik sendiri untuk non-privileged
         var pegawai = ownershipService.resolvePemohon(request.getPegawaiId());
+        // kepegawaian-3o6c: validasi update-aware, kuota/jenis/besar-ibadah dicek terhadap
+        // pemilik cuti, exclude cuti yang sedang di-update dari cek pending-duplikat
+        cutiPengajuanValidator.validate(request, cutiPegawai.getPegawai().getId(), id);
         var jenisCuti = cutiJenisRepository.getReferenceById(request.getJenisCutiId());
         var subJenisCuti = request.getSubJenisCutiId() != null ? cutiJenisRepository.getReferenceById(request.getSubJenisCutiId()) : null;
 

@@ -28,9 +28,18 @@ public class CutiPengajuanValidator {
      * membocorkan status cuti pegawai lain sebelum ownership dicek (kepegawaian-p6np).
      */
     public void validate(CutiPengajuanPostRequest request, Long pegawaiId) {
-        boolean existsPendingPengajuan = repository.existsPending(
-                pegawaiId, request.getTanggalMulai().getYear(), EApprovalCutiStatus.PENDING
-        );
+        validate(request, pegawaiId, null);
+    }
+
+    /**
+     * Varian update-aware (kepegawaian-3o6c): {@code excludeCutiId} meng-exclude cuti
+     * yang sedang di-update dari cek "masih ada pengajuan pending" — cuti itu sendiri
+     * berstatus PENDING, tidak boleh dianggap duplikat.
+     */
+    public void validate(CutiPengajuanPostRequest request, Long pegawaiId, Long excludeCutiId) {
+        boolean existsPendingPengajuan = excludeCutiId == null
+                ? repository.existsPending(pegawaiId, request.getTanggalMulai().getYear(), EApprovalCutiStatus.PENDING)
+                : repository.existsPendingExcluding(excludeCutiId, pegawaiId, request.getTanggalMulai().getYear(), EApprovalCutiStatus.PENDING);
         if (existsPendingPengajuan) {
             throw new RuntimeException("Masih ada pengajuan cuti yang belum diapprove");
         }
