@@ -21,6 +21,9 @@ public class PrefRole {
     @NotEmpty(message = "ID is required")
     String id;
 
+    // ADR-0039: label role untuk UI manajemen role (nullable; update via PUT /system/roles/{id})
+    String description;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "pref_role_permission",
             joinColumns = @JoinColumn(name = "role_id"),
@@ -29,6 +32,11 @@ public class PrefRole {
 
     public PrefRole(String id) {
         this.id = id;
+    }
+
+    public PrefRole(String id, String description) {
+        this.id = id;
+        this.description = description;
     }
 
     @Override

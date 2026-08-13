@@ -181,6 +181,8 @@ public class PegawaiCommandService {
             return false;
         }
         repository.delete(optionalPegawai.get());
+        // ADR-0039: user Appwrite tidak di-hard-delete — ikut di-disable (best-effort)
+        authService.blockUserIfExists(id.toString());
         return true;
     }
 

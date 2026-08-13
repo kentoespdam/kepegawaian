@@ -20,13 +20,13 @@ public class PrefPermissionController {
     private final PrefRoleRepository roleRepository;
     private final PrefPermissionRepository permissionRepository;
 
-    @PreAuthorize("hasRole('SYSTEM')")
+    @PreAuthorize("hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_ROLE')")
     @GetMapping("/permissions")
     public ResponseEntity<ListResult<PrefPermission>> list() {
         return CustomResult.list(permissionRepository.findAll());
     }
 
-    @PreAuthorize("hasRole('SYSTEM')")
+    @PreAuthorize("hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_ROLE')")
     @Transactional
     @PostMapping("/roles/{roleId}/permissions/{permName}")
     public ResponseEntity<SavedResult<String>> assign(@PathVariable String roleId, @PathVariable String permName) {
@@ -41,7 +41,7 @@ public class PrefPermissionController {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, "success"));
     }
 
-    @PreAuthorize("hasRole('SYSTEM')")
+    @PreAuthorize("hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_ROLE')")
     @Transactional
     @DeleteMapping("/roles/{roleId}/permissions/{permName}")
     public ResponseEntity<DeletedResult> revoke(@PathVariable String roleId, @PathVariable String permName) {

@@ -32,8 +32,9 @@ public class UserService {
         return new PageImpl<>(list, pegawaiPage.getPageable(), pegawaiPage.getTotalElements());
     }
 
-    public SavedStatus<AppwriteUser> patchStatus(Long id, UserPatchStatusRequest request) {
-        return SavedStatus.build(ESaveStatus.SUCCESS, authService.updateStatus(id.toString(), request));
+    // ADR-0039: id Appwrite user adalah String (sama dengan pegawai.id), seragam dengan endpoint pref/{id}
+    public SavedStatus<AppwriteUser> patchStatus(String id, UserPatchStatusRequest request) {
+        return SavedStatus.build(ESaveStatus.SUCCESS, authService.updateStatus(id, request));
     }
 
     private CompletableFuture<UserResponse> fetchUserAsync(Pegawai pegawai) {

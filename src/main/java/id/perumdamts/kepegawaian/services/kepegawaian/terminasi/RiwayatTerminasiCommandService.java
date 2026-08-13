@@ -24,6 +24,7 @@ import id.perumdamts.kepegawaian.repositories.master.jpa.GolonganRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.JabatanRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.OrganisasiRepository;
 import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
+import id.perumdamts.kepegawaian.services.auth.AuthService;
 import id.perumdamts.kepegawaian.services.kepegawaian.lampiran.LampiranSkCommandService;
 import id.perumdamts.kepegawaian.services.pegawai.pegawai.PegawaiWriteback;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +47,7 @@ public class RiwayatTerminasiCommandService {
     private final LampiranSkCommandService lampiranSkCommandService;
     private final LampiranSkRepository lampiranSkRepository;
     private final PegawaiWriteback pegawaiWriteback;
+    private final AuthService authService;
 
     @Transactional(rollbackFor = Exception.class)
     public RiwayatTerminasi save(RiwayatTerminasiPostRequest request) {
@@ -73,6 +75,9 @@ public class RiwayatTerminasiCommandService {
         // Update Pegawai
         pegawai.setStatusKerja(EStatusKerja.BERHENTI_OR_KELUAR);
         pegawaiWriteback.savePegawai(pegawai);
+
+        // ADR-0039: pegawai keluar → user Appwrite di-disable (best-effort, tidak di-hard-delete)
+        authService.blockUserIfExists(pegawai.getId().toString());
 
         // Add attachment if provided
         if (request.getFileName() != null) {

@@ -32,6 +32,20 @@ public class PrefRoleRecord extends UpdatableRecordImpl<PrefRoleRecord> {
         return (String) get(0);
     }
 
+    /**
+     * Setter for <code>pref_role.description</code>.
+     */
+    public void setDescription(String value) {
+        set(1, value);
+    }
+
+    /**
+     * Getter for <code>pref_role.description</code>.
+     */
+    public String getDescription() {
+        return (String) get(1);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -55,10 +69,11 @@ public class PrefRoleRecord extends UpdatableRecordImpl<PrefRoleRecord> {
     /**
      * Create a detached, initialised PrefRoleRecord
      */
-    public PrefRoleRecord(String id_) {
+    public PrefRoleRecord(String id_, String description) {
         super(PrefRole.PREF_ROLE);
 
         setId(id_);
+        setDescription(description);
         resetChangedOnNotNull();
     }
 }

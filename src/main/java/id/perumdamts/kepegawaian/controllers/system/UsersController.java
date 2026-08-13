@@ -28,27 +28,27 @@ public class UsersController {
     private final UserService service;
     private final AuthService authService;
 
-    @PreAuthorize("hasRole('SYSTEM')")
+    @PreAuthorize("hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_USER')")
     @GetMapping
     public ResponseEntity<SingleResult<Page<UserResponse>>> index(@Valid @ParameterObject UserRequest request) {
         return CustomResult.any(service.findPage(request));
     }
 
-    @PreAuthorize("hasRole('SYSTEM')")
+    @PreAuthorize("hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_USER')")
     @PostMapping()
     public ResponseEntity<SavedResult<String>> create(@Valid @RequestBody AuthPostRequest request) {
         return CustomResult.save(authService.createUser(request));
     }
 
-    @PreAuthorize("hasRole('SYSTEM')")
+    @PreAuthorize("hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_USER')")
     @PatchMapping("/pref/{id}")
     public ResponseEntity<SavedResult<String>> updatePref(@PathVariable String id, @RequestBody List<PrefRole> request) {
         return CustomResult.save(authService.updatePref(id, request));
     }
 
-    @PreAuthorize("hasRole('SYSTEM')")
+    @PreAuthorize("hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_USER')")
     @PatchMapping("/{id}/status")
-    public ResponseEntity<SavedResult<AppwriteUser>> patchStatus(@PathVariable Long id, @Valid @RequestBody UserPatchStatusRequest request) {
+    public ResponseEntity<SavedResult<AppwriteUser>> patchStatus(@PathVariable String id, @Valid @RequestBody UserPatchStatusRequest request) {
         return CustomResult.save(service.patchStatus(id, request));
     }
 }

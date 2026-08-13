@@ -173,7 +173,21 @@ Migrasi per-modul dikerjakan di issue terpisah (tidak di scope issue ini).
 - [x] **master** — 17 controller, 54 guard → dual-mode `hasRole('ADMIN') or hasAuthority('MASTER:WRITE'|'MASTER:DELETE')` (kepegawaian-rcpo)
 - [x] **pegawai** — 1 controller, 6 guard (5 WRITE + 1 DELETE) → dual-mode `hasRole('ADMIN') or hasAuthority('PEGAWAI:WRITE'|'PEGAWAI:DELETE')`
 - [x] **profil** — endpoint admin: 7 controller, guard dual-mode `PROFIL:APPROVE` (biodata + 6 entity) + read-path `PROFIL:READ` (ADR-0038 split, kepegawaian-huis/3blf/jiv4)
-- [ ] kepegawaian, cuti, penggajian — belum dimigrasi
+- [x] **system** — 3 controller (roles, permissions, users) → dual-mode `hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_ROLE'|'SYSTEM:MANAGE_USER')` (review 2026-08-13)
+- [ ] kepegawaian, cuti, penggajian, laporan — belum dimigrasi → issue: kepegawaian-1448, kepegawaian-cq6h, kepegawaian-z35h, kepegawaian-8vuk
+
+---
+
+## Review RBAC 2026-08-13 — Manajemen Surface Lengkap (ADR-0039)
+
+**Trigger**: review ulang RBAC + endpoint user roles — CRUD tidak lengkap. Keputusan (grill session):
+
+1. **Katalog permission seed-only** — tidak ada CRUD permission via API (enforcement di `@PreAuthorize` kode). Aturan audit: setiap permission di katalog wajib di-enforce ≥1 controller.
+2. **Role**: kolom `description` baru (V32) + `PUT /system/roles/{id}`; `DELETE /system/roles/{id}` dengan proteksi `SYSTEM` & `ADMIN`; fix `GET /system/roles/{id}` (exact match, SingleResult, 404).
+3. **User**: tanpa `DELETE /system/users` — lifecycle mengikuti pegawai; auto-disable (blocked) saat terminasi/hard-delete; `PATCH status` wajib body eksplisit (`@NotNull`); id seragam `String`.
+4. **Guard system module dual-mode** — `SYSTEM:MANAGE_USER` / `SYSTEM:MANAGE_ROLE` kini benar-benar di-enforce (sebelumnya zombie, 0 guard).
+
+**Audit katalog 20 permission vs realita saat review**: hanya 5 di-enforce (`MASTER:WRITE/DELETE`, `PEGAWAI:WRITE/DELETE`, `PROFIL:APPROVE`); 15 zombie. Setelah sesi ini + migrasi system → 7 aktif. Sisa 15 butuh migrasi modul kepegawaian/cuti/penggajian + guard read-path — di-track per issue beads.
 
 ---
 

@@ -54,6 +54,22 @@ public class AuthService {
         return appwriteClient.updateStatus(id, status);
     }
 
+    /**
+     * ADR-0039: disable Appwrite user (status blocked) secara best-effort.
+     * Dipanggil saat pegawai terminasi ({@code BERHENTI_OR_KELUAR}) atau di-hard-delete —
+     * user tidak pernah di-hard-delete, lifecycle-nya mengikuti pegawai.
+     * Kegagalan hanya di-log, tidak menggagalkan transaksi utama.
+     */
+    public void blockUserIfExists(String userId) {
+        try {
+            UserPatchStatusRequest request = new UserPatchStatusRequest();
+            request.setStatus(true);
+            appwriteClient.updateStatus(userId, request);
+        } catch (Exception e) {
+            log.warn("Failed to block Appwrite user {}: {}", userId, e.getMessage());
+        }
+    }
+
     public SavedStatus<String> updatePref(String id, List<PrefRole> prefRoles) {
         appwriteClient.updatePrefs(id, prefRoles);
         return SavedStatus.build(ESaveStatus.SUCCESS, "success");
