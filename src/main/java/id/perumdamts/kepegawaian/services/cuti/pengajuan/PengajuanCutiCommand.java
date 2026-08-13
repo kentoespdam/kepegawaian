@@ -18,6 +18,7 @@ import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiJenisRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiPegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.HariLiburRepository;
 import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
+import id.perumdamts.kepegawaian.services.cuti.CutiOwnershipService;
 import id.perumdamts.kepegawaian.services.cuti.approvalChain.CutiApprovalChainGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,7 @@ public class PengajuanCutiCommand {
     private final CutiJenisRepository cutiJenisRepository;
     private final CutiApprovalChainGenerator cutiApprovalChainGenerator;
     private final CutiPengajuanValidator cutiPengajuanValidator;
+    private final CutiOwnershipService ownershipService;
 
     @Transactional
     public SavedStatus<Long> save(CutiPengajuanPostRequest request) {
@@ -47,7 +49,8 @@ public class PengajuanCutiCommand {
         }
         cutiPengajuanValidator.validate(request);
 
-        var pegawai = pegawaiRepository.findById(request.getPegawaiId()).orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
+        // ADR-0038: identitas di-resolve dari principal (non-ADMIN/HRD wajib atas nama sendiri)
+        var pegawai = ownershipService.resolvePemohon(request.getPegawaiId());
         var jenisCuti = cutiJenisRepository.getReferenceById(request.getJenisCutiId());
         var subJenisCuti = request.getSubJenisCutiId() != null ? cutiJenisRepository.getReferenceById(request.getSubJenisCutiId()) : null;
 
@@ -82,7 +85,8 @@ public class PengajuanCutiCommand {
             throw new ConflictException("Duplicate request detected");
         }
         var cutiPegawai = repository.findById(id).orElseThrow(() -> new RuntimeException("Unknown Cuti Pengajuan"));
-        var pegawai = pegawaiRepository.findById(request.getPegawaiId()).orElseThrow(() -> new RuntimeException("Unknown Pegawai"));
+        // ADR-0038: identitas di-resolve dari principal (non-ADMIN/HRD wajib atas nama sendiri)
+        var pegawai = ownershipService.resolvePemohon(request.getPegawaiId());
         var jenisCuti = cutiJenisRepository.getReferenceById(request.getJenisCutiId());
         var subJenisCuti = request.getSubJenisCutiId() != null ? cutiJenisRepository.getReferenceById(request.getSubJenisCutiId()) : null;
 
@@ -114,6 +118,8 @@ public class PengajuanCutiCommand {
     public boolean pembatalan(Long id) {
         var entity = repository.findByIdAndApprovalCutiStatus(id, EApprovalCutiStatus.PENDING)
                 .orElseThrow(() -> new RuntimeException("Unknown Cuti Pegawai"));
+        // non-ADMIN/HRD hanya boleh membatalkan cuti milik sendiri
+        ownershipService.assertOwns(entity.getPegawai().getId());
         entity.setApprovalCutiStatus(EApprovalCutiStatus.CANCELED);
         repository.save(entity);
         return true;

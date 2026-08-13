@@ -181,9 +181,10 @@ DELETE /api/system/roles/HRD
 
 **`GET /system/roles/{id}`** — diperbaiki: exact match, respons `SingleResult` (bukan list), `404` jika tidak ada.
 
-> **Seed matrix (V31 + V33 + V34, sudah live):** katalog **22 permission**. `ADMIN`=22 (semua), `HRD`=15 (operasional minus `SYSTEM:*`, `CUTI:CREATE`, `PENGGAJIAN:WRITE/PROCESS/DELETE`), `USER`=8 (`PEGAWAI:READ`, `PROFIL:READ/UPDATE`, `KEPEGAWAIAN:READ`, `CUTI:READ/CREATE`, `PENGGAJIAN:READ`, `LAPORAN:READ`). Implikasi:
+> **Seed matrix (V31 + V33 + V34 + V35, sudah live):** katalog **21 permission**. `ADMIN`=21 (semua), `HRD`=14 (operasional minus `SYSTEM:*`, `CUTI:CREATE`, `PENGGAJIAN:WRITE/PROCESS/DELETE`), `USER`=7 (`PEGAWAI:READ`, `PROFIL:READ/UPDATE`, `KEPEGAWAIAN:READ`, `CUTI:READ`, `PENGGAJIAN:READ`, `LAPORAN:READ`). Implikasi:
 > - HRD bisa akses **write/delete master** (`MASTER:WRITE/DELETE`), **write/delete pegawai** (`PEGAWAI:WRITE/DELETE`), **`PATCH /admin/profil/{id}`** (`PROFIL:APPROVE`), kelola **jenis/kuota cuti** (`CUTI:WRITE`), **laporan** (`LAPORAN:READ`).
-> - `USER` (pegawai biasa) bisa **baca modul bisnis** (READ yang dimiliki), **update profil sendiri** (`PROFIL:UPDATE`) dan **ajukan cuti** (`CUTI:CREATE`).
+> - `USER` (pegawai biasa) bisa **baca modul bisnis** (READ yang dimiliki) dan **update profil sendiri** (`PROFIL:UPDATE`).
+> - ✅ **Pengajuan cuti (create/update/klaim/batal) = login-only + ownership check** — TANPA permission: semua pegawai bersesi aktif berhak mengusulkan cuti sendiri. Server me-resolve identitas dari principal (`CutiOwnershipService`, ADR-0038): non-ADMIN/HRD yang mencoba `pegawaiId` milik orang lain → **403**. `CUTI:CREATE` dihapus dari katalog (V35). Baca daftar/detail cuti milik sendiri (`GET /cuti/pengajuan/{pegawaiId}/pegawai`, `GET /cuti/pengajuan/{id}`) juga login-only + di-scope ke principal.
 > - ✅ **Read master (jabatan, organisasi, golongan, jenis-*, dll) = login-only** — TANPA guard permission, cukup sesi aktif (pola `/account/me`). FE bisa pakai dropdown master dari sesi user mana pun. `MASTER:READ` dihapus dari katalog (V34).
 > - ✅ **Referensi lintas modul = login-only juga**: `GET /cuti/jenis*` (katalog jenis cuti), `GET /penggajian/tunjangan` (daftar enum jenis tunjangan, tanpa nominal), `GET /cuti/pengajuan/{tgl}/{tgl}/total-hari-kerja` (kalkulator hari kerja) — cukup sesi aktif, tanpa permission.
 > - ⚠️ **Read-path modul bisnis** (`PEGAWAI:READ`, `PROFIL:READ`, `KEPEGAWAIAN:READ`, `CUTI:READ`, `PENGGAJIAN:READ`, `LAPORAN:READ`) di-guard dual-mode (`hasRole('ADMIN') or hasAuthority('X:READ')`).

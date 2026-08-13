@@ -46,4 +46,5 @@ _Avoid_: "permission loading", "role expansion"
 - Sebuah **Appwrite User** / **Dev User** membawa satu atau lebih **Role**; **Role** menentukan akses endpoint.
 - **Appwrite User tidak pernah di-hard-delete** — lifecycle mengikuti Pegawai (auto-disable saat terminasi/hard-delete, re-aktivasi manual).
 - **Read data referensi master tidak butuh Permission** — cukup sesi aktif (`anyRequest().authenticated()` di WebSecurity), pola yang sama dengan `/account/me`. Yang di-enforce hanya tulis/hapus (`MASTER:WRITE`/`MASTER:DELETE`).
+- **Self-service actions (cuti) login-only + ownership check** — identitas di-resolve server dari principal (`CutiOwnershipService`), bukan dari body request (ADR-0038 pattern). Non-ADMIN/HRD yang mencoba `pegawaiId` milik orang lain → 403. Ini pengganti permission `CUTI:CREATE` yang dihapus (V35).
 - **Role** penulis menentukan `changedStatus` pada data Profil: **SDM** → `false` (langsung stabil), **pegawai** → `true` (menunggu). Keputusan ini diambil **server** dari principal, bukan dari body request.

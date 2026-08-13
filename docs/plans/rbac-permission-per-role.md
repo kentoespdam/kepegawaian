@@ -192,9 +192,11 @@ Migrasi per-modul dikerjakan di issue terpisah (tidak di scope issue ini).
 3. **User**: tanpa `DELETE /system/users` — lifecycle mengikuti pegawai; auto-disable (blocked) saat terminasi/hard-delete; `PATCH status` wajib body eksplisit (`@NotNull`); id seragam `String`.
 4. **Guard system module dual-mode** — `SYSTEM:MANAGE_USER` / `SYSTEM:MANAGE_ROLE` kini benar-benar di-enforce (sebelumnya zombie, 0 guard).
 
-**Audit katalog final (setelah migrasi penuh + V34)**: katalog **22 permission** = **semua di-enforce ≥1 controller** (0 zombie, 0 enforced-tanpa-katalog). Matrix seed: ADMIN=22, HRD=15 (minus SYSTEM:*, CUTI:CREATE, PENGGAJIAN:WRITE/PROCESS/DELETE, dan MASTER:READ yang dihapus), USER=8 (`PEGAWAI:READ`, `PROFIL:READ/UPDATE`, `KEPEGAWAIAN:READ`, `CUTI:READ/CREATE`, `PENGGAJIAN:READ`, `LAPORAN:READ`).
+**Audit katalog final (setelah migrasi penuh + V34/V35)**: katalog **21 permission** = **semua di-enforce ≥1 controller** (0 zombie, 0 enforced-tanpa-katalog). Matrix seed: ADMIN=21, HRD=14 (minus SYSTEM:*, CUTI:CREATE, PENGGAJIAN:WRITE/PROCESS/DELETE, dan MASTER:READ/CUTI:CREATE yang dihapus), USER=7 (`PEGAWAI:READ`, `PROFIL:READ/UPDATE`, `KEPEGAWAIAN:READ`, `CUTI:READ`, `PENGGAJIAN:READ`, `LAPORAN:READ`).
 
 **Read master = login-only** (ADR review 2026-08-13): data referensi master tidak butuh permission — cukup sesi aktif, pola yang sama dengan `/account/me`. Write/delete master tetap `MASTER:WRITE/DELETE` (dual-mode).
+
+**Cuti self-service = login-only + ownership check** (ADR-0038 pattern): pengajuan/ubah/klaim/batal cuti terbuka semua pegawai bersesi aktif — bukan karena permission `CUTI:CREATE` (dihapus, V35), tapi karena `CutiOwnershipService` me-resolve identitas dari principal: non-ADMIN/HRD wajib atas nama sendiri (403 jika mencoba pegawai lain). Baca cuti milik sendiri (`GET /cuti/pengajuan/{pegawaiId}/pegawai`, `/{id}`) juga login-only + di-scope ke principal. `GET /cuti/pengajuan` (index semua) tetap `CUTI:READ` untuk tampilan HRD/ADMIN.
 
 **Catatan gap tersisa**: role `PENGGAJIAN` (seed V21) belum punya permission di matrix — perlu keputusan matrix terpisah (issue follow-up).
 

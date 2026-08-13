@@ -34,7 +34,8 @@ public class DevAuthFilter extends OncePerRequestFilter {
             "PEGAWAI:READ", "PEGAWAI:WRITE", "PEGAWAI:DELETE",
             "KEPEGAWAIAN:READ", "KEPEGAWAIAN:WRITE", "KEPEGAWAIAN:DELETE",
             "PROFIL:READ", "PROFIL:UPDATE", "PROFIL:APPROVE",
-            "CUTI:READ", "CUTI:CREATE", "CUTI:APPROVE",
+            // CUTI:CREATE sengaja tidak ada — pengajuan cuti self-service login-only + ownership check
+            "CUTI:READ", "CUTI:APPROVE",
             "PENGGAJIAN:READ", "PENGGAJIAN:WRITE", "PENGGAJIAN:DELETE", "PENGGAJIAN:PROCESS",
             "LAPORAN:READ", "CUTI:WRITE",
             "SYSTEM:MANAGE_USER", "SYSTEM:MANAGE_ROLE");

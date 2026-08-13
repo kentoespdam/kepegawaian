@@ -24,6 +24,7 @@ import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiKlaimDetailRepository
 import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiPegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.HariLiburRepository;
 import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
+import id.perumdamts.kepegawaian.services.cuti.CutiOwnershipService;
 import id.perumdamts.kepegawaian.services.cuti.approvalChain.CutiApprovalChainGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,12 +47,15 @@ public class KlaimCutiCommand {
     private final CutiApprovalChainGenerator cutiApprovalChainGenerator;
     private final CutiApproveKlaimCutiService cutiApproveKlaimCutiService;
     private final CutiKlaimCrossYearSettlement cutiKlaimCrossYearSettlement;
+    private final CutiOwnershipService ownershipService;
 
     @Value("${custom.jabatan.supervisorSdm}")
     private Long supervisorSdm;
 
     @Transactional
     public SavedStatus<Long> save(CutiPengajuanKlaimPostRequest request) {
+        // ADR-0038: non-ADMIN/HRD wajib klaim atas nama sendiri
+        ownershipService.resolvePemohon(request.getPegawaiId());
         CutiPegawai validCuti = cutiKlaimValidator.validateKlaim(request);
         CutiPegawai entity = CutiPegawaiMapper.toEntity(validCuti, request);
         entity.setPicSaatIni(new Jabatan(supervisorSdm));
@@ -68,6 +72,8 @@ public class KlaimCutiCommand {
     public SavedStatus<Long> update(Long id, CutiPengajuanKlaimPostRequest request) {
         CutiPegawai cutiPegawai = cutiPegawaiRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Unknown Cuti Pegawai"));
+        // non-ADMIN/HRD hanya boleh update klaim milik sendiri
+        ownershipService.assertOwns(cutiPegawai.getPegawai().getId());
 
         List<LocalDate> working = setWorkingDays(request.getListHari(), cutiPegawai);
         CutiPegawai save = cutiPegawaiRepository.save(cutiPegawai);

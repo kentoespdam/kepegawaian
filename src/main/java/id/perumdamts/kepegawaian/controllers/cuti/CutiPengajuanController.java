@@ -5,6 +5,7 @@ import id.perumdamts.kepegawaian.dto.cuti.approvalChain.CutiApprovalChainRequest
 import id.perumdamts.kepegawaian.dto.cuti.approvalChain.CutiApprovalChainResponse;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.*;
 import id.perumdamts.kepegawaian.exceptions.BadRequestException;
+import id.perumdamts.kepegawaian.services.cuti.CutiOwnershipService;
 import id.perumdamts.kepegawaian.services.cuti.approvalChain.CutiInboxQueryService;
 import id.perumdamts.kepegawaian.services.cuti.klaim.KlaimCutiCommand;
 import id.perumdamts.kepegawaian.services.cuti.pengajuan.CutiPengajuanQueryService;
@@ -28,6 +29,7 @@ public class CutiPengajuanController {
     private final CutiInboxQueryService cutiInboxQueryService;
     private final PengajuanCutiCommand pengajuanCutiCommand;
     private final KlaimCutiCommand klaimCutiCommand;
+    private final CutiOwnershipService ownershipService;
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:READ')")
     @GetMapping
@@ -41,14 +43,13 @@ public class CutiPengajuanController {
         return CustomResult.page(cutiInboxQueryService.findCutiPegawai(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:READ')")
+    // Self-service: non-ADMIN/HRD hanya bisa melihat daftar cuti milik sendiri (ADR-0038)
     @GetMapping("/{pegawaiId}/pegawai")
     public ResponseEntity<PageResult<Page<CutiPengajuanResponse>>> index(@PathVariable Long pegawaiId, @Valid @ParameterObject CutiPengajuanRequest request) {
-        request.setPegawaiId(pegawaiId);
+        request.setPegawaiId(ownershipService.resolvePemohon(pegawaiId).getId());
         return CustomResult.page(queryService.findPage(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:READ')")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<CutiPengajuanResponse>> detail(@PathVariable Long id) {
         return CustomResult.any(queryService.findById(id));
@@ -64,7 +65,6 @@ public class CutiPengajuanController {
         return CustomResult.any(queryService.findTotalHariKerja(tanggalMulai, tanggalSelesai));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:CREATE')")
     @PostMapping
     public ResponseEntity<SavedResult<Long>> create(@Valid @RequestBody CutiPengajuanPostRequest request) {
         if (request.getTanggalMulai().isAfter(request.getTanggalSelesai()))
@@ -74,7 +74,6 @@ public class CutiPengajuanController {
         return CustomResult.save(pengajuanCutiCommand.save(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:CREATE')")
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<Long>> update(@PathVariable Long id, @Valid @RequestBody CutiPengajuanPutRequest request) {
         if (request.getTanggalMulai().isAfter(request.getTanggalSelesai()))
@@ -84,19 +83,16 @@ public class CutiPengajuanController {
         return CustomResult.save(pengajuanCutiCommand.update(id, request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:CREATE')")
     @PostMapping("/klaim")
     public ResponseEntity<SavedResult<Long>> klaim(@Valid @RequestBody CutiPengajuanKlaimPostRequest request) {
         return CustomResult.save(klaimCutiCommand.save(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:CREATE')")
     @PutMapping("/klaim/{id}")
     public ResponseEntity<SavedResult<Long>> updateKlaim(@PathVariable Long id, @Valid @RequestBody CutiPengajuanKlaimPostRequest request) {
         return CustomResult.save(klaimCutiCommand.update(id, request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:CREATE')")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> pembatalan(@PathVariable Long id) {
         return CustomResult.delete(pengajuanCutiCommand.pembatalan(id));
