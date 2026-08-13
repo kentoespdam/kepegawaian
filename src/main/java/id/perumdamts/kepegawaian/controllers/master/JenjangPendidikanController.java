@@ -25,16 +25,19 @@ public class JenjangPendidikanController {
     private final JenjangPendidikanQueryService queryService;
     private final JenjangPendidikanCommandService commandService;
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping
     public ResponseEntity<PageResult<Page<JenjangPendidikanResponse>>> index(@ParameterObject @Valid JenjangPendidikanIndexQuery request) {
         return CustomResult.page(queryService.pageQuery(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping("/list")
     public ResponseEntity<ListResult<JenjangPendidikanResponse>> list() {
         return CustomResult.list(queryService.findAll());
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<JenjangPendidikanResponse>> findById(@PathVariable Long id) {
         return CustomResult.any(queryService.getById(id));

@@ -22,16 +22,19 @@ public class AlasanBerhentiController {
     private final AlasanBerhentiQueryService query;
     private final AlasanBerhentiCommandService command;
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping
     public ResponseEntity<PageResult<Page<AlasanBerhentiQuery>>> index(@ParameterObject @Valid AlasanBerhentiIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping("/list")
     public ResponseEntity<ListResult<AlasanBerhentiListResponse>> list() {
         return CustomResult.list(query.listQuery());
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<AlasanBerhentiQuery>> findById(@PathVariable Long id) {
         return CustomResult.any(query.getById(id));

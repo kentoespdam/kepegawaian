@@ -7,6 +7,7 @@ import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilCo
 import id.perumdamts.kepegawaian.services.profil.lampiranProfil.LampiranProfilQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -16,6 +17,7 @@ public class LampiranProfilController {
     private final LampiranProfilQueryService queryService;
     private final LampiranProfilCommandService commandService;
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PROFIL:READ')")
     @GetMapping("/file/{jenis}/{id}")
     public ResponseEntity<?> getFile(@PathVariable EJenisLampiranProfil jenis, @PathVariable Long id) {
         return queryService.getFileLampiranById(jenis, id);
@@ -23,6 +25,7 @@ public class LampiranProfilController {
 
     // ADR-0036 §6: jalur approval lampiran lama (POST /profil/lampiran/accept) dihapus —
     // approval kini lewat antrian ProfileUpdate (PUT /profil/profil-update/{id}).
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PROFIL:UPDATE')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<DeletedResult> delete(@PathVariable Long id) {
         return CustomResult.delete(commandService.deleteById(id, true));

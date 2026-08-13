@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,17 +25,20 @@ public class CutiApprovalController {
     private final ApprovalCutiCommand approvalCutiCommand;
     private final KlaimCutiCommand klaimCutiCommand;
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:APPROVE')")
     @GetMapping("/{cutiId}")
     public ResponseEntity<PageResult<Page<CutiApprovalMiniResponse>>> findApproval(@PathVariable Long cutiId, @Valid @ParameterObject CutiApprovalRequest request) {
         request.setCutiId(cutiId);
         return CustomResult.page(queryService.findPage(cutiId, request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:APPROVE')")
     @PostMapping
     public ResponseEntity<SavedResult<String>> saveApproval(@Valid @RequestBody CutiApprovalPostRequest request) {
         return CustomResult.save(approvalCutiCommand.savePengajuan(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:APPROVE')")
     @PostMapping("/klaim")
     public ResponseEntity<SavedResult<String>> klaim(@Valid @RequestBody CutiApprovalPostRequest request) {
         return CustomResult.save(klaimCutiCommand.saveKlaim(request));

@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,41 +21,49 @@ public class CutiKuotaController {
     private final CutiKuotaQueryService queryService;
     private final CutiKuotaCommandService commandService;
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:READ')")
     @GetMapping
     public ResponseEntity<SingleResult<CutiKuotaPegawaiResponse>> index(@Valid @ParameterObject CutiKuotaRequest request) {
         return CustomResult.any(queryService.findPage(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:READ')")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<CutiKuotaResponse>> show(@PathVariable Long id) {
         return CustomResult.any(queryService.findById(id));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:READ')")
     @GetMapping("/{pegawaiId}/{tahun}/sisa")
     public ResponseEntity<SingleResult<CutiKuotaSisa>> showByPegawai(@PathVariable Long pegawaiId, @PathVariable Integer tahun) {
         return CustomResult.any(queryService.findByPegawai(pegawaiId, tahun));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:READ')")
     @GetMapping("/template")
     public ResponseEntity<?> template() {
         return commandService.exportTemplate();
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:WRITE')")
     @PostMapping
     public ResponseEntity<SavedResult<Long>> store(@Valid @RequestBody CutiKuotaPostRequest request) {
         return CustomResult.save(commandService.save(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:WRITE')")
     @PostMapping(value = "/import", consumes = "multipart/form-data")
     public ResponseEntity<SavedResult<String>> importData(@Valid @ModelAttribute CutiKuotaImportRequest request) {
         return CustomResult.save(commandService.importData(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:WRITE')")
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<Long>> update(@PathVariable Long id, @Valid @RequestBody CutiKuotaPutRequest request) {
         return CustomResult.save(commandService.update(id, request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:WRITE')")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> delete(@PathVariable Long id) {
         return CustomResult.delete(commandService.delete(id));

@@ -13,6 +13,7 @@ import id.perumdamts.kepegawaian.services.profil.biodata.BiodataCommandService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,6 +32,7 @@ public class SelfProfilController {
     private final BiodataCommandService commandService;
     private final PegawaiRepository pegawaiRepository;
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PROFIL:UPDATE')")
     @PatchMapping
     public ResponseEntity<SavedResult<String>> patchBiodataSelf(@Valid @RequestBody BiodataPatchRequest request) {
         AppwriteUser principal = (AppwriteUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

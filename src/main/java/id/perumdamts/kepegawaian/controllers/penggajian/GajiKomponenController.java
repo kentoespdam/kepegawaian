@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,36 +19,43 @@ public class GajiKomponenController {
     private final GajiKomponenCommandService commandService;
     private final GajiKomponenQueryService queryService;
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
     @GetMapping("/{profilId}/kode")
     public ResponseEntity<ListResult<GajiKomponenMiniProjection>> listKode(@PathVariable Long profilId) {
         return CustomResult.list(queryService.findAllKode(profilId));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
     @GetMapping("/{profilId}/profil")
     public ResponseEntity<PageResult<Page<GajiKomponenResponse>>> index(@PathVariable Long profilId, @ParameterObject @Valid GajiKomponenIndexQuery request) {
         return CustomResult.page(queryService.findPage(profilId, request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
     @GetMapping("/{profilId}/profil/urut")
     public ResponseEntity<SingleResult<Integer>> indexUrut(@PathVariable Long profilId) {
         return CustomResult.any(queryService.findLastUrut(profilId));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
     @GetMapping("/{id}/detail")
     public ResponseEntity<SingleResult<GajiKomponenResponse>> detail(@PathVariable Long id) {
         return CustomResult.any(queryService.findById(id).orElse(null));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:WRITE')")
     @PostMapping
     public ResponseEntity<SavedResult<Long>> save(@Valid @RequestBody GajiKomponenPostRequest request) {
         return CustomResult.save(commandService.create(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:WRITE')")
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<Long>> update(@PathVariable Long id, @Valid @RequestBody GajiKomponenPutRequest request) {
         return CustomResult.save(commandService.update(id, request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:DELETE')")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> delete(@PathVariable Long id) {
         return CustomResult.delete(commandService.delete(id));

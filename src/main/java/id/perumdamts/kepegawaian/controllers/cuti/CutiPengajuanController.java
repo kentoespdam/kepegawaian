@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -28,27 +29,32 @@ public class CutiPengajuanController {
     private final PengajuanCutiCommand pengajuanCutiCommand;
     private final KlaimCutiCommand klaimCutiCommand;
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:READ')")
     @GetMapping
     public ResponseEntity<PageResult<Page<CutiPengajuanResponse>>> index(@Valid @ParameterObject CutiPengajuanRequest request) {
         return CustomResult.page(queryService.findPage(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:APPROVE')")
     @GetMapping("/approval")
     public ResponseEntity<PageResult<Page<CutiApprovalChainResponse>>> indexApproval(@Valid @ParameterObject CutiApprovalChainRequest request) {
         return CustomResult.page(cutiInboxQueryService.findCutiPegawai(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:READ')")
     @GetMapping("/{pegawaiId}/pegawai")
     public ResponseEntity<PageResult<Page<CutiPengajuanResponse>>> index(@PathVariable Long pegawaiId, @Valid @ParameterObject CutiPengajuanRequest request) {
         request.setPegawaiId(pegawaiId);
         return CustomResult.page(queryService.findPage(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:READ')")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<CutiPengajuanResponse>> detail(@PathVariable Long id) {
         return CustomResult.any(queryService.findById(id));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:READ')")
     @GetMapping("/{tanggalMulai}/{tanggalSelesai}/total-hari-kerja")
     public ResponseEntity<SingleResult<Integer>> findTotalHariKerja(@PathVariable LocalDate tanggalMulai, @PathVariable LocalDate tanggalSelesai) {
         if (Objects.isNull(tanggalMulai) || Objects.isNull(tanggalSelesai))
@@ -58,6 +64,7 @@ public class CutiPengajuanController {
         return CustomResult.any(queryService.findTotalHariKerja(tanggalMulai, tanggalSelesai));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:CREATE')")
     @PostMapping
     public ResponseEntity<SavedResult<Long>> create(@Valid @RequestBody CutiPengajuanPostRequest request) {
         if (request.getTanggalMulai().isAfter(request.getTanggalSelesai()))
@@ -67,6 +74,7 @@ public class CutiPengajuanController {
         return CustomResult.save(pengajuanCutiCommand.save(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:CREATE')")
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<Long>> update(@PathVariable Long id, @Valid @RequestBody CutiPengajuanPutRequest request) {
         if (request.getTanggalMulai().isAfter(request.getTanggalSelesai()))
@@ -76,16 +84,19 @@ public class CutiPengajuanController {
         return CustomResult.save(pengajuanCutiCommand.update(id, request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:CREATE')")
     @PostMapping("/klaim")
     public ResponseEntity<SavedResult<Long>> klaim(@Valid @RequestBody CutiPengajuanKlaimPostRequest request) {
         return CustomResult.save(klaimCutiCommand.save(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:CREATE')")
     @PutMapping("/klaim/{id}")
     public ResponseEntity<SavedResult<Long>> updateKlaim(@PathVariable Long id, @Valid @RequestBody CutiPengajuanKlaimPostRequest request) {
         return CustomResult.save(klaimCutiCommand.update(id, request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:CREATE')")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> pembatalan(@PathVariable Long id) {
         return CustomResult.delete(pengajuanCutiCommand.pembatalan(id));

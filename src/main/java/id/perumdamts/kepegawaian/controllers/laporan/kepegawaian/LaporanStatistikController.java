@@ -6,6 +6,7 @@ import id.perumdamts.kepegawaian.helpers.UrlBuilder;
 import id.perumdamts.kepegawaian.services.laporan.kepegawaian.LaporanKepegawaianService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,54 +19,63 @@ public class LaporanStatistikController {
     private static final String BASE_PATH = "/statistik";
     private final LaporanKepegawaianService service;
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
     @GetMapping("/golongan")
     public ResponseEntity<SingleResult<Object>> lapStatistikGolongan() {
         return CustomResult.any(
                 service.getObject(UrlBuilder.build(BASE_PATH, "/golongan")));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
     @GetMapping("/pendidikan1")
     public ResponseEntity<SingleResult<Object>> lapStatistikPendidikan1() {
         return CustomResult.any(
                 service.getObject(UrlBuilder.build(BASE_PATH, "/pendidikan1")));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
     @GetMapping("/pendidikan2/{tahun}/{bulan}")
     public ResponseEntity<SingleResult<Object>> lapStatistikPendidikan2(@PathVariable int tahun, @PathVariable int bulan) {
         return CustomResult.any(
                 service.getObject(UrlBuilder.build(BASE_PATH, "/pendidikan2?tahun=" + tahun + "&bulan=" + bulan)));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
     @GetMapping("/pendidikan2/excel/{tahun}/{bulan}")
     public ResponseEntity<?> lapStatistikPendidikan2Excel(@PathVariable int tahun, @PathVariable int bulan) {
         return service.getExport(
                 UrlBuilder.build(BASE_PATH, "/pendidikan2/excel?tahun=" + tahun + "&bulan=" + bulan));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
     @GetMapping("/umur")
     public ResponseEntity<SingleResult<Object>> lapStatistikUmur() {
         return CustomResult.any(
                 service.getObject(UrlBuilder.build(BASE_PATH, "/umur")));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
     @GetMapping("/jenis_kelamin")
     public ResponseEntity<SingleResult<Object>> lapStatistikJenisKelamin() {
         return CustomResult.any(
                 service.getObject(UrlBuilder.build(BASE_PATH, "/jenis_kelamin")));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
     @GetMapping("/gelar_akademik")
     public ResponseEntity<SingleResult<Object>> lapStatistikGelarAkademik() {
         return CustomResult.any(
                 service.getObject(UrlBuilder.build(BASE_PATH, "/gelar_akademik")));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
     @GetMapping("/agama")
     public ResponseEntity<SingleResult<Object>> lapStatistikAgama() {
         return CustomResult.any(
                 service.getObject(UrlBuilder.build(BASE_PATH, "/agama")));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
     @GetMapping("/status_pegawai")
     public ResponseEntity<SingleResult<Object>> lapStatistikStatusPegawai() {
         return CustomResult.any(

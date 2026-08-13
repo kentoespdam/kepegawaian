@@ -8,6 +8,7 @@ import id.perumdamts.kepegawaian.services.laporan.kepegawaian.LaporanKepegawaian
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,16 +22,19 @@ public class LaporanKenaikanBerkalaController {
     private static final String BASE_PATH = "/kenaikan_berkala";
     private final LaporanKepegawaianService service;
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
     @GetMapping
     public ResponseEntity<SingleResult<Object>> lapKenaikanBerkala(@ParameterObject KenaikanBerkalaRequest request) {
         return CustomResult.any(service.getObject(UrlBuilder.build(BASE_PATH, "/", request)));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
     @GetMapping("/count")
     public ResponseEntity<SingleResult<Object>> lapKenaikanBerkalaCount(@ParameterObject KenaikanBerkalaRequest request) {
         return CustomResult.any(service.getObject(UrlBuilder.build(BASE_PATH, "/count", request)));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
     @GetMapping("/excel")
     public ResponseEntity<?> lapKenaikanBerkalaExcel(@ParameterObject KenaikanBerkalaRequest request) {
         return service.getExport(UrlBuilder.build(BASE_PATH, "/excel", request));

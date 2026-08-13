@@ -22,16 +22,19 @@ public class RumahDinasController {
     private final RumahDinasQueryService query;
     private final RumahDinasCommandService command;
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping
     public ResponseEntity<PageResult<Page<RumahDinasQuery>>> index(@ParameterObject @Valid RumahDinasIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping("/list")
     public ResponseEntity<ListResult<RumahDinasListResponse>> list() {
         return CustomResult.list(query.listQuery());
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<RumahDinasQuery>> findById(@PathVariable Long id) {
         return CustomResult.any(query.getById(id));

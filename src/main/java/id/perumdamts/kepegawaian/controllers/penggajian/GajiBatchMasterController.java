@@ -22,18 +22,20 @@ public class GajiBatchMasterController {
     private final GajiBatchMasterCommandService commandService;
     private final GajiBatchMasterQueryService queryService;
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
     @GetMapping
     public ResponseEntity<ListResult<GajiBatchMasterResponse>> getGajiBatchMasterByPeriode(
             @Valid @ParameterObject GajiBatchMasterIndexQuery request) {
         return CustomResult.list(queryService.findAll(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<GajiBatchMasterResponse>> getGajiBatchMasterById(@PathVariable Long id) {
         return CustomResult.any(queryService.findById(id).orElse(null));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
     @GetMapping("/pegawai/{pegawaiId}")
     public ResponseEntity<PageResult<Page<GajiBatchMasterResponse>>> getGajiBatchMasterByPegawaiId(
             @PathVariable Long pegawaiId,
@@ -41,19 +43,19 @@ public class GajiBatchMasterController {
         return CustomResult.page(queryService.findByPegawaiId(pegawaiId, query));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
     @GetMapping("/download/table-gaji/{rootBatchId}")
     public ResponseEntity<?> downloadTableGaji(@PathVariable String rootBatchId) {
         return queryService.downloadTableGaji(rootBatchId);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
     @GetMapping("/download/potongan-gaji/{rootBatchId}")
     public ResponseEntity<?> downloadPotonganGaji(@PathVariable String rootBatchId) {
         return queryService.downloadPotonganGaji(rootBatchId);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:WRITE')")
     @PatchMapping(value = "upload/{rootBatchId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<SavedResult<String>> uploadPotonganTambahan(
             @PathVariable String rootBatchId,

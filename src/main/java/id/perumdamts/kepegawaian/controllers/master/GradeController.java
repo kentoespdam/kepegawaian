@@ -22,21 +22,25 @@ public class GradeController {
     private final GradeQueryService query;
     private final GradeCommandService command;
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping
     public ResponseEntity<PageResult<Page<GradeQuery>>> index(@ParameterObject @Valid GradeIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping("/list")
     public ResponseEntity<ListResult<GradeListResponse>> list() {
         return CustomResult.list(query.listQuery());
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<GradeQuery>> findById(@PathVariable Long id) {
         return CustomResult.any(query.getById(id));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping("/level/{id}")
     public ResponseEntity<ListResult<GradeQuery>> findByLevelId(@PathVariable Long id) {
         return CustomResult.list(query.findByLevelId(id));

@@ -21,37 +21,37 @@ public class GajiBatchMasterProsesController {
     private final GajiBatchMasterProsesCommandService commandService;
     private final GajiBatchMasterProsesQueryService queryService;
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
     @GetMapping
     public ResponseEntity<PageResult<Page<GajiBatchMasterProsesResponse>>> index(@ParameterObject @Valid GajiBatchMasterProsesIndexQuery request) {
         return CustomResult.page(queryService.findPage(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
     @GetMapping("/{masterId}/master_batch_id/{kode}/kode")
     public ResponseEntity<SingleResult<GajiBatchMasterProsesResponse>> show(@PathVariable Long masterId, @PathVariable String kode) {
         return CustomResult.any(queryService.findById(masterId).orElse(null));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
     @GetMapping("/{batchMasterId}/master")
     public ResponseEntity<ListResult<GajiBatchMasterProsesResponse>> byBatchMaster(@PathVariable Long batchMasterId) {
         return CustomResult.list(queryService.findByMasterId(batchMasterId));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:PROCESS')")
     @PostMapping
     public ResponseEntity<SavedResult<Long>> save(@Valid @RequestBody GajiBatchMasterProsesPostRequest request) {
         return CustomResult.save(commandService.save(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:PROCESS')")
     @DeleteMapping("/{rootBatchId}/rollback")
     public ResponseEntity<DeletedResult> rollback(@PathVariable String rootBatchId) {
         return CustomResult.delete(commandService.rollback(rootBatchId));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:PROCESS')")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> delete(@PathVariable Long id) {
         return CustomResult.delete(commandService.delete(id));

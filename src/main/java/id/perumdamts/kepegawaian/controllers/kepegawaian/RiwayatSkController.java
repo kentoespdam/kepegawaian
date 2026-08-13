@@ -24,27 +24,31 @@ public class RiwayatSkController {
     private final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     private final Validator validator = factory.getValidator();
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:READ')")
     @GetMapping
     public ResponseEntity<PageResult<Page<RiwayatSkQuery>>> index(@Valid @ParameterObject RiwayatSkRequest request) {
         return CustomResult.page(queryService.findPage(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:READ')")
     @GetMapping("/list")
     public ResponseEntity<ListResult<RiwayatSkQuery>> list(@Valid @ParameterObject RiwayatSkListRequest request) {
         return CustomResult.list(queryService.findAll(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:READ')")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<RiwayatSkQuery>> detail(@PathVariable Long id) {
         return CustomResult.any(queryService.findById(id));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:READ')")
     @GetMapping("/pegawai/{id}")
     public ResponseEntity<PageResult<Page<RiwayatSkQuery>>> findByPegawaiId(@PathVariable Long id, @Valid @ParameterObject RiwayatSkRequest request) {
         return CustomResult.page(queryService.findByPegawaiId(id, request));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:WRITE')")
     @PostMapping
     public ResponseEntity<SavedResult<Long>> save(@Valid @RequestBody RiwayatSkPostRequest request) {
         if (Objects.nonNull(request.getUpdateMaster()) && request.getUpdateMaster()) {
@@ -57,7 +61,7 @@ public class RiwayatSkController {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.save(request).getId()));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:WRITE')")
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<Long>> update(@PathVariable Long id, @Valid @RequestBody RiwayatSkPutRequest request) {
         if (Objects.nonNull(request.getUpdateMaster()) && request.getUpdateMaster()) {
@@ -69,7 +73,7 @@ public class RiwayatSkController {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.update(id, request).getId()));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:DELETE')")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> delete(@PathVariable Long id) {
         return CustomResult.delete(commandService.delete(id));

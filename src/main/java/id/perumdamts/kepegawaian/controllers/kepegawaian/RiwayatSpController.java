@@ -23,34 +23,37 @@ public class RiwayatSpController {
     private final RiwayatSpCommandService commandService;
     private final RiwayatSpQueryService queryService;
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:READ')")
     @GetMapping("/pegawai/{id}")
     public ResponseEntity<PageResult<Page<RiwayatSpQuery>>> index(@PathVariable Long id, @Valid @ParameterObject RiwayatSpRequest request) {
         return CustomResult.page(queryService.pageQuery(id, request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:READ')")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<RiwayatSpQuery>> detail(@PathVariable Long id) {
         return CustomResult.any(queryService.getById(id));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:READ')")
     @GetMapping("/{id}/file")
     public ResponseEntity<?> getFile(@PathVariable Long id) {
         return queryService.getFile(id);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:WRITE')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<SavedResult<Long>> create(@Valid @ModelAttribute RiwayatSpPostRequest request) {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.save(request).getId()));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:WRITE')")
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<SavedResult<Long>> update(@PathVariable Long id, @Valid @ModelAttribute RiwayatSpPutRequest request) {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.update(id, request).getId()));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:DELETE')")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> delete(@PathVariable Long id) {
         return CustomResult.delete(commandService.delete(id));

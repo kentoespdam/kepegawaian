@@ -34,7 +34,8 @@ public class DevAuthFilter extends OncePerRequestFilter {
             "KEPEGAWAIAN:READ", "KEPEGAWAIAN:WRITE", "KEPEGAWAIAN:DELETE",
             "PROFIL:READ", "PROFIL:UPDATE", "PROFIL:APPROVE",
             "CUTI:READ", "CUTI:CREATE", "CUTI:APPROVE",
-            "PENGGAJIAN:READ", "PENGGAJIAN:WRITE", "PENGGAJIAN:PROCESS",
+            "PENGGAJIAN:READ", "PENGGAJIAN:WRITE", "PENGGAJIAN:DELETE", "PENGGAJIAN:PROCESS",
+            "LAPORAN:READ", "CUTI:WRITE",
             "SYSTEM:MANAGE_USER", "SYSTEM:MANAGE_ROLE");
 
     @Value("${security.dev.roles:ADMIN,SYSTEM}")

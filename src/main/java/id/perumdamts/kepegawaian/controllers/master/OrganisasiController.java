@@ -19,21 +19,25 @@ public class OrganisasiController {
     private final OrganisasiQueryService query;
     private final OrganisasiCommandService command;
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping
     public ResponseEntity<PageResult<Page<OrganisasiQuery>>> index(@ParameterObject @Valid OrganisasiIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping("/list")
     public ResponseEntity<ListResult<OrganisasiListResponse>> list() {
         return CustomResult.list(query.listQuery());
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<OrganisasiQuery>> findById(@PathVariable Long id) {
         return CustomResult.any(query.getById(id));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping("/{id}/parent")
     public ResponseEntity<ListResult<OrganisasiQuery>> findByParentId(@PathVariable Long id) {
         return CustomResult.list(query.findByParentId(id));

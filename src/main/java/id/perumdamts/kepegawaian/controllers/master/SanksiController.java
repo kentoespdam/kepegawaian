@@ -19,21 +19,25 @@ public class SanksiController {
     private final SanksiQueryService query;
     private final SanksiCommandService command;
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping
     public ResponseEntity<PageResult<Page<SanksiQuery>>> index(@ParameterObject @Valid SanksiIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping("/list")
     public ResponseEntity<ListResult<SanksiQuery>> list() {
         return CustomResult.list(query.listQuery());
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<SanksiQuery>> findById(@PathVariable Long id) {
         return CustomResult.any(query.getById(id));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping("/jenis-sp/{id}")
     public ResponseEntity<ListResult<SanksiJenisSpList>> findByJenisSpId(@PathVariable Long id) {
         return CustomResult.list(query.findJenisSpList(id));

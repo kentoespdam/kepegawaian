@@ -29,36 +29,43 @@ public class PegawaiController {
     private final PegawaiProperties pegawaiProperties;
     private final Validator validator;
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PEGAWAI:READ')")
     @GetMapping
     public ResponseEntity<PageResult<Page<PegawaiTableResponse>>> index(@ParameterObject @Valid PegawaiRequest request) {
         return CustomResult.page(queryService.findTablePage(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PEGAWAI:READ')")
     @GetMapping("/list")
     public ResponseEntity<ListResult<PegawaiListResponse>> list(@ParameterObject @Valid PegawaiListRequest request) {
         return CustomResult.list(queryService.findAll(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PEGAWAI:READ')")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<PegawaiResponseDetail>> findById(@PathVariable Long id) {
         return CustomResult.any(queryService.findById(id));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PEGAWAI:READ')")
     @GetMapping("/{nipam}/nipam")
     public ResponseEntity<SingleResult<PegawaiResponse>> findByNipam(@PathVariable String nipam) {
         return CustomResult.any(queryService.findByNipam(nipam));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PEGAWAI:READ')")
     @GetMapping("/{id}/ringkasan")
     public ResponseEntity<SingleResult<PegawaiResponseRingkasan>> findRingkasan(@PathVariable Long id) {
         return CustomResult.any(queryService.findRingkasan(id));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PEGAWAI:READ')")
     @GetMapping("/{id}/session")
     public ResponseEntity<SingleResult<PegawaiResponseSession>> findSession(@PathVariable Long id) {
         return CustomResult.any(queryService.findSession(id));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PEGAWAI:READ')")
     @GetMapping("/{id}/mutasi-context")
     public ResponseEntity<SingleResult<PegawaiResponseMutasiContext>> findMutasiContext(@PathVariable Long id) {
         return CustomResult.any(queryService.findMutasiContext(id));
@@ -77,6 +84,7 @@ public class PegawaiController {
         return CustomResult.save(commandService.save(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PEGAWAI:READ')")
     @PostMapping("/batch-by-ids")
     public ResponseEntity<ListResult<PegawaiListResponse>> batchByIds(@Valid @RequestBody PegawaiBatchIdsRequest request) {
         return CustomResult.list(queryService.findByIds(request.getIds()));

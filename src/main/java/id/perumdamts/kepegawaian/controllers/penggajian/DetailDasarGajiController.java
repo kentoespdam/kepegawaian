@@ -26,35 +26,39 @@ public class DetailDasarGajiController {
     private final DetailDasarGajiCommandService command;
     private final DetailDasarGajiQueryService query;
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
     @GetMapping
     public ResponseEntity<PageResult<Page<DetailDasarGajiResponse>>> index(@ParameterObject @Valid DetailDasarGajiIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
     @GetMapping("/list")
     public ResponseEntity<ListResult<DetailDasarGajiResponse>> list() {
         return CustomResult.list(query.listQuery());
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<DetailDasarGajiResponse>> findById(@PathVariable Long id) {
         return CustomResult.any(query.getById(id));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
     @GetMapping("/{golonganId}/{masaKerja}")
     public ResponseEntity<SingleResult<DetailDasarGajiNominal>> findByGolonganIdAndMasaKerja(
             @PathVariable Long golonganId, @PathVariable Integer masaKerja) {
         return CustomResult.any(query.findNominalByGolonganAndMasaKerja(golonganId, masaKerja));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:WRITE')")
     @PostMapping
     public ResponseEntity<SavedResult<Long>> create(@Valid @RequestBody DetailDasarGajiPostRequest request) {
         DetailDasarGaji entity = command.create(request);
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity.getId()));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:WRITE')")
     @PostMapping("/batch")
     public ResponseEntity<SavedResult<List<Long>>> createBatch(@Valid @RequestBody List<@Valid DetailDasarGajiPostRequest> requests) {
         List<DetailDasarGaji> entities = command.createBatch(requests);
@@ -62,14 +66,14 @@ public class DetailDasarGajiController {
                 entities.stream().map(DetailDasarGaji::getId).toList()));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:WRITE')")
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<Long>> update(@PathVariable Long id, @Valid @RequestBody DetailDasarGajiPutRequest request) {
         DetailDasarGaji entity = command.update(id, request);
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity.getId()));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:DELETE')")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> delete(@PathVariable Long id) {
         return CustomResult.delete(command.delete(id));

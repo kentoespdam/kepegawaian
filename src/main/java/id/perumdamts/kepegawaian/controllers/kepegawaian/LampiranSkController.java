@@ -23,23 +23,25 @@ public class LampiranSkController {
     private final LampiranSkCommandService commandService;
     private final LampiranSkQueryService queryService;
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:READ')")
     @GetMapping("/list/{ref}/{refId}")
     public ResponseEntity<ListResult<LampiranSkQuery>> getList(@PathVariable EJenisSk ref, @PathVariable Long refId) {
         return CustomResult.list(queryService.getLampiran(ref, refId));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:READ')")
     @GetMapping("/file/{jenis}/{id}")
     public ResponseEntity<?> getFile(@PathVariable EJenisSk jenis, @PathVariable Long id) {
         return queryService.getFileLampiranById(jenis, id);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:WRITE')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<SavedResult<Long>> create(@Valid @ModelAttribute LampiranSkPostRequest request) {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.addLampiran(request).getId()));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:WRITE')")
     @PostMapping("/accept")
     public ResponseEntity<SavedResult<Long>> acceptLampiran(@Valid @RequestBody LampiranSkAcceptRequest request) {
         AppwriteUser appwriteUser = (AppwriteUser) SecurityContextHolder.getContext()
@@ -47,7 +49,7 @@ public class LampiranSkController {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.acceptLampiran(request, appwriteUser.getName()).getId()));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:DELETE')")
     @DeleteMapping("/{ref}/{refId}/{id}")
     public ResponseEntity<DeletedResult> delete(@PathVariable EJenisSk ref, @PathVariable Long refId, @PathVariable Long id) {
         return CustomResult.delete(commandService.deleteLampiran(ref, refId, id));

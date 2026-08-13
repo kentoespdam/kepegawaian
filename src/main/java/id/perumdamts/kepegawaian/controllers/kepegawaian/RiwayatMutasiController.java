@@ -24,18 +24,20 @@ public class RiwayatMutasiController {
     private final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     private final Validator validator = factory.getValidator();
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:READ')")
     @GetMapping("/pegawai/{id}")
     public ResponseEntity<PageResult<Page<RiwayatMutasiQuery>>> index(@PathVariable Long id, @Valid @ParameterObject RiwayatMutasiRequest request) {
         request.setPegawaiId(id);
         return CustomResult.page(queryService.findPage(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:READ')")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<RiwayatMutasiQuery>> detail(@PathVariable Long id) {
         return CustomResult.any(queryService.findById(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:WRITE')")
     @PostMapping
     public ResponseEntity<SavedResult<Long>> save(@Valid @RequestBody RiwayatMutasiPostRequest request) {
         if (request.getJenisMutasi().equals(EJenisMutasi.MUTASI_GOLONGAN) ||
@@ -60,13 +62,13 @@ public class RiwayatMutasiController {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.save(request).getId()));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:WRITE')")
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<Long>> update(@PathVariable Long id, @Valid @RequestBody RiwayatMutasiPutRequest request) {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.update(id, request).getId()));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:DELETE')")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> delete(@PathVariable Long id) {
         return CustomResult.delete(commandService.delete(id));

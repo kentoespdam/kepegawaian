@@ -29,13 +29,13 @@ public class GajiBatchRootController {
     private final GajiBatchRootWorkflowCommandService workflowCommandService;
     private final GajiBatchRootQueryService queryService;
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
     @GetMapping
     public ResponseEntity<ListResult<GajiBatchRootResponse>> index(@ParameterObject @Valid GajiBatchRootIndexQuery request) {
         return CustomResult.list(queryService.findAll(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
     @GetMapping("/{periode}/periode/{status}/status")
     public ResponseEntity<ListResult<GajiBatchRootResponse>> byPeriode(
             @PathVariable String periode,
@@ -46,13 +46,13 @@ public class GajiBatchRootController {
         return CustomResult.list(queryService.findAll(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:PROCESS')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<SavedResult<String>> create(@Valid @ModelAttribute GajiBatchRootPostRequest request) {
         return CustomResult.save(commandService.save(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:PROCESS')")
     @PatchMapping("/{id}/reprocess")
     public ResponseEntity<SavedResult<String>> reprocess(@PathVariable String id,
                                           @Valid @RequestBody GajiBatchRootProcessRequest request) {
@@ -61,7 +61,7 @@ public class GajiBatchRootController {
         return CustomResult.save(workflowCommandService.reprocess(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:PROCESS')")
     @PatchMapping("/{id}/verify1")
     public ResponseEntity<SavedResult<String>> verify1(@PathVariable String id,
                                         @Valid @RequestBody GajiBatchRootProcessRequest request) {
@@ -70,7 +70,7 @@ public class GajiBatchRootController {
         return CustomResult.save(workflowCommandService.verify1(id, request));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:PROCESS')")
     @PatchMapping("/{id}/verify2")
     public ResponseEntity<SavedResult<String>> verify2(@PathVariable String id,
                                         @Valid @RequestBody GajiBatchRootProcessRequest request) {
@@ -79,7 +79,7 @@ public class GajiBatchRootController {
         return CustomResult.save(workflowCommandService.verify2(id, request));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:PROCESS')")
     @PatchMapping("/{id}/accept")
     public ResponseEntity<SavedResult<String>> accept(@PathVariable String id,
                                        @Valid @RequestBody GajiBatchRootProcessRequest request) {
@@ -88,7 +88,7 @@ public class GajiBatchRootController {
         return CustomResult.save(workflowCommandService.accept(id, request));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:PROCESS')")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> delete(@PathVariable String id) {
         return CustomResult.delete(commandService.delete(id));

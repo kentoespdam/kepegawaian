@@ -22,16 +22,19 @@ public class GolonganController {
     private final GolonganQueryService query;
     private final GolonganCommandService command;
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping
     public ResponseEntity<PageResult<Page<GolonganQuery>>> index(@ParameterObject @Valid GolonganIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping("/list")
     public ResponseEntity<ListResult<GolonganListResponse>> list() {
         return CustomResult.list(query.listQuery());
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<GolonganQuery>> findById(@PathVariable Long id) {
         return CustomResult.any(query.getById(id));

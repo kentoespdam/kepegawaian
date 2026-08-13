@@ -19,16 +19,19 @@ public class JenisSpController {
     private final JenisSpQueryService query;
     private final JenisSpCommandService command;
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping
     public ResponseEntity<PageResult<Page<JenisSpQuery>>> index(@ParameterObject @Valid JenisSpIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping("/list")
     public ResponseEntity<ListResult<JenisSpListResponse>> list() {
         return CustomResult.list(query.listQuery());
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<JenisSpQuery>> findById(@PathVariable Long id) {
         return CustomResult.any(query.getById(id));

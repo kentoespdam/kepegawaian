@@ -174,7 +174,11 @@ Migrasi per-modul dikerjakan di issue terpisah (tidak di scope issue ini).
 - [x] **pegawai** — 1 controller, 6 guard (5 WRITE + 1 DELETE) → dual-mode `hasRole('ADMIN') or hasAuthority('PEGAWAI:WRITE'|'PEGAWAI:DELETE')`
 - [x] **profil** — endpoint admin: 7 controller, guard dual-mode `PROFIL:APPROVE` (biodata + 6 entity) + read-path `PROFIL:READ` (ADR-0038 split, kepegawaian-huis/3blf/jiv4)
 - [x] **system** — 3 controller (roles, permissions, users) → dual-mode `hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_ROLE'|'SYSTEM:MANAGE_USER')` (review 2026-08-13)
-- [ ] kepegawaian, cuti, penggajian, laporan — belum dimigrasi → issue: kepegawaian-1448, kepegawaian-cq6h, kepegawaian-z35h, kepegawaian-8vuk
+- [x] **kepegawaian** — 6 controller → dual-mode `KEPEGAWAIAN:READ/WRITE/DELETE` (kepegawaian-1448)
+- [x] **cuti** — 4 controller → dual-mode `CUTI:READ/CREATE/APPROVE` + `CUTI:WRITE` baru (kepegawaian-cq6h)
+- [x] **penggajian** — 12 controller → dual-mode `PENGGAJIAN:READ/WRITE/DELETE/PROCESS` (kepegawaian-z35h)
+- [x] **laporan** — 8 controller → `LAPORAN:READ` baru (kepegawaian-8vuk)
+- [x] **read-path master/pegawai/profil** — `MASTER:READ`/`PEGAWAI:READ`/`PROFIL:READ` + `PROFIL:UPDATE` (self-service) di-enforce
 
 ---
 
@@ -187,7 +191,9 @@ Migrasi per-modul dikerjakan di issue terpisah (tidak di scope issue ini).
 3. **User**: tanpa `DELETE /system/users` — lifecycle mengikuti pegawai; auto-disable (blocked) saat terminasi/hard-delete; `PATCH status` wajib body eksplisit (`@NotNull`); id seragam `String`.
 4. **Guard system module dual-mode** — `SYSTEM:MANAGE_USER` / `SYSTEM:MANAGE_ROLE` kini benar-benar di-enforce (sebelumnya zombie, 0 guard).
 
-**Audit katalog 20 permission vs realita saat review**: hanya 5 di-enforce (`MASTER:WRITE/DELETE`, `PEGAWAI:WRITE/DELETE`, `PROFIL:APPROVE`); 15 zombie. Setelah sesi ini + migrasi system → 7 aktif. Sisa 15 butuh migrasi modul kepegawaian/cuti/penggajian + guard read-path — di-track per issue beads.
+**Audit katalog final (setelah migrasi penuh)**: katalog 23 permission = **semua di-enforce ≥1 controller** (0 zombie, 0 enforced-tanpa-katalog). Matrix seed: ADMIN=23, HRD=16 (minus SYSTEM:*, CUTI:CREATE, PENGGAJIAN:WRITE/PROCESS/DELETE), USER=9 (semua `*:READ` + `PROFIL:UPDATE` + `CUTI:CREATE` — V33).
+
+**Catatan gap tersisa**: role `PENGGAJIAN` (seed V21) belum punya permission di matrix — perlu keputusan matrix terpisah (issue follow-up).
 
 ---
 
