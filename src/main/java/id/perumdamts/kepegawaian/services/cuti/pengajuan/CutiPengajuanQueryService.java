@@ -20,6 +20,12 @@ public class CutiPengajuanQueryService {
     private final CutiOwnershipService ownershipService;
 
     public Page<CutiPengajuanResponse> findPage(CutiPengajuanRequest request) {
+        // kepegawaian-oo7y (opsi B): non-privileged hanya boleh melihat cuti milik sendiri
+        // lewat index — scope pegawaiId dipaksa = id principal; HRD/ADMIN/DEV bebas
+        // (filter pegawaiId dari query tetap dihormati).
+        if (!ownershipService.isPrivileged()) {
+            request.setPegawaiId(ownershipService.currentPegawaiId());
+        }
         return queryRepository.pageQuery(request);
     }
 
