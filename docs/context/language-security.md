@@ -45,4 +45,5 @@ _Avoid_: "permission loading", "role expansion"
 - Di **development**, Bearer token **invalid/expired → 401** (strict); fallback Dev User tidak berlaku untuk token yang ada tapi gagal validasi.
 - Sebuah **Appwrite User** / **Dev User** membawa satu atau lebih **Role**; **Role** menentukan akses endpoint.
 - **Appwrite User tidak pernah di-hard-delete** — lifecycle mengikuti Pegawai (auto-disable saat terminasi/hard-delete, re-aktivasi manual).
+- **Read data referensi master tidak butuh Permission** — cukup sesi aktif (`anyRequest().authenticated()` di WebSecurity), pola yang sama dengan `/account/me`. Yang di-enforce hanya tulis/hapus (`MASTER:WRITE`/`MASTER:DELETE`).
 - **Role** penulis menentukan `changedStatus` pada data Profil: **SDM** → `false` (langsung stabil), **pegawai** → `true` (menunggu). Keputusan ini diambil **server** dari principal, bukan dari body request.

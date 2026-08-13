@@ -22,19 +22,16 @@ public class JenisPelatihanController {
     private final JenisPelatihanQueryService query;
     private final JenisPelatihanCommandService command;
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping
     public ResponseEntity<PageResult<Page<JenisPelatihanQuery>>> index(@ParameterObject @Valid JenisPelatihanIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping("/list")
     public ResponseEntity<ListResult<JenisPelatihanListResponse>> list() {
         return CustomResult.list(query.listQuery());
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<JenisPelatihanQuery>> findById(@PathVariable Long id) {
         return CustomResult.any(query.getById(id));

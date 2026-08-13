@@ -178,7 +178,8 @@ Migrasi per-modul dikerjakan di issue terpisah (tidak di scope issue ini).
 - [x] **cuti** — 4 controller → dual-mode `CUTI:READ/CREATE/APPROVE` + `CUTI:WRITE` baru (kepegawaian-cq6h)
 - [x] **penggajian** — 12 controller → dual-mode `PENGGAJIAN:READ/WRITE/DELETE/PROCESS` (kepegawaian-z35h)
 - [x] **laporan** — 8 controller → `LAPORAN:READ` baru (kepegawaian-8vuk)
-- [x] **read-path master/pegawai/profil** — `MASTER:READ`/`PEGAWAI:READ`/`PROFIL:READ` + `PROFIL:UPDATE` (self-service) di-enforce
+- [x] **read-path pegawai/profil** — `PEGAWAI:READ`/`PROFIL:READ` + `PROFIL:UPDATE` (self-service) di-enforce
+- [x] **read-path master** — **tanpa guard** (login-only, WebSecurity `anyRequest().authenticated()`): data referensi boleh dibaca siapa pun bersesi aktif, seperti `/account/me`; `MASTER:READ` dihapus dari katalog (V34)
 
 ---
 
@@ -191,7 +192,9 @@ Migrasi per-modul dikerjakan di issue terpisah (tidak di scope issue ini).
 3. **User**: tanpa `DELETE /system/users` — lifecycle mengikuti pegawai; auto-disable (blocked) saat terminasi/hard-delete; `PATCH status` wajib body eksplisit (`@NotNull`); id seragam `String`.
 4. **Guard system module dual-mode** — `SYSTEM:MANAGE_USER` / `SYSTEM:MANAGE_ROLE` kini benar-benar di-enforce (sebelumnya zombie, 0 guard).
 
-**Audit katalog final (setelah migrasi penuh)**: katalog 23 permission = **semua di-enforce ≥1 controller** (0 zombie, 0 enforced-tanpa-katalog). Matrix seed: ADMIN=23, HRD=16 (minus SYSTEM:*, CUTI:CREATE, PENGGAJIAN:WRITE/PROCESS/DELETE), USER=9 (semua `*:READ` + `PROFIL:UPDATE` + `CUTI:CREATE` — V33).
+**Audit katalog final (setelah migrasi penuh + V34)**: katalog **22 permission** = **semua di-enforce ≥1 controller** (0 zombie, 0 enforced-tanpa-katalog). Matrix seed: ADMIN=22, HRD=15 (minus SYSTEM:*, CUTI:CREATE, PENGGAJIAN:WRITE/PROCESS/DELETE, dan MASTER:READ yang dihapus), USER=8 (`PEGAWAI:READ`, `PROFIL:READ/UPDATE`, `KEPEGAWAIAN:READ`, `CUTI:READ/CREATE`, `PENGGAJIAN:READ`, `LAPORAN:READ`).
+
+**Read master = login-only** (ADR review 2026-08-13): data referensi master tidak butuh permission — cukup sesi aktif, pola yang sama dengan `/account/me`. Write/delete master tetap `MASTER:WRITE/DELETE` (dual-mode).
 
 **Catatan gap tersisa**: role `PENGGAJIAN` (seed V21) belum punya permission di matrix — perlu keputusan matrix terpisah (issue follow-up).
 

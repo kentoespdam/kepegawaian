@@ -22,19 +22,16 @@ public class HariLiburController {
     private final HariLiburQueryService query;
     private final HariLiburCommandService command;
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping
     public ResponseEntity<PageResult<Page<HariLiburQuery>>> index(@ParameterObject @Valid HariLiburIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping("/list")
     public ResponseEntity<ListResult<HariLiburListResponse>> list() {
         return CustomResult.list(query.listQuery());
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<HariLiburQuery>> findById(@PathVariable Long id) {
         return CustomResult.any(query.getById(id));

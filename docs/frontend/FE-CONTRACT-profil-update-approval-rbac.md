@@ -181,11 +181,12 @@ DELETE /api/system/roles/HRD
 
 **`GET /system/roles/{id}`** — diperbaiki: exact match, respons `SingleResult` (bukan list), `404` jika tidak ada.
 
-> **Seed matrix (V31 + V33, sudah live):** katalog 23 permission. `ADMIN`=23 (semua), `HRD`=16 (operasional minus `SYSTEM:*`, `CUTI:CREATE`, `PENGGAJIAN:WRITE/PROCESS/DELETE`), `USER`=9 (semua `*:READ` + `PROFIL:UPDATE` + `CUTI:CREATE`). Implikasi:
+> **Seed matrix (V31 + V33 + V34, sudah live):** katalog **22 permission**. `ADMIN`=22 (semua), `HRD`=15 (operasional minus `SYSTEM:*`, `CUTI:CREATE`, `PENGGAJIAN:WRITE/PROCESS/DELETE`), `USER`=8 (`PEGAWAI:READ`, `PROFIL:READ/UPDATE`, `KEPEGAWAIAN:READ`, `CUTI:READ/CREATE`, `PENGGAJIAN:READ`, `LAPORAN:READ`). Implikasi:
 > - HRD bisa akses **write/delete master** (`MASTER:WRITE/DELETE`), **write/delete pegawai** (`PEGAWAI:WRITE/DELETE`), **`PATCH /admin/profil/{id}`** (`PROFIL:APPROVE`), kelola **jenis/kuota cuti** (`CUTI:WRITE`), **laporan** (`LAPORAN:READ`).
-> - `USER` (pegawai biasa) bisa **baca semua modul** (semua `*:READ`), **update profil sendiri** (`PROFIL:UPDATE`) dan **ajukan cuti** (`CUTI:CREATE`) — sesuai perilaku read-path "login saja" sebelumnya (tidak menyempit).
-> - ⚠️ **Read-path kini di-guard dual-mode** (`hasRole('ADMIN') or hasAuthority('X:READ')`) — perilaku sama untuk ADMIN/HRD/USER (semua punya READ), tapi akses berbasis permission kini nyata.
-> - ⚠️ **Antrian approval profil** (`GET /profil/profil-update*`) di-guard `PROFIL:APPROVE` — **menyempit** (sebelumnya terbuka semua user login; ini perbaikan keamanan kepegawaian-t3s3).
+> - `USER` (pegawai biasa) bisa **baca modul bisnis** (READ yang dimiliki), **update profil sendiri** (`PROFIL:UPDATE`) dan **ajukan cuti** (`CUTI:CREATE`).
+> - ✅ **Read master (jabatan, organisasi, golongan, jenis-*, dll) = login-only** — TANPA guard permission, cukup sesi aktif (pola `/account/me`). FE bisa pakai dropdown master dari sesi user mana pun. `MASTER:READ` dihapus dari katalog (V34).
+> - ⚠️ **Read-path modul bisnis** (`PEGAWAI:READ`, `PROFIL:READ`, `KEPEGAWAIAN:READ`, `CUTI:READ`, `PENGGAJIAN:READ`, `LAPORAN:READ`) di-guard dual-mode (`hasRole('ADMIN') or hasAuthority('X:READ')`).
+> - ⚠️ **Antrian approval profil** (`GET /profil/profil-update*`) di-guard `PROFIL:APPROVE` — **menyempit** (sebelumnya terbuka semua user login; perbaikan keamanan kepegawaian-t3s3).
 > - Matrix bisa diubah runtime via API assign/revoke (section 2.2–2.3).
 
 ---

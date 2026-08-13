@@ -29,7 +29,8 @@ public class DevAuthFilter extends OncePerRequestFilter {
     // Semua permission yang dikenal (katalog docs/plans/rbac-permission-per-role.md),
     // hardcoded supaya Dev User bisa test semua endpoint tanpa seed DB (ADR-0037).
     private static final List<String> DEV_PERMISSIONS = List.of(
-            "MASTER:READ", "MASTER:WRITE", "MASTER:DELETE",
+            // MASTER:READ sengaja tidak ada — read master terbuka untuk semua user bersesi aktif
+            "MASTER:WRITE", "MASTER:DELETE",
             "PEGAWAI:READ", "PEGAWAI:WRITE", "PEGAWAI:DELETE",
             "KEPEGAWAIAN:READ", "KEPEGAWAIAN:WRITE", "KEPEGAWAIAN:DELETE",
             "PROFIL:READ", "PROFIL:UPDATE", "PROFIL:APPROVE",

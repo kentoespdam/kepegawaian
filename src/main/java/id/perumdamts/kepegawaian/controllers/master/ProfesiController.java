@@ -19,25 +19,21 @@ public class ProfesiController {
     private final ProfesiQueryService query;
     private final ProfesiCommandService command;
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping
     public ResponseEntity<PageResult<Page<ProfesiDetail>>> index(@ParameterObject @Valid ProfesiIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping("/list")
     public ResponseEntity<ListResult<ProfesiListResponse>> list() {
         return CustomResult.list(query.listQuery());
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<ProfesiDetail>> findById(@PathVariable Long id) {
         return CustomResult.any(query.getById(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping("/jabatan/{id}")
     public ResponseEntity<ListResult<ProfesiListResponse>> findByJabatanId(@PathVariable Long id) {
         return CustomResult.list(query.findByJabatanId(id));

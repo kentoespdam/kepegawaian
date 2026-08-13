@@ -19,31 +19,26 @@ public class JabatanController {
     private final JabatanQueryService query;
     private final JabatanCommandService command;
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping
     public ResponseEntity<PageResult<Page<JabatanQuery>>> index(@ParameterObject @Valid JabatanIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping("/list")
     public ResponseEntity<ListResult<JabatanListResponse>> list() {
         return CustomResult.list(query.listQuery());
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<JabatanQuery>> findById(@PathVariable Long id) {
         return CustomResult.any(query.getById(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping("/{id}/parent")
     public ResponseEntity<ListResult<JabatanQuery>> findByParentId(@PathVariable Long id) {
         return CustomResult.list(query.findByParentId(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:READ')")
     @GetMapping("/organisasi/{id}")
     public ResponseEntity<ListResult<JabatanQuery>> findByOrganisasiId(@PathVariable Long id) {
         return CustomResult.list(query.findByOrganisasiId(id));
