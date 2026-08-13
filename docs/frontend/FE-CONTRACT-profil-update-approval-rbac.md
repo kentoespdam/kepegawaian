@@ -378,3 +378,4 @@ Semua endpoint memakai envelope berikut (kecuali error handler khusus):
 - [x] **Seed matrix (V31)**: `ADMIN`=20 / `HRD`=15 sudah live — HRD punya write/delete master + pegawai + admin-profil (section 2.4).
 - [x] **Ownership self-endpoint**: endpoint self verifikasi kepemilikan `biodataId`/`nik` — **sudah LIVE** (kepegawaian-3blf); target bukan milik principal → 404 (section 5.1).
 - [x] **Ownership read self**: jalur read profil dibatasi ke data sendiri (force NIK di list, 404 di detail/file) — **sudah LIVE** (kepegawaian-jiv4); HRD/ADMIN bebas via `PROFIL:READ` (section 5.1).
+- [x] **Terdaftar di OpenAPI**: `GET /account/me` masuk group swagger `auth` (`/v3/api-docs/auth` — paths `/auth/**`, `/account/**`); semua `/admin/profil/**` masuk group `profil` (`/v3/api-docs/profil` — paths `/profil/**`, `/admin/profil/**`) — FE bisa regenerate tipe dari kedua group tersebut.
