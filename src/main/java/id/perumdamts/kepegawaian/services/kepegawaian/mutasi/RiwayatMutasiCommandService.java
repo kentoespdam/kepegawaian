@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.services.kepegawaian.mutasi;
 
 import id.perumdamts.kepegawaian.dto.kepegawaian.mutasi.RiwayatMutasiPostRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.mutasi.RiwayatMutasiPutRequest;
+import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkPostRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkPutRequest;
 import id.perumdamts.kepegawaian.entities.commons.EJenisMutasi;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
@@ -45,7 +46,7 @@ public class RiwayatMutasiCommandService {
             throw new ConflictException("Riwayat Mutasi is already Exists");
         }
 
-        RiwayatSk riwayatSk = skCommandService.save(request);
+        RiwayatSk riwayatSk = skCommandService.save(toSkPostRequest(request));
 
         RiwayatMutasi entity;
         if (request.getJenisMutasi() == EJenisMutasi.MUTASI_GOLONGAN ||
@@ -104,7 +105,7 @@ public class RiwayatMutasiCommandService {
         skPutRequest.setKenaikanBerikutnya(request.getKenaikanBerikutnya());
         skPutRequest.setMkgbTahun(request.getMkgbTahun());
         skPutRequest.setMkgbBulan(request.getMkgbBulan());
-        skPutRequest.setUpdateMaster(request.getUpdateMaster());
+        // updateMaster default false — writeback pegawai ditangani eksplisit oleh pegawaiWriteback (ADR-0023)
         skPutRequest.setNotes(request.getNotes());
 
         RiwayatSk riwayatSk = skCommandService.update(riwayatMutasi.getRiwayatSk().getId(), skPutRequest);
@@ -161,6 +162,30 @@ public class RiwayatMutasiCommandService {
     @Transactional(rollbackFor = Exception.class)
     public RiwayatMutasi createFromTerminasi(RiwayatTerminasi terminasi) {
         return repository.save(RiwayatMutasiMapper.toEntity(terminasi));
+    }
+
+    /**
+     * Proyeksi field mutasi ke {@link RiwayatSkPostRequest} untuk ditulis oleh
+     * {@code RiwayatSkCommandService}. Field SK-gaji ikut disalin karena kondisional
+     * per jenisMutasi (MUTASI_GOLONGAN/GAJI/GAJI_BERKALA). updateMaster default false —
+     * writeback pegawai ditangani eksplisit oleh {@code PegawaiWriteback}.
+     */
+    private RiwayatSkPostRequest toSkPostRequest(RiwayatMutasiPostRequest request) {
+        RiwayatSkPostRequest sk = new RiwayatSkPostRequest();
+        sk.setPegawaiId(request.getPegawaiId());
+        sk.setNomorSk(request.getNomorSk());
+        sk.setJenisSk(request.getJenisSk());
+        sk.setTanggalSk(request.getTanggalSk());
+        sk.setTmtBerlaku(request.getTmtBerlaku());
+        sk.setGolonganId(request.getGolonganId());
+        sk.setGajiPokok(request.getGajiPokok());
+        sk.setMkgTahun(request.getMkgTahun());
+        sk.setMkgBulan(request.getMkgBulan());
+        sk.setKenaikanBerikutnya(request.getKenaikanBerikutnya());
+        sk.setMkgbTahun(request.getMkgbTahun());
+        sk.setMkgbBulan(request.getMkgbBulan());
+        sk.setNotes(request.getNotes());
+        return sk;
     }
 
     private EJenisSk resolveJenisSk(EJenisMutasi jenisMutasi) {

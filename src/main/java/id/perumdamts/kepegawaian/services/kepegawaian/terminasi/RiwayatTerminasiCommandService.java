@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.services.kepegawaian.terminasi;
 
 import id.perumdamts.kepegawaian.dto.kepegawaian.lampiran.LampiranSkPostRequest;
+import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkPostRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiPostRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiPutRequest;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
@@ -69,7 +70,9 @@ public class RiwayatTerminasiCommandService {
                 .orElseThrow(() -> new NotFoundException("Unknown Jabatan"));
 
         // 1. SK terminasi — tulis milik aggregate SK (guard anti-duplikat ikut aktif, ADR-0034)
-        RiwayatSk savedSk = skCommandService.save(request);
+        //    DTO terminasi dedicated: bangun RiwayatSkPostRequest eksplisit (updateMaster default false,
+        //    terminasi tidak pernah meng-update master gaji pegawai)
+        RiwayatSk savedSk = skCommandService.save(toSkPostRequest(request));
 
         // 2. Lifecycle pegawai (ADR-0039): status BERHENTI + user Appwrite di-disable (best-effort)
         pegawai.setStatusKerja(EStatusKerja.BERHENTI_OR_KELUAR);
@@ -157,6 +160,23 @@ public class RiwayatTerminasiCommandService {
         // Update Terminasi
         RiwayatTerminasi entity = RiwayatTerminasiMapper.updateEntity(request, terminasi, alasanTerminasi, savedSk, golongan, jabatan, organisasi);
         return repository.save(entity);
+    }
+
+    /**
+     * Proyeksi field SK-inti terminasi ke {@link RiwayatSkPostRequest} untuk ditulis oleh
+     * {@code RiwayatSkCommandService}. updateMaster sengaja default false — SK pensiun tidak
+     * boleh meng-update master gaji pegawai.
+     */
+    private RiwayatSkPostRequest toSkPostRequest(RiwayatTerminasiPostRequest request) {
+        RiwayatSkPostRequest sk = new RiwayatSkPostRequest();
+        sk.setPegawaiId(request.getPegawaiId());
+        sk.setNomorSk(request.getNomorSk());
+        sk.setJenisSk(request.getJenisSk());
+        sk.setTanggalSk(request.getTanggalSk());
+        sk.setTmtBerlaku(request.getTmtBerlaku());
+        sk.setGolonganId(request.getGolonganId());
+        sk.setNotes(request.getNotes());
+        return sk;
     }
 
 }

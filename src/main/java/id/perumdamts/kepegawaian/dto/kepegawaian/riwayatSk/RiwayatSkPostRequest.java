@@ -52,9 +52,7 @@ public class RiwayatSkPostRequest {
     @JsonFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "Kenaikan Berikutnya is required", groups = GajiSk.class)
     private LocalDate kenaikanBerikutnya;
-    @JsonSerialize(using = LocalDateSerializer.class)
     private Integer mkgbTahun;
-    @JsonSerialize(using = LocalDateSerializer.class)
     private Integer mkgbBulan;
     private Boolean updateMaster = false;
     private String notes;

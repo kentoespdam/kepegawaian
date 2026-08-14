@@ -69,7 +69,7 @@ Content-Type: application/pdf
 
 Respons sukses: `SavedResult` (`status: 201`, `data: {id}`). Duplikat → 409 (`message: "Riwayat SP is Exists"` / `"Terminasi is already exist"`).
 
-> ⚠️ **Terminasi**: kirim `jenisSk = SK_PENSIUN` (wajib, dari `RiwayatSkPostRequest`). Tanpa file → lampiran SK pensiun tidak dibuat (opsional).
+> ⚠️ **Terminasi**: field lengkap ada di [FE-CONTRACT-kepegawaian-riwayat-write.md](./FE-CONTRACT-kepegawaian-riwayat-write.md) §5. Inti: `jenisSk = SK_PENSIUN` (wajib); field SK-gaji (`gajiPokok`, `mkg*`, `kenaikanBerikutnya`, `updateMaster`) **tidak ada** di DTO — jangan dikirim. Tanpa file → lampiran SK pensiun tidak dibuat (opsional).
 
 ### 2.2 Modul Profil
 

@@ -1,20 +1,52 @@
 package id.perumdamts.kepegawaian.dto.kepegawaian.terminasi;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.RiwayatSkPostRequest;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatTerminasi;
 import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.multipart.MultipartFile;
 
-@EqualsAndHashCode(callSuper = true)
+import java.time.LocalDate;
+
+/**
+ * DTO dedicated terminasi — TIDAK mewarisi {@code RiwayatSkPostRequest} agar kontrak
+ * FE eksplisit: hanya field SK-inti yang relevan (SK pensiun/berhenti) + field terminasi.
+ * Field SK-gaji (grup GajiSk: gajiPokok, mkg*, kenaikanBerikutnya, updateMaster) sengaja
+ * tidak ada — saga membangun {@code RiwayatSkPostRequest} sendiri di
+ * {@code RiwayatTerminasiCommandService} (updateMaster selalu false).
+ */
 @Data
-public class RiwayatTerminasiPostRequest extends RiwayatSkPostRequest {
+public class RiwayatTerminasiPostRequest {
+    @NotNull(message = "Pegawai ID is required")
+    @Min(value = 1, message = "Pegawai ID is required")
+    private Long pegawaiId;
+    @NotEmpty(message = "Nomor SK is required")
+    private String nomorSk;
+    @Enumerated(EnumType.ORDINAL)
+    @NotNull(message = "Jenis SK is required")
+    private EJenisSk jenisSk;
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "Tanggal SK is required")
+    private LocalDate tanggalSk;
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "TMT Berlaku is required")
+    private LocalDate tmtBerlaku;
+    @Min(value = 1, message = "Golongan ID must be greater than or equal to 1")
+    private Long golonganId;
+    private String notes;
+
     @NotNull(message = "Alasan Berhenti is required")
     @Min(value = 1, message = "Alasan Berhenti is required")
     private Long alasanTerminasiId;

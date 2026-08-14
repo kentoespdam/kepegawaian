@@ -124,12 +124,6 @@ class RiwayatTerminasiSagaTest {
         r.setTanggalSk(TANGGAL_TERMINASI);
         r.setTmtBerlaku(TANGGAL_TERMINASI);
         r.setGolonganId(golongan.getId());
-        r.setGajiPokok(5_000_000.0);
-        r.setMkgTahun(15);
-        r.setMkgBulan(6);
-        r.setKenaikanBerikutnya(LocalDate.of(2028, 6, 30));
-        r.setMkgbTahun(2);
-        r.setMkgbBulan(0);
         r.setAlasanTerminasiId(alasanBerhenti.getId());
         r.setNipam(pegawai.getNipam());
         r.setNama(pegawai.getBiodata().getNama());
