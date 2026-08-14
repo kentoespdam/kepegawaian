@@ -15,11 +15,11 @@ public interface PendidikanRepository extends JpaRepository<Pendidikan, Long>, J
      * Native carcass-finder — bypasses {@code @SQLRestriction("is_deleted = FALSE")}
      * on {@code Pendidikan} so the create-seam can see soft-deleted rows and
      * revive them (ADR-0005, kepegawaian-1sf). Natural key is
-     * {@code biodata_id + jenjang_pendidikan_id + tahun_masuk} (unique constraint
+     * {@code biodata_id + jenjang_id + tahun_masuk} (unique constraint
      * excludes is_deleted so soft-deleted duplicates coexist until revived).
      */
     @Query(value = "SELECT * FROM pendidikan " +
-            "WHERE biodata_id = ?1 AND jenjang_pendidikan_id = ?2 AND tahun_masuk = ?3 " +
+            "WHERE biodata_id = ?1 AND jenjang_id = ?2 AND tahun_masuk = ?3 " +
             "LIMIT 1",
             nativeQuery = true)
     Optional<Pendidikan> findAnyByUniqueKey(String biodataId, Long jenjangPendidikanId, Integer tahunMasuk);
@@ -38,7 +38,7 @@ public interface PendidikanRepository extends JpaRepository<Pendidikan, Long>, J
     @Modifying
     @Query(value = """
             update pendidikan p set
-                    p.biodata_id = ?1, p.jenjang_pendidikan_id = ?2, p.gelar_depan = ?3, p.gelar_belakang = ?4, p.jurusan = ?5, p.institusi = ?6,
+                    p.biodata_id = ?1, p.jenjang_id = ?2, p.gelar_depan = ?3, p.gelar_belakang = ?4, p.jurusan = ?5, p.institusi = ?6,
                     p.kota = ?7, p.tahun_masuk = ?8, p.is_lulus = ?9, p.tahun_lulus = ?10, p.gpa = ?11, p.is_latest = ?12, p.changed_status = ?13,
                     p.disetujui = ?14, p.tanggal_pengajuan = ?15, p.tanggal_disetujui = ?16, p.disetujui_oleh = ?17
             where p.id = ?18

@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
         @Index(columnList = "is_latest"),
         @Index(columnList = "disetujuiOleh")
 }, uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"biodata_id", "jenjang_pendidikan_id", "tahun_masuk"})
+        @UniqueConstraint(columnNames = {"biodata_id", "jenjang_id", "tahun_masuk"})
 })
 @Getter
 @Setter
@@ -39,7 +39,7 @@ public class Pendidikan extends IdsAbstract {
     @JsonIgnore
     private Biodata biodata;
     @ManyToOne
-    @JoinColumn(name = "jenjang_pendidikan_id", referencedColumnName = "id")
+    @JoinColumn(name = "jenjang_id", referencedColumnName = "id")
     private JenjangPendidikan jenjangPendidikan;
     private String gelarDepan;
     private String gelarBelakang;
