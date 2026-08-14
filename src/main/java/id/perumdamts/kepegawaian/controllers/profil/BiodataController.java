@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -65,7 +66,7 @@ public class BiodataController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PROFIL:APPROVE')")
-    @PutMapping("/{id}/foto-profil")
+    @PutMapping(value = "/{id}/foto-profil", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<SavedResult<String>> updateFotoProfil(@PathVariable String id, @RequestParam("fotoProfil") MultipartFile fotoProfil) {
         String extension = mimeTypesUtils.getExtension(fotoProfil.getContentType());
         if (!mimeTypesUtils.isImage(extension))

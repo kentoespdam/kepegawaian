@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -71,7 +72,7 @@ public class KartuIdentitasController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PROFIL:UPDATE')")
-    @PostMapping(value = "/lampiran", consumes = "multipart/form-data")
+    @PostMapping(value = "/lampiran", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<SavedResult<Long>> saveLampiran(@Valid @ModelAttribute KartuIdentitasLampiranPostRequest request) {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, lampiranCommand.addLampiran(request, true)));
     }

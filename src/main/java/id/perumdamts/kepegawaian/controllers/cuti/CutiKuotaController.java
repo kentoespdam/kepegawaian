@@ -10,6 +10,7 @@ import id.perumdamts.kepegawaian.services.cuti.kuota.CutiKuotaQueryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -52,7 +53,7 @@ public class CutiKuotaController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:WRITE')")
-    @PostMapping(value = "/import", consumes = "multipart/form-data")
+    @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<SavedResult<String>> importData(@Valid @ModelAttribute CutiKuotaImportRequest request) {
         return CustomResult.save(commandService.importData(request));
     }

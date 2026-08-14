@@ -5,6 +5,7 @@ import id.perumdamts.kepegawaian.dto.profil.keahlian.*;
 import id.perumdamts.kepegawaian.services.profil.keahlian.KeahlianCommandService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +35,7 @@ public class AdminKeahlianController {
         return CustomResult.delete(command.delete(id, false));
     }
 
-    @PostMapping(value = "/lampiran", consumes = "multipart/form-data")
+    @PostMapping(value = "/lampiran", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<SavedResult<Long>> addLampiran(@Valid @ModelAttribute KeahlianLampiranPostRequest request) {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, command.addLampiran(request, false)));
     }
