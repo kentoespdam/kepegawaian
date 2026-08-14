@@ -30,9 +30,10 @@ public class RiwayatTerminasiRequest extends PagedRequest {
         return id.perumdamts.kepegawaian.utils.SpecificationBuilder.<id.perumdamts.kepegawaian.entities.pegawai.Pegawai>of()
                 .addEqual(pegawaiId, "id")
                 .addEqual(nipam, "nipam")
-                .addEqual(nama, "biodata", "nama")
+                .addLike(nama, "biodata", "nama")
                 .addEqual(jabatanId, "jabatan", "id")
                 .addEqual(golonganId, "golongan", "id")
+                .addEqual(organisasiId, "organisasi", "id")
                 .addLessThan(tanggalTerminasi, "tmtPensiun")
                 .addEqual(id.perumdamts.kepegawaian.entities.commons.EStatusKerja.KARYAWAN_AKTIF, "statusKerja")
                 .build();

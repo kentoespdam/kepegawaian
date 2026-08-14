@@ -36,7 +36,11 @@ public class RiwayatTerminasiQueryService {
 
     public Page<PegawaiResponse> findPageCalonPensiun(RiwayatTerminasiRequest request) {
         LocalDate now = LocalDate.now();
-        LocalDate end = now.plusMonths(3);
+        // Default jendela: 3 bulan ke depan. TanggalTerminasi dari user (bila ada)
+        // dipakai sebagai batas atas, bukan ditimpa — sebelumnya nilai user dibuang.
+        LocalDate end = request.getTanggalTerminasi() != null
+                ? request.getTanggalTerminasi()
+                : now.plusMonths(3);
         request.setTanggalTerminasi(end);
         request.setSortBy("Biodata.nama");
         request.setSortDirection("ASC");
