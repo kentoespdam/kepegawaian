@@ -7,6 +7,7 @@ import id.perumdamts.kepegawaian.entities.commons.EJenisMutasi;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatMutasi;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
+import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatTerminasi;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
@@ -149,6 +150,17 @@ public class RiwayatMutasiCommandService {
         byId.setIsDeleted(true);
         repository.save(byId);
         return true;
+    }
+
+    /**
+     * Saga terminasi (ADR-0021): baris mutasi (jenis TERMINASI) dibuat dari
+     * riwayat_terminasi yang baru disimpan. Dipanggil oleh
+     * {@code RiwayatTerminasiCommandService.save} — tulis milik aggregate ini
+     * tidak boleh di-inline di orkestrator.
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public RiwayatMutasi createFromTerminasi(RiwayatTerminasi terminasi) {
+        return repository.save(RiwayatMutasiMapper.toEntity(terminasi));
     }
 
     private EJenisSk resolveJenisSk(EJenisMutasi jenisMutasi) {

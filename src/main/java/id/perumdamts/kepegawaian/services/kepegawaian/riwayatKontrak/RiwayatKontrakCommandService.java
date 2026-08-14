@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.services.kepegawaian.riwayatKontrak;
 
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatKontrak.RiwayatKontrakPostRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatKontrak.RiwayatKontrakPutRequest;
+import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiPostRequest;
 import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiPostRequest;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatKontrak;
@@ -181,6 +182,21 @@ public class RiwayatKontrakCommandService implements KontrakBootstrapPort {
         byId.setIsDeleted(true);
         repository.save(byId);
         return true;
+    }
+
+    /**
+     * Saga terminasi (ADR-0021): baris kontrak terminasi dibuat untuk pegawai
+     * berstatus KONTRAK. Dipanggil oleh {@code RiwayatTerminasiCommandService.save} —
+     * tulis milik aggregate ini tidak boleh di-inline di orkestrator, dan flag
+     * isLatest dikelola di sini (updateLatest), bukan disalin ke service lain.
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public RiwayatKontrak createForTerminasi(RiwayatTerminasiPostRequest request, Pegawai pegawai, RiwayatSk riwayatSk) {
+        RiwayatKontrak kontrak = RiwayatKontrakMapper.toEntity(request, pegawai);
+        kontrak.setRiwayatSk(riwayatSk);
+        RiwayatKontrak saved = repository.save(kontrak);
+        updateLatest(saved);
+        return saved;
     }
 
     private void updateLatest(RiwayatKontrak entity) {
