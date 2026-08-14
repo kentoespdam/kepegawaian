@@ -91,11 +91,35 @@ public class RiwayatTerminasiQueryRepository {
 
     private org.jooq.Condition getFilterCondition(RiwayatTerminasiRequest request) {
         var condition = RIWAYAT_TERMINASI.IS_DELETED.eq(false);
-        if (request.getNipam() != null) {
+        if (request.getPegawaiId() != null) {
+            condition = condition.and(RIWAYAT_TERMINASI.PEGAWAI_ID.eq(request.getPegawaiId()));
+        }
+        if (request.getNipam() != null && !request.getNipam().isBlank()) {
             condition = condition.and(RIWAYAT_TERMINASI.NIPAM.eq(request.getNipam()));
         }
-        if (request.getNomorSk() != null) {
+        if (request.getNama() != null && !request.getNama().isBlank()) {
+            condition = condition.and(RIWAYAT_TERMINASI.NAMA.likeIgnoreCase("%" + request.getNama() + "%"));
+        }
+        if (request.getAlasanTerminasiId() != null) {
+            condition = condition.and(RIWAYAT_TERMINASI.ALASAN_TERMINASI_ID.eq(request.getAlasanTerminasiId()));
+        }
+        if (request.getNomorSk() != null && !request.getNomorSk().isBlank()) {
             condition = condition.and(RIWAYAT_TERMINASI.NOMOR_SK.likeIgnoreCase("%" + request.getNomorSk() + "%"));
+        }
+        if (request.getOrganisasiId() != null) {
+            condition = condition.and(RIWAYAT_TERMINASI.ORGANISASI_ID.eq(request.getOrganisasiId()));
+        }
+        if (request.getJabatanId() != null) {
+            condition = condition.and(RIWAYAT_TERMINASI.JABATAN_ID.eq(request.getJabatanId()));
+        }
+        if (request.getGolonganId() != null) {
+            condition = condition.and(RIWAYAT_TERMINASI.GOLONGAN_ID.eq(request.getGolonganId()));
+        }
+        if (request.getTanggalTerminasi() != null) {
+            condition = condition.and(RIWAYAT_TERMINASI.TANGGAL_TERMINASI.eq(request.getTanggalTerminasi()));
+        }
+        if (request.getTahunPensiun() != null) {
+            condition = condition.and(RIWAYAT_TERMINASI.TAHUN_TERMINASI.eq(request.getTahunPensiun()));
         }
         return condition;
     }

@@ -15,6 +15,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static id.perumdamts.kepegawaian.jooq.tables.AlasanBerhenti.ALASAN_BERHENTI;
 import static id.perumdamts.kepegawaian.jooq.tables.Golongan.GOLONGAN;
@@ -25,6 +27,7 @@ import static id.perumdamts.kepegawaian.jooq.tables.RiwayatSk.RIWAYAT_SK;
 import static id.perumdamts.kepegawaian.jooq.tables.RiwayatTerminasi.RIWAYAT_TERMINASI;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Regression for GET /kepegawaian/riwayat/terminasi returning 500:
@@ -118,6 +121,52 @@ class RiwayatTerminasiQueryRepositoryTest {
         assertEquals("SUB BAG TEKNOLOGI INFORMASI", q.namaOrganisasi());
         assertEquals("Supervisor Teknologi Informasi", q.namaJabatan());
         assertEquals("Pembina - IV/a", q.namaGolongan());
+    }
+
+    @Test
+    void pageQueryAppliesAllDeclaredRequestFilters() {
+        List<String> executedSql = new ArrayList<>();
+        DSLContext captureDsl = DSL.using(new MockConnection(ctx -> {
+            executedSql.add(ctx.sql());
+            if (ctx.sql().toLowerCase().startsWith("select count")) {
+                Field<Long> count = DSL.field("cnt", Long.class);
+                Result<Record> countRows = dsl.newResult(new Field<?>[]{count});
+                countRows.add(dsl.newRecord(count).value1(1L));
+                return new MockResult[]{new MockResult(1, countRows)};
+            }
+            return new MockResult[]{new MockResult(0, dsl.newResult(new Field<?>[0]))};
+        }), SQLDialect.MARIADB);
+        RiwayatTerminasiQueryRepository repo = new RiwayatTerminasiQueryRepository(captureDsl);
+
+        RiwayatTerminasiRequest request = new RiwayatTerminasiRequest();
+        request.setPegawaiId(77L);
+        request.setNipam("890300426");
+        request.setNama("ABDUL");
+        request.setAlasanTerminasiId(5L);
+        request.setJabatanId(3L);
+        request.setOrganisasiId(9L);
+        request.setGolonganId(2L);
+        request.setNomorSk("SK/2024");
+        request.setTahunPensiun(2024);
+        request.setTanggalTerminasi(LocalDate.of(2024, 6, 30));
+
+        repo.pageQuery(request);
+
+        // [count, data] — periksa WHERE clause dari query data (SELECT juga punya kolom nama dll.,
+        // jadi hanya bagian WHERE yang diassert agar tidak false-positive).
+        assertEquals(2, executedSql.size());
+        String dataSql = executedSql.get(1);
+        String where = dataSql.toLowerCase().substring(dataSql.toLowerCase().indexOf("where"));
+        assertTrue(where.contains("pegawai_id"));
+        assertTrue(where.contains("nipam"));
+        assertTrue(where.contains("nama"));
+        assertTrue(where.contains("alasan_terminasi_id"));
+        assertTrue(where.contains("jabatan_id"));
+        assertTrue(where.contains("organisasi_id"));
+        assertTrue(where.contains("golongan_id"));
+        assertTrue(where.contains("nomor_sk"));
+        assertTrue(where.contains("tahun_terminasi"));
+        assertTrue(where.contains("tanggal_terminasi"));
     }
 
     @Test
