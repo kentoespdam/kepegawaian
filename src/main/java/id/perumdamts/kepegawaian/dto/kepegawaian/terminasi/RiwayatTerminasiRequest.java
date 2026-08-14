@@ -27,15 +27,23 @@ public class RiwayatTerminasiRequest extends PagedRequest {
 
     @com.fasterxml.jackson.annotation.JsonIgnore
     public org.springframework.data.jpa.domain.Specification<id.perumdamts.kepegawaian.entities.pegawai.Pegawai> getCalonPensiunSpecification() {
-        return id.perumdamts.kepegawaian.utils.SpecificationBuilder.<id.perumdamts.kepegawaian.entities.pegawai.Pegawai>of()
+        var builder = id.perumdamts.kepegawaian.utils.SpecificationBuilder.<id.perumdamts.kepegawaian.entities.pegawai.Pegawai>of()
                 .addEqual(pegawaiId, "id")
                 .addEqual(nipam, "nipam")
                 .addLike(nama, "biodata", "nama")
                 .addEqual(jabatanId, "jabatan", "id")
                 .addEqual(golonganId, "golongan", "id")
                 .addEqual(organisasiId, "organisasi", "id")
-                .addLessThan(tanggalTerminasi, "tmtPensiun")
-                .addEqual(id.perumdamts.kepegawaian.entities.commons.EStatusKerja.KARYAWAN_AKTIF, "statusKerja")
-                .build();
+                .addLessThanOrEqual(tanggalTerminasi, "tmtPensiun")
+                .addEqual(id.perumdamts.kepegawaian.entities.commons.EStatusKerja.KARYAWAN_AKTIF, "statusKerja");
+        // tahunPensiun: jendela 1 Januari–31 Desember tahun tersebut (portable, tanpa fungsi YEAR()
+        // yang dialect-specific) — filter ini sebelumnya dideklarasikan tapi tidak pernah diterapkan.
+        if (tahunPensiun != null) {
+            builder.addBetween(
+                    java.time.LocalDate.of(tahunPensiun, 1, 1),
+                    java.time.LocalDate.of(tahunPensiun, 12, 31),
+                    "tmtPensiun");
+        }
+        return builder.build();
     }
 }

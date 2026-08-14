@@ -38,9 +38,13 @@ public class RiwayatTerminasiQueryService {
         LocalDate now = LocalDate.now();
         // Default jendela: 3 bulan ke depan. TanggalTerminasi dari user (bila ada)
         // dipakai sebagai batas atas, bukan ditimpa — sebelumnya nilai user dibuang.
+        // Bila user memfilter tahunPensiun tanpa tanggalTerminasi, jendela diperluas
+        // ke akhir tahun tersebut agar filter tahun tidak terpotong jendela now+3 bulan.
         LocalDate end = request.getTanggalTerminasi() != null
                 ? request.getTanggalTerminasi()
-                : now.plusMonths(3);
+                : request.getTahunPensiun() != null
+                        ? LocalDate.of(request.getTahunPensiun(), 12, 31)
+                        : now.plusMonths(3);
         request.setTanggalTerminasi(end);
         request.setSortBy("Biodata.nama");
         request.setSortDirection("ASC");
