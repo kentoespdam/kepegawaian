@@ -34,15 +34,19 @@ public class CutiInboxQueryRepository {
     private final DSLContext dsl;
 
     public Page<CutiApprovalChainResponse> pageQuery(CutiApprovalChainRequest query) {
-        Condition where = baseWhere(query);
-
-        var sortOrder = SortParam.resolve(query.getSortBy(), query.getSortDirection(),
-                allowedSorts(), CUTI_APPROVAL_CHAIN.ID);
+        // Chain filters (jabatan/readWrite) MUST live inside the ranked subquery: the outer
+        // query only sees the derived table alias, and per decisions-cuti.md the jabatan
+        // filter applies BEFORE ROW_NUMBER so the representative row is the highest approval
+        // level among the viewer's own chain rows. Pegawai filters stay on the outer join.
+        var chainWhere = chainWhere(query);
+        var pegawaiWhere = pegawaiWhere(query);
 
         var count = dsl.select(DSL.countDistinct(CUTI_APPROVAL_CHAIN.REF_CUTI_ID))
                 .from(CUTI_APPROVAL_CHAIN)
                 .leftJoin(CUTI_PEGAWAI).on(CUTI_APPROVAL_CHAIN.REF_CUTI_ID.eq(CUTI_PEGAWAI.ID))
-                .where(where).fetchOptional(0, Long.class).orElse(0L);
+                .where(chainWhere)
+                .and(pegawaiWhere)
+                .fetchOptional(0, Long.class).orElse(0L);
 
         // FIX N+1: Use ROW_NUMBER() subquery instead of calling getById() per row
         var jenisCuti = CUTI_JENIS.as("jc");
@@ -59,7 +63,16 @@ public class CutiInboxQueryRepository {
                                 .orderBy(CUTI_APPROVAL_CHAIN.APPROVAL_LEVEL.desc(), CUTI_APPROVAL_CHAIN.ID.desc())
                                 .as("rn")
                 ).from(CUTI_APPROVAL_CHAIN)
+                .where(chainWhere)
                 .asTable("ranked");
+
+        // Sort columns must be qualified to the derived table (`ranked`.`id`, ...) —
+        // referencing CUTI_APPROVAL_CHAIN here would render an out-of-scope table name.
+        var sortOrder = SortParam.resolve(query.getSortBy(), query.getSortDirection(), Map.of(
+                        "id", ranked.field(CUTI_APPROVAL_CHAIN.ID),
+                        "approvalLevel", ranked.field(CUTI_APPROVAL_CHAIN.APPROVAL_LEVEL),
+                        "readWriteStatus", ranked.field(CUTI_APPROVAL_CHAIN.READ_WRITE_STATUS)
+                ), ranked.field(CUTI_APPROVAL_CHAIN.ID));
 
         Field<?>[] allFields = Stream.concat(
                         Stream.of(
@@ -81,7 +94,7 @@ public class CutiInboxQueryRepository {
                 .leftJoin(subJenisCuti).on(CUTI_PEGAWAI.SUB_JENIS_CUTI_ID.eq(subJenisCuti.ID))
                 .leftJoin(pic).on(CUTI_PEGAWAI.PIC_SAAT_INI_ID.eq(pic.ID))
                 .where(DSL.field(DSL.name("ranked", "rn")).eq(1))
-                .and(where)
+                .and(pegawaiWhere)
                 .orderBy(sortOrder)
                 .limit(query.getSizeOrDefault())
                 .offset(query.offset())
@@ -99,16 +112,9 @@ public class CutiInboxQueryRepository {
         return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
     }
 
-    private static Map<String, Field<?>> allowedSorts() {
-        return Map.of(
-                "id", CUTI_APPROVAL_CHAIN.ID,
-                "approvalLevel", CUTI_APPROVAL_CHAIN.APPROVAL_LEVEL,
-                "readWriteStatus", CUTI_APPROVAL_CHAIN.READ_WRITE_STATUS
-        );
-    }
-
-    private Condition baseWhere(CutiApprovalChainRequest q) {
-        Condition cond = CUTI_PEGAWAI.IS_DELETED.eq(false);
+    /** Conditions on {@code cuti_approval_chain} — applied INSIDE the ranked subquery. */
+    private static Condition chainWhere(CutiApprovalChainRequest q) {
+        Condition cond = DSL.trueCondition();
 
         // Either match picSaatIniId or specific jabatanId
         if (q.getJabatanId() != null) {
@@ -117,12 +123,19 @@ public class CutiInboxQueryRepository {
             cond = cond.and(CUTI_APPROVAL_CHAIN.JABATAN_ID.eq(q.getPicSaatIniId()));
         }
 
-        if (q.getApprovalCutiStatus() != null) {
-            cond = cond.and(CUTI_PEGAWAI.APPROVAL_CUTI_STATUS.eq((byte) q.getApprovalCutiStatus().ordinal()));
-        }
-
         if (q.getReadWriteStatus() != null) {
             cond = cond.and(CUTI_APPROVAL_CHAIN.READ_WRITE_STATUS.eq((byte) q.getReadWriteStatus().ordinal()));
+        }
+
+        return cond;
+    }
+
+    /** Conditions on {@code cuti_pegawai} — applied on the outer query (joined tables). */
+    private static Condition pegawaiWhere(CutiApprovalChainRequest q) {
+        Condition cond = CUTI_PEGAWAI.IS_DELETED.eq(false);
+
+        if (q.getApprovalCutiStatus() != null) {
+            cond = cond.and(CUTI_PEGAWAI.APPROVAL_CUTI_STATUS.eq((byte) q.getApprovalCutiStatus().ordinal()));
         }
 
         if (q.getTahun() != null) {
