@@ -68,7 +68,7 @@ public class CutiJenisQueryRepository {
                 .from(CUTI_JENIS)
                 .leftJoin(parent).on(CUTI_JENIS.PARENT_ID.eq(parent.ID))
                 .where(where)
-                .orderBy(CUTI_JENIS.NAMA.asc())
+                .orderBy(CUTI_JENIS.ID.asc())
                 .fetch(CutiJenisJooqMapper::mapToResponse);
     }
 
