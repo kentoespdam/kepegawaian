@@ -93,7 +93,9 @@ public class CutiKuotaTemplateBuilder {
     private void writeRow(SXSSFRow row, Pegawai pegawai, CellStyle cellStyle) {
         AtomicInteger colNum = new AtomicInteger(0);
         ExcelHelper.createCell(row, colNum.getAndIncrement(), pegawai.getNipam(), cellStyle);
-        ExcelHelper.createCell(row, colNum.getAndIncrement(), pegawai.getBiodata().getNama(), cellStyle);
+        // Pegawai boleh saja belum punya Biodata (mis. data lama) — null-safe ala PegawaiReadMapper
+        ExcelHelper.createCell(row, colNum.getAndIncrement(),
+                pegawai.getBiodata() != null ? pegawai.getBiodata().getNama() : null, cellStyle);
         ExcelHelper.createCell(row, colNum.getAndIncrement(), 12, cellStyle);
         ExcelHelper.createCell(row, colNum.getAndIncrement(), 0, cellStyle);
         ExcelHelper.createCell(row, colNum.getAndIncrement(), 12, cellStyle);
