@@ -26,7 +26,7 @@
 `kepegawaian-ebt` (#10 now() cross-year), `kepegawaian-ciw` (#16 forNextYear −1),
 `kepegawaian-sfq` (#16 now() reject-gate), `kepegawaian-s5n` (#16 entity .equals).
 
-**Refactor `/list` (2026-07-31):** `GET /cuti/jenis/list` kini pakai `CutiJenisListRequest` = `{parentId, nama}` (filter-only, TIDAK extends `PagedRequest`); sort tetap hardcoded `.orderBy(CUTI_JENIS.NAMA.asc())` di `CutiJenisQueryRepository.listQuery`. `CutiJenisRequest extends PagedRequest` hanya dipakai endpoint index.
+**Refactor `/list` (2026-07-31, diperbarui 2026-08-18):** `GET /cuti/jenis/list` kini pakai `CutiJenisListRequest` = `{parentId, nama}` (filter-only, TIDAK extends `PagedRequest`); sort tetap hardcoded `.orderBy(CUTI_JENIS.ID.asc())` di `CutiJenisQueryRepository.listQuery`. Sejak 2026-08-18 endpoint ini mengembalikan **`CutiJenisMiniResponse`** `{id, nama, parentId}` langsung (bukan `CutiJenisResponse` + `parent` nested) — `parentId` di-select langsung dari kolom `parent_id` (tanpa self-join, bernilai riil, `null` hanya untuk root). `CutiJenisRequest extends PagedRequest` hanya dipakai endpoint index.
 
 ---
 
@@ -123,7 +123,7 @@
 **Exemplar:** modul master CRUD (Command+Query+JOOQ+Mapper+Controller).
 
 - [x] NEW `mapper/cuti/jenis/CutiJenisMapper.java` — final, private ctor, `toEntity`/`updateEntity`
-- [x] NEW `repositories/cuti/jooq/CutiJenisQueryRepository.java` — `pageQuery`/`getById`/`listQuery`, `IS_DELETED.eq(false)`, parent via self-join mini
+- [x] NEW `repositories/cuti/jooq/CutiJenisQueryRepository.java` — `pageQuery`/`getById` (parent via self-join mini) / `listQuery` (kembalikan `List<CutiJenisMiniResponse>` — select `id,nama,parent_id` langsung, tanpa self-join), semua filter `IS_DELETED.eq(false)`
 - [x] NEW `services/cuti/jenis/CutiJenisQueryService.java`
 - [x] NEW `services/cuti/jenis/CutiJenisCommandService.java` — create (revive bila soft-deleted), update, delete (soft)
 - [x] DELETE interface `CutiJenisService` + `CutiJenisServiceImpl` (ADR-0007)

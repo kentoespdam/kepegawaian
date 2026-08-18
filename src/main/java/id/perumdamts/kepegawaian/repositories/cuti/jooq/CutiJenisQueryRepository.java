@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.repositories.cuti.jooq;
 
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.cuti.jenis.CutiJenisListRequest;
+import id.perumdamts.kepegawaian.dto.cuti.jenis.CutiJenisMiniResponse;
 import id.perumdamts.kepegawaian.dto.cuti.jenis.CutiJenisRequest;
 import id.perumdamts.kepegawaian.dto.cuti.jenis.CutiJenisResponse;
 import id.perumdamts.kepegawaian.mapper.cuti.CutiJenisJooqMapper;
@@ -53,23 +54,18 @@ public class CutiJenisQueryRepository {
         return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
     }
 
-    public List<CutiJenisResponse> listQuery(CutiJenisListRequest query) {
-        var parent = CUTI_JENIS.as("parent");
+    public List<CutiJenisMiniResponse> listQuery(CutiJenisListRequest query) {
         Condition where = baseWhere(query.getParentId(), query.getNama());
-        
+
         return dsl.select(
                         CUTI_JENIS.ID,
                         CUTI_JENIS.NAMA,
-                        CUTI_JENIS.MAX_HARI,
-                        CUTI_JENIS.POTONG_KUOTA_TAHUNAN,
-                        parent.ID.as("parent_id"),
-                        parent.NAMA.as("parent_nama")
+                        CUTI_JENIS.PARENT_ID
                 )
                 .from(CUTI_JENIS)
-                .leftJoin(parent).on(CUTI_JENIS.PARENT_ID.eq(parent.ID))
                 .where(where)
                 .orderBy(CUTI_JENIS.ID.asc())
-                .fetch(CutiJenisJooqMapper::mapToResponse);
+                .fetch(CutiJenisJooqMapper::mapToMini);
     }
 
     public CutiJenisResponse getById(Long id) {

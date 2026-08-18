@@ -22,4 +22,13 @@ public final class CutiJenisJooqMapper {
                 record.get(CUTI_JENIS.POTONG_KUOTA_TAHUNAN)
         );
     }
+
+    public static CutiJenisMiniResponse mapToMini(Record record) {
+        if (record == null) return null;
+        return new CutiJenisMiniResponse(
+                record.get(CUTI_JENIS.ID),
+                record.get(CUTI_JENIS.NAMA),
+                record.get(CUTI_JENIS.PARENT_ID)
+        );
+    }
 }

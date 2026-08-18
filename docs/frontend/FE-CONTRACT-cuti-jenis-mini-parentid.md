@@ -40,7 +40,6 @@
 | Endpoint | Field nested | Isi `parentId` |
 |----------|--------------|----------------|
 | `GET /cuti/jenis` (index) | `parent` | `null` (parent dari parent tidak di-select query) |
-| `GET /cuti/jenis/list` | `parent` | `null` (sama) |
 | `GET /cuti/jenis/{id}` (detail) | `parent` | `null` (sama) |
 | `GET /cuti/pengajuan` (index) | `jenisCuti` | `null` (jenis root) |
 | `GET /cuti/pengajuan` (index) | `subJenisCuti` | **id `jenisCuti`** — parent-nya memang jenis cuti tsb. |
@@ -60,17 +59,17 @@
 
 Relasi yang bisa dipakai FE: **`subJenisCuti.parentId === jenisCuti.id`** untuk baris yang sama.
 
-`GET /cuti/jenis/list` — satu baris (potongan):
+`GET /cuti/jenis/list` — kini mengembalikan **`CutiJenisMiniResponse` langsung** (bukan `CutiJenisResponse` + `parent` nested), satu baris (potongan):
 
 ```jsonc
 {
   "id": 2,
   "nama": "Cuti Sakit",
-  "parent": { "id": 1, "nama": "Cuti Tahunan", "parentId": null }
+  "parentId": 1   // null untuk jenis root
 }
 ```
 
-> Catatan: di jalur JOOQ (`/cuti/jenis/*` dan list pengajuan), `parentId` dari **mini yang mewakili root/parent** tidak di-select query sehingga bernilai `null`, walaupun secara data parent-nya mungkin ada. Jangan pakai `parentId` untuk membedakan "root vs data rusak" — pakai `parent == null` (di `/cuti/jenis/*`) atau `subJenisCuti == null` (di pengajuan) untuk itu.
+> `parentId` di `/cuti/jenis/list` di-select langsung dari kolom `parent_id` — **bernilai riil** (null hanya jika jenis tsb. root). Berbeda dengan mini nested di `/cuti/jenis/*` (index/detail) dan list pengajuan, yang parent-nya diwakili mini `{id,nama}` tanpa `parentId` (tidak di-select query → `null`). Jangan pakai `parentId` untuk membedakan "root vs data rusak" pada mini nested — pakai `parent == null` (di `/cuti/jenis/*`) atau `subJenisCuti == null` (di pengajuan) untuk itu.
 
 ## 4. Contoh Kode FE (Next.js)
 
