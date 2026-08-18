@@ -67,12 +67,13 @@ public class PengajuanCutiCommand {
 
         if (request.getJenisCutiId().equals(cutiProperties.getJenisCutiTahunan())) {
             ECutiPeriod period = CutiPeriodClassifier.classify(request.getTanggalMulai(), request.getTanggalSelesai(), nowYear);
+            CutiPeriodClassifier.YearPair pair = CutiPeriodClassifier.deriveYearPair(period, request.getTanggalMulai(), request.getTanggalSelesai(), nowYear);
             CutiPegawai cutiPegawai = switch (period) {
-                case NEXT_YEAR -> saveCutiService.forNextYear(request, entity);
-                case OVERLAPPING -> saveCutiService.overlappingYear(request, entity);
-                case JAN_JUN -> saveCutiService.between1JanAnd30Jun(request, entity);
-                case JUL_DES -> saveCutiService.between1JulAnd31Dec(request, entity);
-                case JUN_JUL -> saveCutiService.between30JunAnd1Jul(request, entity);
+                case NEXT_YEAR -> saveCutiService.forNextYear(request, entity, pair);
+                case OVERLAPPING -> saveCutiService.overlappingYear(request, entity, pair);
+                case JAN_JUN -> saveCutiService.between1JanAnd30Jun(request, entity, pair);
+                case JUL_DES -> saveCutiService.between1JulAnd31Dec(request, entity, pair);
+                case JUN_JUL -> saveCutiService.between30JunAnd1Jul(request, entity, pair);
             };
             cutiApprovalChainGenerator.forPengajuan(cutiPegawai);
         } else {
@@ -111,12 +112,13 @@ public class PengajuanCutiCommand {
 
         if (request.getJenisCutiId().equals(cutiProperties.getJenisCutiTahunan())) {
             ECutiPeriod period = CutiPeriodClassifier.classify(request.getTanggalMulai(), request.getTanggalSelesai(), nowYear);
+            CutiPeriodClassifier.YearPair pair = CutiPeriodClassifier.deriveYearPair(period, request.getTanggalMulai(), request.getTanggalSelesai(), nowYear);
             switch (period) {
-                case NEXT_YEAR -> saveCutiService.forNextYear(request, entity);
-                case OVERLAPPING -> saveCutiService.overlappingYear(request, entity);
-                case JAN_JUN -> saveCutiService.between1JanAnd30Jun(request, entity);
-                case JUL_DES -> saveCutiService.between1JulAnd31Dec(request, entity);
-                case JUN_JUL -> saveCutiService.between30JunAnd1Jul(request, entity);
+                case NEXT_YEAR -> saveCutiService.forNextYear(request, entity, pair);
+                case OVERLAPPING -> saveCutiService.overlappingYear(request, entity, pair);
+                case JAN_JUN -> saveCutiService.between1JanAnd30Jun(request, entity, pair);
+                case JUL_DES -> saveCutiService.between1JulAnd31Dec(request, entity, pair);
+                case JUN_JUL -> saveCutiService.between30JunAnd1Jul(request, entity, pair);
             }
         } else {
             saveCutiService.saveCutiNonTahunan(request, entity);

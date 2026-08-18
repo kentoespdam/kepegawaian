@@ -7,6 +7,7 @@ import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPostRequest;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.helpers.cuti.CutiKuotaAllocator;
+import id.perumdamts.kepegawaian.helpers.cuti.CutiPeriodClassifier;
 import id.perumdamts.kepegawaian.helpers.cuti.MinimalCutiRule;
 import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiKuotaRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiPegawaiRepository;
@@ -31,32 +32,32 @@ public class SaveCutiService {
     private final CutiBetween1JulAnd31DecHandler cutiBetween1JulAnd31DecHandler;
     private final CutiBetween30JunAnd1JulHandler cutiBetween30JunAnd1JulHandler;
 
-    public CutiPegawai forNextYear(CutiPengajuanPostRequest request, CutiPegawai entity) {
-        cutiNextYearHandler.handle(request, entity);
+    public CutiPegawai forNextYear(CutiPengajuanPostRequest request, CutiPegawai entity, CutiPeriodClassifier.YearPair pair) {
+        cutiNextYearHandler.handle(request, entity, pair);
         setPic(entity);
         return repository.save(entity);
     }
 
-    public CutiPegawai overlappingYear(CutiPengajuanPostRequest request, CutiPegawai entity) {
-        cutiOverlappingYearHandler.handle(request, entity);
+    public CutiPegawai overlappingYear(CutiPengajuanPostRequest request, CutiPegawai entity, CutiPeriodClassifier.YearPair pair) {
+        cutiOverlappingYearHandler.handle(request, entity, pair);
         setPic(entity);
         return repository.save(entity);
     }
 
-    public CutiPegawai between1JanAnd30Jun(CutiPengajuanPostRequest request, CutiPegawai entity) {
-        cutiBetween1JanAnd30JunHandler.handle(request, entity);
+    public CutiPegawai between1JanAnd30Jun(CutiPengajuanPostRequest request, CutiPegawai entity, CutiPeriodClassifier.YearPair pair) {
+        cutiBetween1JanAnd30JunHandler.handle(request, entity, pair);
         setPic(entity);
         return repository.save(entity);
     }
 
-    public CutiPegawai between1JulAnd31Dec(CutiPengajuanPostRequest request, CutiPegawai entity) {
-        cutiBetween1JulAnd31DecHandler.handle(request, entity);
+    public CutiPegawai between1JulAnd31Dec(CutiPengajuanPostRequest request, CutiPegawai entity, CutiPeriodClassifier.YearPair pair) {
+        cutiBetween1JulAnd31DecHandler.handle(request, entity, pair);
         setPic(entity);
         return repository.save(entity);
     }
 
-    public CutiPegawai between30JunAnd1Jul(CutiPengajuanPostRequest request, CutiPegawai entity) {
-        cutiBetween30JunAnd1JulHandler.handle(request, entity);
+    public CutiPegawai between30JunAnd1Jul(CutiPengajuanPostRequest request, CutiPegawai entity, CutiPeriodClassifier.YearPair pair) {
+        cutiBetween30JunAnd1JulHandler.handle(request, entity, pair);
         setPic(entity);
         return repository.save(entity);
     }

@@ -7,6 +7,7 @@ import id.perumdamts.kepegawaian.dto.master.hariLibur.TanggalHariLibur;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import id.perumdamts.kepegawaian.helpers.DateHelper;
 import id.perumdamts.kepegawaian.helpers.cuti.CutiKuotaAllocator;
+import id.perumdamts.kepegawaian.helpers.cuti.CutiPeriodClassifier;
 import id.perumdamts.kepegawaian.helpers.cuti.MinimalCutiRule;
 import id.perumdamts.kepegawaian.helpers.cuti.WorkdayCalculator;
 import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiKuotaRepository;
@@ -25,17 +26,17 @@ public class CutiBetween30JunAnd1JulHandler implements CutiPeriodHandler {
     private final HariLiburRepository hariLiburRepository;
 
     @Override
-    public void handle(CutiPengajuanPostRequest request, CutiPegawai entity) {
+    public void handle(CutiPengajuanPostRequest request, CutiPegawai entity, CutiPeriodClassifier.YearPair pair) {
         int totalHariCuti = entity.getJumlahHariKerja();
-        int year = request.getTanggalMulai().getYear();
+        int year = pair.year1();
 
         int prevKuota = cutiKuotaRepository
-                .findRecordByPegawai_IdAndTahunAndExpiredGreaterThan(request.getPegawaiId(), year - 1, request.getTanggalSelesai(), SisaCutiRecord.class)
+                .findRecordByPegawai_IdAndTahunAndExpiredGreaterThan(request.getPegawaiId(), pair.year0(), request.getTanggalSelesai(), SisaCutiRecord.class)
                 .map(SisaCutiRecord::sisaKuota).orElse(0);
 
-        int currentKuota = cutiKuotaRepository.findRecordByPegawai_IdAndTahun(request.getPegawaiId(), year, SisaCutiRecord.class)
+        int currentKuota = cutiKuotaRepository.findRecordByPegawai_IdAndTahun(request.getPegawaiId(), pair.year1(), SisaCutiRecord.class)
                 .map(SisaCutiRecord::sisaKuota)
-                .orElseThrow(() -> new RuntimeException("Kuota Cuti Tahun " + year + " tidak tersedia!"));
+                .orElseThrow(() -> new RuntimeException("Kuota Cuti Tahun " + pair.year1() + " tidak tersedia!"));
 
         int totalRemainingQuota = currentKuota + prevKuota;
 

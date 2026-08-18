@@ -106,8 +106,14 @@ public class KlaimCutiCommand {
         if (!request.getApprovalStatus().equals(EApprovalCutiStatus.APPROVED)) {
             cutiPegawaiRepository.save(cutiPegawai);
         } else {
-            int nowYear = LocalDate.now().getYear();
-            ECutiPeriod period = CutiPeriodClassifier.classify(cutiPegawai.getTanggalMulai(), cutiPegawai.getTanggalSelesai(), nowYear);
+            // kepegawaian-ciw: settlement klaim didispatch berdasarkan PERIODE refCuti
+            // (keputusan dibuat saat pengajuan), bukan re-klasifikasi tanggal klaim dengan
+            // now() — yang dulu bisa crash (IllegalArgumentException) / salah bucket saat
+            // approval lintas tahun. Fallback defensif: tanggal klaim sendiri.
+            CutiPegawai refCuti = cutiPegawai.getRefCuti();
+            ECutiPeriod period = refCuti != null
+                    ? CutiPeriodClassifier.resolvePeriod(refCuti.getTanggalMulai(), refCuti.getTanggalSelesai(), refCuti.getCreatedAt())
+                    : CutiPeriodClassifier.resolvePeriod(cutiPegawai.getTanggalMulai(), cutiPegawai.getTanggalSelesai(), cutiPegawai.getCreatedAt());
             switch (period) {
                 case NEXT_YEAR -> cutiKlaimCrossYearSettlement.forNextYear(cutiPegawai, entity);
                 case OVERLAPPING -> cutiKlaimCrossYearSettlement.overlappingYear(cutiPegawai, entity);

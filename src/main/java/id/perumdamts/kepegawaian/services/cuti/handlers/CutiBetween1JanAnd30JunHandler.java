@@ -5,6 +5,7 @@ import id.perumdamts.kepegawaian.dto.cuti.kuota.SisaCutiRecord;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPostRequest;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import id.perumdamts.kepegawaian.helpers.cuti.CutiKuotaAllocator;
+import id.perumdamts.kepegawaian.helpers.cuti.CutiPeriodClassifier;
 import id.perumdamts.kepegawaian.helpers.cuti.MinimalCutiRule;
 import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiKuotaRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,11 +17,11 @@ public class CutiBetween1JanAnd30JunHandler implements CutiPeriodHandler {
     private final CutiKuotaRepository cutiKuotaRepository;
 
     @Override
-    public void handle(CutiPengajuanPostRequest request, CutiPegawai entity) {
+    public void handle(CutiPengajuanPostRequest request, CutiPegawai entity, CutiPeriodClassifier.YearPair pair) {
         int totalDays = entity.getJumlahHariKerja();
 
-        int prevYear = request.getTanggalMulai().getYear() - 1;
-        int currentYear = request.getTanggalMulai().getYear();
+        int prevYear = pair.year0();
+        int currentYear = pair.year1();
 
         int prevKuota = cutiKuotaRepository.findRecordByPegawai_IdAndTahunAndExpiredGreaterThan(request.getPegawaiId(), prevYear, request.getTanggalSelesai(), SisaCutiRecord.class)
                 .map(SisaCutiRecord::sisaKuota).orElse(0);

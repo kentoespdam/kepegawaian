@@ -2,9 +2,10 @@ package id.perumdamts.kepegawaian.services.cuti.kuota;
 
 import id.perumdamts.kepegawaian.config.CutiProperties;
 import id.perumdamts.kepegawaian.dto.cuti.kuota.CutiKuotaDeductionResult;
+import id.perumdamts.kepegawaian.entities.commons.ECutiPeriod;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
-import id.perumdamts.kepegawaian.helpers.DateHelper;
 import id.perumdamts.kepegawaian.helpers.cuti.CutiKuotaDeductionAllocator;
+import id.perumdamts.kepegawaian.helpers.cuti.CutiPeriodClassifier;
 import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiKuotaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,46 +20,33 @@ public class CutiKuotaUpdateByCutiService {
 
     /**
      * Update the leave quota of the employee in the database.
-     * This is called when the leave request is approved or rejected.
-     * The logic for updating the quota is as follows:
-     * 1. If the start year is greater than the current year and the end year is greater than the current year,
-     * update the quota for the current year and the next year.
-     * 2. If the start year is equal to the current year and the end year is greater than the current year,
-     * update the quota for the current year and the next year.
-     * 3. If the start date is after January 1st of the start year and before June 30th of the start year,
-     * update the quota for the previous year and the current year.
-     * 4. If the start date is after July 1st of the start year and before December 31st of the start year,
-     * update the quota for the current year.
-     * 5. If the start date is before June 30th of the start year and the end date is after July 1st of the start year,
-     * update the quota for the previous year and the current year.
+     * This is called when the leave request is approved (final).
+     *
+     * <p>kepegawaian-ebt: klasifikasi & pemetaan period→tahun di-anchor ke
+     * {@code createdAt} (tahun pengajuan) — BUKAN {@code LocalDate.now()} — jadi cuti
+     * yang sama memotong kuota yang sama persis, tidak peduli kapan approval terjadi.
+     * Dulu salinan inline 5-cabang ini re-klasifikasi dengan now(), sehingga cuti
+     * OVERLAPPING yang disetujui di tahun berikutnya jatuh ke no-branch (silent no-op).</p>
      *
      * @param cutiPegawai the leave request containing the employee ID, start and end dates, and other details.
      */
     public void updateKuota(CutiPegawai cutiPegawai) {
-        int currentYear = LocalDate.now().getYear();
         LocalDate tanggalMulai = cutiPegawai.getTanggalMulai();
         LocalDate tanggalSelesai = cutiPegawai.getTanggalSelesai();
         int startYear = tanggalMulai.getYear();
-        int endYear = tanggalSelesai.getYear();
 
         if (cutiPegawai.getJenisCuti().getId().equals(cutiProperties.getJenisCutiTahunan())) {
-            if (startYear > currentYear && endYear > currentYear) {
-                int previousYear = startYear - 1;
-                doUpdateKuota(cutiPegawai, previousYear, endYear);
-            } else if (startYear == currentYear && endYear > currentYear) {
-                doUpdateKuota(cutiPegawai, startYear, endYear);
-            } else if (DateHelper.isBetweenDates(tanggalMulai, tanggalSelesai, startYear, 1, 6, 30)) {
-                int previousYear = startYear - 1;
-                doUpdateKuota(cutiPegawai, previousYear, startYear);
-            } else if (DateHelper.isBetweenDates(tanggalMulai, tanggalSelesai, startYear, 7, 12, 31)) {
-                updateKuotaForYear(cutiPegawai, startYear, cutiPegawai.getRiwayatPakai0());
-            } else if (DateHelper.isOverlappingDates(tanggalMulai, tanggalSelesai, startYear)) {
-                int previousYear = startYear - 1;
-                doUpdateKuota(cutiPegawai, previousYear, startYear);
+            ECutiPeriod period = CutiPeriodClassifier.resolvePeriod(tanggalMulai, tanggalSelesai, cutiPegawai.getCreatedAt());
+            CutiPeriodClassifier.YearPair pair = CutiPeriodClassifier.deriveYearPair(
+                    period, tanggalMulai, tanggalSelesai,
+                    CutiPeriodClassifier.resolveRefYear(cutiPegawai.getCreatedAt(), tanggalMulai));
+            switch (period) {
+                case JUL_DES -> updateKuotaForYear(cutiPegawai, pair.year0(), cutiPegawai.getRiwayatPakai0());
+                case NEXT_YEAR, OVERLAPPING, JAN_JUN, JUN_JUL ->
+                        doUpdateKuota(cutiPegawai, pair.year0(), pair.year1());
             }
         } else {
-            int previousYear = startYear - 1;
-            doUpdateKuota(cutiPegawai, previousYear, startYear);
+            doUpdateKuota(cutiPegawai, startYear - 1, startYear);
         }
     }
 

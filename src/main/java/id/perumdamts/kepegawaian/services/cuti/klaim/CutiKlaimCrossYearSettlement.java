@@ -16,8 +16,12 @@ public class CutiKlaimCrossYearSettlement {
     private final CutiKuotaRepository cutiKuotaRepository;
 
     public void forNextYear(CutiPegawai cutiPegawai, CutiApproval cutiApproval) {
-        // PRESERVED: see kepegawaian-ciw
-        int currentYear = cutiPegawai.getTanggalMulai().getYear() - 1;
+        // kepegawaian-ciw: tahun pertama = refYear (tahun pengajuan refCuti), bukan
+        // tanggalMulai-1 — konsisten dengan deriveYearPair(NEXT_YEAR) = (refYear, endYear).
+        CutiPegawai refCuti = cutiPegawai.getRefCuti();
+        int currentYear = (refCuti != null && refCuti.getCreatedAt() != null)
+                ? refCuti.getCreatedAt().getYear()
+                : cutiPegawai.getTanggalMulai().getYear() - 1;
         int nextYear = cutiPegawai.getTanggalSelesai().getYear();
         this.separateCutiWithNextYear(cutiPegawai, currentYear, nextYear, cutiPegawai.getPegawai().getId());
         cutiApprovalRepository.save(cutiApproval);
