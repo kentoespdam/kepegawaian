@@ -42,7 +42,7 @@ Bagian dari [CONTEXT-MAP.md](../../CONTEXT-MAP.md). Baca file ini saat mengerjak
 
 - **Deduksi kuota saat approval (`CutiKuotaUpdateByCutiService`) → port 1:1, bug `now()` SENGAJA dipertahankan**. Klasifikasi periode berbasis `LocalDate.now()` di sisi deduksi: bug lintas-tahun dipertahankan (parity), dilacak sebagai **beads issue terpisah**. ⚠️ Buat issue `bd` untuk bug `LocalDate.now()` deduksi kuota lintas-tahun sebelum/selagi porting service ini.
 
-- **Aggregate Jenis & Kuota → Command+Query standar, Excel di sisi Command**. **CutiJenis**: flat CRUD (tree entity tapi service flat — response cuma bawa `parent` mini). **CutiKuota**: CRUD + `importData` (POI HSSF/XSSF) + `exportTemplate` (POI SXSSF) + `findByPegawai`. Import & template-build tetap di sisi Command. **Konsolidasi DTO Jenis**: **satu `CutiJenisMiniResponse {id,nama}`** dipakai di mana pun; **buang `JenisCutiMiniResponse` & `JenisCutiResponse`**.
+- **Aggregate Jenis & Kuota → Command+Query standar, Excel di sisi Command**. **CutiJenis**: flat CRUD (tree entity tapi service flat — response cuma bawa `parent` mini). **CutiKuota**: CRUD + `importData` (POI HSSF/XSSF) + `exportTemplate` (POI SXSSF) + `findByPegawai`. Import & template-build tetap di sisi Command. **Konsolidasi DTO Jenis**: **satu `CutiJenisMiniResponse {id,nama,parentId}`** dipakai di mana pun; **buang `JenisCutiMiniResponse` & `JenisCutiResponse`**.
 
 - **Layanan validasi pengajuan → validator kolaborator khusus, `existsBy` eksplisit, aturan minimal jadi fungsi murni**. Tiga perbaikan saat port: (1) **buang Specification-on-DTO** → query derived eksplisit; (2) **`validateMinimalCuti` jadi fungsi murni statik** (`MinimalCutiRule.check(totalHariKerja, totalSisaKuota)`); (3) **inject `CutiProperties`** ganti `DefConfig`.
 

@@ -74,12 +74,12 @@ public final class CutiPegawaiJooqMapper {
 
         CutiJenisMiniResponse jenisCuti = null;
         if (record.get("jc_id") != null) {
-            jenisCuti = new CutiJenisMiniResponse((Long) record.get("jc_id"), (String) record.get("jc_nama"));
+            jenisCuti = new CutiJenisMiniResponse((Long) record.get("jc_id"), (String) record.get("jc_nama"), null);
         }
 
         CutiJenisMiniResponse subJenisCuti = null;
         if (record.get("sjc_id") != null) {
-            subJenisCuti = new CutiJenisMiniResponse((Long) record.get("sjc_id"), (String) record.get("sjc_nama"));
+            subJenisCuti = new CutiJenisMiniResponse((Long) record.get("sjc_id"), (String) record.get("sjc_nama"), (Long) record.get("jc_id"));
         }
 
         JabatanMiniResponse picSaatIni = null;

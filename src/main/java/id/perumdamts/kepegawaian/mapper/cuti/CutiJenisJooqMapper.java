@@ -12,7 +12,7 @@ public final class CutiJenisJooqMapper {
     public static CutiJenisResponse mapToResponse(Record record) {
         if (record == null) return null;
         CutiJenisMiniResponse parent = record.get("parent_id") != null
-                ? new CutiJenisMiniResponse((Long) record.get("parent_id"), (String) record.get("parent_nama"))
+                ? new CutiJenisMiniResponse((Long) record.get("parent_id"), (String) record.get("parent_nama"), null)
                 : null;
         return new CutiJenisResponse(
                 record.get(CUTI_JENIS.ID),

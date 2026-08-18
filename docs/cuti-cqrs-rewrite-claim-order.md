@@ -98,17 +98,17 @@
 
 ## FASE 3 — Konsolidasi DTO Jenis + mini-projection (Keputusan #15, #3)
 
-**Goal:** satu hierarki mini `{id,nama}` untuk semua nested jenis; baca dirakit di mapper JOOQ (Pola B), bukan `from(entity)` lazy.
+**Goal:** satu hierarki mini `{id,nama,parentId}` untuk semua nested jenis; baca dirakit di mapper JOOQ (Pola B), bukan `from(entity)` lazy.
 **Exemplar:** `mapper/master/jabatan/JabatanMapper.java` (Pola B), mapper JOOQ master mana pun.
 
 ### Pre-edit
 - [x] `gitnexus_impact` pada `JenisCutiResponse`, `JenisCutiMiniResponse`, `CutiJenisResponse`, `CutiJenisMiniResponse` — konfirmasi consumer (sudah diverifikasi: keempatnya dipakai, dua mini identik)
 
 ### Implementasi
-- [x] Pertahankan `CutiJenisMiniResponse {id,nama}` sebagai SATU mini kanonik
+- [x] Pertahankan `CutiJenisMiniResponse {id,nama,parentId}` sebagai SATU mini kanonik
 - [x] Pertahankan `CutiJenisResponse {id,parent,nama,maxHari,potongKuotaTahunan}` (CRUD Jenis)
-- [x] DELETE `JenisCutiMiniResponse` (duplikat literal `{id,nama}`)
-- [x] DELETE `JenisCutiResponse` (pengajuan rujuk `CutiJenisMiniResponse` untuk nested `jenisCuti`/`subJenisCuti` — cukup `{id,nama}`)
+- [x] DELETE `JenisCutiMiniResponse` (duplikat literal mini saat itu `{id,nama}` — kanonik kini `{id,nama,parentId}`)
+- [x] DELETE `JenisCutiResponse` (pengajuan rujuk `CutiJenisMiniResponse` untuk nested `jenisCuti`/`subJenisCuti` — cukup `{id,nama,parentId}`)
 - [x] Update `CutiPengajuanResponse`/`CutiPengajuanMiniResponse` agar nested pakai `CutiJenisMiniResponse`
 
 ### Acceptance
@@ -162,7 +162,7 @@
 - [x] NEW `repositories/cuti/jooq/CutiPengajuanQueryRepository.java` & `CutiInboxQueryRepository.java`
   - [x] index pengajuan (filter status/pegawai/tahun — **FIX bug filter tahun** MONTH→YEAR bila terbawa)
   - [x] inbox: pengajuan dengan `picSaatIni` = jabatan approver, status PENDING/RETURNED
-  - [x] `getById` rakit nested: pegawai/biodata, jenisCuti/subJenisCuti (mini `{id,nama}`), `refCuti` self-join
+  - [x] `getById` rakit nested: pegawai/biodata, jenisCuti/subJenisCuti (mini `{id,nama,parentId}`), `refCuti` self-join
 - [x] NEW `services/cuti/pengajuan/CutiPengajuanQueryService.java` & `CutiInboxQueryService.java`
 - [x] Mapper JOOQ rakit `CutiPengajuanResponse` — **bukan** `from(entity)` lazy (Pola B)
 
