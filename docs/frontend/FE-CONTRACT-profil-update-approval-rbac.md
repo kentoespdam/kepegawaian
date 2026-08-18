@@ -208,6 +208,7 @@ DELETE /api/system/roles/HRD
 - Otomatis: pegawai **terminasi** atau **di-hard-delete** → user Appwrite ikut di-disable (best-effort).
 - `PATCH /system/users/{id}/status` sekarang **wajib** body eksplisit `{"status": true/false}` — body kosong → `400` (sebelumnya body kosong = unblock, footgun).
 - User yang di-disable tetap muncul di `GET /system/users` dengan `status: true` — tampilkan status, jangan sembunyikan.
+- ⚠️ **Envelope `GET /system/users` berubah** (ADR-0041, 2026-08-18): `SingleResult` → **`PageResult`** — field `message` hilang; halaman kosong kini **200 + empty page ber-metadata** (sebelumnya envelope `SingleResult`; HTTP tetap 200 karena Page tidak pernah null). Jangan baca `message` dari endpoint ini; cek `data.content.length`.
 
 ### Dev User (hanya profile `development`)
 

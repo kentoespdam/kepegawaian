@@ -4,8 +4,8 @@ import id.perumdamts.kepegawaian.dto.appwrite.AppwriteUser;
 import id.perumdamts.kepegawaian.dto.appwrite.PrefRole;
 import id.perumdamts.kepegawaian.dto.auth.AuthPostRequest;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
+import id.perumdamts.kepegawaian.dto.commons.PageResult;
 import id.perumdamts.kepegawaian.dto.commons.SavedResult;
-import id.perumdamts.kepegawaian.dto.commons.SingleResult;
 import id.perumdamts.kepegawaian.dto.users.UserPatchStatusRequest;
 import id.perumdamts.kepegawaian.dto.users.UserRequest;
 import id.perumdamts.kepegawaian.dto.users.UserResponse;
@@ -30,8 +30,8 @@ public class UsersController {
 
     @PreAuthorize("hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_USER')")
     @GetMapping
-    public ResponseEntity<SingleResult<Page<UserResponse>>> index(@Valid @ParameterObject UserRequest request) {
-        return CustomResult.any(service.findPage(request));
+    public ResponseEntity<PageResult<Page<UserResponse>>> index(@Valid @ParameterObject UserRequest request) {
+        return CustomResult.page(service.findPage(request));
     }
 
     @PreAuthorize("hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_USER')")
