@@ -17,6 +17,9 @@ _Avoid_: "kategori cuti".
 **Kuota Cuti** (CutiKuota):
 Jatah cuti per-pegawai per-**tahun**: `kuota`, `kuotaTerpakai`, `kuotaTambahan`, `sisaKuota`, dan tanggal `expired`. Lifecycle sendiri — di-CRUD admin, di-import Excel, dan dipotong saat permohonan cuti tahunan disetujui. **Siklus-hidup**: kuota di-set/mulai **1 Juli** dan **expired 30 Juni tahun berikutnya** — karena itu boundary 30-Jun/1-Jul memisahkan dua siklus kuota, dan handler reservasi/settlement mem-bucket periode di tanggal itu (bukan tanggal arbitrer).
 
+**Kuota Tahun Sebelumnya** (`kuotaTahunSebelumnya`, dulu `additional`):
+Baris **Kuota Cuti** siklus tahun−1 untuk pegawai yang sama, dikirim bersamaan dengan halaman index kuota tahun berjalan (`GET /cuti/kuota`). Di-fetch **tanpa** filter `EXPIRED` — record utuh siklus sebelumnya, bukan sekadar sisa — untuk konteks carry-over di grid FE. Bukan pengganti `sisaKuota`; keduanya berbeda konsep (record tahun−1 vs angka sisa dalam satu record). Lihat [ADR-0040](../adr/0040-cuti-kuota-index-pagerequest-dengan-kuota-tahun-sebelumnya.md).
+
 **Jenis Pengajuan** (EJenisPengajuanCuti):
 Dua alur permohonan: **Pengajuan Cuti** (PENGAJUAN_CUTI — rencana cuti ke depan) dan **Klaim Cuti** (KLAIM_CUTI — mencatat cuti yang sudah terjadi, mis. sakit). Disimpan enum ordinal.
 

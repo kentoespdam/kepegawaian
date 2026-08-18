@@ -30,7 +30,7 @@ import static id.perumdamts.kepegawaian.jooq.tables.Pegawai.PEGAWAI;
 public class CutiKuotaQueryRepository {
     private final DSLContext dsl;
 
-    public CutiKuotaPegawaiResponse pageQuery(CutiKuotaRequest query) {
+    public CutiKuotaPegawaiResponse pageQueryWithPreviousYear(CutiKuotaRequest query) {
         Condition where = baseWhere(query);
         
         var sortOrder = SortParam.resolve(query.getSortBy(), query.getSortDirection(),
@@ -68,11 +68,12 @@ public class CutiKuotaQueryRepository {
                 .fetch(CutiKuotaJooqMapper::mapToResponse);
                 
         Page<CutiKuotaResponse> page = new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
-        if (page.isEmpty()) return null;
+        // Page kosong tetap return response utuh (200 + empty page ber-metadata), bukan null (ADR-0040)
+        if (page.isEmpty()) return new CutiKuotaPegawaiResponse(page, List.of());
         
         List<Long> pegawaiIdList = page.getContent().stream().map(c -> c.pegawai().id()).toList();
         
-        List<CutiKuotaResponse> additionalData = dsl.select(
+        List<CutiKuotaResponse> kuotaTahunSebelumnya = dsl.select(
                         CUTI_KUOTA.ID,
                         CUTI_KUOTA.TAHUN,
                         CUTI_KUOTA.KUOTA,
@@ -97,7 +98,7 @@ public class CutiKuotaQueryRepository {
                         .and(CUTI_KUOTA.IS_DELETED.eq(false)))
                 .fetch(CutiKuotaJooqMapper::mapToResponse);
                 
-        return new CutiKuotaPegawaiResponse(page, additionalData);
+        return new CutiKuotaPegawaiResponse(page, kuotaTahunSebelumnya);
     }
 
     public CutiKuotaResponse getById(Long id) {

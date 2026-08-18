@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 public class CutiKuotaQueryService {
     private final CutiKuotaQueryRepository queryRepository;
 
-    public CutiKuotaPegawaiResponse findPage(CutiKuotaRequest request) {
-        return queryRepository.pageQuery(request);
+    public CutiKuotaPegawaiResponse findIndex(CutiKuotaRequest request) {
+        return queryRepository.pageQueryWithPreviousYear(request);
     }
 
     public CutiKuotaResponse findById(Long id) {

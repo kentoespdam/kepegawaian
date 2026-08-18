@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.controllers.cuti;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.DeletedResult;
+import id.perumdamts.kepegawaian.dto.commons.PageResult;
 import id.perumdamts.kepegawaian.dto.commons.SavedResult;
 import id.perumdamts.kepegawaian.dto.commons.SingleResult;
 import id.perumdamts.kepegawaian.dto.cuti.kuota.*;
@@ -24,8 +25,8 @@ public class CutiKuotaController {
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:READ')")
     @GetMapping
-    public ResponseEntity<SingleResult<CutiKuotaPegawaiResponse>> index(@Valid @ParameterObject CutiKuotaRequest request) {
-        return CustomResult.any(queryService.findPage(request));
+    public ResponseEntity<PageResult<CutiKuotaPegawaiResponse>> index(@Valid @ParameterObject CutiKuotaRequest request) {
+        return CustomResult.page(queryService.findIndex(request));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:READ')")

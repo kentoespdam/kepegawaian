@@ -6,6 +6,6 @@ import java.util.List;
 
 public record CutiKuotaPegawaiResponse(
         Page<CutiKuotaResponse> page,
-        List<CutiKuotaResponse> additional
+        List<CutiKuotaResponse> kuotaTahunSebelumnya
 ) {
 }
