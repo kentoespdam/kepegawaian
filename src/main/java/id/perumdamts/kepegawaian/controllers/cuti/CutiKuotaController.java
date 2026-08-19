@@ -35,7 +35,6 @@ public class CutiKuotaController {
         return CustomResult.any(queryService.findById(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:READ')")
     @GetMapping("/{pegawaiId}/{tahun}/sisa")
     public ResponseEntity<SingleResult<CutiKuotaSisa>> showByPegawai(@PathVariable Long pegawaiId, @PathVariable Integer tahun) {
         return CustomResult.any(queryService.findByPegawai(pegawaiId, tahun));
