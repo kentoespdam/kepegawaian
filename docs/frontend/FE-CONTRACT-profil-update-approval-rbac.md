@@ -224,11 +224,11 @@ Mekanisme approval profil **tidak berubah** oleh pekerjaan RBAC. Kontrak berikut
 
 | Method & Path | Fungsi | Guard saat ini |
 |---------------|--------|----------------|
-| `GET /profil/profil-update` | List antrian perubahan profil (paging) | Login saja |
-| `GET /profil/profil-update/{id}` | Detail: data sebelum & sesudah revisi | Login saja |
-| `PUT /profil/profil-update/{id}` | Approve / reject antrian | Login saja |
+| `GET /profil/profil-update` | List antrian perubahan profil (paging) | `hasRole('ADMIN') or hasAuthority('PROFIL:APPROVE')` |
+| `GET /profil/profil-update/{id}` | Detail: data sebelum & sesudah revisi | `hasRole('ADMIN') or hasAuthority('PROFIL:APPROVE')` |
+| `PUT /profil/profil-update/{id}` | Approve / reject antrian | `hasRole('ADMIN') or hasAuthority('PROFIL:APPROVE')` |
 
-> ⚠️ **Catatan penting**: saat ini endpoint di atas **belum** punya `@PreAuthorize` — hanya butuh login. Rencana (migrasi permission): `PUT .../{id}` akan digate **`PROFIL:APPROVE`**. Saat itu tiba, FE harus menyembunyikan tombol approve bagi user tanpa permission tsb. **Belum aktif sekarang.**
+> ✅ **Sudah aktif (kepegawaian-t3s3)**: semua endpoint antrian approval profil kini di-guard `PROFIL:APPROVE` — hanya HRD/ADMIN yang bisa akses. Pegawai biasa (role `USER`) tidak bisa melihat/mengubah antrian approval. FE harus menyembunyikan menu antrian approval bagi user tanpa permission `PROFIL:APPROVE`.
 
 ### 4.2 Query params `GET /profil/profil-update`
 

@@ -20,7 +20,7 @@ Issue tracking: **kepegawaian-ws8**
 | `tingkat` | `jenjang_pendidikan.nama` |
 | `institusi` | `pendidikan.institusi` (FE yang menyesuaikan label) |
 | Filter pendidikan | `is_latest = true AND changed_status = false` |
-| Query layer | `BiodataDashboardQuery` **BARU** (bukan di `BiodataDetailQuery` yang sudah 98 baris) |
+| Query layer | `BiodataDashboardQuery` — **multiset subqueries** isolasi PEGAWAI & PENDIDIKAN dari main query BIODATA (refactor 2026-08-19, sebelumnya flat JOINs menyebabkan fan-out) |
 
 ---
 
@@ -62,12 +62,12 @@ Issue tracking: **kepegawaian-ws8**
 
 ### 2. Repository — JOOQ Query
 - [x] Buat `BiodataDashboardQuery` di `repositories/profil/jooq/`
-- [x] Join: `BIODATA` → `PEGAWAI` (INNER JOIN, on `PEGAWAI.BIODATA_ID = BIODATA.NIK`)
-- [x] Join: `PEGAWAI` → `GAJI_PENDAPATAN_NON_PAJAK` (LEFT JOIN, on `PEGAWAI.GAJI_PENDAPATAN_NON_PAJAK_ID = GAJI_PENDAPATAN_NON_PAJAK.ID`)
-- [x] Join: `PENDIDIKAN` (LEFT JOIN, on `PENDIDIKAN.BIODATA_ID = BIODATA.NIK` + `IS_LATEST = true` + `CHANGED_STATUS = false`)
-- [x] Join: `JENJANG_PENDIDIKAN` (LEFT JOIN, on `PENDIDIKAN.JENJANG_ID = JENJANG_PENDIDIKAN.ID`)
+- [x] **Multiset subqueries** (refactor 2026-08-19): PEGAWAI & PENDIDIKAN diisolasi dari main query BIODATA — mencegah JOIN fan-out (`Cursor returned more than one result`)
+- [x] PEGAWAI multiset: correlated on `BIODATA.NIK`, select `EMAIL` + `GAJI_PENDAPATAN_NON_PAJAK.KODE` (LEFT JOIN)
+- [x] PENDIDIKAN multiset: correlated on `BIODATA.NIK`, filter `IS_LATEST = 1` + `CHANGED_STATUS = 0` + `IS_DELETED = false`, LEFT JOIN `JENJANG_PENDIDIKAN`
+- [x] Main query: `BIODATA` only (selalu 0 atau 1 baris, `fetchOptional()` aman)
 - [x] Return `Optional<BiodataDashboardResponse>`
-- [x] Referensi pola: `PegawaiRingkasanQueryRepository`, `BiodataDetailQuery`
+- [x] Referensi pola: `BiodataDetailQuery` (multiset subqueries)
 
 ### 3. Service
 - [x] Tambah `getDashboard(String nik)` di `BiodataQueryService`
@@ -94,11 +94,10 @@ Issue tracking: **kepegawaian-ws8**
 | File | Peran |
 |---|---|
 | `controllers/profil/BiodataController.java` | Tambah endpoint baru di sini |
-| `services/profil/biodata/BiodataQueryService.java` | Tambah `getDashboard()` |
-| `repositories/profil/jooq/BiodataDetailQuery.java` | Pola query JOOQ yang ditiru |
-| `repositories/profil/jooq/BiodataDashboardQuery.java` | **File baru** |
-| `dto/profil/biodata/BiodataDashboardResponse.java` | **File baru** |
-| `repositories/pegawai/jooq/PegawaiRingkasanQueryRepository.java` | Contoh join `kodePajak` |
+| `services/profil/biodata/BiodataQueryService.java` | Tambah `getDashboard()` + ownership check |
+| `repositories/profil/jooq/BiodataDetailQuery.java` | Pola multiset subqueries yang ditiru |
+| `repositories/profil/jooq/BiodataDashboardQuery.java` | Multiset subqueries — PEGAWAI + PENDIDIKAN |
+| `dto/profil/biodata/BiodataDashboardResponse.java` | Response record + `PendidikanDashboard` nested |
 
 ---
 

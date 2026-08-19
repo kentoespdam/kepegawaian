@@ -16,11 +16,11 @@ _Avoid_: "audit", "log" — ini bukan jejak pasif, melainkan antrian persetujuan
 
 **Dashboard Pegawai** (`GET /profil/biodata/{nik}/dashboard`):
 Endpoint ringan khusus untuk tampilan dashboard pegawai di FE. Mengembalikan 14 field biodata + pegawai + `detailPendidikanTerakhir` — cukup untuk header profil dan ringkasan esensial, tanpa 40+ field seperti `BiodataDetail`.
-_Path_: `{nik}` = NIK biodata. _Akses_: semua user terautentikasi (tanpa ownership check). _404 guard_: NIK tanpa baris di `pegawai` → NotFoundException (INNER JOIN PEGAWAI).
-_Sumber field_: `noTelp` = `biodata.telp`, `email` = `pegawai.email` (join via `biodata.nik = pegawai.biodata_id`), `kodePajak` = `gaji_pendapatan_non_pajak.kode` (String flat, bisa null jika LEFT JOIN-nya tak punya record). `changedStatus` = `biodata.changed_status` (Boolean — `true` berarti biodata menunggu approval, diambil langsung dari kolom tabel tanpa filter).
-_Pendidikan_: hanya satu baris dengan `is_latest=true AND changed_status=false`; di-render sebagai `PendidikanDashboard` (tingkat/jurusan/institusi/tahunLulus). Null jika tidak ada pendidikan yang cocok.
+_Path_: `{nik}` = NIK biodata. _Akses_: semua user terautentikasi — ownership check via `ownershipGuard.assertSelfRead(nik)` (HRD/ADMIN bebas via `PROFIL:READ`; pegawai biasa hanya bisa baca data sendiri → 404 jika bukan miliknya). _404 guard_: NIK tidak ditemukan di `biodata` → `NotFoundException("Biodata not found or NIK bukan pegawai")`.
+_Sumber field_: `noTelp` = `biodata.telp`, `email` = `pegawai.email` (multiset subquery correlated on `biodata.nik = pegawai.biodata_id`), `kodePajak` = `gaji_pendapatan_non_pajak.kode` (multiset, bisa null jika pegawai tidak punya record). `changedStatus` = `biodata.changed_status` (Boolean — `true` berarti biodata menunggu approval, diambil langsung dari kolom tabel tanpa filter).
+_Pendidikan_: multiset subquery — hanya satu baris dengan `is_latest=true AND changed_status=false`; di-render sebagai `PendidikanDashboard` (tingkat/jurusan/institusi/tahunLulus). Null jika tidak ada pendidikan yang cocok.
 _Enum labels_: `jenisKelamin` dikonversi dari ordinal Byte ke label "Laki-Laki"/"Perempuan"; `agama` & `statusKawin` dari enum Byte ke `.toString()`. Semua null-safe.
-_Query layer_: `BiodataDashboardQuery` di repositori JOOQ — query terpisah dari `BiodataDetailQuery` (yang sudah 98 baris).
+_Query layer_: `BiodataDashboardQuery` di repositori JOOQ — **multiset subqueries** isolasi PEGAWAI dan PENDIDIKAN dari main query BIODATA (mencegah JOIN fan-out; sebelumnya flat JOINs menyebabkan `Cursor returned more than one result`).
 
 **Pendidikan Terlatest** (`isLatest`) & **Pendidikan Terakhir** (`pendidikanTerakhir`):
 Seorang pegawai punya banyak baris **Pendidikan**; tepat satu ditandai sebagai yang terkini (`isLatest=true`). **Pendidikan Terakhir** adalah field turunan (denormalisasi) di **Biodata** — jenjang dari Pendidikan yang `isLatest`-nya `true`. Disimpan di Biodata sebagai jalan pintas baca, bukan sumber kebenaran tersendiri.
