@@ -24,8 +24,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class RiwayatSkController {
     private final RiwayatSkCommandService commandService;
     private final RiwayatSkQueryService queryService;
-    private final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-    private final Validator validator = factory.getValidator();
+    private final Validator validator;
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:READ')")
     @Operation(summary = "List data dengan paginasi")

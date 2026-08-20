@@ -24,8 +24,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class RiwayatMutasiController {
     private final RiwayatMutasiCommandService commandService;
     private final RiwayatMutasiQueryService queryService;
-    private final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-    private final Validator validator = factory.getValidator();
+    private final Validator validator;
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:READ')")
     @Operation(summary = "List data dengan paginasi")
