@@ -31,7 +31,7 @@ public final class HariLiburJooqMapper {
         if (ordinal == null) return null;
         for (EJenisLibur e : EJenisLibur.values()) {
             if (e.ordinal() == ordinal)
-                return e.getValue();
+                return e.name();
         }
         return null;
     }
