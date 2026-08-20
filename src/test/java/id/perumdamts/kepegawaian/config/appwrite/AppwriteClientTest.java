@@ -44,11 +44,7 @@ class AppwriteClientTest {
     }
 
     private static AppwriteProperties appwriteProperties() {
-        AppwriteProperties properties = new AppwriteProperties();
-        properties.setEndpoint(ENDPOINT);
-        properties.setProjectId(PROJECT_ID);
-        properties.setApiKey(API_KEY);
-        return properties;
+        return new AppwriteProperties(ENDPOINT, PROJECT_ID, API_KEY);
     }
 
     @Test

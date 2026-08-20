@@ -9,7 +9,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "Laporan — Laporan So")
 @RestController
 @RequestMapping("/laporan/kepegawaian/so")
 @RequiredArgsConstructor
@@ -17,6 +20,7 @@ public class LaporanSoController {
     private final LaporanKepegawaianService service;
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
+    @Operation(summary = "lap so")
     @GetMapping()
     public ResponseEntity<SingleResult<Object>> lapSo() {
         return CustomResult.any(

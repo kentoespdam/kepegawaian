@@ -16,7 +16,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "Cuti — Cuti Approval")
 @RestController
 @RequestMapping("/cuti/approval")
 @RequiredArgsConstructor
@@ -26,6 +29,7 @@ public class CutiApprovalController {
     private final KlaimCutiCommand klaimCutiCommand;
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:APPROVE')")
+    @Operation(summary = "find approval")
     @GetMapping("/{cutiId}")
     public ResponseEntity<PageResult<Page<CutiApprovalMiniResponse>>> findApproval(@PathVariable Long cutiId, @Valid @ParameterObject CutiApprovalRequest request) {
         request.setCutiId(cutiId);
@@ -33,12 +37,14 @@ public class CutiApprovalController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:APPROVE')")
+    @Operation(summary = "save approval")
     @PostMapping
     public ResponseEntity<SavedResult<String>> saveApproval(@Valid @RequestBody CutiApprovalPostRequest request) {
         return CustomResult.save(approvalCutiCommand.savePengajuan(request));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:APPROVE')")
+    @Operation(summary = "klaim")
     @PostMapping("/klaim")
     public ResponseEntity<SavedResult<String>> klaim(@Valid @RequestBody CutiApprovalPostRequest request) {
         return CustomResult.save(klaimCutiCommand.saveKlaim(request));

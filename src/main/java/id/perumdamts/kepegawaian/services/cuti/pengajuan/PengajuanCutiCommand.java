@@ -65,7 +65,7 @@ public class PengajuanCutiCommand {
         entity.setJumlahHari(totalHariCuti);
         entity.setJumlahHariKerja(totalHariCuti);
 
-        if (request.getJenisCutiId().equals(cutiProperties.getJenisCutiTahunan())) {
+        if (request.getJenisCutiId().equals(cutiProperties.jenisCutiTahunan())) {
             ECutiPeriod period = CutiPeriodClassifier.classify(request.getTanggalMulai(), request.getTanggalSelesai(), nowYear);
             CutiPeriodClassifier.YearPair pair = CutiPeriodClassifier.deriveYearPair(period, request.getTanggalMulai(), request.getTanggalSelesai(), nowYear);
             CutiPegawai cutiPegawai = switch (period) {
@@ -110,7 +110,7 @@ public class PengajuanCutiCommand {
         entity.setJumlahHari(totalHariCuti);
         entity.setJumlahHariKerja(totalHariCuti);
 
-        if (request.getJenisCutiId().equals(cutiProperties.getJenisCutiTahunan())) {
+        if (request.getJenisCutiId().equals(cutiProperties.jenisCutiTahunan())) {
             ECutiPeriod period = CutiPeriodClassifier.classify(request.getTanggalMulai(), request.getTanggalSelesai(), nowYear);
             CutiPeriodClassifier.YearPair pair = CutiPeriodClassifier.deriveYearPair(period, request.getTanggalMulai(), request.getTanggalSelesai(), nowYear);
             switch (period) {

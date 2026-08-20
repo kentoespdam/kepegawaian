@@ -14,7 +14,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "Penggajian — Gaji Batch Master")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/penggajian/batch/master")
@@ -23,6 +26,7 @@ public class GajiBatchMasterController {
     private final GajiBatchMasterQueryService queryService;
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
+    @Operation(summary = "Ambil gaji batch master by periode")
     @GetMapping
     public ResponseEntity<ListResult<GajiBatchMasterResponse>> getGajiBatchMasterByPeriode(
             @Valid @ParameterObject GajiBatchMasterIndexQuery request) {
@@ -30,12 +34,14 @@ public class GajiBatchMasterController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
+    @Operation(summary = "Ambil gaji batch master by id")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<GajiBatchMasterResponse>> getGajiBatchMasterById(@PathVariable Long id) {
         return CustomResult.any(queryService.findById(id).orElse(null));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
+    @Operation(summary = "Ambil gaji batch master by pegawai id")
     @GetMapping("/pegawai/{pegawaiId}")
     public ResponseEntity<PageResult<Page<GajiBatchMasterResponse>>> getGajiBatchMasterByPegawaiId(
             @PathVariable Long pegawaiId,
@@ -44,18 +50,21 @@ public class GajiBatchMasterController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
+    @Operation(summary = "download table gaji")
     @GetMapping("/download/table-gaji/{rootBatchId}")
     public ResponseEntity<?> downloadTableGaji(@PathVariable String rootBatchId) {
         return queryService.downloadTableGaji(rootBatchId);
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
+    @Operation(summary = "download potongan gaji")
     @GetMapping("/download/potongan-gaji/{rootBatchId}")
     public ResponseEntity<?> downloadPotonganGaji(@PathVariable String rootBatchId) {
         return queryService.downloadPotonganGaji(rootBatchId);
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:WRITE')")
+    @Operation(summary = "upload potongan tambahan")
     @PatchMapping(value = "upload/{rootBatchId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<SavedResult<String>> uploadPotonganTambahan(
             @PathVariable String rootBatchId,

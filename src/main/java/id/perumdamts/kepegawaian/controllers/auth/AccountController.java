@@ -15,16 +15,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * GET /account/me — roles + permissions user login untuk UI berbasis permission.
  * Sumber data: authorities principal (ROLE_* = role, ENTITY:ACTION = permission)
  * yang sudah di-inflate oleh JwtAuthFilter/DevAuthFilter (ADR-0037) — tanpa query DB.
  */
+@Tag(name = "Account — Account")
 @RestController
 @RequestMapping("/account")
 public class AccountController {
 
+    @Operation(summary = "me")
     @GetMapping("/me")
     public ResponseEntity<SingleResult<MeResponse>> me() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

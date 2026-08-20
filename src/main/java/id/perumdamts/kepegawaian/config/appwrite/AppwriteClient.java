@@ -25,7 +25,7 @@ public class AppwriteClient {
 
     public AppwriteUser getUser(String id) {
         return restClient.get()
-                .uri(properties.getEndpoint() + "/users/" + id)
+                .uri(properties.endpoint() + "/users/" + id)
                 .headers(headers -> addDefaultHeaders(headers, properties))
                 .retrieve()
                 .body(AppwriteUser.class);
@@ -33,7 +33,7 @@ public class AppwriteClient {
 
     public void createUser(AppwriteUserPostRequest request) {
         restClient.post()
-                .uri(properties.getEndpoint() + "/users")
+                .uri(properties.endpoint() + "/users")
                 .headers(headers -> addDefaultHeaders(headers, properties))
                 .body(request)
                 .retrieve()
@@ -42,7 +42,7 @@ public class AppwriteClient {
 
     public AppwriteUser updateStatus(String id, UserPatchStatusRequest status) {
         return restClient.patch()
-                .uri(properties.getEndpoint() + "/users/" + id + "/status")
+                .uri(properties.endpoint() + "/users/" + id + "/status")
                 .headers(headers -> addDefaultHeaders(headers, properties))
                 .body(status)
                 .retrieve()
@@ -56,7 +56,7 @@ public class AppwriteClient {
 
         try {
             restClient.patch()
-                    .uri(properties.getEndpoint() + "/users/" + id + "/prefs")
+                    .uri(properties.endpoint() + "/users/" + id + "/prefs")
                     .headers(headers -> addDefaultHeaders(headers, properties))
                     .body(wrapper)
                     .retrieve()
@@ -83,7 +83,7 @@ public class AppwriteClient {
     public AppwriteUser validateToken(String token) {
         try {
             return restClient.get()
-                    .uri(properties.getEndpoint() + "/account")
+                    .uri(properties.endpoint() + "/account")
                     .headers(headers -> {
                         addDefaultHeaders(headers, properties);
                         headers.set("X-Appwrite-JWT", token);
@@ -103,7 +103,7 @@ public class AppwriteClient {
     private static void addDefaultHeaders(org.springframework.http.HttpHeaders headers, AppwriteProperties props) {
         headers.set("Content-Type", "application/json");
         headers.set("X-Appwrite-Response-Format", "1.0.0");
-        headers.set("X-Appwrite-Project", props.getProjectId());
-        headers.set("X-Appwrite-Key", props.getApiKey());
+        headers.set("X-Appwrite-Project", props.projectId());
+        headers.set("X-Appwrite-Key", props.apiKey());
     }
 }

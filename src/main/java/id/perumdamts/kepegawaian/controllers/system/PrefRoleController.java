@@ -19,7 +19,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "Sistem — Pref Role")
 @RestController
 @RequestMapping("/system/roles")
 @RequiredArgsConstructor
@@ -31,6 +34,7 @@ public class PrefRoleController {
     private final PrefRoleRepository repository;
 
     @PreAuthorize("hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_ROLE')")
+    @Operation(summary = "List data dengan paginasi")
     @GetMapping
     public ResponseEntity<PageResult<Page<PrefRole>>> index(@Valid @ParameterObject PrefRoleRequest request) {
         Page<PrefRole> result = repository.findAll(request.getSpecification(), request.getPageable());
@@ -38,6 +42,7 @@ public class PrefRoleController {
     }
 
     @PreAuthorize("hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_ROLE')")
+    @Operation(summary = "Daftar semua data")
     @GetMapping("/list")
     public ResponseEntity<ListResult<PrefRole>> list() {
         List<PrefRole> all = repository.findAll();
@@ -45,6 +50,7 @@ public class PrefRoleController {
     }
 
     @PreAuthorize("hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_ROLE')")
+    @Operation(summary = "show")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<PrefRole>> show(@PathVariable String id) {
         PrefRole role = repository.findById(id)
@@ -53,6 +59,7 @@ public class PrefRoleController {
     }
 
     @PreAuthorize("hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_ROLE')")
+    @Operation(summary = "store")
     @PostMapping
     public ResponseEntity<SavedResult<String>> store(@Valid @RequestBody PrefRoleStoreRequest request) {
         boolean isExist = repository.existsById(request.getId());
@@ -64,6 +71,7 @@ public class PrefRoleController {
     }
 
     @PreAuthorize("hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_ROLE')")
+    @Operation(summary = "Perbarui data")
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<String>> update(@PathVariable String id,
                                                       @RequestBody PrefRoleUpdateRequest request) {
@@ -76,6 +84,7 @@ public class PrefRoleController {
 
     @PreAuthorize("hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_ROLE')")
     @Transactional
+    @Operation(summary = "destroy")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> destroy(@PathVariable String id) {
         if (PROTECTED_ROLES.contains(id)) {

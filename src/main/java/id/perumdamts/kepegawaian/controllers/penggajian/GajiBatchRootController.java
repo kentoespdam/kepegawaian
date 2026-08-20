@@ -20,7 +20,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "Penggajian — Gaji Batch Root")
 @RestController
 @RequestMapping("/penggajian/batch")
 @RequiredArgsConstructor
@@ -30,12 +33,14 @@ public class GajiBatchRootController {
     private final GajiBatchRootQueryService queryService;
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
+    @Operation(summary = "List data dengan paginasi")
     @GetMapping
     public ResponseEntity<ListResult<GajiBatchRootResponse>> index(@ParameterObject @Valid GajiBatchRootIndexQuery request) {
         return CustomResult.list(queryService.findAll(request));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
+    @Operation(summary = "by periode")
     @GetMapping("/{periode}/periode/{status}/status")
     public ResponseEntity<ListResult<GajiBatchRootResponse>> byPeriode(
             @PathVariable String periode,
@@ -47,12 +52,14 @@ public class GajiBatchRootController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:PROCESS')")
+    @Operation(summary = "Buat data baru")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<SavedResult<String>> create(@Valid @ModelAttribute GajiBatchRootPostRequest request) {
         return CustomResult.save(commandService.save(request));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:PROCESS')")
+    @Operation(summary = "reprocess")
     @PatchMapping("/{id}/reprocess")
     public ResponseEntity<SavedResult<String>> reprocess(@PathVariable String id,
                                           @Valid @RequestBody GajiBatchRootProcessRequest request) {
@@ -62,6 +69,7 @@ public class GajiBatchRootController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:PROCESS')")
+    @Operation(summary = "verify1")
     @PatchMapping("/{id}/verify1")
     public ResponseEntity<SavedResult<String>> verify1(@PathVariable String id,
                                         @Valid @RequestBody GajiBatchRootProcessRequest request) {
@@ -71,6 +79,7 @@ public class GajiBatchRootController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:PROCESS')")
+    @Operation(summary = "verify2")
     @PatchMapping("/{id}/verify2")
     public ResponseEntity<SavedResult<String>> verify2(@PathVariable String id,
                                         @Valid @RequestBody GajiBatchRootProcessRequest request) {
@@ -80,6 +89,7 @@ public class GajiBatchRootController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:PROCESS')")
+    @Operation(summary = "accept")
     @PatchMapping("/{id}/accept")
     public ResponseEntity<SavedResult<String>> accept(@PathVariable String id,
                                        @Valid @RequestBody GajiBatchRootProcessRequest request) {
@@ -89,6 +99,7 @@ public class GajiBatchRootController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:PROCESS')")
+    @Operation(summary = "Hapus data")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> delete(@PathVariable String id) {
         return CustomResult.delete(commandService.delete(id));

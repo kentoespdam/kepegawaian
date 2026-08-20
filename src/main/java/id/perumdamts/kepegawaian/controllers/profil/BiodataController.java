@@ -14,7 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "Profil Pegawai — Biodata")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/profil/biodata")
@@ -24,48 +27,56 @@ public class BiodataController {
     private final MimeTypesUtils mimeTypesUtils;
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PROFIL:READ')")
+    @Operation(summary = "List data dengan paginasi")
     @GetMapping
     public ResponseEntity<PageResult<Page<BiodataQuery>>> index(@Valid @ParameterObject BiodataIndexQuery query) {
         return CustomResult.page(queryService.pageQuery(query));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PROFIL:READ')")
+    @Operation(summary = "Daftar semua data")
     @GetMapping("/list")
     public ResponseEntity<ListResult<BiodataQuery>> list() {
         return CustomResult.list(queryService.findAll());
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PROFIL:READ')")
+    @Operation(summary = "Detail data berdasarkan ID")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<BiodataDetail>> findById(@PathVariable String id) {
         return CustomResult.any(queryService.getById(id));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PROFIL:APPROVE')")
+    @Operation(summary = "Simpan data baru")
     @PostMapping
     public ResponseEntity<SavedResult<String>> save(@Valid @RequestBody BiodataPostRequest request) {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.create(request)));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PROFIL:APPROVE')")
+    @Operation(summary = "Perbarui data")
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<String>> update(@PathVariable String id, @Valid @RequestBody BiodataPutRequest request) {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.update(id, request, false)));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PROFIL:READ')")
+    @Operation(summary = "Ambil dashboard")
     @GetMapping("/{id}/dashboard")
     public ResponseEntity<SingleResult<BiodataDashboardResponse>> getDashboard(@PathVariable String id) {
         return CustomResult.any(queryService.getDashboard(id));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PROFIL:READ')")
+    @Operation(summary = "Ambil foto profil")
     @GetMapping("/{id}/foto-profil")
     public ResponseEntity<?> getFotoProfil(@PathVariable String id) {
         return queryService.findFotoProfil(id);
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PROFIL:APPROVE')")
+    @Operation(summary = "update foto profil")
     @PutMapping(value = "/{id}/foto-profil", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<SavedResult<String>> updateFotoProfil(@PathVariable String id, @RequestParam("fotoProfil") MultipartFile fotoProfil) {
         String extension = mimeTypesUtils.getExtension(fotoProfil.getContentType());
@@ -75,6 +86,7 @@ public class BiodataController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PROFIL:APPROVE')")
+    @Operation(summary = "Hapus data berdasarkan ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> deleteById(@PathVariable String id) {
         return CustomResult.delete(commandService.deleteById(id));

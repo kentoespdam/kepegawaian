@@ -14,7 +14,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "Kepegawaian — Riwayat Kontrak")
 @RestController
 @RequestMapping("/kepegawaian/riwayat/kontrak")
 @RequiredArgsConstructor
@@ -23,6 +26,7 @@ public class RiwayatKontrakController {
     private final RiwayatKontrakQueryService queryService;
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:READ')")
+    @Operation(summary = "List data dengan paginasi")
     @GetMapping("/pegawai/{id}")
     public ResponseEntity<PageResult<Page<RiwayatKontrakQuery>>> index(@PathVariable Long id, @Valid @ParameterObject RiwayatKontrakRequest request) {
         request.setPegawaiId(id);
@@ -30,24 +34,28 @@ public class RiwayatKontrakController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:READ')")
+    @Operation(summary = "Detail data berdasarkan ID")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<RiwayatKontrakQuery>> findById(@PathVariable Long id) {
         return CustomResult.any(queryService.findById(id));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:WRITE')")
+    @Operation(summary = "Simpan data baru")
     @PostMapping
     public ResponseEntity<SavedResult<Long>> save(@Valid @RequestBody RiwayatKontrakPostRequest request) {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.save(request).getId()));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:WRITE')")
+    @Operation(summary = "Perbarui data")
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<Long>> update(@PathVariable Long id, @Valid @RequestBody RiwayatKontrakPutRequest request) {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.update(id, request).getId()));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:DELETE')")
+    @Operation(summary = "Hapus data")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> delete(@PathVariable Long id) {
         return CustomResult.delete(commandService.delete(id));

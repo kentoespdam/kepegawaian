@@ -17,7 +17,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "Profil Pegawai — Profil Update")
 @RestController
 @RequestMapping("/profil/profil-update")
 @RequiredArgsConstructor
@@ -27,18 +30,21 @@ public class ProfilUpdateController {
 
     // ADR-0038/0039: antrian approval profil khusus HRD/ADMIN (kepegawaian-t3s3) — tidak untuk USER
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PROFIL:APPROVE')")
+    @Operation(summary = "List data dengan paginasi")
     @GetMapping
     public ResponseEntity<PageResult<Page<ProfileUpdateQuery>>> index(@ParameterObject @Valid ProfileUpdateRequest request) {
         return CustomResult.page(queryService.findPage(request));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PROFIL:APPROVE')")
+    @Operation(summary = "show")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<ProfilUpdateDetail<?>>> show(@PathVariable Long id) {
         return CustomResult.any(queryService.findById(id));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PROFIL:APPROVE')")
+    @Operation(summary = "approval")
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<String>> approval(@PathVariable Long id, @Valid @RequestBody ProfilUpdateAcceptRequest approval) {
         return CustomResult.save(service.approval(id, approval));

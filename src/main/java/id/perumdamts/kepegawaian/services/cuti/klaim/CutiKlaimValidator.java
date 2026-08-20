@@ -22,7 +22,7 @@ public class CutiKlaimValidator {
                 request.getRefCutiId(), EApprovalCutiStatus.APPROVED
         ).orElseThrow(() -> new RuntimeException("Unknown Cuti Pegawai"));
 
-        if (!List.of(cutiProperties.getJenisCutiTahunan(), cutiProperties.getJenisCutiIbadah()).contains(cutiPegawai.getJenisCuti().getId()))
+        if (!List.of(cutiProperties.jenisCutiTahunan(), cutiProperties.jenisCutiIbadah()).contains(cutiPegawai.getJenisCuti().getId()))
             throw new RuntimeException("Cuti ini tidak perlu di klaim");
 
         // Cek apakah pengajuan klaim cuti ini sudah ada
@@ -43,7 +43,7 @@ public class CutiKlaimValidator {
         // Cek apakah ada cuti melaksanakan ibadah yang masih berlangsung atau belum disetujui
         boolean existCutiIbadah = repository.existsByPegawai_IdAndJenisCuti_IdAndApprovalCutiStatusIn(
                 request.getPegawaiId(),
-                cutiProperties.getJenisCutiIbadah(),
+                cutiProperties.jenisCutiIbadah(),
                 List.of(EApprovalCutiStatus.PENDING, EApprovalCutiStatus.RETURNED)
         );
         if (existCutiIbadah) {

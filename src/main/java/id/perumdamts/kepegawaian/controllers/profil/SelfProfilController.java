@@ -19,12 +19,15 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * Self-service profil (ADR-0038): PATCH /profil — edit biodata milik sendiri,
  * SELALU masuk approval queue (changedStatus=true). NIK diambil dari principal,
  * bukan dari path/body, sehingga tidak bisa edit profil orang lain.
  */
+@Tag(name = "Profil Pegawai — Self Profil")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/profil")
@@ -33,6 +36,7 @@ public class SelfProfilController {
     private final PegawaiRepository pegawaiRepository;
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PROFIL:UPDATE')")
+    @Operation(summary = "Perbarui sebagian biodata self")
     @PatchMapping
     public ResponseEntity<SavedResult<String>> patchBiodataSelf(@Valid @RequestBody BiodataPatchRequest request) {
         AppwriteUser principal = (AppwriteUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

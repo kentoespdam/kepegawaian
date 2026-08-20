@@ -2,7 +2,6 @@ package id.perumdamts.kepegawaian.repositories.master.jooq;
 
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.master.golongan.GolonganIndexQuery;
-import id.perumdamts.kepegawaian.dto.master.golongan.GolonganListResponse;
 import id.perumdamts.kepegawaian.dto.master.golongan.GolonganQuery;
 import id.perumdamts.kepegawaian.jooq.tables.Golongan;
 import lombok.RequiredArgsConstructor;
@@ -65,11 +64,11 @@ public class GolonganQueryRepository {
                 .fetchOptionalInto(GolonganQuery.class);
     }
 
-    public List<GolonganListResponse> listQuery() {
+    public List<GolonganQuery> listQuery() {
         return dsl.select(Golongan.GOLONGAN.ID, Golongan.GOLONGAN.GOLONGAN_, Golongan.GOLONGAN.PANGKAT)
                 .from(Golongan.GOLONGAN)
                 .where(Golongan.GOLONGAN.IS_DELETED.eq(false))
                 .orderBy(Golongan.GOLONGAN.GOLONGAN_.asc())
-                .fetchInto(GolonganListResponse.class);
+                .fetchInto(GolonganQuery.class);
     }
 }

@@ -35,7 +35,7 @@ public class CutiKuotaUpdateByCutiService {
         LocalDate tanggalSelesai = cutiPegawai.getTanggalSelesai();
         int startYear = tanggalMulai.getYear();
 
-        if (cutiPegawai.getJenisCuti().getId().equals(cutiProperties.getJenisCutiTahunan())) {
+        if (cutiPegawai.getJenisCuti().getId().equals(cutiProperties.jenisCutiTahunan())) {
             ECutiPeriod period = CutiPeriodClassifier.resolvePeriod(tanggalMulai, tanggalSelesai, cutiPegawai.getCreatedAt());
             CutiPeriodClassifier.YearPair pair = CutiPeriodClassifier.deriveYearPair(
                     period, tanggalMulai, tanggalSelesai,

@@ -75,8 +75,8 @@ public class PegawaiCommandService {
                 .orElseThrow(() -> new NotFoundException("Unknown Profesi"));
 
         Golongan golongan = request.getGolonganId() == null ||
-                pegawaiProperties.getExcludedGolonganStatuses().contains(request.getStatusPegawai()) ||
-                pegawaiProperties.getExcludedJabatanIds().contains(request.getJabatanId()) ? null :
+                pegawaiProperties.excludedGolonganStatuses().contains(request.getStatusPegawai()) ||
+                pegawaiProperties.excludedJabatanIds().contains(request.getJabatanId()) ? null :
                 golonganRepository.findById(request.getGolonganId())
                         .orElseThrow(() -> new NotFoundException("Unknown Golongan"));
 
@@ -127,8 +127,8 @@ public class PegawaiCommandService {
                 profesiRepository.findById(request.getProfesiId()).orElseThrow(() -> new NotFoundException("Unknown Profesi"));
 
         Golongan golongan = request.getGolonganId() == null ||
-                pegawaiProperties.getExcludedGolonganStatuses().contains(request.getStatusPegawai()) ||
-                pegawaiProperties.getExcludedJabatanIds().contains(request.getJabatanId()) ? null :
+                pegawaiProperties.excludedGolonganStatuses().contains(request.getStatusPegawai()) ||
+                pegawaiProperties.excludedJabatanIds().contains(request.getJabatanId()) ? null :
                 golonganRepository.findById(request.getGolonganId())
                         .orElseThrow(() -> new NotFoundException("Unknown Golongan"));
 

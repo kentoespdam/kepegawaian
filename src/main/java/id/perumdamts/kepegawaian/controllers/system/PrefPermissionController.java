@@ -12,7 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "Sistem — Pref Permission")
 @RestController
 @RequestMapping("/system")
 @RequiredArgsConstructor
@@ -21,6 +24,7 @@ public class PrefPermissionController {
     private final PrefPermissionRepository permissionRepository;
 
     @PreAuthorize("hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_ROLE')")
+    @Operation(summary = "Daftar semua data")
     @GetMapping("/permissions")
     public ResponseEntity<ListResult<PrefPermission>> list() {
         return CustomResult.list(permissionRepository.findAll());
@@ -28,6 +32,7 @@ public class PrefPermissionController {
 
     @PreAuthorize("hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_ROLE')")
     @Transactional
+    @Operation(summary = "assign")
     @PostMapping("/roles/{roleId}/permissions/{permName}")
     public ResponseEntity<SavedResult<String>> assign(@PathVariable String roleId, @PathVariable String permName) {
         PrefRole role = roleRepository.findById(roleId)
@@ -43,6 +48,7 @@ public class PrefPermissionController {
 
     @PreAuthorize("hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_ROLE')")
     @Transactional
+    @Operation(summary = "revoke")
     @DeleteMapping("/roles/{roleId}/permissions/{permName}")
     public ResponseEntity<DeletedResult> revoke(@PathVariable String roleId, @PathVariable String permName) {
         PrefRole role = roleRepository.findById(roleId)

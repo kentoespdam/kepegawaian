@@ -66,7 +66,7 @@ class CutiKuotaUpdateByCutiServiceTest {
         CutiKuota kuota2025 = kuota(2025, 10, 30);
         CutiKuota kuota2026 = kuota(2026, 0, 12);
 
-        when(cutiProperties.getJenisCutiTahunan()).thenReturn(1L);
+        when(cutiProperties.jenisCutiTahunan()).thenReturn(1L);
         when(repository.findByPegawai_IdAndTahun(7L, 2025)).thenReturn(Optional.of(kuota2025));
         when(repository.findByPegawai_IdAndTahun(7L, 2026)).thenReturn(Optional.of(kuota2026));
 
@@ -88,7 +88,7 @@ class CutiKuotaUpdateByCutiServiceTest {
                 LocalDateTime.of(2026, 10, 1, 9, 0), 3, 0);
         CutiKuota kuota2026 = kuota(2026, 5, 20);
 
-        when(cutiProperties.getJenisCutiTahunan()).thenReturn(1L);
+        when(cutiProperties.jenisCutiTahunan()).thenReturn(1L);
         when(repository.findByPegawai_IdAndTahun(7L, 2026)).thenReturn(Optional.of(kuota2026));
 
         service.updateKuota(cuti);
@@ -108,7 +108,7 @@ class CutiKuotaUpdateByCutiServiceTest {
         CutiKuota kuota2026 = kuota(2026, 10, 30);
         CutiKuota kuota2028 = kuota(2028, 0, 10);
 
-        when(cutiProperties.getJenisCutiTahunan()).thenReturn(1L);
+        when(cutiProperties.jenisCutiTahunan()).thenReturn(1L);
         when(repository.findByPegawai_IdAndTahun(7L, 2026)).thenReturn(Optional.of(kuota2026));
         when(repository.findByPegawai_IdAndTahun(7L, 2028)).thenReturn(Optional.of(kuota2028));
 

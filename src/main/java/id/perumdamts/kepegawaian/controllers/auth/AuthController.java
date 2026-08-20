@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClient;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "Autentikasi — Auth")
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -26,6 +29,7 @@ public class AuthController {
     private final RedisHelper redisHelper;
     private final String jwtHeader = "X-Appwrite-JWT";
 
+    @Operation(summary = "List data dengan paginasi")
     @GetMapping("/session")
     public ResponseEntity<String> index(@RequestHeader(value = jwtHeader) String token) {
         String result = restClient.get()
@@ -38,6 +42,7 @@ public class AuthController {
         return ResponseEntity.ok(result);
     }
 
+    @Operation(summary = "csrf token")
     @GetMapping("/csrf-token")
     public ResponseEntity<SingleResult<String>> csrfToken() {
         return CustomResult.any(redisHelper.generateToken());

@@ -16,7 +16,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "Kepegawaian — Riwayat Terminasi")
 @RestController
 @RequestMapping("/kepegawaian/riwayat/terminasi")
 @RequiredArgsConstructor
@@ -25,30 +28,35 @@ public class RiwayatTerminasiController {
     private final RiwayatTerminasiQueryService queryService;
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:READ')")
+    @Operation(summary = "List data dengan paginasi")
     @GetMapping
     public ResponseEntity<PageResult<Page<RiwayatTerminasiQuery>>> index(@Valid @ParameterObject RiwayatTerminasiRequest request) {
         return CustomResult.page(queryService.findPage(request));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:READ')")
+    @Operation(summary = "index calon pensiun")
     @GetMapping("/calon-pensiun")
     public ResponseEntity<PageResult<Page<PegawaiResponse>>> indexCalonPensiun(@Valid @ParameterObject RiwayatTerminasiRequest request) {
         return CustomResult.page(queryService.findPageCalonPensiun(request));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:READ')")
+    @Operation(summary = "detail")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<RiwayatTerminasiQuery>> detail(@PathVariable Long id) {
         return CustomResult.any(queryService.findById(id));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:WRITE')")
+    @Operation(summary = "Buat data baru")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<SavedResult<Long>> create(@Valid @ModelAttribute RiwayatTerminasiPostRequest request) {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.save(request).getId()));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:WRITE')")
+    @Operation(summary = "Perbarui data")
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<SavedResult<Long>> update(@PathVariable Long id, @Valid @ModelAttribute RiwayatTerminasiPutRequest request) {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.update(id, request).getId()));

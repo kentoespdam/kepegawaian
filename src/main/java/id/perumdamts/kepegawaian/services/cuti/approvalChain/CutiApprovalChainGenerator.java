@@ -30,20 +30,20 @@ public class CutiApprovalChainGenerator {
         Long jabatanLevelId = cutiPegawai.getJabatan().getLevel().getId();
         List<Long> steps = new ArrayList<>();
 
-        if (jabatanLevelId.equals(cutiProperties.getLevelManager())) {
-            steps.add(cutiProperties.getSupervisorSdm());
-            steps.add(cutiProperties.getManagerSdm());
-            steps.add(cutiProperties.getDirekturUmum());
-            steps.add(cutiProperties.getDirekturUtama());
-        } else if (jabatanLevelId.equals(cutiProperties.getLevelSupervisor())) {
+        if (jabatanLevelId.equals(cutiProperties.levelManager())) {
+            steps.add(cutiProperties.supervisorSdm());
+            steps.add(cutiProperties.managerSdm());
+            steps.add(cutiProperties.direkturUmum());
+            steps.add(cutiProperties.direkturUtama());
+        } else if (jabatanLevelId.equals(cutiProperties.levelSupervisor())) {
             Jabatan manager = cutiPegawai.getJabatan().getParent();
             if (manager != null) {
                 steps.add(manager.getId());
             }
-            steps.add(cutiProperties.getSupervisorSdm());
-            steps.add(cutiProperties.getManagerSdm());
-            steps.add(cutiProperties.getDirekturUmum());
-            steps.add(cutiProperties.getDirekturUtama());
+            steps.add(cutiProperties.supervisorSdm());
+            steps.add(cutiProperties.managerSdm());
+            steps.add(cutiProperties.direkturUmum());
+            steps.add(cutiProperties.direkturUtama());
         } else {
             Jabatan supervisor = cutiPegawai.getJabatan().getParent();
             if (supervisor != null) {
@@ -53,9 +53,9 @@ public class CutiApprovalChainGenerator {
                     steps.add(manager.getId());
                 }
             }
-            steps.add(cutiProperties.getSupervisorSdm());
-            steps.add(cutiProperties.getManagerSdm());
-            steps.add(cutiProperties.getDirekturUmum());
+            steps.add(cutiProperties.supervisorSdm());
+            steps.add(cutiProperties.managerSdm());
+            steps.add(cutiProperties.direkturUmum());
         }
 
         List<Long> cleanSteps = steps.stream()
@@ -76,10 +76,10 @@ public class CutiApprovalChainGenerator {
         }
 
         java.util.Set<Long> hrAndDireksiIds = java.util.Set.of(
-                cutiProperties.getSupervisorSdm(),
-                cutiProperties.getManagerSdm(),
-                cutiProperties.getDirekturUmum(),
-                cutiProperties.getDirekturUtama()
+                cutiProperties.supervisorSdm(),
+                cutiProperties.managerSdm(),
+                cutiProperties.direkturUmum(),
+                cutiProperties.direkturUtama()
         );
 
         boolean foundWrite = false;
@@ -113,7 +113,7 @@ public class CutiApprovalChainGenerator {
 
     public void forKlaim(CutiPegawai cutiPegawai) {
         List<CutiApprovalChain> approvalChain = new ArrayList<>();
-        addApprovalChainIfJabatanExists(approvalChain, cutiPegawai, cutiProperties.getSupervisorSdm());
+        addApprovalChainIfJabatanExists(approvalChain, cutiPegawai, cutiProperties.supervisorSdm());
         if (!approvalChain.isEmpty()) {
             approvalChain.getFirst().setApprovalStatus(EApprovalCutiStatus.PENDING);
             approvalChain.getFirst().setReadWriteStatus(EReadWriteStatus.WRITE);

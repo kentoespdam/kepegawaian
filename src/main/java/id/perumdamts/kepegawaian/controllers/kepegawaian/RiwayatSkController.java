@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
 import java.util.Set;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "Kepegawaian — Riwayat Sk")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/kepegawaian/riwayat/sk")
@@ -25,30 +28,35 @@ public class RiwayatSkController {
     private final Validator validator = factory.getValidator();
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:READ')")
+    @Operation(summary = "List data dengan paginasi")
     @GetMapping
     public ResponseEntity<PageResult<Page<RiwayatSkQuery>>> index(@Valid @ParameterObject RiwayatSkRequest request) {
         return CustomResult.page(queryService.findPage(request));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:READ')")
+    @Operation(summary = "Daftar semua data")
     @GetMapping("/list")
     public ResponseEntity<ListResult<RiwayatSkQuery>> list(@Valid @ParameterObject RiwayatSkListRequest request) {
         return CustomResult.list(queryService.findAll(request));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:READ')")
+    @Operation(summary = "detail")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<RiwayatSkQuery>> detail(@PathVariable Long id) {
         return CustomResult.any(queryService.findById(id));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:READ')")
+    @Operation(summary = "find by pegawai id")
     @GetMapping("/pegawai/{id}")
     public ResponseEntity<PageResult<Page<RiwayatSkQuery>>> findByPegawaiId(@PathVariable Long id, @Valid @ParameterObject RiwayatSkRequest request) {
         return CustomResult.page(queryService.findByPegawaiId(id, request));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:WRITE')")
+    @Operation(summary = "Simpan data baru")
     @PostMapping
     public ResponseEntity<SavedResult<Long>> save(@Valid @RequestBody RiwayatSkPostRequest request) {
         if (Objects.nonNull(request.getUpdateMaster()) && request.getUpdateMaster()) {
@@ -62,6 +70,7 @@ public class RiwayatSkController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:WRITE')")
+    @Operation(summary = "Perbarui data")
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<Long>> update(@PathVariable Long id, @Valid @RequestBody RiwayatSkPutRequest request) {
         if (Objects.nonNull(request.getUpdateMaster()) && request.getUpdateMaster()) {
@@ -74,6 +83,7 @@ public class RiwayatSkController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:DELETE')")
+    @Operation(summary = "Hapus data")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> delete(@PathVariable Long id) {
         return CustomResult.delete(commandService.delete(id));

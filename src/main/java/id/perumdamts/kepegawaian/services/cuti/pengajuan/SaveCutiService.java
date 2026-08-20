@@ -80,7 +80,7 @@ public class SaveCutiService {
         int totalRemainingQuota = currentKuota + prevKuota;
         MinimalCutiRule.check(totalHariCuti, totalRemainingQuota);
 
-        if (request.getJenisCutiId().equals(cutiProperties.getJenisCutiIbadah())) {
+        if (request.getJenisCutiId().equals(cutiProperties.jenisCutiIbadah())) {
             CutiKuotaAllocationResult res = CutiKuotaAllocator.allocate(currentKuota, 0, currentKuota);
             entity.setRiwayatKuota0(prevKuota);
             entity.setRiwayatPakai0(0);
@@ -102,8 +102,8 @@ public class SaveCutiService {
     private void setPic(CutiPegawai cutiPegawai) {
         Jabatan jabatan = cutiPegawai.getPegawai().getJabatan();
 
-        if (jabatan.getLevel().getId().equals(cutiProperties.getLevelManager())) {
-            jabatanRepository.findById(cutiProperties.getSupervisorSdm()).ifPresent(cutiPegawai::setPicSaatIni);
+        if (jabatan.getLevel().getId().equals(cutiProperties.levelManager())) {
+            jabatanRepository.findById(cutiProperties.supervisorSdm()).ifPresent(cutiPegawai::setPicSaatIni);
         } else {
             cutiPegawai.setPicSaatIni(jabatan.getParent());
         }

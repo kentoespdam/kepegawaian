@@ -14,7 +14,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "Kepegawaian — Riwayat Mutasi")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/kepegawaian/riwayat/mutasi")
@@ -25,6 +28,7 @@ public class RiwayatMutasiController {
     private final Validator validator = factory.getValidator();
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:READ')")
+    @Operation(summary = "List data dengan paginasi")
     @GetMapping("/pegawai/{id}")
     public ResponseEntity<PageResult<Page<RiwayatMutasiQuery>>> index(@PathVariable Long id, @Valid @ParameterObject RiwayatMutasiRequest request) {
         request.setPegawaiId(id);
@@ -32,12 +36,14 @@ public class RiwayatMutasiController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:READ')")
+    @Operation(summary = "detail")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<RiwayatMutasiQuery>> detail(@PathVariable Long id) {
         return CustomResult.any(queryService.findById(id));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:WRITE')")
+    @Operation(summary = "Simpan data baru")
     @PostMapping
     public ResponseEntity<SavedResult<Long>> save(@Valid @RequestBody RiwayatMutasiPostRequest request) {
         if (request.getJenisMutasi().equals(EJenisMutasi.MUTASI_GOLONGAN) ||
@@ -63,12 +69,14 @@ public class RiwayatMutasiController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:WRITE')")
+    @Operation(summary = "Perbarui data")
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<Long>> update(@PathVariable Long id, @Valid @RequestBody RiwayatMutasiPutRequest request) {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.update(id, request).getId()));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:DELETE')")
+    @Operation(summary = "Hapus data")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> delete(@PathVariable Long id) {
         return CustomResult.delete(commandService.delete(id));

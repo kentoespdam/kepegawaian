@@ -50,7 +50,7 @@ public class CutiPengajuanValidator {
         );
 
         boolean existBesar = repository.existsByJenisCutiAndYear(
-                pegawaiId, cutiProperties.getJenisCutiBesar(),
+                pegawaiId, cutiProperties.jenisCutiBesar(),
                 request.getTanggalMulai().getYear(), activeStatuses
         );
         if (existBesar) {
@@ -58,7 +58,7 @@ public class CutiPengajuanValidator {
         }
 
         boolean existIbadah = repository.existsByPegawai_IdAndJenisCuti_IdAndApprovalCutiStatusIn(
-                pegawaiId, cutiProperties.getJenisCutiIbadah(), activeStatuses
+                pegawaiId, cutiProperties.jenisCutiIbadah(), activeStatuses
         );
         if (existIbadah) {
             throw new RuntimeException("Anda tidak berhak cuti tahunan karena telah mengambil cuti melaksanakan ibadah");

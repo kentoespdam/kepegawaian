@@ -9,7 +9,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "Laporan — Laporan Mutasi")
 @RestController
 @RequestMapping("/laporan/kepegawaian/mutasi")
 @RequiredArgsConstructor
@@ -18,12 +21,14 @@ public class LaporanMutasiController {
     private final LaporanKepegawaianService service;
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
+    @Operation(summary = "lap mutasi")
     @GetMapping("/{from_date}/{to_date}")
     public ResponseEntity<SingleResult<Object>> lapMutasi(@PathVariable String from_date, @PathVariable String to_date, @RequestParam(required = false) EJenisMutasi jenis_mutasi) {
         return CustomResult.any(service.getObject(urlBuilder("/", from_date, to_date, jenis_mutasi)));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
+    @Operation(summary = "lap mutasi excel")
     @GetMapping("/excel/{from_date}/{to_date}")
     public ResponseEntity<?> lapMutasiExcel(@PathVariable String from_date, @PathVariable String to_date, @RequestParam(required = false) EJenisMutasi jenis_mutasi) {
         return service.getExport(urlBuilder("/excel", from_date, to_date, jenis_mutasi));
