@@ -68,7 +68,7 @@ Tiap issue: `bd update <id> --claim` saat mulai, `bd close <id>` saat selesai (t
 - [x] grep `LampiranProfilService` & `LampiranProfilResponse` = 0 pemakai produktif
 - [x] HAPUS: `LampiranProfilService.java`, `LampiranProfilServiceImpl.java`, `LampiranProfilResponse.java` (hapus bersih, bukan shim)
 - [x] detect_changes → `./gradlew test` hijau (satu batch `git add` di akhir)
-- [ ] `bd close kepegawaian-94u.3`
+- [x] `bd close kepegawaian-94u.3`
 
 ---
 
