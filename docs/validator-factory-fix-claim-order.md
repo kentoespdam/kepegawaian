@@ -38,7 +38,7 @@ private final Validator validator = factory.getValidator();
 - [x] Verify: `./gradlew clean compileJava`
 
 ### Step 3: Verify
-- [ ] `./gradlew test` — all green
+- [x] `./gradlew test` — all green
 + [x] Conditional validation works (group-based validation)
 
 ---

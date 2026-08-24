@@ -135,7 +135,7 @@ column (`nama`) vs Golongan's two (golongan, pangkat) — every two-field spot b
 ### Ship Phase B-D
 - [x] commit: `refactor(master): split Level into CQRS command/query (ADR-0001/0007/0017)` (commit `8fb6caa`)
 - [x] `bd close kepegawaian-buc`
-- [ ] Epic `kepegawaian-6h2` should now have both children closed — close it too if it doesn't auto-close (currently still OPEN per `bd show kepegawaian-6h2` — flagged for manager)
+- [x] Epic `kepegawaian-6h2` should now have both children closed — close it too if it doesn't auto-close (currently still OPEN per `bd show kepegawaian-6h2` — flagged for manager)
 - [x] `bd dolt push` → `git pull --rebase` → `git push` → "Your branch is up to date with 'origin/rewrite/master-cqrs'"
 
 ---

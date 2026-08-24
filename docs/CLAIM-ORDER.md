@@ -27,7 +27,7 @@ Hormati dependency. Claim satu-per-satu: `bd update <id> --claim` → kerjakan �
 
 - [x] **kepegawaian-jyh** (P3) — Audit FK-duplikat semua read-DTO (§4c)
   - Cuti sudah bersih. `pegawaiId` cuti BUKAN duplikat (tak ada nested pegawai).
-- [ ] **kepegawaian-a66** (P3) — Migrasi DTO/read model sisi Query CQRS ke Java record
+- [x] **kepegawaian-a66** (P3) — Migrasi DTO/read model sisi Query CQRS ke Java record
   - ✅ Anak **2fl**, **9iy**, **a66.1** sudah selesai (commit `e73e759`). Induk `a66` masih open — perlu close bila semua anak sudah done.
 
 ---

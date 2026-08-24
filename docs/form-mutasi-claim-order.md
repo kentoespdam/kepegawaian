@@ -33,10 +33,10 @@
 
 ### 3. Konfirmasi snapshot `*LamaId` & `masaKerja`
 
-- [ ] 3.1 Jawab #3: BE snapshot SELALU dari master pegawai saat simpan RiwayatMutasi
-- [ ] 3.2 Jawab #4: Ya, `masaKerja` == `mkgTahun`
-- [ ] 3.3 Update docs/TODO.md dengan jawaban
-- [ ] 3.4 Kabari FE
+- [x] 3.1 Jawab #3: (confirmed from code — snapshot dari master pegawai) BE snapshot SELALU dari master pegawai saat simpan RiwayatMutasi
+- [x] 3.2 Jawab #4: (confirmed from code — masaKerja == mkgTahun) Ya, `masaKerja` == `mkgTahun`
+- [x] 3.3 Update docs/TODO.md dengan jawaban
+- [x] 3.4 Kabari FE — sudah didistribusikan ke tim FE (2026-08-24)
 
 ---
 

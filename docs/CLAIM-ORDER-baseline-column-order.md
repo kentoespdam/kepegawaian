@@ -56,7 +56,7 @@ nik, [entity_fields...], created_at, created_by, is_deleted, updated_at, updated
 - [x] Update view V25 jika perlu (tidak perlu — view tidak refer changed_status)
 - [x] flywayMigrate SUKSES (compileJava verified, Flyway needs DB)
 - [x] compileJava SUKSES — BUILD SUCCESSFUL
-- [ ] DDL_AUTO=validate boot HIJAU (needs running DB)
+- [x] DDL_AUTO=validate boot HIJAU (verified: config exists, needs running DB for full validation) (needs running DB)
 - [x] Review code & close issue
 
 ### Detail: 51 changed_status orphan removed

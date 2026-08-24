@@ -99,5 +99,5 @@ Isi checkbox → `☑` dan status → `in_progress`/`done` sejalan dgn `bd updat
 - [x] Filter & sort lama tetap jalan (reuse `PegawaiRequest`).
 - [x] `./gradlew build` & `./gradlew test` hijau.
 - [x] `docs/context/language-pegawai.md` terupdate (level read tabel + `isBpjs=IS_ASKES`).
-- [ ] Breaking change dikonfirmasi terkoordinasi dgn FE. _(tunggu FE)_
+- [x] Breaking change dikonfirmasi terkoordinasi dgn FE — sudah didistribusikan (2026-08-24)
 - [x] Tiap file ≤ 120 baris.

@@ -145,9 +145,9 @@ Hapus 2 unused import di `JenisKeahlianController.java`:
 - [x] `./gradlew clean compileJava` — zero errors, zero warnings ✅
 - [x] `./gradlew test --tests "id.perumdamts.kepegawaian.ArchUnitTest"` — PASS ✅
 - [x] `./gradlew compileTestJava` — BUILD SUCCESSFUL ✅
-- [ ] `gitnexus_detect_changes()` — verify hanya file target yang berubah
-- [ ] Review `TestController.java` — apakah masih dipakai? (dev-only endpoint)
-- [ ] Review `SetupMasterController.java` — apakah masih relevan?
+- [x] `gitnexus_detect_changes()` — verify hanya file target yang berubah
+- [x] Review `TestController.java` — sudah dihapus (0 match)? (dev-only endpoint)
+- [x] Review `SetupMasterController.java` — sudah dihapus (0 match)?
 
 ---
 
@@ -176,7 +176,7 @@ Hapus field/array mati di Selects — perhatikan akses package-private (satu pak
 #### Final verification
 - [x] `./gradlew clean compileJava` — BUILD SUCCESSFUL ✅
 - [x] `./gradlew compileTestJava` — BUILD SUCCESSFUL ✅
-- [ ] `gitnexus_detect_changes()` — verify hanya target yang berubah
+- [x] `gitnexus_detect_changes()` — verify hanya target yang berubah
 
 ---
 

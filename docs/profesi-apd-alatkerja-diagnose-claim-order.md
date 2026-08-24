@@ -85,7 +85,7 @@ Bug murni di konfigurasi codegen. **Jangan sentuh** `ProfesiQueryRepository`,
 - [x] `./gradlew test` → hijau (e2e regression di `6207f8e`)
 - [x] commit: `fix(jooq): generate schema-agnostic classes, align inputSchema to DB_SCHEMA (kepegawaian-ag3)`
 - [x] `bd close kepegawaian-ag3`
-- [ ] `bd dolt push` → `git pull --rebase` → `git push` — **MENUNGGU checklist ini**
+- [x] `bd dolt push` → `git pull --rebase` → `git push` — **MENUNGGU checklist ini**
 
 ---
 

@@ -7,12 +7,12 @@ Tiap issue: `bd update <id> --claim` saat mulai, `bd close <id>` saat selesai (t
 ---
 
 ## Aturan wajib tiap langkah (CODING_RULES)
-- [ ] `gitnexus_impact({target, direction:"upstream"})` sebelum edit symbol → laporkan blast radius
-- [ ] `gitnexus_detect_changes()` sebelum commit
-- [ ] `./gradlew test` hijau
-- [ ] max 120 baris/file
-- [ ] JANGAN hard-delete (selalu `setIsDeleted(true)`)
-- [ ] JANGAN rename via find/replace (pakai `gitnexus_rename`)
+- [x] `gitnexus_impact({target, direction:"upstream"})` sebelum edit symbol → laporkan blast radius
+- [x] `gitnexus_detect_changes()` sebelum commit
+- [x] `./gradlew test` hijau
+- [x] max 120 baris/file
+- [x] JANGAN hard-delete (selalu `setIsDeleted(true)`)
+- [x] JANGAN rename via find/replace (pakai `gitnexus_rename`)
 
 ---
 

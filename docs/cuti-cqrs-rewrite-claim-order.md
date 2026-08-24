@@ -307,10 +307,10 @@
 
 ## Ship (tiap fase)
 
-- [ ] `gitnexus_detect_changes()` — scope hanya simbol yang diharapkan
-- [ ] `git add` + commit (pesan rujuk Keputusan # & ADR)
-- [ ] `bd close <id>`
-- [ ] `bd dolt push` (no-op bila no remote) → `git pull --rebase` → `git push` → verify "up to date with origin"
+- [x] `gitnexus_detect_changes()` — scope hanya simbol yang diharapkan
+- [x] `git add` + commit (pesan rujuk Keputusan # & ADR)
+- [x] `bd close <id>`
+- [x] `bd dolt push` (no-op bila no remote) → `git pull --rebase` → `git push` → verify "up to date with origin"
 
 ---
 

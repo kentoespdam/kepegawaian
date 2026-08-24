@@ -105,11 +105,11 @@ Di **prod** (`!development`): chain tidak berubah sama sekali — `JwtAuthFilter
 
 ## F. Pitfalls
 
-- [ ] **Jangan lupa filter order**: `jwtAuthFilter` harus di-register sebelum `devAuthFilter` di chain dev. Kalau `devAuthFilter` duluan, `clearContext()`-nya bisa menghapus auth hasil JwtAuthFilter (jika trigger tanpa-Bearer salah)
-- [ ] **`finally { clearContext() }`** di DevAuthFilter hanya boleh mengeksekusi saat DEV di-inject — jangan clear auth asli Appwrite
-- [ ] **Prod chain jangan tersentuh** — scope epic ini hanya dev chain + AppwriteClient + JwtAuthFilter short-circuit
-- [ ] **Post-mv re-Read**: kalau ada `git mv`, baca ulang path baru sebelum Edit
-- [ ] **Clean compileJava**: tutup epic dengan `./gradlew clean compileJava`
+- [x] **Jangan lupa filter order**: `jwtAuthFilter` harus di-register sebelum `devAuthFilter` di chain dev. Kalau `devAuthFilter` duluan, `clearContext()`-nya bisa menghapus auth hasil JwtAuthFilter (jika trigger tanpa-Bearer salah)
+- [x] **`finally { clearContext() }`** di DevAuthFilter hanya boleh mengeksekusi saat DEV di-inject — jangan clear auth asli Appwrite
+- [x] **Prod chain jangan tersentuh** — scope epic ini hanya dev chain + AppwriteClient + JwtAuthFilter short-circuit
+- [x] **Post-mv re-Read**: kalau ada `git mv`, baca ulang path baru sebelum Edit
+- [x] **Clean compileJava**: tutup epic dengan `./gradlew clean compileJava`
 
 ---
 

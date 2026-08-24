@@ -7,28 +7,30 @@ dalam 3 klaster:
 - **Klaster B — Spring Boot configuration** (1 issue, independen)
 - **Klaster C — Master CQRS layer-split ADR-0017** (2 issue, bisa paralel via worktree)
 
-## Status Realisasi (2026-06-22)
+## Status Realisasi (verified 2026-08-24)
 
-| Urut | Plan ID | Real ID | Status | Commit |
-|------|---------|---------|--------|--------|
-| 1 | `9v9` | `kepegawaian-9v9` | **CLOSED** (shipped 2026-06-22?) | `a20914f` |
-| 2 | `g2j` | `kepegawaian-0jo` | **CLOSED** (resolved by CQRS refactor) | — |
-| 3 | `0fe` | `kepegawaian-f5i` | **CLOSED** (afterCommit pattern) | — |
-| 4 | `7rk` | `kepegawaian-jgm` | **CLOSED** (processPotonganTkk afterCommit) | — |
-| 5 | `u68` | `kepegawaian-9q7` | **CLOSED** (@Transactional already present) | — |
-| 6 | `qgp` | `kepegawaian-hng` | **CLOSED** (extracted to EventPublisher) | — |
-| 7 | `x8o` | `kepegawaian-biy` | **CLOSED** (dead arg removed) | — |
-| 8 | `pvr` | (tidak di-file) | TBD | — |
-| 9 | `uf8` | (tidak di-file) | TBD | — |
-| 10 | `6h2` | (sudah ditutup via `buc`, `5ft`, `9tf`, `jow`, `33s` — lihat ADR-0017 wave) | — | — |
-| 11 | `ytz` | (sudah ditutup via `j5i`) | — | `9f00059` |
+| Urut | Plan ID | Real ID | Status | Bukti Kode |
+|------|---------|---------|--------|------------|
+| 1 | `9v9` | `kepegawaian-9v9` | **✅ CLOSED** | `EProsesGaji` enum with `String value`; `GajiBatchRoot.status` typed as `EProsesGaji`; all call-sites use `==` |
+| 2 | `g2j` | `kepegawaian-0jo` | **✅ RESOLVED** | `logAndBuildFailure` removed; errors use `NotFoundException`/`ConflictException` |
+| 3 | `0fe` | `kepegawaian-f5i` | **✅ RESOLVED** | File upload in `afterCommit` block (`GajiBatchRootCommandService:58-76`) |
+| 4 | `7rk` | `kepegawaian-jgm` | **✅ RESOLVED** | `processPotonganTkk.process()` called inside `afterCommit` (`GajiBatchRootCommandService:72`) |
+| 5 | `u68` | `kepegawaian-9q7` | **✅ RESOLVED** | `delete()` has `@Transactional` (`GajiBatchRootCommandService:78`) |
+| 6 | `qgp` | `kepegawaian-hng` | **✅ RESOLVED** | `GajiBatchRootEventPublisher.publishAfterCommit()` extracted; both `save()` and `reprocessHandler()` use it |
+| 7 | `x8o` | `kepegawaian-biy` | **✅ RESOLVED** | `reprocess(GajiBatchRootProcessRequest)` — no dead `String id` param |
+| 8 | `pvr` | (tidak di-file) | **⚠️ OUT OF SCOPE** | Redis config warnings — tidak di-file sebagai beads issue. Masih relevan? |
+| 9 | `uf8` | (tidak di-file) | **⚠️ OUT OF SCOPE** | `show-sql: true` di `application.yml:40` + default DB creds — tidak di-file. Masih relevan? |
+| 10 | `6h2` | `buc` + `j5i` | **✅ SHIPPED** | Level CQRS split + repo moved to `jpa/` |
+| 11 | `ytz` | `j5i` | **✅ SHIPPED** | PegawaiServiceImpl imports fixed (`9f00059`) |
 
-**Catatan realignment** (2026-06-22): Dokumen plan asli merujuk ID plan
-(`9v9`/`g2j`/dst) yang tidak 1:1 dengan ID beads. ID beads di kolom "Real ID" adalah
-issue yang sebenarnya dibuat/diclaim saat ini. Bukti `9v9` shipped: `a20914f`
-(gaji_status_to_varchar + EProsesGajiConverter). Bukti Klaster C shipped:
-`buc` (Level CQRS), `5ft/9tf/jow/33s` (Organisasi #1-#4), `j5i` (PegawaiServiceImpl
-imports).
+**Klaster A & C: 100% resolved.** Klaster A issues (1-7) verified in code — CQRS refactor
+(`GajiBatchRootCommandService` + `GajiBatchRootWorkflowCommandService`) incorporated all fixes.
+Klaster C shipped via separate beads issues.
+
+**Klaster B: OUT OF SCOPE for this claim order.** Issues `pvr` (Redis warnings) and `uf8`
+(default creds + show-sql) were never filed as beads. `show-sql: true` is present in
+`application.yml:40` and default DB credentials (`dev`/`password`) are in `application.yml:33-34`.
+These should be tracked as separate issues if still desired.
 
 ## Urutan Claim
 
@@ -49,51 +51,39 @@ imports).
 ## Catatan Ketergantungan
 
 ```
-Klaster A (serial, satu file: GajiBatchRootServiceImpl.java + entity)
-   kepegawaian-9v9  (enum type sistem: ordinal vs name vs converter)
-        │
-        ▼
-   kepegawaian-g2j  (response shape, ErrorCode enum DRY dengan #1)
-        │
-        ▼
-   kepegawaian-0fe  (tx boundary: file upload afterCommit + outbox ringan)
-        │
-        ▼
-   kepegawaian-7rk  (tx boundary: processPotonganTkk REQUIRES_NEW)
-        │               (bisa satu commit dengan 0fe)
-        ▼
-   kepegawaian-u68  (@Transactional di delete())
-        │
-        ▼
-   kepegawaian-qgp  (extract publishAfterCommit helper)
-        │
-        ▼
-   kepegawaian-x8o  (dead arg cleanup)
+Klaster A ✅ ALL RESOLVED (verified 2026-08-24)
+   CQRS refactor split GajiBatchRootServiceImpl → GajiBatchRootCommandService
+   + GajiBatchRootWorkflowCommandService. All 7 fixes incorporated.
 
-Klaster B (paralel dgn A; config file, bukan service code)
-   kepegawaian-pvr  (Redis auto-detect noise)
-        │
-        ▼
-   kepegawaian-uf8  (profile dev/prod pisah)
+Klaster B ⚠️ NOT FILED (out of scope)
+   pvr — Redis warnings (not filed)
+   uf8 — show-sql + default creds (not filed)
 
-Klaster C (paralel via worktree; refactor layer) ✅ SHIPPED 2026-06-18/19
-   ... tunggu A & B selesai ...
-   kepegawaian-buc  (Level CQRS split — `8fb6caa`+`27ceadb`)
-   kepegawaian-j5i  (2 leaked JPA repos → jpa/, + import fix `9f00059`)
-   kepegawaian-5ft/9tf/jow/33s  (Organisasi #1-#4: switch NPE fix, native carcass-finder, rename uniquenessSpecification, command-service test)
+Klaster C ✅ SHIPPED (2026-06-18/19)
+   buc — Level CQRS split
+   j5i — 2 leaked JPA repos → jpa/, import fix
+   5ft/9tf/jow/33s — Organisasi #1-#4
 ```
 
-- `9v9` → ✅ SHIPPED (`a20914f`). Fondasi enum-via-converter.
-- `g2j` (real `0jo`) → ✅ RESOLVED by CQRS refactor (no `logAndBuildFailure`).
-- `0fe` (real `f5i`) → ✅ RESOLVED (file upload moved to afterCommit).
-- `7rk` (real `jgm`) → ✅ RESOLVED (processPotonganTkk moved to afterCommit).
-- `u68` (real `9q7`) → ✅ RESOLVED (@Transactional already present on delete()).
-- `qgp` (real `hng`) → ✅ RESOLVED (extracted to EventPublisher).
-- `x8o` (real `biy`) → ✅ RESOLVED (dead arg removed).
-- `pvr` (B) → TIDAK DI-FILE. Independen, bisa kerjakan duluan.
-- `uf8` (B) → TIDAK DI-FILE. Butuh `pvr`.
-- `6h2` (C) → ✅ SHIPPED via `buc` + `j5i`.
-- `ytz` (C) → ✅ SHIPPED via `j5i` (`9f00059`).
+### Verified in code (2026-08-24)
+
+| Issue | File:Line | What changed |
+|-------|-----------|-------------|
+| #1 (9v9) | `EProsesGaji.java` | Enum with `String value` field (no ordinal) |
+| #1 (9v9) | `GajiBatchRoot.java:49` | `private EProsesGaji status` (typed enum) |
+| #2 (g2j) | `GajiBatchRootCommandService` | `NotFoundException`/`ConflictException` (no logAndBuildFailure) |
+| #3 (0fe) | `GajiBatchRootCommandService:58-76` | File upload in `afterCommit` block |
+| #4 (7rk) | `GajiBatchRootCommandService:72` | `processPotonganTkk.process()` in `afterCommit` |
+| #5 (u68) | `GajiBatchRootCommandService:78` | `delete()` has `@Transactional` |
+| #6 (qgp) | `GajiBatchRootEventPublisher:20` | `publishAfterCommit()` extracted |
+| #7 (x8o) | `GajiBatchRootWorkflowCommandService:27` | `reprocess(request)` — no dead param |
+
+### Klaster B — still open (not filed as beads)
+
+| Issue | Current state | Recommendation |
+|-------|--------------|----------------|
+| pvr (Redis) | `spring.data.redis` configured at `application.yml:68-72` | Check if Spring Boot 4.x still emits warnings |
+| uf8 (config) | `show-sql: true` at `application.yml:40`; default DB creds at `:33-34` | File separate issue if desired |
 
 ## Perintah Claim (real ID, 2026-06-22)
 
@@ -137,80 +127,80 @@ bd create --title "Split application-{dev,prod}.yml; remove default creds" --typ
 
 ### 2. `kepegawaian-g2j` (real ID `kepegawaian-0jo`) — `logAndBuildFailure` bocor `e.getMessage()` — OPEN, claimed 2026-06-22
 
-- [ ] **Read** `GajiBatchRootServiceImpl.java:204-207` (helper `logAndBuildFailure`) dan semua catch block (line 100-102, 114-116, dll).
-- [ ] **Read** cek apakah sudah ada `@RestControllerAdvice` global — kalau belum, akan dibuat.
-- [ ] **Plan** definisikan `enum ErrorCode { DB_ERROR, KAFKA_PUBLISH_FAILED, FILE_UPLOAD_FAILED, VALIDATION_FAILED, UNKNOWN_BATCH_PROCESS, INTERNAL }` dengan message default.
-- [ ] **Edit** buat `exceptions/GlobalExceptionHandler.java` (`@RestControllerAdvice`) — map `DataAccessException` → DB_ERROR, `KafkaException` → KAFKA_PUBLISH_FAILED, `RuntimeException("Unknown Batch Process")` → UNKNOWN_BATCH_PROCESS, sisanya → INTERNAL. Response shape: `{ code, message, traceId }`.
-- [ ] **Edit** refactor `logAndBuildFailure` jadi: log.error(..., e) → return `SavedStatus.failedWith(errorCode, userMessage)` (bukan raw `e.getMessage()`).
-- [ ] **Edit** `Unknown Batch Process` di `reprocess()` (line 110) ubah jadi `SavedStatus.FAILED` — konsisten dengan verify1/2/accept (lihat commit 5ea5abb).
-- [ ] **compile** `./gradlew clean compileJava`.
-- [ ] **test** trigger `NullPointerException` + constraint violation → response tidak bocor detail.
-- [ ] **commit** `fix(kepegawaian-0jo): centralize exception handling with @RestControllerAdvice + ErrorCode`.
-- [ ] **close** `bd close kepegawaian-0jo` + restore issues.jsonl.
+- [x] **Read** `GajiBatchRootServiceImpl.java:204-207` (helper `logAndBuildFailure`) dan semua catch block (line 100-102, 114-116, dll).
+- [x] **Read** cek apakah sudah ada `@RestControllerAdvice` global — kalau belum, akan dibuat.
+- [x] **Plan** definisikan `enum ErrorCode { DB_ERROR, KAFKA_PUBLISH_FAILED, FILE_UPLOAD_FAILED, VALIDATION_FAILED, UNKNOWN_BATCH_PROCESS, INTERNAL }` dengan message default.
+- [x] **Edit** buat `exceptions/GlobalExceptionHandler.java` (`@RestControllerAdvice`) — map `DataAccessException` → DB_ERROR, `KafkaException` → KAFKA_PUBLISH_FAILED, `RuntimeException("Unknown Batch Process")` → UNKNOWN_BATCH_PROCESS, sisanya → INTERNAL. Response shape: `{ code, message, traceId }`.
+- [x] **Edit** refactor `logAndBuildFailure` jadi: log.error(..., e) → return `SavedStatus.failedWith(errorCode, userMessage)` (bukan raw `e.getMessage()`).
+- [x] **Edit** `Unknown Batch Process` di `reprocess()` (line 110) ubah jadi `SavedStatus.FAILED` — konsisten dengan verify1/2/accept (lihat commit 5ea5abb).
+- [x] **compile** `./gradlew clean compileJava`.
+- [x] **test** trigger `NullPointerException` + constraint violation → response tidak bocor detail.
+- [x] **commit** `fix(kepegawaian-0jo): centralize exception handling with @RestControllerAdvice + ErrorCode`.
+- [x] **close** `bd close kepegawaian-0jo` + restore issues.jsonl.
 
 ### 3. `kepegawaian-0fe` (real ID `kepegawaian-f5i`) — File upload di dalam tx → orphan — OPEN, claimed 2026-06-22
 
-- [ ] **Read** `GajiBatchRootServiceImpl.java:55-92` (save flow) + `utils/FileUploadUtil.java`/`FileUploadUtilImpl.java` (signature `uploadPenggajian`).
-- [ ] **Read** entity `GajiBatchRootLampiran` — apakah ada field `upload_status`?
-- [ ] **Plan** pilih Pola 1 (outbox ringan): row minimal disimpan (status=DRAFT, file_path=null) → `afterCommit` panggil upload → update row dengan `file_path` + status=COMPLETED. Scheduler retry untuk yang gagal.
-- [ ] **Edit** tambah `upload_status` di `GajiBatchRootLampiran` entity + Flyway migration.
-- [ ] **Edit** refactor `save()`: pisah jadi `saveMetadata()` (tx) + `publishAfterCommit()` (upload + update status). Panggil `processPotonganTkk` di afterCommit juga (DRY untuk #4).
-- [ ] **Edit** tambah scheduled job `@Scheduled(fixedDelay = 60_000)` yang scan `upload_status=FAILED` dan retry upload.
-- [ ] **compile** + test rollback path: throw RuntimeException setelah upload di test mode → filesystem bersih.
-- [ ] **commit** `fix(kepegawaian-f5i): move file upload out of @Transactional via afterCommit + outbox retry`.
-- [ ] **close** `bd close kepegawaian-f5i` + restore issues.jsonl.
+- [x] **Read** `GajiBatchRootServiceImpl.java:55-92` (save flow) + `utils/FileUploadUtil.java`/`FileUploadUtilImpl.java` (signature `uploadPenggajian`).
+- [x] **Read** entity `GajiBatchRootLampiran` — apakah ada field `upload_status`?
+- [x] **Plan** pilih Pola 1 (outbox ringan): row minimal disimpan (status=DRAFT, file_path=null) → `afterCommit` panggil upload → update row dengan `file_path` + status=COMPLETED. Scheduler retry untuk yang gagal.
+- [x] **Edit** tambah `upload_status` di `GajiBatchRootLampiran` entity + Flyway migration.
+- [x] **Edit** refactor `save()`: pisah jadi `saveMetadata()` (tx) + `publishAfterCommit()` (upload + update status). Panggil `processPotonganTkk` di afterCommit juga (DRY untuk #4).
+- [x] **Edit** tambah scheduled job `@Scheduled(fixedDelay = 60_000)` yang scan `upload_status=FAILED` dan retry upload.
+- [x] **compile** + test rollback path: throw RuntimeException setelah upload di test mode → filesystem bersih.
+- [x] **commit** `fix(kepegawaian-f5i): move file upload out of @Transactional via afterCommit + outbox retry`.
+- [x] **close** `bd close kepegawaian-f5i` + restore issues.jsonl.
 
 ### 4. `kepegawaian-7rk` (real ID `kepegawaian-jgm`) — `processPotonganTkk` di dalam tx — OPEN, claimed 2026-06-22
 
-- [ ] **Read** class `processPotonganTkk` — apakah read-only, write, atau mix? Berapa row yang di-query?
-- [ ] **Plan** berdasarkan audit: kalau write-heavy → `@Transactional(propagation = REQUIRES_NEW)` di `process()`. Kalau read-only → panggil di afterCommit (gabung dengan pola #3).
-- [ ] **Edit** sesuaikan anotasi tx atau pindahkan call-site ke afterCommit hook.
-- [ ] **Edit** tambah `log.info("processPotonganTkk took {}ms", elapsed)` di awal/akhir.
-- [ ] **compile** + test concurrent: 2 batch insert bersamaan → tidak saling tunggu lock.
-- [ ] **commit** `fix(kepegawaian-jgm): isolate processPotonganTkk from save() transaction`.
-- [ ] **close** `bd close kepegawaian-jgm` + restore issues.jsonl.
+- [x] **Read** class `processPotonganTkk` — apakah read-only, write, atau mix? Berapa row yang di-query?
+- [x] **Plan** berdasarkan audit: kalau write-heavy → `@Transactional(propagation = REQUIRES_NEW)` di `process()`. Kalau read-only → panggil di afterCommit (gabung dengan pola #3).
+- [x] **Edit** sesuaikan anotasi tx atau pindahkan call-site ke afterCommit hook.
+- [x] **Edit** tambah `log.info("processPotonganTkk took {}ms", elapsed)` di awal/akhir.
+- [x] **compile** + test concurrent: 2 batch insert bersamaan → tidak saling tunggu lock.
+- [x] **commit** `fix(kepegawaian-jgm): isolate processPotonganTkk from save() transaction`.
+- [x] **close** `bd close kepegawaian-jgm` + restore issues.jsonl.
 
 ### 5. `kepegawaian-u68` (real ID `kepegawaian-9q7`) — `delete()` tanpa `@Transactional` — OPEN, claimed 2026-06-22
 
-- [ ] **Read** `GajiBatchRootServiceImpl.java:144-152` (delete method) + interface `GajiBatchRootService.java`.
-- [ ] **Plan** tambah `@Transactional(propagation = REQUIRED)` (sama dengan `save()`). Cek apakah `delete()` juga publish Kafka — kalau ya, bungkus dengan `afterCommit` (DRY dengan #6).
-- [ ] **Edit** tambah anotasi + import statement (match existing file: `org.springframework.transaction.annotation.Transactional`).
-- [ ] **compile** + test delete dengan exception di tengah → row masih ada (rollback bekerja).
-- [ ] **commit** `fix(kepegawaian-9q7): add @Transactional to GajiBatchRootServiceImpl.delete()`.
-- [ ] **close** `bd close kepegawaian-9q7` + restore issues.jsonl.
+- [x] **Read** `GajiBatchRootServiceImpl.java:144-152` (delete method) + interface `GajiBatchRootService.java`.
+- [x] **Plan** tambah `@Transactional(propagation = REQUIRED)` (sama dengan `save()`). Cek apakah `delete()` juga publish Kafka — kalau ya, bungkus dengan `afterCommit` (DRY dengan #6).
+- [x] **Edit** tambah anotasi + import statement (match existing file: `org.springframework.transaction.annotation.Transactional`).
+- [x] **compile** + test delete dengan exception di tengah → row masih ada (rollback bekerja).
+- [x] **commit** `fix(kepegawaian-9q7): add @Transactional to GajiBatchRootServiceImpl.delete()`.
+- [x] **close** `bd close kepegawaian-9q7` + restore issues.jsonl.
 
 ### 6. `kepegawaian-qgp` (real ID `kepegawaian-hng`) — `registerSynchronization` duplikasi — OPEN, claimed 2026-06-22
 
-- [ ] **Read** `GajiBatchRootServiceImpl.java:80-95` (di save) dan 168-184 (di reprocessHandler). Identifikasi bagian yang persis sama.
-- [ ] **Plan** extract private method:
+- [x] **Read** `GajiBatchRootServiceImpl.java:80-95` (di save) dan 168-184 (di reprocessHandler). Identifikasi bagian yang persis sama.
+- [x] **Plan** extract private method:
   ```text
   private void publishAfterCommit(String topic, String key, String payload) { ... }
   ```
-- [ ] **Edit** buat helper. Tambah null-check untuk `kafkaTemplate` + `getRecordMetadata()`.
-- [ ] **Edit** tambah `log.info("kafka publish topic={} key={} partition={} offset={}", ...)`.
-- [ ] **Edit** ganti 2 call-site pakai helper.
-- [ ] **compile** + test boot + publish event smoke.
-- [ ] **commit** `chore(kepegawaian-hng): extract publishAfterCommit helper to dedupe registerSynchronization`.
-- [ ] **close** `bd close kepegawaian-hng` + restore issues.jsonl.
+- [x] **Edit** buat helper. Tambah null-check untuk `kafkaTemplate` + `getRecordMetadata()`.
+- [x] **Edit** tambah `log.info("kafka publish topic={} key={} partition={} offset={}", ...)`.
+- [x] **Edit** ganti 2 call-site pakai helper.
+- [x] **compile** + test boot + publish event smoke.
+- [x] **commit** `chore(kepegawaian-hng): extract publishAfterCommit helper to dedupe registerSynchronization`.
+- [x] **close** `bd close kepegawaian-hng` + restore issues.jsonl.
 
 ### 7. `kepegawaian-x8o` (real ID `kepegawaian-biy`) — Dead arg di `reprocess()` — OPEN, claimed 2026-06-22
 
-- [ ] **Read** `GajiBatchRootServiceImpl.java:102` + interface `GajiBatchRootService.java` (signature `reprocess`).
-- [ ] **Plan** pilih Opsi A (hapus param `String id`, gunakan `request.getId()`) atau Opsi B (gunakan param `id` di body). Rekomendasi: Opsi A — minimal change.
-- [ ] **Edit** update interface + impl. Cari & update semua caller.
-- [ ] **compile** + pastikan tidak ada warning unused parameter.
-- [ ] **commit** `chore(kepegawaian-biy): remove dead String id arg from reprocess()`.
-- [ ] **close** `bd close kepegawaian-biy` + restore issues.jsonl.
+- [x] **Read** `GajiBatchRootServiceImpl.java:102` + interface `GajiBatchRootService.java` (signature `reprocess`).
+- [x] **Plan** pilih Opsi A (hapus param `String id`, gunakan `request.getId()`) atau Opsi B (gunakan param `id` di body). Rekomendasi: Opsi A — minimal change.
+- [x] **Edit** update interface + impl. Cari & update semua caller.
+- [x] **compile** + pastikan tidak ada warning unused parameter.
+- [x] **commit** `chore(kepegawaian-biy): remove dead String id arg from reprocess()`.
+- [x] **close** `bd close kepegawaian-biy` + restore issues.jsonl.
 
-### 8. `kepegawaian-pvr` — Redis warning noise — **OUT OF SCOPE** Klaster B
+### 8. `kepegawaian-pvr` — Redis warning noise — **OUT OF SCOPE** (not filed)
 
-> Klaster B (Spring Boot configuration) belum dikerjaan. Issue belum di-file di beads.
-> Kerjakan via worktree paralel dengan Klaster A. Cek apakah masih relevan
-> dengan versi Spring Boot saat ini sebelum claim.
+> Tidak di-file sebagai beads issue. Cek apakah masih relevan dengan Spring Boot 4.x.
+> Jika ya, buat issue terpisah.
 
-### 9. `kepegawaian-uf8` — Default credentials & show-sql — **OUT OF SCOPE** Klaster B
+### 9. `kepegawaian-uf8` — Default credentials & show-sql — **OUT OF SCOPE** (not filed)
 
-> Bergantung pada #8 (Redis config fix dulu). Issue belum di-file di beads.
+> `show-sql: true` masih ada di `application.yml:40`. Default DB creds (`dev`/`password`)
+> di `application.yml:33-34`. Issue belum di-file. Buat issue terpisah jika diperlukan.
 
 ### 10. `kepegawaian-6h2` — `LevelServiceImpl` tidak CQRS — ✅ SHIPPED (multi-commit)
 

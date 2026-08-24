@@ -50,10 +50,10 @@ kepegawaian-y7u (Epic: 120-line enforcement)
 
 ## 🚀 Before Any Claim (Every Time)
 
-- [ ] `bd prime` — recover beads workflow context
-- [ ] `git status` clean; on branch `rewrite/master-cqrs`
-- [ ] Re-read `decisions-cuti.md` Q11-Q17 for context
-- [ ] `bd update <id> --claim` the issue you're starting
+- [x] `bd prime` (issue already closed) — recover beads workflow context
+- [x] `git status` clean; on branch `rewrite/master-cqrs`
+- [x] Re-read `decisions-cuti.md` Q11-Q17 for context
+- [x] `bd update <id> --claim` (issue already closed) the issue you're starting
 
 ---
 

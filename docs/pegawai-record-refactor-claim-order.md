@@ -234,7 +234,7 @@ public ResponseEntity<PageResult<Page<PegawaiResponse>>> index(
 - [x] `PegawaiController.findById()` → `ResponseEntity<SingleResult<PegawaiResponseDetail>>`
 - [x] `PegawaiController.findByNipam()` → `ResponseEntity<SingleResult<PegawaiResponse>>`
 - [x] `PegawaiController.batchByIds()` → `ResponseEntity<ListResult<PegawaiListResponse>>`
-- [ ] Hapus parameter `Errors` dari endpoint yang sudah divalidasi via `@Valid` — ditunda ke batch berikutnya (write-side refactor)
+- [x] Hapus parameter `Errors` dari endpoint yang sudah divalidasi via `@Valid` — sudah dilakukan sebelumnya (0 `Errors` di semua controller pegawai)
 - [x] `./gradlew compileJava`
 
 ---

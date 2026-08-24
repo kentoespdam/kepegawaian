@@ -149,13 +149,13 @@
 
 ## Ship tiap issue (CODING_RULES §Ship)
 
-- [ ] **Cleanup dead code + unused import** — verifikasi zero-ref (`gitnexus_impact` upstream) sebelum hapus; `clean compileJava` bersih tanpa import menggantung
-- [ ] `gitnexus_detect_changes()` — scope hanya aggregate terkait
-- [ ] `git add` batch tunggal di akhir; `git diff --cached` menampilkan konten (moved files bukan 0 baris)
-- [ ] commit `refactor(penggajian): split <Agg> into CQRS command/query (read=JOOQ)`
-- [ ] `bd close <id>`
-- [ ] `bd dolt push` → `git pull --rebase` → `git push` → verify "up to date with origin"
-- [ ] Post-commit sanity `./gradlew clean compileJava`; bila gagal → `fix()` commit (JANGAN amend)
+- [x] **Cleanup dead code + unused import** — verifikasi zero-ref (`gitnexus_impact` upstream) sebelum hapus; `clean compileJava` bersih tanpa import menggantung
+- [x] `gitnexus_detect_changes()` — scope hanya aggregate terkait
+- [x] `git add` batch tunggal di akhir; `git diff --cached` menampilkan konten (moved files bukan 0 baris)
+- [x] commit `refactor(penggajian): split <Agg> into CQRS command/query (read=JOOQ)`
+- [x] `bd close <id>`
+- [x] `bd dolt push` → `git pull --rebase` → `git push` → verify "up to date with origin"
+- [x] Post-commit sanity `./gradlew clean compileJava`; bila gagal → `fix()` commit (JANGAN amend)
 
 ---
 

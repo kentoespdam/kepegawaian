@@ -146,10 +146,10 @@
 
 ## Ship (tiap issue)
 
-- [ ] `gitnexus_detect_changes()` — scope hanya simbol yang diharapkan
-- [ ] `git add` (single batch) + commit (pesan rujuk decisions-pegawai § & epic `kepegawaian-3kj`)
-- [ ] `bd close kepegawaian-<id>`
-- [ ] `bd dolt push` → `git pull --rebase` → `git push` → verify "up to date with origin"
+- [x] `gitnexus_detect_changes()` — scope hanya simbol yang diharapkan
+- [x] `git add` (single batch) + commit (pesan rujuk decisions-pegawai § & epic `kepegawaian-3kj`)
+- [x] `bd close kepegawaian-<id>`
+- [x] `bd dolt push` → `git pull --rebase` → `git push` → verify "up to date with origin"
 
 ---
 
