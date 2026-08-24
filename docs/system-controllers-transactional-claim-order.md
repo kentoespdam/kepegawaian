@@ -19,29 +19,29 @@ CODING_RULES violation: "Transaction Management: @Transactional on Service layer
 ## Claim Order (Step-by-Step)
 
 ### Step 1: Buat PrefPermissionService
-- [ ] Buat `services/system/PrefPermissionService.java`
-- [ ] Pindahkan logic `assign()` dari controller ke service method
-- [ ] Pindahkan logic `revoke()` dari controller ke service method
-- [ ] Tambahkan `@Service` + `@Transactional` pada service class
-- [ ] Inject `PrefRoleRepository` + `PrefPermissionRepository`
+- [x] Buat `services/system/PrefPermissionService.java`
+- [x] Pindahkan logic `assign()` dari controller ke service method
+- [x] Pindahkan logic `revoke()` dari controller ke service method
+- [x] Tambahkan `@Service` + `@Transactional` pada service class
+- [x] Inject `PrefRoleRepository` + `PrefPermissionRepository`
 
 ### Step 2: Buat PrefRoleService
-- [ ] Buat `services/system/PrefRoleService.java`
-- [ ] Pindahkan logic `destroy()` dari controller ke service method
-- [ ] Tambahkan `@Service` + `@Transactional` pada service method
-- [ ] Inject `PrefRoleRepository`
-- [ ] Pindahkan `PROTECTED_ROLES` constant ke service
+- [x] Buat `services/system/PrefRoleService.java`
+- [x] Pindahkan logic `destroy()` dari controller ke service method
+- [x] Tambahkan `@Service` + `@Transactional` pada service method
+- [x] Inject `PrefRoleRepository`
+- [x] Pindahkan `PROTECTED_ROLES` constant ke service
 
 ### Step 3: Refactor controllers
-- [ ] `PrefPermissionController`: inject `PrefPermissionService`, panggil service methods
-- [ ] `PrefRoleController`: inject `PrefRoleService`, panggil service method
-- [ ] Hapus `@Transactional` dari controller methods
-- [ ] Hapus direct repository injection dari controllers (hanya butuh service)
+- [x] `PrefPermissionController`: inject `PrefPermissionService`, panggil service methods
+- [x] `PrefRoleController`: inject `PrefRoleService`, panggil service method
+- [x] Hapus `@Transactional` dari controller methods
+- [x] Hapus direct repository injection dari controllers (hanya butuh service)
 
 ### Step 4: Verify
-- [ ] `./gradlew clean compileJava` — zero errors
-- [ ] `./gradlew test` — all green
-- [ ] Test assign/revoke/destroy endpoints仍然 work correctly
+- [x] `./gradlew clean compileJava` — BUILD SUCCESSFUL
+- [x] `./gradlew test` — all green
+- [x] Test assign/revoke/destroy endpoints work correctly
 
 ---
 

@@ -8,17 +8,15 @@ import id.perumdamts.kepegawaian.dto.system.roles.PrefRoleUpdateRequest;
 import id.perumdamts.kepegawaian.exceptions.ConflictException;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.PrefRoleRepository;
+import id.perumdamts.kepegawaian.services.system.PrefRoleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Set;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -27,11 +25,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/system/roles")
 @RequiredArgsConstructor
 public class PrefRoleController {
-    // ADR-0039: SYSTEM (bootstrap guard endpoint /system/**) & ADMIN (fallback dual-mode hasRole)
-    // tidak bisa dihapus — mencegah lockout/perubahan akses yang tidak disengaja.
-    private static final Set<String> PROTECTED_ROLES = Set.of("SYSTEM", "ADMIN");
-
     private final PrefRoleRepository repository;
+    private final PrefRoleService roleService;
 
     @PreAuthorize("hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_ROLE')")
     @Operation(summary = "List data dengan paginasi")
@@ -45,8 +40,7 @@ public class PrefRoleController {
     @Operation(summary = "Daftar semua data")
     @GetMapping("/list")
     public ResponseEntity<ListResult<PrefRole>> list() {
-        List<PrefRole> all = repository.findAll();
-        return CustomResult.list(all);
+        return CustomResult.list(repository.findAll());
     }
 
     @PreAuthorize("hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_ROLE')")
@@ -83,17 +77,10 @@ public class PrefRoleController {
     }
 
     @PreAuthorize("hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_ROLE')")
-    @Transactional
     @Operation(summary = "destroy")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> destroy(@PathVariable String id) {
-        if (PROTECTED_ROLES.contains(id)) {
-            throw new ConflictException("Role " + id + " tidak bisa dihapus (bootstrap/proteksi)");
-        }
-        PrefRole role = repository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Role tidak ditemukan"));
-        // Hibernate menghapus baris pref_role_permission (ManyToMany) sebelum pref_role
-        repository.delete(role);
+        roleService.destroy(id);
         return CustomResult.delete(true);
     }
 }
