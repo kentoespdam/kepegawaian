@@ -16,7 +16,6 @@ import org.hibernate.envers.Audited;
 })
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE gaji_phdp SET is_deleted=true WHERE id=?")

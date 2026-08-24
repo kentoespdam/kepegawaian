@@ -14,7 +14,6 @@ import org.hibernate.annotations.SQLDelete;
 @SQLDelete(sql = "UPDATE apd SET is_deleted = true WHERE id = ?")
 @Getter
 @Setter
-@ToString
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class Apd extends MasterBaseEntity {

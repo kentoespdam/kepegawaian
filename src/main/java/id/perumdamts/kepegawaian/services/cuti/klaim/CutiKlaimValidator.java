@@ -4,6 +4,8 @@ import id.perumdamts.kepegawaian.config.CutiProperties;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanKlaimPostRequest;
 import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
+import id.perumdamts.kepegawaian.exceptions.BadRequestException;
+import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiPegawaiRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,10 +22,10 @@ public class CutiKlaimValidator {
         // Cek apakah referensi cuti ini sudah disetujui
         CutiPegawai cutiPegawai = repository.findByIdAndApprovalCutiStatus(
                 request.getRefCutiId(), EApprovalCutiStatus.APPROVED
-        ).orElseThrow(() -> new RuntimeException("Unknown Cuti Pegawai"));
+        ).orElseThrow(() -> new NotFoundException("Unknown Cuti Pegawai"));
 
         if (!List.of(cutiProperties.jenisCutiTahunan(), cutiProperties.jenisCutiIbadah()).contains(cutiPegawai.getJenisCuti().getId()))
-            throw new RuntimeException("Cuti ini tidak perlu di klaim");
+            throw new BadRequestException("Cuti ini tidak perlu di klaim");
 
         // Cek apakah pengajuan klaim cuti ini sudah ada
         boolean exists = repository.existsByPegawai_IdAndJenisCuti_IdAndApprovalCutiStatusIn(
@@ -37,7 +39,7 @@ public class CutiKlaimValidator {
                 )
         );
         if (exists) {
-            throw new RuntimeException("Pengajuan Klaim Cuti ini sudah ada");
+            throw new BadRequestException("Pengajuan Klaim Cuti ini sudah ada");
         }
 
         // Cek apakah ada cuti melaksanakan ibadah yang masih berlangsung atau belum disetujui
@@ -47,7 +49,7 @@ public class CutiKlaimValidator {
                 List.of(EApprovalCutiStatus.PENDING, EApprovalCutiStatus.RETURNED)
         );
         if (existCutiIbadah) {
-            throw new RuntimeException("Klaim cuti tidak dapat diproses karena masih ada pengajuan cuti melaksanakan ibadah yang masih berlangsung");
+            throw new BadRequestException("Klaim cuti tidak dapat diproses karena masih ada pengajuan cuti melaksanakan ibadah yang masih berlangsung");
         }
 
         return cutiPegawai;

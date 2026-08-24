@@ -12,12 +12,12 @@ dalam 3 klaster:
 | Urut | Plan ID | Real ID | Status | Commit |
 |------|---------|---------|--------|--------|
 | 1 | `9v9` | `kepegawaian-9v9` | **CLOSED** (shipped 2026-06-22?) | `a20914f` |
-| 2 | `g2j` | `kepegawaian-0jo` | open, claimed | — |
-| 3 | `0fe` | `kepegawaian-f5i` | open, claimed | — |
-| 4 | `7rk` | `kepegawaian-jgm` | open, claimed | — |
-| 5 | `u68` | `kepegawaian-9q7` | open, claimed | — |
-| 6 | `qgp` | `kepegawaian-hng` | open, claimed | — |
-| 7 | `x8o` | `kepegawaian-biy` | open, claimed | — |
+| 2 | `g2j` | `kepegawaian-0jo` | **CLOSED** (resolved by CQRS refactor) | — |
+| 3 | `0fe` | `kepegawaian-f5i` | **CLOSED** (afterCommit pattern) | — |
+| 4 | `7rk` | `kepegawaian-jgm` | **CLOSED** (processPotonganTkk afterCommit) | — |
+| 5 | `u68` | `kepegawaian-9q7` | **CLOSED** (@Transactional already present) | — |
+| 6 | `qgp` | `kepegawaian-hng` | **CLOSED** (extracted to EventPublisher) | — |
+| 7 | `x8o` | `kepegawaian-biy` | **CLOSED** (dead arg removed) | — |
 | 8 | `pvr` | (tidak di-file) | TBD | — |
 | 9 | `uf8` | (tidak di-file) | TBD | — |
 | 10 | `6h2` | (sudah ditutup via `buc`, `5ft`, `9tf`, `jow`, `33s` — lihat ADR-0017 wave) | — | — |
@@ -84,12 +84,12 @@ Klaster C (paralel via worktree; refactor layer) ✅ SHIPPED 2026-06-18/19
 ```
 
 - `9v9` → ✅ SHIPPED (`a20914f`). Fondasi enum-via-converter.
-- `g2j` (real `0jo`) → OPEN. Butuh `9v9` agar `ErrorCode` mapping akurat.
-- `0fe` (real `f5i`) → OPEN. Butuh `9v9` agar status `DRAFT`/`COMPLETED` valid.
-- `7rk` (real `jgm`) → OPEN. Bisa paralel dengan `0fe` (touchpoint beda); tx refactor.
-- `u68` (real `9q7`) → OPEN. Butuh `0fe`/`7rk` agar pola `@Transactional` stabil.
-- `qgp` (real `hng`) → OPEN. Butuh `u68` agar `delete()` final.
-- `x8o` (real `biy`) → OPEN. Dead-arg cleanup terakhir.
+- `g2j` (real `0jo`) → ✅ RESOLVED by CQRS refactor (no `logAndBuildFailure`).
+- `0fe` (real `f5i`) → ✅ RESOLVED (file upload moved to afterCommit).
+- `7rk` (real `jgm`) → ✅ RESOLVED (processPotonganTkk moved to afterCommit).
+- `u68` (real `9q7`) → ✅ RESOLVED (@Transactional already present on delete()).
+- `qgp` (real `hng`) → ✅ RESOLVED (extracted to EventPublisher).
+- `x8o` (real `biy`) → ✅ RESOLVED (dead arg removed).
 - `pvr` (B) → TIDAK DI-FILE. Independen, bisa kerjakan duluan.
 - `uf8` (B) → TIDAK DI-FILE. Butuh `pvr`.
 - `6h2` (C) → ✅ SHIPPED via `buc` + `j5i`.

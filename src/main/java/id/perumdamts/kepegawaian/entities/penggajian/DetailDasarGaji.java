@@ -16,7 +16,6 @@ import org.hibernate.envers.RelationTargetAuditMode;
 })
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE dasar_gaji SET is_deleted=true WHERE id=?")

@@ -19,8 +19,7 @@ import java.io.Serializable;
 })
 @Getter
 @Setter
-@ToString
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class GajiBatchMaster implements Serializable {
     @Id

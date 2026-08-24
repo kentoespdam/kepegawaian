@@ -14,6 +14,7 @@ import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.exceptions.ConflictException;
+import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.helpers.DateHelper;
 import id.perumdamts.kepegawaian.helpers.RedisHelper;
 import id.perumdamts.kepegawaian.helpers.cuti.CutiPeriodClassifier;
@@ -71,7 +72,7 @@ public class KlaimCutiCommand {
     @Transactional
     public SavedStatus<Long> update(Long id, CutiPengajuanKlaimPostRequest request) {
         CutiPegawai cutiPegawai = cutiPegawaiRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Unknown Cuti Pegawai"));
+                .orElseThrow(() -> new NotFoundException("Unknown Cuti Pegawai"));
         // non-ADMIN/HRD hanya boleh update klaim milik sendiri
         ownershipService.assertOwns(cutiPegawai.getPegawai().getId());
 
@@ -92,12 +93,12 @@ public class KlaimCutiCommand {
         }
 
         CutiPegawai cutiPegawai = cutiPegawaiRepository.findById(request.getCutiId())
-                .orElseThrow(() -> new RuntimeException("Unknown Cuti Pegawai"));
+                .orElseThrow(() -> new NotFoundException("Unknown Cuti Pegawai"));
         Pegawai approver = pegawaiRepository.findById(request.getApproverId())
-                .orElseThrow(() -> new RuntimeException("Approver Pegawai not found"));
+                .orElseThrow(() -> new NotFoundException("Approver Pegawai not found"));
 
         if (!cutiPegawai.getPicSaatIni().equals(approver.getJabatan())) {
-            throw new RuntimeException("Approver Pegawai not found");
+            throw new NotFoundException("Approver Pegawai not found");
         }
 
         CutiApproval entity = CutiApprovalMapper.toEntity(request, cutiPegawai, approver);

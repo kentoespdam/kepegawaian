@@ -8,6 +8,7 @@ import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.cuti.CutiKuota;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
+import id.perumdamts.kepegawaian.exceptions.BadRequestException;
 import id.perumdamts.kepegawaian.exceptions.ConflictException;
 import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiKuotaRepository;
 import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
@@ -37,14 +38,19 @@ public class ProcessCutiKuotaService {
         boolean existByTahun = repository.existsByTahun(tahun);
         if (existByTahun)
             throw new ConflictException("Kuota Cuti Tahun " + tahun + " sudah ada");
+
         Workbook workbook = getWorkbook(file);
         if (workbook == null)
             throw new RuntimeException("Gagal membaca file");
-        List<CutiKuota> cutiKuotaList = readSheetData(workbook.getSheetAt(0), tahun);
-        if (cutiKuotaList.isEmpty())
-            throw new RuntimeException("Tidak ada data");
-        repository.saveAll(cutiKuotaList);
-        return SavedStatus.build(ESaveStatus.SUCCESS, cutiKuotaList.size() + " success");
+        try {
+            List<CutiKuota> cutiKuotaList = readSheetData(workbook.getSheetAt(0), tahun);
+            if (cutiKuotaList.isEmpty())
+                throw new BadRequestException("Tidak ada data");
+            repository.saveAll(cutiKuotaList);
+            return SavedStatus.build(ESaveStatus.SUCCESS, cutiKuotaList.size() + " success");
+        } finally {
+            try { workbook.close(); } catch (IOException ignored) {}
+        }
     }
 
     private Workbook getWorkbook(MultipartFile file) {

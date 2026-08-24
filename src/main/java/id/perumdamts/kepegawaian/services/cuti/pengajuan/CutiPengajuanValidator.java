@@ -5,6 +5,8 @@ import id.perumdamts.kepegawaian.dto.cuti.kuota.CutiKuotaSisa;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPostRequest;
 import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
 import id.perumdamts.kepegawaian.entities.cuti.CutiJenis;
+import id.perumdamts.kepegawaian.exceptions.BadRequestException;
+import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.helpers.cuti.MinimalCutiRule;
 import id.perumdamts.kepegawaian.repositories.cuti.jooq.CutiKuotaQueryRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiJenisRepository;
@@ -41,7 +43,7 @@ public class CutiPengajuanValidator {
                 ? repository.existsPending(pegawaiId, request.getTanggalMulai().getYear(), EApprovalCutiStatus.PENDING)
                 : repository.existsPendingExcluding(excludeCutiId, pegawaiId, request.getTanggalMulai().getYear(), EApprovalCutiStatus.PENDING);
         if (existsPendingPengajuan) {
-            throw new RuntimeException("Masih ada pengajuan cuti yang belum diapprove");
+            throw new BadRequestException("Masih ada pengajuan cuti yang belum diapprove");
         }
 
         List<EApprovalCutiStatus> activeStatuses = List.of(
@@ -54,18 +56,18 @@ public class CutiPengajuanValidator {
                 request.getTanggalMulai().getYear(), activeStatuses
         );
         if (existBesar) {
-            throw new RuntimeException("Anda tidak berhak cuti tahunan karena telah mengambil cuti besar");
+            throw new BadRequestException("Anda tidak berhak cuti tahunan karena telah mengambil cuti besar");
         }
 
         boolean existIbadah = repository.existsByPegawai_IdAndJenisCuti_IdAndApprovalCutiStatusIn(
                 pegawaiId, cutiProperties.jenisCutiIbadah(), activeStatuses
         );
         if (existIbadah) {
-            throw new RuntimeException("Anda tidak berhak cuti tahunan karena telah mengambil cuti melaksanakan ibadah");
+            throw new BadRequestException("Anda tidak berhak cuti tahunan karena telah mengambil cuti melaksanakan ibadah");
         }
 
         CutiJenis cutiJenis = cutiJenisRepository.findById(request.getJenisCutiId())
-                .orElseThrow(() -> new RuntimeException("Unknown Jenis Cuti"));
+                .orElseThrow(() -> new NotFoundException("Unknown Jenis Cuti"));
 
         CutiKuotaSisa kuotaSisa = cutiKuotaQueryRepository.findByPegawai(pegawaiId, request.getTanggalMulai().getYear());
         int totalSisaKuota = kuotaSisa.sisaCutiTahunIni() + kuotaSisa.sisaCutiTahunLalu();
@@ -73,7 +75,7 @@ public class CutiPengajuanValidator {
         if (Boolean.TRUE.equals(cutiJenis.getPotongKuotaTahunan())) {
             MinimalCutiRule.check(request.getJumlahHariKerja(), totalSisaKuota);
             if (request.getJumlahHariKerja() > totalSisaKuota) {
-                throw new RuntimeException("Kuota cuti tidak mencukupi");
+                throw new BadRequestException("Kuota cuti tidak mencukupi");
             }
         }
     }

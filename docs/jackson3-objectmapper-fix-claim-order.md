@@ -21,17 +21,17 @@ CODING_RULES: "Jackson 3 | Package `tools.jackson`; immutable `JsonMapper.builde
 ## Claim Order
 
 ### Step 1: Fix DeniedHandler
-- [ ] Replace `com.fasterxml.jackson.databind.ObjectMapper` → `tools.jackson.databind.json.JsonMapper`
-- [ ] Inject via constructor (already has `@RequiredArgsConstructor`)
-- [ ] Replace `new ObjectMapper()` with injected `JsonMapper`
-- [ ] Verify: `./gradlew clean compileJava`
+- [x] Replace `com.fasterxml.jackson.databind.ObjectMapper` → `tools.jackson.databind.json.JsonMapper`
+- [x] Inject via constructor (already has `@RequiredArgsConstructor`)
+- [x] Replace `new ObjectMapper()` with injected `JsonMapper`
+- [x] Verify: `./gradlew clean compileJava`
 
 ### Step 2: Fix JwtAuthEntryPoint
-- [ ] Same changes as Step 1
-- [ ] Verify: `./gradlew clean compileJava`
+- [x] Same changes as Step 1
+- [x] Verify: `./gradlew clean compileJava`
 
 ### Step 3: Verify
-- [ ] `./gradlew test` — all green
+- [x] `./gradlew test` — all green
 
 ---
 

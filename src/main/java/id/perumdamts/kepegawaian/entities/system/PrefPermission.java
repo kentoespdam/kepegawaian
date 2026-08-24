@@ -10,11 +10,10 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "pref_permission")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 public class PrefPermission {
     @Id
     String name;

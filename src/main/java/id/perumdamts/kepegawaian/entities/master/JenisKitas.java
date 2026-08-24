@@ -7,6 +7,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.AccessLevel;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 
@@ -17,7 +18,7 @@ import org.hibernate.annotations.SQLDelete;
 })
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE jenis_kitas SET is_deleted = TRUE WHERE id = ?")
 public class JenisKitas extends MasterBaseEntity {

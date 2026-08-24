@@ -23,7 +23,6 @@ import java.time.LocalDate;
         uniqueConstraints = {@UniqueConstraint(columnNames = {"nik", "jenis_kitas_id"})})
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE kartu_identitas SET is_deleted = TRUE WHERE id = ?")

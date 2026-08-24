@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.services.cuti.klaim;
 
 import id.perumdamts.kepegawaian.entities.cuti.CutiApproval;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
+import id.perumdamts.kepegawaian.exceptions.BadRequestException;
 import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiApprovalRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiKuotaRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiPegawaiRepository;
@@ -58,7 +59,7 @@ public class CutiKlaimCrossYearSettlement {
         int remainingAfterCurrentYear = totalDays - currentYearRemaining;
         if (remainingAfterCurrentYear > 0) {
             if (nextYearRemaining < remainingAfterCurrentYear) {
-                throw new RuntimeException("Kuota Cuti Tahun depan tidak tersedia! sisa kuota: " + nextYearRemaining + " hari");
+                throw new BadRequestException("Kuota Cuti Tahun depan tidak tersedia! sisa kuota: " + nextYearRemaining + " hari");
             }
 
             cutiPegawai.setRiwayatKuota0(currentYearRemaining);

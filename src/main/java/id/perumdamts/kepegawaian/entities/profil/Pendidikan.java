@@ -27,7 +27,6 @@ import java.time.LocalDateTime;
 })
 @Getter
 @Setter
-@ToString
 @RequiredArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE pendidikan SET is_deleted = TRUE WHERE id = ?")

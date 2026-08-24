@@ -14,7 +14,6 @@ import org.hibernate.annotations.SQLDelete;
 })
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE jenjang_pendidikan SET is_deleted = TRUE WHERE id = ?")

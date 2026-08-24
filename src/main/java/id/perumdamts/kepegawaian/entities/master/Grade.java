@@ -15,7 +15,6 @@ import java.util.List;
 })
 @Getter
 @Setter
-@ToString
 @RequiredArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE grade SET is_deleted=true WHERE id=?")
@@ -29,7 +28,6 @@ public class Grade extends MasterBaseEntity {
     private Double tukin;
 
     @OneToMany(mappedBy = "grade", fetch = FetchType.LAZY)
-    @ToString.Exclude
     private List<Profesi> profesiList;
 
     public Grade(Long id) {

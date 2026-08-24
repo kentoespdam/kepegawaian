@@ -13,8 +13,7 @@ import org.hibernate.annotations.SQLDelete;
 })
 @Getter
 @Setter
-@ToString
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE jenis_keahlian SET is_deleted = TRUE WHERE id = ?")
 public class JenisKeahlian extends MasterBaseEntity {

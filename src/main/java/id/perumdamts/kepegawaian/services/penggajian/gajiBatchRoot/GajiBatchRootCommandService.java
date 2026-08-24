@@ -18,6 +18,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -45,38 +48,35 @@ public class GajiBatchRootCommandService {
                 });
 
         GajiBatchRoot save = repository.save(entity);
-
-        if (request.getFileName() != null) {
-            String subFolder = "PotonganTKK/" + entity.getPeriode();
-            UploadResultUtil uploadResultUtil = fileUploadUtil.uploadPenggajian(
-                    request.getFileName(),
-                    subFolder
-            );
-            try {
-                GajiBatchRootLampiran gajiBatchRootLampiran = new GajiBatchRootLampiran(
-                        entity,
-                        EJenisPotonganGaji.POTONGAN_TKK,
-                        uploadResultUtil.getMimeType(),
-                        uploadResultUtil.getFileName(),
-                        uploadResultUtil.getHashedFileName());
-                gajiBatchRootLampiranRepository.save(gajiBatchRootLampiran);
-                processPotonganTkk.process(entity.getId());
-            } catch (RuntimeException postUploadEx) {
-                // Compensating action: drop the just-uploaded file so the
-                // rollback of the Lampiran row + potongan_tkk rows leaves
-                // no orphan on disk.
-                try {
-                    fileUploadUtil.deleteOldFilePenggajian(
-                            subFolder, uploadResultUtil.getHashedFileName());
-                } catch (RuntimeException cleanupEx) {
-                    log.warn("Failed to delete orphaned upload {}/{}: {}",
-                            subFolder, uploadResultUtil.getHashedFileName(),
-                            cleanupEx.getMessage());
-                }
-                throw postUploadEx;
-            }
-        }
         final String batchId = save.getId();
+        final MultipartFile filePart = request.getFileName();
+        final String periode = entity.getPeriode();
+
+        if (filePart != null) {
+            // #3 kepegawaian-f5i: upload di luar tx — orphans terjadi saat
+            // rollback setelah file ter-upload tapi sebelum tx commit.
+            TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+                @Override
+                public void afterCommit() {
+                    String subFolder = "PotonganTKK/" + periode;
+                    try {
+                        UploadResultUtil uploadResult = fileUploadUtil.uploadPenggajian(filePart, subFolder);
+                        GajiBatchRootLampiran lampiran = new GajiBatchRootLampiran(
+                                save,
+                                EJenisPotonganGaji.POTONGAN_TKK,
+                                uploadResult.getMimeType(),
+                                uploadResult.getFileName(),
+                                uploadResult.getHashedFileName());
+                        gajiBatchRootLampiranRepository.save(lampiran);
+                        // #4 kepegawaian-jgm: processPotonganTkk juga di afterCommit
+                        processPotonganTkk.process(batchId);
+                    } catch (RuntimeException ex) {
+                        log.error("Failed post-commit processing for batch {}: {}", batchId, ex.getMessage(), ex);
+                    }
+                }
+            });
+        }
+
         eventPublisher.publishAfterCommit(batchId);
         return SavedStatus.build(ESaveStatus.SUCCESS, "1 success");
     }

@@ -29,7 +29,6 @@ import java.time.LocalDate;
 })
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE riwayat_sk SET is_deleted=true WHERE id=?")

@@ -19,8 +19,7 @@ import org.hibernate.envers.RelationTargetAuditMode;
 })
 @Getter
 @Setter
-@ToString
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE riwayat_cuti SET is_deleted=true WHERE id=?")
 @SQLRestriction("is_deleted = FALSE")

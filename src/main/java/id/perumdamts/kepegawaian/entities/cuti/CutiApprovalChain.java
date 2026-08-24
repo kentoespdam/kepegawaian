@@ -5,6 +5,7 @@ import id.perumdamts.kepegawaian.entities.commons.EReadWriteStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.AccessLevel;
 import lombok.Setter;
 
 @Entity
@@ -14,7 +15,7 @@ import lombok.Setter;
 })
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CutiApprovalChain {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -61,25 +61,25 @@ Code review finding: 16 `RuntimeException` throws across cuti services, all busi
 ## Claim Order (Step-by-Step)
 
 ### Step 1: Sub-Issue A — Pengajuan Validator
-- [ ] Replace 4 RuntimeException → BadRequestException
-- [ ] Add import for BadRequestException
-- [ ] Verify: `./gradlew clean compileJava`
+- [x] Replace 4 RuntimeException → BadRequestException (+ 1 NotFoundException for Unknown Jenis Cuti)
+- [x] Add import for BadRequestException + NotFoundException
+- [x] Verify: `./gradlew clean compileJava`
 
 ### Step 2: Sub-Issue B — Cuti Klaim
-- [ ] Replace 7 RuntimeException → typed exceptions
-- [ ] Verify: `./gradlew clean compileJava`
+- [x] Replace 7 RuntimeException → typed exceptions (NotFoundException + BadRequestException)
+- [x] Verify: `./gradlew clean compileJava`
 
 ### Step 3: Sub-Issue C — Cuti Approval
-- [ ] Replace 2 RuntimeException → ForbiddenException + BadRequestException
-- [ ] Verify: `./gradlew clean compileJava`
+- [x] Replace 2 RuntimeException → ForbiddenException + BadRequestException (+ 3 NotFoundException for entity lookups)
+- [x] Verify: `./gradlew clean compileJava`
 
 ### Step 4: Sub-Issue D — Cuti Kuota
-- [ ] Replace 1 RuntimeException → BadRequestException (keep 2 file errors as RuntimeException)
-- [ ] Verify: `./gradlew clean compileJava`
+- [x] Replace 1 RuntimeException → BadRequestException (keep 2 file errors as RuntimeException)
+- [x] Verify: `./gradlew clean compileJava`
 
 ### Step 5: Full verification
-- [ ] `./gradlew test` — all green
-- [ ] No stack traces leaked in error responses
+- [x] `./gradlew test` — all green
+- [x] No stack traces leaked in error responses
 
 ---
 

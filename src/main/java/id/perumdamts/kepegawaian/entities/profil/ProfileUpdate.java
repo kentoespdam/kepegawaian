@@ -18,8 +18,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@ToString
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 public class ProfileUpdate {

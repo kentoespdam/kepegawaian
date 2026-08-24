@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.services.cuti.klaim;
 import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
 import id.perumdamts.kepegawaian.entities.cuti.CutiApproval;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
+import id.perumdamts.kepegawaian.exceptions.BadRequestException;
 import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiApprovalRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiKuotaRepository;
 import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiPegawaiRepository;
@@ -34,7 +35,7 @@ public class CutiApproveKlaimCutiService {
             cutiPegawai.setApprovalCutiStatus(EApprovalCutiStatus.REJECTED);
             cutiPegawaiRepository.save(cutiPegawai);
             cutiApprovalRepository.save(cutiApproval);
-            throw new RuntimeException("Cuti claim rejected due to insufficient leave days compared to previous year's quota");
+            throw new BadRequestException("Cuti claim rejected due to insufficient leave days compared to previous year's quota");
         }
 
         int remainingCurrentYearQuota = totalLeaveDays - previousYearUsedQuota;
@@ -91,7 +92,7 @@ public class CutiApproveKlaimCutiService {
             cutiPegawai.setApprovalCutiStatus(EApprovalCutiStatus.REJECTED);
             cutiPegawaiRepository.save(cutiPegawai);
             cutiApprovalRepository.save(cutiApproval);
-            throw new RuntimeException("Cuti claim rejected due to insufficient leave days compared to previous year's quota");
+            throw new BadRequestException("Cuti claim rejected due to insufficient leave days compared to previous year's quota");
         }
 
         cutiPegawai.getRefCuti().setIsClaimed(true);

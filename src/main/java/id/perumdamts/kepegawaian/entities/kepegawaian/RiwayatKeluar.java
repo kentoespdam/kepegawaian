@@ -23,8 +23,7 @@ import java.time.LocalDate;
 })
 @Getter
 @Setter
-@ToString
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE riwayat_keluar SET is_deleted=true WHERE id=?")
 @SQLRestriction("is_deleted = FALSE")

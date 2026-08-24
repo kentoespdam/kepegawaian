@@ -19,9 +19,9 @@ CODING_RULES: "@ToString (unscoped — triggers lazy loads)" is FORBIDDEN on @En
 ## Claim Order
 
 ### Step 1: Remove @ToString from all entities
-- [ ] Delete `@ToString` line from all 43 entity files
-- [ ] Remove unused `import lombok.ToString;` if present
-- [ ] Verify: `./gradlew clean compileJava`
+- [x] Delete `@ToString` line from all 43 entity files
+- [x] Remove unused `import lombok.ToString;` if present
+- [x] Verify: `./gradlew clean compileJava`
 
 ### Step 2: Verify
 - [ ] `./gradlew test` — all green

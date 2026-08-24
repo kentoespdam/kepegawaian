@@ -30,7 +30,7 @@ public class GajiBatchRootWorkflowCommandService {
     }
 
     @Transactional
-    public SavedStatus<String> verify1(String id, GajiBatchRootProcessRequest request) {
+    public SavedStatus<String> verify1(GajiBatchRootProcessRequest request) {
         GajiBatchRoot gajiBatchRoot = repository.findById(request.getId())
                 .orElseThrow(() -> new NotFoundException("Unknown Batch Process"));
         GajiBatchRoot verified = GajiBatchRootProcessRequest.verifyPhase1(gajiBatchRoot, request);
@@ -39,7 +39,7 @@ public class GajiBatchRootWorkflowCommandService {
     }
 
     @Transactional
-    public SavedStatus<String> verify2(String id, GajiBatchRootProcessRequest request) {
+    public SavedStatus<String> verify2(GajiBatchRootProcessRequest request) {
         GajiBatchRoot gajiBatchRoot = repository.findById(request.getId())
                 .orElseThrow(() -> new NotFoundException("Unknown Batch Process"));
         GajiBatchRoot verified = GajiBatchRootProcessRequest.verifyPhase2(gajiBatchRoot, request);
@@ -48,7 +48,7 @@ public class GajiBatchRootWorkflowCommandService {
     }
 
     @Transactional
-    public SavedStatus<String> accept(String id, GajiBatchRootProcessRequest request) {
+    public SavedStatus<String> accept(GajiBatchRootProcessRequest request) {
         GajiBatchRoot gajiBatchRoot = repository.findById(request.getId())
                 .orElseThrow(() -> new NotFoundException("Unknown Batch Process"));
         GajiBatchRoot accepted = GajiBatchRootProcessRequest.accept(gajiBatchRoot, request);

@@ -75,7 +75,7 @@ public class GajiBatchRootController {
                                         @Valid @RequestBody GajiBatchRootProcessRequest request) {
         if (!request.getId().equals(id))
             throw new BadRequestException("Path id does not match request body id");
-        return CustomResult.save(workflowCommandService.verify1(id, request));
+        return CustomResult.save(workflowCommandService.verify1(request));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:PROCESS')")
@@ -85,7 +85,7 @@ public class GajiBatchRootController {
                                         @Valid @RequestBody GajiBatchRootProcessRequest request) {
         if (!request.getId().equals(id))
             throw new BadRequestException("Path id does not match request body id");
-        return CustomResult.save(workflowCommandService.verify2(id, request));
+        return CustomResult.save(workflowCommandService.verify2(request));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:PROCESS')")
@@ -95,7 +95,7 @@ public class GajiBatchRootController {
                                        @Valid @RequestBody GajiBatchRootProcessRequest request) {
         if (!request.getId().equals(id))
             throw new BadRequestException("Path id does not match request body id");
-        return CustomResult.save(workflowCommandService.accept(id, request));
+        return CustomResult.save(workflowCommandService.accept(request));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:PROCESS')")

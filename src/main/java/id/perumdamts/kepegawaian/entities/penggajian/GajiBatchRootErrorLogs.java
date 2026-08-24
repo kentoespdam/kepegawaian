@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.io.Serializable;
 
@@ -16,7 +15,6 @@ import java.io.Serializable;
 })
 @Getter
 @Setter
-@ToString
 public class GajiBatchRootErrorLogs implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

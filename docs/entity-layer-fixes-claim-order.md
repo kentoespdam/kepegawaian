@@ -22,23 +22,22 @@ Additionally, 12+ entities use plain `@NoArgsConstructor` without `AccessLevel.P
 ## Claim Order (Step-by-Step)
 
 ### Step 1: Audit ALL entities for lazy toString
-- [ ] List every entity in `entities/` (cuti, pegawai, profil, master, kepegawaian, penggajian, system)
-- [ ] For each entity, identify `@OneToMany`, `@ManyToOne`, `@ManyToMany`, `@OneToOne(LAZY)` fields
-- [ ] Check if any of these fields are NOT excluded from `toString()`
-- [ ] Document findings
+- [x] List every entity in `entities/` (cuti, pegawai, profil, master, kepegawaian, penggajian, system)
+- [x] For each entity, identify `@OneToMany`, `@ManyToOne`, `@ManyToMany`, `@OneToOne(LAZY)` fields
+- [x] Check if any of these fields are NOT excluded from `toString()`
+- [x] Document findings
 
 ### Step 2: Fix @ToString.Exclude on all entities
-- [ ] Add `@ToString.Exclude` to all lazy association fields
-- [ ] Priority targets: `CutiPegawai`, `CutiApproval` (known lazy toString)
-- [ ] Then audit remaining entities
+- [x] Remove `@ToString` entirely from all 43 entities (CODING_RULES forbids @ToString on @Entity)
+- [x] Remove unused `import lombok.ToString;` from 4 files
 
 ### Step 3: Fix @NoArgsConstructor on all entities
-- [ ] Change `@NoArgsConstructor` → `@NoArgsConstructor(access = AccessLevel.PROTECTED)`
-- [ ] Ensure `@AllArgsConstructor` or `@Builder` is present for construction
-- [ ] Verify no code breaks (test compilation)
+- [x] Change `@NoArgsConstructor` → `@NoArgsConstructor(access = AccessLevel.PROTECTED)` on 17 entities with no external callers
+- [x] 35 entities reverted to public @NoArgsConstructor (external `new Entity()` calls in mappers/services)
+- [x] Verify no code breaks (test compilation)
 
 ### Step 4: Verify
-- [ ] `./gradlew clean compileJava` — zero errors
+- [x] `./gradlew clean compileJava` — zero errors
 - [ ] `./gradlew test` — all green
 - [ ] No LazyInitializationException in test output
 

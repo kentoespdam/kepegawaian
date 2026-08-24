@@ -15,9 +15,8 @@ import java.time.LocalDate;
         @UniqueConstraint(name = "unique_tanggal_idx", columnNames = {"tanggal"})})
 @Getter
 @Setter
-@ToString
 @SQLDelete(sql = "UPDATE hari_libur SET is_deleted = true where id = ?")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class HariLibur extends MasterBaseEntity {
     private LocalDate tanggal;

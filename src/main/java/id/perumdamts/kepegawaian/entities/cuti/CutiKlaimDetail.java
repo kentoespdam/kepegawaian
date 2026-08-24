@@ -9,8 +9,7 @@ import java.time.LocalDate;
 @Table
 @Getter
 @Setter
-@ToString
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class CutiKlaimDetail {
     @Id

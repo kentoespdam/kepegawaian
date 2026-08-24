@@ -13,7 +13,6 @@ import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.envers.Audited;
@@ -24,7 +23,6 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-@ToString
 @Entity
 @Table(indexes = {
         @Index(columnList = "nipam"),

@@ -13,8 +13,7 @@ import lombok.*;
 })
 @Getter
 @Setter
-@ToString
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class StatistikPegawai {
     @Id

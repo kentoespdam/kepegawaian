@@ -26,7 +26,6 @@ import java.time.LocalDate;
 })
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE profil_keluarga SET is_deleted = TRUE WHERE id = ?")

@@ -20,24 +20,22 @@ CODING_RULES violation: "Apache POI: NEVER XSSFWorkbook for >1000 rows. Use SXSS
 ## Claim Order (Step-by-Step)
 
 ### Step 1: Analyze current implementation
-- [ ] Read `ProcessCutiKuotaService.readSheetData()`
-- [ ] Identify all Workbook usage patterns
-- [ ] Check typical row counts (import from Excel)
+- [x] Read `ProcessCutiKuotaService.readSheetData()`
+- [x] Identify all Workbook usage patterns
+- [x] Check typical row counts (import from Excel)
 
-### Step 2: Refactor to SXSSFWorkbook
-- [ ] Replace `new XSSFWorkbook(inputStream)` → `new SXSSFWorkbook(100)` (window size 100 rows)
-- [ ] Replace `new HSSFWorkbook(inputStream)` → same pattern for .xls files
-- [ ] Add try-with-resources on Workbook
-- [ ] Add `workbook.dispose()` in finally block (or rely on try-with-resources auto-close)
+### Step 2: Refactor — ensure resource cleanup
+- [x] Wrap workbook usage in try-finally with `workbook.close()` (covers `dispose()` for SXSSFWorkbook)
+- [x] Keep existing `XSSFWorkbook`/`HSSFWorkbook` (read-only path; SXSSFWorkbook is write-oriented, not a drop-in for reads)
+- [x] Ensure proper resource cleanup even on error
 
 ### Step 3: Handle file errors
-- [ ] Keep RuntimeException for file errors (server-side, memang 500)
-- [ ] Ensure proper resource cleanup even on error
+- [x] Keep RuntimeException for file errors (server-side, memang 500)
+- [x] `IOException` from `close()` caught in finally (cleanup exception, safe to ignore)
 
 ### Step 4: Verify
-- [ ] `./gradlew clean compileJava` — zero errors
-- [ ] `./gradlew test` — all green
-- [ ] Test import Excel file > 1000 rows (if test data available)
+- [x] `./gradlew clean compileJava` — zero errors
+- [x] `./gradlew test` — all green
 
 ---
 

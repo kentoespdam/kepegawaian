@@ -10,7 +10,10 @@ import id.perumdamts.kepegawaian.entities.cuti.CutiApprovalChain;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
+import id.perumdamts.kepegawaian.exceptions.BadRequestException;
 import id.perumdamts.kepegawaian.exceptions.ConflictException;
+import id.perumdamts.kepegawaian.exceptions.ForbiddenException;
+import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.helpers.RedisHelper;
 import id.perumdamts.kepegawaian.mapper.cuti.approval.CutiApprovalMapper;
 import id.perumdamts.kepegawaian.repositories.cuti.jpa.CutiApprovalChainRepository;
@@ -43,15 +46,15 @@ public class ApprovalCutiCommand {
 
         CutiPegawai leaveRequest = cutiPegawaiRepository
                 .findByIdAndApprovalCutiStatusIn(request.getCutiId(), List.of(EApprovalCutiStatus.PENDING, EApprovalCutiStatus.RETURNED))
-                .orElseThrow(() -> new RuntimeException("Unknown Cuti Pegawai"));
+                .orElseThrow(() -> new NotFoundException("Unknown Cuti Pegawai"));
 
         Pegawai approver = pegawaiRepository.findById(request.getApproverId())
-                .orElseThrow(() -> new RuntimeException("Unknown Approver Pegawai"));
+                .orElseThrow(() -> new NotFoundException("Unknown Approver Pegawai"));
 
         Long approverJabatanId = approver.getJabatan().getId();
         Long currentPicJabatanId = leaveRequest.getPicSaatIni().getId();
         if (!approverJabatanId.equals(currentPicJabatanId)) {
-            throw new RuntimeException("You are not allowed to approve this leave request");
+            throw new ForbiddenException("You are not allowed to approve this leave request");
         }
 
         CutiApproval approvalEntity = CutiApprovalMapper.toEntity(request, leaveRequest, approver);
@@ -59,7 +62,7 @@ public class ApprovalCutiCommand {
         switch (request.getApprovalStatus()) {
             case APPROVED, RETURNED -> doSaveAcceptReject(approvalEntity, leaveRequest);
             case REJECTED -> rejectCutiPegawai(approvalEntity, leaveRequest);
-            default -> throw new RuntimeException("Unknown Approval Status");
+            default -> throw new BadRequestException("Unknown Approval Status");
         }
 
         return SavedStatus.build(ESaveStatus.SUCCESS, "success");
@@ -71,7 +74,7 @@ public class ApprovalCutiCommand {
         CutiApprovalChain currentChain = approvalChains.stream()
                 .filter(chain -> chain.getReadWriteStatus() == EReadWriteStatus.WRITE)
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Writable approval chain not found"));
+                .orElseThrow(() -> new NotFoundException("Writable approval chain not found"));
 
         int currentLevel = currentChain.getApprovalLevel();
         int nextLevel = cutiApproval.getApprovalStatus().equals(EApprovalCutiStatus.APPROVED) ?
