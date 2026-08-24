@@ -43,9 +43,9 @@
 | 22 | ~~`cuti-refactor-claim-order.md`~~                  | 4         | **belum mulai**    | Init steps: prime, claim                             |
 | 23 | ~~`profil-cqrs-cleanup-claim-order.md`~~            | 4         | **final steps**    | detect, commit, close, push                          |
 | 24 | `CLAIM-ORDER-drop-commonpagerequest.md`             | 8         | **template only**  | Checklist per-slice — epik sudah selesai             |
-| 25 | `organisasi-publication-pattern-claim-order.md`     | 13        | **belum mulai**    | Publication pattern — checklist belum di-check       |
-| 26 | `master-pattern-claim-order.md`                     | 59        | **belum mulai**    | Massive — wave execution checklist                   |
-| 27 | `ponytail-audit-claim-order.md`                     | 54        | **belum mulai**    | Ponytail audit sweep — 5 sub-epics                   |
+| 25 | ~~`organisasi-publication-pattern-claim-order.md`~~ | 13        | **belum mulai**    | Publication pattern — checklist belum di-check       |
+| 26 | ~~`master-pattern-claim-order.md`~~                 | 59        | **belum mulai**    | Massive — wave execution checklist                   |
+| 27 | ~~`ponytail-audit-claim-order.md`~~                 | 54        | **belum mulai**    | Ponytail audit sweep — 5 sub-epics                   |
 
 ---
 
