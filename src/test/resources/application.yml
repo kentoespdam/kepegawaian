@@ -28,6 +28,8 @@ spring:
     hikari:
       connection-timeout: 20000
       maximum-pool-size: ${DB_POOL_SIZE:10}
+  flyway:
+    repair-on-migrate: true
   jpa:
     show-sql: true
     hibernate:
