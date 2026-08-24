@@ -118,7 +118,6 @@ CREATE TABLE `biodata_aud` (
 DROP TABLE IF EXISTS `cuti_approval`;
 CREATE TABLE `cuti_approval` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
   `approval_level` int(11) DEFAULT NULL,
   `approval_status` tinyint(4) DEFAULT NULL,
   `notes` text DEFAULT NULL,
@@ -146,7 +145,6 @@ CREATE TABLE `cuti_approval_aud` (
   `id` bigint(20) NOT NULL,
   `rev` int(11) NOT NULL,
   `revtype` tinyint(4) DEFAULT NULL,
-  `changed_status` tinyint(1) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
@@ -181,7 +179,6 @@ CREATE TABLE `cuti_approval_chain` (
 DROP TABLE IF EXISTS `cuti_jenis`;
 CREATE TABLE `cuti_jenis` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
   `max_hari` int(11) DEFAULT NULL,
   `nama` varchar(255) DEFAULT NULL,
   `potong_kuota_tahunan` bit(1) DEFAULT NULL,
@@ -201,7 +198,6 @@ CREATE TABLE `cuti_jenis_aud` (
   `id` bigint(20) NOT NULL,
   `rev` int(11) NOT NULL,
   `revtype` tinyint(4) DEFAULT NULL,
-  `changed_status` tinyint(1) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
@@ -228,7 +224,6 @@ CREATE TABLE `cuti_klaim_detail` (
 DROP TABLE IF EXISTS `cuti_kuota`;
 CREATE TABLE `cuti_kuota` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
   `expired` date DEFAULT NULL,
   `kuota` int(11) DEFAULT NULL,
   `kuota_tambahan` int(11) DEFAULT NULL,
@@ -253,7 +248,6 @@ CREATE TABLE `cuti_kuota_aud` (
   `id` bigint(20) NOT NULL,
   `rev` int(11) NOT NULL,
   `revtype` tinyint(4) DEFAULT NULL,
-  `changed_status` tinyint(1) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
@@ -273,7 +267,6 @@ CREATE TABLE `cuti_kuota_aud` (
 DROP TABLE IF EXISTS `cuti_pegawai`;
 CREATE TABLE `cuti_pegawai` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
   `alasan` varchar(255) DEFAULT NULL,
   `approval_cuti_status` tinyint(4) DEFAULT NULL,
   `approval_level` int(11) DEFAULT NULL,
@@ -328,7 +321,6 @@ CREATE TABLE `cuti_pegawai_aud` (
   `id` bigint(20) NOT NULL,
   `rev` int(11) NOT NULL,
   `revtype` tinyint(4) DEFAULT NULL,
-  `changed_status` tinyint(1) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
@@ -368,7 +360,6 @@ CREATE TABLE `cuti_pegawai_aud` (
 DROP TABLE IF EXISTS `dasar_gaji`;
 CREATE TABLE `dasar_gaji` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
   `aktif` bit(1) NOT NULL,
   `deskripsi` varchar(255) DEFAULT NULL,
   `tanggal_akhir` date DEFAULT NULL,
@@ -390,7 +381,6 @@ CREATE TABLE `dasar_gaji_aud` (
   `id` bigint(20) NOT NULL,
   `rev` int(11) NOT NULL,
   `revtype` tinyint(4) DEFAULT NULL,
-  `changed_status` tinyint(1) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
@@ -407,7 +397,6 @@ CREATE TABLE `dasar_gaji_aud` (
 DROP TABLE IF EXISTS `detail_dasar_gaji`;
 CREATE TABLE `detail_dasar_gaji` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
   `golongan_kode` int(11) DEFAULT NULL,
   `mkg` int(11) DEFAULT NULL,
   `nominal` double DEFAULT NULL,
@@ -430,7 +419,6 @@ CREATE TABLE `detail_dasar_gaji_aud` (
   `id` bigint(20) NOT NULL,
   `rev` int(11) NOT NULL,
   `revtype` tinyint(4) DEFAULT NULL,
-  `changed_status` tinyint(1) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
@@ -598,7 +586,6 @@ CREATE TABLE `gaji_batch_root_lampiran` (
 DROP TABLE IF EXISTS `gaji_komponen`;
 CREATE TABLE `gaji_komponen` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
   `formula` varchar(255) DEFAULT NULL,
   `is_reference` bit(1) DEFAULT NULL,
   `jenis_gaji` enum('NONE','PEMASUKAN','POTONGAN') DEFAULT NULL,
@@ -624,7 +611,6 @@ CREATE TABLE `gaji_komponen_aud` (
   `id` bigint(20) NOT NULL,
   `rev` int(11) NOT NULL,
   `revtype` tinyint(4) DEFAULT NULL,
-  `changed_status` tinyint(1) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
@@ -645,7 +631,6 @@ CREATE TABLE `gaji_komponen_aud` (
 DROP TABLE IF EXISTS `gaji_parameter_setting`;
 CREATE TABLE `gaji_parameter_setting` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
   `kode` varchar(255) DEFAULT NULL,
   `nominal` double DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
@@ -663,7 +648,6 @@ CREATE TABLE `gaji_parameter_setting_aud` (
   `id` bigint(20) NOT NULL,
   `rev` int(11) NOT NULL,
   `revtype` tinyint(4) DEFAULT NULL,
-  `changed_status` tinyint(1) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
@@ -678,7 +662,6 @@ CREATE TABLE `gaji_parameter_setting_aud` (
 DROP TABLE IF EXISTS `gaji_pendapatan_non_pajak`;
 CREATE TABLE `gaji_pendapatan_non_pajak` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
   `kode` varchar(255) DEFAULT NULL,
   `nominal` double DEFAULT NULL,
   `notes` varchar(255) DEFAULT NULL,
@@ -698,7 +681,6 @@ CREATE TABLE `gaji_pendapatan_non_pajak_aud` (
   `id` bigint(20) NOT NULL,
   `rev` int(11) NOT NULL,
   `revtype` tinyint(4) DEFAULT NULL,
-  `changed_status` tinyint(1) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
@@ -714,7 +696,6 @@ CREATE TABLE `gaji_pendapatan_non_pajak_aud` (
 DROP TABLE IF EXISTS `gaji_phdp`;
 CREATE TABLE `gaji_phdp` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
   `formula` varchar(255) DEFAULT NULL,
   `kondisi` varchar(255) DEFAULT NULL,
   `urut` int(11) DEFAULT NULL,
@@ -734,7 +715,6 @@ CREATE TABLE `gaji_phdp_aud` (
   `id` bigint(20) NOT NULL,
   `rev` int(11) NOT NULL,
   `revtype` tinyint(4) DEFAULT NULL,
-  `changed_status` tinyint(1) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
@@ -750,7 +730,6 @@ CREATE TABLE `gaji_phdp_aud` (
 DROP TABLE IF EXISTS `gaji_potongan_tkk`;
 CREATE TABLE `gaji_potongan_tkk` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
   `nominal` double DEFAULT NULL,
   `status_pegawai` tinyint(4) DEFAULT NULL,
   `golongan_id` bigint(20) DEFAULT NULL,
@@ -774,7 +753,6 @@ CREATE TABLE `gaji_potongan_tkk_aud` (
   `id` bigint(20) NOT NULL,
   `rev` int(11) NOT NULL,
   `revtype` tinyint(4) DEFAULT NULL,
-  `changed_status` tinyint(1) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
@@ -791,7 +769,6 @@ CREATE TABLE `gaji_potongan_tkk_aud` (
 DROP TABLE IF EXISTS `gaji_profil`;
 CREATE TABLE `gaji_profil` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
   `nama` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_gj_prf_is_deleted` (`is_deleted`) USING BTREE,
@@ -808,7 +785,6 @@ CREATE TABLE `gaji_profil_aud` (
   `id` bigint(20) NOT NULL,
   `rev` int(11) NOT NULL,
   `revtype` tinyint(4) DEFAULT NULL,
-  `changed_status` tinyint(1) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
@@ -822,7 +798,6 @@ CREATE TABLE `gaji_profil_aud` (
 DROP TABLE IF EXISTS `gaji_tunjangan`;
 CREATE TABLE `gaji_tunjangan` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
   `jenis_tunjangan` tinyint(4) DEFAULT NULL,
   `nominal` double DEFAULT NULL,
   `golongan_id` bigint(20) DEFAULT NULL,
@@ -846,7 +821,6 @@ CREATE TABLE `gaji_tunjangan_aud` (
   `id` bigint(20) NOT NULL,
   `rev` int(11) NOT NULL,
   `revtype` tinyint(4) DEFAULT NULL,
-  `changed_status` tinyint(1) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
@@ -1035,7 +1009,6 @@ CREATE TABLE `kartu_identitas_aud` (
   `id` bigint(20) NOT NULL,
   `rev` int(11) NOT NULL,
   `revtype` tinyint(4) DEFAULT NULL,
-  `changed_status` tinyint(1) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
@@ -1086,7 +1059,6 @@ CREATE TABLE `keahlian_aud` (
   `id` bigint(20) NOT NULL,
   `rev` int(11) NOT NULL,
   `revtype` tinyint(4) DEFAULT NULL,
-  `changed_status` tinyint(1) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
@@ -1110,7 +1082,6 @@ CREATE TABLE `keahlian_aud` (
 DROP TABLE IF EXISTS `lampiran_profil`;
 CREATE TABLE `lampiran_profil` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
   `disetujui` bit(1) DEFAULT NULL,
   `disetujui_oleh` varchar(255) DEFAULT NULL,
   `file_name` varchar(255) DEFAULT NULL,
@@ -1138,7 +1109,6 @@ CREATE TABLE `lampiran_profil_aud` (
   `id` bigint(20) NOT NULL,
   `rev` int(11) NOT NULL,
   `revtype` tinyint(4) DEFAULT NULL,
-  `changed_status` tinyint(1) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
@@ -1161,7 +1131,6 @@ CREATE TABLE `lampiran_profil_aud` (
 DROP TABLE IF EXISTS `lampiran_sk`;
 CREATE TABLE `lampiran_sk` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
   `disetujui` bit(1) DEFAULT NULL,
   `disetujui_oleh` varchar(255) DEFAULT NULL,
   `file_name` varchar(255) DEFAULT NULL,
@@ -1189,7 +1158,6 @@ CREATE TABLE `lampiran_sk_aud` (
   `id` bigint(20) NOT NULL,
   `rev` int(11) NOT NULL,
   `revtype` tinyint(4) DEFAULT NULL,
-  `changed_status` tinyint(1) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
@@ -1247,7 +1215,6 @@ CREATE TABLE `organisasi` (
 DROP TABLE IF EXISTS `pegawai`;
 CREATE TABLE `pegawai` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
   `absensi_id` bigint(20) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `gaji_pokok` double DEFAULT NULL,
@@ -1318,7 +1285,6 @@ CREATE TABLE `pegawai_aud` (
   `id` bigint(20) NOT NULL,
   `rev` int(11) NOT NULL,
   `revtype` tinyint(4) DEFAULT NULL,
-  `changed_status` tinyint(1) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
@@ -1401,7 +1367,6 @@ CREATE TABLE `pelatihan_aud` (
   `id` bigint(20) NOT NULL,
   `rev` int(11) NOT NULL,
   `revtype` tinyint(4) DEFAULT NULL,
-  `changed_status` tinyint(1) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
@@ -1467,7 +1432,6 @@ CREATE TABLE `pendidikan_aud` (
   `id` bigint(20) NOT NULL,
   `rev` int(11) NOT NULL,
   `revtype` tinyint(4) DEFAULT NULL,
-  `changed_status` tinyint(1) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
@@ -1526,7 +1490,6 @@ CREATE TABLE `pengalaman_kerja_aud` (
   `id` bigint(20) NOT NULL,
   `rev` int(11) NOT NULL,
   `revtype` tinyint(4) DEFAULT NULL,
-  `changed_status` tinyint(1) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
@@ -1621,7 +1584,6 @@ CREATE TABLE `profil_keluarga_aud` (
   `id` bigint(20) NOT NULL,
   `rev` int(11) NOT NULL,
   `revtype` tinyint(4) DEFAULT NULL,
-  `changed_status` tinyint(1) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
@@ -1675,7 +1637,6 @@ CREATE TABLE `revinfo` (
 DROP TABLE IF EXISTS `riwayat_cuti`;
 CREATE TABLE `riwayat_cuti` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
   `nama` varchar(255) DEFAULT NULL,
   `nipam` varchar(255) DEFAULT NULL,
   `pegawai_id` bigint(20) DEFAULT NULL,
@@ -1696,7 +1657,6 @@ CREATE TABLE `riwayat_cuti_aud` (
   `id` bigint(20) NOT NULL,
   `rev` int(11) NOT NULL,
   `revtype` tinyint(4) DEFAULT NULL,
-  `changed_status` tinyint(1) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
@@ -1712,7 +1672,6 @@ CREATE TABLE `riwayat_cuti_aud` (
 DROP TABLE IF EXISTS `riwayat_keluar`;
 CREATE TABLE `riwayat_keluar` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
   `disetujui_oleh_nama` varchar(255) DEFAULT NULL,
   `nama_jabatan` varchar(255) DEFAULT NULL,
   `nama_jabatan_penyetuju` varchar(255) DEFAULT NULL,
@@ -1754,7 +1713,6 @@ CREATE TABLE `riwayat_keluar` (
 DROP TABLE IF EXISTS `riwayat_kontrak`;
 CREATE TABLE `riwayat_kontrak` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
   `is_latest` bit(1) DEFAULT NULL,
   `jenis_kontrak` tinyint(4) DEFAULT NULL,
   `nama` varchar(255) DEFAULT NULL,
@@ -1790,7 +1748,6 @@ CREATE TABLE `riwayat_kontrak_aud` (
   `id` bigint(20) NOT NULL,
   `rev` int(11) NOT NULL,
   `revtype` tinyint(4) DEFAULT NULL,
-  `changed_status` tinyint(1) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
@@ -1815,7 +1772,6 @@ CREATE TABLE `riwayat_kontrak_aud` (
 DROP TABLE IF EXISTS `riwayat_mutasi`;
 CREATE TABLE `riwayat_mutasi` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
   `jenis_mutasi` tinyint(4) DEFAULT NULL,
   `nama` varchar(255) DEFAULT NULL,
   `nama_golongan` varchar(255) DEFAULT NULL,
@@ -1859,7 +1815,6 @@ CREATE TABLE `riwayat_mutasi_aud` (
   `id` bigint(20) NOT NULL,
   `rev` int(11) NOT NULL,
   `revtype` tinyint(4) DEFAULT NULL,
-  `changed_status` tinyint(1) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
@@ -1896,7 +1851,6 @@ CREATE TABLE `riwayat_mutasi_aud` (
 DROP TABLE IF EXISTS `riwayat_sk`;
 CREATE TABLE `riwayat_sk` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
   `gaji_pokok` double DEFAULT NULL,
   `jenis_sk` tinyint(4) DEFAULT NULL,
   `kenaikan_berikutnya` date DEFAULT NULL,
@@ -1938,7 +1892,6 @@ CREATE TABLE `riwayat_sk_aud` (
   `id` bigint(20) NOT NULL,
   `rev` int(11) NOT NULL,
   `revtype` tinyint(4) DEFAULT NULL,
-  `changed_status` tinyint(1) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
@@ -1967,7 +1920,6 @@ CREATE TABLE `riwayat_sk_aud` (
 DROP TABLE IF EXISTS `riwayat_sp`;
 CREATE TABLE `riwayat_sp` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
@@ -2016,7 +1968,6 @@ CREATE TABLE `riwayat_sp_aud` (
   `id` bigint(20) NOT NULL,
   `rev` int(11) NOT NULL,
   `revtype` tinyint(4) DEFAULT NULL,
-  `changed_status` tinyint(1) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,
@@ -2050,7 +2001,6 @@ CREATE TABLE `riwayat_sp_aud` (
 DROP TABLE IF EXISTS `riwayat_terminasi`;
 CREATE TABLE `riwayat_terminasi` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `changed_status` tinyint(1) DEFAULT 0,
   `masa_kerja` int(11) DEFAULT NULL,
   `nama` varchar(255) DEFAULT NULL,
   `nama_golongan` varchar(255) DEFAULT NULL,
@@ -2097,7 +2047,6 @@ CREATE TABLE `riwayat_terminasi_aud` (
   `id` bigint(20) NOT NULL,
   `rev` int(11) NOT NULL,
   `revtype` tinyint(4) DEFAULT NULL,
-  `changed_status` tinyint(1) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `created_by` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT 0,

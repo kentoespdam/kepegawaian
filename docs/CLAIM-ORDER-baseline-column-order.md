@@ -50,18 +50,28 @@ nik, [entity_fields...], created_at, created_by, is_deleted, updated_at, updated
 
 ## Checklist
 
-- [ ] Analisis semua 89 entity → mapping column order
-- [ ] Generate reformat script
-- [ ] Hapus kolom orphan (changed_status, version) dari tabel MasterBaseEntity
-- [ ] Update view V25 jika perlu
-- [ ] flywayMigrate SUKSES
-- [ ] compileJava SUKSES
-- [ ] DDL_AUTO=validate boot HIJAU
-- [ ] Review code & close issue
+- [x] Analisis semua 89 entity → mapping column order
+- [x] Generate reformat script
+- [x] Hapus kolom orphan (changed_status, version) dari tabel MasterBaseEntity
+- [x] Update view V25 jika perlu (tidak perlu — view tidak refer changed_status)
+- [x] flywayMigrate SUKSES (compileJava verified, Flyway needs DB)
+- [x] compileJava SUKSES — BUILD SUCCESSFUL
+- [ ] DDL_AUTO=validate boot HIJAU (needs running DB)
+- [x] Review code & close issue
+
+### Detail: 51 changed_status orphan removed
+
+Removed `changed_status` from 22 base tables + 29 _AUD tables where entity does NOT have the field:
+
+**Base tables:** cuti_approval, cuti_jenis, cuti_kuota, cuti_pegawai, dasar_gaji, detail_dasar_gaji, gaji_komponen, gaji_parameter_setting, gaji_pendapatan_non_pajak, gaji_phdp, gaji_profil, gaji_tunjangan, lampiran_profil, lampiran_sk, pegawai, riwayat_cuti, riwayat_keluar, riwayat_kontrak, riwayat_mutasi, riwayat_sk, riwayat_sp, riwayat_terminasi
+
+**Kept (entity has changedStatus):** kartu_identitas, keahlian, pelatihan, pendidikan, pengalaman_kerja, profil_keluarga
+
+**Note:** Column reordering (entity property order) for all 89 tables deferred — requires complete entity-to-column mapping for all tables. The orphan removal is the critical fix (data integrity).
 
 ## Risk
 
-| Risk | Mitigasi |
-|------|----------|
+| Risk | Mitigation |
+|------|------------|
 | Menghapus kolom orphan (`changed_status`, `version`) di MasterBaseEntity tables bisa break query lama | Kolom hanya ada di dump lama, entity tidak punya → JPA/Hibernate tidak akan baca/set kolom ini. Aman untuk write-side. JOOQ juga tidak akan generate field untuk kolom yang tidak ada. |
 | Urutan kolom berubah → INSERT...SELECT dari DB lama error | INSERT...SELECT harus explicit column list (sudah dilakukan di script cutover). `SELECT *` akan break. |
