@@ -15,14 +15,14 @@ Urutan klaim di bawah mengikuti **dependency**, bukan nomor issue. Dua child iss
 
 ## WAVE 0 — Epic (gerbang, tidak dikerjakan langsung)
 
-- [ ] **dcz** · #5 (EPIC): adopsi pattern response Publication ke modul master Organisasi · `P2` · deps: —
+- [x] **dcz** · #5 (EPIC): adopsi pattern response Publication ke modul master Organisasi · `P2` · deps: —
 
 > Epic ini hanya kontainer keputusan + grounding. Tidak ada koding di sini. Tutup setelah #6 & #7 selesai.
 
 ## WAVE 1 — Eksekusi paralel (2 issue, tidak saling blok)
 
-- [ ] **5f8** · #6: `PagedRequest` + `SortParam` whitelist di modul master + migrasi switch inline `OrganisasiQueryRepository` (~baris 26-33) → `allowedSorts()` deklaratif · `P2` · deps: dcz
-- [ ] **smp** · #7: write-flow controller — `OrganisasiController` POST/PUT/DELETE kembalikan `{status, id}` saja (swap `entity` → `entity.getId()` ke `SavedStatus.build`) · `P2` · deps: dcz
+- [x] **5f8** · #6: `PagedRequest` + `SortParam` whitelist di modul master + migrasi switch inline `OrganisasiQueryRepository` (~baris 26-33) → `allowedSorts()` deklaratif · `P2` · deps: dcz
+- [x] **smp** · #7: write-flow controller — `OrganisasiController` POST/PUT/DELETE kembalikan `{status, id}` saja (swap `entity` → `entity.getId()` ke `SavedStatus.build`) · `P2` · deps: dcz
 
 > #6 menyentuh `dto/master/organisasi` + `OrganisasiQueryRepository`. #7 menyentuh `OrganisasiController` saja. Tidak ada file bertabrakan → aman paralel.
 
@@ -38,18 +38,18 @@ dcz(#5 epic) ──┬── 5f8(#6 paging/sort)
 ## Acceptance ringkas per issue
 
 **#6 (5f8)**
-- [ ] `PagedRequest` & `SortParam` ada di dalam modul master (bukan `dto/commons` global)
-- [ ] `OrganisasiIndexQuery` tidak lagi `extends CommonPageRequest`
-- [ ] Sort `kode/nama/levelOrg/shortName/category` & default identik perilaku lama; `sortBy` tak dikenal → default `ID` (tidak error, tidak kolom mentah)
-- [ ] Nol dependency build baru
-- [ ] Blast radius dilaporkan sebelum edit; `detect_changes` bersih dari modul lain
+- [x] `PagedRequest` & `SortParam` ada di dalam modul master (bukan `dto/commons` global)
+- [x] `OrganisasiIndexQuery` tidak lagi `extends CommonPageRequest`
+- [x] Sort `kode/nama/levelOrg/shortName/category` & default identik perilaku lama; `sortBy` tak dikenal → default `ID` (tidak error, tidak kolom mentah)
+- [x] Nol dependency build baru
+- [x] Blast radius dilaporkan sebelum edit; `detect_changes` bersih dari modul lain
 
 **#7 (smp)**
-- [ ] POST & PUT mengembalikan body `{status, id}` (Long), bukan entity penuh
-- [ ] Tidak ada kebocoran relasi/lazy entity pada response mutasi
-- [ ] `OrganisasiCommandService` tidak berubah (idealnya), atau perubahan dijustifikasi impact
-- [ ] `detect_changes` hanya menunjukkan `OrganisasiController`
-- [ ] DELETE tetap soft-delete
+- [x] POST & PUT mengembalikan body `{status, id}` (Long), bukan entity penuh
+- [x] Tidak ada kebocoran relasi/lazy entity pada response mutasi
+- [x] `OrganisasiCommandService` tidak berubah (idealnya), atau perubahan dijustifikasi impact
+- [x] `detect_changes` hanya menunjukkan `OrganisasiController`
+- [x] DELETE tetap soft-delete
 
 ## Cara update checklist
 

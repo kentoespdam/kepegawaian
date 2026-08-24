@@ -2,6 +2,7 @@
 
 > Generated: 2026-08-20
 > Scope: Whole-repo over-engineering audit vs CODING_RULES.md
+> Status: **ALL COMPLETE** (verified 2026-08-24, build green)
 
 ## Summary
 
@@ -19,11 +20,11 @@
 
 ---
 
-## Issue 1: `kepegawaian-80p1` — Dead Code & Redundant Patterns
+## Issue 1: `kepegawaian-80p1` — Dead Code & Redundant Patterns ✅
 
 ### Claim Order
 
-- [ ] **Step 1:** Hapus 5 dead classes
+- [x] **Step 1:** Hapus 5 dead classes
   - `utils/DetailFromList.java` — zero callers
   - `config/DefConfig.java` — zero imports
   - `config/audit/AuditRevisionListener.java` — empty class, commented body
@@ -31,22 +32,22 @@
   - `dto/commons/ErrorCode.java` — zero callers
   - → `./gradlew clean compileJava`
 
-- [ ] **Step 2:** Hapus `@EnableWebMvc` dari `OpenApiConfig`
+- [x] **Step 2:** Hapus `@EnableWebMvc` dari `OpenApiConfig`
   - `config/OpenApiConfig.java` — remove annotation + import
   - → `./gradlew clean compileJava`
 
-- [ ] **Step 3:** Collapse `MimeTypesUtils` interface + impl
+- [x] **Step 3:** Collapse `MimeTypesUtils` interface + impl
   - Delete `utils/MimeTypesUtils.java` (interface)
   - Rename `utils/MimeTypesUtilsImpl.java` → `utils/MimeTypesUtils.java`
   - Add `final` to class, keep `@Component`
   - Update `BiodataController` import if needed
   - → `./gradlew clean compileJava`
 
-- [ ] **Step 4:** Hapus `Serializable` dari `UploadResultUtil`
+- [x] **Step 4:** Hapus `Serializable` dari `UploadResultUtil`
   - Remove `implements Serializable` + import
   - → `./gradlew clean compileJava`
 
-- [ ] **Step 5:** Merge 4 identical Query/ListResponse pairs
+- [x] **Step 5:** Merge 4 identical Query/ListResponse pairs
   - Delete `GolonganListResponse.java` — use `GolonganQuery` in `GolonganQueryService.listQuery()`
   - Delete `JenisKeahlianListResponse.java` — use `JenisKeahlianQuery`
   - Delete `JenisKitasListResponse.java` — use `JenisKitasQuery`
@@ -54,48 +55,48 @@
   - Update query service return types + controller response types
   - → `./gradlew clean compileJava`
 
-- [ ] **Step 6:** `./gradlew test` — all green
+- [x] **Step 6:** `./gradlew test` — all green
 
-- [ ] **Step 7:** Update graph + commit
+- [x] **Step 7:** Update graph + commit
 
 ---
 
-## Issue 2: `kepegawaian-0ejq` — ConfigurationProperties → Immutable Record
+## Issue 2: `kepegawaian-0ejq` — ConfigurationProperties → Immutable Record ✅
 
 ### Claim Order
 
-- [ ] **Step 1:** Konvert `AppwriteProperties` → record
+- [x] **Step 1:** Konvert `AppwriteProperties` → record
   - `config/AppwriteProperties.java` → `public record AppwriteProperties(String endpoint, String projectId, String apiKey) {}`
   - Add `@EnableConfigurationProperties(AppwriteProperties.class)` on main app class or config
   - → `./gradlew clean compileJava`
 
-- [ ] **Step 2:** Update `AppwriteClientTest`
+- [x] **Step 2:** Update `AppwriteClientTest`
   - `new AppwriteProperties()` + setters → `new AppwriteProperties(ENDPOINT, PROJECT_ID, API_KEY)`
   - → `./gradlew clean compileJava`
 
-- [ ] **Step 3:** Konvert `CutiProperties` → record
+- [x] **Step 3:** Konvert `CutiProperties` → record
   - 9 fields → record components
   - → `./gradlew clean compileJava`
 
-- [ ] **Step 4:** Konvert `PegawaiProperties` → record
+- [x] **Step 4:** Konvert `PegawaiProperties` → record
   - 2 fields → record components
   - → `./gradlew clean compileJava`
 
-- [ ] **Step 5:** `./gradlew test` — all green
+- [x] **Step 5:** `./gradlew test` — all green
 
-- [ ] **Step 6:** Update graph + commit
+- [x] **Step 6:** Update graph + commit
 
 ---
 
-## Issue 3: `kepegawaian-ofd5` — Redis Cache Config + UrlBuilder Refactor
+## Issue 3: `kepegawaian-ofd5` — Redis Cache Config + UrlBuilder Refactor ✅
 
 ### Claim Order
 
 #### Part A: Redis Cache Config
-- [ ] **Step A1:** Hapus `RedisConfig.java`
+- [x] **Step A1:** Hapus `RedisConfig.java`
   - → `./gradlew clean compileJava`
 
-- [ ] **Step A2:** Tambah `spring.cache` di `application.yml`
+- [x] **Step A2:** Tambah `spring.cache` di `application.yml`
   ```yaml
   spring:
     cache:
@@ -107,107 +108,107 @@
         use-key-prefix: true
   ```
 
-- [ ] **Step A3:** Tambah `CacheConfig` bean
+- [x] **Step A3:** Tambah `CacheConfig` bean
   - `@Configuration @EnableCaching`
   - `RedisCacheManagerBuilderCustomizer` — per-cache-name TTL
   - `CacheErrorHandler` — Redis down → degrade to DB
 
-- [ ] **Step A4:** Tambah `REDIS_CACHE_TTL` ke `env.example`
+- [x] **Step A4:** Tambah `REDIS_CACHE_TTL` ke `env.example`
 
 #### Part B: UrlBuilder Refactor
-- [ ] **Step B1:** Refactor `LaporanStatistikController` (9 call sites)
+- [x] **Step B1:** Refactor `LaporanStatistikController` (9 call sites)
   - `UrlBuilder.build(BASE_PATH, "/endpoint")` → `UriComponentsBuilder.fromPath(BASE_PATH).path("/endpoint").toUriString()`
   - `UrlBuilder.build(BASE_PATH, "/endpoint?tahun=X&bulan=Y")` → `.queryParam("tahun", tahun).queryParam("bulan", bulan)`
   - → `./gradlew clean compileJava`
 
-- [ ] **Step B2:** Refactor `LaporanKontrakController` (2 call sites)
+- [x] **Step B2:** Refactor `LaporanKontrakController` (2 call sites)
   - `UrlBuilder.buildFilter(BASE_PATH, "/endpoint", filter)` → `.queryParam("filter", filter)`
   - → `./gradlew clean compileJava`
 
-- [ ] **Step B3:** Refactor `LaporanKenaikanBerkalaController` (3 call sites)
+- [x] **Step B3:** Refactor `LaporanKenaikanBerkalaController` (3 call sites)
   - `UrlBuilder.build(BASE_PATH, "/endpoint", request)` → explicit `queryParam()` calls
   - → `./gradlew clean compileJava`
 
-- [ ] **Step B4:** Refactor `LaporanDukController` (2 call sites)
+- [x] **Step B4:** Refactor `LaporanDukController` (2 call sites)
   - → `./gradlew clean compileJava`
 
-- [ ] **Step B5:** Refactor `LaporanDnpController` (2 call sites)
+- [x] **Step B5:** Refactor `LaporanDnpController` (2 call sites)
   - → `./gradlew clean compileJava`
 
-- [ ] **Step B6:** Refactor `LaporanLtaController` (3 call sites)
+- [x] **Step B6:** Refactor `LaporanLtaController` (3 call sites)
   - → `./gradlew clean compileJava`
 
-- [ ] **Step B7:** Hapus `helpers/UrlBuilder.java`
+- [x] **Step B7:** Hapus `helpers/UrlBuilder.java`
   - → `./gradlew clean compileJava`
 
-- [ ] **Step B8:** `./gradlew test` — all green
+- [x] **Step B8:** `./gradlew test` — all green
 
-- [ ] **Step 9:** Update graph + commit
+- [x] **Step 9:** Update graph + commit
 
 ---
 
-## Issue 4: `kepegawaian-k8cg` — SpringDoc OpenAPI @Tag + @Operation
+## Issue 4: `kepegawaian-k8cg` — SpringDoc OpenAPI @Tag + @Operation ✅
 
 ### Claim Order
 
 #### Domain: master (22 controllers)
-- [ ] **Step 1:** Tambah `@Tag` ke semua master controllers
-- [ ] **Step 2:** Tambah `@Operation(summary = "...")` ke semua master methods (~80)
-- [ ] **Step 3:** `./gradlew clean compileJava`
+- [x] **Step 1:** Tambah `@Tag` ke semua master controllers
+- [x] **Step 2:** Tambah `@Operation(summary = "...")` ke semua master methods (~80)
+- [x] **Step 3:** `./gradlew clean compileJava`
 
 #### Domain: profil (17 controllers)
-- [ ] **Step 4:** Tambah `@Tag` ke semua profil controllers
-- [ ] **Step 5:** Tambah `@Operation` ke semua profil methods (~70)
-- [ ] **Step 6:** `./gradlew clean compileJava`
+- [x] **Step 4:** Tambah `@Tag` ke semua profil controllers
+- [x] **Step 5:** Tambah `@Operation` ke semua profil methods (~70)
+- [x] **Step 6:** `./gradlew clean compileJava`
 
 #### Domain: penggajian (12 controllers)
-- [ ] **Step 7:** Tambah `@Tag` ke semua penggajian controllers
-- [ ] **Step 8:** Tambah `@Operation` ke semua penggajian methods (~60)
-- [ ] **Step 9:** `./gradlew clean compileJava`
+- [x] **Step 7:** Tambah `@Tag` ke semua penggajian controllers
+- [x] **Step 8:** Tambah `@Operation` ke semua penggajian methods (~60)
+- [x] **Step 9:** `./gradlew clean compileJava`
 
 #### Domain: kepegawaian (6 controllers)
-- [ ] **Step 10:** Tambah `@Tag` ke semua kepegawaian controllers
-- [ ] **Step 11:** Tambah `@Operation` ke semua kepegawaian methods (~40)
-- [ ] **Step 12:** `./gradlew clean compileJava`
+- [x] **Step 10:** Tambah `@Tag` ke semua kepegawaian controllers
+- [x] **Step 11:** Tambah `@Operation` ke semua kepegawaian methods (~40)
+- [x] **Step 12:** `./gradlew clean compileJava`
 
 #### Domain: cuti (4 controllers)
-- [ ] **Step 13:** Tambah `@Tag` ke semua cuti controllers
-- [ ] **Step 14:** Tambah `@Operation` ke semua cuti methods (~30)
-- [ ] **Step 15:** `./gradlew clean compileJava`
+- [x] **Step 13:** Tambah `@Tag` ke semua cuti controllers
+- [x] **Step 14:** Tambah `@Operation` ke semua cuti methods (~30)
+- [x] **Step 15:** `./gradlew clean compileJava`
 
 #### Domain: laporan (8 controllers)
-- [ ] **Step 16:** Tambah `@Tag` ke semua laporan controllers
-- [ ] **Step 17:** Tambah `@Operation` ke semua laporan methods (~40)
-- [ ] **Step 18:** `./gradlew clean compileJava`
+- [x] **Step 16:** Tambah `@Tag` ke semua laporan controllers
+- [x] **Step 17:** Tambah `@Operation` ke semua laporan methods (~40)
+- [x] **Step 18:** `./gradlew clean compileJava`
 
 #### Domain: auth + system + pegawai (6 controllers)
-- [ ] **Step 19:** Tambah `@Tag` ke semua auth/system/pegawai controllers
-- [ ] **Step 20:** Tambah `@Operation` ke semua methods (~30)
-- [ ] **Step 21:** `./gradlew clean compileJava`
+- [x] **Step 19:** Tambah `@Tag` ke semua auth/system/pegawai controllers
+- [x] **Step 20:** Tambah `@Operation` ke semua methods (~30)
+- [x] **Step 21:** `./gradlew clean compileJava`
 
-- [ ] **Step 22:** `./gradlew test` — all green
-- [ ] **Step 23:** Update graph + commit
+- [x] **Step 22:** `./gradlew test` — all green
+- [x] **Step 23:** Update graph + commit
 
 ---
 
-## Issue 5: `kepegawaian-iuro` — Spring Config Cleanup
+## Issue 5: `kepegawaian-iuro` — Spring Config Cleanup ✅
 
 ### Claim Order
 
-- [ ] **Step 1:** Tambah `spring.jpa.open-in-view: false` ke `application.yml`
+- [x] **Step 1:** Tambah `spring.jpa.open-in-view: false` ke `application.yml`
   - → `./gradlew clean compileJava`
 
-- [ ] **Step 2:** Bersihkan `custom.*` YAML — hapus 15 dead keys
+- [x] **Step 2:** Bersihkan `custom.*` YAML — hapus 15 dead keys
   - **Keep:** `custom.cors.allowed-origins`, `custom.jabatan.supervisorSdm`
   - **Hapus:** `custom.protected.*`, `custom.jenisCuti.*`, `custom.jabatan.direkturUtama/direkturTeknik/direkturUmum/managerSdm`, `custom.levelJabatan.*` (6 keys), `custom.security.dev.*`
   - → `./gradlew clean compileJava`
 
-- [ ] **Step 3:** Hapus `entities/commons/AuditRevisionEntity.java`
+- [x] **Step 3:** Hapus `entities/commons/AuditRevisionEntity.java`
   - Fully commented-out, zero references (bersama AuditRevisionListener di Issue 1)
   - → `./gradlew clean compileJava`
 
-- [ ] **Step 4:** `./gradlew test` — all green
-- [ ] **Step 5:** Update graph + commit
+- [x] **Step 4:** `./gradlew test` — all green
+- [x] **Step 5:** Update graph + commit
 
 ---
 

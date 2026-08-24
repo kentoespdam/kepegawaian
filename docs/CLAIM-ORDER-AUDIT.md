@@ -16,36 +16,36 @@
 
 ## 🟡 Prioritas Menengah (bug fix / refactor core)
 
-| # | File | Unchecked | Status | Catatan |
-|---|------|-----------|--------|---------|
-| 5 | `jackson3-objectmapper-fix-claim-order.md` | 7 | **belum mulai** | Jackson 2→3 migration (DeniedHandler + JwtAuthEntryPoint) |
-| 6 | `cuti-exception-typing-claim-order.md` | 11 | **belum mulai** | RuntimeException → typed exceptions |
-| 7 | `xlsx-workbook-fix-claim-order.md` | 12 | **belum mulai** | XSSFWorkbook → SXSSFWorkbook (memory fix) |
-| 8 | `claim-order-2026-06-17-analisis-bug.md` | 46 | **belum mulai** | GajiBatchRoot — exception handling, file upload, kafka |
-| 9 | `penggajian-cqrs-claim-order.md` | 7 | **progres** | Penggajian CQRS split — cleanup & commit tersisa |
-| 10 | `lampiranProfil-cqrs-claim-order.md` | 7 | **progres** | LampiranProfil CQRS — impact, detect, test tersisa |
-| 11 | `entity-layer-fixes-claim-order.md` | 2 | **hampir selesai** | Tinggal verify test (ready untuk close) |
-| 12 | `remove-entity-tostring-claim-order.md` | 2 | **hampir selesai** | Tinggal verify test (ready untuk close) |
-| 13 | `validator-factory-fix-claim-order.md` | 2 | **hampir selesai** | Tinggal verify test (ready untuk close) |
+| #  | File                                           | Unchecked | Status | Catatan |
+|----|------------------------------------------------|-----------|--------|---------|
+| 5  | ~~`jackson3-objectmapper-fix-claim-order.md`~~ | 7 | **belum mulai** | Jackson 2→3 migration (DeniedHandler + JwtAuthEntryPoint) |
+| 6  | ~~`cuti-exception-typing-claim-order.md`~~     | 11 | **belum mulai** | RuntimeException → typed exceptions |
+| 7  | ~~`xlsx-workbook-fix-claim-order.md`~~         | 12 | **belum mulai** | XSSFWorkbook → SXSSFWorkbook (memory fix) |
+| 8  | `claim-order-2026-06-17-analisis-bug.md`       | 46 | **belum mulai** | GajiBatchRoot — exception handling, file upload, kafka |
+| 9  | ~~`penggajian-cqrs-claim-order.md`~~           | 7 | **progres** | Penggajian CQRS split — cleanup & commit tersisa |
+| 10 | ~~`lampiranProfil-cqrs-claim-order.md`~~       | 7 | **progres** | LampiranProfil CQRS — impact, detect, test tersisa |
+| 11 | ~~`entity-layer-fixes-claim-order.md`~~        | 2 | **hampir selesai** | Tinggal verify test (ready untuk close) |
+| 12 | ~~`remove-entity-tostring-claim-order.md`~~    | 2 | **hampir selesai** | Tinggal verify test (ready untuk close) |
+| 13 | ~~`validator-factory-fix-claim-order.md`~~     | 2 | **hampir selesai** | Tinggal verify test (ready untuk close) |
 
 ## 🟢 Prioritas Rendah (polish / documentation / quick wins)
 
-| # | File | Unchecked | Status | Catatan |
-|---|------|-----------|--------|---------|
-| 14 | `CLAIM-ORDER.md` | 1 | **hampir selesai** | a66 — migrasi DTO ke record, tinggal close |
-| 15 | `level-cqrs-claim-order.md` | 1 | **hampir selesai** | Epic kepegawaian-6h2 tinggal close |
-| 16 | `profesi-apd-alatkerja-diagnose-claim-order.md` | 1 | **hampir selesai** | Tinggal `bd dolt push` |
-| 17 | `pegawai-record-refactor-claim-order.md` | 1 | **ditunda** | Hapus parameter Errors — ditunda ke batch berikutnya |
-| 18 | `pegawai-table-response-claim-order.md` | 1 | **ditunda** | Tunggu koordinasi FE |
-| 19 | `form-mutasi-claim-order.md` | 4 | **belum mulai** | Jawaban desain + kabari FE |
-| 20 | `master-dead-code-cleanup-claim-order.md` | 4 | **belum mulai** | Detect changes + review dead code |
-| 21 | `cuti-cqrs-rewrite-claim-order.md` | 4 | **final steps** | detect, commit, close, push |
-| 22 | `cuti-refactor-claim-order.md` | 4 | **belum mulai** | Init steps: prime, claim |
-| 23 | `profil-cqrs-cleanup-claim-order.md` | 4 | **final steps** | detect, commit, close, push |
-| 24 | `CLAIM-ORDER-drop-commonpagerequest.md` | 8 | **template only** | Checklist per-slice — epik sudah selesai |
-| 25 | `organisasi-publication-pattern-claim-order.md` | 13 | **belum mulai** | Publication pattern — checklist belum di-check |
-| 26 | `master-pattern-claim-order.md` | 59 | **belum mulai** | Massive — wave execution checklist |
-| 27 | `ponytail-audit-claim-order.md` | 54 | **belum mulai** | Ponytail audit sweep — 5 sub-epics |
+| #  | File                                                | Unchecked | Status             | Catatan                                              |
+|----|-----------------------------------------------------|-----------|--------------------|------------------------------------------------------|
+| 14 | `CLAIM-ORDER.md`                                    | 1         | **hampir selesai** | a66 — migrasi DTO ke record, tinggal close           |
+| 15 | ~~`level-cqrs-claim-order.md`~~                     | 1         | **hampir selesai** | Epic kepegawaian-6h2 tinggal close                   |
+| 16 | ~~`profesi-apd-alatkerja-diagnose-claim-order.md`~~ | 1         | **hampir selesai** | Tinggal `bd dolt push`                               |
+| 17 | ~~`pegawai-record-refactor-claim-order.md`~~        | 1         | **ditunda**        | Hapus parameter Errors — ditunda ke batch berikutnya |
+| 18 | ~~`pegawai-table-response-claim-order.md`~~         | 1         | **ditunda**        | Tunggu koordinasi FE                                 |
+| 19 | ~~`form-mutasi-claim-order.md`~~                    | 4         | **belum mulai**    | Jawaban desain + kabari FE                           |
+| 20 | ~~`master-dead-code-cleanup-claim-order.md`~~       | 4         | **belum mulai**    | Detect changes + review dead code                    |
+| 21 | ~~`cuti-cqrs-rewrite-claim-order.md`~~              | 4         | **final steps**    | detect, commit, close, push                          |
+| 22 | ~~`cuti-refactor-claim-order.md`~~                  | 4         | **belum mulai**    | Init steps: prime, claim                             |
+| 23 | ~~`profil-cqrs-cleanup-claim-order.md`~~            | 4         | **final steps**    | detect, commit, close, push                          |
+| 24 | `CLAIM-ORDER-drop-commonpagerequest.md`             | 8         | **template only**  | Checklist per-slice — epik sudah selesai             |
+| 25 | `organisasi-publication-pattern-claim-order.md`     | 13        | **belum mulai**    | Publication pattern — checklist belum di-check       |
+| 26 | `master-pattern-claim-order.md`                     | 59        | **belum mulai**    | Massive — wave execution checklist                   |
+| 27 | `ponytail-audit-claim-order.md`                     | 54        | **belum mulai**    | Ponytail audit sweep — 5 sub-epics                   |
 
 ---
 
