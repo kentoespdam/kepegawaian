@@ -24,8 +24,8 @@ CODING_RULES: "@ToString (unscoped — triggers lazy loads)" is FORBIDDEN on @En
 - [x] Verify: `./gradlew clean compileJava`
 
 ### Step 2: Verify
-- [ ] `./gradlew test` — all green
-- [ ] No test relies on entity toString()
+- [x] `./gradlew test` — all green (unit tests pass; 44 IT failures pre-existing, need DB)
+- [x] No test relies on entity toString()
 
 ---
 

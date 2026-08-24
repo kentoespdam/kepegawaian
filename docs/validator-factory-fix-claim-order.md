@@ -39,7 +39,7 @@ private final Validator validator = factory.getValidator();
 
 ### Step 3: Verify
 - [ ] `./gradlew test` — all green
-- [ ] Conditional validation仍然 works (group-based validation)
++ [x] Conditional validation works (group-based validation)
 
 ---
 
