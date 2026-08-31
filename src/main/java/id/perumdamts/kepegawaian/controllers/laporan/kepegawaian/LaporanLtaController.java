@@ -7,6 +7,8 @@ import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.LtaCountResponse;
 import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.LtaResponse;
 import id.perumdamts.kepegawaian.services.laporan.kepegawaian.LtaService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,6 +48,11 @@ public class LaporanLtaController {
     @GetMapping("/excel")
     public ResponseEntity<?> lapLtaExcel(
             @RequestParam(required = false, defaultValue = "BULAN_INI") EFilterLta filter) {
-        return ResponseEntity.ok(service.exportExcel(filter));
+        var resource = service.exportExcel(filter);
+        return ResponseEntity.ok()
+                .contentLength(resource.contentLength())
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"lap_lta.xlsx\"")
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
     }
 }

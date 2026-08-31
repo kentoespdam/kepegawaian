@@ -6,6 +6,8 @@ import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.EFilterKontrak;
 import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.KontrakResponse;
 import id.perumdamts.kepegawaian.services.laporan.kepegawaian.KontrakService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +39,11 @@ public class LaporanKontrakController {
     @GetMapping("/excel")
     public ResponseEntity<?> lapKontrakExcel(
             @RequestParam(required = false, defaultValue = "AKTIF") EFilterKontrak filter) {
-        return ResponseEntity.ok(service.exportExcel(filter));
+        var resource = service.exportExcel(filter);
+        return ResponseEntity.ok()
+                .contentLength(resource.contentLength())
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"lap_kontrak.xlsx\"")
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
     }
 }

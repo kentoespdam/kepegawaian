@@ -8,6 +8,8 @@ import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.KenaikanBerkalaResponse
 import id.perumdamts.kepegawaian.services.laporan.kepegawaian.KenaikanBerkalaService;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -52,6 +54,11 @@ public class LaporanKenaikanBerkalaController {
     public ResponseEntity<?> lapKenaikanBerkalaExcel(
             @RequestParam(defaultValue = "BULAN_INI") EFilterKenaikanBerkala filter,
             @RequestParam EJenisKenaikanBerkala jenis_sk) {
-        return ResponseEntity.ok(service.exportExcel(filter, jenis_sk));
+        var resource = service.exportExcel(filter, jenis_sk);
+        return ResponseEntity.ok()
+                .contentLength(resource.contentLength())
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"lap_kenaikan_berkala.xlsx\"")
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
     }
 }

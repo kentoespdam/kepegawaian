@@ -5,6 +5,8 @@ import id.perumdamts.kepegawaian.dto.commons.SingleResult;
 import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.DnpResponse;
 import id.perumdamts.kepegawaian.services.laporan.kepegawaian.DnpService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +35,11 @@ public class LaporanDnpController {
     @Operation(summary = "lap dnp excel")
     @GetMapping("/excel")
     public ResponseEntity<?> lapDnpExcel() {
-        return ResponseEntity.ok(service.exportExcel());
+        var resource = service.exportExcel();
+        return ResponseEntity.ok()
+                .contentLength(resource.contentLength())
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"lap_dnp.xlsx\"")
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
     }
 }

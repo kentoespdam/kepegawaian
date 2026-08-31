@@ -3,9 +3,10 @@ package id.perumdamts.kepegawaian.controllers.laporan.kepegawaian;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.SingleResult;
 import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.*;
-import java.util.List;
 import id.perumdamts.kepegawaian.services.laporan.kepegawaian.StatistikService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,7 +52,12 @@ public class LaporanStatistikController {
     @GetMapping("/pendidikan2/excel/{tahun}/{bulan}")
     public ResponseEntity<?> lapStatistikPendidikan2Excel(
             @PathVariable int tahun, @PathVariable int bulan) {
-        return ResponseEntity.ok(service.exportExcelPendidikan2(tahun, bulan));
+        var resource = service.exportExcelPendidikan2(tahun, bulan);
+        return ResponseEntity.ok()
+                .contentLength(resource.contentLength())
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"lap_statistik_pendidikan.xlsx\"")
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
