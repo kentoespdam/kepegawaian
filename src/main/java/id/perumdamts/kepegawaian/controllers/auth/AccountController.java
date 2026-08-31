@@ -39,6 +39,7 @@ public class AccountController {
         List<String> permissions = new ArrayList<>();
         for (GrantedAuthority authority : auth.getAuthorities()) {
             String value = authority.getAuthority();
+            assert value != null;
             if (value.startsWith("ROLE_")) {
                 roles.add(value.substring("ROLE_".length()));
             } else {

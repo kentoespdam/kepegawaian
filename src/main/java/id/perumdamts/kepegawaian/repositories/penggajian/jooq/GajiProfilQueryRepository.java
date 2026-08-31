@@ -52,7 +52,7 @@ public class GajiProfilQueryRepository {
                         GAJI_PROFIL.NAMA)
                 .from(GAJI_PROFIL)
                 .where(baseWhere(query.getNama()))
-                .orderBy(GAJI_PROFIL.NAMA.asc())
+                .orderBy(GAJI_PROFIL.ID.asc())
                 .fetch(GajiProfilJooqMapper::mapToResponse);
     }
 
