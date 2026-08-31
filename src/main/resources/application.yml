@@ -121,10 +121,6 @@ appwrite:
 
 penggajian:
   endpoint: ${PENGGAJIAN_URL:http://192.168.1.214:81}
-laporan:
-  kepegawaian:
-    endpoint: ${LAPORAN_KEPEGAWAIAN_URL:http://192.168.1.214:82}
-
 custom:
   cors:
     allowed-origins: http://localhost:5173,http://localhost:3000

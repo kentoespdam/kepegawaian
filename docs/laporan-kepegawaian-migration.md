@@ -40,50 +40,50 @@
 
 ### Phase 1: Foundation
 
-- [ ] **1.1** Copy template `.xlsx` files dari Python `template/` ke `src/main/resources/templates/laporan/`
-- [ ] **1.2** Create package structure:
+- [x] **1.1** Copy template `.xlsx` files dari Python `template/` ke `src/main/resources/templates/laporan/`
+- [x] **1.2** Create package structure:
   ```
   repositories/laporan/kepegawaian/    ← JOOQ query repositories
   services/laporan/kepegawaian/        ← One service per module (replace proxy)
   dto/laporan/kepegawaian/             ← Typed response DTOs (extend existing enums)
   mapper/laporan/kepegawaian/          ← Record → DTO mappers
   ```
-- [ ] **1.3** Create response DTOs untuk semua 8 modules (lihat DTO section di bawah)
+- [x] **1.3** Create response DTOs untuk semua 8 modules (lihat DTO section di bawah)
 
 ### Phase 2: Simple Modules (DUK, SO, Mutasi)
 
-- [ ] **2.1** **DUK** — `DukRepository` + `DukService` + `DukResponse`
+- [x] **2.1** **DUK** — `DukRepository` + `DukService` + `DukResponse`
   - Query: JOIN pegawai + biodata + golongan + jabatan + pendidikan + jenjang_pendidikan
   - Cleanup: format tanggal (dd.MM.yyyy), hitung sisa bulan, decode status_pegawai
-- [ ] **2.2** **SO** — `SoRepository` + `SoService` + `SoResponse`
+- [x] **2.2** **SO** — `SoRepository` + `SoService` + `SoResponse`
   - Query: jabatan LEFT JOIN pegawai (active) + biodata, level_id ≤ 6
   - Cleanup: build hierarchy tree (recursive parent→children)
-- [ ] **2.3** **Mutasi** — `MutasiRepository` + `MutasiService` + `MutasiResponse`
+- [x] **2.3** **Mutasi** — `MutasiRepository` + `MutasiService` + `MutasiResponse`
   - Query: SELECT from `riwayat_mutasi` (VIEW) with date range filter
   - Cleanup: decode jenis_mutasi, format tanggal
 
 ### Phase 3: Medium Modules (DNP, Kontrak, LTA, Statistik)
 
-- [ ] **3.1** **DNP** — `DnpRepository` + `DnpService` + `DnpResponse`
+- [x] **3.1** **DNP** — `DnpRepository` + `DnpService` + `DnpResponse`
   - Complex query: 7-table JOIN (pegawai + biodata + jabatan + golongan + organisasi + pendidikan + jenjang_pendidikan)
   - Cleanup: mask kode_organisasi for direksi, compute mkg_bulan, format tanggal
   - Excel: grouped by organisasi, nested rows
-- [ ] **3.2** **Kontrak** — `KontrakRepository` + `KontrakService` + `KontrakResponse`
+- [x] **3.2** **Kontrak** — `KontrakRepository` + `KontrakService` + `KontrakResponse`
   - Dynamic WHERE based on filter enum (6 variants)
   - Query: pegawai + biodata + riwayat_kontrak (is_latest) + organisasi + jabatan
   - Cleanup: format tanggal Indonesia
-- [ ] **3.3** **LTA** — `LtaRepository` + `LtaService` + `LtaResponse`
+- [x] **3.3** **LTA** — `LtaRepository` + `LtaService` + `LtaResponse`
   - Complex: month/year rollover calculation, TIMESTAMPDIFF with STR_TO_DATE
   - Query: profil_keluarga + biodata + pegawai + jabatan
   - Cleanup: decode jenis_kelamin, format tanggal, boolean cleanup
-- [ ] **3.4** **Statistik** — `StatistikRepository` + `StatistikService` + 8 response types
+- [x] **3.4** **Statistik** — `StatistikRepository` + `StatistikService` + 8 response types
   - 8 sub-endpoints: golongan, pendidikan1, pendidikan2, umur, jenis_kelamin, gelar_akademik, agama, status_pegawai
   - Most are simple GROUP BY aggregations
   - Pendidikan2 reads from snapshot table `statistik_pegawai`
 
 ### Phase 4: Complex Module (Kenaikan Berkala)
 
-- [ ] **4.1** **Kenaikan Berkala** — `KenaikanBerkalaRepository` + `KenaikanBerkalaService` + `KenaikanBerkalaResponse`
+- [x] **4.1** **Kenaikan Berkala** — `KenaikanBerkalaRepository` + `KenaikanBerkalaService` + `KenaikanBerkalaResponse`
   - Most complex: 8-table JOIN (riwayat_sk + pegawai + biodata + golongan + jabatan + pendidikan + jenjang_pendidikan + riwayat_sp + sanksi_sp)
   - Dynamic conditions: filter changes WHERE clause (BULAN_INI, GTE_1, GTE_2, TAHUN_INI)
   - Cleanup: decode is_pending_gaji/pangkat from byte, conditional nullification
@@ -91,11 +91,11 @@
 
 ### Phase 5: Cleanup
 
-- [ ] **5.1** Remove `LaporanKepegawaianService` (the proxy)
-- [ ] **5.2** Remove `LAPORAN_KEPEGAWAIAN_URL` from `application.yml`
-- [ ] **5.3** Update controllers to inject specific services instead of proxy
-- [ ] **5.4** Verify all endpoints match Python behavior (JSON format, status codes)
-- [ ] **5.5** Build & test: `./gradlew build`
+- [x] **5.1** Remove `LaporanKepegawaianService` (the proxy)
+- [x] **5.2** Remove `LAPORAN_KEPEGAWAIAN_URL` from `application.yml`
+- [x] **5.3** Update controllers to inject specific services instead of proxy
+- [x] **5.4** Verify all endpoints match Python behavior (JSON format, status codes)
+- [x] **5.5** Build & test: `./gradlew build`
 
 ## Target File Structure
 
