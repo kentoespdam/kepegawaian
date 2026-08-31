@@ -46,7 +46,7 @@ Bagian dari [CONTEXT-MAP.md](../../CONTEXT-MAP.md). Baca file ini saat mengerjak
 
 - **Penempatan mapper baca — dua pola**: **Pola A (flat/sederhana)**: `private toQuery(Record)` di dalam QueryRepository JOOQ. **Pola B (nested/berat)**: kelas statik `final` terpisah `*Mapper.map(Record, Result...)` di `mapper/<modul>/<aggregate>/`. Semua mapper = **kelas statik `final` + private ctor, BUKAN `@Component`**. Pembagian: `LampiranSk`/`RiwayatKontrak`/`RiwayatSp`/`RiwayatSk` → Pola A; `RiwayatMutasi`/`RiwayatTerminasi` → Pola B.
 
-- **Laporan kepegawaian DI LUAR scope rewrite**: `controllers/laporan/kepegawaian/` (8 controller — proxy `RestClient` ke service laporan eksternal via `LaporanKepegawaianService`) dibiarkan apa adanya.
+- **Laporan kepegawaian MASUK scope rewrite** (ADR-0042): `controllers/laporan/kepegawaian/` (8 controller) di-migrate dari proxy `RestClient` ke `LaporanKepegawaianService` menjadi native JOOQ queries + Apache POI Excel. Service proxy dihapus; controller di-update inject service spesifik. Detail: [ADR-0042](../adr/0042-laporan-kepegawaian-native-jooq.md).
 
 - **Pemecahan Lampiran SK — ikut template `LampiranProfil` persis**: `LampiranSkQueryService` + `LampiranSkCommandService`. Baca pakai **Pola A** (`toQuery` private di `LampiranSkQueryRepository`). `deleteByRefId(Long refId)` dipertahankan TANPA tambah `EJenisSk`.
 

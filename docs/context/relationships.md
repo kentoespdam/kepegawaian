@@ -37,3 +37,4 @@ Bagian dari [CONTEXT-MAP.md](../../CONTEXT-MAP.md). Baca file ini saat memahami 
 | `pegawai → kepegawaian` (via port) | Bootstrap: `SkBootstrapPort` & `KontrakBootstrapPort` di `services/pegawai/port/` agar arah compile tetap searah |
 | `profil → updateProfile` | Profil memicu Pengajuan Perubahan; logika approve/reject milik updateProfile |
 | `pegawai ← riwayat_sk` (baca langsung tabel) | Detail/Ringkasan Pegawai membaca `riwayat_sk` langsung (tanpa melewati modul kepegawaian) |
+| `laporan → pegawai, biodata, golongan, jabatan, organisasi, pendidikan, riwayat_*` | Modul laporan membaca tabel lintas-modul via JOOQ untuk menghasilkan laporan (DUK, DNP, Statistik, dll). Read-only; tidak menulis data. |
