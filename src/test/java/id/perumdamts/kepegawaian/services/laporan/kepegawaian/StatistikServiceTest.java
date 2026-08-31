@@ -111,6 +111,27 @@ class StatistikServiceTest {
     }
 
     @Test
+    void fetchUmurRangeSkipsNullUmur() {
+        var umurData = List.of(
+                new StatistikUmurResponse(null, 3, 10.0),
+                new StatistikUmurResponse(25, 10, 20.0),
+                new StatistikUmurResponse(45, 10, 20.0),
+                new StatistikUmurResponse(62, 5, 10.0)
+        );
+        when(repository.fetchByUmur()).thenReturn(umurData);
+
+        var result = service.fetchUmurRange();
+
+        assertEquals(6, result.size());
+        assertEquals(0, result.getFirst().total());  // <20: no non-null umur <20
+        assertEquals(10, result.get(1).total());     // 20-29
+        assertEquals(10, result.get(3).total());     // 40-49
+        assertEquals(5, result.getLast().total());   // >60
+        // grandTotal should exclude null umur entries
+        assertEquals(25, result.stream().mapToInt(StatistikUmurRangeResponse::total).sum());
+    }
+
+    @Test
     void exportExcelPendidikan2ReturnsResource() {
         when(repository.fetchByPendidikan2(2024, 1)).thenReturn(List.of());
         var resource = service.exportExcelPendidikan2(2024, 1);

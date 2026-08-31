@@ -42,7 +42,9 @@ public class StatistikService {
         var ranges = List.of("<20", "20-29", "30-39", "40-49", "50-59", ">60");
         var totals = new int[6];
         for (var r : data) {
-            int age = r.umur();
+            var ageObj = r.umur();
+            if (ageObj == null) continue;
+            int age = ageObj;
             if (age < 20) totals[0] += r.total();
             else if (age < 30) totals[1] += r.total();
             else if (age < 40) totals[2] += r.total();
