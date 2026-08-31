@@ -91,7 +91,7 @@ public class RiwayatMutasi extends IdsAbstract {
     private String namaGolongan;
 
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "organisasi_lama_id", referencedColumnName = "id")
     @NotFound(action = NotFoundAction.IGNORE)
     private Organisasi organisasiLama;
@@ -112,7 +112,7 @@ public class RiwayatMutasi extends IdsAbstract {
     private String namaProfesiLama;
 
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "golongan_lama_id", referencedColumnName = "id")
     @NotFound(action = NotFoundAction.IGNORE)
     private Golongan golonganLama;

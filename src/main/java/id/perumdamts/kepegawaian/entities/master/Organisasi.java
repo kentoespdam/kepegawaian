@@ -26,7 +26,7 @@ import org.hibernate.annotations.SQLDelete;
 public class Organisasi extends MasterBaseEntity {
     private String kode;
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
     @NotFound(action = NotFoundAction.IGNORE)
     private Organisasi parent;

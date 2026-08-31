@@ -26,7 +26,7 @@ import org.hibernate.envers.Audited;
 @AllArgsConstructor
 public class CutiJenis extends IdsAbstract {
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
     @NotFound(action = NotFoundAction.IGNORE)
     private CutiJenis parent;
