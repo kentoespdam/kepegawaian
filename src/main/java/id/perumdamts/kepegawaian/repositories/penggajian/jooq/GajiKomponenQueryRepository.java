@@ -105,8 +105,12 @@ public class GajiKomponenQueryRepository {
     }
 
     private Condition baseWhere(Long profilId, GajiKomponenIndexQuery q) {
+        var search = q.getSearch();
         return GAJI_KOMPONEN.IS_DELETED.eq(false)
                 .and(GAJI_KOMPONEN.PROFIL_GAJI_ID.eq(profilId))
-                .and(q.getKode() != null && !q.getKode().isBlank() ? GAJI_KOMPONEN.KODE.likeIgnoreCase("%" + q.getKode() + "%") : DSL.noCondition());
+                .and(search != null && !search.isBlank()
+                        ? GAJI_KOMPONEN.KODE.likeIgnoreCase("%" + search + "%")
+                                .or(GAJI_KOMPONEN.NAMA.likeIgnoreCase("%" + search + "%"))
+                        : DSL.noCondition());
     }
 }

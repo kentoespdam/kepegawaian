@@ -14,7 +14,7 @@ _Avoid_: "tarif gaji".
 Satu baris nominal gaji pokok untuk kombinasi **Masa Kerja Golongan** (`mkg`) dan **kode golongan** di bawah satu **Dasar Gaji**. Inilah matriks yang di-lookup saat gaji seorang pegawai dihitung.
 
 **Komponen Gaji** (GajiKomponen):
-Satu unsur perhitungan gaji di dalam sebuah **Profil Gaji** — punya `kode`, `nama`, **Jenis Gaji** (pemasukan/potongan), `nilai`, dan `formula` (ekspresi hitung). Urutannya (`urut`) menentukan urutan evaluasi.
+Satu unsur perhitungan gaji di dalam sebuah **Profil Gaji** — punya `kode`, `nama`, **Jenis Gaji** (pemasukan/potongan), `nilai`, dan `formula` (ekspresi hitung). Urutannya (`urut`) menentukan urutan evaluasi. Endpoint index (`GET /penggajian/komponen/{profilId}/profil`) menerima query param `search` yang di-likeIgnoreCase terhadap `kode` **ATAU** `nama` — satu field untuk pencarian fleksibel tanpa harus tahu apakah input user itu kode atau nama.
 
 **Profil Gaji** (GajiProfil):
 Sekumpulan **Komponen Gaji** yang membentuk satu template/skema perhitungan gaji. Menjadi cetakan yang dipakai saat membangun proses gaji per pegawai.
