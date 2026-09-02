@@ -45,7 +45,7 @@ public class GajiBatchRoot implements Serializable {
     @Id
     private String id;
     private String periode;
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     private EProsesGaji status;
     private Integer totalPegawai;
     @JsonSerialize(using = LocalDateTimeSerializer.class)
