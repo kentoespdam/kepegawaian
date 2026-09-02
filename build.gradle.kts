@@ -84,6 +84,7 @@ dependencies {
 
     // Database
     runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
+    testImplementation("com.h2database:h2")
 
     // Config processor
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
