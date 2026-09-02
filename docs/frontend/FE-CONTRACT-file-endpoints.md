@@ -173,7 +173,21 @@ await fetch(`/api/profil/biodata/${nik}/foto-profil`, {
 
 ---
 
-## 5. Checklist Aksi Tim FE
+## 5. Breaking Change — Pagination (2026-09-02)
+
+`GET /penggajian/batch` dan `GET /penggajian/batch/{periode}/periode/{status}/status` kini mengembalikan `PageResult` (bukan `ListResult`).
+
+| Sebelum | Sesudah |
+|---------|--------|
+| `data: [...]` | `data: { content: [...], totalElements, totalPages, ... }` |
+| Empty → 404 | Empty → 200 + `data.content = []` |
+| Tidak ada param `page`/`size` | `?page=0&size=20` tersedia |
+
+**FE action**: ganti akses array langsung (`response.data`) jadi `response.data.content`.
+
+---
+
+## 6. Checklist Aksi Tim FE
 
 - [ ] Semua upload file pakai `FormData` + `multipart/form-data` (jangan JSON, jangan base64).
 - [ ] Nama part file sesuai tabel: `fileName` | `file` | `fotoProfil`.
@@ -182,3 +196,4 @@ await fetch(`/api/profil/biodata/${nik}/foto-profil`, {
 - [ ] Field file wajib (`@NotNull`) → tampilkan validasi FE sebelum upload (jangan harap 400).
 - [ ] Foto profil: validasi ekstensi gambar di FE juga (server cek MIME → bukan gambar = error).
 - [ ] Endpoint self vs admin profil (`/profil/{entity}/lampiran` vs `/admin/profil/{entity}/lampiran`) dipilih per konteks halaman (approval vs langsung stabil).
+- [ ] `/penggajian/batch` endpoints: ganti akses `response.data` → `response.data.content` (PageResult).

@@ -47,15 +47,6 @@ public class GajiBatchRootQueryRepository {
         return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
     }
 
-    public List<GajiBatchRootResponse> listQuery(GajiBatchRootIndexQuery query) {
-        var sortOrder = SortParam.resolve(query.getSortBy(), query.getSortDirection(),
-                allowedSorts(), GAJI_BATCH_ROOT.ID);
-        return dsl.selectFrom(GAJI_BATCH_ROOT)
-                .where(baseWhere(query))
-                .orderBy(sortOrder)
-                .fetch(GajiBatchRootJooqMapper::mapToResponse);
-    }
-
     public Optional<GajiBatchRootResponse> getById(String id) {
         return dsl.selectFrom(GAJI_BATCH_ROOT)
                 .where(GAJI_BATCH_ROOT.ID.eq(id))

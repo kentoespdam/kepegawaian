@@ -1,7 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.penggajian;
 
 import id.perumdamts.kepegawaian.dto.commons.DeletedResult;
-import id.perumdamts.kepegawaian.dto.commons.ListResult;
+import id.perumdamts.kepegawaian.dto.commons.PageResult;
 import id.perumdamts.kepegawaian.dto.commons.SavedResult;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRoot.*;
 import id.perumdamts.kepegawaian.entities.commons.EProsesGaji;
@@ -12,6 +12,7 @@ import id.perumdamts.kepegawaian.services.penggajian.gajiBatchRoot.GajiBatchRoot
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -37,7 +38,7 @@ class GajiBatchRootControllerTest {
     // --- INDEX (GET) ---
 
     @Test
-    void index_returnsListOfResponsesWithStatus() {
+    void index_returnsPageOfResponsesWithStatus() {
         GajiBatchRootResponse response = new GajiBatchRootResponse(
                 "202609-001", "202609", EProsesGaji.PENDING,
                 10, null, null, null,
@@ -46,16 +47,16 @@ class GajiBatchRootControllerTest {
                 null, null, null,
                 null, null, null
         );
-        when(queryService.findAll(any(GajiBatchRootIndexQuery.class)))
-                .thenReturn(List.of(response));
+        when(queryService.findPage(any(GajiBatchRootIndexQuery.class)))
+                .thenReturn(new PageImpl<>(List.of(response), PageRequest.of(0, 20), 1));
 
-        ResponseEntity<ListResult<GajiBatchRootResponse>> result =
+        ResponseEntity<PageResult<Page<GajiBatchRootResponse>>> result =
                 controller.index(new GajiBatchRootIndexQuery());
 
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertNotNull(result.getBody());
-        assertEquals(1, result.getBody().getData().size());
-        assertEquals(EProsesGaji.PENDING, result.getBody().getData().getFirst().status());
+        assertEquals(1, result.getBody().getData().getContent().size());
+        assertEquals(EProsesGaji.PENDING, result.getBody().getData().getContent().getFirst().status());
     }
 
     // --- BY PERIODE ---
@@ -70,14 +71,14 @@ class GajiBatchRootControllerTest {
                 null, null, null,
                 null, null, null
         );
-        when(queryService.findAll(any(GajiBatchRootIndexQuery.class)))
-                .thenReturn(List.of(response));
+        when(queryService.findPage(any(GajiBatchRootIndexQuery.class)))
+                .thenReturn(new PageImpl<>(List.of(response), PageRequest.of(0, 20), 1));
 
-        ResponseEntity<ListResult<GajiBatchRootResponse>> result =
+        ResponseEntity<PageResult<Page<GajiBatchRootResponse>>> result =
                 controller.byPeriode("202609", EProsesGaji.FINISHED);
 
         assertEquals(HttpStatus.OK, result.getStatusCode());
-        assertEquals(EProsesGaji.FINISHED, result.getBody().getData().getFirst().status());
+        assertEquals(EProsesGaji.FINISHED, result.getBody().getData().getContent().getFirst().status());
     }
 
     // --- CREATE (POST) ---

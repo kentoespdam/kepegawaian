@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,10 +16,6 @@ public class GajiBatchRootQueryService {
 
     public Page<GajiBatchRootResponse> findPage(GajiBatchRootIndexQuery query) {
         return queryRepository.pageQuery(query);
-    }
-
-    public List<GajiBatchRootResponse> findAll(GajiBatchRootIndexQuery query) {
-        return queryRepository.listQuery(query);
     }
 
     public Optional<GajiBatchRootResponse> findById(String id) {
