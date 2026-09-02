@@ -109,11 +109,16 @@ public class GajiBatchMasterQueryRepository {
 
     private Condition baseWhere(GajiBatchMasterIndexQuery q) {
         Condition condition = DSL.noCondition();
-        if (q.getGajiBatchRootId() != null && !q.getGajiBatchRootId().isBlank()) {
-            condition = condition.and(GAJI_BATCH_MASTER.BATCH_ROOT_ID.eq(q.getGajiBatchRootId()));
-        }
-        if (q.getPegawaiId() != null) {
-            condition = condition.and(GAJI_BATCH_MASTER.PEGAWAI_ID.eq(q.getPegawaiId()));
+        if (q.getSearch() != null && !q.getSearch().isBlank()) {
+            String escaped = q.getSearch().trim()
+                    .replace("\\", "\\\\")
+                    .replace("%", "\\%")
+                    .replace("_", "\\_");
+            String like = "%" + escaped + "%";
+            condition = condition.and(
+                    GAJI_BATCH_MASTER.NIPAM.likeIgnoreCase(like, '\\')
+                            .or(GAJI_BATCH_MASTER.NAMA.likeIgnoreCase(like, '\\'))
+            );
         }
         return condition;
     }

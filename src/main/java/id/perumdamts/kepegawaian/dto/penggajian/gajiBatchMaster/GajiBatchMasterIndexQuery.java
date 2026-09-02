@@ -7,6 +7,5 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class GajiBatchMasterIndexQuery extends PagedRequest {
-    private String gajiBatchRootId;
-    private Long pegawaiId;
+    private String search;
 }
