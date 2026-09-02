@@ -67,7 +67,8 @@ public class GajiBatchMasterQueryRepository {
     public Page<GajiBatchMasterResponse> findByPegawaiId(Long pegawaiId, GajiBatchMasterIndexQuery query) {
         var sortOrder = SortParam.resolve(query.getSortBy(), query.getSortDirection(),
                 allowedSorts(), GAJI_BATCH_MASTER.ID);
-        Condition where = GAJI_BATCH_MASTER.PEGAWAI_ID.eq(pegawaiId)
+        Condition where = baseWhere(query)
+                .and(GAJI_BATCH_MASTER.PEGAWAI_ID.eq(pegawaiId))
                 .and(GAJI_BATCH_ROOT.STATUS.ge(EProsesGaji.FINISHED.ordinal()));
         var count = dsl.selectCount()
                 .from(GAJI_BATCH_MASTER)
@@ -108,7 +109,7 @@ public class GajiBatchMasterQueryRepository {
     }
 
     private Condition baseWhere(GajiBatchMasterIndexQuery q) {
-        Condition condition = DSL.noCondition();
+        Condition condition = GAJI_BATCH_MASTER.PERIODE.eq(q.getPeriode());
         if (q.getSearch() != null && !q.getSearch().isBlank()) {
             String escaped = q.getSearch().trim()
                     .replace("\\", "\\\\")

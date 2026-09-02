@@ -109,19 +109,23 @@ Content-Type: image/jpeg
 
 ### 2.4 Query Endpoint - Penggajian Batch Master
 
-> **Breaking Change** (2026-09-02): query params `nipam`, `nama`, `gajiBatchRootId`, `pegawaiId` pada `GET /penggajian/batch/master` **dihapus**. Diganti satu param `search` yang melakukan LIKE case-insensitive pada kolom `nipam` DAN `nama`.
+> **Breaking Change** (2026-09-02): query params `nipam`, `nama`, `gajiBatchRootId`, `pegawaiId` pada `GET /penggajian/batch/master` **dihapus**. Diganti `search` (LIKE nipam/nama) dan `periode` (exact match, wajib).
 
-| Method & Path | Param | Tipe | Keterangan |
-|---------------|-------|------|------------|
-| `GET /penggajian/batch/master` | `search` | `string` (opsional) | Filter by nipam/nama (`LIKE %search%`, case-insensitive) |
-| `GET /penggajian/batch/master/pegawai/{pegawaiId}` | `pegawaiId` | `long` (path) | Tidak berubah - filter by pegawai + status FINISHED |
+| Method & Path | Param | Tipe | Wajib | Keterangan |
+|---------------|-------|------|-------|------------|
+| `GET /penggajian/batch/master` | `periode` | `string` | ✅ **wajib** | Filter exact match kolom `periode` (e.g. `2026-09`) |
+| `GET /penggajian/batch/master` | `search` | `string` | opsional | Filter by nipam/nama (`LIKE %search%`, case-insensitive) |
+| `GET /penggajian/batch/master/pegawai/{pegawaiId}` | `periode` | `string` | ✅ **wajib** | Filter exact match + pegawai + status FINISHED |
+| `GET /penggajian/batch/master/pegawai/{pegawaiId}` | `pegawaiId` | `long` (path) | ✅ | Path variable - filter by pegawai |
 
 Contoh:
 ```
-GET /api/penggajian/batch/master?search=budi
-GET /api/penggajian/batch/master              <- semua data (tanpa filter)
-GET /api/penggajian/batch/master/pegawai/123  <- tidak berubah
+GET /api/penggajian/batch/master?periode=2026-09
+GET /api/penggajian/batch/master?periode=2026-09&search=budi
+GET /api/penggajian/batch/master/pegawai/123?periode=2026-09
 ```
+
+> Tanpa `?periode=...` → **HTTP 400** (`"periode is required"`).
 
 ### 2.5 Modul Cuti
 
