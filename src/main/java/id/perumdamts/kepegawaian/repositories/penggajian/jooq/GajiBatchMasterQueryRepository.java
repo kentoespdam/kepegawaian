@@ -34,6 +34,7 @@ public class GajiBatchMasterQueryRepository {
         Condition where = baseWhere(query);
         var count = dsl.selectCount()
                 .from(GAJI_BATCH_MASTER)
+                .join(GAJI_BATCH_ROOT).on(GAJI_BATCH_MASTER.BATCH_ROOT_ID.eq(GAJI_BATCH_ROOT.ID))
                 .where(where)
                 .fetchOptional(0, Long.class).orElse(0L);
         var data = dsl.select(
@@ -41,6 +42,7 @@ public class GajiBatchMasterQueryRepository {
                         ORGANISASI.KODE,
                         ORGANISASI.NAMA)
                 .from(GAJI_BATCH_MASTER)
+                .join(GAJI_BATCH_ROOT).on(GAJI_BATCH_MASTER.BATCH_ROOT_ID.eq(GAJI_BATCH_ROOT.ID))
                 .leftJoin(ORGANISASI).on(GAJI_BATCH_MASTER.ORGANISASI_ID.eq(ORGANISASI.ID))
                 .where(where)
                 .orderBy(sortOrder)
@@ -58,6 +60,7 @@ public class GajiBatchMasterQueryRepository {
                         ORGANISASI.KODE,
                         ORGANISASI.NAMA)
                 .from(GAJI_BATCH_MASTER)
+                .join(GAJI_BATCH_ROOT).on(GAJI_BATCH_MASTER.BATCH_ROOT_ID.eq(GAJI_BATCH_ROOT.ID))
                 .leftJoin(ORGANISASI).on(GAJI_BATCH_MASTER.ORGANISASI_ID.eq(ORGANISASI.ID))
                 .where(baseWhere(query))
                 .orderBy(sortOrder)
@@ -67,7 +70,7 @@ public class GajiBatchMasterQueryRepository {
     public Page<GajiBatchMasterResponse> findByPegawaiId(Long pegawaiId, GajiBatchMasterIndexQuery query) {
         var sortOrder = SortParam.resolve(query.getSortBy(), query.getSortDirection(),
                 allowedSorts(), GAJI_BATCH_MASTER.ID);
-        Condition where = baseWhere(query)
+        Condition where = baseWhere(query, false)
                 .and(GAJI_BATCH_MASTER.PEGAWAI_ID.eq(pegawaiId))
                 .and(GAJI_BATCH_ROOT.STATUS.ge(EProsesGaji.FINISHED.ordinal()));
         var count = dsl.selectCount()
@@ -109,7 +112,20 @@ public class GajiBatchMasterQueryRepository {
     }
 
     private Condition baseWhere(GajiBatchMasterIndexQuery q) {
-        Condition condition = GAJI_BATCH_MASTER.PERIODE.eq(q.getPeriode());
+        return baseWhere(q, true);
+    }
+
+    private Condition baseWhere(GajiBatchMasterIndexQuery q, boolean applyStatus) {
+        Condition condition = GAJI_BATCH_MASTER.PERIODE.eq(q.getPeriode())
+                .and(GAJI_BATCH_ROOT.IS_DELETED.eq(false));
+        if (applyStatus && q.getStatus() != null) {
+            if (q.getStatus() == EProsesGaji.FAILED) {
+                condition = condition.and(GAJI_BATCH_ROOT.STATUS.eq(EProsesGaji.FAILED.ordinal()));
+            } else {
+                condition = condition.and(GAJI_BATCH_ROOT.STATUS.ge(q.getStatus().ordinal()))
+                        .and(GAJI_BATCH_ROOT.STATUS.ne(EProsesGaji.FAILED.ordinal()));
+            }
+        }
         if (q.getSearch() != null && !q.getSearch().isBlank()) {
             String escaped = q.getSearch().trim()
                     .replace("\\", "\\\\")

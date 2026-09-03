@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster;
 
 import id.perumdamts.kepegawaian.dto.commons.PagedRequest;
+import id.perumdamts.kepegawaian.entities.commons.EProsesGaji;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,4 +12,5 @@ public class GajiBatchMasterIndexQuery extends PagedRequest {
     @NotBlank(message = "periode is required")
     private String periode;
     private String search;
+    private EProsesGaji status;
 }

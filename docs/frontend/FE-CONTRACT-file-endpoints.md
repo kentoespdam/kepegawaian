@@ -115,13 +115,15 @@ Content-Type: image/jpeg
 |---------------|-------|------|-------|------------|
 | `GET /penggajian/batch/master` | `periode` | `string` | ✅ **wajib** | Filter exact match kolom `periode` (e.g. `2026-09`) |
 | `GET /penggajian/batch/master` | `search` | `string` | opsional | Filter by nipam/nama (`LIKE %search%`, case-insensitive) |
+| `GET /penggajian/batch/master` | `status` | `string (enum EProsesGaji)` | opsional | Filter minimal status proses approval (`status >= :status` dan bukan `FAILED`). Enum: `PENDING`, `PROSES`, `WAIT_VERIFICATION_PHASE_1`, `WAIT_VERIFICATION_PHASE_2`, `WAIT_APPROVAL`, `FINISHED`, `FAILED` |
 | `GET /penggajian/batch/master/pegawai/{pegawaiId}` | `periode` | `string` | ✅ **wajib** | Filter exact match + pegawai + status FINISHED |
-| `GET /penggajian/batch/master/pegawai/{pegawaiId}` | `pegawaiId` | `long` (path) | ✅ | Path variable - filter by pegawai |
+| `GET /penggajian/batch/master/pegawai/{pegawaiId}` | `pegawaiId` | `long` (path) | ✅ | Path variable - filter by pegawai (parameter `status` diabaikan, tetap terkunci pada `FINISHED`) |
 
 Contoh:
 ```
 GET /api/penggajian/batch/master?periode=2026-09
 GET /api/penggajian/batch/master?periode=2026-09&search=budi
+GET /api/penggajian/batch/master?periode=2026-09&status=WAIT_APPROVAL
 GET /api/penggajian/batch/master/pegawai/123?periode=2026-09
 ```
 
