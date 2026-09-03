@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.dto.master.organisasi;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
@@ -16,6 +17,8 @@ public class OrganisasiPostRequest {
     private String nama;
     private String shortName;
     private String category;
+    @NotBlank(message = "Group tidak boleh kosong")
+    private String group;
 
     /**
      * Kunci keunikan Organisasi: nama + parent.

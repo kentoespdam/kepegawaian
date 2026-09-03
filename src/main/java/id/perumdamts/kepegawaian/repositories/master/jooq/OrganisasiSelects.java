@@ -14,6 +14,7 @@ public final class OrganisasiSelects {
     public static final Field<String> NAMA = ORGANISASI.NAMA;
     public static final Field<String> SHORT_NAME = ORGANISASI.SHORT_NAME;
     public static final Field<String> CATEGORY = ORGANISASI.CATEGORY;
+    public static final Field<String> GROUP = ORGANISASI.ORG_GROUP;
 
     /**
      * ⚠️ Static parent field — referensi ke main table, BUKAN alias self-join.
@@ -30,7 +31,8 @@ public final class OrganisasiSelects {
             LEVEL_ORG,
             NAMA,
             SHORT_NAME,
-            CATEGORY
+            CATEGORY,
+            GROUP
     };
 
     /**

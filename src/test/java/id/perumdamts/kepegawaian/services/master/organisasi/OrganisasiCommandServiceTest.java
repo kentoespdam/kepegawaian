@@ -1,9 +1,11 @@
 package id.perumdamts.kepegawaian.services.master.organisasi;
 
+import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiIndexQuery;
 import id.perumdamts.kepegawaian.dto.master.organisasi.OrganisasiPostRequest;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.exceptions.ConflictException;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
+import jakarta.validation.Validator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +34,11 @@ class OrganisasiCommandServiceTest {
     @Autowired
     private OrganisasiCommandService service;
     @Autowired
+    private OrganisasiQueryService queryService;
+    @Autowired
     private JdbcTemplate jdbc;
+    @Autowired
+    private Validator validator;
 
     private final List<Long> createdIds = new java.util.ArrayList<>();
     private final List<Long> childIds = new java.util.ArrayList<>();
@@ -61,6 +67,7 @@ class OrganisasiCommandServiceTest {
         r.setNama(nama);
         r.setShortName("IT");
         r.setCategory("TEST");
+        r.setGroup("IT-GRP");
         return r;
     }
 
@@ -84,6 +91,7 @@ class OrganisasiCommandServiceTest {
         assertNotNull(saved.getId(), "id must be assigned");
         assertEquals(kode, saved.getKode());
         assertEquals("IT-9TF-a", saved.getNama());
+        assertEquals("IT-GRP", saved.getGroup(), "group must be persisted from request");
         assertFalse(Boolean.TRUE.equals(saved.getIsDeleted()),
                 "fresh create must have isDeleted=false");
     }
@@ -313,5 +321,66 @@ class OrganisasiCommandServiceTest {
         Organisasi aAfter = service.update(idA, req(kodeA, namaShared));
         assertEquals(idA, aAfter.getId());
         assertEquals(namaShared, aAfter.getNama());
+    }
+
+    /**
+     * (k) group wajib — `@NotBlank` di request (kepegawaian-m04g). Request
+     * dengan group kosong/blank → violation "Group tidak boleh kosong";
+     * request valid → tanpa violation.
+     */
+    @Test
+    void group_isMandatoryViaNotBlank() {
+        OrganisasiPostRequest blank = req(uniqueKode(), "IT-9TF-k");
+        blank.setGroup("   ");
+        var blankViolations = validator.validate(blank);
+        assertTrue(blankViolations.stream()
+                        .anyMatch(v -> "Group tidak boleh kosong".equals(v.getMessage())),
+                "blank group must trigger @NotBlank violation");
+
+        OrganisasiPostRequest ok = req(uniqueKode(), "IT-9TF-k2");
+        assertTrue(validator.validate(ok).isEmpty(),
+                "complete request with group must have no violations");
+    }
+
+    /**
+     * (l) update mengganti group → tersimpan (kepegawaian-m04g).
+     */
+    @Test
+    void update_persistsNewGroup() {
+        String kode = uniqueKode();
+        Long id = createAndRemember(req(kode, "IT-9TF-l"));
+
+        OrganisasiPostRequest changed = req(kode, "IT-9TF-l");
+        changed.setGroup("02.SATUAN PENGAWAS INTERN");
+        Organisasi updated = service.update(id, changed);
+
+        assertEquals(id, updated.getId());
+        assertEquals("02.SATUAN PENGAWAS INTERN", updated.getGroup(),
+                "update must persist the new group");
+    }
+
+    /**
+     * (m) filter index `?group=` (equal, pola category) — hanya record dengan
+     * group yang sama yang kembali (kepegawaian-m04g).
+     */
+    @Test
+    void pageQuery_filterByGroup() {
+        String kodeA = uniqueKode();
+        String kodeB = uniqueKode();
+        OrganisasiPostRequest reqA = req(kodeA, "IT-9TF-m-A");
+        reqA.setGroup("GRP-ALPHA");
+        Long idA = createAndRemember(reqA);
+        OrganisasiPostRequest reqB = req(kodeB, "IT-9TF-m-B");
+        reqB.setGroup("GRP-BETA");
+        createAndRemember(reqB);
+
+        OrganisasiIndexQuery filter = new OrganisasiIndexQuery();
+        filter.setGroup("GRP-ALPHA");
+        var page = queryService.pageQuery(filter);
+
+        assertEquals(1, page.getTotalElements(), "only the GRP-ALPHA record matches");
+        assertEquals(idA, page.getContent().get(0).id());
+        assertEquals("GRP-ALPHA", page.getContent().get(0).group(),
+                "response must carry group");
     }
 }

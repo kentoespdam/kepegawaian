@@ -16,6 +16,7 @@ public class OrganisasiIndexQuery extends PagedRequest {
     private Long parentId;
     private Integer levelOrg;
     private String category;
+    private String group;
 
     @JsonIgnore
     public Specification<Organisasi> getSpecification() {
@@ -25,6 +26,7 @@ public class OrganisasiIndexQuery extends PagedRequest {
                 .addEqual(parentId, "parent", "id")
                 .addEqual(levelOrg, "levelOrg")
                 .addEqual(category, "category")
+                .addEqual(group, "group")
                 .build();
     }
 }

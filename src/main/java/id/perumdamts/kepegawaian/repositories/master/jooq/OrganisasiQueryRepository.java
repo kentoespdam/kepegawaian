@@ -43,6 +43,7 @@ public class OrganisasiQueryRepository {
                 .and(query.getParentId() != null ? ORGANISASI.PARENT_ID.eq(query.getParentId()) : DSL.noCondition())
                 .and(query.getLevelOrg() != null ? ORGANISASI.LEVEL_ORG.eq(query.getLevelOrg()) : DSL.noCondition())
                 .and(query.getCategory() != null ? ORGANISASI.CATEGORY.eq(query.getCategory()) : DSL.noCondition())
+                .and(query.getGroup() != null ? ORGANISASI.ORG_GROUP.eq(query.getGroup()) : DSL.noCondition())
                 .fetchOptional(0, Long.class).orElse(0L);
         var data = dsl.select(queryColumns(parent))
                 .from(ORGANISASI)
@@ -53,6 +54,7 @@ public class OrganisasiQueryRepository {
                 .and(query.getParentId() != null ? ORGANISASI.PARENT_ID.eq(query.getParentId()) : DSL.noCondition())
                 .and(query.getLevelOrg() != null ? ORGANISASI.LEVEL_ORG.eq(query.getLevelOrg()) : DSL.noCondition())
                 .and(query.getCategory() != null ? ORGANISASI.CATEGORY.eq(query.getCategory()) : DSL.noCondition())
+                .and(query.getGroup() != null ? ORGANISASI.ORG_GROUP.eq(query.getGroup()) : DSL.noCondition())
                 .orderBy(sortOrder)
                 .limit(query.getSizeOrDefault())
                 .offset(query.getPageNumber() * query.getSizeOrDefault())
@@ -71,7 +73,7 @@ public class OrganisasiQueryRepository {
     }
 
     public List<OrganisasiListResponse> listQuery() {
-        return dsl.select(OrganisasiSelects.ID, OrganisasiSelects.NAMA)
+        return dsl.select(OrganisasiSelects.ID, OrganisasiSelects.NAMA, OrganisasiSelects.GROUP)
                 .from(ORGANISASI)
                 .where(ORGANISASI.IS_DELETED.eq(false))
                 .orderBy(ORGANISASI.NAMA.asc())

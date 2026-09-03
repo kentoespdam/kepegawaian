@@ -16,6 +16,7 @@ public final class OrganisasiJooqMapper {
             record.get(OrganisasiSelects.NAMA),
             record.get(OrganisasiSelects.SHORT_NAME),
             record.get(OrganisasiSelects.CATEGORY),
+            record.get(OrganisasiSelects.GROUP),
             record.get(OrganisasiSelects.PARENT_ID) != null ? buildParent(record) : null
         );
     }

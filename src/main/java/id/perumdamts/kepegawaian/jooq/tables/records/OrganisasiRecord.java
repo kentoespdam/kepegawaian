@@ -49,143 +49,157 @@ public class OrganisasiRecord extends UpdatableRecordImpl<OrganisasiRecord> {
     }
 
     /**
+     * Setter for <code>organisasi.org_group</code>.
+     */
+    public void setOrgGroup(String value) {
+        set(2, value);
+    }
+
+    /**
+     * Getter for <code>organisasi.org_group</code>.
+     */
+    public String getOrgGroup() {
+        return (String) get(2);
+    }
+
+    /**
      * Setter for <code>organisasi.kode</code>.
      */
     public void setKode(String value) {
-        set(2, value);
+        set(3, value);
     }
 
     /**
      * Getter for <code>organisasi.kode</code>.
      */
     public String getKode() {
-        return (String) get(2);
+        return (String) get(3);
     }
 
     /**
      * Setter for <code>organisasi.level_org</code>.
      */
     public void setLevelOrg(Integer value) {
-        set(3, value);
+        set(4, value);
     }
 
     /**
      * Getter for <code>organisasi.level_org</code>.
      */
     public Integer getLevelOrg() {
-        return (Integer) get(3);
+        return (Integer) get(4);
     }
 
     /**
      * Setter for <code>organisasi.nama</code>.
      */
     public void setNama(String value) {
-        set(4, value);
+        set(5, value);
     }
 
     /**
      * Getter for <code>organisasi.nama</code>.
      */
     public String getNama() {
-        return (String) get(4);
+        return (String) get(5);
     }
 
     /**
      * Setter for <code>organisasi.short_name</code>.
      */
     public void setShortName(String value) {
-        set(5, value);
+        set(6, value);
     }
 
     /**
      * Getter for <code>organisasi.short_name</code>.
      */
     public String getShortName() {
-        return (String) get(5);
+        return (String) get(6);
     }
 
     /**
      * Setter for <code>organisasi.parent_id</code>.
      */
     public void setParentId(Long value) {
-        set(6, value);
+        set(7, value);
     }
 
     /**
      * Getter for <code>organisasi.parent_id</code>.
      */
     public Long getParentId() {
-        return (Long) get(6);
+        return (Long) get(7);
     }
 
     /**
      * Setter for <code>organisasi.created_at</code>.
      */
     public void setCreatedAt(LocalDateTime value) {
-        set(7, value);
+        set(8, value);
     }
 
     /**
      * Getter for <code>organisasi.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(7);
+        return (LocalDateTime) get(8);
     }
 
     /**
      * Setter for <code>organisasi.created_by</code>.
      */
     public void setCreatedBy(String value) {
-        set(8, value);
+        set(9, value);
     }
 
     /**
      * Getter for <code>organisasi.created_by</code>.
      */
     public String getCreatedBy() {
-        return (String) get(8);
+        return (String) get(9);
     }
 
     /**
      * Setter for <code>organisasi.is_deleted</code>.
      */
     public void setIsDeleted(Boolean value) {
-        set(9, value);
+        set(10, value);
     }
 
     /**
      * Getter for <code>organisasi.is_deleted</code>.
      */
     public Boolean getIsDeleted() {
-        return (Boolean) get(9);
+        return (Boolean) get(10);
     }
 
     /**
      * Setter for <code>organisasi.updated_at</code>.
      */
     public void setUpdatedAt(LocalDateTime value) {
-        set(10, value);
+        set(11, value);
     }
 
     /**
      * Getter for <code>organisasi.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(10);
+        return (LocalDateTime) get(11);
     }
 
     /**
      * Setter for <code>organisasi.updated_by</code>.
      */
     public void setUpdatedBy(String value) {
-        set(11, value);
+        set(12, value);
     }
 
     /**
      * Getter for <code>organisasi.updated_by</code>.
      */
     public String getUpdatedBy() {
-        return (String) get(11);
+        return (String) get(12);
     }
 
     // -------------------------------------------------------------------------
@@ -211,11 +225,12 @@ public class OrganisasiRecord extends UpdatableRecordImpl<OrganisasiRecord> {
     /**
      * Create a detached, initialised OrganisasiRecord
      */
-    public OrganisasiRecord(Long id_, String category, String kode, Integer levelOrg, String nama, String shortName, Long parentId, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy) {
+    public OrganisasiRecord(Long id_, String category, String orgGroup, String kode, Integer levelOrg, String nama, String shortName, Long parentId, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy) {
         super(Organisasi.ORGANISASI);
 
         setId(id_);
         setCategory(category);
+        setOrgGroup(orgGroup);
         setKode(kode);
         setLevelOrg(levelOrg);
         setNama(nama);

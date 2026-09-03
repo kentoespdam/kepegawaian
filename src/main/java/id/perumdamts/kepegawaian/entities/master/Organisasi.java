@@ -34,6 +34,8 @@ public class Organisasi extends MasterBaseEntity {
     private String nama;
     private String shortName;
     private String category;
+    @Column(name = "org_group")
+    private String group = "";
 
     public Organisasi(Long id) {
         super(id);

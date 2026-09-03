@@ -79,6 +79,11 @@ public class Organisasi extends TableImpl<OrganisasiRecord> {
     public final TableField<OrganisasiRecord, String> CATEGORY = createField(DSL.name("category"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
+     * The column <code>organisasi.org_group</code>.
+     */
+    public final TableField<OrganisasiRecord, String> ORG_GROUP = createField(DSL.name("org_group"), SQLDataType.VARCHAR(64).nullable(false).defaultValue(DSL.field(DSL.raw("''"), SQLDataType.VARCHAR)), this, "");
+
+    /**
      * The column <code>organisasi.kode</code>.
      */
     public final TableField<OrganisasiRecord, String> KODE = createField(DSL.name("kode"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");

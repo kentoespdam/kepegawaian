@@ -27,6 +27,11 @@ Tingkat gaji/kepangkatan, dipilih langsung saat membuat Profesi.
 **Organisasi**:
 Unit kerja; pohon hierarkis (punya induk).
 
+**Grup Organisasi**:
+Pengelompokan organisasi berdasarkan garis hierarki: satu organisasi induk beserta seluruh keturunannya (hingga sub bagian) menjadi satu grup. Dipakai untuk agregasi data pegawai per grup (mis. laporan, filter FE).
+Nilai: teks bebas (mis. `01.DIREKSI`, `07.BAGIAN KESEKRETARIATAN`), ditulis manual per record oleh staf SDM mengikuti hierarki perusahaan; konsistensi nilai adalah disiplin data, bukan jaminan sistem. Sumber data lama: kolom `group` di `smartoffice.organization` (`docs/organization.sql`).
+_Avoid_: Category Organisasi — pengelompokan berdasarkan jenis pekerjaan yang dilakukan; dua sumbu klasifikasi yang berbeda.
+
 **APD** (Alat Pelindung Diri):
 Perlengkapan keselamatan yang melekat pada sebuah Profesi (mis. helm, sarung tangan). Daftar pendek per Profesi.
 

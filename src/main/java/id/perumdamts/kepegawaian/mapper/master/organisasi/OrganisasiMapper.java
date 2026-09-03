@@ -15,6 +15,7 @@ public final class OrganisasiMapper {
         organisasi.setNama(request.getNama());
         organisasi.setShortName(request.getShortName());
         organisasi.setCategory(request.getCategory());
+        organisasi.setGroup(request.getGroup());
         return organisasi;
     }
 
@@ -26,5 +27,6 @@ public final class OrganisasiMapper {
         entity.setNama(request.getNama());
         entity.setShortName(request.getShortName());
         entity.setCategory(request.getCategory());
+        entity.setGroup(request.getGroup());
     }
 }
