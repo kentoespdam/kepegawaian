@@ -199,6 +199,7 @@ public class Indexes {
     public static final Index ORGANISASI_IDX_ORG_KODE = Internal.createIndex(DSL.name("idx_org_kode"), Organisasi.ORGANISASI, new OrderField[] { Organisasi.ORGANISASI.KODE }, false);
     public static final Index ORGANISASI_IDX_ORG_LVL_ORG = Internal.createIndex(DSL.name("idx_org_lvl_org"), Organisasi.ORGANISASI, new OrderField[] { Organisasi.ORGANISASI.LEVEL_ORG }, false);
     public static final Index ORGANISASI_IDX_ORG_NAMA = Internal.createIndex(DSL.name("idx_org_nama"), Organisasi.ORGANISASI, new OrderField[] { Organisasi.ORGANISASI.NAMA }, false);
+    public static final Index ORGANISASI_IDX_ORG_ORG_GROUP = Internal.createIndex(DSL.name("idx_org_org_group"), Organisasi.ORGANISASI, new OrderField[] { Organisasi.ORGANISASI.ORG_GROUP }, false);
     public static final Index PROFESI_IDX_PFS_GRD_ID = Internal.createIndex(DSL.name("idx_pfs_grd_id"), Profesi.PROFESI, new OrderField[] { Profesi.PROFESI.GRADE_ID }, false);
     public static final Index PROFESI_IDX_PFS_IS_DELETED = Internal.createIndex(DSL.name("idx_pfs_is_deleted"), Profesi.PROFESI, new OrderField[] { Profesi.PROFESI.IS_DELETED }, false);
     public static final Index PROFESI_IDX_PFS_JBT_ID = Internal.createIndex(DSL.name("idx_pfs_jbt_id"), Profesi.PROFESI, new OrderField[] { Profesi.PROFESI.JABATAN_ID }, false);

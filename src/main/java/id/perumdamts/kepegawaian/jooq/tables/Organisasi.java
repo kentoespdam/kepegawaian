@@ -202,7 +202,7 @@ public class Organisasi extends TableImpl<OrganisasiRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.ORGANISASI_IDX_ORG_IS_DELETED, Indexes.ORGANISASI_IDX_ORG_KODE, Indexes.ORGANISASI_IDX_ORG_LVL_ORG, Indexes.ORGANISASI_IDX_ORG_NAMA);
+        return Arrays.asList(Indexes.ORGANISASI_IDX_ORG_IS_DELETED, Indexes.ORGANISASI_IDX_ORG_KODE, Indexes.ORGANISASI_IDX_ORG_LVL_ORG, Indexes.ORGANISASI_IDX_ORG_NAMA, Indexes.ORGANISASI_IDX_ORG_ORG_GROUP);
     }
 
     @Override
