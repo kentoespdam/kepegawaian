@@ -41,7 +41,8 @@ class GajiBatchMasterQueryRepositoryTest {
         assertEquals(1, executedSql.size());
         String sql = executedSql.getFirst().toLowerCase();
         assertTrue(sql.contains("join `gaji_batch_root`"), "Must join gaji_batch_root");
-        assertTrue(sql.contains("is_deleted"), "Must filter is_deleted = false");
+        assertTrue(sql.contains("`is_deleted`"), "Must filter is_deleted = false");
+        assertTrue(sql.contains("`org_group`"), "Must select org_group from organisasi");
         assertFalse(sql.contains("status >=") || sql.contains("status ="), "Must not filter status when null");
     }
 

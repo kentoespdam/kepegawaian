@@ -128,6 +128,8 @@ GET /api/penggajian/batch/master/pegawai/123?periode=2026-09
 ```
 
 > Tanpa `?periode=...` → **HTTP 400** (`"periode is required"`).
+>
+> Setiap item response (`GajiBatchMasterResponse`) memuat field `orgGroup` (`string`, grup organisasi dari relasi master organisasi) untuk kebutuhan grouping di UI frontend.
 
 ### 2.5 Modul Cuti
 

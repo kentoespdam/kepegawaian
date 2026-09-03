@@ -40,7 +40,8 @@ public class GajiBatchMasterQueryRepository {
         var data = dsl.select(
                         GAJI_BATCH_MASTER.asterisk(),
                         ORGANISASI.KODE,
-                        ORGANISASI.NAMA)
+                        ORGANISASI.NAMA,
+                        ORGANISASI.ORG_GROUP)
                 .from(GAJI_BATCH_MASTER)
                 .join(GAJI_BATCH_ROOT).on(GAJI_BATCH_MASTER.BATCH_ROOT_ID.eq(GAJI_BATCH_ROOT.ID))
                 .leftJoin(ORGANISASI).on(GAJI_BATCH_MASTER.ORGANISASI_ID.eq(ORGANISASI.ID))
@@ -58,7 +59,8 @@ public class GajiBatchMasterQueryRepository {
         return dsl.select(
                         GAJI_BATCH_MASTER.asterisk(),
                         ORGANISASI.KODE,
-                        ORGANISASI.NAMA)
+                        ORGANISASI.NAMA,
+                        ORGANISASI.ORG_GROUP)
                 .from(GAJI_BATCH_MASTER)
                 .join(GAJI_BATCH_ROOT).on(GAJI_BATCH_MASTER.BATCH_ROOT_ID.eq(GAJI_BATCH_ROOT.ID))
                 .leftJoin(ORGANISASI).on(GAJI_BATCH_MASTER.ORGANISASI_ID.eq(ORGANISASI.ID))
@@ -81,7 +83,8 @@ public class GajiBatchMasterQueryRepository {
         var data = dsl.select(
                         GAJI_BATCH_MASTER.asterisk(),
                         ORGANISASI.KODE,
-                        ORGANISASI.NAMA)
+                        ORGANISASI.NAMA,
+                        ORGANISASI.ORG_GROUP)
                 .from(GAJI_BATCH_MASTER)
                 .join(GAJI_BATCH_ROOT).on(GAJI_BATCH_MASTER.BATCH_ROOT_ID.eq(GAJI_BATCH_ROOT.ID))
                 .leftJoin(ORGANISASI).on(GAJI_BATCH_MASTER.ORGANISASI_ID.eq(ORGANISASI.ID))
@@ -97,7 +100,8 @@ public class GajiBatchMasterQueryRepository {
         return dsl.select(
                         GAJI_BATCH_MASTER.asterisk(),
                         ORGANISASI.KODE,
-                        ORGANISASI.NAMA)
+                        ORGANISASI.NAMA,
+                        ORGANISASI.ORG_GROUP)
                 .from(GAJI_BATCH_MASTER)
                 .leftJoin(ORGANISASI).on(GAJI_BATCH_MASTER.ORGANISASI_ID.eq(ORGANISASI.ID))
                 .where(GAJI_BATCH_MASTER.ID.eq(id))
