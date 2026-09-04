@@ -122,11 +122,12 @@ GajiBatchProsesCommandService.prosesGaji(rootBatchId)
 
 ### Wave 3 — Engine Utilities
 
-- [ ] **W3-1** `GajiFormulaEvaluator` di `utils/`:
+- [x] **W3-1** `GajiFormulaEvaluator` di `utils/`:
   - Wrapper exp4j dengan custom function `ceil(x)` → `Math.ceil(x)`
   - `double evaluate(String formula, Map<String, Double> vars) throws GajiFormulaException`
   - Empty formula → return 0.0
   - Parse error → throw `GajiFormulaException` (caught sebagai DATA error)
+  - **Temuan:** exp4j 0.4.8 tidak punya fungsi bawaan + lookup nama fungsi case-sensitive → normalisasi `(?i)\bceil\b` → `ceil` (seed DB pakai `CEIL(` huruf besar, 9x di V16–V18)
 
 ---
 
