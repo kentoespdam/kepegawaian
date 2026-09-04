@@ -54,3 +54,4 @@ graphify-out/**/.graphify_analysis.json
 /dummy_prompt.md
 .antigravitycli/
 /src/main/resources/db/migration/V1__baseline.sql.bak
+/docs/php/
