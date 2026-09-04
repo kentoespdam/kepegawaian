@@ -11,7 +11,6 @@ public class GajiBatchRootProcessRequest {
     private String id;
     private String nama;
     private String jabatan;
-    private EProsesGaji phase;
 
 
     public static GajiBatchRoot verifyPhase1(GajiBatchRoot entity, GajiBatchRootProcessRequest request) {

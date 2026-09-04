@@ -57,7 +57,7 @@ public class GajiBatchRootWorkflowCommandService {
     }
 
     private void reprocessHandler(GajiBatchRoot entity, GajiBatchRootProcessRequest request) {
-        switch (request.getPhase()) {
+        switch (entity.getStatus()) {
             case WAIT_APPROVAL -> entity.setStatus(EProsesGaji.WAIT_VERIFICATION_PHASE_2);
             case WAIT_VERIFICATION_PHASE_2 -> entity.setStatus(EProsesGaji.WAIT_VERIFICATION_PHASE_1);
             case WAIT_VERIFICATION_PHASE_1 -> entity.setStatus(EProsesGaji.PENDING);

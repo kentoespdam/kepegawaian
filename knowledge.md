@@ -6,17 +6,17 @@
 
 ## 1. Project Identity
 
-| Item | Value |
-|------|-------|
-| Nama | `kepegawaian` — Employee Management System |
-| Entitas | PERUMDAMTS |
-| Type | Spring Boot REST API |
-| Stack | Java 25, Spring Boot 4.0.3, Gradle |
-| DB | MariaDB (JPA/Hibernate + Envers) |
-| Infra | Redis, Kafka, Appwrite (JWT) |
-| Base pkg | `id.perumdamts.kepegawaian` |
-| Branch | `rewrite/master-cqrs` |
-| Legacy | `../kepegawaian-legacy` (tag `legacy-snapshot`, read-only) |
+| Item     | Value                                                      |
+|----------|------------------------------------------------------------|
+| Nama     | `kepegawaian` — Employee Management System                 |
+| Entitas  | PERUMDAMTS                                                 |
+| Type     | Spring Boot REST API                                       |
+| Stack    | Java 25, Spring Boot 4.0.3, Gradle                         |
+| DB       | MariaDB (JPA/Hibernate + Envers)                           |
+| Infra    | Redis, Kafka, Appwrite (JWT)                               |
+| Base pkg | `id.perumdamts.kepegawaian`                                |
+| Branch   | `rewrite/master-cqrs`                                      |
+| Legacy   | `../kepegawaian-legacy` (tag `legacy-snapshot`, read-only) |
 
 ---
 
@@ -24,14 +24,16 @@
 
 Freebuff beroperasi dalam **2 mode**. Mode ditentukan oleh prompt pertama user:
 
-| Mode | Role | Output | Kapan? |
-|------|------|--------|--------|
-| **🔍 Grilling** | 🧠 **Manager** — analisis, rencana, NO CODING | Beads issue (plan implementasi) + MD file (checklist claim order) | User minta review/analisis/desain/planning |
-| **💻 Coding** | 🔧 **Engineer** — eksekusi issue sesuai aturan | Code changes + update MD file + commit & push | User minta implementasi / ngerjain issue |
+| Mode            | Role                                           | Output                                                            | Kapan?                                                                       |
+|-----------------|------------------------------------------------|-------------------------------------------------------------------|------------------------------------------------------------------------------|
+| **🔍 Grilling** | 🧠 **Manager** — analisis, rencana, NO CODING  | Beads issue (plan implementasi) + MD file (checklist claim order) | User minta review/analisis/desain/planning — **termasuk `/diagnosing-bugs`** |
+| **💻 Coding**   | 🔧 **Engineer** — eksekusi issue sesuai aturan | Code changes + update MD file + commit & push                     | User minta implementasi / ngerjain issue                                     |
 
 ### 🔍 Grilling Mode
 
 > **Agent sebagai Manager.** Tidak menulis kode sama sekali.
+>
+> **Skill yang masuk Grilling Mode:** `/diagnosing-bugs` — saat skill ini aktif, agent **hanya mendiagnosis** (analisis root cause, trace eksekusi, identifikasi penyebab bug), lalu membuat beads issue berisi plan fix. **TIDAK langsung implementasi/menulis kode.**
 
 1. Analisis domain/modul yang diminta — baca CONTEXT, ADR, docs terkait
 2. Grilling → sharpen plan bareng user (tanya-jawab)
@@ -74,14 +76,14 @@ Freebuff beroperasi dalam **2 mode**. Mode ditentukan oleh prompt pertama user:
 
 ### Domain Modules
 
-| Package | Function |
-|---------|----------|
-| `profil/` | biodata, pendidikan, keahlian, keluarga, pelatihan |
-| `pegawai/` | core employee records (NIPAM key) |
-| `master/` | referensi (organisasi, jabatan, golongan, grade, level, profesi) |
-| `cuti/` | leave, multi-level approval chain |
-| `kepegawaian/` | SK, SP, mutasi, kontrak, terminasi |
-| `penggajian/` | payroll, batch processing, gajiBatchRoot + Kafka |
+| Package        | Function                                                         |
+|----------------|------------------------------------------------------------------|
+| `profil/`      | biodata, pendidikan, keahlian, keluarga, pelatihan               |
+| `pegawai/`     | core employee records (NIPAM key)                                |
+| `master/`      | referensi (organisasi, jabatan, golongan, grade, level, profesi) |
+| `cuti/`        | leave, multi-level approval chain                                |
+| `kepegawaian/` | SK, SP, mutasi, kontrak, terminasi                               |
+| `penggajian/`  | payroll, batch processing, gajiBatchRoot + Kafka                 |
 
 ### Layer Pattern (per Domain Module)
 
@@ -97,34 +99,34 @@ Freebuff beroperasi dalam **2 mode**. Mode ditentukan oleh prompt pertama user:
 
 ### Code Patterns
 
-| Aspect | Rule |
-|--------|------|
-| Controller | `CustomResult.any/list/save/delete()` → `{status, statusText, data, timestamp}` |
-| Validation | `@Valid` + `Errors` on all mutating endpoints |
-| Auth mutating | `@PreAuthorize("hasRole('ADMIN')")` |
-| Pagination | `@ParameterObject` on query params |
-| Soft delete | `is_deleted` flag — **never hard-delete** |
-| Audit | `created_at/by`, `updated_at/by` (JPA `AuditAware`) + Envers revision history |
-| Approval | cuti & profil — `PENDING → APPROVED/REJECTED` chain |
-| IDs | Mostly `Long` auto; `Biodata` keyed by `NIK` (String) |
-| Auth impl | Appwrite JWT via `JwtAuthFilter`. Dev no-token → hardcoded admin |
-| Config | `application.yml` from env vars. Docker configs in `docker/` |
+| Aspect        | Rule                                                                            |
+|---------------|---------------------------------------------------------------------------------|
+| Controller    | `CustomResult.any/list/save/delete()` → `{status, statusText, data, timestamp}` |
+| Validation    | `@Valid` + `Errors` on all mutating endpoints                                   |
+| Auth mutating | `@PreAuthorize("hasRole('ADMIN')")`                                             |
+| Pagination    | `@ParameterObject` on query params                                              |
+| Soft delete   | `is_deleted` flag — **never hard-delete**                                       |
+| Audit         | `created_at/by`, `updated_at/by` (JPA `AuditAware`) + Envers revision history   |
+| Approval      | cuti & profil — `PENDING → APPROVED/REJECTED` chain                             |
+| IDs           | Mostly `Long` auto; `Biodata` keyed by `NIK` (String)                           |
+| Auth impl     | Appwrite JWT via `JwtAuthFilter`. Dev no-token → hardcoded admin                |
+| Config        | `application.yml` from env vars. Docker configs in `docker/`                    |
 
 ### Domain Context (Lazy Read)
 
 Start with `CONTEXT-MAP.md`, then pick relevant sub-context:
 
-| If touching... | Read |
-|----------------|------|
-| `master/` (Profesi, Jabatan, Organisasi) | `docs/context/language-master.md` |
-| `pegawai/` terminology | `docs/context/language-pegawai.md` |
+| If touching...                                 | Read                                |
+|------------------------------------------------|-------------------------------------|
+| `master/` (Profesi, Jabatan, Organisasi)       | `docs/context/language-master.md`   |
+| `pegawai/` terminology                         | `docs/context/language-pegawai.md`  |
 | `pegawai/` or `kepegawaian/` rewrite decisions | `docs/context/decisions-pegawai.md` |
-| `profil/` (biodata, pendidikan, updateProfile) | `docs/context/language-profil.md` |
-| `cuti/` terminology | `docs/context/language-cuti.md` |
-| `cuti/` rewrite decisions | `docs/context/decisions-cuti.md` |
-| Auth, JWT, Spring profiles | `docs/context/language-security.md` |
-| Cross-module dependencies | `docs/context/relationships.md` |
-| ADRs | `docs/adr/` |
+| `profil/` (biodata, pendidikan, updateProfile) | `docs/context/language-profil.md`   |
+| `cuti/` terminology                            | `docs/context/language-cuti.md`     |
+| `cuti/` rewrite decisions                      | `docs/context/decisions-cuti.md`    |
+| Auth, JWT, Spring profiles                     | `docs/context/language-security.md` |
+| Cross-module dependencies                      | `docs/context/relationships.md`     |
+| ADRs                                           | `docs/adr/`                         |
 
 ---
 
@@ -132,18 +134,18 @@ Start with `CONTEXT-MAP.md`, then pick relevant sub-context:
 
 Critical env vars (full list: `env.example`):
 
-| Variable | Required | Purpose |
-|----------|----------|---------|
-| `DB_HOST`, `DB_PORT`, `DB_SCHEMA`, `DB_USER`, `DB_PASSWORD` | ✅ | MariaDB connection |
-| `APPWRITE_ENDPOINT`, `APPWRITE_PROJECT_ID`, `APPWRITE_API_KEY` | ✅ | JWT auth provider |
-| `KAFKA_BOOTSTRAP_SERVERS` | ✅ | Event bus for gajiBatchRoot |
-| `REDIS_HOST`, `REDIS_PORT`, `REDIS_DATABASE` | ✅ | Cache |
-| `PENGGAJIAN_URL`, `LAPORAN_KEPEGAWAIAN_URL` | ✅ | External service URLs |
-| `SERVER_PORT`, `PROFILE` | ⚠️ | Server config (default: 8080, development) |
-| `JENIS_CUTI_TAHUNAN`, `JENIS_CUTI_BESAR`, `JABATAN_MANAGER_SDM`, `JABATAN_SUPERVISOR_SDM` | ⚠️ | Leave & approval config |
-| `PROTECTED_DELETE_KTP` | ⚠️ | Flag for protected KTP delete |
-| `FLYWAY_ENABLED` | ⚠️ | Toggle Flyway migration (default: false) |
-| `REDIS_PASSWORD` | ⚠️ | Redis auth (default: empty) |
+| Variable                                                                                  | Required | Purpose                                    |
+|-------------------------------------------------------------------------------------------|----------|--------------------------------------------|
+| `DB_HOST`, `DB_PORT`, `DB_SCHEMA`, `DB_USER`, `DB_PASSWORD`                               | ✅       | MariaDB connection                         |
+| `APPWRITE_ENDPOINT`, `APPWRITE_PROJECT_ID`, `APPWRITE_API_KEY`                            | ✅       | JWT auth provider                          |
+| `KAFKA_BOOTSTRAP_SERVERS`                                                                 | ✅       | Event bus for gajiBatchRoot                |
+| `REDIS_HOST`, `REDIS_PORT`, `REDIS_DATABASE`                                              | ✅       | Cache                                      |
+| `PENGGAJIAN_URL`, `LAPORAN_KEPEGAWAIAN_URL`                                               | ✅       | External service URLs                      |
+| `SERVER_PORT`, `PROFILE`                                                                  | ⚠️       | Server config (default: 8080, development) |
+| `JENIS_CUTI_TAHUNAN`, `JENIS_CUTI_BESAR`, `JABATAN_MANAGER_SDM`, `JABATAN_SUPERVISOR_SDM` | ⚠️       | Leave & approval config                    |
+| `PROTECTED_DELETE_KTP`                                                                    | ⚠️       | Flag for protected KTP delete              |
+| `FLYWAY_ENABLED`                                                                          | ⚠️       | Toggle Flyway migration (default: false)   |
+| `REDIS_PASSWORD`                                                                          | ⚠️       | Redis auth (default: empty)                |
 
 ---
 
@@ -208,18 +210,18 @@ git push
 
 **Read MD → Read CONTEXT → `/ponytail` → Explore → Write → Test → Build → Update Graph → Update MD → Close → Ship**
 
-| Step | Action |
-|------|--------|
-| **Read MD** | Baca MD file terkait issue — teliti & pahami claim order |
-| **Read CONTEXT** | `docs/context/language-{domain}.md`, ADR, CONTEXT-MAP.md — **jangan tebak-nebak** |
-| **Explore** | **Prioritas:** `graphify` (knowledge graph) → `gitnexus` (code intelligence: `query/impact/context`) → `grep` (last resort saja) |
-| **Write** | Max 120 lines/file. Split if exceeded. Follow conventions. |
-| **Test** | Unit tests **required** for new logic. |
-| **Build** | **WAJIB** `./gradlew build` (atau `./gradlew clean compileJava` minimal) — pastikan zero error sebelum lanjut |
+| Step             | Action                                                                                                                                                                                                                                                                                                                                                                               |
+|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Read MD**      | Baca MD file terkait issue — teliti & pahami claim order                                                                                                                                                                                                                                                                                                                             |
+| **Read CONTEXT** | `docs/context/language-{domain}.md`, ADR, CONTEXT-MAP.md — **jangan tebak-nebak**                                                                                                                                                                                                                                                                                                    |
+| **Explore**      | **Prioritas:** `graphify` (knowledge graph) → `gitnexus` (code intelligence: `query/impact/context`) → `grep` (last resort saja)                                                                                                                                                                                                                                                     |
+| **Write**        | Max 120 lines/file. Split if exceeded. Follow conventions.                                                                                                                                                                                                                                                                                                                           |
+| **Test**         | Unit tests **required** for new logic.                                                                                                                                                                                                                                                                                                                                               |
+| **Build**        | **WAJIB** `./gradlew build` (atau `./gradlew clean compileJava` minimal) — pastikan zero error sebelum lanjut                                                                                                                                                                                                                                                                        |
 | **Update Graph** | Prompt `update graph` → runbook §11 (tanpa LLM): `python3 scripts/graphify-semantic-local.py` → `python3 scripts/graphify-semantic-seed.py --verify` (0 MISS) → `graphify . --update` → `GRAPHIFY_VIZ_NODE_LIMIT=20000 graphify cluster-only .` → `node .gitnexus/run.cjs analyze` (refresh GitNexus, auto-update stat di AGENTS/CLAUDE) → verifikasi & commit `chore: update graph` |
-| **Update MD** | Tandai step yang sudah selesai di MD file |
-| **Close** | `bd close <id>` — complete issue |
-| **Ship** | Commit `<type>: <description>`. `git pull --rebase` → `bd dolt push` → `git push` → verify "up to date". Build & Graph WAJIB up-to-date sebelum step ini. |
+| **Update MD**    | Tandai step yang sudah selesai di MD file                                                                                                                                                                                                                                                                                                                                            |
+| **Close**        | `bd close <id>` — complete issue                                                                                                                                                                                                                                                                                                                                                     |
+| **Ship**         | Commit `<type>: <description>`. `git pull --rebase` → `bd dolt push` → `git push` → verify "up to date". Build & Graph WAJIB up-to-date sebelum step ini.                                                                                                                                                                                                                            |
 
 ### Git mv + Edit (HARD INVARIANT)
 
@@ -236,17 +238,17 @@ git push
 
 ## 8. Anti-Examples (Do NOT Do)
 
-| Anti-Pattern | Why |
-|--------------|-----|
-| ❌ Hard-delete rows | Always use `is_deleted` flag. Soft delete only. |
-| ❌ `git add` + Edit in parallel | Race: Edit may land after Add snapshot. Batch add at end only. |
-| ❌ `git add` per-file between edits | Defeats single-batch guarantee. |
-| ❌ Amending broken commits | Policy: **never amend**. Always `fix()` commit. |
-| ❌ `compileJava UP-TO-DATE` trust | Gradle content-hash cache can mask missing content. Always `clean compileJava`. |
-| ❌ Rename symbols with find-and-replace | Use `gitnexus_rename` — understands call graph. |
-| ❌ Resolve out-of-scope errors inline | File new issue instead. |
-| ❌ Skip `gitnexus_impact` before edit | Always check blast radius first. |
-| ❌ `grep` before `graphify`/`gitnexus` | Prioritas explore: graphify → gitnexus → grep. Jangan grep dulu. |
+| Anti-Pattern                            | Why                                                                             |
+|-----------------------------------------|---------------------------------------------------------------------------------|
+| ❌ Hard-delete rows                     | Always use `is_deleted` flag. Soft delete only.                                 |
+| ❌ `git add` + Edit in parallel         | Race: Edit may land after Add snapshot. Batch add at end only.                  |
+| ❌ `git add` per-file between edits     | Defeats single-batch guarantee.                                                 |
+| ❌ Amending broken commits              | Policy: **never amend**. Always `fix()` commit.                                 |
+| ❌ `compileJava UP-TO-DATE` trust       | Gradle content-hash cache can mask missing content. Always `clean compileJava`. |
+| ❌ Rename symbols with find-and-replace | Use `gitnexus_rename` — understands call graph.                                 |
+| ❌ Resolve out-of-scope errors inline   | File new issue instead.                                                         |
+| ❌ Skip `gitnexus_impact` before edit   | Always check blast radius first.                                                |
+| ❌ `grep` before `graphify`/`gitnexus`  | Prioritas explore: graphify → gitnexus → grep. Jangan grep dulu.                |
 
 ---
 
@@ -321,21 +323,21 @@ bd close <id>         # Complete
 
 Full catalog: `.claude/skills/`. Key ones:
 
-| Skill | Use Case |
-|-------|----------|
-| `graphify` | Knowledge graph — eksplorasi/cluster project secara visual (skill di `.agents/skills/graphify/SKILL.md`) |
-| `gitnexus-*` | Code intelligence (6 skills — exploring, impact, debugging, refactoring, guide, CLI) |
-| `tdd` | Test-first development |
-| `diagnose` / `diagnosing-bugs` | Debug / regression |
-| `review` | Code review vs standards + spec |
-| `grill-me` / `grill-with-docs` | Stress-test plans |
-| `domain-modeling` | DDD ubiquitous language |
-| `ubiquitous-language` | Extract glossary from conversation |
-| `to-prd` / `to-issues` | Convert conversation → PRD → issues |
-| `prototype` | Throwaway experimental code |
-| `handoff` | Compact session → handoff doc |
-| `ponytail` | Force simplest solution (YAGNI) |
-| `caveman` | Ultra-compressed mode |
+| Skill                          | Use Case                                                                                                 |
+|--------------------------------|----------------------------------------------------------------------------------------------------------|
+| `graphify`                     | Knowledge graph — eksplorasi/cluster project secara visual (skill di `.agents/skills/graphify/SKILL.md`) |
+| `gitnexus-*`                   | Code intelligence (6 skills — exploring, impact, debugging, refactoring, guide, CLI)                     |
+| `tdd`                          | Test-first development                                                                                   |
+| `diagnose` / `diagnosing-bugs` | Debug / regression — **Grilling Mode only**: diagnosis + plan, NO implementation                         |
+| `review`                       | Code review vs standards + spec                                                                          |
+| `grill-me` / `grill-with-docs` | Stress-test plans                                                                                        |
+| `domain-modeling`              | DDD ubiquitous language                                                                                  |
+| `ubiquitous-language`          | Extract glossary from conversation                                                                       |
+| `to-prd` / `to-issues`         | Convert conversation → PRD → issues                                                                      |
+| `prototype`                    | Throwaway experimental code                                                                              |
+| `handoff`                      | Compact session → handoff doc                                                                            |
+| `ponytail`                     | Force simplest solution (YAGNI)                                                                          |
+| `caveman`                      | Ultra-compressed mode                                                                                    |
 
 ### Ignore Files — `.graphifyignore`
 
@@ -351,7 +353,7 @@ File di root repo (ter-commit). Sintaks **sama seperti `.gitignore`**: komentar 
 
 **Yang di-exclude di project ini:** `graphify-out/`, `backup.jsonl`, `.openclaude-profile.json`, `skills-lock.json` + dot-dir agen/tooling (`.beads/`, `.claude/`, `.agents/`, `.openclaude/`, `.antigravitycli/`, `.gitnexus/`, `.gradle/`, `.idea/`, `.vscode/`, `build/`).
 
-**Prompt `update graph` (runbook baku, TANPA LLM):** jalankan SEMUA step di blok "Graphify semantic enrichment TANPA LLM" di bawah + GitNexus refresh (§7): `python3 scripts/graphify-semantic-local.py` (seed semantic cache deterministik) → `python3 scripts/graphify-semantic-seed.py --verify` (pastikan 0 MISS) → `graphify . --update` (pipeline penuh, 100% cache hit → 0 panggilan LLM) → `GRAPHIFY_VIZ_NODE_LIMIT=20000 graphify cluster-only .` (re-cluster + report + full html) → `node .gitnexus/run.cjs analyze` (refresh GitNexus; auto-update stat di AGENTS.md/CLAUDE.md) → verifikasi & commit `chore: update graph`.
+**Prompt `update graph` (runbook baku, TANPA LLM):** jalankan SEMUA step di blok "Graphify semantic enrichment TANPA LLM" di bawah + GitNexus refresh (§7): `python3 scripts/graphify-semantic-local.py` (seed semantic cache deterministik) → `python3 scripts/graphify-semantic-seed.py --verify` (pastikan 0 MISS) → `graphify . --update` (pipeline penuh, 100% cache hit → 0 panggilan LLM) → `GRAPHIFY_VIZ_NODE_LIMIT=20000 graphify cluster-only .` (re-cluster + report + full HTML) → `node .gitnexus/run.cjs analyze` (refresh GitNexus; auto-update stat di AGENTS.md/CLAUDE.md) → verifikasi & commit `chore: update graph`.
 
 **Update AST-only:** `graphify update . --force` (wajib `--force` saat node count turun karena pengecualian — tanpa itu graphify menolak overwrite, "fewer nodes"). Full re-extraction (hapus `graphify-out/cache/`) untuk purge file yang sudah keluar dari corpus (fail-closed keep).
 
