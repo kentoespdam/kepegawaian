@@ -25,6 +25,7 @@
 | 12 | GajiKpi | Buat migration + entity + full CRUD |
 | 13 | Concurrency | Parallel per pegawai — `StructuredTaskScope` (virtual threads) |
 | 14 | Reprocess | Engine selalu reset (idempoten): hapus `GajiBatchMaster` + `GajiBatchMasterProses`, hitung ulang |
+| 15 | Clamp POT | Engine-level clamp pasca-eval (pola legacy): `POT_JP` → `maksimal_potongan_jpn`, `POT_ASKES` → `maksimal_potongan_askes` dari `gaji_parameter_setting` (di-lock 2026-09-04, hasil audit legacy) |
 
 ---
 
@@ -162,20 +163,13 @@ Legacy **tidak punya** konsep `is_reference`/`#SYSTEM` — SEMUA nilai referensi
 | `jml_anak` / `jml_jiwa` | Bukan komponen: `query_tanggungan_anak` + `1 + jml_anak + (kawin ? 1 : 0)` | Cocok dgn resolver map — tapi token ini TIDAK ada sbg baris komponen; ctx W6 harus di-seed dari `GajiBatchMaster` (jmlTanggungan/statusKawin) |
 | `t_kpi` / `t_ter` | `query_kpi`/`query_ter` per pegawai per tahun | → `GajiKpi.tunkin` / `GajiKpi.pph21Ter` (W1) |
 | `t_jabatan`, `t_kk`, `t_air`, `p_rudin`, `t_beras`, `p_askes`, `p_pph21`, `p_jp`, `p_tkk` | Query lookup langsung (level/golongan, rumdin, flag askes, PTKP, pot TKK) — **jalan walau formula komponen kosong** | Profil p1/p6/p9 punya `TUNJ_JABATAN`/`TUNJ_KK`/`TUNJ_AIR`/`POT_RUDIN` formula KOSONG & TANPA komponen `REF_TUNJ_*` di profil tsb → aturan W6 "formula kosong → 0.0" akan **menghilangkan tunjangan** yg legacy tetap bayar via lookup. Perlu penanganan eksplisit di W6 (implicit resolve per kode, atau seed REF_* di semua profil) |
-| `p_jp`/`p_askes` | Engine-level clamp `result > maksimal_potongan_* → maksimal_potongan_*` dari `sys_reference(code=payroll)` | **Nilai SUDAH di-seed** di `gaji_parameter_setting` rewrite (`maksimal_potongan_jpn`, `maksimal_potongan_askes`) — lihat usulan keputusan #15 di bawah |
+| `p_jp`/`p_askes` | Engine-level clamp `result > maksimal_potongan_* → maksimal_potongan_*` dari `sys_reference(code=payroll)` | **Nilai SUDAH di-seed** di `gaji_parameter_setting` rewrite — dikerjakan di W6-2 (keputusan #15, locked) |
 | `p_pph21`/`t_pph21` | Clamp `result < 0 → 0` | Formula potongan pajak |
 | Lainnya (formula aritmetika) | `replace_formula` (token komponen → nilai) lalu `eval` | Setara W6 substitusi + evaluator; hasil per-komponen di-`round(x,0)` |
 
 **Temuan token:** hanya variabel non-komponen dalam formula seed = `JML_ANAK`, `JML_JIWA` (ctx) + fungsi `CEIL` — semua sudah dicover.
 
-### Keputusan Desain #15 — clamp potongan JP & ASKES (usulan, 2026-09-04)
 
-> **Status: usulan (belum di-lock)** — dari audit legacy di atas. Tanpa ini, `POT_JP` & `POT_ASKES` di engine baru tidak ter-cap utk pegawai ber-GP tinggi (legacy membatasinya).
-
-- Sumber: `gaji_parameter_setting` (kode → nominal) — sudah ter-seed (`maksimal_potongan_jpn` 100423 di V20, ter-update 105474 di dev; `maksimal_potongan_askes` 120000).
-- Penerapan: engine-level clamp setelah evaluasi formula, persis pola legacy (`if result > max → max`), bukan di formula: `POT_JP` → kode `maksimal_potongan_jpn`, `POT_ASKES` → kode `maksimal_potongan_askes`.
-- Konsekuensi W6: kalkulasi perlu akses `GajiParameterSettingRepository` + `findByKode(kode)` (finder belum ada) + mapping kode komponen → kode parameter (2 entry, hardcode di service).
-- Kalau disetujui: pindah ke tabel Locked + tambah item W6; tolak → tandai "tidak di-cap" eksplisit (deviasi dari legacy).
 
 ---
 
@@ -191,6 +185,9 @@ Legacy **tidak punya** konsep `is_reference`/`#SYSTEM` — SEMUA nilai referensi
   - Hasil dibulatkan: `Math.round(nilai)`
   - Simpan `GajiBatchMasterProses`: `kode, urut, nama, jenisGaji, nilai, formula (asli), nilaiFormula (formula + nilai tersubstitusi)`
   - Update `GajiBatchMaster` totals dari ctx: `penghasilanKotor, totalPotongan, penghasilanBersih, pembulatan, penghasilanBersihFinal, pajak`
+- [ ] **W6-2** Clamp engine-level pasca-eval (keputusan #15): `POT_JP` → `min(nilai, maksimal_potongan_jpn)`, `POT_ASKES` → `min(nilai, maksimal_potongan_askes)`
+  - `GajiParameterSettingRepository` + tambah finder `findByKode(kode)`; mapping kode komponen → kode parameter hardcode (2 entry)
+  - Parameter tak ditemukan → log warn, tanpa cap (jangan cap ke 0 seperti default legacy)
 
 ---
 
