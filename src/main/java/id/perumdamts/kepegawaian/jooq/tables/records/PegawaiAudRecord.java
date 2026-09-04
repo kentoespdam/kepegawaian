@@ -637,6 +637,20 @@ public class PegawaiAudRecord extends UpdatableRecordImpl<PegawaiAudRecord> {
         return (Long) get(43);
     }
 
+    /**
+     * Setter for <code>pegawai_aud.biodata_id</code>.
+     */
+    public void setBiodataId(String value) {
+        set(44, value);
+    }
+
+    /**
+     * Getter for <code>pegawai_aud.biodata_id</code>.
+     */
+    public String getBiodataId() {
+        return (String) get(44);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -660,7 +674,7 @@ public class PegawaiAudRecord extends UpdatableRecordImpl<PegawaiAudRecord> {
     /**
      * Create a detached, initialised PegawaiAudRecord
      */
-    public PegawaiAudRecord(Long id_, Integer rev, Byte revtype, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Long absensiId, String email, Double gajiPokok, Boolean isAskes, Integer jmlTanggungan, Integer mkgBulan, Integer mkgTahun, String nipam, String notes, Double phdp, Long refSkCapegId, Long refSkGajiBerkalaId, Long refSkGolId, Long refSkJabatanId, Long refSkMutasiId, Long refSkPegawaiId, Byte statusKerja, Byte statusPegawai, LocalDate tanggalPengangkatan, LocalDate tmtGajiBerkala, LocalDate tmtGolongan, LocalDate tmtJabatan, LocalDate tmtKerja, LocalDate tmtMutasi, LocalDate tmtPegawai, LocalDate tmtPensiun, String nik, Long gajiProfilId, Long golonganId, Long gradeId, Long jabatanId, Long gajiPendapatanNonPajakId, Long organisasiId, Long profesiId, Long rumahDinasId) {
+    public PegawaiAudRecord(Long id_, Integer rev, Byte revtype, Byte changedStatus, LocalDateTime createdAt, String createdBy, Boolean isDeleted, LocalDateTime updatedAt, String updatedBy, Long absensiId, String email, Double gajiPokok, Boolean isAskes, Integer jmlTanggungan, Integer mkgBulan, Integer mkgTahun, String nipam, String notes, Double phdp, Long refSkCapegId, Long refSkGajiBerkalaId, Long refSkGolId, Long refSkJabatanId, Long refSkMutasiId, Long refSkPegawaiId, Byte statusKerja, Byte statusPegawai, LocalDate tanggalPengangkatan, LocalDate tmtGajiBerkala, LocalDate tmtGolongan, LocalDate tmtJabatan, LocalDate tmtKerja, LocalDate tmtMutasi, LocalDate tmtPegawai, LocalDate tmtPensiun, String nik, Long gajiProfilId, Long golonganId, Long gradeId, Long jabatanId, Long gajiPendapatanNonPajakId, Long organisasiId, Long profesiId, Long rumahDinasId, String biodataId) {
         super(PegawaiAud.PEGAWAI_AUD);
 
         setId(id_);
@@ -707,6 +721,7 @@ public class PegawaiAudRecord extends UpdatableRecordImpl<PegawaiAudRecord> {
         setOrganisasiId(organisasiId);
         setProfesiId(profesiId);
         setRumahDinasId(rumahDinasId);
+        setBiodataId(biodataId);
         resetChangedOnNotNull();
     }
 }

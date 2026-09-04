@@ -84,6 +84,11 @@ public class GajiBatchRootErrorLogs extends TableImpl<GajiBatchRootErrorLogsReco
      */
     public final TableField<GajiBatchRootErrorLogsRecord, String> ROOT_BATCH_ID = createField(DSL.name("root_batch_id"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
+    /**
+     * The column <code>gaji_batch_root_error_logs.jenis_error</code>.
+     */
+    public final TableField<GajiBatchRootErrorLogsRecord, String> JENIS_ERROR = createField(DSL.name("jenis_error"), SQLDataType.VARCHAR(10).nullable(false).defaultValue(DSL.field(DSL.raw("'SYSTEM'"), SQLDataType.VARCHAR)), this, "");
+
     private GajiBatchRootErrorLogs(Name alias, Table<GajiBatchRootErrorLogsRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }

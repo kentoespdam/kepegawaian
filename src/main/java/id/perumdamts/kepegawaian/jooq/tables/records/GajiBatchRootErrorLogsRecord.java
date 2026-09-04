@@ -88,6 +88,20 @@ public class GajiBatchRootErrorLogsRecord extends UpdatableRecordImpl<GajiBatchR
         return (String) get(4);
     }
 
+    /**
+     * Setter for <code>gaji_batch_root_error_logs.jenis_error</code>.
+     */
+    public void setJenisError(String value) {
+        set(5, value);
+    }
+
+    /**
+     * Getter for <code>gaji_batch_root_error_logs.jenis_error</code>.
+     */
+    public String getJenisError() {
+        return (String) get(5);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -111,7 +125,7 @@ public class GajiBatchRootErrorLogsRecord extends UpdatableRecordImpl<GajiBatchR
     /**
      * Create a detached, initialised GajiBatchRootErrorLogsRecord
      */
-    public GajiBatchRootErrorLogsRecord(Long id_, String nama, String nipam, String notes, String rootBatchId) {
+    public GajiBatchRootErrorLogsRecord(Long id_, String nama, String nipam, String notes, String rootBatchId, String jenisError) {
         super(GajiBatchRootErrorLogs.GAJI_BATCH_ROOT_ERROR_LOGS);
 
         setId(id_);
@@ -119,6 +133,7 @@ public class GajiBatchRootErrorLogsRecord extends UpdatableRecordImpl<GajiBatchR
         setNipam(nipam);
         setNotes(notes);
         setRootBatchId(rootBatchId);
+        setJenisError(jenisError);
         resetChangedOnNotNull();
     }
 }

@@ -278,6 +278,11 @@ public class PegawaiAud extends TableImpl<PegawaiAudRecord> {
      */
     public final TableField<PegawaiAudRecord, Long> RUMAH_DINAS_ID = createField(DSL.name("rumah_dinas_id"), SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)), this, "");
 
+    /**
+     * The column <code>pegawai_aud.biodata_id</code>.
+     */
+    public final TableField<PegawaiAudRecord, String> BIODATA_ID = createField(DSL.name("biodata_id"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
     private PegawaiAud(Name alias, Table<PegawaiAudRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }
