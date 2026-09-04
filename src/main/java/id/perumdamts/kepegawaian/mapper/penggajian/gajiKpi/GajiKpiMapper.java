@@ -1,7 +1,6 @@
 package id.perumdamts.kepegawaian.mapper.penggajian.gajiKpi;
 
 import id.perumdamts.kepegawaian.dto.penggajian.gajiKpi.GajiKpiPostRequest;
-import id.perumdamts.kepegawaian.dto.penggajian.gajiKpi.GajiKpiPutRequest;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiKpi;
 
 public final class GajiKpiMapper {
@@ -16,7 +15,7 @@ public final class GajiKpiMapper {
         return entity;
     }
 
-    public static void updateEntity(GajiKpi entity, GajiKpiPutRequest request) {
+    public static void updateEntity(GajiKpi entity, GajiKpiPostRequest request) {
         entity.setNipam(request.getNipam());
         entity.setPeriode(request.getPeriode());
         entity.setTunkin(request.getTunkin());

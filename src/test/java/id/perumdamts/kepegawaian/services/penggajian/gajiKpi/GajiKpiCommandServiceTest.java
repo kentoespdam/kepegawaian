@@ -21,8 +21,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Unit test {@link GajiKpiCommandService} — unik (nipam, periode) + soft-delete.
- * Mock {@link GajiKpiRepository}, tanpa database.
+ * Unit test {@link GajiKpiCommandService} — unik (nipam, periode): aktif → conflict,
+ * soft-deleted → revive (create-only), soft-delete. Mock {@link GajiKpiRepository},
+ * tanpa database.
  */
 @ExtendWith(MockitoExtension.class)
 class GajiKpiCommandServiceTest {
@@ -58,18 +59,19 @@ class GajiKpiCommandServiceTest {
         return r;
     }
 
-    private GajiKpi entityWithId(Long id) {
+    private GajiKpi entity(Long id, boolean isDeleted) {
         GajiKpi e = new GajiKpi();
         e.setId(id);
         e.setNipam(NIPAM);
         e.setPeriode(PERIODE);
         e.setTunkin(TUNKIN);
+        e.setIsDeleted(isDeleted);
         return e;
     }
 
     @Test
     void save_creates_whenPairNotExists() {
-        when(repository.findByNipamAndPeriode(NIPAM, PERIODE)).thenReturn(Optional.empty());
+        when(repository.findAnyByNipamAndPeriode(NIPAM, PERIODE)).thenReturn(Optional.empty());
         when(repository.save(any())).thenAnswer(inv -> {
             GajiKpi e = inv.getArgument(0);
             e.setId(1L);
@@ -85,11 +87,12 @@ class GajiKpiCommandServiceTest {
         assertEquals(NIPAM, captor.getValue().getNipam());
         assertEquals(PERIODE, captor.getValue().getPeriode());
         assertEquals(TUNKIN, captor.getValue().getTunkin());
+        assertFalse(captor.getValue().getIsDeleted());
     }
 
     @Test
-    void save_throwsConflict_whenPairExists() {
-        when(repository.findByNipamAndPeriode(NIPAM, PERIODE)).thenReturn(Optional.of(entityWithId(1L)));
+    void save_throwsConflict_whenPairActive() {
+        when(repository.findAnyByNipamAndPeriode(NIPAM, PERIODE)).thenReturn(Optional.of(entity(1L, false)));
 
         ConflictException ex = assertThrows(ConflictException.class, () -> service.save(req()));
 
@@ -99,11 +102,27 @@ class GajiKpiCommandServiceTest {
     }
 
     @Test
+    void save_revives_whenPairArchived() {
+        GajiKpi archived = entity(7L, true);
+        archived.setTunkin(111.0);
+        when(repository.findAnyByNipamAndPeriode(NIPAM, PERIODE)).thenReturn(Optional.of(archived));
+        when(repository.save(any())).thenAnswer(inv -> inv.getArgument(0));
+
+        SavedStatus<Long> result = service.save(req());
+
+        assertEquals(ESaveStatus.SUCCESS, result.getStatus());
+        assertEquals(7L, result.getData(), "revive harus memakai id row lama, bukan insert baru");
+        assertEquals(TUNKIN, archived.getTunkin(), "field harus di-update dari request");
+        assertFalse(archived.getIsDeleted(), "row harus dihidupkan kembali");
+        verify(repository).save(archived);
+    }
+
+    @Test
     void update_throwsNotFound_whenMissing() {
         when(repository.findById(99L)).thenReturn(Optional.empty());
 
         NotFoundException ex = assertThrows(NotFoundException.class,
-                () -> service.update(99L, new GajiKpiPutRequest()));
+                () -> service.update(99L, putReq()));
 
         assertTrue(ex.getMessage().contains("Gaji KPI not found"),
                 "Message must mention 'Gaji KPI not found', got: " + ex.getMessage());
@@ -113,9 +132,10 @@ class GajiKpiCommandServiceTest {
 
     @Test
     void update_succeeds_whenPairIsSelf() {
-        GajiKpi self = entityWithId(1L);
+        GajiKpi self = entity(1L, false);
         when(repository.findById(1L)).thenReturn(Optional.of(self));
         when(repository.findByNipamAndPeriode(NIPAM, PERIODE)).thenReturn(Optional.of(self));
+        when(repository.findAnyByNipamAndPeriode(NIPAM, PERIODE)).thenReturn(Optional.of(self));
         when(repository.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
         SavedStatus<Long> result = service.update(1L, putReq());
@@ -126,9 +146,9 @@ class GajiKpiCommandServiceTest {
     }
 
     @Test
-    void update_throwsConflict_whenPairOwnedByOther() {
-        when(repository.findById(2L)).thenReturn(Optional.of(entityWithId(2L)));
-        when(repository.findByNipamAndPeriode(NIPAM, PERIODE)).thenReturn(Optional.of(entityWithId(1L)));
+    void update_throwsConflict_whenPairActiveOwnedByOther() {
+        when(repository.findById(2L)).thenReturn(Optional.of(entity(2L, false)));
+        when(repository.findByNipamAndPeriode(NIPAM, PERIODE)).thenReturn(Optional.of(entity(1L, false)));
 
         ConflictException ex = assertThrows(ConflictException.class,
                 () -> service.update(2L, putReq()));
@@ -139,8 +159,22 @@ class GajiKpiCommandServiceTest {
     }
 
     @Test
+    void update_throwsConflict_whenPairArchivedByOther() {
+        when(repository.findById(2L)).thenReturn(Optional.of(entity(2L, false)));
+        when(repository.findByNipamAndPeriode(NIPAM, PERIODE)).thenReturn(Optional.empty());
+        when(repository.findAnyByNipamAndPeriode(NIPAM, PERIODE)).thenReturn(Optional.of(entity(1L, true)));
+
+        ConflictException ex = assertThrows(ConflictException.class,
+                () -> service.update(2L, putReq()));
+
+        assertTrue(ex.getMessage().contains("diarsip"),
+                "Message must mention archived collision, got: " + ex.getMessage());
+        verify(repository, never()).save(any());
+    }
+
+    @Test
     void delete_softDeletes_whenExists() {
-        GajiKpi entity = entityWithId(1L);
+        GajiKpi entity = entity(1L, false);
         when(repository.findById(1L)).thenReturn(Optional.of(entity));
         when(repository.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
