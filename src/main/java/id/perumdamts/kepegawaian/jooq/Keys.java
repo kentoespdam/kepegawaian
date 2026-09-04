@@ -33,6 +33,8 @@ import id.perumdamts.kepegawaian.jooq.tables.GajiBatchRootErrorLogs;
 import id.perumdamts.kepegawaian.jooq.tables.GajiBatchRootLampiran;
 import id.perumdamts.kepegawaian.jooq.tables.GajiKomponen;
 import id.perumdamts.kepegawaian.jooq.tables.GajiKomponenAud;
+import id.perumdamts.kepegawaian.jooq.tables.GajiKpi;
+import id.perumdamts.kepegawaian.jooq.tables.GajiKpiAud;
 import id.perumdamts.kepegawaian.jooq.tables.GajiParameterSetting;
 import id.perumdamts.kepegawaian.jooq.tables.GajiParameterSettingAud;
 import id.perumdamts.kepegawaian.jooq.tables.GajiPendapatanNonPajak;
@@ -125,6 +127,8 @@ import id.perumdamts.kepegawaian.jooq.tables.records.GajiBatchRootLampiranRecord
 import id.perumdamts.kepegawaian.jooq.tables.records.GajiBatchRootRecord;
 import id.perumdamts.kepegawaian.jooq.tables.records.GajiKomponenAudRecord;
 import id.perumdamts.kepegawaian.jooq.tables.records.GajiKomponenRecord;
+import id.perumdamts.kepegawaian.jooq.tables.records.GajiKpiAudRecord;
+import id.perumdamts.kepegawaian.jooq.tables.records.GajiKpiRecord;
 import id.perumdamts.kepegawaian.jooq.tables.records.GajiParameterSettingAudRecord;
 import id.perumdamts.kepegawaian.jooq.tables.records.GajiParameterSettingRecord;
 import id.perumdamts.kepegawaian.jooq.tables.records.GajiPendapatanNonPajakAudRecord;
@@ -236,6 +240,9 @@ public class Keys {
     public static final UniqueKey<GajiBatchRootLampiranRecord> KEY_GAJI_BATCH_ROOT_LAMPIRAN_PRIMARY = Internal.createUniqueKey(GajiBatchRootLampiran.GAJI_BATCH_ROOT_LAMPIRAN, DSL.name("KEY_gaji_batch_root_lampiran_PRIMARY"), new TableField[] { GajiBatchRootLampiran.GAJI_BATCH_ROOT_LAMPIRAN.ID }, true);
     public static final UniqueKey<GajiKomponenRecord> KEY_GAJI_KOMPONEN_PRIMARY = Internal.createUniqueKey(GajiKomponen.GAJI_KOMPONEN, DSL.name("KEY_gaji_komponen_PRIMARY"), new TableField[] { GajiKomponen.GAJI_KOMPONEN.ID }, true);
     public static final UniqueKey<GajiKomponenAudRecord> KEY_GAJI_KOMPONEN_AUD_PRIMARY = Internal.createUniqueKey(GajiKomponenAud.GAJI_KOMPONEN_AUD, DSL.name("KEY_gaji_komponen_aud_PRIMARY"), new TableField[] { GajiKomponenAud.GAJI_KOMPONEN_AUD.REV, GajiKomponenAud.GAJI_KOMPONEN_AUD.ID }, true);
+    public static final UniqueKey<GajiKpiRecord> KEY_GAJI_KPI_PRIMARY = Internal.createUniqueKey(GajiKpi.GAJI_KPI, DSL.name("KEY_gaji_kpi_PRIMARY"), new TableField[] { GajiKpi.GAJI_KPI.ID }, true);
+    public static final UniqueKey<GajiKpiRecord> KEY_GAJI_KPI_UK_GJ_KPI_NIPAM_PERIODE = Internal.createUniqueKey(GajiKpi.GAJI_KPI, DSL.name("KEY_gaji_kpi_uk_gj_kpi_nipam_periode"), new TableField[] { GajiKpi.GAJI_KPI.NIPAM, GajiKpi.GAJI_KPI.PERIODE }, true);
+    public static final UniqueKey<GajiKpiAudRecord> KEY_GAJI_KPI_AUD_PRIMARY = Internal.createUniqueKey(GajiKpiAud.GAJI_KPI_AUD, DSL.name("KEY_gaji_kpi_aud_PRIMARY"), new TableField[] { GajiKpiAud.GAJI_KPI_AUD.REV, GajiKpiAud.GAJI_KPI_AUD.ID }, true);
     public static final UniqueKey<GajiParameterSettingRecord> KEY_GAJI_PARAMETER_SETTING_PRIMARY = Internal.createUniqueKey(GajiParameterSetting.GAJI_PARAMETER_SETTING, DSL.name("KEY_gaji_parameter_setting_PRIMARY"), new TableField[] { GajiParameterSetting.GAJI_PARAMETER_SETTING.ID }, true);
     public static final UniqueKey<GajiParameterSettingAudRecord> KEY_GAJI_PARAMETER_SETTING_AUD_PRIMARY = Internal.createUniqueKey(GajiParameterSettingAud.GAJI_PARAMETER_SETTING_AUD, DSL.name("KEY_gaji_parameter_setting_aud_PRIMARY"), new TableField[] { GajiParameterSettingAud.GAJI_PARAMETER_SETTING_AUD.REV, GajiParameterSettingAud.GAJI_PARAMETER_SETTING_AUD.ID }, true);
     public static final UniqueKey<GajiPendapatanNonPajakRecord> KEY_GAJI_PENDAPATAN_NON_PAJAK_PRIMARY = Internal.createUniqueKey(GajiPendapatanNonPajak.GAJI_PENDAPATAN_NON_PAJAK, DSL.name("KEY_gaji_pendapatan_non_pajak_PRIMARY"), new TableField[] { GajiPendapatanNonPajak.GAJI_PENDAPATAN_NON_PAJAK.ID }, true);
@@ -350,6 +357,7 @@ public class Keys {
     public static final ForeignKey<GajiBatchRootLampiranRecord, GajiBatchRootRecord> FK_GJ_BT_ROOT_LMP_GJ_BT_ROOT_ROOT_BT_ID = Internal.createForeignKey(GajiBatchRootLampiran.GAJI_BATCH_ROOT_LAMPIRAN, DSL.name("fk_gj_bt_root_lmp_gj_bt_root_root_bt_id"), new TableField[] { GajiBatchRootLampiran.GAJI_BATCH_ROOT_LAMPIRAN.ROOT_BATCH_ID }, Keys.KEY_GAJI_BATCH_ROOT_PRIMARY, new TableField[] { GajiBatchRoot.GAJI_BATCH_ROOT.ID }, true);
     public static final ForeignKey<GajiKomponenRecord, GajiProfilRecord> FK_GJ_KPN_GJ_PRF_PRF_GJ_ID = Internal.createForeignKey(GajiKomponen.GAJI_KOMPONEN, DSL.name("fk_gj_kpn_gj_prf_prf_gj_id"), new TableField[] { GajiKomponen.GAJI_KOMPONEN.PROFIL_GAJI_ID }, Keys.KEY_GAJI_PROFIL_PRIMARY, new TableField[] { GajiProfil.GAJI_PROFIL.ID }, true);
     public static final ForeignKey<GajiKomponenAudRecord, RevinfoRecord> FK_GJ_KPN_AUD_REV_REV = Internal.createForeignKey(GajiKomponenAud.GAJI_KOMPONEN_AUD, DSL.name("fk_gj_kpn_aud_rev_rev"), new TableField[] { GajiKomponenAud.GAJI_KOMPONEN_AUD.REV }, Keys.KEY_REVINFO_PRIMARY, new TableField[] { Revinfo.REVINFO.REV }, true);
+    public static final ForeignKey<GajiKpiAudRecord, RevinfoRecord> FK_GJ_KPI_AUD_REV_REV = Internal.createForeignKey(GajiKpiAud.GAJI_KPI_AUD, DSL.name("fk_gj_kpi_aud_rev_rev"), new TableField[] { GajiKpiAud.GAJI_KPI_AUD.REV }, Keys.KEY_REVINFO_PRIMARY, new TableField[] { Revinfo.REVINFO.REV }, true);
     public static final ForeignKey<GajiParameterSettingAudRecord, RevinfoRecord> FK_GJ_PRM_STG_AUD_REV_REV = Internal.createForeignKey(GajiParameterSettingAud.GAJI_PARAMETER_SETTING_AUD, DSL.name("fk_gj_prm_stg_aud_rev_rev"), new TableField[] { GajiParameterSettingAud.GAJI_PARAMETER_SETTING_AUD.REV }, Keys.KEY_REVINFO_PRIMARY, new TableField[] { Revinfo.REVINFO.REV }, true);
     public static final ForeignKey<GajiPendapatanNonPajakAudRecord, RevinfoRecord> FK_GJ_PP_NN_PJK_AUD_REV_REV = Internal.createForeignKey(GajiPendapatanNonPajakAud.GAJI_PENDAPATAN_NON_PAJAK_AUD, DSL.name("fk_gj_pp_nn_pjk_aud_rev_rev"), new TableField[] { GajiPendapatanNonPajakAud.GAJI_PENDAPATAN_NON_PAJAK_AUD.REV }, Keys.KEY_REVINFO_PRIMARY, new TableField[] { Revinfo.REVINFO.REV }, true);
     public static final ForeignKey<GajiPhdpAudRecord, RevinfoRecord> FK_GJ_PHDP_AUD_REV_REV = Internal.createForeignKey(GajiPhdpAud.GAJI_PHDP_AUD, DSL.name("fk_gj_phdp_aud_rev_rev"), new TableField[] { GajiPhdpAud.GAJI_PHDP_AUD.REV }, Keys.KEY_REVINFO_PRIMARY, new TableField[] { Revinfo.REVINFO.REV }, true);

@@ -24,6 +24,7 @@ import id.perumdamts.kepegawaian.jooq.tables.GajiBatchRoot;
 import id.perumdamts.kepegawaian.jooq.tables.GajiBatchRootErrorLogs;
 import id.perumdamts.kepegawaian.jooq.tables.GajiBatchRootLampiran;
 import id.perumdamts.kepegawaian.jooq.tables.GajiKomponen;
+import id.perumdamts.kepegawaian.jooq.tables.GajiKpi;
 import id.perumdamts.kepegawaian.jooq.tables.GajiParameterSetting;
 import id.perumdamts.kepegawaian.jooq.tables.GajiPendapatanNonPajak;
 import id.perumdamts.kepegawaian.jooq.tables.GajiPhdp;
@@ -150,6 +151,9 @@ public class Indexes {
     public static final Index GAJI_BATCH_ROOT_IDX_GJ_BT_ROOT_TANGGAL_PRS = Internal.createIndex(DSL.name("idx_gj_bt_root_tanggal_prs"), GajiBatchRoot.GAJI_BATCH_ROOT, new OrderField[] { GajiBatchRoot.GAJI_BATCH_ROOT.TANGGAL_PROSES }, false);
     public static final Index GAJI_BATCH_ROOT_IDX_GJ_BT_ROOT_TANGGAL_VERIFIKASI_TAHAP1 = Internal.createIndex(DSL.name("idx_gj_bt_root_tanggal_verifikasi_tahap1"), GajiBatchRoot.GAJI_BATCH_ROOT, new OrderField[] { GajiBatchRoot.GAJI_BATCH_ROOT.TANGGAL_VERIFIKASI_TAHAP1 }, false);
     public static final Index GAJI_BATCH_ROOT_IDX_GJ_BT_ROOT_TANGGAL_VERIFIKASI_TAHAP2 = Internal.createIndex(DSL.name("idx_gj_bt_root_tanggal_verifikasi_tahap2"), GajiBatchRoot.GAJI_BATCH_ROOT, new OrderField[] { GajiBatchRoot.GAJI_BATCH_ROOT.TANGGAL_VERIFIKASI_TAHAP2 }, false);
+    public static final Index GAJI_KPI_IDX_GJ_KPI_IS_DELETED = Internal.createIndex(DSL.name("idx_gj_kpi_is_deleted"), GajiKpi.GAJI_KPI, new OrderField[] { GajiKpi.GAJI_KPI.IS_DELETED }, false);
+    public static final Index GAJI_KPI_IDX_GJ_KPI_NIPAM = Internal.createIndex(DSL.name("idx_gj_kpi_nipam"), GajiKpi.GAJI_KPI, new OrderField[] { GajiKpi.GAJI_KPI.NIPAM }, false);
+    public static final Index GAJI_KPI_IDX_GJ_KPI_PERIODE = Internal.createIndex(DSL.name("idx_gj_kpi_periode"), GajiKpi.GAJI_KPI, new OrderField[] { GajiKpi.GAJI_KPI.PERIODE }, false);
     public static final Index GAJI_KOMPONEN_IDX_GJ_KPN_IS_DELETED = Internal.createIndex(DSL.name("idx_gj_kpn_is_deleted"), GajiKomponen.GAJI_KOMPONEN, new OrderField[] { GajiKomponen.GAJI_KOMPONEN.IS_DELETED }, false);
     public static final Index GAJI_KOMPONEN_IDX_GJ_KPN_PRF_GJ_ID = Internal.createIndex(DSL.name("idx_gj_kpn_prf_gj_id"), GajiKomponen.GAJI_KOMPONEN, new OrderField[] { GajiKomponen.GAJI_KOMPONEN.PROFIL_GAJI_ID }, false);
     public static final Index GAJI_PHDP_IDX_GJ_PHDP_IS_DELETED = Internal.createIndex(DSL.name("idx_gj_phdp_is_deleted"), GajiPhdp.GAJI_PHDP, new OrderField[] { GajiPhdp.GAJI_PHDP.IS_DELETED }, false);

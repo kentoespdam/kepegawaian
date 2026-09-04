@@ -89,16 +89,16 @@ GajiBatchProsesCommandService.prosesGaji(rootBatchId)
 
 ### Wave 1 — GajiKpi CRUD
 
-- [ ] **W1-1** Migration: `Vy__create_gaji_kpi.sql` — tabel `gaji_kpi` + `gaji_kpi_aud`
+- [x] **W1-1** Migration: `V41__create_gaji_kpi.sql` — tabel `gaji_kpi` + `gaji_kpi_aud`
   - Kolom: `id, nipam, periode (VARCHAR 7, format YYYY-MM), tunkin, pph21_ter, is_deleted, audit`
   - Unique key: `(nipam, periode)`
-- [ ] **W1-2** Entity: `GajiKpi` (extends `IdsAbstract`, `@Audited`, soft-delete)
-- [ ] **W1-3** DTO: `GajiKpiPostRequest`, `GajiKpiPutRequest`, `GajiKpiResponse`, `GajiKpiIndexQuery`
-- [ ] **W1-4** Mapper: `GajiKpiMapper` (write), `GajiKpiJooqMapper` (read)
-- [ ] **W1-5** Repository JPA: `GajiKpiRepository` + `findByNipamAndPeriode(nipam, periode)`
-- [ ] **W1-6** Repository JOOQ: `GajiKpiQueryRepository`
-- [ ] **W1-7** Service: `GajiKpiCommandService` (save, update, delete), `GajiKpiQueryService` (page, list, findById)
-- [ ] **W1-8** Controller: `GajiKpiController` → `@RequestMapping("/api/penggajian/kpi")`
+- [x] **W1-2** Entity: `GajiKpi` (extends `IdsAbstract`, `@Audited`, soft-delete)
+- [x] **W1-3** DTO: `GajiKpiPostRequest`, `GajiKpiPutRequest`, `GajiKpiResponse`, `GajiKpiIndexQuery` (+`GajiKpiListRequest` utk endpoint `/list`)
+- [x] **W1-4** Mapper: `GajiKpiMapper` (write), `GajiKpiJooqMapper` (read)
+- [x] **W1-5** Repository JPA: `GajiKpiRepository` + `findByNipamAndPeriode(nipam, periode)`
+- [x] **W1-6** Repository JOOQ: `GajiKpiQueryRepository`
+- [x] **W1-7** Service: `GajiKpiCommandService` (save, update, delete), `GajiKpiQueryService` (page, list, findById)
+- [x] **W1-8** Controller: `GajiKpiController` → `@RequestMapping("/penggajian/kpi")` (prefix `/api` tidak dipakai modul lain; path mengikuti konvensi controller existing)
 
 ---
 

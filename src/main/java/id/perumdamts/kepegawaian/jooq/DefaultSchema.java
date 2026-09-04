@@ -33,6 +33,8 @@ import id.perumdamts.kepegawaian.jooq.tables.GajiBatchRootErrorLogs;
 import id.perumdamts.kepegawaian.jooq.tables.GajiBatchRootLampiran;
 import id.perumdamts.kepegawaian.jooq.tables.GajiKomponen;
 import id.perumdamts.kepegawaian.jooq.tables.GajiKomponenAud;
+import id.perumdamts.kepegawaian.jooq.tables.GajiKpi;
+import id.perumdamts.kepegawaian.jooq.tables.GajiKpiAud;
 import id.perumdamts.kepegawaian.jooq.tables.GajiParameterSetting;
 import id.perumdamts.kepegawaian.jooq.tables.GajiParameterSettingAud;
 import id.perumdamts.kepegawaian.jooq.tables.GajiPendapatanNonPajak;
@@ -263,6 +265,16 @@ public class DefaultSchema extends SchemaImpl {
      * The table <code>gaji_komponen_aud</code>.
      */
     public final GajiKomponenAud GAJI_KOMPONEN_AUD = GajiKomponenAud.GAJI_KOMPONEN_AUD;
+
+    /**
+     * The table <code>gaji_kpi</code>.
+     */
+    public final GajiKpi GAJI_KPI = GajiKpi.GAJI_KPI;
+
+    /**
+     * The table <code>gaji_kpi_aud</code>.
+     */
+    public final GajiKpiAud GAJI_KPI_AUD = GajiKpiAud.GAJI_KPI_AUD;
 
     /**
      * The table <code>gaji_parameter_setting</code>.
@@ -629,6 +641,8 @@ public class DefaultSchema extends SchemaImpl {
             GajiBatchRootLampiran.GAJI_BATCH_ROOT_LAMPIRAN,
             GajiKomponen.GAJI_KOMPONEN,
             GajiKomponenAud.GAJI_KOMPONEN_AUD,
+            GajiKpi.GAJI_KPI,
+            GajiKpiAud.GAJI_KPI_AUD,
             GajiParameterSetting.GAJI_PARAMETER_SETTING,
             GajiParameterSettingAud.GAJI_PARAMETER_SETTING_AUD,
             GajiPendapatanNonPajak.GAJI_PENDAPATAN_NON_PAJAK,

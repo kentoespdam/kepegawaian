@@ -15,6 +15,7 @@ import id.perumdamts.kepegawaian.jooq.tables.DasarGajiAud.DasarGajiAudPath;
 import id.perumdamts.kepegawaian.jooq.tables.DetailDasarGajiAud.DetailDasarGajiAudPath;
 import id.perumdamts.kepegawaian.jooq.tables.GajiBatchRootAud.GajiBatchRootAudPath;
 import id.perumdamts.kepegawaian.jooq.tables.GajiKomponenAud.GajiKomponenAudPath;
+import id.perumdamts.kepegawaian.jooq.tables.GajiKpiAud.GajiKpiAudPath;
 import id.perumdamts.kepegawaian.jooq.tables.GajiParameterSettingAud.GajiParameterSettingAudPath;
 import id.perumdamts.kepegawaian.jooq.tables.GajiPendapatanNonPajakAud.GajiPendapatanNonPajakAudPath;
 import id.perumdamts.kepegawaian.jooq.tables.GajiPhdpAud.GajiPhdpAudPath;
@@ -297,6 +298,18 @@ public class Revinfo extends TableImpl<RevinfoRecord> {
             _gajiBatchRootAud = new GajiBatchRootAudPath(this, null, Keys.FK_GJ_BT_ROOT_AUD_REV_REV.getInverseKey());
 
         return _gajiBatchRootAud;
+    }
+
+    private transient GajiKpiAudPath _gajiKpiAud;
+
+    /**
+     * Get the implicit to-many join path to the <code>gaji_kpi_aud</code> table
+     */
+    public GajiKpiAudPath gajiKpiAud() {
+        if (_gajiKpiAud == null)
+            _gajiKpiAud = new GajiKpiAudPath(this, null, Keys.FK_GJ_KPI_AUD_REV_REV.getInverseKey());
+
+        return _gajiKpiAud;
     }
 
     private transient GajiKomponenAudPath _gajiKomponenAud;

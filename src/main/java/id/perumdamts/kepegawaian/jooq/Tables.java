@@ -33,6 +33,8 @@ import id.perumdamts.kepegawaian.jooq.tables.GajiBatchRootErrorLogs;
 import id.perumdamts.kepegawaian.jooq.tables.GajiBatchRootLampiran;
 import id.perumdamts.kepegawaian.jooq.tables.GajiKomponen;
 import id.perumdamts.kepegawaian.jooq.tables.GajiKomponenAud;
+import id.perumdamts.kepegawaian.jooq.tables.GajiKpi;
+import id.perumdamts.kepegawaian.jooq.tables.GajiKpiAud;
 import id.perumdamts.kepegawaian.jooq.tables.GajiParameterSetting;
 import id.perumdamts.kepegawaian.jooq.tables.GajiParameterSettingAud;
 import id.perumdamts.kepegawaian.jooq.tables.GajiPendapatanNonPajak;
@@ -249,6 +251,16 @@ public class Tables {
      * The table <code>gaji_komponen_aud</code>.
      */
     public static final GajiKomponenAud GAJI_KOMPONEN_AUD = GajiKomponenAud.GAJI_KOMPONEN_AUD;
+
+    /**
+     * The table <code>gaji_kpi</code>.
+     */
+    public static final GajiKpi GAJI_KPI = GajiKpi.GAJI_KPI;
+
+    /**
+     * The table <code>gaji_kpi_aud</code>.
+     */
+    public static final GajiKpiAud GAJI_KPI_AUD = GajiKpiAud.GAJI_KPI_AUD;
 
     /**
      * The table <code>gaji_parameter_setting</code>.
