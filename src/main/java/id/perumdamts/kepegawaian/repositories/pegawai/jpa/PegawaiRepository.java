@@ -18,6 +18,24 @@ public interface PegawaiRepository extends JpaRepository<Pegawai, Long>,
 
     Optional<Pegawai> findOneByNipam(String nipam);
 
+    /**
+     * Pegawai eligible engine gaji (keputusan #8): statusKerja KARYAWAN_AKTIF,
+     * statusPegawai != NON_PEGAWAI. Fetch joins eager utk snapshot Wave 5:
+     * biodata (statusKawin), jabatan+level (levelId), golongan, gajiProfil,
+     * kodePajak. Organisasi & biodata EAGER di entity; sisanya join eksplisit.
+     */
+    @Query("""
+            select p from Pegawai p
+            join fetch p.biodata
+            left join fetch p.jabatan j
+            left join fetch j.level
+            left join fetch p.golongan
+            left join fetch p.gajiProfil
+            left join fetch p.kodePajak
+            where p.statusKerja = ?1 and p.statusPegawai <> ?2
+            """)
+    List<Pegawai> findEligibleForGaji(EStatusKerja statusKerja, EStatusPegawai statusPegawai);
+
     List<PegawaiIdNipam> findByStatusKerjaInAndStatusPegawai(List<EStatusKerja> dirumahkan, EStatusPegawai eStatusPegawai);
 
     boolean existsByJabatanId(Long id);

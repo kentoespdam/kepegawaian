@@ -146,11 +146,12 @@ GajiBatchProsesCommandService.prosesGaji(rootBatchId)
 
 ### Wave 5 — Snapshot Service
 
-- [ ] **W5-1** `GajiBatchProsesSnapshotService`:
-  - Query `Pegawai` where `statusKerja = KARYAWAN_AKTIF` AND `statusPegawai != NON_PEGAWAI`
-  - Eager load: `biodata` (untuk statusKawin), `jabatan`, `golongan`, `organisasi`, `gajiProfil`, `kodePajak`, `rumahDinas`
-  - Buat `GajiBatchMaster` per pegawai dengan snapshot lengkap
+- [x] **W5-1** `GajiBatchProsesSnapshotService`:
+  - Query `Pegawai` where `statusKerja = KARYAWAN_AKTIF` AND `statusPegawai != NON_PEGAWAI` — `PegawaiRepository.findEligibleForGaji` (JPQL fetch join: biodata, jabatan+level, golongan, gajiProfil, kodePajak)
+  - Eager load: `biodata` (untuk statusKawin), `jabatan`+`level`, `golongan`, `organisasi` (EAGER entity), `gajiProfil`, `kodePajak` — `rumahDinas` TIDAK di-eager-load: REF_SEWA_RUMDIN di-resolve live (keputusan W4-1), kolomnya tidak ada di snapshot
+  - Buat `GajiBatchMaster` per pegawai dengan snapshot lengkap (termasuk `jmlJiwa` = 1 + jmlTanggungan + kawin, sama dgn resolver)
   - `GajiBatchMasterRepository.saveAll(masters)`
+  - Catatan: no-arg ctor `GajiBatchMaster` dilebarkan PROTECTED → public (konvensi repo, mirror `GajiBatchMasterProses`)
 
 ---
 
