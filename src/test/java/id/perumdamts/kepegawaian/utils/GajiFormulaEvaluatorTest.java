@@ -31,6 +31,13 @@ class GajiFormulaEvaluatorTest {
     }
 
     @Test
+    void evaluate_realPembulatanSeedFormula() {
+        // Formula asli komponen PEMBULATAN (V16-V18): spasi ganda + CEIL nested.
+        String formula = "( CEIL( PENGHASILAN_BERSIH / 100 ) * 100 ) - PENGHASILAN_BERSIH";
+        assertEquals(33.0, evaluator.evaluate(formula, Map.of("PENGHASILAN_BERSIH", 1_234_567.0)));
+    }
+
+    @Test
     void evaluate_emptyOrNull_returnsZero() {
         assertEquals(0.0, evaluator.evaluate("", Map.of()));
         assertEquals(0.0, evaluator.evaluate("   ", Map.of()));
