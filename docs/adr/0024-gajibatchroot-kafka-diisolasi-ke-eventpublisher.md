@@ -1,8 +1,24 @@
 # Publikasi Kafka GajiBatchRoot diisolasi ke `GajiBatchRootEventPublisher`, dipublish after-commit
 
-> **Status:** accepted — mengikat pemecahan 4-file `GajiBatchRoot` pada rewrite CQRS penggajian (`kepegawaian-awf.12`).
+> **Status:** superseded (2026-09-04) — transport Kafka digantikan **ApplicationEvent in-process** (keputusan desain #1, [docs/penggajian-proses-gaji-claim-order.md](../penggajian-proses-gaji-claim-order.md), `kepegawaian-8seb`). Engine proses gaji pindah ke dalam service; tidak ada lagi broker eksternal.
 
 Saat `GajiBatchRootServiceImpl` dipecah untuk CQRS (read=JOOQ, write=JPA) dan agar tiap file ≤ 120 baris, tanggung jawab publikasi Kafka **dikeluarkan** dari `CommandService`/`WorkflowCommandService` ke satu kelas terdedikasi `GajiBatchRootEventPublisher`. `KafkaTemplate` dan `@Value("${spring.kafka.topic}") PENGGAJIAN_TOPIC` **hanya** hidup di kelas ini; Command/Workflow menginject publisher, bukan `KafkaTemplate`. Publikasi tetap memakai pola after-commit: `TransactionSynchronizationManager.registerSynchronization(...)` dengan `send()` di `afterCommit()` (fire-and-forget, hanya log on failure) — bukan `send()` inline di dalam transaksi.
+
+## Superseded — apa yang berubah dan yang bertahan
+
+**Berubah (dieksekusi Wave 2, commit `51a5eb6a`):**
+
+- `GajiBatchRootEventPublisher` tidak lagi menyentuh Kafka — inject `ApplicationEventPublisher`, publish `GajiBatchRootProcessEvent`.
+- After-commit tidak lagi via `TransactionSynchronizationManager` manual — dijamin `GajiBatchRootEventListener` dengan `@TransactionalEventListener(phase = AFTER_COMMIT)` + `@Async("gajiProsesExecutor")` (virtual threads).
+- Konsumen engine: dulu external service via Kafka (consumer mati di rewrite) → kini in-process `GajiBatchProsesCommandService.prosesGaji()`.
+- `KafkaConfig` (bean `NewTopic`), dep `spring-boot-kafka`, env `KAFKA_*`, blok `spring.kafka` dihapus (commit `ed132781`).
+
+**Bertahan (masih mengikat):**
+
+- Isolasi ke `GajiBatchRootEventPublisher` — Command/Workflow tetap inject publisher, bukan event bus.
+- Publikasi tetap terjadi *setelah* commit (fire-and-forget, kegagalan hanya log) — sekarang via phase AFTER_COMMIT listener, bukan manual synchronization.
+
+**Bekas mode kegagalan ADR ini** (event hilang bila commit sukses tapi publish gagal, tanpa retry/outbox) **tetap berlaku**: event in-process nyaris tak bisa "hilang", tapi listener async bisa gagal — ditangani status FAILED + startup recovery (Wave 8).
 
 ## Considered Options
 
