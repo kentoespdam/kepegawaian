@@ -209,6 +209,8 @@ Legacy **tidak punya** konsep `is_reference`/`#SYSTEM` — SEMUA nilai referensi
     6. `totalPegawai = masters.size()`, `status = WAIT_VERIFICATION_PHASE_1`
     7. Exception fatal (di luar per-pegawai) → `status = FAILED` + error `SYSTEM` — **tidak rethrow** supaya FAILED + error log ter-persist (commit normal, bukan rollback)
   - `GajiBatchRootErrorLogsRepository` JPA tidak dibuat — error log dicatat via relasi cascade `root.errorLogs`
+  - **Temuan verifikasi live (2026-09-04) — transaksi PER FASE wajib:** versi awal membungkus PROSES+reset+snapshot+fork dalam SATU `@Transactional` → SEMUA fork gagal "Master hilang"/"Row was already updated or deleted": fork membuka transaksi sendiri (koneksi berbeda, InnoDB isolation) sehingga **tidak bisa melihat master yang belum commit** oleh transaksi outer. Diperbaiki: `prosesGaji` non-transactional + tiap fase via `TransactionTemplate` (PROSES → reset → snapshot commit → fork hitung (tx masing-masing, re-fetch master fresh via `findById`) → simpan hasil); `reset` juga via template (dipanggil self-invocation — `@Transactional` tidak ter-proxy)
+  - **Error log menumpuk antar reprocess** (reset hanya hapus master+proses, bukan error log) — riwayat kegagalan, diterima (spec reset tidak minta hapus error log)
 
 ---
 
@@ -253,10 +255,19 @@ W7 ────────→ W8 (Startup Recovery)
 
 ## Verifikasi
 
-- [ ] `./gradlew clean compileJava` — zero error
-- [ ] Unit test `GajiFormulaEvaluator` — semua formula seed dievaluasi benar (termasuk CEIL)
-- [ ] Unit test `GajiBatchProsesReferenceResolver` — mock tiap resolver
-- [ ] Integration test: batch root created → PENDING → engine runs → WAIT_VERIFICATION_PHASE_1
-- [ ] Test reprocess: FAILED → reprocess → engine reset + recalculate → WAIT_VERIFICATION_PHASE_1
-- [ ] Test concurrency: 50+ pegawai, tidak ada race condition
-- [ ] Test startup recovery: simulate PROSES state on boot → auto FAILED
+- [x] `./gradlew clean compileJava` — zero error
+- [x] Unit test `GajiFormulaEvaluator` — semua formula seed dievaluasi benar (termasuk CEIL)
+- [x] Unit test `GajiBatchProsesReferenceResolver` — mock tiap resolver
+- [x] Integration test: batch root created → PENDING → engine runs → WAIT_VERIFICATION_PHASE_1 (live dev DB, batch `202612-001`, 269 pegawai)
+- [x] Test reprocess: FAILED → reprocess → engine reset + recalculate → WAIT_VERIFICATION_PHASE_1 (live, 2× reprocess sukses — reset idempoten)
+- [x] Test concurrency: 269 pegawai paralel (virtual threads), 9074 baris `gaji_batch_master_proses` konsisten, 0 error per-pegawai
+- [x] Test startup recovery: batch di-set PROSES di DB → restart app → auto FAILED + error SYSTEM "Server restart detected" (live)
+
+### Hasil verifikasi live (2026-09-04, batch `202612-001`, 269 pegawai eligible)
+
+1. **Arsitektur perlu transaksi per fase** (lihat catatan W7-1) — satu `@Transactional` besar membuat semua fork gagal
+2. **Semua 34 komponen per pegawai terverifikasi manual** (sample profil 2): `ASTEK` 7.228.575×0.0489 → 353.477 ✓; `PKP` 10.282.052 ✓; `TUNJ_PPH21` = `(PKP − 0.05·PKP − REF_PTKP)·0.05` → 225.897 = `master.pajak` ✓ (pola legacy `tax=p_pph21`); `POTONGAN` = Σ potongan = 968.120 ✓; `PEMBULATAN` 48 = `ceil(91863,52)×100 − 9186352` ✓; `FINAL` = BERSIH + PEMBULATAN ✓
+3. **Implicit resolve per kode jalan live**: `TUNJ_JABATAN` = 1.500.000 via lookup level/golongan; `PHDP` = `Pegawai.phdp` 8.521.575 (nilai statis seed 21M diabaikan — keputusan #11) ✓
+4. REF_* resolver jalan: PTKP 5.250.000 (kode pajak), ASKES 1 (is_askes), SEWA_RUMDIN 0 (tanpa rumdin), JML_POT_TKK 0 (belum upload) ✓
+5. Clamp W6-2 tak terpaksa di sample (POT_JP 72.286 < 100.423) — logika sudah di-cover unit test
+6. **Konteks**: `status_kerja`/`status_pegawai` ordinal — KARYAWAN_AKTIF=2 (272) − NON_PEGAWAI (3) = 269 eligible

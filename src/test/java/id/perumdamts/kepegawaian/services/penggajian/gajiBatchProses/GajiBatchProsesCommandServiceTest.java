@@ -17,9 +17,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.SimpleTransactionStatus;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -41,7 +48,26 @@ class GajiBatchProsesCommandServiceTest {
     void setUp() {
         service = new GajiBatchProsesCommandService(
                 repository, gajiBatchMasterRepository, gajiBatchMasterProsesRepository,
-                snapshotService, kalkulasiService);
+                snapshotService,                kalkulasiService,
+                stubTransactionTemplate());
+    }
+
+    /** ResourcelessTransactionManager dihapus di Spring 7 — pakai stub inline. */
+    private static TransactionTemplate stubTransactionTemplate() {
+        return new TransactionTemplate(new PlatformTransactionManager() {
+            @Override
+            public TransactionStatus getTransaction(TransactionDefinition definition) {
+                return new SimpleTransactionStatus();
+            }
+
+            @Override
+            public void commit(TransactionStatus status) {
+            }
+
+            @Override
+            public void rollback(TransactionStatus status) {
+            }
+        });
     }
 
     private GajiBatchRoot batch(EProsesGaji status) {
@@ -63,10 +89,14 @@ class GajiBatchProsesCommandServiceTest {
     @Test
     void prosesGaji_success_snapshotDihitungParalel() {
         GajiBatchRoot entity = batch(EProsesGaji.PENDING);
+        GajiBatchMaster m1 = master(1L, "111", "A");
+        GajiBatchMaster m2 = master(2L, "222", "B");
         when(repository.findById(BATCH_ID)).thenReturn(Optional.of(entity));
         when(gajiBatchMasterRepository.findByGajiBatchRoot_Id(BATCH_ID)).thenReturn(List.of());
-        when(snapshotService.snapshot(entity)).thenReturn(List.of(
-                master(1L, "111", "A"), master(2L, "222", "B")));
+        when(snapshotService.snapshot(entity)).thenReturn(List.of(m1, m2));
+        // hitungSatu re-fetch instance fresh per fork (entitas tidak dibagikan antar thread)
+        when(gajiBatchMasterRepository.findById(1L)).thenReturn(Optional.of(m1));
+        when(gajiBatchMasterRepository.findById(2L)).thenReturn(Optional.of(m2));
 
         service.prosesGaji(BATCH_ID);
 
@@ -80,13 +110,15 @@ class GajiBatchProsesCommandServiceTest {
     @Test
     void prosesGaji_errorPerPegawai_dataErrorDicatatLanjut() {
         GajiBatchRoot entity = batch(EProsesGaji.PENDING);
+        GajiBatchMaster m1 = master(1L, "111", "A");
+        GajiBatchMaster m2 = master(2L, "222", "B");
         when(repository.findById(BATCH_ID)).thenReturn(Optional.of(entity));
         when(gajiBatchMasterRepository.findByGajiBatchRoot_Id(BATCH_ID)).thenReturn(List.of());
-        when(snapshotService.snapshot(entity)).thenReturn(List.of(
-                master(1L, "111", "A"), master(2L, "222", "B")));
-        // pegawai pertama gagal (formula) — pegawai kedua tetap dihitung
+        when(snapshotService.snapshot(entity)).thenReturn(List.of(m1, m2));
+        when(gajiBatchMasterRepository.findById(1L)).thenReturn(Optional.of(m1));
+        when(gajiBatchMasterRepository.findById(2L)).thenReturn(Optional.of(m2));
+        // kedua pegawai gagal (formula) — fork berjalan paralel, stub deterministik utk semua
         doThrow(new GajiFormulaException("GP + X", new IllegalStateException("var X")))
-                .doNothing()
                 .when(kalkulasiService).hitung(any(GajiBatchMaster.class), anyString());
 
         service.prosesGaji(BATCH_ID);
@@ -94,19 +126,23 @@ class GajiBatchProsesCommandServiceTest {
         // error per pegawai tidak menggagalkan batch
         assertEquals(EProsesGaji.WAIT_VERIFICATION_PHASE_1, entity.getStatus());
         assertEquals(2, entity.getTotalPegawai());
-        assertEquals(1, entity.getErrorLogs().size());
-        GajiBatchRootErrorLogs error = entity.getErrorLogs().iterator().next();
-        assertEquals(EJenisErrorGaji.DATA, error.getJenisError());
-        assertEquals("111", error.getNipam());
-        assertTrue(error.getNotes().contains("Formula tidak valid"));
+        assertEquals(2, entity.getErrorLogs().size());
+        for (GajiBatchRootErrorLogs error : entity.getErrorLogs()) {
+            assertEquals(EJenisErrorGaji.DATA, error.getJenisError());
+            assertTrue(error.getNotes().contains("Formula tidak valid"));
+        }
+        assertEquals(Set.of("111", "222"), entity.getErrorLogs().stream()
+                .map(GajiBatchRootErrorLogs::getNipam).collect(Collectors.toSet()));
     }
 
     @Test
     void prosesGaji_errorPerPegawai_systemErrorDicatatLanjut() {
         GajiBatchRoot entity = batch(EProsesGaji.PENDING);
+        GajiBatchMaster m1 = master(1L, "111", "A");
         when(repository.findById(BATCH_ID)).thenReturn(Optional.of(entity));
         when(gajiBatchMasterRepository.findByGajiBatchRoot_Id(BATCH_ID)).thenReturn(List.of());
-        when(snapshotService.snapshot(entity)).thenReturn(List.of(master(1L, "111", "A")));
+        when(snapshotService.snapshot(entity)).thenReturn(List.of(m1));
+        when(gajiBatchMasterRepository.findById(1L)).thenReturn(Optional.of(m1));
         doThrow(new IllegalStateException("db down"))
                 .when(kalkulasiService).hitung(any(GajiBatchMaster.class), anyString());
 
