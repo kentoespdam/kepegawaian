@@ -134,10 +134,12 @@ GajiBatchProsesCommandService.prosesGaji(rootBatchId)
 
 ### Wave 4 — Reference Resolver
 
-- [ ] **W4-1** `GajiBatchProsesReferenceResolver` di `services/penggajian/gajiBatchMasterProses/`:
-  - Inject: `GajiTunjanganRepository`, `GajiPotonganTkkRepository`, `GajiBatchPotonganTkkRepository`, `GajiKpiRepository`, `RiwayatSpRepository`
+- [x] **W4-1** `GajiBatchProsesReferenceResolver` di `services/penggajian/gajiBatchMasterProses/`:
+  - Inject: `GajiTunjanganRepository`, `GajiPotonganTkkRepository`, `GajiBatchPotonganTkkRepository`, `GajiKpiRepository`, `RiwayatSpRepository` (+`PegawaiRepository`)
   - `double resolve(String kode, GajiBatchMaster master, Map<String, Double> ctx, String batchId)`
   - SP3 check untuk `REF_TUNJ_KK`: cek `RiwayatSp` where `pegawai.id = master.pegawaiId` AND `jenisSp` = SP3 AND periode overlap (21 prev month — 20 current month)
+  - **Keputusan (2026-09-04):** `REF_ASKES` & `REF_SEWA_RUMDIN` di-resolve **live dari `Pegawai`** (`PegawaiRepository.findIsAskesById` / `findRumahDinasNilaiById` — scalar query, hindari lazy-load di luar tx) — snapshot `gaji_batch_master` tidak punya kolom is_askes/rumdins dan W4-1 tidak inject `PegawaiRepository`
+  - Periode batch root `"YYYYMM"` dinormalisasi → `"YYYY-MM"` utk lookup `GajiKpi` (format KPI) & parsing window SP-3
 
 ---
 
