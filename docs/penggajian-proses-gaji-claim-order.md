@@ -198,17 +198,17 @@ Legacy **tidak punya** konsep `is_reference`/`#SYSTEM` — SEMUA nilai referensi
 
 ### Wave 7 — Orchestrator
 
-- [ ] **W7-1** `GajiBatchProsesCommandService`:
-  - `reset(rootBatchId)`: hapus `GajiBatchMasterProses` cascade → hapus `GajiBatchMaster`
+- [x] **W7-1** `GajiBatchProsesCommandService`:
+  - `reset(rootBatchId)`: hapus `GajiBatchMasterProses` (`deleteByBatchMasterIdIn`) → hapus `GajiBatchMaster` (`findByGajiBatchRoot_Id` + `deleteAll`)
   - `prosesGaji(rootBatchId)`:
-    1. Update `GajiBatchRoot.status = PROSES`
+    1. Update `GajiBatchRoot.status = PROSES` + `tanggalProses`
     2. `reset(rootBatchId)`
     3. `snapshotService.snapshot(batchRoot)` → `List<GajiBatchMaster>`
-    4. Parallel via `StructuredTaskScope.ShutdownOnFailure`:
-       - Per pegawai: `kalkulasiService.hitung(master)` dalam try-catch
-       - Exception per pegawai → catat `GajiBatchRootErrorLogs(jenisError=DATA/SYSTEM)`, lanjut
-    5. Update `GajiBatchRoot`: `totalPegawai = masters.size()`, `status = WAIT_VERIFICATION_PHASE_1`
-    6. Jika exception fatal → `status = FAILED`, log `jenisError=SYSTEM`
+    4. Parallel per pegawai: `kalkulasiService.hitung(master, batchId)` dalam try-catch — **deviasi**: spec minta `StructuredTaskScope.ShutdownOnFailure` tapi API itu masih **preview di JDK 25** (butuh `--enable-preview` di compile+test+run) → dipakai padanan setara `Executors.newVirtualThreadPerTaskExecutor()` + submit/get (`hitungSatu` men-catch SEMUA exception → tak ada subtask gagal, wait-all identik). Ganti bila project aktifkan preview
+    5. Exception per pegawai → `GajiBatchRootErrorLogs`: `GajiFormulaException` → **DATA**, lainnya → **SYSTEM**; lanjut (error log di-*collect* dari fork, dicatat di thread utama setelah join — session Hibernate tidak thread-safe), cascade via `root.errorLogs` (cascade ALL)
+    6. `totalPegawai = masters.size()`, `status = WAIT_VERIFICATION_PHASE_1`
+    7. Exception fatal (di luar per-pegawai) → `status = FAILED` + error `SYSTEM` — **tidak rethrow** supaya FAILED + error log ter-persist (commit normal, bukan rollback)
+  - `GajiBatchRootErrorLogsRepository` JPA tidak dibuat — error log dicatat via relasi cascade `root.errorLogs`
 
 ---
 
