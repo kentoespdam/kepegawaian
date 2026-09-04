@@ -214,9 +214,11 @@ Legacy **tidak punya** konsep `is_reference`/`#SYSTEM` — SEMUA nilai referensi
 
 ### Wave 8 — Startup Recovery
 
-- [ ] **W8-1** `GajiBatchProsesStartupService` (`@Component`, `@ApplicationListener<ApplicationReadyEvent>`):
-  - Cari `GajiBatchRoot` dengan `status = PROSES` → set `FAILED` + log "Server restart detected" (SYSTEM)
+- [x] **W8-1** `GajiBatchProsesStartupService` (`@Component`, `@ApplicationListener<ApplicationReadyEvent>`):
+  - Cari `GajiBatchRoot` dengan `status = PROSES` → set `FAILED` + error log SYSTEM "Server restart detected — proses terputus" (via cascade `root.errorLogs`)
   - Cari `GajiBatchRoot` dengan `status = PENDING` → publish `GajiBatchRootProcessEvent` (re-queue)
+  - **Penting:** `onApplicationEvent` di-`@Transactional` — listener proses gaji adalah `@TransactionalEventListener(AFTER_COMMIT)`, publish di luar transaksi akan **dibuang** (fallbackExecution default false). Re-queue hanya jalan karena publish terjadi dalam transaksi
+  - `findByStatus(EProsesGaji)` baru di `GajiBatchRootRepository`; soft-delete tetap ter-filter otomatis (@SQLRestriction)
 
 ---
 

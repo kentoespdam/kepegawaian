@@ -1,14 +1,18 @@
 package id.perumdamts.kepegawaian.repositories.penggajian.jpa;
 
+import id.perumdamts.kepegawaian.entities.commons.EProsesGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchRoot;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface GajiBatchRootRepository extends JpaRepository<GajiBatchRoot, String>,
         JpaSpecificationExecutor<GajiBatchRoot> {
+    List<GajiBatchRoot> findByStatus(EProsesGaji status);
+
     @Query(
             value = "SELECT DISTINCT * FROM gaji_batch_root gbr WHERE gbr.periode = :periode AND gbr.is_deleted = TRUE ORDER BY gbr.id DESC LIMIT 1",
             nativeQuery = true
