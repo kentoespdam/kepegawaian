@@ -104,17 +104,19 @@ GajiBatchProsesCommandService.prosesGaji(rootBatchId)
 
 ### Wave 2 — Event Infrastructure (ganti Kafka)
 
-- [ ] **W2-1** `GajiBatchRootProcessEvent extends ApplicationEvent` — field: `String rootBatchId`
-- [ ] **W2-2** `@Bean("gajiProsesExecutor")` `Executor` menggunakan `Executors.newVirtualThreadPerTaskExecutor()`
-- [ ] **W2-3** Modifikasi `GajiBatchRootEventPublisher`:
+- [x] **W2-1** `GajiBatchRootProcessEvent extends ApplicationEvent` — field: `String rootBatchId`
+- [x] **W2-2** `@Bean("gajiProsesExecutor")` `Executor` menggunakan `Executors.newVirtualThreadPerTaskExecutor()` (+`@EnableAsync` di `ThreadPoolConfig`)
+- [x] **W2-3** Modifikasi `GajiBatchRootEventPublisher`:
   - Ganti `KafkaTemplate` → inject `ApplicationEventPublisher`
-  - `publishAfterCommit(batchId)` → `publisher.publishEvent(new GajiBatchRootProcessEvent(this, batchId))`
-- [ ] **W2-4** Buat `GajiBatchRootEventListener`:
+  - `publishAfterCommit(batchId)` → `publisher.publishEvent(new GajiBatchRootProcessEvent(this, batchId))` (AFTER_COMMIT dijamin listener)
+- [x] **W2-4** Buat `GajiBatchRootEventListener`:
   - `@TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)`
   - `@Async("gajiProsesExecutor")`
   - Panggil `prosesCommandService.prosesGaji(event.getRootBatchId())`
-- [ ] **W2-5** Modifikasi `GajiBatchRootWorkflowCommandService.reprocess()`:
-  - Setelah state kembali ke `PENDING`, publish `GajiBatchRootProcessEvent`
+- [x] **W2-5** Modifikasi `GajiBatchRootWorkflowCommandService.reprocess()`:
+  - Setelah state kembali ke `PENDING`, publish `GajiBatchRootProcessEvent` — **sudah ada** (`reprocessHandler` → `publishAfterCommit` saat PENDING), API publisher tak berubah
+
+> **Catatan W2 → W7:** `GajiBatchProsesCommandService.prosesGaji()` dibuat sebagai **stub** di Wave 2 (keputusan user) — set status `PROSES` + `tanggalProses` saja; snapshot (W5) + kalkulasi (W6) + reset idempoten diisi saat W7-1.
 
 ---
 
