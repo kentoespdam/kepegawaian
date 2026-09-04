@@ -137,67 +137,23 @@ class GajiBatchRootControllerTest {
     }
 
     @Test
-    void verify1_pathIdMismatch_throwsBadRequest() {
+    void verify_pathIdMismatch_throwsBadRequest() {
         GajiBatchRootProcessRequest request = new GajiBatchRootProcessRequest();
         request.setId("wrong-id");
 
         assertThrows(BadRequestException.class,
-                () -> controller.verify1("202609-001", request));
+                () -> controller.verify("202609-001", request));
     }
 
     @Test
-    void verify1_returnsSuccess() {
-        when(workflowCommandService.verify1(any(GajiBatchRootProcessRequest.class)))
+    void verify_returnsSuccess() {
+        when(workflowCommandService.verify(any(GajiBatchRootProcessRequest.class)))
                 .thenReturn(SavedStatus.build(ESaveStatus.SUCCESS, "success"));
 
         GajiBatchRootProcessRequest request = new GajiBatchRootProcessRequest();
         request.setId("202609-001");
 
-        ResponseEntity<SavedResult<String>> result = controller.verify1("202609-001", request);
-
-        assertEquals(HttpStatus.CREATED, result.getStatusCode());
-    }
-
-    @Test
-    void verify2_pathIdMismatch_throwsBadRequest() {
-        GajiBatchRootProcessRequest request = new GajiBatchRootProcessRequest();
-        request.setId("wrong-id");
-
-        assertThrows(BadRequestException.class,
-                () -> controller.verify2("202609-001", request));
-    }
-
-    @Test
-    void verify2_returnsSuccess() {
-        when(workflowCommandService.verify2(any(GajiBatchRootProcessRequest.class)))
-                .thenReturn(SavedStatus.build(ESaveStatus.SUCCESS, "success"));
-
-        GajiBatchRootProcessRequest request = new GajiBatchRootProcessRequest();
-        request.setId("202609-001");
-
-        ResponseEntity<SavedResult<String>> result = controller.verify2("202609-001", request);
-
-        assertEquals(HttpStatus.CREATED, result.getStatusCode());
-    }
-
-    @Test
-    void accept_pathIdMismatch_throwsBadRequest() {
-        GajiBatchRootProcessRequest request = new GajiBatchRootProcessRequest();
-        request.setId("wrong-id");
-
-        assertThrows(BadRequestException.class,
-                () -> controller.accept("202609-001", request));
-    }
-
-    @Test
-    void accept_returnsSuccess() {
-        when(workflowCommandService.accept(any(GajiBatchRootProcessRequest.class)))
-                .thenReturn(SavedStatus.build(ESaveStatus.SUCCESS, "success"));
-
-        GajiBatchRootProcessRequest request = new GajiBatchRootProcessRequest();
-        request.setId("202609-001");
-
-        ResponseEntity<SavedResult<String>> result = controller.accept("202609-001", request);
+        ResponseEntity<SavedResult<String>> result = controller.verify("202609-001", request);
 
         assertEquals(HttpStatus.CREATED, result.getStatusCode());
     }

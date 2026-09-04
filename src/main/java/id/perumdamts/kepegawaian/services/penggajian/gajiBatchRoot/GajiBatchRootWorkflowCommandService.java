@@ -25,46 +25,49 @@ public class GajiBatchRootWorkflowCommandService {
     public SavedStatus<String> reprocess(GajiBatchRootProcessRequest request) {
         GajiBatchRoot entity = repository.findById(request.getId())
                 .orElseThrow(() -> new NotFoundException("Unknown Batch Process"));
-        reprocessHandler(entity, request);
+        reprocessHandler(entity);
         return SavedStatus.build(ESaveStatus.SUCCESS, "success");
     }
 
     @Transactional
-    public SavedStatus<String> verify1(GajiBatchRootProcessRequest request) {
-        GajiBatchRoot gajiBatchRoot = repository.findById(request.getId())
+    public SavedStatus<String> verify(GajiBatchRootProcessRequest request) {
+        GajiBatchRoot entity = repository.findById(request.getId())
                 .orElseThrow(() -> new NotFoundException("Unknown Batch Process"));
-        GajiBatchRoot verified = GajiBatchRootProcessRequest.verifyPhase1(gajiBatchRoot, request);
-        repository.save(verified);
+        verifyHandler(entity, request);
         return SavedStatus.build(ESaveStatus.SUCCESS, "success");
     }
 
-    @Transactional
-    public SavedStatus<String> verify2(GajiBatchRootProcessRequest request) {
-        GajiBatchRoot gajiBatchRoot = repository.findById(request.getId())
-                .orElseThrow(() -> new NotFoundException("Unknown Batch Process"));
-        GajiBatchRoot verified = GajiBatchRootProcessRequest.verifyPhase2(gajiBatchRoot, request);
-        repository.save(verified);
-        return SavedStatus.build(ESaveStatus.SUCCESS, "success");
+    private void verifyHandler(GajiBatchRoot entity, GajiBatchRootProcessRequest request) {
+        switch (entity.getStatus()) {
+            case WAIT_VERIFICATION_PHASE_1 -> {
+                entity.setStatus(EProsesGaji.WAIT_VERIFICATION_PHASE_2);
+                entity.setTanggalVerifikasiTahap1(LocalDateTime.now());
+                entity.setDiVerifikasiOlehTahap1(request.getNama());
+                entity.setJabatanVerifikasiTahap1(request.getJabatan());
+            }
+            case WAIT_VERIFICATION_PHASE_2 -> {
+                entity.setStatus(EProsesGaji.WAIT_APPROVAL);
+                entity.setTanggalVerifikasiTahap2(LocalDateTime.now());
+                entity.setDiVerifikasiOlehTahap2(request.getNama());
+                entity.setJabatanVerifikasiTahap2(request.getJabatan());
+            }
+            case WAIT_APPROVAL -> {
+                entity.setStatus(EProsesGaji.FINISHED);
+                entity.setTanggalPersetujuan(LocalDateTime.now());
+                entity.setDiSetujuiOleh(request.getNama());
+                entity.setJabatanPenyetuju(request.getJabatan());
+            }
+        }
+        repository.save(entity);
     }
 
-    @Transactional
-    public SavedStatus<String> accept(GajiBatchRootProcessRequest request) {
-        GajiBatchRoot gajiBatchRoot = repository.findById(request.getId())
-                .orElseThrow(() -> new NotFoundException("Unknown Batch Process"));
-        GajiBatchRoot accepted = GajiBatchRootProcessRequest.accept(gajiBatchRoot, request);
-        repository.save(accepted);
-        return SavedStatus.build(ESaveStatus.SUCCESS, "success");
-    }
-
-    private void reprocessHandler(GajiBatchRoot entity, GajiBatchRootProcessRequest request) {
+    private void reprocessHandler(GajiBatchRoot entity) {
         switch (entity.getStatus()) {
             case WAIT_APPROVAL -> entity.setStatus(EProsesGaji.WAIT_VERIFICATION_PHASE_2);
             case WAIT_VERIFICATION_PHASE_2 -> entity.setStatus(EProsesGaji.WAIT_VERIFICATION_PHASE_1);
             case WAIT_VERIFICATION_PHASE_1 -> entity.setStatus(EProsesGaji.PENDING);
+            case FAILED -> entity.setStatus(EProsesGaji.PENDING);
         }
-        entity.setTanggalVerifikasiTahap1(LocalDateTime.now());
-        entity.setDiVerifikasiOlehTahap1(request.getNama());
-        entity.setJabatanVerifikasiTahap1(request.getJabatan());
         GajiBatchRoot save = repository.save(entity);
         if (save.getStatus() == EProsesGaji.PENDING) {
             eventPublisher.publishAfterCommit(save.getId());

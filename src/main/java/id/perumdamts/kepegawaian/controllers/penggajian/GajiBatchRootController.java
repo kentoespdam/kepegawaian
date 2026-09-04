@@ -64,39 +64,21 @@ public class GajiBatchRootController {
     @PatchMapping("/{id}/reprocess")
     public ResponseEntity<SavedResult<String>> reprocess(@PathVariable String id,
                                           @Valid @RequestBody GajiBatchRootProcessRequest request) {
-        if (!request.getId().equals(id))
-            throw new BadRequestException("Path id does not match request body id");
-        return CustomResult.save(workflowCommandService.reprocess(request));
+        return CustomResult.save(workflowCommandService.reprocess(validated(request, id)));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:PROCESS')")
-    @Operation(summary = "verify1")
-    @PatchMapping("/{id}/verify1")
-    public ResponseEntity<SavedResult<String>> verify1(@PathVariable String id,
-                                        @Valid @RequestBody GajiBatchRootProcessRequest request) {
-        if (!request.getId().equals(id))
-            throw new BadRequestException("Path id does not match request body id");
-        return CustomResult.save(workflowCommandService.verify1(request));
-    }
-
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:PROCESS')")
-    @Operation(summary = "verify2")
-    @PatchMapping("/{id}/verify2")
-    public ResponseEntity<SavedResult<String>> verify2(@PathVariable String id,
-                                        @Valid @RequestBody GajiBatchRootProcessRequest request) {
-        if (!request.getId().equals(id))
-            throw new BadRequestException("Path id does not match request body id");
-        return CustomResult.save(workflowCommandService.verify2(request));
-    }
-
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:PROCESS')")
-    @Operation(summary = "accept")
-    @PatchMapping("/{id}/accept")
-    public ResponseEntity<SavedResult<String>> accept(@PathVariable String id,
+    @Operation(summary = "verify (verifikasi tahap 1/2 atau approval, mengikuti status batch)")
+    @PatchMapping("/{id}/verify")
+    public ResponseEntity<SavedResult<String>> verify(@PathVariable String id,
                                        @Valid @RequestBody GajiBatchRootProcessRequest request) {
+        return CustomResult.save(workflowCommandService.verify(validated(request, id)));
+    }
+
+    private GajiBatchRootProcessRequest validated(GajiBatchRootProcessRequest request, String id) {
         if (!request.getId().equals(id))
             throw new BadRequestException("Path id does not match request body id");
-        return CustomResult.save(workflowCommandService.accept(request));
+        return request;
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:PROCESS')")
