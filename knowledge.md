@@ -13,7 +13,7 @@
 | Type     | Spring Boot REST API                                       |
 | Stack    | Java 25, Spring Boot 4.0.3, Gradle                         |
 | DB       | MariaDB (JPA/Hibernate + Envers)                           |
-| Infra    | Redis, Kafka, Appwrite (JWT)                               |
+| Infra    | Redis, Appwrite (JWT)                                    |
 | Base pkg | `id.perumdamts.kepegawaian`                                |
 | Branch   | `rewrite/master-cqrs`                                      |
 | Legacy   | `../kepegawaian-legacy` (tag `legacy-snapshot`, read-only) |
@@ -83,7 +83,7 @@ Freebuff beroperasi dalam **2 mode**. Mode ditentukan oleh prompt pertama user:
 | `master/`      | referensi (organisasi, jabatan, golongan, grade, level, profesi) |
 | `cuti/`        | leave, multi-level approval chain                                |
 | `kepegawaian/` | SK, SP, mutasi, kontrak, terminasi                               |
-| `penggajian/`  | payroll, batch processing, gajiBatchRoot + Kafka                 |
+| `penggajian/`  | payroll, batch processing, gajiBatchRoot + ApplicationEvent       |
 
 ### Layer Pattern (per Domain Module)
 
@@ -138,7 +138,6 @@ Critical env vars (full list: `env.example`):
 |-------------------------------------------------------------------------------------------|----------|--------------------------------------------|
 | `DB_HOST`, `DB_PORT`, `DB_SCHEMA`, `DB_USER`, `DB_PASSWORD`                               | ✅       | MariaDB connection                         |
 | `APPWRITE_ENDPOINT`, `APPWRITE_PROJECT_ID`, `APPWRITE_API_KEY`                            | ✅       | JWT auth provider                          |
-| `KAFKA_BOOTSTRAP_SERVERS`                                                                 | ✅       | Event bus for gajiBatchRoot                |
 | `REDIS_HOST`, `REDIS_PORT`, `REDIS_DATABASE`                                              | ✅       | Cache                                      |
 | `PENGGAJIAN_URL`, `LAPORAN_KEPEGAWAIAN_URL`                                               | ✅       | External service URLs                      |
 | `SERVER_PORT`, `PROFILE`                                                                  | ⚠️       | Server config (default: 8080, development) |

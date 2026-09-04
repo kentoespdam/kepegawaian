@@ -24,7 +24,7 @@ Java 25, Spring Boot 4.0.3, Gradle.
 
 Employee management (kepegawaian) for PERUMDAMTS — Spring Boot REST API.
 
-**Stack:** MariaDB (JPA/Hibernate + Envers), Redis, Kafka, Appwrite (JWT).
+**Stack:** MariaDB (JPA/Hibernate + Envers), Redis, Appwrite (JWT).
 **Source:** `src/main/java/id/perumdamts/kepegawaian/`
 
 | Domain         | Purpose                                                          |

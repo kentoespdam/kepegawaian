@@ -61,12 +61,6 @@ spring:
   #              create-source: metadata
   #              drop-target: drop.sql
   #              drop-source: metadata
-  kafka:
-    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:192.168.1.214:9092}
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
-    topic: ${KAFKA_TOPIC:penggajian}
   data:
     redis:
       host: ${REDIS_HOST:192.168.1.214}
@@ -83,16 +77,6 @@ spring:
   docker:
     compose:
       enabled: false
-#    consumer:
-#      group-id: kepegawaian
-#      auto-offset-reset: latest
-#      key-deserializer: org.apache.kafka.build.serialization.StringDeserializer
-#      value-deserializer: org.apache.kafka.build.serialization.StringDeserializer
-#      properties:
-#        spring:
-#          json:
-#            trusted:
-#              packages: id.perumdamts.kepegawaian
 
 logging:
   # File logging bawaan Spring Boot (Logback): menulis ke file + console, rotasi otomatis.

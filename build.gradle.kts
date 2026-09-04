@@ -60,10 +60,6 @@ dependencies {
     // Spring Data
     implementation("org.springframework.data:spring-data-envers")
 
-    // Kafka — Boot 4.0 modularized auto-config out of spring-boot-autoconfigure
-    // into the dedicated spring-boot-kafka module (transitively pulls spring-kafka).
-    implementation("org.springframework.boot:spring-boot-kafka")
-
     // Flyway
     implementation("org.springframework.boot:spring-boot-starter-flyway")
     implementation("org.flywaydb:flyway-mysql:$flywayVersion")
