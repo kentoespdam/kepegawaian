@@ -150,6 +150,26 @@ GajiBatchProsesCommandService.prosesGaji(rootBatchId)
 
 ---
 
+### Audit legacy — resolve komponen is_reference / formula kosong (2026-09-04)
+
+> Sumber: `docs/php/payroll_bms.php` `hitung_gaji()` — dump dari DB dev (`gaji_komponen`, 9 profil).
+
+Legacy **tidak punya** konsep `is_reference`/`#SYSTEM` — SEMUA nilai referensi diisi lewat `switch ($key)` per kode di PHP:
+
+| Pola komponen | Cara legacy | Catatan utk engine baru |
+|---------------|-------------|--------------------------|
+| `gp`, `phdp` | `$row['emp_gp']` / `$row['emp_phdp']` langsung (**formula & nilai komponen diabaikan**) | Konfirmasi keputusan #11: PHDP = snapshot `Pegawai.phdp`. Nilai statis `PHDP` di seed (21362814 / 23736460) **mati** — jangan dipakai engine |
+| `jml_anak` / `jml_jiwa` | Bukan komponen: `query_tanggungan_anak` + `1 + jml_anak + (kawin ? 1 : 0)` | Cocok dgn resolver map — tapi token ini TIDAK ada sbg baris komponen; ctx W6 harus di-seed dari `GajiBatchMaster` (jmlTanggungan/statusKawin) |
+| `t_kpi` / `t_ter` | `query_kpi`/`query_ter` per pegawai per tahun | → `GajiKpi.tunkin` / `GajiKpi.pph21Ter` (W1) |
+| `t_jabatan`, `t_kk`, `t_air`, `p_rudin`, `t_beras`, `p_askes`, `p_pph21`, `p_jp`, `p_tkk` | Query lookup langsung (level/golongan, rumdin, flag askes, PTKP, pot TKK) — **jalan walau formula komponen kosong** | Profil p1/p6/p9 punya `TUNJ_JABATAN`/`TUNJ_KK`/`TUNJ_AIR`/`POT_RUDIN` formula KOSONG & TANPA komponen `REF_TUNJ_*` di profil tsb → aturan W6 "formula kosong → 0.0" akan **menghilangkan tunjangan** yg legacy tetap bayar via lookup. Perlu penanganan eksplisit di W6 (implicit resolve per kode, atau seed REF_* di semua profil) |
+| `p_jp`/`p_askes` | `maksimal_potongan_jpn`/`askes` clamp dari `sys_reference` | Batas potongan — belum ada di claim order; cek kebutuhan |
+| `p_pph21`/`t_pph21` | Clamp `result < 0 → 0` | Formula potongan pajak |
+| Lainnya (formula aritmetika) | `replace_formula` (token komponen → nilai) lalu `eval` | Setara W6 substitusi + evaluator; hasil per-komponen di-`round(x,0)` |
+
+**Temuan token:** hanya variabel non-komponen dalam formula seed = `JML_ANAK`, `JML_JIWA` (ctx) + fungsi `CEIL` — semua sudah dicover.
+
+---
+
 ### Wave 6 — Kalkulasi Service
 
 - [ ] **W6-1** `GajiBatchProsesKalkulasiService`:
