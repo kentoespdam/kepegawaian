@@ -26,6 +26,7 @@
 | 13 | Concurrency | Parallel per pegawai — `StructuredTaskScope` (virtual threads) |
 | 14 | Reprocess | Engine selalu reset (idempoten): hapus `GajiBatchMaster` + `GajiBatchMasterProses`, hitung ulang |
 | 15 | Clamp POT | Engine-level clamp pasca-eval (pola legacy): `POT_JP` → `maksimal_potongan_jpn`, `POT_ASKES` → `maksimal_potongan_askes` dari `gaji_parameter_setting` (di-lock 2026-09-04, hasil audit legacy) |
+| 16 | Periode format | Batch root & `GajiBatchMaster.periode` = **`YYYYMM`** (6 digit, `GajiBatchRootPostRequest.tahun+bulan`); `GajiKpi.periode` = **`YYYY-MM`** (VARCHAR 7, validasi `\d{4}-\d{2}`). Engine memakai format `YYYY-MM` sbg kanonik internal → resolver normalisasi `"202509"` → `"2025-09"` utk lookup KPI & window SP-3 (di-lock 2026-09-04, hasil implementasi W4-1) |
 
 ---
 
@@ -46,7 +47,7 @@
 | `REF_TUNJ_KK` | `GajiTunjangan` (KINERJA) | By `levelId`/`golonganId`; **0 jika SP3 aktif** via `RiwayatSp` |
 | `REF_TUNJ_AIR` | `GajiTunjangan` (AIR) | By `levelId` atau `golonganId` |
 | `REF_PHDP` | `GajiBatchMaster.phdp` | Snapshot dari `Pegawai.phdp` |
-| `TUNJ_KINERJA` | `GajiKpi.tunkin` | By `nipam` + `periode`; **default 0** jika tidak ada data |
+| `TUNJ_KINERJA` | `GajiKpi.tunkin` | By `nipam` + `periode` (**`YYYY-MM`**, keputusan #16); **default 0** jika tidak ada data |
 
 ---
 
@@ -139,7 +140,7 @@ GajiBatchProsesCommandService.prosesGaji(rootBatchId)
   - `double resolve(String kode, GajiBatchMaster master, Map<String, Double> ctx, String batchId)`
   - SP3 check untuk `REF_TUNJ_KK`: cek `RiwayatSp` where `pegawai.id = master.pegawaiId` AND `jenisSp` = SP3 AND periode overlap (21 prev month — 20 current month)
   - **Keputusan (2026-09-04):** `REF_ASKES` & `REF_SEWA_RUMDIN` di-resolve **live dari `Pegawai`** (`PegawaiRepository.findIsAskesById` / `findRumahDinasNilaiById` — scalar query, hindari lazy-load di luar tx) — snapshot `gaji_batch_master` tidak punya kolom is_askes/rumdins dan W4-1 tidak inject `PegawaiRepository`
-  - Periode batch root `"YYYYMM"` dinormalisasi → `"YYYY-MM"` utk lookup `GajiKpi` (format KPI) & parsing window SP-3
+  - Periode batch root `"YYYYMM"` dinormalisasi → `"YYYY-MM"` utk lookup `GajiKpi` (format KPI) & parsing window SP-3 → **keputusan #16 (locked)**
 
 ---
 
