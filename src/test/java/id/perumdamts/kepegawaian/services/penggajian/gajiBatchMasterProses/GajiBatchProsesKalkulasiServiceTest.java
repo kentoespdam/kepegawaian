@@ -1,49 +1,35 @@
 package id.perumdamts.kepegawaian.services.penggajian.gajiBatchMasterProses;
 
 import id.perumdamts.kepegawaian.entities.commons.EJenisGaji;
+import id.perumdamts.kepegawaian.entities.commons.EJenisTunjangan;
+import id.perumdamts.kepegawaian.entities.commons.EStatusKawin;
+import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchMaster;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchMasterProses;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiKomponen;
-import id.perumdamts.kepegawaian.entities.penggajian.GajiParameterSetting;
-import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiBatchMasterProsesRepository;
-import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiBatchMasterRepository;
-import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiKomponenRepository;
-import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiParameterSettingRepository;
+import id.perumdamts.kepegawaian.entities.penggajian.GajiPendapatanNonPajak;
+import id.perumdamts.kepegawaian.services.penggajian.gajiBatchMasterProses.preload.GajiPreloadContext;
+import id.perumdamts.kepegawaian.services.penggajian.gajiBatchMasterProses.preload.HitungPegawaiResult;
 import id.perumdamts.kepegawaian.utils.GajiFormulaEvaluator;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Spy;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
+import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
 class GajiBatchProsesKalkulasiServiceTest {
 
-    private static final String BATCH_ID = "batch-1";
+    private GajiBatchProsesKalkulasiService service;
+    private GajiFormulaEvaluator formulaEvaluator;
 
-    @Mock GajiKomponenRepository gajiKomponenRepository;
-    @Mock GajiBatchMasterProsesRepository gajiBatchMasterProsesRepository;
-    @Mock GajiBatchMasterRepository gajiBatchMasterRepository;
-    @Mock GajiParameterSettingRepository gajiParameterSettingRepository;
-    @Mock GajiBatchProsesReferenceResolver referenceResolver;
-
-    @Spy
-    GajiFormulaEvaluator formulaEvaluator = new GajiFormulaEvaluator();
-
-    @InjectMocks
-    GajiBatchProsesKalkulasiService service;
+    @BeforeEach
+    void setUp() {
+        formulaEvaluator = new GajiFormulaEvaluator();
+        service = new GajiBatchProsesKalkulasiService(formulaEvaluator);
+    }
 
     private GajiKomponen komponen(int urut, String kode, EJenisGaji jenis, boolean isRef, String formula) {
         return new GajiKomponen(urut, null, kode, kode, jenis, 0, isRef, formula);
@@ -54,18 +40,35 @@ class GajiBatchProsesKalkulasiServiceTest {
         m.setId(1L);
         m.setGajiProfilId(1L);
         m.setNipam("12345");
+        m.setNama("Budi");
+        m.setStatusPegawai(EStatusPegawai.PEGAWAI);
+        m.setStatusKawin(EStatusKawin.KAWIN);
+        m.setLevelId(5L);
+        m.setGajiPokok(5_000_000.0);
+        m.setJmlTanggungan(2);
         return m;
     }
 
-    private void stubCtxSeeds() {
-        when(referenceResolver.resolve(eq("JML_ANAK"), any(), any(), any())).thenReturn(2.0);
-        when(referenceResolver.resolve(eq("JML_JIWA"), any(), any(), any())).thenReturn(4.0);
-    }
-
-    private List<GajiBatchMasterProses> capturedProses() {
-        ArgumentCaptor<List<GajiBatchMasterProses>> captor = ArgumentCaptor.forClass(List.class);
-        verify(gajiBatchMasterProsesRepository).saveAll(captor.capture());
-        return captor.getValue();
+    private GajiPreloadContext createContext(
+            List<GajiKomponen> komponens,
+            Map<String, Double> parameterSettings,
+            Map<GajiPreloadContext.JenisLevelKey, Double> tunjanganByJenisAndLevel
+    ) {
+        return new GajiPreloadContext(
+                komponens != null ? Map.of(1L, komponens) : Map.of(),
+                parameterSettings != null ? parameterSettings : Map.of(),
+                Map.of(),
+                Map.of(),
+                Map.of(),
+                tunjanganByJenisAndLevel != null ? tunjanganByJenisAndLevel : Map.of(),
+                Map.of(),
+                Map.of(),
+                Map.of(),
+                Map.of(),
+                Map.of(),
+                Map.of(),
+                Set.of()
+        );
     }
 
     private GajiBatchMasterProses byKode(List<GajiBatchMasterProses> rows, String kode) {
@@ -75,14 +78,6 @@ class GajiBatchProsesKalkulasiServiceTest {
     /** Alur penuh profil 1: implicit resolve TUNJ_JABATAN, evaluasi formula, clamp, round, total master. */
     @Test
     void hitung_alurPenuh_profil1() {
-        stubCtxSeeds();
-        when(referenceResolver.resolve(eq("GP"), any(), any(), any())).thenReturn(5_000_000.0);
-        when(referenceResolver.resolve(eq("REF_TUNJ_JABATAN"), any(), any(), any())).thenReturn(1_234_567.0);
-        when(gajiParameterSettingRepository.findByKode("maksimal_potongan_jpn"))
-                .thenReturn(Optional.of(new GajiParameterSetting(1L, "maksimal_potongan_jpn", 100_423.0)));
-        when(gajiParameterSettingRepository.findByKode("maksimal_potongan_askes"))
-                .thenReturn(Optional.of(new GajiParameterSetting(2L, "maksimal_potongan_askes", 120_000.0)));
-
         List<GajiKomponen> komponens = List.of(
                 komponen(1, "GP", EJenisGaji.PEMASUKAN, true, "#SYSTEM"),
                 komponen(2, "TUNJ_JABATAN", EJenisGaji.PEMASUKAN, false, ""),
@@ -94,10 +89,18 @@ class GajiBatchProsesKalkulasiServiceTest {
                 komponen(8, "PENGHASILAN_BERSIH", EJenisGaji.NONE, false, "PENGHASILAN_KOTOR - POTONGAN"),
                 komponen(9, "PEMBULATAN", EJenisGaji.NONE, false, "( CEIL( PENGHASILAN_BERSIH / 100 ) * 100 ) - PENGHASILAN_BERSIH"),
                 komponen(10, "PENGHASILAN_BERSIH_FINAL", EJenisGaji.NONE, false, "PENGHASILAN_BERSIH + PEMBULATAN"));
-        when(gajiKomponenRepository.findByProfilGajiIdOrderByUrutAsc(1L)).thenReturn(komponens);
+
+        GajiPreloadContext ctx = createContext(
+                komponens,
+                Map.of("maksimal_potongan_jpn", 100_423.0, "maksimal_potongan_askes", 120_000.0),
+                Map.of(new GajiPreloadContext.JenisLevelKey(EJenisTunjangan.JABATAN, 5L), 1_234_567.0)
+        );
 
         GajiBatchMaster master = master();
-        service.hitung(master, BATCH_ID);
+        HitungPegawaiResult result = service.hitung(master, ctx);
+
+        assertTrue(result.isSuccess());
+        assertNull(result.error());
 
         // GP 5.000.000 + TUNJ_JABATAN 1.234.567 → KOTOR 6.234.567
         // POT_JP 62.345,67 → round 62.346 (clamp 100.423 tak kena)
@@ -109,9 +112,8 @@ class GajiBatchProsesKalkulasiServiceTest {
         assertEquals(25.0, master.getPembulatan());
         assertEquals(6_109_900.0, master.getPenghasilanBersihFinal());
         assertEquals(0.0, master.getPajak());
-        verify(gajiBatchMasterRepository).save(master);
 
-        List<GajiBatchMasterProses> rows = capturedProses();
+        List<GajiBatchMasterProses> rows = result.prosesList();
         assertEquals(10, rows.size());
         // implicit resolve TUNJ_JABATAN → nilai lookup, bukan 0
         assertEquals(1_234_567.0, byKode(rows, "TUNJ_JABATAN").getNilai());
@@ -128,90 +130,121 @@ class GajiBatchProsesKalkulasiServiceTest {
     /** PHDP (formula kosong) di-resolve implisit dari snapshot (keputusan #11); TUNJ_SI tanpa lookup → 0.0. */
     @Test
     void hitung_formulaKosong_implicitResolvePerKode() {
-        stubCtxSeeds();
-        when(referenceResolver.resolve(eq("REF_PHDP"), any(), any(), any())).thenReturn(21_362_814.0);
-
         List<GajiKomponen> komponens = List.of(
                 komponen(1, "PHDP", EJenisGaji.NONE, false, ""),
                 komponen(2, "TUNJ_SI", EJenisGaji.PEMASUKAN, false, ""));
-        when(gajiKomponenRepository.findByProfilGajiIdOrderByUrutAsc(1L)).thenReturn(komponens);
+
+        GajiPreloadContext ctx = createContext(komponens, Map.of(), Map.of());
 
         GajiBatchMaster master = master();
-        service.hitung(master, BATCH_ID);
+        master.setPhdp(21_362_814.0);
+        HitungPegawaiResult result = service.hitung(master, ctx);
 
-        List<GajiBatchMasterProses> rows = capturedProses();
+        assertTrue(result.isSuccess());
+        List<GajiBatchMasterProses> rows = result.prosesList();
         assertEquals(21_362_814.0, byKode(rows, "PHDP").getNilai());
         assertEquals(0.0, byKode(rows, "TUNJ_SI").getNilai());
-        // kode tanpa lookup tidak boleh menyentuh resolver
-        verify(referenceResolver, never()).resolve(eq("REF_TUNJ_SI"), any(), any(), any());
-        verify(referenceResolver, never()).resolve(eq("TUNJ_SI"), any(), any(), any());
     }
 
     /** W6-2: POT_JP melebihi cap → di-clamp ke maksimal_potongan_jpn. */
     @Test
     void hitung_clampPOT_JP() {
-        stubCtxSeeds();
-        when(referenceResolver.resolve(eq("GP"), any(), any(), any())).thenReturn(50_000_000.0);
-        when(referenceResolver.resolve(eq("REF_TUNJ_JABATAN"), any(), any(), any())).thenReturn(1_250_000.0);
-        when(gajiParameterSettingRepository.findByKode("maksimal_potongan_jpn"))
-                .thenReturn(Optional.of(new GajiParameterSetting(1L, "maksimal_potongan_jpn", 100_423.0)));
-
         List<GajiKomponen> komponens = List.of(
                 komponen(1, "GP", EJenisGaji.PEMASUKAN, true, "#SYSTEM"),
                 komponen(2, "TUNJ_JABATAN", EJenisGaji.PEMASUKAN, false, ""),
                 komponen(3, "POT_JP", EJenisGaji.POTONGAN, false, "( GP + TUNJ_JABATAN ) * 0.01"));
-        when(gajiKomponenRepository.findByProfilGajiIdOrderByUrutAsc(1L)).thenReturn(komponens);
 
-        service.hitung(master(), BATCH_ID);
+        GajiPreloadContext ctx = createContext(
+                komponens,
+                Map.of("maksimal_potongan_jpn", 100_423.0),
+                Map.of(new GajiPreloadContext.JenisLevelKey(EJenisTunjangan.JABATAN, 5L), 1_250_000.0)
+        );
 
+        GajiBatchMaster master = master();
+        master.setGajiPokok(50_000_000.0);
+        HitungPegawaiResult result = service.hitung(master, ctx);
+
+        assertTrue(result.isSuccess());
         // 0,01 * 51.250.000 = 512.500 > cap 100.423 → 100.423
-        assertEquals(100_423.0, byKode(capturedProses(), "POT_JP").getNilai());
+        assertEquals(100_423.0, byKode(result.prosesList(), "POT_JP").getNilai());
     }
 
     /** W6-2: parameter clamp tidak ditemukan → tanpa cap (bukan cap 0 seperti default legacy). */
     @Test
     void hitung_clampParamHilang_tanpaCap() {
-        stubCtxSeeds();
-        when(referenceResolver.resolve(eq("GP"), any(), any(), any())).thenReturn(50_000_000.0);
-        when(referenceResolver.resolve(eq("REF_TUNJ_JABATAN"), any(), any(), any())).thenReturn(1_250_000.0);
-        when(gajiParameterSettingRepository.findByKode("maksimal_potongan_jpn"))
-                .thenReturn(Optional.empty());
-
         List<GajiKomponen> komponens = List.of(
                 komponen(1, "GP", EJenisGaji.PEMASUKAN, true, "#SYSTEM"),
                 komponen(2, "TUNJ_JABATAN", EJenisGaji.PEMASUKAN, false, ""),
                 komponen(3, "POT_JP", EJenisGaji.POTONGAN, false, "( GP + TUNJ_JABATAN ) * 0.01"));
-        when(gajiKomponenRepository.findByProfilGajiIdOrderByUrutAsc(1L)).thenReturn(komponens);
 
-        service.hitung(master(), BATCH_ID);
+        GajiPreloadContext ctx = createContext(
+                komponens,
+                Map.of(),
+                Map.of(new GajiPreloadContext.JenisLevelKey(EJenisTunjangan.JABATAN, 5L), 1_250_000.0)
+        );
 
-        assertEquals(512_500.0, byKode(capturedProses(), "POT_JP").getNilai());
+        GajiBatchMaster master = master();
+        master.setGajiPokok(50_000_000.0);
+        HitungPegawaiResult result = service.hitung(master, ctx);
+
+        assertTrue(result.isSuccess());
+        assertEquals(512_500.0, byKode(result.prosesList(), "POT_JP").getNilai());
     }
 
     /** isReference/#SYSTEM di-resolve via resolver; token REF_* di formula tersubstitusi dari ctx. */
     @Test
     void hitung_isReference_dan_tokenRefDiFormula() {
-        stubCtxSeeds();
-        when(referenceResolver.resolve(eq("REF_PTKP"), any(), any(), any())).thenReturn(54_000_000.0);
-
         List<GajiKomponen> komponens = List.of(
                 komponen(1, "REF_PTKP", EJenisGaji.NONE, true, "#SYSTEM"),
                 komponen(2, "POT_PPH21", EJenisGaji.POTONGAN, false, "REF_PTKP * 0.1"));
-        when(gajiKomponenRepository.findByProfilGajiIdOrderByUrutAsc(1L)).thenReturn(komponens);
 
-        service.hitung(master(), BATCH_ID);
+        GajiPreloadContext ctx = new GajiPreloadContext(
+                Map.of(1L, komponens),
+                Map.of(),
+                Map.of(),
+                Map.of(),
+                Map.of(),
+                Map.of(),
+                Map.of(),
+                Map.of(10L, 54_000_000.0),
+                Map.of(),
+                Map.of(),
+                Map.of(),
+                Map.of(),
+                Set.of()
+        );
 
-        List<GajiBatchMasterProses> rows = capturedProses();
+        GajiBatchMaster master = master();
+        master.setGajiPendapatanNonPajakId(new GajiPendapatanNonPajak(10L, "K0", 54_000_000.0, null));
+        HitungPegawaiResult result = service.hitung(master, ctx);
+
+        assertTrue(result.isSuccess());
+        List<GajiBatchMasterProses> rows = result.prosesList();
         assertEquals(54_000_000.0, byKode(rows, "REF_PTKP").getNilai());
         assertEquals(5_400_000.0, byKode(rows, "POT_PPH21").getNilai());
         assertEquals("54000000 * 0.1", byKode(rows, "POT_PPH21").getNilaiFormula());
-        // POT_PPH21 → pajak master
-        assertEquals(5_400_000.0, masterFromSave().getPajak());
+        assertEquals(5_400_000.0, master.getPajak());
     }
 
-    private GajiBatchMaster masterFromSave() {
-        ArgumentCaptor<GajiBatchMaster> captor = ArgumentCaptor.forClass(GajiBatchMaster.class);
-        verify(gajiBatchMasterRepository).save(captor.capture());
-        return captor.getValue();
+    @Test
+    void hitung_komponenProfilKosong_returnError() {
+        GajiPreloadContext ctx = createContext(List.of(), Map.of(), Map.of());
+        HitungPegawaiResult result = service.hitung(master(), ctx);
+
+        assertFalse(result.isSuccess());
+        assertNotNull(result.error());
+        assertTrue(result.error().notes().contains("Komponen profil"));
+    }
+
+    @Test
+    void hitung_formulaError_returnErrorData() {
+        List<GajiKomponen> komponens = List.of(
+                komponen(1, "TEST", EJenisGaji.PEMASUKAN, false, "INVALID +++ FORMULA"));
+        GajiPreloadContext ctx = createContext(komponens, Map.of(), Map.of());
+
+        HitungPegawaiResult result = service.hitung(master(), ctx);
+
+        assertFalse(result.isSuccess());
+        assertNotNull(result.error());
     }
 }

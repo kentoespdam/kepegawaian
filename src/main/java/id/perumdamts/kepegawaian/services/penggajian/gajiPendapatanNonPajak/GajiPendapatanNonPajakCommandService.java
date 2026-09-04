@@ -11,6 +11,7 @@ import id.perumdamts.kepegawaian.mapper.penggajian.gajiPendapatanNonPajak.GajiPe
 import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiPendapatanNonPajakRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -21,6 +22,7 @@ public class GajiPendapatanNonPajakCommandService {
     private final GajiPendapatanNonPajakRepository repository;
 
     @Transactional
+    @CacheEvict(value = "gaji-referensi", key = "'ptkp'")
     public SavedStatus<Long> save(GajiPendapatanNonPajakPostRequest request) {
         Optional<GajiPendapatanNonPajak> one = repository.findOne(request.getSpecification());
         if (one.isPresent())
@@ -31,6 +33,7 @@ public class GajiPendapatanNonPajakCommandService {
     }
 
     @Transactional
+    @CacheEvict(value = "gaji-referensi", key = "'ptkp'")
     public SavedStatus<Long> update(Long id, GajiPendapatanNonPajakPutRequest request) {
         GajiPendapatanNonPajak entity = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Pendapatan Non Pajak not found"));
@@ -40,6 +43,7 @@ public class GajiPendapatanNonPajakCommandService {
     }
 
     @Transactional
+    @CacheEvict(value = "gaji-referensi", key = "'ptkp'")
     public Boolean delete(Long id) {
         Optional<GajiPendapatanNonPajak> byId = repository.findById(id);
         if (byId.isEmpty())

@@ -15,6 +15,7 @@ import id.perumdamts.kepegawaian.repositories.master.jpa.LevelRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiPotonganTkkRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -27,6 +28,7 @@ public class GajiPotonganTkkCommandService {
     private final GolonganRepository golonganRepository;
 
     @Transactional
+    @CacheEvict(value = "gaji-referensi", key = "'potongan-tkk'")
     public SavedStatus<Long> create(GajiPotonganTkkPostRequest request) {
         boolean exists = repository.exists(request.getSpecification());
         if (exists) throw new ConflictException("Gaji Potongan Tkk sudah ada");
@@ -38,6 +40,7 @@ public class GajiPotonganTkkCommandService {
     }
 
     @Transactional
+    @CacheEvict(value = "gaji-referensi", key = "'potongan-tkk'")
     public SavedStatus<Long> update(Long id, GajiPotonganTkkPutRequest request) {
         GajiPotonganTkk entity = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Gaji Potongan Tkk not found"));
@@ -49,6 +52,7 @@ public class GajiPotonganTkkCommandService {
     }
 
     @Transactional
+    @CacheEvict(value = "gaji-referensi", key = "'potongan-tkk'")
     public Boolean delete(Long id) {
         Optional<GajiPotonganTkk> byId = repository.findById(id);
         if (byId.isEmpty()) return false;

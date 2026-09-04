@@ -6,12 +6,18 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.history.RevisionRepository;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public interface GajiKpiRepository extends JpaRepository<GajiKpi, Long>,
         JpaSpecificationExecutor<GajiKpi>,
         RevisionRepository<GajiKpi, Long, Integer> {
     Optional<GajiKpi> findByNipamAndPeriode(String nipam, String periode);
+
+    List<GajiKpi> findByPeriode(String periode);
+
+    List<GajiKpi> findByPeriodeAndNipamIn(String periode, Collection<String> nipams);
 
     /**
      * Native carcass-finder — bypasses {@code @SQLRestriction("is_deleted = FALSE")}

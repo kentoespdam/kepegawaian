@@ -11,4 +11,6 @@ public interface GajiKomponenRepository extends JpaRepository<GajiKomponen, Long
         JpaSpecificationExecutor<GajiKomponen>,
         RevisionRepository<GajiKomponen, Long, Integer> {
     List<GajiKomponen> findByProfilGajiIdOrderByUrutAsc(Long profilGajiId);
+
+    List<GajiKomponen> findByOrderByUrutAsc();
 }

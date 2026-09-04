@@ -11,6 +11,7 @@ import id.perumdamts.kepegawaian.mapper.penggajian.gajiParameterSetting.GajiPara
 import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiParameterSettingRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -21,6 +22,7 @@ public class GajiParameterSettingCommandService {
     private final GajiParameterSettingRepository repository;
 
     @Transactional
+    @CacheEvict(value = "gaji-referensi", key = "'parameter'")
     public SavedStatus<Long> save(GajiParameterSettingPostRequest request) {
         Optional<GajiParameterSetting> one = repository.findOne(request.getSpecification());
         if (one.isPresent())
@@ -31,6 +33,7 @@ public class GajiParameterSettingCommandService {
     }
 
     @Transactional
+    @CacheEvict(value = "gaji-referensi", key = "'parameter'")
     public SavedStatus<Long> update(Long id, GajiParameterSettingPutRequest request) {
         GajiParameterSetting entity = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Setting Parameter Gaji not found"));
@@ -40,6 +43,7 @@ public class GajiParameterSettingCommandService {
     }
 
     @Transactional
+    @CacheEvict(value = "gaji-referensi", key = "'parameter'")
     public Boolean delete(Long id) {
         Optional<GajiParameterSetting> byId = repository.findById(id);
         if (byId.isEmpty())

@@ -5,13 +5,17 @@ import id.perumdamts.kepegawaian.entities.commons.EProsesGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchMaster;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchRoot;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchRootErrorLogs;
-import id.perumdamts.kepegawaian.exceptions.GajiFormulaException;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
+import id.perumdamts.kepegawaian.repositories.penggajian.jdbc.GajiBatchMasterProsesJdbcRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiBatchMasterProsesRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiBatchMasterRepository;
 import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiBatchRootRepository;
 import id.perumdamts.kepegawaian.services.penggajian.gajiBatchMasterProses.GajiBatchProsesKalkulasiService;
 import id.perumdamts.kepegawaian.services.penggajian.gajiBatchMasterProses.GajiBatchProsesSnapshotService;
+import id.perumdamts.kepegawaian.services.penggajian.gajiBatchMasterProses.preload.ErrorEntry;
+import id.perumdamts.kepegawaian.services.penggajian.gajiBatchMasterProses.preload.GajiPreloadContext;
+import id.perumdamts.kepegawaian.services.penggajian.gajiBatchMasterProses.preload.GajiPreloadService;
+import id.perumdamts.kepegawaian.services.penggajian.gajiBatchMasterProses.preload.HitungPegawaiResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,7 +43,9 @@ class GajiBatchProsesCommandServiceTest {
     @Mock GajiBatchRootRepository repository;
     @Mock GajiBatchMasterRepository gajiBatchMasterRepository;
     @Mock GajiBatchMasterProsesRepository gajiBatchMasterProsesRepository;
+    @Mock GajiBatchMasterProsesJdbcRepository gajiBatchMasterProsesJdbcRepository;
     @Mock GajiBatchProsesSnapshotService snapshotService;
+    @Mock GajiPreloadService preloadService;
     @Mock GajiBatchProsesKalkulasiService kalkulasiService;
 
     private GajiBatchProsesCommandService service;
@@ -48,8 +54,8 @@ class GajiBatchProsesCommandServiceTest {
     void setUp() {
         service = new GajiBatchProsesCommandService(
                 repository, gajiBatchMasterRepository, gajiBatchMasterProsesRepository,
-                snapshotService,                kalkulasiService,
-                stubTransactionTemplate());
+                gajiBatchMasterProsesJdbcRepository, snapshotService, preloadService,
+                kalkulasiService, stubTransactionTemplate());
     }
 
     /** ResourcelessTransactionManager dihapus di Spring 7 — pakai stub inline. */
@@ -94,16 +100,24 @@ class GajiBatchProsesCommandServiceTest {
         when(repository.findById(BATCH_ID)).thenReturn(Optional.of(entity));
         when(gajiBatchMasterRepository.findByGajiBatchRoot_Id(BATCH_ID)).thenReturn(List.of());
         when(snapshotService.snapshot(entity)).thenReturn(List.of(m1, m2));
-        // hitungSatu re-fetch instance fresh per fork (entitas tidak dibagikan antar thread)
-        when(gajiBatchMasterRepository.findById(1L)).thenReturn(Optional.of(m1));
-        when(gajiBatchMasterRepository.findById(2L)).thenReturn(Optional.of(m2));
+
+        GajiPreloadContext ctx = mock(GajiPreloadContext.class);
+        when(preloadService.preload(eq(BATCH_ID), eq("202609"), any())).thenReturn(ctx);
+        when(kalkulasiService.hitung(eq(m1), eq(ctx))).thenReturn(new HitungPegawaiResult(m1, List.of(), null));
+        when(kalkulasiService.hitung(eq(m2), eq(ctx))).thenReturn(new HitungPegawaiResult(m2, List.of(), null));
 
         service.prosesGaji(BATCH_ID);
 
-        verify(kalkulasiService, times(2)).hitung(any(GajiBatchMaster.class), eq(BATCH_ID));
+        verify(kalkulasiService, times(2)).hitung(any(GajiBatchMaster.class), eq(ctx));
+        verify(gajiBatchMasterProsesJdbcRepository).batchInsert(anyList());
+        verify(gajiBatchMasterRepository).saveAll(List.of(m1, m2));
         assertEquals(EProsesGaji.WAIT_VERIFICATION_PHASE_1, entity.getStatus());
         assertEquals(2, entity.getTotalPegawai());
         assertTrue(entity.getErrorLogs().isEmpty());
+        assertNotNull(entity.getNotes());
+        assertTrue(entity.getNotes().contains("\"totalPegawai\":2"));
+        assertTrue(entity.getNotes().contains("\"berhasil\":2"));
+        assertTrue(entity.getNotes().contains("\"gagal\":0"));
         verify(repository, times(2)).save(entity);
     }
 
@@ -115,16 +129,18 @@ class GajiBatchProsesCommandServiceTest {
         when(repository.findById(BATCH_ID)).thenReturn(Optional.of(entity));
         when(gajiBatchMasterRepository.findByGajiBatchRoot_Id(BATCH_ID)).thenReturn(List.of());
         when(snapshotService.snapshot(entity)).thenReturn(List.of(m1, m2));
-        when(gajiBatchMasterRepository.findById(1L)).thenReturn(Optional.of(m1));
-        when(gajiBatchMasterRepository.findById(2L)).thenReturn(Optional.of(m2));
-        // kedua pegawai gagal (formula) — fork berjalan paralel, stub deterministik utk semua
-        doThrow(new GajiFormulaException("GP + X", new IllegalStateException("var X")))
-                .when(kalkulasiService).hitung(any(GajiBatchMaster.class), anyString());
+
+        GajiPreloadContext ctx = mock(GajiPreloadContext.class);
+        when(preloadService.preload(eq(BATCH_ID), eq("202609"), any())).thenReturn(ctx);
+        when(kalkulasiService.hitung(eq(m1), eq(ctx)))
+                .thenReturn(new HitungPegawaiResult(m1, List.of(), new ErrorEntry("111", "A", EJenisErrorGaji.DATA, "Formula tidak valid")));
+        when(kalkulasiService.hitung(eq(m2), eq(ctx)))
+                .thenReturn(new HitungPegawaiResult(m2, List.of(), new ErrorEntry("222", "B", EJenisErrorGaji.DATA, "Formula tidak valid")));
 
         service.prosesGaji(BATCH_ID);
 
-        // error per pegawai tidak menggagalkan batch
-        assertEquals(EProsesGaji.WAIT_VERIFICATION_PHASE_1, entity.getStatus());
+        // error per pegawai menyebabkan status FAILED
+        assertEquals(EProsesGaji.FAILED, entity.getStatus());
         assertEquals(2, entity.getTotalPegawai());
         assertEquals(2, entity.getErrorLogs().size());
         for (GajiBatchRootErrorLogs error : entity.getErrorLogs()) {
@@ -133,6 +149,8 @@ class GajiBatchProsesCommandServiceTest {
         }
         assertEquals(Set.of("111", "222"), entity.getErrorLogs().stream()
                 .map(GajiBatchRootErrorLogs::getNipam).collect(Collectors.toSet()));
+        assertNotNull(entity.getNotes());
+        assertTrue(entity.getNotes().contains("\"gagal\":2"));
     }
 
     @Test
@@ -142,16 +160,20 @@ class GajiBatchProsesCommandServiceTest {
         when(repository.findById(BATCH_ID)).thenReturn(Optional.of(entity));
         when(gajiBatchMasterRepository.findByGajiBatchRoot_Id(BATCH_ID)).thenReturn(List.of());
         when(snapshotService.snapshot(entity)).thenReturn(List.of(m1));
-        when(gajiBatchMasterRepository.findById(1L)).thenReturn(Optional.of(m1));
-        doThrow(new IllegalStateException("db down"))
-                .when(kalkulasiService).hitung(any(GajiBatchMaster.class), anyString());
+
+        GajiPreloadContext ctx = mock(GajiPreloadContext.class);
+        when(preloadService.preload(eq(BATCH_ID), eq("202609"), any())).thenReturn(ctx);
+        when(kalkulasiService.hitung(eq(m1), eq(ctx)))
+                .thenReturn(new HitungPegawaiResult(m1, List.of(), new ErrorEntry("111", "A", EJenisErrorGaji.SYSTEM, "db down")));
 
         service.prosesGaji(BATCH_ID);
 
-        assertEquals(EProsesGaji.WAIT_VERIFICATION_PHASE_1, entity.getStatus());
+        assertEquals(EProsesGaji.FAILED, entity.getStatus());
         GajiBatchRootErrorLogs error = entity.getErrorLogs().iterator().next();
         assertEquals(EJenisErrorGaji.SYSTEM, error.getJenisError());
         assertEquals("db down", error.getNotes());
+        assertNotNull(entity.getNotes());
+        assertTrue(entity.getNotes().contains("\"gagal\":1"));
     }
 
     @Test
@@ -179,6 +201,7 @@ class GajiBatchProsesCommandServiceTest {
         when(repository.findById(BATCH_ID)).thenReturn(Optional.of(entity));
         when(gajiBatchMasterRepository.findByGajiBatchRoot_Id(BATCH_ID)).thenReturn(List.of(oldMaster));
         when(snapshotService.snapshot(entity)).thenReturn(List.of());
+        when(preloadService.preload(any(), any(), any())).thenReturn(mock(GajiPreloadContext.class));
 
         service.prosesGaji(BATCH_ID);
 

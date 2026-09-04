@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.history.RevisionRepository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,7 +42,7 @@ public interface PegawaiRepository extends JpaRepository<Pegawai, Long>,
     boolean existsByJabatanId(Long id);
 
     /**
-     * Scalar reads utk engine gaji (GajiBatchProsesReferenceResolver) — menghindari
+     * Scalar reads utk engine gaji (GajiPreloadService) — menghindari
      * lazy-load {@link Pegawai#getRumahDinas()} di luar transaksi kalkulasi.
      */
     @Query("select p.isAskes from Pegawai p where p.id = ?1")
@@ -49,4 +50,10 @@ public interface PegawaiRepository extends JpaRepository<Pegawai, Long>,
 
     @Query("select rd.nilai from Pegawai p left join p.rumahDinas rd where p.id = ?1")
     Optional<Double> findRumahDinasNilaiById(Long pegawaiId);
+
+    @Query("select p.id, p.isAskes from Pegawai p where p.id in ?1")
+    List<Object[]> findIsAskesByIdIn(Collection<Long> pegawaiIds);
+
+    @Query("select p.id, rd.nilai from Pegawai p left join p.rumahDinas rd where p.id in ?1")
+    List<Object[]> findRumahDinasNilaiByIdIn(Collection<Long> pegawaiIds);
 }

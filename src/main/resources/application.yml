@@ -28,13 +28,13 @@ spring:
       max-file-size: 100MB
       max-request-size: 100MB
   datasource:
-    url: jdbc:mariadb://${DB_HOST:192.168.230.84}:${DB_PORT:3307}/${DB_SCHEMA:kepegawaian_dev_new}?useSSL=false&zeroDateTimeBehavior=convertToNull&useLegacyDatetimeCode=false&server=mysql
+    url: jdbc:mariadb://${DB_HOST:192.168.230.84}:${DB_PORT:3307}/${DB_SCHEMA:kepegawaian_dev_new}?useSSL=false&zeroDateTimeBehavior=convertToNull&useLegacyDatetimeCode=false&server=mysql&rewriteBatchedStatements=true
     username: ${DB_USER:dev}
     password: ${DB_PASSWORD:password}
     driver-class-name: org.mariadb.jdbc.Driver
     hikari:
       connection-timeout: 20000
-      maximum-pool-size: ${DB_POOL_SIZE:10}
+      maximum-pool-size: ${DB_POOL_SIZE:20}
   jpa:
     open-in-view: false
     show-sql: true
@@ -43,6 +43,9 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        jdbc:
+          batch_size: 100
+        order_updates: true
 #        dialect: org.hibernate.dialect.MariaDBDialect
         column_ordering_strategy: legacy
   #      org:

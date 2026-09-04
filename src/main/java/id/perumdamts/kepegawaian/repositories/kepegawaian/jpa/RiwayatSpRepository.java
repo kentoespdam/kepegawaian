@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.history.RevisionRepository;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.Set;
 
 public interface RiwayatSpRepository extends JpaRepository<RiwayatSp, Long>,
         JpaSpecificationExecutor<RiwayatSp>,
@@ -25,4 +27,21 @@ public interface RiwayatSpRepository extends JpaRepository<RiwayatSp, Long>,
               and (r.tanggalSelesai is null or r.tanggalSelesai >= ?3)
             """)
     boolean existsSp3Aktif(Long pegawaiId, LocalDate windowEnd, LocalDate windowStart);
+
+    /**
+     * Bulk query ID pegawai yang memiliki SP-3 aktif pada rentang window gaji.
+     */
+    @Query("""
+            select distinct r.pegawai.id
+            from RiwayatSp r
+            where r.pegawai.id in ?1
+              and r.jenisSp.kode = 'SP-3'
+              and r.tanggalMulai <= ?2
+              and (r.tanggalSelesai is null or r.tanggalSelesai >= ?3)
+            """)
+    Set<Long> findAllPegawaiIdsWithActiveSp3In(Collection<Long> pegawaiIds, LocalDate windowEnd, LocalDate windowStart);
+
+    default Set<Long> findPegawaiIdsWithActiveSp3In(Collection<Long> pegawaiIds, LocalDate windowEnd, LocalDate windowStart) {
+        return findAllPegawaiIdsWithActiveSp3In(pegawaiIds, windowEnd, windowStart);
+    }
 }

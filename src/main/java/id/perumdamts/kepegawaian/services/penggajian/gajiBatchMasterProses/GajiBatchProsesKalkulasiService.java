@@ -1,40 +1,32 @@
 package id.perumdamts.kepegawaian.services.penggajian.gajiBatchMasterProses;
 
+import id.perumdamts.kepegawaian.entities.commons.EJenisErrorGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchMaster;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchMasterProses;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiKomponen;
-import id.perumdamts.kepegawaian.entities.penggajian.GajiParameterSetting;
-import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiBatchMasterProsesRepository;
-import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiBatchMasterRepository;
-import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiKomponenRepository;
-import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiParameterSettingRepository;
+import id.perumdamts.kepegawaian.exceptions.GajiFormulaException;
+import id.perumdamts.kepegawaian.services.penggajian.gajiBatchMasterProses.preload.ErrorEntry;
+import id.perumdamts.kepegawaian.services.penggajian.gajiBatchMasterProses.preload.GajiPreloadContext;
+import id.perumdamts.kepegawaian.services.penggajian.gajiBatchMasterProses.preload.HitungPegawaiResult;
 import id.perumdamts.kepegawaian.utils.GajiFormulaEvaluator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Engine kalkulasi gaji (Wave 6) — lihat docs/penggajian-proses-gaji-claim-order.md.
+ * Engine kalkulasi gaji (Wave 6) — zero-DB, zero-transaction virtual thread safe.
  *
- * <p>Per pegawai: load {@link GajiKomponen} profil by {@code urut}, akumulasi nilai
- * di {@code ctx}, evaluasi formula via {@link GajiFormulaEvaluator} (exp4j), simpan
- * {@link GajiBatchMasterProses}, lalu update total {@link GajiBatchMaster}.
- *
- * <p>Keputusan user 2026-09-04 (implicit resolve per kode): komponen ber-formula kosong
- * yang punya lookup (profil 1/6/9: {@code TUNJ_JABATAN/BERAS/KK/AIR}, {@code PHDP}) tetap
- * di-resolve via resolver seperti legacy; kode tanpa lookup ({@code TUNJ_SI/ANAK/KESEHATAN/
- * PPH21}, {@code ASTEK}, {@code PKP}, {@code POT_PENSIUN}) → 0.0 (sama dgn guard legacy
- * {@code if ($formula != '')}).
+ * <p>Per pegawai: ambil {@link GajiKomponen} profil dari {@link GajiPreloadContext},
+ * akumulasi nilai di {@code ctxMap}, evaluasi formula via {@link GajiFormulaEvaluator} (exp4j),
+ * dan kembalikan {@link HitungPegawaiResult} murni di memori (tanpa DB write).
  */
 @Service
 @RequiredArgsConstructor
@@ -55,76 +47,70 @@ public class GajiBatchProsesKalkulasiService {
     /** Token formula (kode komponen / referensi) — regex boundary aman utk REF_TUNJ_KK vs TUNJ_KK. */
     private static final Pattern TOKEN = Pattern.compile("\\b[A-Z][A-Z0-9_]*\\b");
 
-    private final GajiKomponenRepository gajiKomponenRepository;
-    private final GajiBatchMasterProsesRepository gajiBatchMasterProsesRepository;
-    private final GajiBatchMasterRepository gajiBatchMasterRepository;
-    private final GajiParameterSettingRepository gajiParameterSettingRepository;
-    private final GajiBatchProsesReferenceResolver referenceResolver;
     private final GajiFormulaEvaluator formulaEvaluator;
 
     /**
-     * Hitung seluruh komponen pegawai dan simpan hasilnya.
+     * Hitung seluruh komponen pegawai di memori dan kembalikan hasilnya.
+     * Tidak melakukan DB write (zero-DB) sehingga aman dijalankan di virtual threads.
      *
-     * @param master  snapshot pegawai (Wave 5) — totalnya di-update di sini
-     * @param batchId id batch root (utk lookup potongan TKK per batch di resolver)
+     * @param master snapshot pegawai (Wave 5) — totalnya di-update di memori
+     * @param ctx    preloaded context penggajian
+     * @return HitungPegawaiResult berisi master, prosesList, dan error jika ada
      */
-    @Transactional
-    public void hitung(GajiBatchMaster master, String batchId) {
-        List<GajiKomponen> komponens = gajiKomponenRepository
-                .findByProfilGajiIdOrderByUrutAsc(master.getGajiProfilId());
-
-        Map<String, Double> ctx = new HashMap<>();
-        for (String kode : CTX_SEED)
-            ctx.put(kode, referenceResolver.resolve(kode, master, ctx, batchId));
-
-        List<GajiBatchMasterProses> prosesList = new ArrayList<>();
-        for (GajiKomponen k : komponens) {
-            double nilai = hitungKomponen(k, master, ctx, batchId);
-            double bulat = Math.round(clampPotongan(k.getKode(), nilai));
-            ctx.put(k.getKode(), bulat);
-            prosesList.add(new GajiBatchMasterProses(
-                    null, master.getId(), k.getKode(), k.getUrut(), k.getNama(),
-                    k.getJenisGaji(), bulat, k.getFormula(),
-                    substitusiFormula(k.getFormula(), ctx)));
+    public HitungPegawaiResult hitung(GajiBatchMaster master, GajiPreloadContext ctx) {
+        if (master == null) {
+            return new HitungPegawaiResult(null, List.of(), new ErrorEntry(
+                    null, null, EJenisErrorGaji.SYSTEM, "Master pegawai bernilai null"));
         }
-        gajiBatchMasterProsesRepository.saveAll(prosesList);
-        updateTotal(master, ctx);
-        gajiBatchMasterRepository.save(master);
+
+        try {
+            List<GajiKomponen> komponens = ctx.getKomponenByProfilId(master.getGajiProfilId());
+            if (komponens == null || komponens.isEmpty()) {
+                return new HitungPegawaiResult(master, List.of(), new ErrorEntry(
+                        master.getNipam(), master.getNama(), EJenisErrorGaji.DATA,
+                        "Komponen profil gaji tidak ditemukan"));
+            }
+
+            Map<String, Double> ctxMap = new HashMap<>();
+            for (String kode : CTX_SEED) {
+                ctxMap.put(kode, ctx.resolve(kode, master, ctxMap));
+            }
+
+            List<GajiBatchMasterProses> prosesList = new ArrayList<>();
+            for (GajiKomponen k : komponens) {
+                double nilai = hitungKomponen(k, master, ctxMap, ctx);
+                double bulat = Math.round(ctx.clampPotongan(k.getKode(), nilai));
+                ctxMap.put(k.getKode(), bulat);
+                prosesList.add(new GajiBatchMasterProses(
+                        null, master.getId(), k.getKode(), k.getUrut(), k.getNama(),
+                        k.getJenisGaji(), bulat, k.getFormula(),
+                        substitusiFormula(k.getFormula(), ctxMap)));
+            }
+
+            updateTotal(master, ctxMap);
+            return new HitungPegawaiResult(master, prosesList, null);
+        } catch (GajiFormulaException e) {
+            log.warn("DATA error pegawai {}: {}", master.getNipam(), e.getMessage());
+            return new HitungPegawaiResult(master, List.of(), new ErrorEntry(
+                    master.getNipam(), master.getNama(), EJenisErrorGaji.DATA, e.getMessage()));
+        } catch (Exception e) {
+            log.error("SYSTEM error pegawai {}: {}", master.getNipam(), e.getMessage(), e);
+            return new HitungPegawaiResult(master, List.of(), new ErrorEntry(
+                    master.getNipam(), master.getNama(), EJenisErrorGaji.SYSTEM, e.getMessage()));
+        }
     }
 
     /** Resolve satu komponen: isReference/#SYSTEM → resolver; formula kosong → implicit resolve; else evaluator. */
-    private double hitungKomponen(GajiKomponen k, GajiBatchMaster master, Map<String, Double> ctx, String batchId) {
+    private double hitungKomponen(GajiKomponen k, GajiBatchMaster master, Map<String, Double> ctxMap, GajiPreloadContext ctx) {
         if (Boolean.TRUE.equals(k.getIsReference()) || "#SYSTEM".equals(k.getFormula()))
-            return referenceResolver.resolve(k.getKode(), master, ctx, batchId);
+            return ctx.resolve(k.getKode(), master, ctxMap);
         if (k.getFormula() == null || k.getFormula().isBlank()) {
             String refKode = KODE_EMPTY_IMPLICIT.get(k.getKode());
             if (refKode != null)
-                return referenceResolver.resolve(refKode, master, ctx, batchId);
+                return ctx.resolve(refKode, master, ctxMap);
             return 0.0;
         }
-        return formulaEvaluator.evaluate(k.getFormula(), ctx);
-    }
-
-    /**
-     * W6-2 (keputusan #15, locked): clamp pasca-eval POT_JP/POT_ASKES ke
-     * {@code gaji_parameter_setting}. Parameter tak ditemukan → tanpa cap + warn
-     * (sengaja tidak meniru default legacy yang cap-nya 0 = semua ke-0).
-     */
-    private double clampPotongan(String kode, double nilai) {
-        String paramKode = switch (kode) {
-            case "POT_JP" -> "maksimal_potongan_jpn";
-            case "POT_ASKES" -> "maksimal_potongan_askes";
-            default -> null;
-        };
-        if (paramKode == null)
-            return nilai;
-        Optional<Double> cap = gajiParameterSettingRepository.findByKode(paramKode)
-                .map(GajiParameterSetting::getNominal);
-        if (cap.isEmpty()) {
-            log.warn("Parameter clamp '{}' tidak ditemukan — {} tanpa cap", paramKode, kode);
-            return nilai;
-        }
-        return Math.min(nilai, cap.get());
+        return formulaEvaluator.evaluate(k.getFormula(), ctxMap);
     }
 
     /** nilaiFormula = formula asli dgn token komponen diganti nilai (round) dari ctx — token tanpa ctx dibiarkan. */

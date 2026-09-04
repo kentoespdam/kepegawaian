@@ -14,6 +14,7 @@ import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiKomponenReposit
 import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiProfilRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -25,6 +26,7 @@ public class GajiKomponenCommandService {
     private final GajiProfilRepository gajiProfilRepository;
 
     @Transactional
+    @CacheEvict(value = "gaji-referensi", key = "'komponen'")
     public SavedStatus<Long> create(GajiKomponenPostRequest request) {
         boolean exists = repository.exists(request.getSpecification());
         if (exists) throw new ConflictException("Gaji Komponen sudah ada");
@@ -36,6 +38,7 @@ public class GajiKomponenCommandService {
     }
 
     @Transactional
+    @CacheEvict(value = "gaji-referensi", key = "'komponen'")
     public SavedStatus<Long> update(Long id, GajiKomponenPutRequest request) {
         GajiKomponen gajiKomponen = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Gaji Komponen not found"));
@@ -47,6 +50,7 @@ public class GajiKomponenCommandService {
     }
 
     @Transactional
+    @CacheEvict(value = "gaji-referensi", key = "'komponen'")
     public Boolean delete(Long id) {
         Optional<GajiKomponen> byId = repository.findById(id);
         if (byId.isEmpty()) return false;
@@ -56,6 +60,7 @@ public class GajiKomponenCommandService {
     }
 
     @Transactional
+    @CacheEvict(value = "gaji-referensi", key = "'komponen'")
     public void generateDefaultValue(GajiProfil profilGaji) {
         repository.save(defaultGP(profilGaji));
         repository.save(defaultJmlAnak(profilGaji));
