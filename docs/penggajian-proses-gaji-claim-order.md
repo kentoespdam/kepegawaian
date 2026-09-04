@@ -66,7 +66,7 @@ GajiBatchProsesCommandService.prosesGaji(rootBatchId)
     ├── 3. GajiBatchProsesSnapshotService.snapshot(batchRoot)
     │       → query Pegawai eligible → create GajiBatchMaster[]
     ├── 4. StructuredTaskScope.ShutdownOnFailure — parallel per pegawai:
-    │       GajiBatchProsesKalkulasiService.hitung(batchMaster)
+    │       GajiBatchProsesKalkulasiService.hitung(batchMaster, batchId)
     │           → resolve #SYSTEM via GajiBatchProsesReferenceResolver
     │           → evaluate formula via GajiFormulaEvaluator (exp4j)
     │           → save GajiBatchMasterProses per komponen
@@ -166,7 +166,7 @@ Legacy **tidak punya** konsep `is_reference`/`#SYSTEM` — SEMUA nilai referensi
 | `gp`, `phdp` | `$row['emp_gp']` / `$row['emp_phdp']` langsung (**formula & nilai komponen diabaikan**) | Konfirmasi keputusan #11: PHDP = snapshot `Pegawai.phdp`. Nilai statis `PHDP` di seed (21362814 / 23736460) **mati** — jangan dipakai engine |
 | `jml_anak` / `jml_jiwa` | Bukan komponen: `query_tanggungan_anak` + `1 + jml_anak + (kawin ? 1 : 0)` | Cocok dgn resolver map — tapi token ini TIDAK ada sbg baris komponen; ctx W6 harus di-seed dari `GajiBatchMaster` (jmlTanggungan/statusKawin) |
 | `t_kpi` / `t_ter` | `query_kpi`/`query_ter` per pegawai per tahun | → `GajiKpi.tunkin` / `GajiKpi.pph21Ter` (W1) |
-| `t_jabatan`, `t_kk`, `t_air`, `p_rudin`, `t_beras`, `p_askes`, `p_pph21`, `p_jp`, `p_tkk` | Query lookup langsung (level/golongan, rumdin, flag askes, PTKP, pot TKK) — **jalan walau formula komponen kosong** | Profil p1/p6/p9 punya `TUNJ_JABATAN`/`TUNJ_KK`/`TUNJ_AIR`/`POT_RUDIN` formula KOSONG & TANPA komponen `REF_TUNJ_*` di profil tsb → aturan W6 "formula kosong → 0.0" akan **menghilangkan tunjangan** yg legacy tetap bayar via lookup. Perlu penanganan eksplisit di W6 (implicit resolve per kode, atau seed REF_* di semua profil) |
+| `t_jabatan`, `t_kk`, `t_air`, `p_rudin`, `t_beras`, `p_askes`, `p_pph21`, `p_jp`, `p_tkk` | Query lookup langsung (level/golongan, rumdin, flag askes, PTKP, pot TKK) — **jalan walau formula komponen kosong** | **KEPUTUSAN (2026-09-04): implicit resolve per kode** — komponen formula kosong dgn lookup di-resolve via resolver: `TUNJ_JABATAN→REF_TUNJ_JABATAN`, `TUNJ_BERAS→REF_TUNJ_BERAS`, `TUNJ_KK→REF_TUNJ_KK`, `TUNJ_AIR→REF_TUNJ_AIR`, `PHDP→REF_PHDP` (keputusan #11). Kode tanpa lookup (`TUNJ_SI/ANAK/KESEHATAN/PPH21`, `ASTEK`, `PKP`, `POT_PENSIUN`) → 0.0, sama dgn guard legacy `if ($formula != '')` |
 | `p_jp`/`p_askes` | Engine-level clamp `result > maksimal_potongan_* → maksimal_potongan_*` dari `sys_reference(code=payroll)` | **Nilai SUDAH di-seed** di `gaji_parameter_setting` rewrite — dikerjakan di W6-2 (keputusan #15, locked) |
 | `p_pph21`/`t_pph21` | Clamp `result < 0 → 0` | Formula potongan pajak |
 | Lainnya (formula aritmetika) | `replace_formula` (token komponen → nilai) lalu `eval` | Setara W6 substitusi + evaluator; hasil per-komponen di-`round(x,0)` |
@@ -179,17 +179,18 @@ Legacy **tidak punya** konsep `is_reference`/`#SYSTEM` — SEMUA nilai referensi
 
 ### Wave 6 — Kalkulasi Service
 
-- [ ] **W6-1** `GajiBatchProsesKalkulasiService`:
+- [x] **W6-1** `GajiBatchProsesKalkulasiService`:
   - Load `GajiKomponen` by `profilGajiId` ordered by `urut`
-  - Maintain `Map<String, Double> ctx` (accumulator semua nilai komponen)
+  - Maintain `Map<String, Double> ctx` (accumulator semua nilai komponen), seed token non-komponen `JML_ANAK`/`JML_JIWA` dari resolver
   - Per komponen:
     - `isReference = true` atau `formula = "#SYSTEM"` → `referenceResolver.resolve(kode, ...)`
-    - `formula` kosong → 0.0
+    - `formula` kosong → **implicit resolve per kode** (keputusan 2026-09-04: `TUNJ_JABATAN/BERAS/KK/AIR` → `REF_TUNJ_*`, `PHDP` → `REF_PHDP`; kode tanpa lookup → 0.0)
     - Else → substitusi kode komponen dalam formula + `formulaEvaluator.evaluate(...)`
-  - Hasil dibulatkan: `Math.round(nilai)`
-  - Simpan `GajiBatchMasterProses`: `kode, urut, nama, jenisGaji, nilai, formula (asli), nilaiFormula (formula + nilai tersubstitusi)`
-  - Update `GajiBatchMaster` totals dari ctx: `penghasilanKotor, totalPotongan, penghasilanBersih, pembulatan, penghasilanBersihFinal, pajak`
-- [ ] **W6-2** Clamp engine-level pasca-eval (keputusan #15): `POT_JP` → `min(nilai, maksimal_potongan_jpn)`, `POT_ASKES` → `min(nilai, maksimal_potongan_askes)`
+  - Hasil dibulatkan: `Math.round(nilai)` (nilai round masuk ctx, dipakai formula berikutnya)
+  - Simpan `GajiBatchMasterProses`: `kode, urut, nama, jenisGaji, nilai, formula (asli), nilaiFormula (formula + nilai tersubstitusi, format `BigDecimal.toPlainString` — tanpa notasi ilmiah)`
+  - Update `GajiBatchMaster` totals dari ctx: `penghasilanKotor` (PENGHASILAN_KOTOR), `totalPotongan` (POTONGAN), `penghasilanBersih` (PENGHASILAN_BERSIH), `pembulatan` (PEMBULATAN), `penghasilanBersihFinal` (PENGHASILAN_BERSIH_FINAL), `pajak` (POT_PPH21 — legacy `tax = p_pph21`)
+  - Signature `hitung(GajiBatchMaster master, String batchId)` — batchId eksplisit utk resolver (`REF_JML_POT_KK` per batch)
+- [x] **W6-2** Clamp engine-level pasca-eval (keputusan #15): `POT_JP` → `min(nilai, maksimal_potongan_jpn)`, `POT_ASKES` → `min(nilai, maksimal_potongan_askes)`
   - `GajiParameterSettingRepository` + tambah finder `findByKode(kode)`; mapping kode komponen → kode parameter hardcode (2 entry)
   - Parameter tak ditemukan → log warn, tanpa cap (jangan cap ke 0 seperti default legacy)
 
