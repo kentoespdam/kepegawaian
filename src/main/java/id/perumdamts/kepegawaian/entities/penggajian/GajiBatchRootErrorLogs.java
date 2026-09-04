@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.entities.penggajian;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import id.perumdamts.kepegawaian.entities.commons.EJenisErrorGaji;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,4 +28,6 @@ public class GajiBatchRootErrorLogs implements Serializable {
     private String nipam;
     private String nama;
     private String notes;
+    @Enumerated(EnumType.STRING)
+    private EJenisErrorGaji jenisError = EJenisErrorGaji.SYSTEM;
 }

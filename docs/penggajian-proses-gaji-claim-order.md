@@ -79,11 +79,11 @@ GajiBatchProsesCommandService.prosesGaji(rootBatchId)
 
 ### Wave 0 — Fondasi
 
-- [ ] **W0-1** Tambah dep `exp4j` ke `build.gradle.kts`: `implementation("net.objecthunter:exp4j:0.4.8")`
-- [ ] **W0-2** Migration: `Vx__add_jenis_error_to_gaji_batch_root_error_logs.sql`
+- [x] **W0-1** Tambah dep `exp4j` ke `build.gradle.kts`: `implementation("net.objecthunter:exp4j:0.4.8")`
+- [x] **W0-2** Migration: `V40__add_jenis_error_to_gaji_batch_root_error_logs.sql`
   - `ALTER TABLE gaji_batch_root_error_logs ADD COLUMN jenis_error VARCHAR(10) NOT NULL DEFAULT 'SYSTEM';`
-- [ ] **W0-3** Enum `EJenisErrorGaji { DATA, SYSTEM }` di `entities/commons/`
-- [ ] **W0-4** Update entity `GajiBatchRootErrorLogs` + field `jenisError: EJenisErrorGaji`
+- [x] **W0-3** Enum `EJenisErrorGaji { DATA, SYSTEM }` di `entities/commons/`
+- [x] **W0-4** Update entity `GajiBatchRootErrorLogs` + field `jenisError: EJenisErrorGaji`
 
 ---
 

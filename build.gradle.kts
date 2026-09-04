@@ -103,6 +103,9 @@ dependencies {
     // Commons IO
     implementation("commons-io:commons-io:2.16.1")
 
+    // exp4j — formula evaluator engine proses gaji
+    implementation("net.objecthunter:exp4j:0.4.8")
+
     // Testing
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
