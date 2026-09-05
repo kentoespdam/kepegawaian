@@ -178,6 +178,7 @@ def sync_biodata_and_pegawai(
       e.mkg_tahun,
       e.mkg_bulan,
       p.emp_note,
+      p.emp_type,
       p.emp_name,
       p.emp_gender,
       p.emp_birth_place,
@@ -261,6 +262,9 @@ def sync_biodata_and_pegawai(
         telp = r.get("emp_mobile") or r.get("emp_phone") or None
         is_deleted_val = 1 if r.get("emp_status") == 3 else 0
 
+        # Tentukan apakah ini adalah pelamar rekrutmen (bukan karyawan)
+        is_recruiter = r.get("emp_type") == 1 or str(emp_code).startswith("REC/")
+
         bio_row = {
             "nik": nik,
             "nama": emp_name,
@@ -273,7 +277,7 @@ def sync_biodata_and_pegawai(
             "telp": telp,
             "ibu_kandung": r.get("emp_mother_name"),
             "foto_profil": r.get("emp_photo"),
-            "is_pegawai": 1,
+            "is_pegawai": 0 if is_recruiter else 1,  # Pelamar bukan pegawai
             "is_deleted": is_deleted_val,
             "version": 0,
             "changed_status": 0,
@@ -291,27 +295,50 @@ def sync_biodata_and_pegawai(
             })
 
         # 3. Map Pegawai fields
-        # status_kerja: 6=Aktif -> 2 (KARYAWAN_AKTIF), 7=Dirumahkan -> 1, 8=Keluar -> 0
+        # Mapping lengkap berdasarkan smartoffice.sys_reference (code='emp_work_status')
+        # ke ordinal EStatusKerja Java (@Enumerated(EnumType.ORDINAL))
+        _STATUS_KERJA_MAP = {
+            1: 3,  # Lamaran Baru        -> EStatusKerja.LAMARAN_BARU (ordinal 3)
+            2: 4,  # Tahap Seleksi       -> EStatusKerja.TAHAP_SELEKSI (ordinal 4)
+            3: 5,  # Diterima            -> EStatusKerja.DITERIMA (ordinal 5)
+            4: 6,  # Direkomendasikan    -> EStatusKerja.DIREKOMENDASIKAN (ordinal 6)
+            5: 7,  # Ditolak             -> EStatusKerja.DITOLAK (ordinal 7)
+            6: 2,  # Karyawan Aktif      -> EStatusKerja.KARYAWAN_AKTIF (ordinal 2)
+            7: 1,  # Dirumahkan          -> EStatusKerja.DIRUMAHKAN (ordinal 1)
+            8: 0,  # Berhenti / Keluar   -> EStatusKerja.BERHENTI_OR_KELUAR (ordinal 0)
+        }
         work_status_raw = r.get("emp_work_status")
-        if work_status_raw == 6:
-            status_kerja = 2
-        elif work_status_raw == 7:
-            status_kerja = 1
-        elif work_status_raw == 8:
-            status_kerja = 0
-        else:
-            status_kerja = 2 if r.get("emp_status") == 1 else 0
+        status_kerja = _STATUS_KERJA_MAP.get(work_status_raw, 0)  # default: BERHENTI_OR_KELUAR
 
-        # status_pegawai: 1=Tetap -> 2 (PEGAWAI), 2=Kontrak -> 0 (KONTRAK), 3=Calon -> 1 (CAPEG)
+        # Koreksi data legacy kadaluarsa: pegawai dengan tmt_pensiun sudah lewat tapi
+        # emp_work_status tidak diperbarui ke 8 oleh admin legacy
+        tmt_pensiun_val = r.get("tmt_pensiun")
+        if tmt_pensiun_val is not None and status_kerja == 2:  # saat ini dianggap Aktif
+            import datetime as _dt
+            if hasattr(tmt_pensiun_val, "date"):
+                tmt_date = tmt_pensiun_val.date()
+            elif isinstance(tmt_pensiun_val, _dt.date):
+                tmt_date = tmt_pensiun_val
+            else:
+                try:
+                    tmt_date = _dt.date.fromisoformat(str(tmt_pensiun_val)[:10])
+                except ValueError:
+                    tmt_date = None
+            if tmt_date and tmt_date <= _dt.date.today():
+                status_kerja = 0  # BERHENTI_OR_KELUAR — pensiun terlewat di data legacy
+
+        # Mapping lengkap berdasarkan smartoffice.sys_reference (code='emp_flag')
+        # ke ordinal EStatusPegawai Java (@Enumerated(EnumType.ORDINAL))
+        _STATUS_PEGAWAI_MAP = {
+            1: 2,  # Pegawai Tetap       -> EStatusPegawai.PEGAWAI (ordinal 2)
+            2: 0,  # Pegawai Kontrak     -> EStatusPegawai.KONTRAK (ordinal 0)
+            3: 5,  # Non Pegawai         -> EStatusPegawai.NON_PEGAWAI (ordinal 5)
+            4: 1,  # Calon Pegawai       -> EStatusPegawai.CAPEG (ordinal 1)
+            5: 4,  # Honorer Tetap       -> EStatusPegawai.HONORER (ordinal 4)
+            6: 3,  # Calon Honorer Tetap -> EStatusPegawai.CALON_HONORER (ordinal 3)
+        }
         flag_raw = r.get("emp_flag")
-        if flag_raw == 1:
-            status_pegawai = 2
-        elif flag_raw == 2:
-            status_pegawai = 0
-        elif flag_raw == 3:
-            status_pegawai = 1
-        else:
-            status_pegawai = 2
+        status_pegawai = _STATUS_PEGAWAI_MAP.get(flag_raw, 5)  # default: NON_PEGAWAI (5)
 
         pos_id = r.get("emp_pos_id")
         jabatan_id = pos_id if pos_id in valid_jabs else None
@@ -352,7 +379,9 @@ def sync_biodata_and_pegawai(
             "version": 0,
             "changed_status": 0,
         }
-        pegawai_records.append(peg_row)
+        # Pelamar rekrutmen TIDAK dimasukkan ke tabel pegawai — hanya biodata
+        if not is_recruiter:
+            pegawai_records.append(peg_row)
 
     # Deduplicate biodata records by NIK
     unique_biodata: dict[str, dict[str, Any]] = {}
