@@ -102,7 +102,63 @@ Proses migrasi data dari Smartoffice ke Kepegawaian direkomendasikan untuk dieks
 
 ---
 
-### 2.2 Tabel Perbandingan Perintah (Cheat-Sheet Makefile vs CLI)
+### 2.2 Penerusan Flag & Argumen via Make (Hybrid Flag Support)
+
+> [!IMPORTANT]
+> **Aturan Sintaks GNU Make:**
+> `make` secara bawaan memperlakukan argumen yang diawali tanda minus ganda (`--flag`) sebagai opsi untuk program `make` itu sendiri, bukan untuk skrip Python di dalamnya.
+> Menjalankan `make migrate-stage STAGE=stage5_penggajian --payroll-all` akan memicu galat:
+> ```text
+> make: unrecognized option '--payroll-all'
+> ```
+> Oleh karena itu, flag harus diteruskan menggunakan salah satu dari dua metode di bawah ini (*Hybrid Flag Support*).
+
+#### 1. Convenience Variables (Variabel Praktis)
+Parameter umum dapat diteruskan menggunakan variabel Make berbasis `KEY=VALUE` (`1`, `true`, atau `yes`):
+
+| Variabel Make | Flag CLI yang Dihasilkan | Keterangan & Target yang Didukung |
+|---|---|---|
+| `PAYROLL_ALL=1` (`true`/`yes`) | `--payroll-all` | Memigrasi seluruh tahun historis payroll (`migrate-stage`, `migrate-run-all`) |
+| `DRY_RUN=1` (`true`/`yes`) | `--dry-run` | Simulasi eksekusi tanpa mutasi basis data (`migrate-stage`, `migrate-run-all`) |
+| `FRESH=1` (`true`/`yes`) | `--fresh` | Membersihkan tabel `migration_id_map` & manifest SQLite sebelum mulai (`migrate-run-all`) |
+| `FORCE=1` (`true`/`yes`) | `--force` | Mengabaikan kegagalan preflight Stage 0 (`migrate-run-all`) |
+| `LIMIT=N` | `--limit N` | Membatasi jumlah record yang diproses (`migrate-stage`, `migrate-run-all`) |
+| `STAGE=nama` | `--name nama` | Menentukan stage target (default: `stage0_preflight`) pada `migrate-stage` |
+| `WORKERS=N` | `--workers N` | Menentukan jumlah thread worker (default: 4) pada `migrate-sync-files` |
+
+**Contoh Penggunaan Convenience Variables:**
+```bash
+# Menjalankan Stage 5 Penggajian dengan seluruh riwayat payroll historis:
+make migrate-stage STAGE=stage5_penggajian PAYROLL_ALL=1
+
+# Menjalankan pipeline penuh secara fresh dengan seluruh data payroll:
+make migrate-run-all FRESH=1 PAYROLL_ALL=1
+
+# Menjalankan simulasi dry-run untuk Stage 2 Pegawai dengan batas 100 record:
+make migrate-stage STAGE=stage2 DRY_RUN=1 LIMIT=100
+```
+
+#### 2. Raw Arguments (`ARGS="..."` / `EXTRA_ARGS="..."`)
+Untuk meneruskan flag arbitrary atau opsi tambahan lainnya langsung ke CLI Python tanpa pembatasan:
+
+**Contoh Penggunaan Raw Arguments:**
+```bash
+# Meneruskan --payroll-all via ARGS ke Stage 5:
+make migrate-stage STAGE=stage5_penggajian ARGS="--payroll-all"
+
+# Menjalankan audit penuh dengan mode strict dan toleransi deviasi Rp 0,-:
+make migrate-audit ARGS="--strict --tolerance 0.0"
+
+# Menjalankan worker berkas lampiran dengan retry record gagal dan limit:
+make migrate-sync-files ARGS="--retry-failed --limit 50"
+
+# Kombinasi convenience variable dan ARGS:
+make migrate-stage STAGE=stage5_penggajian PAYROLL_ALL=1 ARGS="--dry-run"
+```
+
+---
+
+### 2.3 Tabel Perbandingan Perintah (Cheat-Sheet Makefile vs CLI)
 
 | Target `make` (Root Repo) | Perintah CLI Langsung (`python3`) | Deskripsi Singkat |
 |---|---|---|
@@ -110,9 +166,9 @@ Proses migrasi data dari Smartoffice ke Kepegawaian direkomendasikan untuk dieks
 | `make migrate-venv` | `python3 -m venv .venv && .venv/bin/pip install -r tools/migration/requirements.txt` | Inisialisasi `.venv` dan instalasi dependensi `tools/migration/requirements.txt`. |
 | `make migrate-test` | `python3 -m unittest discover -s tools/migration/tests -v` | Menjalankan seluruh rangkaian unit test mandiri microapp migrasi. |
 | `make migrate-preflight` | `python3 tools/migration/run.py stage --name stage0_preflight` | Validasi koneksi DB Legacy, DB Target, izin cross-DB, dan server Appwrite. |
-| `make migrate-run-all` | `python3 tools/migration/run.py run-all` | Menjalankan seluruh pipeline migrasi data (Stage 0 s/d Stage 7) berurutan. |
-| `make migrate-stage STAGE=<nama>` | `python3 tools/migration/run.py stage --name <nama>` | Menjalankan stage migrasi tertentu secara mandiri (contoh: `STAGE=stage2`). |
-| `make migrate-audit` | `python3 tools/migration/run.py audit` | Menjalankan audit penuh (integritas referensial FK, Envers, & rekonsiliasi payroll). |
+| `make migrate-run-all [FRESH=1] [PAYROLL_ALL=1]` | `python3 tools/migration/run.py run-all [--fresh] [--payroll-all]` | Menjalankan seluruh pipeline migrasi data (Stage 0 s/d Stage 7) berurutan. |
+| `make migrate-stage STAGE=<nama> [PAYROLL_ALL=1]` | `python3 tools/migration/run.py stage --name <nama> [--payroll-all]` | Menjalankan stage migrasi tertentu secara mandiri (contoh: `STAGE=stage2`). |
+| `make migrate-audit [ARGS="..."]` | `python3 tools/migration/run.py audit` | Menjalankan audit penuh (integritas referensial FK, Envers, & rekonsiliasi payroll). |
 | `make migrate-audit-integrity` | `python3 tools/migration/run.py audit --integrity-only` | Menjalankan audit zero-orphan dan kepatuhan Hibernate Envers saja. |
 | `make migrate-reconcile-payroll` | `python3 tools/migration/run.py audit --payroll-only` | Menjalankan audit rekonsiliasi nominal gaji historis Smartoffice vs Target saja. |
 | `make migrate-sync-files-dry` | `python3 tools/migration/run.py sync-files --dry-run` | Simulasi dry-run proses sinkronisasi berkas lampiran fisik dari antrean manifest. |
