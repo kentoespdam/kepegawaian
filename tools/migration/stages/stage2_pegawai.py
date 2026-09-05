@@ -251,11 +251,19 @@ def sync_biodata_and_pegawai(
         except (ValueError, TypeError):
             agama_id = 0
 
-        # Status Kawin: 0=Belum Kawin, 1=Kawin, 2=Janda/Duda, 4=Tidak Tahu
+        # Mapping berdasarkan smartoffice.sys_reference (code='status_kawin')
+        # ke ordinal EStatusKawin Java (@Enumerated(EnumType.ORDINAL))
+        _STATUS_KAWIN_MAP = {
+            1:  0,   # Belum Menikah    -> EStatusKawin.BELUM_KAWIN (ordinal 0)
+            2:  1,   # Sudah Menikah    -> EStatusKawin.KAWIN (ordinal 1)
+            3:  2,   # Janda/Duda       -> EStatusKawin.JANDA_DUDA (ordinal 2)
+            4:  3,   # Menikah Sekantor -> EStatusKawin.MENIKAH_SEKANTOR (ordinal 3)
+            99: 4,   # Tidak Tahu       -> EStatusKawin.TIDAK_TAHU (ordinal 4)
+        }
         mar_raw = r.get("id_marital_status")
         try:
             mar_int = int(mar_raw) if mar_raw is not None else 99
-            status_kawin = 1 if mar_int == 2 else 0 if mar_int == 1 else 2 if mar_int in (3, 4) else 4
+            status_kawin = _STATUS_KAWIN_MAP.get(mar_int, 4)  # default: TIDAK_TAHU
         except (ValueError, TypeError):
             status_kawin = 4
 

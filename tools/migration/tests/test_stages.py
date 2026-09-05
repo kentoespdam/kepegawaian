@@ -80,6 +80,86 @@ class TestMigrationStages(unittest.TestCase):
         self.assertEqual(legacy_to_ordinal(8), 7)  # SK Penyesuaian Gaji
         self.assertEqual(legacy_to_ordinal(9), 8)  # SK Kenaikan Gaji Berkala
 
+    def test_stage5_status_pegawai_gaji_mapping(self):
+        from tools.migration.stages.stage5_penggajian import _STATUS_PEGAWAI_MAP_GAJI
+
+        self.assertEqual(_STATUS_PEGAWAI_MAP_GAJI.get(1), 2)  # Pegawai Tetap -> PEGAWAI
+        self.assertEqual(_STATUS_PEGAWAI_MAP_GAJI.get(2), 0)  # Pegawai Kontrak -> KONTRAK
+        self.assertEqual(_STATUS_PEGAWAI_MAP_GAJI.get(3), 5)  # Non Pegawai -> NON_PEGAWAI
+        self.assertEqual(_STATUS_PEGAWAI_MAP_GAJI.get(4), 1)  # Calon Pegawai -> CAPEG
+        self.assertEqual(_STATUS_PEGAWAI_MAP_GAJI.get(5), 4)  # Honorer Tetap -> HONORER
+        self.assertEqual(_STATUS_PEGAWAI_MAP_GAJI.get(6), 3)  # Calon Honorer Tetap -> CALON_HONORER
+
+    def test_stage2_status_kawin_mapping(self):
+        status_kawin_map = {
+            1: 0,   # Belum Menikah -> BELUM_KAWIN
+            2: 1,   # Sudah Menikah -> KAWIN
+            3: 2,   # Janda/Duda -> JANDA_DUDA
+            4: 3,   # Menikah Sekantor -> MENIKAH_SEKANTOR
+            99: 4,  # Tidak Tahu -> TIDAK_TAHU
+        }
+        self.assertEqual(status_kawin_map.get(1, 4), 0)
+        self.assertEqual(status_kawin_map.get(2, 4), 1)
+        self.assertEqual(status_kawin_map.get(3, 4), 2)
+        self.assertEqual(status_kawin_map.get(4, 4), 3)
+        self.assertEqual(status_kawin_map.get(99, 4), 4)
+        self.assertEqual(status_kawin_map.get(999, 4), 4)
+
+    def test_stage3_kontrak_grouping_and_latest(self):
+        from datetime import date
+        from collections import defaultdict
+
+        raw_contracts = [
+            {"ec_id": 1, "emp_code": "P01", "contract_start_date": date(2020, 1, 1), "ec_status": 0},
+            {"ec_id": 2, "emp_code": "P01", "contract_start_date": date(2021, 1, 1), "ec_status": 1},
+            {"ec_id": 3, "emp_code": "P01", "contract_start_date": date(2022, 1, 1), "ec_status": 1},
+            {"ec_id": 4, "emp_code": "P02", "contract_start_date": date(2020, 5, 1), "ec_status": 1},
+            {"ec_id": 5, "emp_code": "P03", "contract_start_date": date(2019, 1, 1), "ec_status": 0},
+        ]
+
+        kontrak_by_emp: dict[str, list] = defaultdict(list)
+        for r in raw_contracts:
+            is_del = 1 if r["ec_status"] != 1 else 0
+            kontrak_by_emp[r["emp_code"]].append({
+                "ec_id": r["ec_id"],
+                "is_del": is_del,
+                "contract_start_date": r["contract_start_date"],
+            })
+
+        results = []
+        for emp_code, contracts in kontrak_by_emp.items():
+            sorted_contracts = sorted(
+                contracts,
+                key=lambda c: (c["contract_start_date"] or date.min, c["ec_id"] or 0),
+            )
+            active_contracts = [c for c in sorted_contracts if c["is_del"] == 0]
+            latest_ec_id = active_contracts[-1]["ec_id"] if active_contracts else None
+            for i, c in enumerate(sorted_contracts):
+                jenis_kontrak = 1 if i == 0 else 0
+                is_latest = 1 if c["ec_id"] == latest_ec_id else 0
+                results.append({
+                    "ec_id": c["ec_id"],
+                    "emp_code": emp_code,
+                    "jenis_kontrak": jenis_kontrak,
+                    "is_latest": is_latest,
+                })
+
+        by_id = {r["ec_id"]: r for r in results}
+        # P01: ec_id 1 is first -> jenis_kontrak=1, is_latest=0 (ec_status 0)
+        self.assertEqual(by_id[1]["jenis_kontrak"], 1)
+        self.assertEqual(by_id[1]["is_latest"], 0)
+        # P01: ec_id 2 is second -> jenis_kontrak=0, is_latest=0 (active, but ec_id 3 is later)
+        self.assertEqual(by_id[2]["jenis_kontrak"], 0)
+        self.assertEqual(by_id[2]["is_latest"], 0)
+        # P01: ec_id 3 is third -> jenis_kontrak=0, is_latest=1 (last active)
+        self.assertEqual(by_id[3]["jenis_kontrak"], 0)
+        self.assertEqual(by_id[3]["is_latest"], 1)
+        # P02: ec_id 4 is first and only active -> jenis_kontrak=1, is_latest=1
+        self.assertEqual(by_id[4]["jenis_kontrak"], 1)
+        self.assertEqual(by_id[4]["is_latest"], 1)
+        # P03: ec_id 5 is deleted -> jenis_kontrak=1, is_latest=0
+        self.assertEqual(by_id[5]["jenis_kontrak"], 1)
+        self.assertEqual(by_id[5]["is_latest"], 0)
 
     def test_stage7_status_kerja_resolution(self):
         # 0 = BERHENTI_OR_KELUAR (Terminasi / Pensiun)

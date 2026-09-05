@@ -17,6 +17,8 @@ Memigrasikan rekam jejak surat keputusan, mutasi kerja, surat peringatan, dan ko
 
 from __future__ import annotations
 
+from collections import defaultdict
+from datetime import date
 import logging
 from typing import Any, Optional
 
@@ -571,58 +573,101 @@ def sync_riwayat_kontrak(conn: Any) -> tuple[int, int, list[int]]:
     # Constraint handling: purge stale legacy prototype seed records with mismatched auto-increment IDs
     execute_query(conn, "DELETE FROM riwayat_kontrak WHERE created_by = 'SYSTEM'")
 
+    # First pass: collect all contract rows per emp_code
+    kontrak_by_emp: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for r in rows:
+        emp_code = r.get("emp_code")
+        if emp_code not in code_to_peg:
+            continue
+        peg_id, nama = code_to_peg[emp_code]
+
+        ec_id = r.get("ec_id")
+        ec_status_raw = r.get("ec_status")
+        is_del = 1 if ec_status_raw is not None and int(ec_status_raw) != 1 else 0
+
+        start_date_raw = _clean_date(r.get("contract_start_date"))
+        if isinstance(start_date_raw, date):
+            start_date_obj = start_date_raw
+        elif isinstance(start_date_raw, str):
+            try:
+                start_date_obj = date.fromisoformat(start_date_raw[:10])
+            except Exception:
+                start_date_obj = None
+        else:
+            start_date_obj = None
+
+        kontrak_by_emp[emp_code].append({
+            "ec_id": ec_id,
+            "emp_code": emp_code,
+            "peg_id": peg_id,
+            "nama": nama,
+            "contract_no": (r.get("contract_no") or "").strip(),
+            "ec_status": ec_status_raw,
+            "is_del": is_del,
+            "contract_start_date": start_date_obj,
+            "tanggal_mulai": start_date_raw,
+            "tanggal_selesai": _clean_date(r.get("contract_exp_date")),
+            "tanggal_sk": start_date_raw,
+            "notes": (r.get("ec_description") or "")[:255] if r.get("ec_description") else None,
+        })
+
+    # Second pass: derive jenis_kontrak and is_latest per emp_code
     records: list[dict[str, Any]] = []
     mappings: list[dict[str, Any]] = []
     touched_ids: list[int] = []
     used_sk_links: set[tuple[int, int]] = set()
 
-    for r in rows:
-        ec_id = r["ec_id"]
-        emp_code = r["emp_code"]
-        if emp_code not in code_to_peg:
-            continue
-        peg_id, nama = code_to_peg[emp_code]
+    for emp_code, contracts in kontrak_by_emp.items():
+        sorted_contracts = sorted(
+            contracts,
+            key=lambda c: (c["contract_start_date"] or date.min, c["ec_id"] or 0),
+        )
+        active_contracts = [c for c in sorted_contracts if c["is_del"] == 0]
+        latest_ec_id = active_contracts[-1]["ec_id"] if active_contracts else None
 
-        contract_no = (r.get("contract_no") or "").strip()
-        matched_sk = sk_index.get((peg_id, contract_no))
+        for i, c in enumerate(sorted_contracts):
+            jenis_kontrak = 1 if i == 0 else 0  # PENGANGKATAN for first, PERPANJANGAN for rest
+            is_latest = 1 if c["ec_id"] == latest_ec_id else 0
 
-        # Check unique constraint on (pegawai_id, riwayat_sk_id)
-        if matched_sk and (peg_id, matched_sk) not in used_sk_links:
-            riwayat_sk_id = matched_sk
-            used_sk_links.add((peg_id, matched_sk))
-        else:
-            riwayat_sk_id = None
+            peg_id = c["peg_id"]
+            contract_no = c["contract_no"]
+            matched_sk = sk_index.get((peg_id, contract_no))
 
-        is_del = 1 if r.get("ec_status") is not None and int(r.get("ec_status")) != 1 else 0
+            # Check unique constraint on (pegawai_id, riwayat_sk_id)
+            if matched_sk and (peg_id, matched_sk) not in used_sk_links:
+                riwayat_sk_id = matched_sk
+                used_sk_links.add((peg_id, matched_sk))
+            else:
+                riwayat_sk_id = None
 
-        target_row = {
-            "id": ec_id,
-            "pegawai_id": peg_id,
-            "nipam": emp_code,
-            "nama": nama,
-            "nomor_kontrak": contract_no,
-            "jenis_kontrak": 0,  # PERPANJANGAN
-            "tanggal_mulai": _clean_date(r.get("contract_start_date")),
-            "tanggal_selesai": _clean_date(r.get("contract_exp_date")),
-            "tanggal_sk": _clean_date(r.get("contract_start_date")),
-            "riwayat_sk_id": riwayat_sk_id,
-            "is_latest": 0,
-            "notes": (r.get("ec_description") or "")[:255] if r.get("ec_description") else None,
-            "is_deleted": is_del,
-            "changed_status": 0,
-            "version": 0,
-        }
-        records.append(target_row)
-        touched_ids.append(ec_id)
+            target_row = {
+                "id": c["ec_id"],
+                "pegawai_id": peg_id,
+                "nipam": c["emp_code"],
+                "nama": c["nama"],
+                "nomor_kontrak": contract_no,
+                "jenis_kontrak": jenis_kontrak,
+                "tanggal_mulai": c["tanggal_mulai"],
+                "tanggal_selesai": c["tanggal_selesai"],
+                "tanggal_sk": c["tanggal_sk"],
+                "riwayat_sk_id": riwayat_sk_id,
+                "is_latest": is_latest,
+                "notes": c["notes"],
+                "is_deleted": c["is_del"],
+                "changed_status": 0,
+                "version": 0,
+            }
+            records.append(target_row)
+            touched_ids.append(c["ec_id"])
 
-        mappings.append({
-            "domain": "kepegawaian",
-            "legacy_table": "emp_contract",
-            "legacy_id": ec_id,
-            "new_table": "riwayat_kontrak",
-            "new_id": ec_id,
-            "record_hash": compute_record_hash(target_row),
-        })
+            mappings.append({
+                "domain": "kepegawaian",
+                "legacy_table": "emp_contract",
+                "legacy_id": c["ec_id"],
+                "new_table": "riwayat_kontrak",
+                "new_id": c["ec_id"],
+                "record_hash": compute_record_hash(target_row),
+            })
 
     upsert_cols = [
         "pegawai_id",
@@ -634,6 +679,7 @@ def sync_riwayat_kontrak(conn: Any) -> tuple[int, int, list[int]]:
         "tanggal_selesai",
         "tanggal_sk",
         "riwayat_sk_id",
+        "is_latest",
         "notes",
         "is_deleted",
     ]

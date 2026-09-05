@@ -115,6 +115,15 @@ COMPONENT_CODE_MAP: dict[str, str] = {
     "jml_anak": "JML_ANAK",
     "jml_jiwa": "JML_JIWA",
 }
+# Mapping emp_flag legacy -> EStatusPegawai ordinal (sama dengan stage2_pegawai.py)
+_STATUS_PEGAWAI_MAP_GAJI: dict[int, int] = {
+    1: 2,  # Pegawai Tetap       -> EStatusPegawai.PEGAWAI (ordinal 2)
+    2: 0,  # Pegawai Kontrak     -> EStatusPegawai.KONTRAK (ordinal 0)
+    3: 5,  # Non Pegawai         -> EStatusPegawai.NON_PEGAWAI (ordinal 5)
+    4: 1,  # Calon Pegawai       -> EStatusPegawai.CAPEG (ordinal 1)
+    5: 4,  # Honorer Tetap       -> EStatusPegawai.HONORER (ordinal 4)
+    6: 3,  # Calon Honorer Tetap -> EStatusPegawai.CALON_HONORER (ordinal 3)
+}
 
 
 def normalize_ctype(ctype_val: Any) -> str:
@@ -364,8 +373,11 @@ def migrate_salary_batches(
                 tax_code = str(m_row.get("tax_code") or "").strip().upper()
                 sk = 1 if tax_code.startswith("K") else 0
 
-            sp = m_row.get("emp_flag")
-            if sp is None:
+            sp_raw = m_row.get("emp_flag")
+            if sp_raw is not None:
+                # Peta emp_flag legacy ke ordinal EStatusPegawai Java (bukan passthrough langsung)
+                sp = _STATUS_PEGAWAI_MAP_GAJI.get(sp_raw, peg_info.get("status_pegawai", 0))
+            else:
                 sp = peg_info.get("status_pegawai", 0)
 
             target_master_id = None
