@@ -47,6 +47,30 @@ graphify-out/cache/
 graphify-out/.graphify_analysis.json
 graphify-out/**/.graphify_analysis.json
 
+### Python (tools/) ###
+# Byte-compiled / optimized / DLL files
+tools/**/__pycache__/
+tools/**/*.py[cod]
+tools/**/*$py.class
+
+# Virtual environments
+tools/**/.venv/
+tools/**/venv/
+tools/**/env/
+
+# Test / lint / coverage artifacts
+tools/**/.pytest_cache/
+tools/**/.mypy_cache/
+tools/**/.ruff_cache/
+tools/**/.coverage
+tools/**/htmlcov/
+tools/**/.tox/
+tools/**/.nox/
+
+# Packaging
+tools/**/*.egg-info/
+tools/**/.eggs/
+
 # Beads / Dolt files (added by bd init)
 .dolt/
 *.db
@@ -55,3 +79,16 @@ graphify-out/**/.graphify_analysis.json
 .antigravitycli/
 /src/main/resources/db/migration/V1__baseline.sql.bak
 /docs/php/
+/.env.dummy
+
+# Virtual environments
+.venv/
+
+# Byte-compiled files
+__pycache__/
+
+# Manifest & audit artifacts
+file_sync_manifest.sqlite
+audit_*.csv
+audit_*.json
+reconcile_payroll_report.json
