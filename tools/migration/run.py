@@ -318,9 +318,13 @@ def cmd_stage(args: argparse.Namespace, console=None) -> int:
     # Stage alias resolution
     stage_map = {
         "stage0": lambda: run_stage0(console=console),
+        "stage0_preflight": lambda: run_stage0(console=console),
         "stage1": lambda: run_stage1(console=console),
+        "stage1_master": lambda: run_stage1(console=console),
         "stage2": lambda: run_stage2(console=console),
+        "stage2_pegawai": lambda: run_stage2(console=console),
         "stage3": lambda: run_stage3(console=console),
+        "stage3_kepegawaian": lambda: run_stage3(console=console),
         "stage4": lambda: run_stage4_cuti(dry_run=args.dry_run, console=console),
         "stage4_cuti": lambda: run_stage4_cuti(dry_run=args.dry_run, console=console),
         "stage5": lambda: run_stage5_penggajian(payroll_all=args.payroll_all, dry_run=args.dry_run, console=console),

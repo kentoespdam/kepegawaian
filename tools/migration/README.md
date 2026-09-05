@@ -25,7 +25,104 @@ Microapp ini dirancang dan diimplementasikan secara ketat mematuhi seluruh Archi
 
 ---
 
-## 2. Struktur Direktori Microapp
+## 2. Cara Menjalankan Cepat (Quickstart & Makefile)
+
+Seluruh alur orkestrasi dan utilitas migrasi data telah terintegrasi penuh dengan `Makefile` di root repositori (`kepegawaian/Makefile`). Pengembang atau operator basis data dapat menjalankan seluruh tahapan migrasi melalui target `make migrate-*` tanpa perlu menghafal path atau argumen CLI secara manual.
+
+Untuk melihat daftar ringkas seluruh target migrasi yang tersedia beserta penjelasannya:
+```bash
+make migrate-help
+```
+
+### 2.1 Alur Kerja Rekomendasi (Step-by-Step Migration Workflow)
+
+Proses migrasi data dari Smartoffice ke Kepegawaian direkomendasikan untuk dieksekusi secara teratur mengikuti urutan tahapan berikut:
+
+1. **Setup venv & dependencies**  
+   Inisialisasi Python virtual environment `.venv` di root repositori dan instalasi seluruh pustaka dependensi yang dibutuhkan:
+   ```bash
+   make migrate-venv
+   # Atau manual:
+   python3 -m venv .venv && .venv/bin/pip install -r tools/migration/requirements.txt
+   ```
+
+2. **Preflight check**  
+   Pemeriksaan awal kesiapan koneksi basis data legacy (`smartoffice`), basis data target (`kepegawaian_dev_new`), perizinan cross-database query, inisialisasi tabel `migration_id_map`, dan konektivitas API server Appwrite:
+   ```bash
+   make migrate-preflight
+   # Atau manual:
+   python3 tools/migration/run.py stage --name stage0_preflight
+   ```
+
+3. **Eksekusi migrasi data**  
+   Menjalankan seluruh pipeline ekstraksi, transformasi, pemetaan relasional, dan injeksi baseline audit Hibernate Envers untuk seluruh entitas master hingga transaksional (Stage 0 s/d Stage 7):
+   ```bash
+   make migrate-run-all
+   # Atau manual:
+   python3 tools/migration/run.py run-all
+   ```
+
+4. **Verifikasi & audit**  
+   Audit integritas data relasional (zero-orphan, kepatuhan Hibernate Envers `*_aud`) serta rekonsiliasi nominal matematika penggajian berdeviasi Rp 0,- (*Zero Deviation*):
+   ```bash
+   make migrate-audit
+   # Atau manual:
+   python3 tools/migration/run.py audit
+   ```
+   > **Tips:** Jalankan `make migrate-audit-integrity` untuk verifikasi integritas saja, atau `make migrate-reconcile-payroll` untuk rekonsiliasi penggajian saja.
+
+5. **Sinkronisasi berkas fisik lampiran**  
+   Jalankan simulasi (*dry-run*) terlebih dahulu, kemudian lakukan penyalinan berkas fisik lampiran SK dan profil secara paralel menggunakan worker multi-threaded:
+   ```bash
+   # 1. Simulasi dry-run:
+   make migrate-sync-files-dry
+   
+   # 2. Eksekusi penyalinan fisik (default 4 worker):
+   make migrate-sync-files
+   # Kustomisasi jumlah worker:
+   make migrate-sync-files WORKERS=8
+   
+   # Atau manual:
+   python3 tools/migration/run.py sync-files --dry-run
+   python3 tools/migration/run.py sync-files --workers 4
+   ```
+
+6. **Sinkronisasi user autentikasi Appwrite**  
+   Sinkronisasi akun pegawai ke Appwrite Auth (pembuatan akun berstatus aktif, serta pemblokiran akun untuk pegawai purna tugas/pensiun):
+   ```bash
+   # Simulasi dry-run (opsional):
+   make migrate-sync-auth-dry
+   
+   # Eksekusi provisioning:
+   make migrate-sync-auth
+   
+   # Atau manual:
+   python3 tools/migration/run.py sync-auth
+   ```
+
+---
+
+### 2.2 Tabel Perbandingan Perintah (Cheat-Sheet Makefile vs CLI)
+
+| Target `make` (Root Repo) | Perintah CLI Langsung (`python3`) | Deskripsi Singkat |
+|---|---|---|
+| `make migrate-help` | `python3 tools/migration/run.py --help` | Menampilkan menu bantuan dan daftar seluruh target migrasi yang tersedia. |
+| `make migrate-venv` | `python3 -m venv .venv && .venv/bin/pip install -r tools/migration/requirements.txt` | Inisialisasi `.venv` dan instalasi dependensi `tools/migration/requirements.txt`. |
+| `make migrate-test` | `python3 -m unittest discover -s tools/migration/tests -v` | Menjalankan seluruh rangkaian unit test mandiri microapp migrasi. |
+| `make migrate-preflight` | `python3 tools/migration/run.py stage --name stage0_preflight` | Validasi koneksi DB Legacy, DB Target, izin cross-DB, dan server Appwrite. |
+| `make migrate-run-all` | `python3 tools/migration/run.py run-all` | Menjalankan seluruh pipeline migrasi data (Stage 0 s/d Stage 7) berurutan. |
+| `make migrate-stage STAGE=<nama>` | `python3 tools/migration/run.py stage --name <nama>` | Menjalankan stage migrasi tertentu secara mandiri (contoh: `STAGE=stage2`). |
+| `make migrate-audit` | `python3 tools/migration/run.py audit` | Menjalankan audit penuh (integritas referensial FK, Envers, & rekonsiliasi payroll). |
+| `make migrate-audit-integrity` | `python3 tools/migration/run.py audit --integrity-only` | Menjalankan audit zero-orphan dan kepatuhan Hibernate Envers saja. |
+| `make migrate-reconcile-payroll` | `python3 tools/migration/run.py audit --payroll-only` | Menjalankan audit rekonsiliasi nominal gaji historis Smartoffice vs Target saja. |
+| `make migrate-sync-files-dry` | `python3 tools/migration/run.py sync-files --dry-run` | Simulasi dry-run proses sinkronisasi berkas lampiran fisik dari antrean manifest. |
+| `make migrate-sync-files [WORKERS=N]` | `python3 tools/migration/run.py sync-files --workers N` | Menjalankan worker multi-threaded penyalinan fisik berkas lampiran. |
+| `make migrate-sync-auth` | `python3 tools/migration/run.py sync-auth` | Eksekusi provisioning akun pengguna pegawai ke server Appwrite Auth. |
+| `make migrate-sync-auth-dry` | `python3 tools/migration/run.py sync-auth --dry-run` | Simulasi dry-run provisioning akun pengguna pegawai ke Appwrite Auth. |
+
+---
+
+## 3. Struktur Direktori Microapp
 
 ```text
 tools/migration/
@@ -65,7 +162,7 @@ tools/migration/
 
 ---
 
-## 3. Prasyarat & Instalasi
+## 4. Prasyarat & Instalasi
 
 Pastikan Python versi 3.10 atau lebih baru telah terpasang pada lingkungan eksekusi:
 
@@ -73,7 +170,7 @@ Pastikan Python versi 3.10 atau lebih baru telah terpasang pada lingkungan eksek
 python3 --version
 ```
 
-### 3.1 Instalasi Dependensi
+### 4.1 Instalasi Dependensi
 
 Disarankan menggunakan virtual environment:
 
@@ -92,7 +189,7 @@ Isi pustaka dependensi (`tools/migration/requirements.txt`):
 
 ---
 
-## 4. Konfigurasi Environment (`.env`)
+## 5. Konfigurasi Environment (`.env`)
 
 Microapp secara otomatis memuat variabel lingkungan dari file `.env` di root proyek atau direktori `tools/migration/.env`.
 
@@ -126,17 +223,17 @@ MANIFEST_DB_PATH=file_sync_manifest.sqlite
 
 ---
 
-## 5. Panduan Penggunaan CLI (`run.py`)
+## 6. Panduan Penggunaan CLI (`run.py`)
 
 Microapp menyediakan antarmuka baris perintah (*CLI*) terpadu melalui `tools/migration/run.py`.
 
-### 5.1 Menampilkan Bantuan
+### 6.1 Menampilkan Bantuan
 
 ```bash
 python3 tools/migration/run.py --help
 ```
 
-### 5.2 Menjalankan Seluruh Pipeline (`run-all`)
+### 6.2 Menjalankan Seluruh Pipeline (`run-all`)
 
 Menjalankan Stage 0 hingga Stage 7 secara berurutan:
 
@@ -157,7 +254,7 @@ python3 tools/migration/run.py run-all --fresh
 python3 tools/migration/run.py run-all --force
 ```
 
-### 5.3 Menjalankan Stage Spesifik (`stage`)
+### 6.3 Menjalankan Stage Spesifik (`stage`)
 
 Menjalankan satu stage migrasi secara terisolasi:
 
@@ -187,7 +284,7 @@ python3 tools/migration/run.py stage --name stage6_lampiran
 python3 tools/migration/run.py stage --name stage7_auth
 ```
 
-### 5.4 Sinkronisasi Fisik Berkas Lampiran (`sync-files`)
+### 6.4 Sinkronisasi Fisik Berkas Lampiran (`sync-files`)
 
 Menjalankan worker multi-threaded Fase 2 untuk menyalin file lampiran dari path legacy ke target:
 
@@ -208,7 +305,7 @@ python3 tools/migration/run.py sync-files --dry-run
 python3 tools/migration/run.py sync-files --no-checksum
 ```
 
-### 5.5 Provisioning Autentikasi Mandiri (`sync-auth`)
+### 6.5 Provisioning Autentikasi Mandiri (`sync-auth`)
 
 ```bash
 # Menjalankan provisioning akun ke Appwrite
@@ -218,7 +315,7 @@ python3 tools/migration/run.py sync-auth
 python3 tools/migration/run.py sync-auth --dry-run
 ```
 
-### 5.6 Audit Kualitas Data & Rekonsiliasi (`audit`)
+### 6.6 Audit Kualitas Data & Rekonsiliasi (`audit`)
 
 Menjalankan verifikasi integritas referensial dan rekonsiliasi nominal penggajian:
 
@@ -243,7 +340,7 @@ python3 tools/migration/run.py audit \
 
 ---
 
-## 6. Berkas Artefak Output
+## 7. Berkas Artefak Output
 
 | Nama Berkas | Format | Deskripsi |
 |---|---|---|
@@ -254,7 +351,7 @@ python3 tools/migration/run.py audit \
 
 ---
 
-## 7. Menjalankan Pengujian Mandiri (*Unit Tests*)
+## 8. Menjalankan Pengujian Mandiri (*Unit Tests*)
 
 Microapp dilengkapi dengan cakupan pengujian unit mandiri tanpa membutuhkan dependensi aktif ke database fisik:
 
