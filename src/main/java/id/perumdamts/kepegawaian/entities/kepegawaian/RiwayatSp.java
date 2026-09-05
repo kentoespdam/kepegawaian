@@ -69,5 +69,6 @@ public class RiwayatSp extends LampiranSp {
     private LocalDate tanggalSelesai;
     private String penandaTangan;
     private String jabatanPenandaTangan;
+    @Column(columnDefinition = "TEXT")
     private String notes;
 }
