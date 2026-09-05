@@ -24,6 +24,7 @@ Index lazy-read domain context. **Jangan membaca semua file sekaligus** — pili
 | Modul `penggajian/` — rewrite CQRS/JOOQ (claim order + ADR) | [`docs/penggajian-cqrs-claim-order.md`](docs/penggajian-cqrs-claim-order.md), [`docs/adr/0024-gajibatchroot-kafka-diisolasi-ke-eventpublisher.md`](docs/adr/0024-gajibatchroot-kafka-diisolasi-ke-eventpublisher.md) |
 | Auth, JWT, Spring profile, `@PreAuthorize`, Dev User | [`docs/context/language-security.md`](docs/context/language-security.md) |
 | Relasi antar domain, dependency lintas-modul, arah coupling | [`docs/context/relationships.md`](docs/context/relationships.md) |
+| Migrasi data dari legacy SmartOffice ke Kepegawaian Baru | [`docs/context/language-migrasi.md`](docs/context/language-migrasi.md), [`docs/adr/0044-staged-batch-etl-runner-migrasi-legacy.md`](docs/adr/0044-staged-batch-etl-runner-migrasi-legacy.md) |
 | Contoh percakapan domain expert, istilah ambigu | [`docs/context/examples-and-flags.md`](docs/context/examples-and-flags.md) |
 
 ## Sub-Context Files
@@ -36,6 +37,7 @@ Index lazy-read domain context. **Jangan membaca semua file sekaligus** — pili
 | [`language-profil.md`](docs/context/language-profil.md) | ~5 KB | Glossary modul profil |
 | [`language-cuti.md`](docs/context/language-cuti.md) | ~4 KB | Glossary modul cuti |
 | [`language-penggajian.md`](docs/context/language-penggajian.md) | ~4 KB | Glossary modul penggajian (payroll & batch) |
+| [`language-migrasi.md`](docs/context/language-migrasi.md) | ~2 KB | Glossary migrasi data SmartOffice ke DB baru |
 | [`language-security.md`](docs/context/language-security.md) | ~2 KB | Glossary auth/security |
 | [`relationships.md`](docs/context/relationships.md) | ~5 KB | Relasi & arah dependency |
 | [`decisions-pegawai.md`](docs/context/decisions-pegawai.md) | ~10 KB | Keputusan rewrite pegawai & kepegawaian |
