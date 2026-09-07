@@ -34,6 +34,10 @@ Pasangan `kode`→`nominal` untuk konstanta/parameter global yang dipakai formul
 **Pendapatan Non-Pajak** (GajiPendapatanNonPajak):
 Daftar `kode`→`nominal` (+`notes`) komponen penghasilan yang dikecualikan dari perhitungan pajak.
 
+**Gaji KPI** (GajiKpi):
+Data tunjangan kinerja bulanan dan PPh 21 TER per pegawai (`nipam`) untuk satu `periode` (`YYYY-MM`). Bersifat input eksternal bulanan yang di-upload via file Excel (atau dikelola mandiri). Berbeda dari entitas master lainnya, `GajiKpi` menggunakan direct delete (tanpa `is_deleted`) dan tanpa Envers audit trail untuk menjaga performa batch upsert.
+_Avoid_: "gaji kpi aud", "carcass kpi".
+
 ### Batch pemrosesan gaji
 
 **Batch Gaji** (GajiBatchRoot):

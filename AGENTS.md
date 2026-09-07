@@ -121,3 +121,14 @@ bd close <id>         # Complete work
 - NEVER say "ready to push when you are" - YOU must push
 - If push fails, resolve and retry until it succeeds
 <!-- END BEADS INTEGRATION -->
+
+---
+
+## Agent Delegation Strategy
+
+**Mandatory Workflow for Planning and Execution:**
+
+1. **Root Agent (Thinking/Planning):** The main agent (you) must act exclusively as the planner, coordinator, and thinker. Do NOT write code, edit files, or run execution commands directly unless it is strictly required for preliminary research during planning.
+2. **Subagents (Execution):** For all execution tasks—including running scripts, manipulating files, editing code, and analyzing logs—you MUST delegate the work to subagents.
+3. **Model Selection:** When invoking subagents via the `invoke_subagent` tool, you MUST set the `Model` parameter to `flash` or `flash_lite` (which corresponds to Gemini Flash Low) to ensure fast and cost-effective execution.
+4. **Coordination:** Use `send_message` to give precise instructions to your `flash` subagents and verify their work once they report back.

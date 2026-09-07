@@ -1,9 +1,11 @@
 package id.perumdamts.kepegawaian.entities.penggajian;
 
-import id.perumdamts.kepegawaian.entities.commons.IdsAbstract;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
@@ -11,27 +13,46 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
-import org.hibernate.envers.Audited;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(indexes = {
         @Index(columnList = "nipam"),
-        @Index(columnList = "periode"),
-        @Index(columnList = "is_deleted")
+        @Index(columnList = "periode")
 }, uniqueConstraints = @UniqueConstraint(name = "uk_gj_kpi_nipam_periode", columnNames = {"nipam", "periode"}))
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@SQLDelete(sql = "UPDATE gaji_kpi SET is_deleted=true WHERE id=?")
-@SQLRestriction("is_deleted = FALSE")
 @EntityListeners(AuditingEntityListener.class)
-@Audited
-public class GajiKpi extends IdsAbstract {
+public class GajiKpi implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @CreatedBy
+    @Column(name = "created_by", updatable = false)
+    private String createdBy;
+
+    @CreatedDate
+    @Column(name = "created_at", updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime createdAt;
+
+    @LastModifiedBy
+    @Column(name = "updated_by")
+    private String updatedBy;
+
+    @LastModifiedDate
+    @Column(name = "updated_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    private LocalDateTime updatedAt;
+
     private String nipam;
     @Column(length = 7)
     private String periode;

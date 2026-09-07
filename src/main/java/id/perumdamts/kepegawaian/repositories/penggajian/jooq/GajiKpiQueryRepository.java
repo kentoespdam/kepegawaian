@@ -72,7 +72,6 @@ public class GajiKpiQueryRepository {
                         GAJI_KPI.PPH21_TER)
                 .from(GAJI_KPI)
                 .where(GAJI_KPI.ID.eq(id))
-                .and(GAJI_KPI.IS_DELETED.eq(false))
                 .fetchOptional(GajiKpiJooqMapper::mapToResponse);
     }
 
@@ -85,8 +84,7 @@ public class GajiKpiQueryRepository {
     }
 
     private Condition baseWhere(String nipam, String periode) {
-        return GAJI_KPI.IS_DELETED.eq(false)
-                .and(StringUtils.hasText(nipam) ? GAJI_KPI.NIPAM.likeIgnoreCase("%" + nipam + "%") : DSL.noCondition())
+        return (StringUtils.hasText(nipam) ? GAJI_KPI.NIPAM.likeIgnoreCase("%" + nipam + "%") : DSL.noCondition())
                 .and(StringUtils.hasText(periode) ? GAJI_KPI.PERIODE.eq(periode) : DSL.noCondition());
     }
 }

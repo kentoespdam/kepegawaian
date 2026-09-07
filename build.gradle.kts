@@ -93,6 +93,9 @@ dependencies {
     // Apache POI for Excel
     implementation("org.apache.poi:poi-ooxml:$poiVersion")
 
+    // Apache Fesod for fast Excel processing
+    implementation("org.apache.fesod:fesod-sheet:2.0.1-incubating")
+
     // Jackson
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 
