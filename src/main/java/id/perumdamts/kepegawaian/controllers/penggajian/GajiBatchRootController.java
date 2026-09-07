@@ -10,14 +10,17 @@ import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRoot.GajiBatchRootProce
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRoot.GajiBatchRootResponse;
 import id.perumdamts.kepegawaian.entities.commons.EProsesGaji;
 import id.perumdamts.kepegawaian.exceptions.BadRequestException;
+import id.perumdamts.kepegawaian.services.penggajian.gajiBatchPotonganTkk.GajiBatchPotonganTkkBatchService;
 import id.perumdamts.kepegawaian.services.penggajian.gajiBatchRoot.GajiBatchRootCommandService;
 import id.perumdamts.kepegawaian.services.penggajian.gajiBatchRoot.GajiBatchRootQueryService;
 import id.perumdamts.kepegawaian.services.penggajian.gajiBatchRoot.GajiBatchRootWorkflowCommandService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.http.MediaType;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +35,7 @@ public class GajiBatchRootController {
     private final GajiBatchRootCommandService commandService;
     private final GajiBatchRootWorkflowCommandService workflowCommandService;
     private final GajiBatchRootQueryService queryService;
+    private final GajiBatchPotonganTkkBatchService batchPotonganTkkService;
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
     @Operation(summary = "List data dengan paginasi")
@@ -50,6 +54,17 @@ public class GajiBatchRootController {
         request.setPeriode(periode);
         request.setStatus(status);
         return CustomResult.page(queryService.findPage(request));
+    }
+
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
+    @Operation(summary = "Download template potongan TKK")
+    @GetMapping("/potongan-tkk/template/download")
+    public ResponseEntity<Resource> downloadTemplate() {
+        Resource resource = batchPotonganTkkService.getTemplateResource();
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"template_potongan_tkk.xlsx\"")
+                .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                .body(resource);
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:PROCESS')")

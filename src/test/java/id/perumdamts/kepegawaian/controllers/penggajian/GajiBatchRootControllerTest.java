@@ -6,15 +6,18 @@ import id.perumdamts.kepegawaian.dto.commons.SavedResult;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchRoot.*;
 import id.perumdamts.kepegawaian.entities.commons.EProsesGaji;
 import id.perumdamts.kepegawaian.exceptions.BadRequestException;
+import id.perumdamts.kepegawaian.services.penggajian.gajiBatchPotonganTkk.GajiBatchPotonganTkkBatchService;
 import id.perumdamts.kepegawaian.services.penggajian.gajiBatchRoot.GajiBatchRootCommandService;
 import id.perumdamts.kepegawaian.services.penggajian.gajiBatchRoot.GajiBatchRootQueryService;
 import id.perumdamts.kepegawaian.services.penggajian.gajiBatchRoot.GajiBatchRootWorkflowCommandService;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import org.junit.jupiter.api.Test;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -33,7 +36,8 @@ class GajiBatchRootControllerTest {
     private final GajiBatchRootCommandService commandService = mock(GajiBatchRootCommandService.class);
     private final GajiBatchRootWorkflowCommandService workflowCommandService = mock(GajiBatchRootWorkflowCommandService.class);
     private final GajiBatchRootQueryService queryService = mock(GajiBatchRootQueryService.class);
-    private final GajiBatchRootController controller = new GajiBatchRootController(commandService, workflowCommandService, queryService);
+    private final GajiBatchPotonganTkkBatchService batchPotonganTkkService = mock(GajiBatchPotonganTkkBatchService.class);
+    private final GajiBatchRootController controller = new GajiBatchRootController(commandService, workflowCommandService, queryService, batchPotonganTkkService);
 
     // --- INDEX (GET) ---
 
@@ -178,5 +182,22 @@ class GajiBatchRootControllerTest {
         ResponseEntity<DeletedResult> result = controller.delete("202609-001");
 
         assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode());
+    }
+
+    // --- DOWNLOAD TEMPLATE ---
+
+    @Test
+    void downloadTemplate_returnsResource() {
+        Resource mockResource = mock(Resource.class);
+        when(batchPotonganTkkService.getTemplateResource()).thenReturn(mockResource);
+
+        ResponseEntity<Resource> response = controller.downloadTemplate();
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(mockResource, response.getBody());
+        assertNotNull(response.getHeaders().getFirst(HttpHeaders.CONTENT_DISPOSITION));
+        assertTrue(response.getHeaders().getFirst(HttpHeaders.CONTENT_DISPOSITION).contains("template_potongan_tkk.xlsx"));
+        assertEquals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                response.getHeaders().getContentType().toString());
     }
 }
