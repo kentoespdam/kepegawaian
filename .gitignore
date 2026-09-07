@@ -89,6 +89,9 @@ __pycache__/
 
 # Manifest & audit artifacts
 file_sync_manifest.sqlite
+
+# Real payroll specimen files (PII — local only, never commit)
+template/data_*.xlsx
 audit_*.csv
 audit_*.json
 reconcile_payroll_report.json
