@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.repositories.kepegawaian.jooq;
 
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiQuery;
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiRequest;
+import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 import org.junit.jupiter.api.Test;
@@ -84,6 +85,7 @@ class RiwayatTerminasiMainListRealDbTest {
         int skBerLampiranGanda = dsl.selectCount()
                 .from(LAMPIRAN_SK)
                 .where(LAMPIRAN_SK.IS_DELETED.eq(false))
+                .and(LAMPIRAN_SK.REF.eq((byte) EJenisSk.SK_PENSIUN.ordinal()))
                 .groupBy(LAMPIRAN_SK.REF, LAMPIRAN_SK.REF_ID)
                 .having(DSL.count().gt(1))
                 .fetch().size();

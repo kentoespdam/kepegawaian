@@ -8,7 +8,7 @@ import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.penggajian.jooq.GajiKpiBatchRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.fesod.sheet.FastExcel;
+import org.apache.fesod.sheet.FesodSheet;
 import org.apache.fesod.sheet.context.AnalysisContext;
 import org.apache.fesod.sheet.read.listener.ReadListener;
 import org.springframework.core.io.ClassPathResource;
@@ -89,7 +89,7 @@ public class GajiKpiBatchService {
             }
 
             // Pph21Ter validation
-            Double pph21Ter = row.getPph21Ter() != null ? row.getPph21Ter() : 0.0;
+            double pph21Ter = row.getPph21Ter() != null ? row.getPph21Ter() : 0.0;
             if (pph21Ter < 0) {
                 errors.add("Baris " + rowNum + ": PPh 21 TER tidak boleh negatif");
             }
@@ -217,7 +217,7 @@ public class GajiKpiBatchService {
     private List<IndexedRow> readExcel(MultipartFile file) {
         List<IndexedRow> rows = new ArrayList<>();
         try (InputStream inputStream = file.getInputStream()) {
-            FastExcel.read(inputStream, GajiKpiExcelRow.class, new ReadListener<GajiKpiExcelRow>() {
+            FesodSheet.read(inputStream, GajiKpiExcelRow.class, new ReadListener<GajiKpiExcelRow>() {
                 @Override
                 public void invoke(GajiKpiExcelRow data, AnalysisContext context) {
                     int rowNum = (context != null && context.readRowHolder() != null && context.readRowHolder().getRowIndex() != null)

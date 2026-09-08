@@ -8,7 +8,7 @@ import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.penggajian.jooq.GajiBatchPotonganTkkBatchRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.fesod.sheet.FastExcel;
+import org.apache.fesod.sheet.FesodSheet;
 import org.apache.fesod.sheet.context.AnalysisContext;
 import org.apache.fesod.sheet.read.listener.ReadListener;
 import org.springframework.core.io.ClassPathResource;
@@ -142,7 +142,7 @@ public class GajiBatchPotonganTkkBatchService {
     private List<IndexedRow> readExcel(InputStream inputStream) {
         List<IndexedRow> rows = new ArrayList<>();
         try {
-            FastExcel.read(inputStream, GajiBatchPotonganTkkExcelRow.class, new ReadListener<GajiBatchPotonganTkkExcelRow>() {
+            FesodSheet.read(inputStream, GajiBatchPotonganTkkExcelRow.class, new ReadListener<GajiBatchPotonganTkkExcelRow>() {
                 @Override
                 public void invoke(GajiBatchPotonganTkkExcelRow data, AnalysisContext context) {
                     int rowNum = (context != null && context.readRowHolder() != null && context.readRowHolder().getRowIndex() != null)

@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record;
+import org.jooq.impl.DSL;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -46,6 +47,8 @@ public class RiwayatTerminasiQueryRepository {
                 .where(condition)
                 .fetchOptional(0, Long.class).orElse(0L);
 
+        var l2 = LAMPIRAN_SK.as("l2");
+
         var data = dsl.select(RiwayatTerminasiSelects.QUERY_COLUMNS)
                 .from(RIWAYAT_TERMINASI)
                 .leftJoin(ALASAN_BERHENTI).on(RIWAYAT_TERMINASI.ALASAN_TERMINASI_ID.eq(ALASAN_BERHENTI.ID))
@@ -54,9 +57,13 @@ public class RiwayatTerminasiQueryRepository {
                 .leftJoin(GOLONGAN).on(RIWAYAT_TERMINASI.GOLONGAN_ID.eq(GOLONGAN.ID))
                 .leftJoin(RIWAYAT_SK).on(RIWAYAT_TERMINASI.RIWAYAT_SK_ID.eq(RIWAYAT_SK.ID))
                 .leftJoin(RiwayatTerminasiSelects.SK_GOL).on(RIWAYAT_SK.GOLONGAN_ID.eq(RiwayatTerminasiSelects.SK_GOL.ID))
-                .leftJoin(LAMPIRAN_SK).on(LAMPIRAN_SK.REF.eq((byte) EJenisSk.SK_PENSIUN.ordinal())
-                        .and(LAMPIRAN_SK.REF_ID.eq(RIWAYAT_SK.ID))
-                        .and(LAMPIRAN_SK.IS_DELETED.eq(false)))
+                .leftJoin(LAMPIRAN_SK).on(LAMPIRAN_SK.ID.eq(
+                        dsl.select(DSL.max(l2.ID))
+                                .from(l2)
+                                .where(l2.REF.eq((byte) EJenisSk.SK_PENSIUN.ordinal()))
+                                .and(l2.REF_ID.eq(RIWAYAT_SK.ID))
+                                .and(l2.IS_DELETED.eq(false))
+                ))
                 .where(condition)
                 .orderBy(sortOrder)
                 .limit(request.getSizeOrDefault())
@@ -67,6 +74,8 @@ public class RiwayatTerminasiQueryRepository {
     }
 
     public Optional<RiwayatTerminasiQuery> getById(Long id) {
+        var l2 = LAMPIRAN_SK.as("l2");
+
         return dsl.select(RiwayatTerminasiSelects.QUERY_COLUMNS)
                 .from(RIWAYAT_TERMINASI)
                 .leftJoin(ALASAN_BERHENTI).on(RIWAYAT_TERMINASI.ALASAN_TERMINASI_ID.eq(ALASAN_BERHENTI.ID))
@@ -75,9 +84,13 @@ public class RiwayatTerminasiQueryRepository {
                 .leftJoin(GOLONGAN).on(RIWAYAT_TERMINASI.GOLONGAN_ID.eq(GOLONGAN.ID))
                 .leftJoin(RIWAYAT_SK).on(RIWAYAT_TERMINASI.RIWAYAT_SK_ID.eq(RIWAYAT_SK.ID))
                 .leftJoin(RiwayatTerminasiSelects.SK_GOL).on(RIWAYAT_SK.GOLONGAN_ID.eq(RiwayatTerminasiSelects.SK_GOL.ID))
-                .leftJoin(LAMPIRAN_SK).on(LAMPIRAN_SK.REF.eq((byte) EJenisSk.SK_PENSIUN.ordinal())
-                        .and(LAMPIRAN_SK.REF_ID.eq(RIWAYAT_SK.ID))
-                        .and(LAMPIRAN_SK.IS_DELETED.eq(false)))
+                .leftJoin(LAMPIRAN_SK).on(LAMPIRAN_SK.ID.eq(
+                        dsl.select(DSL.max(l2.ID))
+                                .from(l2)
+                                .where(l2.REF.eq((byte) EJenisSk.SK_PENSIUN.ordinal()))
+                                .and(l2.REF_ID.eq(RIWAYAT_SK.ID))
+                                .and(l2.IS_DELETED.eq(false))
+                ))
                 .where(RIWAYAT_TERMINASI.ID.eq(id))
                 .and(RIWAYAT_TERMINASI.IS_DELETED.eq(false))
                 .fetchOptional(this::toQuery);

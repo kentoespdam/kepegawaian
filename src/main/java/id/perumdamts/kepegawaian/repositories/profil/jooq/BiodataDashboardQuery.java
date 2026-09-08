@@ -11,7 +11,6 @@ import org.jooq.Field;
 import org.jooq.Record;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 import static id.perumdamts.kepegawaian.jooq.tables.Biodata.BIODATA;
@@ -19,9 +18,7 @@ import static id.perumdamts.kepegawaian.jooq.tables.GajiPendapatanNonPajak.GAJI_
 import static id.perumdamts.kepegawaian.jooq.tables.JenjangPendidikan.JENJANG_PENDIDIKAN;
 import static id.perumdamts.kepegawaian.jooq.tables.Pegawai.PEGAWAI;
 import static id.perumdamts.kepegawaian.jooq.tables.Pendidikan.PENDIDIKAN;
-import static org.jooq.impl.DSL.field;
-import static org.jooq.impl.DSL.multiset;
-import static org.jooq.impl.DSL.select;
+import static org.jooq.impl.DSL.*;
 
 /**
  * Dashboard biodata — multiset subqueries isolate PEGAWAI and PENDIDIKAN
@@ -36,8 +33,7 @@ public class BiodataDashboardQuery {
     private final DSLContext dsl;
 
     // ── Multiset subqueries (correlated on BIODATA.NIK) ────────────────
-    @SuppressWarnings("rawtypes")
-    private final Field pegawaiMultiset = multiset(
+    private final Field<Record> pegawaiMultiset = multiset(
             select(
                     PEGAWAI.EMAIL,
                     GAJI_PENDAPATAN_NON_PAJAK.KODE
@@ -49,8 +45,7 @@ public class BiodataDashboardQuery {
                     .and(PEGAWAI.IS_DELETED.eq(false))
     ).as("pegawai").convertFrom(r -> r.stream().findFirst().orElse(null));
 
-    @SuppressWarnings("rawtypes")
-    private final Field pendidikanMultiset = multiset(
+    private final Field<Record> pendidikanMultiset = multiset(
             select(
                     JENJANG_PENDIDIKAN.NAMA.as("tingkat"),
                     PENDIDIKAN.JURUSAN,
@@ -93,10 +88,9 @@ public class BiodataDashboardQuery {
                 .where(BIODATA.NIK.eq(nik))
                 .and(BIODATA.IS_DELETED.eq(false))
                 .fetchOptional()
-                .map(r -> mapRow((Record) r));
+                .map(this::mapRow);
     }
 
-    @SuppressWarnings("unchecked")
     private BiodataDashboardResponse mapRow(Record r) {
         String jenisKelamin = null;
         Byte jkByte = r.get(BIODATA.JENIS_KELAMIN);
@@ -118,12 +112,12 @@ public class BiodataDashboardQuery {
         }
 
         // ── Extract from PEGAWAI multiset ───────────────────────────────
-        Record pegawai = (Record) r.get(pegawaiMultiset);
+        Record pegawai = r.get(pegawaiMultiset);
         String email = pegawai != null ? pegawai.get(EMAIL) : null;
         String kodePajak = pegawai != null ? pegawai.get(KODE_PAJAK) : null;
 
         // ── Extract from PENDIDIKAN multiset ────────────────────────────
-        Record pendidikan = (Record) r.get(pendidikanMultiset);
+        Record pendidikan = r.get(pendidikanMultiset);
         PendidikanDashboard detailPendidikan = null;
         if (pendidikan != null) {
             String tingkat = pendidikan.get(TINGKAT);
