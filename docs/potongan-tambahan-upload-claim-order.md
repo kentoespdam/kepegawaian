@@ -24,16 +24,25 @@ Satu issue, satu owner. Kerjakan langkah **berurutan**. Referensi perilaku: lega
 
 ## Claim Order
 
-- [ ] **T1 · Parsing core** — `GajiBatchPotonganTambahanBatchService`:
+- [x] **T1 · Parsing core** — `GajiBatchPotonganTambahanBatchService`:
   - `@ExcelProperty(index=…)` model kolom A..X (no, nama, nipam, gaji, Double potongan) — pola `GajiBatchPotonganTkkExcelRow`.
   - Baca SEMUA sheet (loop index; pola legacy `getSheetCount`). Deteksi header B/C; label dari baris berikutnya; baris data A,B,C non-blank; baris total otomatis lolos (B/C kosong).
   - Slug kode + prefix `ADD_`; kumpulkan `ValidatedRow(rowNum, sheetName, nipam, kode, nama, nilai)`.
-- [ ] **T2 · Validasi & guard** — status guard `WAIT_VERIFICATION_PHASE_2`; duplikat antar-sheet; NIPAM→master batch (chunk 1000); negatif; digest 20. Satu error saja → `BadRequestException`, no write.
-- [ ] **T3 · Persist** — simpan file (`FileUploadUtil.uploadPenggajian`) + lampiran; delete `ADD_%` per batch (JOOQ repo baru, pola `GajiBatchPotonganTkkBatchRepository`); batch insert; recalculate per master terdampak (expose `recalculateAdditional` — cek `gitnexus_impact` dulu); return `{n} success`.
-- [ ] **T4 · Controller** — `PATCH /upload/{rootBatchId}` signature tetap; tambah `GET /template/download/{rootBatchId}` (stub → T5). `PreAuthorize` mengikuti pola existing (WRITE utk upload, READ utk template).
-- [ ] **T5 · Template generator** — fesod write, sheet per `namaOrganisasi`, pre-fill dari `GajiBatchMaster` (NO/NAMA/NIPAM/GAJI=gaji_pokok), header baris 9–10 identik form (label kategori standar form), A6 judul + A7 `BULAN {periode}`. Filename `potongan_tambahan_{rootBatchId}.xlsx`.
-- [ ] **T6 · Test** — unit parser (multi-sheet, typo header, baris total, 0/negatif, duplikat antar-sheet, unknown NIPAM), slug, guard status, replace semantics, recalculate terpanggil; controller test `"{n} success"`.
-- [ ] **T7 · Ship** — `./gradlew clean compileJava` + `./gradlew test` zero error → `detect_changes` → close issue → commit `feat: potongan tambahan upload via fesod lokal` → push.
+- [x] **T2 · Validasi & guard** — status guard `WAIT_VERIFICATION_PHASE_2`; duplikat antar-sheet; NIPAM→master batch (chunk 1000); negatif; digest 20. Satu error saja → `BadRequestException`, no write.
+- [x] **T3 · Persist** — simpan file (`FileUploadUtil.uploadPenggajian`) + lampiran; delete `ADD_%` per batch (JOOQ repo baru, pola `GajiBatchPotonganTkkBatchRepository`); batch insert; recalculate per master terdampak (expose `recalculateAdditional` — cek `gitnexus_impact` dulu); return `{n} success`.
+- [x] **T4 · Controller** — `PATCH /upload/{rootBatchId}` signature tetap; tambah `GET /template/download/{rootBatchId}` (stub → T5). `PreAuthorize` mengikuti pola existing (WRITE utk upload, READ utk template).
+- [x] **T5 · Template generator** — fesod write, sheet per `namaOrganisasi`, pre-fill dari `GajiBatchMaster` (NO/NAMA/NIPAM/GAJI=gaji_pokok), header baris 9–10 identik form (label kategori standar form), A6 judul + A7 `BULAN {periode}`. Filename `potongan_tambahan_{rootBatchId}.xlsx`.
+- [x] **T6 · Test** — unit parser (multi-sheet, typo header, baris total, 0/negatif, duplikat antar-sheet, unknown NIPAM), slug, guard status, replace semantics, recalculate terpanggil; controller test `"{n} success"`.
+- [x] **T7 · Ship** — `./gradlew clean compileJava` + `./gradlew test` zero error → `detect_changes` → close issue → commit `feat: potongan tambahan upload via fesod lokal` → push.
+
+## Catatan implementasi (deviasi dari rencana)
+
+- **Parser & template memakai POI langsung, bukan fesod.** Form Potongan Gaji punya header/label baris ganda yang isinya dinamis (anchor B=`NAMA`/C=`NIPAM`, label kategori di baris berikutnya) — model fesod `@ExcelProperty` yang diketik tidak bisa menangkap baris label (string label masuk field `Double`). Pola fesod existing di repo (KPI/TKK) hanya untuk template datar berkolom tetap. Algoritma parser persis mengikuti ADR-0056 (deteksi dinamis, slug `ADD_`, all-or-nothing), hanya tool pembacaan yang POI (`SheetRowBuffer`). `GajiBatchPotonganTambahanExcelRow` (`@ExcelProperty`) dihapus karena mati. Kalau fesod `noModelData` (Map head + `doReadAll`) mau dipakai, itu bisa jadi refactor terpisah.
+- **Baris total dilewati saat kolom B **dan** C kosong** (bukan A/B/C) — baris TOTAL mengisi kolom A, jadi syarat lama tidak pernah match.
+- **Recalculate per master terdampak**: master yang punya `ADD_%` lama (terhapus saat replace) ∪ master yang ada di file upload; sisanya tidak disentuh.
+- **Template endpoint di `GajiBatchMasterController`** (`GET /penggajian/batch/master/template/download/{rootBatchId}`) — satu tempat dengan upload + download per-batch lain (table-gaji, potongan-gaji).
+- `GajiBatchMasterCommandService` (forward legacy) dihapus total; controller langsung pakai `GajiBatchPotonganTambahanBatchService`.
+- Test `RiwayatTerminasiMainListRealDbTest` gagal di baseline (data DB dev: 23 baris `riwayat_sk pensiun` ber-lampiran >1) — tidak terkait perubahan ini.
 
 ## Dependency
 

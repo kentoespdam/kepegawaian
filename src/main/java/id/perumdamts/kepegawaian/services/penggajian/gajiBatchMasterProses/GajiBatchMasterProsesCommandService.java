@@ -79,7 +79,7 @@ public class GajiBatchMasterProsesCommandService {
         return true;
     }
 
-    private void recalculateAdditional(GajiBatchMaster gajiBatchMaster) {
+    public void recalculateAdditional(GajiBatchMaster gajiBatchMaster) {
         List<GajiBatchMasterProses> gajiBatchMasterProsesList = repository.findByBatchMasterId(gajiBatchMaster.getId());
         double addPemasukan = getSumAdditionalByJenisGaji(gajiBatchMasterProsesList, EJenisGaji.PEMASUKAN);
         double addPotongan = getSumAdditionalByJenisGaji(gajiBatchMasterProsesList, EJenisGaji.POTONGAN);

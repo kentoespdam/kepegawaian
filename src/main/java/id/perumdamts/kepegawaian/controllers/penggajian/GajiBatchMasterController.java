@@ -4,12 +4,14 @@ import id.perumdamts.kepegawaian.dto.commons.*;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterIndexQuery;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterPostRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterResponse;
-import id.perumdamts.kepegawaian.services.penggajian.gajiBatchMaster.GajiBatchMasterCommandService;
 import id.perumdamts.kepegawaian.services.penggajian.gajiBatchMaster.GajiBatchMasterQueryService;
+import id.perumdamts.kepegawaian.services.penggajian.gajiBatchPotonganTambahan.GajiBatchPotonganTambahanBatchService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,8 +24,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequiredArgsConstructor
 @RequestMapping("/penggajian/batch/master")
 public class GajiBatchMasterController {
-    private final GajiBatchMasterCommandService commandService;
     private final GajiBatchMasterQueryService queryService;
+    private final GajiBatchPotonganTambahanBatchService batchPotonganTambahanService;
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
     @Operation(summary = "Ambil gaji batch master by periode")
@@ -63,12 +65,23 @@ public class GajiBatchMasterController {
         return queryService.downloadPotonganGaji(rootBatchId);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
+    @Operation(summary = "download template potongan tambahan per batch")
+    @GetMapping("/template/download/{rootBatchId}")
+    public ResponseEntity<Resource> downloadTemplatePotonganTambahan(@PathVariable String rootBatchId) {
+        Resource resource = batchPotonganTambahanService.getTemplateResource(rootBatchId);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"potongan_tambahan_" + rootBatchId + ".xlsx\"")
+                .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                .body(resource);
+    }
+
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:WRITE')")
     @Operation(summary = "upload potongan tambahan")
     @PatchMapping(value = "upload/{rootBatchId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<SavedResult<String>> uploadPotonganTambahan(
             @PathVariable String rootBatchId,
             @Valid @ModelAttribute GajiBatchMasterPostRequest request) {
-        return CustomResult.save(commandService.uploadPotonganTambahan(rootBatchId, request));
+        return CustomResult.save(batchPotonganTambahanService.upload(request.getFile(), rootBatchId));
     }
 }
