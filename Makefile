@@ -8,6 +8,12 @@ build-dev: bootJar
 bootJar:
 	./gradlew bootJar
 
+.PHONY: run-dev dev
+run-dev:
+	./gradlew bootRun
+
+dev: run-dev
+
 .PHONY: start-dev
 start-dev:
 	docker compose -f ./docker/development/docker-compose.yml up -d
@@ -24,9 +30,11 @@ rebuild-dev:
 build-prod:
 	docker compose -f ./docker/production/docker-compose.yml build
 
-.PHONY: run-prod
+.PHONY: start-prod run-prod
 start-prod:
 	docker compose --env-file ./.env -f ./docker/production/docker-compose.yml up -d
+
+run-prod: start-prod
 
 .PHONY: stop-prod
 stop-prod:
