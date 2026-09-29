@@ -36,6 +36,7 @@
   - **Ponytail**: WAJIB load skill `/ponytail` sebelum modifikasi kode.
   - **Issue Tracking (Beads/bd)**: Klaim tugas (`bd update <id> --claim`), tutup tugas (`bd close <id>`). DILARANG membuat todo list manual.
   - **GitNexus First**: WAJIB `gitnexus_impact` & `gitnexus_query` sebelum eksplorasi atau modifikasi.
+  - **Graphify**: WAJIB gunakan `graphify query "<query>"` atau `graphify path "<A>" "<B>"` untuk query arsitektur/konsep, jalankan `graphify . --update` jika ada perubahan modul/struktur. Output graph berada di `graphify-out/` (`graph.html`, `graph.json`, `GRAPH_REPORT.md`). Untuk semantic extraction, TIDAK PERLU menggunakan external LLM model secara langsung/independen, melainkan proses ekstraksi semantik dilakukan sendiri melalui sub-agent internal (`flash_lite`).
   - **Sandbox Policy**: WAJIB gunakan `BypassSandbox: true` untuk semua perintah `git` dan `bd`.
 
 - **File Size & Modularity (Token Conservation)**:
