@@ -82,14 +82,14 @@ class GajiKpiBatchServiceTest {
 
         @Test
         void upload_nullFile_throwsBadRequest() {
-            assertThrows(BadRequestException.class, () -> service.upload(null, "2026-01", "admin"));
+            assertThrows(BadRequestException.class, () -> service.upload(null, "202601", "admin"));
         }
 
         @Test
         void upload_emptyFile_throwsBadRequest() {
             MockMultipartFile emptyFile = new MockMultipartFile("file", "test.xlsx",
                     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", new byte[0]);
-            assertThrows(BadRequestException.class, () -> service.upload(emptyFile, "2026-01", "admin"));
+            assertThrows(BadRequestException.class, () -> service.upload(emptyFile, "202601", "admin"));
         }
 
         @Test
@@ -97,7 +97,7 @@ class GajiKpiBatchServiceTest {
             MockMultipartFile badExtFile = new MockMultipartFile("file", "test.pdf",
                     "application/pdf", new byte[]{1, 2, 3});
             BadRequestException ex = assertThrows(BadRequestException.class,
-                    () -> service.upload(badExtFile, "2026-01", "admin"));
+                    () -> service.upload(badExtFile, "202601", "admin"));
             assertTrue(ex.getMessage().contains("Format file harus berupa Excel"));
         }
 
@@ -106,7 +106,7 @@ class GajiKpiBatchServiceTest {
             MockMultipartFile badMimeFile = new MockMultipartFile("file", "test.xlsx",
                     "image/png", new byte[]{1, 2, 3});
             BadRequestException ex = assertThrows(BadRequestException.class,
-                    () -> service.upload(badMimeFile, "2026-01", "admin"));
+                    () -> service.upload(badMimeFile, "202601", "admin"));
             assertTrue(ex.getMessage().contains("Tipe file tidak valid"));
         }
 
@@ -121,7 +121,7 @@ class GajiKpiBatchServiceTest {
                 }
             };
             BadRequestException ex = assertThrows(BadRequestException.class,
-                    () -> service.upload(bigFile, "2026-01", "admin"));
+                    () -> service.upload(bigFile, "202601", "admin"));
             assertTrue(ex.getMessage().contains("Ukuran file melebihi batas"));
         }
     }
@@ -132,14 +132,14 @@ class GajiKpiBatchServiceTest {
 
         @Test
         void normalizeRequestedPeriode_valid6Digits_returnsNormalized() {
-            assertEquals("2026-01", service.normalizeRequestedPeriode("202601"));
-            assertEquals("2026-12", service.normalizeRequestedPeriode("202612"));
+            assertEquals("202601", service.normalizeRequestedPeriode("202601"));
+            assertEquals("202612", service.normalizeRequestedPeriode("202612"));
         }
 
         @Test
         void normalizeRequestedPeriode_valid7Chars_returnsNormalized() {
-            assertEquals("2026-01", service.normalizeRequestedPeriode("2026-01"));
-            assertEquals("2026-11", service.normalizeRequestedPeriode("2026-11"));
+            assertEquals("202601", service.normalizeRequestedPeriode("2026-01"));
+            assertEquals("202611", service.normalizeRequestedPeriode("2026-11"));
         }
 
         @Test
@@ -155,10 +155,10 @@ class GajiKpiBatchServiceTest {
 
         @Test
         void normalizeRowPeriode_variousInputs() {
-            assertEquals("2026-01", service.normalizeRowPeriode("202601"));
-            assertEquals("2026-01", service.normalizeRowPeriode("202601.0"));
-            assertEquals("2026-01", service.normalizeRowPeriode("2026-01"));
-            assertEquals("2026-01", service.normalizeRowPeriode("2026-01.0"));
+            assertEquals("202601", service.normalizeRowPeriode("202601"));
+            assertEquals("202601", service.normalizeRowPeriode("202601.0"));
+            assertEquals("202601", service.normalizeRowPeriode("2026-01"));
+            assertEquals("202601", service.normalizeRowPeriode("2026-01.0"));
             assertEquals("", service.normalizeRowPeriode(null));
             assertEquals("", service.normalizeRowPeriode(""));
         }
@@ -203,18 +203,18 @@ class GajiKpiBatchServiceTest {
 
             when(batchRepository.findExistingPegawaiNipams(any()))
                     .thenReturn(Set.of("710100239", "000012345"));
-            when(batchRepository.batchUpsert(eq("2026-01"), any(), eq("admin")))
-                    .thenReturn(new GajiKpiUploadResponse("2026-01", 2, 2, 0));
+            when(batchRepository.batchUpsert(eq("202601"), any(), eq("admin")))
+                    .thenReturn(new GajiKpiUploadResponse("202601", 2, 2, 0));
 
             GajiKpiUploadResponse result = service.upload(file, "202601", "admin");
 
             assertNotNull(result);
-            assertEquals("2026-01", result.periode());
+            assertEquals("202601", result.periode());
             assertEquals(2, result.totalRows());
             assertEquals(2, result.inserted());
             assertEquals(0, result.updated());
 
-            verify(batchRepository).batchUpsert(eq("2026-01"), argThat(items -> {
+            verify(batchRepository).batchUpsert(eq("202601"), argThat(items -> {
                 if (items.size() != 2) return false;
                 GajiKpiItem item1 = items.get(0);
                 GajiKpiItem item2 = items.get(1);
@@ -229,7 +229,7 @@ class GajiKpiBatchServiceTest {
                     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", List.of());
 
             BadRequestException ex = assertThrows(BadRequestException.class,
-                    () -> service.upload(file, "2026-01", "admin"));
+                    () -> service.upload(file, "202601", "admin"));
             assertTrue(ex.getMessage().contains("File Excel tidak memiliki data"));
         }
 
@@ -245,8 +245,8 @@ class GajiKpiBatchServiceTest {
                     .thenReturn(Set.of("710100239"));
 
             BadRequestException ex = assertThrows(BadRequestException.class,
-                    () -> service.upload(file, "2026-01", "admin"));
-            assertTrue(ex.getMessage().contains("Baris 6: Periode '2026-02' tidak sesuai dengan periode request '2026-01'"));
+                    () -> service.upload(file, "202601", "admin"));
+            assertTrue(ex.getMessage().contains("Baris 6: Periode '202602' tidak sesuai dengan periode request '202601'"));
         }
 
         @Test
@@ -262,7 +262,7 @@ class GajiKpiBatchServiceTest {
                     .thenReturn(Set.of("710100239"));
 
             BadRequestException ex = assertThrows(BadRequestException.class,
-                    () -> service.upload(file, "2026-01", "admin"));
+                    () -> service.upload(file, "202601", "admin"));
             assertTrue(ex.getMessage().contains("Baris 7: NIPAM '710100239' duplikat di dalam file"));
         }
 
@@ -278,7 +278,7 @@ class GajiKpiBatchServiceTest {
                     .thenReturn(Set.of());
 
             BadRequestException ex = assertThrows(BadRequestException.class,
-                    () -> service.upload(file, "2026-01", "admin"));
+                    () -> service.upload(file, "202601", "admin"));
             assertTrue(ex.getMessage().contains("Baris 6: NIPAM '999999999' tidak terdaftar di sistem"));
         }
 
@@ -294,7 +294,7 @@ class GajiKpiBatchServiceTest {
                     .thenReturn(Set.of("710100239"));
 
             BadRequestException ex = assertThrows(BadRequestException.class,
-                    () -> service.upload(file, "2026-01", "admin"));
+                    () -> service.upload(file, "202601", "admin"));
             assertTrue(ex.getMessage().contains("Baris 6: Tunkin tidak boleh negatif"));
             assertTrue(ex.getMessage().contains("Baris 6: PPh 21 TER tidak boleh negatif"));
         }
@@ -312,7 +312,7 @@ class GajiKpiBatchServiceTest {
                     .thenReturn(Set.of());
 
             BadRequestException ex = assertThrows(BadRequestException.class,
-                    () -> service.upload(file, "2026-01", "admin"));
+                    () -> service.upload(file, "202601", "admin"));
             assertTrue(ex.getMessage().contains("... dan "));
             assertTrue(ex.getMessage().contains("kesalahan lainnya"));
         }

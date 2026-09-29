@@ -146,16 +146,15 @@ public class GajiKpiBatchService {
         }
         String trimmed = requestedPeriode.trim();
         if (trimmed.matches("^\\d{6}$")) {
-            String year = trimmed.substring(0, 4);
             String month = trimmed.substring(4, 6);
             int m = Integer.parseInt(month);
             if (m < 1 || m > 12) {
                 throw new BadRequestException("Format periode tidak valid: " + requestedPeriode);
             }
-            return year + "-" + month;
+            return trimmed;
         }
         if (trimmed.matches("^\\d{4}-(0[1-9]|1[0-2])$")) {
-            return trimmed;
+            return trimmed.replace("-", "");
         }
         throw new BadRequestException("Format periode tidak valid: " + requestedPeriode);
     }
@@ -182,11 +181,11 @@ public class GajiKpiBatchService {
         if (p.endsWith(".0")) {
             p = p.substring(0, p.length() - 2).trim();
         }
+        if (p.matches("^\\d{4}-(0[1-9]|1[0-2])$")) {
+            p = p.replace("-", "");
+        }
         if (p.matches("^\\d+$") && p.length() < 6) {
             p = "0".repeat(6 - p.length()) + p;
-        }
-        if (p.matches("^\\d{6}$")) {
-            p = p.substring(0, 4) + "-" + p.substring(4, 6);
         }
         return p;
     }
