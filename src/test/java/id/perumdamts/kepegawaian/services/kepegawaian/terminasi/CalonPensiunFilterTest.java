@@ -7,9 +7,11 @@ import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
+import id.perumdamts.kepegawaian.entities.profil.Pendidikan;
 import id.perumdamts.kepegawaian.repositories.master.jpa.OrganisasiRepository;
 import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.BiodataRepository;
+import id.perumdamts.kepegawaian.repositories.profil.jpa.PendidikanRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -45,6 +47,7 @@ class CalonPensiunFilterTest {
     @Autowired private PegawaiRepository pegawaiRepository;
     @Autowired private OrganisasiRepository organisasiRepository;
     @Autowired private BiodataRepository biodataRepository;
+    @Autowired private PendidikanRepository pendidikanRepository;
     @Autowired private RiwayatTerminasiQueryService queryService;
 
     private int seq = 0;
@@ -55,7 +58,7 @@ class CalonPensiunFilterTest {
 
     private Pegawai createPegawai(String nama, Organisasi organisasi, LocalDate tmtPensiun) {
         seq++;
-        Biodata biodata = new Biodata("NIK-CP-" + seq);
+        Biodata biodata = new Biodata("NIK-CP-" + System.nanoTime() + "-" + seq);
         biodata.setNama(nama);
         biodataRepository.saveAndFlush(biodata);
 
@@ -170,5 +173,33 @@ class CalonPensiunFilterTest {
 
         assertTrue(page.getContent().stream().anyMatch(r -> r.id().equals(p.getId())),
                 "filter tahunPensiun harus memperluas jendela ke seluruh tahun, bukan terpotong now+3 bulan");
+    }
+
+    @Test
+    @org.springframework.transaction.annotation.Transactional(propagation = org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED)
+    void findPageCalonPensiun_withPendidikan_succeedsWithoutLazyInitializationException() {
+        Organisasi org = saveOrganisasi("ORG-LAZY");
+        Pegawai p = createPegawai("PEGAWAI LAZY", org, LocalDate.now().plusMonths(1));
+        Pendidikan pendidikan = new Pendidikan();
+        pendidikan.setBiodata(p.getBiodata());
+        pendidikan.setTahunMasuk(2010);
+        pendidikan.setIsLatest(true);
+        pendidikan.setGelarDepan("Ir.");
+        pendidikan.setGelarBelakang("M.T.");
+        pendidikan = pendidikanRepository.saveAndFlush(pendidikan);
+
+        try {
+            RiwayatTerminasiRequest request = new RiwayatTerminasiRequest();
+            request.setOrganisasiId(org.getId());
+            Page<PegawaiResponse> page = queryService.findPageCalonPensiun(request);
+            assertEquals(1, page.getTotalElements());
+            assertEquals("Ir.", page.getContent().getFirst().biodata().gelarDepan());
+            assertEquals("M.T.", page.getContent().getFirst().biodata().gelarBelakang());
+        } finally {
+            pendidikanRepository.delete(pendidikan);
+            pegawaiRepository.delete(p);
+            biodataRepository.delete(p.getBiodata());
+            organisasiRepository.delete(org);
+        }
     }
 }

@@ -4,22 +4,23 @@ import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiQuery
 import id.perumdamts.kepegawaian.dto.kepegawaian.terminasi.RiwayatTerminasiRequest;
 import id.perumdamts.kepegawaian.dto.pegawai.pegawai.PegawaiResponse;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
-import id.perumdamts.kepegawaian.mapper.pegawai.pegawai.PegawaiReadMapper;
+import id.perumdamts.kepegawaian.repositories.kepegawaian.jooq.CalonPensiunQueryRepository;
 import id.perumdamts.kepegawaian.repositories.kepegawaian.jooq.RiwayatTerminasiQueryRepository;
 import id.perumdamts.kepegawaian.repositories.pegawai.jooq.PegawaiQueryRepository;
-import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class RiwayatTerminasiQueryService {
     private final RiwayatTerminasiQueryRepository queryRepository;
     private final PegawaiQueryRepository pegawaiQueryRepository;
-    private final PegawaiRepository pegawaiRepository;
+    private final CalonPensiunQueryRepository calonPensiunQueryRepository;
 
     public Page<RiwayatTerminasiQuery> findPage(RiwayatTerminasiRequest request) {
         return queryRepository.pageQuery(request)
@@ -36,21 +37,18 @@ public class RiwayatTerminasiQueryService {
 
     public Page<PegawaiResponse> findPageCalonPensiun(RiwayatTerminasiRequest request) {
         LocalDate now = LocalDate.now();
-        // Default jendela: 3 bulan ke depan. TanggalTerminasi dari user (bila ada)
-        // dipakai sebagai batas atas, bukan ditimpa — sebelumnya nilai user dibuang.
-        // Bila user memfilter tahunPensiun tanpa tanggalTerminasi, jendela diperluas
-        // ke akhir tahun tersebut agar filter tahun tidak terpotong jendela now+3 bulan.
         LocalDate end = request.getTanggalTerminasi() != null
                 ? request.getTanggalTerminasi()
                 : request.getTahunPensiun() != null
                         ? LocalDate.of(request.getTahunPensiun(), 12, 31)
                         : now.plusMonths(3);
         request.setTanggalTerminasi(end);
-        request.setSortBy("Biodata.nama");
-        request.setSortDirection("ASC");
+        if (request.getSortBy() == null || request.getSortBy().isBlank()) {
+            request.setSortBy("Biodata.nama");
+            request.setSortDirection("ASC");
+        }
 
-        return pegawaiRepository.findAll(request.getCalonPensiunSpecification(), request.getPageable())
-                .map(PegawaiReadMapper::toResponse);
+        return calonPensiunQueryRepository.findPage(request);
     }
 
     public RiwayatTerminasiQuery findById(Long id) {
