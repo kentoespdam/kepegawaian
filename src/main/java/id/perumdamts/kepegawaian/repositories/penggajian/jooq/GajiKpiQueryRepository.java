@@ -20,7 +20,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static id.perumdamts.kepegawaian.jooq.tables.Biodata.BIODATA;
 import static id.perumdamts.kepegawaian.jooq.tables.GajiKpi.GAJI_KPI;
+import static id.perumdamts.kepegawaian.jooq.tables.Jabatan.JABATAN;
+import static id.perumdamts.kepegawaian.jooq.tables.Organisasi.ORGANISASI;
+import static id.perumdamts.kepegawaian.jooq.tables.Pegawai.PEGAWAI;
 
 @Repository
 @RequiredArgsConstructor
@@ -30,9 +34,14 @@ public class GajiKpiQueryRepository {
     public Page<GajiKpiResponse> pageQuery(GajiKpiIndexQuery query) {
         var sortOrder = SortParam.resolve(query.getSortBy(), query.getSortDirection(),
                 allowedSorts(), GAJI_KPI.ID);
-        Condition where = baseWhere(query.getNipam(), query.getPeriode());
+        Condition where = baseWhere(query.getSearch(), query.getPeriode(), query.getOrganisasiId());
         var count = dsl.selectCount()
                 .from(GAJI_KPI)
+                .leftJoin(PEGAWAI).on(GAJI_KPI.NIPAM.eq(PEGAWAI.NIPAM)
+                        .and(PEGAWAI.IS_DELETED.isFalse()))
+                .leftJoin(BIODATA).on(PEGAWAI.BIODATA_ID.eq(BIODATA.NIK))
+                .leftJoin(JABATAN).on(PEGAWAI.JABATAN_ID.eq(JABATAN.ID))
+                .leftJoin(ORGANISASI).on(PEGAWAI.ORGANISASI_ID.eq(ORGANISASI.ID))
                 .where(where)
                 .fetchOptional(0, Long.class).orElse(0L);
         var data = dsl.select(
@@ -40,8 +49,17 @@ public class GajiKpiQueryRepository {
                         GAJI_KPI.NIPAM,
                         GAJI_KPI.PERIODE,
                         GAJI_KPI.TUNKIN,
-                        GAJI_KPI.PPH21_TER)
+                        GAJI_KPI.PPH21_TER,
+                        BIODATA.NAMA,
+                        JABATAN.NAMA,
+                        ORGANISASI.NAMA,
+                        PEGAWAI.STATUS_PEGAWAI)
                 .from(GAJI_KPI)
+                .leftJoin(PEGAWAI).on(GAJI_KPI.NIPAM.eq(PEGAWAI.NIPAM)
+                        .and(PEGAWAI.IS_DELETED.isFalse()))
+                .leftJoin(BIODATA).on(PEGAWAI.BIODATA_ID.eq(BIODATA.NIK))
+                .leftJoin(JABATAN).on(PEGAWAI.JABATAN_ID.eq(JABATAN.ID))
+                .leftJoin(ORGANISASI).on(PEGAWAI.ORGANISASI_ID.eq(ORGANISASI.ID))
                 .where(where)
                 .orderBy(sortOrder)
                 .limit(query.getSizeOrDefault())
@@ -56,10 +74,19 @@ public class GajiKpiQueryRepository {
                         GAJI_KPI.NIPAM,
                         GAJI_KPI.PERIODE,
                         GAJI_KPI.TUNKIN,
-                        GAJI_KPI.PPH21_TER)
+                        GAJI_KPI.PPH21_TER,
+                        BIODATA.NAMA,
+                        JABATAN.NAMA,
+                        ORGANISASI.NAMA,
+                        PEGAWAI.STATUS_PEGAWAI)
                 .from(GAJI_KPI)
-                .where(baseWhere(query.getNipam(), query.getPeriode()))
-                .orderBy(GAJI_KPI.NIPAM.asc(), GAJI_KPI.PERIODE.asc())
+                .leftJoin(PEGAWAI).on(GAJI_KPI.NIPAM.eq(PEGAWAI.NIPAM)
+                        .and(PEGAWAI.IS_DELETED.isFalse()))
+                .leftJoin(BIODATA).on(PEGAWAI.BIODATA_ID.eq(BIODATA.NIK))
+                .leftJoin(JABATAN).on(PEGAWAI.JABATAN_ID.eq(JABATAN.ID))
+                .leftJoin(ORGANISASI).on(PEGAWAI.ORGANISASI_ID.eq(ORGANISASI.ID))
+                .where(baseWhere(query.getSearch(), query.getPeriode(), query.getOrganisasiId()))
+                .orderBy(BIODATA.NAMA.asc(), GAJI_KPI.PERIODE.asc())
                 .fetch(GajiKpiJooqMapper::mapToResponse);
     }
 
@@ -69,22 +96,34 @@ public class GajiKpiQueryRepository {
                         GAJI_KPI.NIPAM,
                         GAJI_KPI.PERIODE,
                         GAJI_KPI.TUNKIN,
-                        GAJI_KPI.PPH21_TER)
+                        GAJI_KPI.PPH21_TER,
+                        BIODATA.NAMA,
+                        JABATAN.NAMA,
+                        ORGANISASI.NAMA,
+                        PEGAWAI.STATUS_PEGAWAI)
                 .from(GAJI_KPI)
+                .leftJoin(PEGAWAI).on(GAJI_KPI.NIPAM.eq(PEGAWAI.NIPAM)
+                        .and(PEGAWAI.IS_DELETED.isFalse()))
+                .leftJoin(BIODATA).on(PEGAWAI.BIODATA_ID.eq(BIODATA.NIK))
+                .leftJoin(JABATAN).on(PEGAWAI.JABATAN_ID.eq(JABATAN.ID))
+                .leftJoin(ORGANISASI).on(PEGAWAI.ORGANISASI_ID.eq(ORGANISASI.ID))
                 .where(GAJI_KPI.ID.eq(id))
                 .fetchOptional(GajiKpiJooqMapper::mapToResponse);
     }
 
     private static Map<String, Field<?>> allowedSorts() {
         return Map.of(
+                "nama", BIODATA.NAMA,
                 "nipam", GAJI_KPI.NIPAM,
-                "periode", GAJI_KPI.PERIODE,
-                "tunkin", GAJI_KPI.TUNKIN
+                "id", GAJI_KPI.ID
         );
     }
 
-    private Condition baseWhere(String nipam, String periode) {
-        return (StringUtils.hasText(nipam) ? GAJI_KPI.NIPAM.likeIgnoreCase("%" + nipam + "%") : DSL.noCondition())
-                .and(StringUtils.hasText(periode) ? GAJI_KPI.PERIODE.eq(periode) : DSL.noCondition());
+    private Condition baseWhere(String search, String periode, Long organisasiId) {
+        return (StringUtils.hasText(search)
+                    ? GAJI_KPI.NIPAM.containsIgnoreCase(search).or(BIODATA.NAMA.containsIgnoreCase(search))
+                    : DSL.noCondition())
+                .and(StringUtils.hasText(periode) ? GAJI_KPI.PERIODE.eq(periode) : DSL.noCondition())
+                .and(organisasiId != null ? PEGAWAI.ORGANISASI_ID.eq(organisasiId) : DSL.noCondition());
     }
 }

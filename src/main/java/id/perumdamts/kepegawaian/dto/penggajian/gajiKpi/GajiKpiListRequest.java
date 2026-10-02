@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class GajiKpiListRequest {
-    private String nipam;
+    private String search;
     private String periode;
+    private Long organisasiId;
 }

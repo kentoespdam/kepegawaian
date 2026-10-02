@@ -63,7 +63,8 @@ class GajiKpiControllerTest {
     }
 
     private GajiKpiResponse sampleResponse() {
-        return new GajiKpiResponse(1L, "710100239", "2026-01", 4_619_579.0, 230_978.95);
+        return new GajiKpiResponse(1L, "710100239", "2026-01", 4_619_579.0, 230_978.95,
+                "Budi Santoso", "Staff IT", "PDAM Cabang Utama", "Pegawai Tetap");
     }
 
     @Test

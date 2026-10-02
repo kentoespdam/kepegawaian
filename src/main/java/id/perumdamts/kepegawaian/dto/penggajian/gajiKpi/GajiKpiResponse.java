@@ -9,7 +9,11 @@ public record GajiKpiResponse(
         String nipam,
         String periode,
         Double tunkin,
-        Double pph21Ter
+        Double pph21Ter,
+        String nama,
+        String namaJabatan,
+        String namaOrganisasi,
+        String statusPegawai
 ) {
     public static GajiKpiResponse from(GajiKpi entity) {
         if (Objects.isNull(entity)) return null;
@@ -18,7 +22,11 @@ public record GajiKpiResponse(
                 entity.getNipam(),
                 entity.getPeriode(),
                 entity.getTunkin(),
-                entity.getPph21Ter()
+                entity.getPph21Ter(),
+                null,
+                null,
+                null,
+                null
         );
     }
 }

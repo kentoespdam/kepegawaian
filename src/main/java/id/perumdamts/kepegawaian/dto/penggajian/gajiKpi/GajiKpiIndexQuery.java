@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class GajiKpiIndexQuery extends PagedRequest {
-    private String nipam;
+    private String search;
     private String periode;
+    private Long organisasiId;
 }
