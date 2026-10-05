@@ -25,6 +25,7 @@ Index lazy-read domain context. **Jangan membaca semua file sekaligus** — pili
 | Auth, JWT, Spring profile, `@PreAuthorize`, Dev User | [`docs/context/language-security.md`](docs/context/language-security.md) |
 | Relasi antar domain, dependency lintas-modul, arah coupling | [`docs/context/relationships.md`](docs/context/relationships.md) |
 | Migrasi data dari legacy SmartOffice ke Kepegawaian Baru | [`docs/context/language-migrasi.md`](docs/context/language-migrasi.md), [`docs/adr/0044-staged-batch-etl-runner-migrasi-legacy.md`](docs/adr/0044-staged-batch-etl-runner-migrasi-legacy.md) |
+| Modul laporan (DUK, DNP, SO, LTA, Kenaikan Berkala, Kontrak, Mutasi, Statistik) — terminologi & async claim order | [`docs/context/language-laporan.md`](docs/context/language-laporan.md) |
 | Contoh percakapan domain expert, istilah ambigu | [`docs/context/examples-and-flags.md`](docs/context/examples-and-flags.md) |
 
 ## Sub-Context Files
@@ -37,6 +38,7 @@ Index lazy-read domain context. **Jangan membaca semua file sekaligus** — pili
 | [`language-profil.md`](docs/context/language-profil.md) | ~5 KB | Glossary modul profil |
 | [`language-cuti.md`](docs/context/language-cuti.md) | ~4 KB | Glossary modul cuti |
 | [`language-penggajian.md`](docs/context/language-penggajian.md) | ~4 KB | Glossary modul penggajian (payroll & batch) |
+| [`language-laporan.md`](docs/context/language-laporan.md) | ~5 KB | Glossary modul laporan & arsitektur async claim order |
 | [`language-migrasi.md`](docs/context/language-migrasi.md) | ~2 KB | Glossary migrasi data SmartOffice ke DB baru |
 | [`language-security.md`](docs/context/language-security.md) | ~2 KB | Glossary auth/security |
 | [`relationships.md`](docs/context/relationships.md) | ~5 KB | Relasi & arah dependency |

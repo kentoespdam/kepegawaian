@@ -63,13 +63,15 @@ class GajiBatchPotonganTambahanBatchServiceTest {
     @Mock
     private GajiBatchPotonganTambahanTemplateGenerator templateGenerator;
 
+    private final GajiBatchPotonganTambahanExcelParser excelParser = new GajiBatchPotonganTambahanExcelParser();
+
     private GajiBatchPotonganTambahanBatchService service;
 
     @BeforeEach
     void setUp() {
         service = new GajiBatchPotonganTambahanBatchService(
                 rootRepository, masterRepository, lampiranRepository,
-                tambahanBatchRepository, prosesCommandService, fileUploadUtil, templateGenerator);
+                tambahanBatchRepository, prosesCommandService, fileUploadUtil, templateGenerator, excelParser);
     }
 
     // --- helpers: workbook layout mengikuti form resmi (anchor baris 9, label baris 10, data baris 11+) ---

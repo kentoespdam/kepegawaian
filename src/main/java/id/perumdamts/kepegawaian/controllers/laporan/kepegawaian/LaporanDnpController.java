@@ -42,4 +42,14 @@ public class LaporanDnpController {
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(resource);
     }
+
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
+    @Operation(summary = "Async export dnp excel (Claim Order)")
+    @org.springframework.web.bind.annotation.PostMapping("/export")
+    public ResponseEntity<SingleResult<id.perumdamts.kepegawaian.dto.laporan.kepegawaian.ReportJobResponse>> exportDnp(
+            @org.springframework.beans.factory.annotation.Autowired id.perumdamts.kepegawaian.services.laporan.kepegawaian.ReportJobService jobService
+    ) {
+        var res = jobService.submitJob("dnp", "lap_dnp_" + System.currentTimeMillis() + ".xlsx", () -> service.exportExcel().getByteArray());
+        return CustomResult.any(res);
+    }
 }

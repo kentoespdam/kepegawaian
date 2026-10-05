@@ -49,4 +49,17 @@ public class LaporanMutasiController {
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(resource);
     }
+
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
+    @Operation(summary = "Async export mutasi excel (Claim Order)")
+    @PostMapping("/export/{from_date}/{to_date}")
+    public ResponseEntity<SingleResult<id.perumdamts.kepegawaian.dto.laporan.kepegawaian.ReportJobResponse>> exportMutasi(
+            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from_date,
+            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to_date,
+            @RequestParam(required = false) EJenisMutasi jenis_mutasi,
+            @org.springframework.beans.factory.annotation.Autowired id.perumdamts.kepegawaian.services.laporan.kepegawaian.ReportJobService jobService
+    ) {
+        var res = jobService.submitJob("mutasi", "lap_mutasi_" + System.currentTimeMillis() + ".xlsx", () -> service.exportExcel(from_date, to_date, jenis_mutasi).getByteArray());
+        return CustomResult.any(res);
+    }
 }

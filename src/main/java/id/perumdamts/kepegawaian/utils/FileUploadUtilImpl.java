@@ -189,4 +189,69 @@ public class FileUploadUtilImpl implements FileUploadUtil {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public Path generatePathLaporan(String subFolder, String fileName) {
+        return Paths.get(BASE_PATH, "laporan", subFolder, fileName);
+    }
+
+    @Override
+    public Path saveFileLaporan(byte[] content, String subFolder, String fileName) {
+        try {
+            Path dir = Paths.get(BASE_PATH, "laporan", subFolder);
+            Files.createDirectories(dir);
+            Path filePath = dir.resolve(fileName);
+            Files.write(filePath, content);
+            return filePath;
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to save report file", e);
+        }
+    }
+
+    @Override
+    public void deleteOldFileLaporan(String subFolder, String fileName) {
+        try {
+            Path filePath = generatePathLaporan(subFolder, fileName);
+            if (Files.exists(filePath)) {
+                Files.delete(filePath);
+            }
+        } catch (IOException e) {
+            // ignore or log
+        }
+    }
+
+    @Override
+    public org.springframework.core.io.Resource loadFileLaporanAsResource(String subFolder, String fileName) {
+        try {
+            Path filePath = generatePathLaporan(subFolder, fileName);
+            if (Files.exists(filePath)) {
+                return new org.springframework.core.io.FileSystemResource(filePath);
+            }
+            return null;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
+    public void cleanExpiredLaporanFiles(long maxAgeMillis) {
+        try {
+            Path dir = Paths.get(BASE_PATH, "laporan");
+            if (!Files.exists(dir)) return;
+            long now = System.currentTimeMillis();
+            try (var walk = Files.walk(dir)) {
+                walk.filter(Files::isRegularFile)
+                    .forEach(path -> {
+                        try {
+                            long lastModified = Files.getLastModifiedTime(path).toMillis();
+                            if ((now - lastModified) > maxAgeMillis) {
+                                Files.delete(path);
+                            }
+                        } catch (IOException ignored) {
+                        }
+                    });
+            }
+        } catch (IOException ignored) {
+        }
+    }
 }

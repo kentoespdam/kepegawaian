@@ -26,4 +26,5 @@ Domain context dipecah per modul/topik di `docs/context/`:
 | [`relationships.md`](docs/context/relationships.md) | Relasi & dependency lintas-modul |
 | [`decisions-pegawai.md`](docs/context/decisions-pegawai.md) | Keputusan rewrite pegawai & kepegawaian |
 | [`decisions-cuti.md`](docs/context/decisions-cuti.md) | Keputusan rewrite cuti |
+| [language-laporan.md](docs/context/language-laporan.md) | Domain laporan, DUK, DNP, arsitektur Asynchronous |
 | [`examples-and-flags.md`](docs/context/examples-and-flags.md) | Contoh dialog & ambiguitas |

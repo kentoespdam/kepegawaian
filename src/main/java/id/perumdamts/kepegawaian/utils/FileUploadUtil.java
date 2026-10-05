@@ -20,4 +20,10 @@ public interface FileUploadUtil {
     void deleteOldFile(String fileName, EJenisLampiranProfil ref, String subFolder);
 
     void deleteOldFilePenggajian(String subFolder, String hashedFileName);
+
+    java.nio.file.Path generatePathLaporan(String subFolder, String fileName);
+    java.nio.file.Path saveFileLaporan(byte[] content, String subFolder, String fileName);
+    void deleteOldFileLaporan(String subFolder, String fileName);
+    org.springframework.core.io.Resource loadFileLaporanAsResource(String subFolder, String fileName);
+    void cleanExpiredLaporanFiles(long maxAgeMillis);
 }

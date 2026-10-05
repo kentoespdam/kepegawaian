@@ -42,4 +42,14 @@ public class LaporanDukController {
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(resource);
     }
+
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
+    @Operation(summary = "Async export duk excel (Claim Order)")
+    @org.springframework.web.bind.annotation.PostMapping("/export")
+    public ResponseEntity<id.perumdamts.kepegawaian.dto.commons.SingleResult<id.perumdamts.kepegawaian.dto.laporan.kepegawaian.ReportJobResponse>> exportDuk(
+            @org.springframework.beans.factory.annotation.Autowired id.perumdamts.kepegawaian.services.laporan.kepegawaian.ReportJobService jobService
+    ) {
+        var res = jobService.submitJob("duk", "lap_duk_" + System.currentTimeMillis() + ".xlsx", () -> service.exportExcel().getByteArray());
+        return id.perumdamts.kepegawaian.dto.commons.CustomResult.any(res);
+    }
 }

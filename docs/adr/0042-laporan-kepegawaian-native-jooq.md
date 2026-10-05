@@ -44,9 +44,23 @@ Satu repository + satu service per modul laporan (8 modules). Tidak ada interfac
 - **SQL handles:** `TIMESTAMPDIFF`, `CONCAT_WS`, `DATE_FORMAT`, `IFNULL`, `IF(cond, a, b)` — semua bisa ditulis sebagai `DSL.field("...", type, args)`.
 - **Java handles:** Enum decode (status_pegawai → label), percentage calculation, date formatting untuk Excel output, boolean cleanup dari MySQL `b'\x01'`.
 
-### Excel: Apache POI + classpath templates
+### Excel: Apache POI + classpath templates (Asynchronous Claim Order Pattern)
 
-Template `.xlsx` dari Python project dicopy ke `src/main/resources/templates/laporan/`. Apache POI memuat template, mengisi body data via `Row`/`Cell` API, lalu stream sebagai `ByteArrayResource`. Ini mengikuti pola Python (template + body fill), bukan generating Excel mentah dari nol.
+Template `.xlsx` dari Python project dicopy ke `src/main/resources/templates/laporan/`. Apache POI memuat template dan mengisi body data via `Row`/`Cell` API mengikuti pola Python (template + body fill), bukan generating Excel mentah dari nol.
+
+Untuk penyediaan berkas, diterapkan mekanisme **Asynchronous (Claim Order Pattern)**:
+- Request ekspor memicu pembuatan laporan secara asinkron di latar belakang dan segera mengembalikan claim ticket / job ID ke klien.
+- Worker memproses query data via JOOQ dan merender workbook Apache POI.
+- Klien menggunakan claim ticket untuk memantau status atau mengunduh berkas yang telah selesai.
+Mekanisme ini menggantikan synchronous streaming (`ByteArrayResource`) guna mencegah HTTP connection timeout dan lonjakan memori saat memproses dataset besar.
+
+### Storage: Local File System Temporary Storage via FileUploadUtilImpl + @Scheduled Cleanup
+
+Berkas Excel yang dihasilkan disimpan sementara di Local File System memanfaatkan infrastruktur penyimpanan lokal yang sudah ada (`FileUploadUtilImpl`). Berkas laporan bersifat temporary; pembersihan berkas kedaluwarsa dijalankan secara berkala menggunakan task terjadwal Spring Boot (`@Scheduled`) berdasarkan batas waktu retensi (TTL) untuk mencegah konsumsi ruang disk berlebih.
+
+### Otorisasi: Re-use Permission Modul Masing-masing
+
+Alih-alih membuat permission baru khusus laporan, otorisasi akses laporan menggunakan kembali (re-use) permission dari modul masing-masing (contoh: `hasAuthority('PEGAWAI:READ')` untuk data kepegawaian seperti DUK, DNP, SO, dan statistik). Hal ini menjaga konsistensi hak akses antara modul operasional dan pelaporan.
 
 ### API paths: tidak berubah
 
@@ -71,5 +85,8 @@ Template `.xlsx` dari Python project dicopy ke `src/main/resources/templates/lap
 - **Hapus RestClient import** dari semua laporan controller (hanya inject service spesifik).
 - **8 repository + 8 service + ~15 DTO + 8 mapper** file baru.
 - **Template Excel** (.xlsx) perlu di-copy dari Python `template/` ke classpath Spring Boot.
+- **Asynchronous Claim Order Pattern** untuk ekspor Excel memerlukan penanganan claim ticket dan status job.
+- **Housekeeping penyimpanan lokal:** Task `@Scheduled` diperlukan untuk membersihkan berkas laporan sementara di `FileUploadUtilImpl`.
+- **Konsistensi otorisasi:** Memanfaatkan kembali permission modul yang ada (`PEGAWAI:READ`, dll) tanpa perlu menambah permission baru.
 - **Tidak ada perubahan database schema** — query yang sama, hanya beda eksekusi.
 - **Testing:** Bandingkan JSON output dari Spring Boot vs Python untuk setiap endpoint, menggunakan data produksi yang sama.
