@@ -23,6 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LaporanDukController {
     private final DukService service;
+    private final id.perumdamts.kepegawaian.services.laporan.kepegawaian.ReportJobService reportJobService;
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
     @Operation(summary = "lap duk")
@@ -46,10 +47,8 @@ public class LaporanDukController {
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
     @Operation(summary = "Async export duk excel (Claim Order)")
     @org.springframework.web.bind.annotation.PostMapping("/export")
-    public ResponseEntity<id.perumdamts.kepegawaian.dto.commons.SingleResult<id.perumdamts.kepegawaian.dto.laporan.kepegawaian.ReportJobResponse>> exportDuk(
-            @org.springframework.beans.factory.annotation.Autowired id.perumdamts.kepegawaian.services.laporan.kepegawaian.ReportJobService jobService
-    ) {
-        var res = jobService.submitJob("duk", "lap_duk_" + System.currentTimeMillis() + ".xlsx", () -> service.exportExcel().getByteArray());
-        return id.perumdamts.kepegawaian.dto.commons.CustomResult.any(res);
+    public ResponseEntity<SingleResult<id.perumdamts.kepegawaian.dto.laporan.kepegawaian.ReportJobResponse>> exportDuk() {
+        var res = reportJobService.submitJob("duk", "lap_duk_" + System.currentTimeMillis() + ".xlsx", () -> service.exportExcel().getByteArray());
+        return CustomResult.any(res);
     }
 }

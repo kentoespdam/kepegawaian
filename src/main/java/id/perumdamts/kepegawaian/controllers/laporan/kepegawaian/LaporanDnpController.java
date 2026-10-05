@@ -23,6 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LaporanDnpController {
     private final DnpService service;
+    private final id.perumdamts.kepegawaian.services.laporan.kepegawaian.ReportJobService reportJobService;
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
     @Operation(summary = "lap dnp")
@@ -46,10 +47,8 @@ public class LaporanDnpController {
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
     @Operation(summary = "Async export dnp excel (Claim Order)")
     @org.springframework.web.bind.annotation.PostMapping("/export")
-    public ResponseEntity<SingleResult<id.perumdamts.kepegawaian.dto.laporan.kepegawaian.ReportJobResponse>> exportDnp(
-            @org.springframework.beans.factory.annotation.Autowired id.perumdamts.kepegawaian.services.laporan.kepegawaian.ReportJobService jobService
-    ) {
-        var res = jobService.submitJob("dnp", "lap_dnp_" + System.currentTimeMillis() + ".xlsx", () -> service.exportExcel().getByteArray());
+    public ResponseEntity<SingleResult<id.perumdamts.kepegawaian.dto.laporan.kepegawaian.ReportJobResponse>> exportDnp() {
+        var res = reportJobService.submitJob("dnp", "lap_dnp_" + System.currentTimeMillis() + ".xlsx", () -> service.exportExcel().getByteArray());
         return CustomResult.any(res);
     }
 }

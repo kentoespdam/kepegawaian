@@ -24,6 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LaporanMutasiController {
     private final MutasiService service;
+    private final id.perumdamts.kepegawaian.services.laporan.kepegawaian.ReportJobService reportJobService;
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
     @Operation(summary = "lap mutasi")
@@ -56,10 +57,9 @@ public class LaporanMutasiController {
     public ResponseEntity<SingleResult<id.perumdamts.kepegawaian.dto.laporan.kepegawaian.ReportJobResponse>> exportMutasi(
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from_date,
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to_date,
-            @RequestParam(required = false) EJenisMutasi jenis_mutasi,
-            @org.springframework.beans.factory.annotation.Autowired id.perumdamts.kepegawaian.services.laporan.kepegawaian.ReportJobService jobService
+            @RequestParam(required = false) EJenisMutasi jenis_mutasi
     ) {
-        var res = jobService.submitJob("mutasi", "lap_mutasi_" + System.currentTimeMillis() + ".xlsx", () -> service.exportExcel(from_date, to_date, jenis_mutasi).getByteArray());
+        var res = reportJobService.submitJob("mutasi", "lap_mutasi_" + System.currentTimeMillis() + ".xlsx", () -> service.exportExcel(from_date, to_date, jenis_mutasi).getByteArray());
         return CustomResult.any(res);
     }
 }

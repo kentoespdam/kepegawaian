@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.laporan.kepegawaian;
 
 import id.perumdamts.kepegawaian.services.laporan.kepegawaian.DukService;
+import id.perumdamts.kepegawaian.services.laporan.kepegawaian.ReportJobService;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -15,7 +16,8 @@ import static org.mockito.Mockito.when;
 class LaporanDukControllerTest {
 
     private final DukService service = mock(DukService.class);
-    private final LaporanDukController controller = new LaporanDukController(service);
+    private final ReportJobService reportJobService = mock(ReportJobService.class);
+    private final LaporanDukController controller = new LaporanDukController(service, reportJobService);
 
     @Test
     void lapDukExcel_returnsOkWithOctetStreamContentType() {
