@@ -7,7 +7,7 @@
   - Hanya menerima ringkasan laporan dari subagent.
 
 - **Sub-Agent Reporting Protocol (STRICT)**:
-  - Sub-agent HANYA boleh melaporkan **fakta/hasil mentah** dari tugas yang diberikan (contoh: hasil analisis, output command, daftar temuan).
+  - Sub-agent WAJIB melaporkan ringkasan padat/eksekutif berbasis fakta (high-signal, zero fluff) dari hasil analisis/tugas tanpa menghilangkan konteks teknis esensial, serta DILARANG melakukan dump raw text/output panjang yang memboroskan token di root agent.
   - Sub-agent **DILARANG KERAS**:
     - Memberikan saran, rekomendasi, atau opini tentang langkah berikutnya.
     - Mengambil keputusan di luar lingkup tugas yang diberikan.
@@ -35,9 +35,24 @@
 - **Mandatory Pre-Coding Gates**:
   - **Ponytail**: WAJIB load skill `/ponytail` sebelum modifikasi kode.
   - **Issue Tracking (Beads/bd)**: Klaim tugas (`bd update <id> --claim`), tutup tugas (`bd close <id>`). DILARANG membuat todo list manual.
-  - **GitNexus First**: WAJIB `gitnexus_impact` & `gitnexus_query` sebelum eksplorasi atau modifikasi.
-  - **Graphify**: WAJIB gunakan `graphify query "<query>"` atau `graphify path "<A>" "<B>"` untuk query arsitektur/konsep, jalankan `graphify . --update` jika ada perubahan modul/struktur. Output graph berada di `graphify-out/` (`graph.html`, `graph.json`, `GRAPH_REPORT.md`). Untuk semantic extraction, TIDAK PERLU menggunakan external LLM model secara langsung/independen, melainkan proses ekstraksi semantik dilakukan sendiri melalui sub-agent internal (`flash_lite`).
+  - **GitNexus First**: WAJIB jalankan `gitnexus_impact` & `gitnexus_query` sebelum eksplorasi atau modifikasi kode.
+  - **Graphify**: WAJIB gunakan `graphify query` / `path` untuk audit arsitektur; jalankan `graphify . --update` jika ada perubahan modul/struktur. Ekstraksi semantik via sub-agent internal (`flash_lite`).
   - **Sandbox Policy**: WAJIB gunakan `BypassSandbox: true` untuk semua perintah `git` dan `bd`.
+
+- **Code Intelligence Optimization (Graphify & GitNexus)**:
+  - **Sinergi Analisa**: Gunakan **Graphify** untuk arsitektur makro (knowledge graph, clustering komunitas, batasan domain/modul) dan **GitNexus** untuk navigasi mikro (AST, call graph, execution flows, blast radius).
+  - **Sesi Grilling (Planning & Stress-Testing Desain)**:
+    - **Graphify**: Jalankan `graphify query "<konsep>"` atau `graphify path "<A>" "<B>"` untuk memvalidasi batas modul dan dependensi arsitektur sebelum menyusun opsi desain atau bertanya ke user.
+    - **GitNexus**: Gunakan `query({search_query: "<alur/konsep>"})` dan `context({name: "<simbol>"})` untuk menelusuri trace execution flow konkret. Pertanyaan grilling WAJIB grounded pada kode aktual untuk memverifikasi asumsi implementasi tanpa menebak.
+  - **Sesi Coding (Implementasi & Refactoring)**:
+    - **GitNexus (Pre-Edit)**: WAJIB `impact({target: "<simbol>", direction: "upstream"})` sebelum mengubah metode/kelas. Laporkan blast radius (direct callers, affected processes). Stop & konfirmasi jika risiko HIGH/CRITICAL.
+    - **GitNexus (Refactoring & Pre-Commit)**: Gunakan `rename` berbasis call graph (DILARANG find-and-replace). WAJIB jalankan `detect_changes()` sebelum commit untuk memvalidasi alur yang terdampak.
+    - **Graphify**: Pastikan desain tetap modular (target 150–250 LOC). Jalankan `graphify . --update` saat menambah/mengubah struktur paket atau modul.
+  - **Sesi Diagnosa Bug (Debugging & Root Cause Analysis)**:
+    - **Graphify**: Gunakan `graphify path "<KomponenA>" "<KomponenB>"` untuk menelusuri rantai dependensi antar-layer/modul saat menganalisis bug sistemik atau anomali alur data lintas modul.
+    - **GitNexus (Tracing)**: Telusuri execution flow bug via `gitnexus://repo/kepegawaian/process/{name}` atau `query({search_query: "<error/flow>"})` dari controller/entry point hingga titik kegagalan.
+    - **GitNexus (Callers & Taint)**: Gunakan `context({name: "<method>"})` untuk inspeksi caller/callee dan `explain({target: "<fileOrSymbol>"})` untuk analisis aliran data (source-to-sink).
+    - **GitNexus (Fix Safety)**: WAJIB jalankan `impact` pada fungsi target perbaikan sebelum menulis fix untuk mencegah side-effect atau regresi baru.
 
 - **File Size & Modularity (Token Conservation)**:
   - Target: 150 – 250 LOC per file.
