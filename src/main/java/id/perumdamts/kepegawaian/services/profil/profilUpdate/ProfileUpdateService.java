@@ -18,12 +18,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.history.RevisionMetadata;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class ProfileUpdateService {
     private final ProfileUpdateRepository repository;
     private final PegawaiRepository pegawaiRepository;
