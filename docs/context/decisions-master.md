@@ -95,3 +95,9 @@ Aggregate dengan logika revive kompleks (Profesi: cek kombinasi nama+jabatan+gra
 **Spec guard (mekanis)**: sebelum `setIsDeleted(true)`, cek `existsBy...AndIsDeletedFalse` per owned-child secara berurutan (short-circuit); jika `true` → `throw new ConflictException("<Parent> masih memiliki <Child>")`. Pakai `existsBy` (SELECT 1/LIMIT 1), **bukan** `countBy` (tak perlu angka), **bukan** JOOQ (jangan tarik DSLContext ke command path). Untuk Profesi, cek `apd` lalu `alatKerja`.
 
 _Avoid_: `cascade = CascadeType.ALL` / `orphanRemoval = true` pada relasi master; loop menghapus child otomatis; memblokir delete karena lookup-referrer.
+
+---
+
+## §9 — Validasi master data murni menggunakan JPA derived query tanpa Specification (ADR-0057)
+
+**Keputusan**: Seluruh validasi eksistensi/unik pada sisi command master sepenuhnya beralih ke JPA derived queries eksplisit (mis. `existsBy...`), dengan pencabutan total `JpaSpecificationExecutor` dan `SpecificationBuilder`.

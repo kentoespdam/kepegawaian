@@ -93,3 +93,9 @@ Bagian dari [CONTEXT-MAP.md](../../CONTEXT-MAP.md). Baca file ini saat mengerjak
 - **[N+1 sekunder di `CutiPengajuanQueryRepository.pageQuery` → `refCuti` null di list]**. `pageQuery:92-96` memicu `getMiniById(refCutiId)` (7-join `fetchOne`) per baris klaim (`REF_CUTI_ID != null`) = **N+1** di list pengajuan biasa. **Keputusan**: hapus blok itu; list reuse `mapToResponse` yang default `refCuti = null`. Justifikasi domain: `ref_cuti_id` bersifat **operasional** (menaut klaim → pengajuan-asal untuk approval, lihat [[language-cuti]] "Cuti Referensi"), **bukan** kolom display — dan bukan bagian daftar kolom legacy list. `getById` (detail) **tetap** mengisi `refCuti`; di sana **bukan** N+1 (1 baris → ≤1 `getMiniById`, bounded) — boleh dibiarkan, atau nanti jadi self-JOIN 1-query (opsional, prioritas rendah). Shape tetap `CutiPengajuanResponse` yang sama (refCuti nullable), **bukan** record list terpisah — hindari proliferasi DTO.
 
 - **[FK-duplikat cuti sudah bersih — sweep global dipisah]**. Audit `CutiPengajuanResponse` & `CutiPengajuanMiniResponse` per §4c: **tidak ada FK ID top-level yang duplikat** dengan nested object (`organisasi/jabatan/jenisCuti/subJenisCuti/picSaatIni` tak dibayangi `*Id`). `pegawaiId` **bukan** duplikat (tak ada nested `pegawai`) — scalar identity yang sengaja diratakan sesuai shape legacy, **jangan dihapus**. Sweep FK-duplikat lintas-modul (master/pegawai/penggajian/profil) → pekerjaan mandiri **bd `kepegawaian-jyh`** (P3), bukan bagian grill inbox ini.
+
+---
+
+## Migration Update (ADR-0057)
+
+- **Validasi Cuti Murni JPA Derived Queries**: Seluruh validasi pada sisi command cuti sepenuhnya beralih ke JPA derived queries eksplisit, tanpa menggunakan `JpaSpecificationExecutor` atau `SpecificationBuilder`.

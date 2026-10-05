@@ -96,3 +96,10 @@ Bagian dari [CONTEXT-MAP.md](../../CONTEXT-MAP.md). Baca file ini saat mengerjak
 **Pengecualian**: `@Column` dengan `updatable=false` (audit fields) tetap dipertahankan — ini runtime behavior JPA, bukan DDL.
 
 Alasan: boilerplate `@Column(name)` risk inconsistency (seperti `jmlTanggungan` vs `jml_tanggungan` sebelumnya) dan zero value added karena naming strategy sudah handle mapping otomatis.
+
+---
+
+## Migration Update (ADR-0057)
+
+- **Query `UserService` beralih ke jOOQ**: Seluruh read path untuk `UserService` kini menggunakan jOOQ query repositories.
+- **Validasi Profil & Lampiran**: Seluruh validasi pada modul profil dan lampiran sepenuhnya menggunakan JPA derived queries, tanpa ketergantungan pada `JpaSpecificationExecutor` atau `SpecificationBuilder`.
