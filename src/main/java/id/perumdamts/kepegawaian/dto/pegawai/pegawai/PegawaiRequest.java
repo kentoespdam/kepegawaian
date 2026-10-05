@@ -1,22 +1,16 @@
 package id.perumdamts.kepegawaian.dto.pegawai.pegawai;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.dto.commons.PagedRequest;
 import id.perumdamts.kepegawaian.entities.commons.EJenisKelamin;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKerja;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
-import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
-import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
-
-import org.springframework.util.StringUtils;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -32,30 +26,6 @@ public class PegawaiRequest extends PagedRequest {
     @Enumerated(EnumType.ORDINAL)
     private EStatusKerja statusKerja = EStatusKerja.KARYAWAN_AKTIF;
     private EJenisKelamin jenisKelamin;
-
-    @JsonIgnore
-    public Specification<Pegawai> getSpecification() {
-        return SpecificationBuilder.<Pegawai>of()
-                .addCustom((root, cb) -> {
-                    if (!StringUtils.hasText(search)) {
-                        return null;
-                    }
-                    String likeTerm = "%" + search.trim().toLowerCase() + "%";
-                    var nipamPred = cb.like(cb.lower(root.get("nipam")), likeTerm);
-                    var nikPred = cb.like(cb.lower(root.get("biodata").get("nik")), likeTerm);
-                    var namaPred = cb.like(cb.lower(root.get("biodata").get("nama")), likeTerm);
-                    return cb.or(nipamPred, nikPred, namaPred);
-                })
-                .addEqual(statusPegawai, "statusPegawai")
-                .addEqual(jabatanId, "jabatan", "id")
-                .addEqual(organisasiId, "organisasi", "id")
-                .addEqual(profesiId, "profesi", "id")
-                .addEqual(golonganId, "golongan", "id")
-                .addEqual(gradeId, "grade", "id")
-                .addEqual(statusKerja, "statusKerja")
-                .addEqual(jenisKelamin, "biodata", "jenisKelamin")
-                .build();
-    }
 
     @JsonIgnore
     public Pageable getPageable() {
