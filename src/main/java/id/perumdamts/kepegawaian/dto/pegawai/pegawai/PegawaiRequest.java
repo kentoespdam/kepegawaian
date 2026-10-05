@@ -16,12 +16,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 
+import org.springframework.util.StringUtils;
+
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class PegawaiRequest extends PagedRequest {
-    private String nipam;
-    private String nik;
-    private String nama;
+    private String search;
     @Enumerated(EnumType.ORDINAL)
     private EStatusPegawai statusPegawai;
     private Long jabatanId;
@@ -36,9 +36,16 @@ public class PegawaiRequest extends PagedRequest {
     @JsonIgnore
     public Specification<Pegawai> getSpecification() {
         return SpecificationBuilder.<Pegawai>of()
-                .addLike(nipam, "nipam")
-                .addLike(nik, "biodata", "nik")
-                .addLike(nama, "biodata", "nama")
+                .addCustom((root, cb) -> {
+                    if (!StringUtils.hasText(search)) {
+                        return null;
+                    }
+                    String likeTerm = "%" + search.trim().toLowerCase() + "%";
+                    var nipamPred = cb.like(cb.lower(root.get("nipam")), likeTerm);
+                    var nikPred = cb.like(cb.lower(root.get("biodata").get("nik")), likeTerm);
+                    var namaPred = cb.like(cb.lower(root.get("biodata").get("nama")), likeTerm);
+                    return cb.or(nipamPred, nikPred, namaPred);
+                })
                 .addEqual(statusPegawai, "statusPegawai")
                 .addEqual(jabatanId, "jabatan", "id")
                 .addEqual(organisasiId, "organisasi", "id")

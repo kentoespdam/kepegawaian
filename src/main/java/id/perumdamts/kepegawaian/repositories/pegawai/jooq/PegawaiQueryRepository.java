@@ -90,14 +90,13 @@ public class PegawaiQueryRepository {
     private org.jooq.Condition buildConditions(PegawaiRequest request) {
         var conditions = DSL.trueCondition().and(PEGAWAI.IS_DELETED.eq(false));
 
-        if (request.getNipam() != null && !request.getNipam().isBlank()) {
-            conditions = conditions.and(PEGAWAI.NIPAM.containsIgnoreCase(request.getNipam()));
-        }
-        if (request.getNik() != null && !request.getNik().isBlank()) {
-            conditions = conditions.and(BIODATA.NIK.containsIgnoreCase(request.getNik()));
-        }
-        if (request.getNama() != null && !request.getNama().isBlank()) {
-            conditions = conditions.and(BIODATA.NAMA.containsIgnoreCase(request.getNama()));
+        if (request.getSearch() != null && !request.getSearch().isBlank()) {
+            String search = request.getSearch().trim();
+            conditions = conditions.and(
+                    PEGAWAI.NIPAM.containsIgnoreCase(search)
+                            .or(BIODATA.NIK.containsIgnoreCase(search))
+                            .or(BIODATA.NAMA.containsIgnoreCase(search))
+            );
         }
         if (request.getStatusPegawai() != null) {
             conditions = conditions.and(PEGAWAI.STATUS_PEGAWAI.eq((byte) request.getStatusPegawai().ordinal()));
