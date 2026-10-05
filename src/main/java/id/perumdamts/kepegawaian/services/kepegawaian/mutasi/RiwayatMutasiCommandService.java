@@ -41,7 +41,8 @@ public class RiwayatMutasiCommandService {
     @Transactional(rollbackFor = Exception.class)
     public RiwayatMutasi save(RiwayatMutasiPostRequest request) {
         request.setJenisSk(resolveJenisSk(request.getJenisMutasi()));
-        boolean exists = repository.exists(request.getSpecificationMutasi());
+        boolean exists = repository.existsByRiwayatSk_NomorSkAndPegawai_IdAndRiwayatSk_TanggalSk(
+                request.getNomorSk(), request.getPegawaiId(), request.getTanggalSk());
         if (exists) {
             throw new ConflictException("Riwayat Mutasi is already Exists");
         }
@@ -84,8 +85,8 @@ public class RiwayatMutasiCommandService {
     @Transactional(rollbackFor = Exception.class)
     public RiwayatMutasi update(Long id, RiwayatMutasiPutRequest request) {
         request.setJenisSk(resolveJenisSk(request.getJenisMutasi()));
-        boolean exists = repository.exists(request.getSpecificationMutasi()
-                .and((root, query, cb) -> cb.notEqual(root.get("id"), id)));
+        boolean exists = repository.existsByRiwayatSk_NomorSkAndPegawai_IdAndRiwayatSk_TanggalSkAndIdNot(
+                request.getNomorSk(), request.getPegawaiId(), request.getTanggalSk(), id);
         if (exists) {
             throw new ConflictException("Riwayat Mutasi is already Exists");
         }

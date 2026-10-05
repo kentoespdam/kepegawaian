@@ -24,8 +24,7 @@ public class GajiPendapatanNonPajakCommandService {
     @Transactional
     @CacheEvict(value = "gaji-referensi", key = "'ptkp'")
     public SavedStatus<Long> save(GajiPendapatanNonPajakPostRequest request) {
-        Optional<GajiPendapatanNonPajak> one = repository.findOne(request.getSpecification());
-        if (one.isPresent())
+        if (repository.existsByKode(request.getKode()))
             throw new ConflictException("Pendapatan Non Pajak sudah ada");
         GajiPendapatanNonPajak entity = GajiPendapatanNonPajakMapper.toEntity(request);
         repository.save(entity);

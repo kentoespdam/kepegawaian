@@ -1,16 +1,13 @@
 package id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSp;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSp;
-import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
@@ -59,11 +56,5 @@ public class RiwayatSpPostRequest {
     private MultipartFile fileName;
     private String notes;
 
-    @JsonIgnore
-    public Specification<RiwayatSp> getSpecification() {
-        return SpecificationBuilder.<RiwayatSp>of()
-                .addEqual(nomorSp, "nomorSp")
-                .addEqual(pegawaiId, "pegawai", "id")
-                .build();
-    }
+
 }

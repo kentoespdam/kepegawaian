@@ -1,14 +1,11 @@
 package id.perumdamts.kepegawaian.dto.penggajian.gajiPotonganTkk;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiPotonganTkk;
-import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.springframework.data.jpa.domain.Specification;
 
 @Data
 public class GajiPotonganTkkPostRequest {
@@ -19,14 +16,7 @@ public class GajiPotonganTkkPostRequest {
     private Long golonganId;
     private Double nominal;
 
-    @JsonIgnore
-    public Specification<GajiPotonganTkk> getSpecification() {
-        return SpecificationBuilder.<GajiPotonganTkk>of()
-                .addEqual(statusPegawai, "statusPegawai")
-                .addEqual(levelId, "level", "id")
-                .addEqual(golonganId, "golongan", "id")
-                .build();
-    }
+
 
 
 }

@@ -1,16 +1,13 @@
 package id.perumdamts.kepegawaian.dto.profil.keahlian;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.commons.EKualifikasi;
 import id.perumdamts.kepegawaian.entities.profil.Keahlian;
-import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.springframework.data.jpa.domain.Specification;
 
 @Data
 public class KeahlianPostRequest {
@@ -28,12 +25,5 @@ public class KeahlianPostRequest {
     private Integer tahun;
     private String masaBerlaku;
 
-    @JsonIgnore
-    public Specification<Keahlian> getSpecification() {
-        return SpecificationBuilder.<Keahlian>of()
-                .addEqual(biodataId, "biodata", "nik")
-                .addEqual(keahlianId, "jenisKeahlian", "id")
-                .addEqual(tahun, "tahun")
-                .build();
-    }
+
 }

@@ -2,17 +2,17 @@ package id.perumdamts.kepegawaian.repositories.master.jpa;
 
 import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.history.RevisionRepository;
 
 import java.util.Optional;
 
 public interface OrganisasiRepository extends JpaRepository<Organisasi, Long>,
-        JpaSpecificationExecutor<Organisasi>,
-        RevisionRepository<Organisasi, Long, Integer> {
+RevisionRepository<Organisasi, Long, Integer> {
 
     boolean existsByParentIdAndIsDeletedFalse(Long parentId);
+
+    Optional<Organisasi> findByNamaAndParent(String nama, Organisasi parent);
 
     /**
 

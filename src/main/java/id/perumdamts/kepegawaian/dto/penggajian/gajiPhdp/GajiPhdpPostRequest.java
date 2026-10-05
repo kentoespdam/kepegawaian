@@ -1,11 +1,8 @@
 package id.perumdamts.kepegawaian.dto.penggajian.gajiPhdp;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiPhdp;
-import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
-import org.springframework.data.jpa.domain.Specification;
 
 @Data
 public class GajiPhdpPostRequest {
@@ -15,12 +12,6 @@ public class GajiPhdpPostRequest {
     @NotEmpty(message = "Formula is required")
     private String formula;
 
-    @JsonIgnore
-    public Specification<GajiPhdp> getSpecification() {
-        return SpecificationBuilder.<GajiPhdp>of()
-                .addEqual(kondisi, "kondisi")
-                .addEqual(formula, "formula")
-                .build();
-    }
+
 
 }

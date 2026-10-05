@@ -20,7 +20,7 @@ public class LevelCommandService {
 
     @Transactional
     public Level create(LevelPostRequest request) {
-        Optional<Level> existing = repository.findOne(request.getSpecification());
+        Optional<Level> existing = repository.findByNama(request.getNama());
         if (existing.isPresent()) {
             if (existing.get().getIsDeleted()) {
                 Level revived = existing.get();
@@ -40,7 +40,7 @@ public class LevelCommandService {
         Level existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Level not found"));
 
-        Optional<Level> dup = repository.findOne(request.getSpecification());
+        Optional<Level> dup = repository.findByNama(request.getNama());
         if (dup.isPresent() && !dup.get().getId().equals(id)) {
             throw new ConflictException("Level already exists");
         }

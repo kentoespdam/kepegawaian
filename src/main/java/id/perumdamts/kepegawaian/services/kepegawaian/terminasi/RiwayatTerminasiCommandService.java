@@ -52,7 +52,8 @@ public class RiwayatTerminasiCommandService {
 
     @Transactional(rollbackFor = Exception.class)
     public RiwayatTerminasi save(RiwayatTerminasiPostRequest request) {
-        boolean exists = repository.exists(request.getTerminasiSpecification());
+        boolean exists = repository.existsByPegawai_IdAndSkTerminasi_NomorSkAndSkTerminasi_TanggalSk(
+                request.getPegawaiId(), request.getNomorSk(), request.getTanggalSk());
         if (exists) {
             throw new ConflictException("Terminasi is already exist");
         }
@@ -107,8 +108,8 @@ public class RiwayatTerminasiCommandService {
 
     @Transactional(rollbackFor = Exception.class)
     public RiwayatTerminasi update(Long id, RiwayatTerminasiPutRequest request) {
-        boolean exists = repository.exists(request.getTerminasiSpecification()
-                .and((root, query, cb) -> cb.notEqual(root.get("id"), id)));
+        boolean exists = repository.existsByPegawai_IdAndSkTerminasi_NomorSkAndSkTerminasi_TanggalSkAndIdNot(
+                request.getPegawaiId(), request.getNomorSk(), request.getTanggalSk(), id);
         if (exists) {
             throw new ConflictException("Terminasi is already exist");
         }

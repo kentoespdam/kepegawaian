@@ -19,7 +19,7 @@ public class JenisKeahlianCommandService {
 
     @Transactional
     public JenisKeahlian create(JenisKeahlianPostRequest request) {
-        Optional<JenisKeahlian> existing = repository.findOne(request.getSpecification());
+        Optional<JenisKeahlian> existing = repository.findByNama(request.getNama());
         if (existing.isPresent()) {
             if (existing.get().getIsDeleted()) {
                 JenisKeahlian revived = existing.get();
@@ -38,7 +38,7 @@ public class JenisKeahlianCommandService {
         JenisKeahlian existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("JenisKeahlian not found"));
 
-        Optional<JenisKeahlian> duplicate = repository.findOne(request.getSpecification());
+        Optional<JenisKeahlian> duplicate = repository.findByNama(request.getNama());
         if (duplicate.isPresent() && !duplicate.get().getId().equals(id)) {
             throw new ConflictException("JenisKeahlian with same nama already exists");
         }

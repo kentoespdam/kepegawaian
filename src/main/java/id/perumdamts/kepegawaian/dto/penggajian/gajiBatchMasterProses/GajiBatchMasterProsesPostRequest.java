@@ -1,13 +1,10 @@
 package id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMasterProses;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.commons.EJenisGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchMasterProses;
-import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.springframework.data.jpa.domain.Specification;
 
 @Data
 public class GajiBatchMasterProsesPostRequest {
@@ -18,13 +15,6 @@ public class GajiBatchMasterProsesPostRequest {
     private EJenisGaji jenisGaji;
     private Double nilai;
 
-    @JsonIgnore
-    public Specification<GajiBatchMasterProses> getSpecification() {
-        return SpecificationBuilder.<GajiBatchMasterProses>of()
-                .addEqual(batchMasterId, "batchMasterId")
-                .addEqual(nama, "nama")
-                .addEqual(jenisGaji, "jenisGaji")
-                .build();
-    }
+
 
 }

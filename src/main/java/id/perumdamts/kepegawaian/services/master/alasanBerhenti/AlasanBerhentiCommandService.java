@@ -19,7 +19,7 @@ public class AlasanBerhentiCommandService {
 
     @Transactional
     public AlasanBerhenti create(AlasanBerhentiPostRequest request) {
-        Optional<AlasanBerhenti> existing = repository.findOne(request.getSpecification());
+        Optional<AlasanBerhenti> existing = repository.findByNama(request.getNama());
         if (existing.isPresent()) {
             if (existing.get().getIsDeleted()) {
                 AlasanBerhenti revived = existing.get();
@@ -38,7 +38,7 @@ public class AlasanBerhentiCommandService {
         AlasanBerhenti existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("AlasanBerhenti not found"));
 
-        Optional<AlasanBerhenti> duplicate = repository.findOne(request.getSpecification());
+        Optional<AlasanBerhenti> duplicate = repository.findByNama(request.getNama());
         if (duplicate.isPresent() && !duplicate.get().getId().equals(id)) {
             throw new ConflictException("AlasanBerhenti with same nama already exists");
         }

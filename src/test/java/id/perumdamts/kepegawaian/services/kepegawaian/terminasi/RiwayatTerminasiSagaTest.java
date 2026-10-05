@@ -213,7 +213,8 @@ class RiwayatTerminasiSagaTest {
         RiwayatTerminasiPostRequest request = request(pegawai);
         commandService.save(request);
 
-        assertTrue(terminasiRepository.exists(request.getTerminasiSpecification()),
+        assertTrue(terminasiRepository.existsByPegawai_IdAndSkTerminasi_NomorSkAndSkTerminasi_TanggalSk(
+                request.getPegawaiId(), request.getNomorSk(), request.getTanggalSk()),
                 "terminasi kedua dengan (pegawai, nomorSk, tanggalSk) sama harus terdeteksi");
     }
 }

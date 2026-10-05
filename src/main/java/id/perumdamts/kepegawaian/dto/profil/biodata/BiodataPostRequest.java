@@ -1,19 +1,16 @@
 package id.perumdamts.kepegawaian.dto.profil.biodata;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.commons.EAgama;
 import id.perumdamts.kepegawaian.entities.commons.EGolonganDarah;
 import id.perumdamts.kepegawaian.entities.commons.EJenisKelamin;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKawin;
 import id.perumdamts.kepegawaian.entities.profil.Biodata;
-import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDate;
 
@@ -47,13 +44,5 @@ public class BiodataPostRequest {
     private String notes;
     private Boolean isPegawai = false;
 
-    @JsonIgnore
-    public Specification<Biodata> getSpecification() {
-        return SpecificationBuilder.<Biodata>of()
-                .addEqual(nik, "nik")
-                .addEqual(nama, "nama")
-                .addEqual(tempatLahir, "tempatLahir")
-                .addEqual(tanggalLahir, "tanggalLahir")
-                .build();
-    }
+
 }

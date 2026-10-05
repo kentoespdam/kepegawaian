@@ -39,7 +39,8 @@ public class RiwayatSkCommandService implements SkBootstrapPort {
         Golongan golongan = golonganRepository.findById(request.getGolonganId())
                 .orElse(null);
 
-        boolean exists = repository.exists(request.getSpecification());
+        boolean exists = repository.existsByPegawai_IdAndNomorSkAndJenisSkAndTanggalSk(
+                request.getPegawaiId(), request.getNomorSk(), request.getJenisSk(), request.getTanggalSk());
         if (exists) {
             throw new ConflictException("Riwayat SK is Exists");
         }
@@ -55,8 +56,8 @@ public class RiwayatSkCommandService implements SkBootstrapPort {
 
     @Transactional(rollbackFor = Exception.class)
     public RiwayatSk update(Long id, RiwayatSkPutRequest request) {
-        boolean exists = repository.exists(request.getSpecification()
-                .and((root, query, cb) -> cb.notEqual(root.get("id"), id)));
+        boolean exists = repository.existsByPegawai_IdAndNomorSkAndJenisSkAndTanggalSkAndIdNot(
+                request.getPegawaiId(), request.getNomorSk(), request.getJenisSk(), request.getTanggalSk(), id);
         if (exists) {
             throw new ConflictException("Riwayat SK is Exists");
         }

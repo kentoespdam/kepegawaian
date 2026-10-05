@@ -88,14 +88,18 @@ class RiwayatSkAntiDuplikatIT {
     @Test
     void skSpec_nomorSamaTanggalBeda_tidakTerhitungDuplikat() {
         insertSk(TANGGAL_ASLI);
-        assertFalse(repository.exists(req(TANGGAL_KEMBALI).getSpecification()),
+        RiwayatSkPostRequest r = req(TANGGAL_KEMBALI);
+        assertFalse(repository.existsByPegawai_IdAndNomorSkAndJenisSkAndTanggalSk(
+                r.getPegawaiId(), r.getNomorSk(), r.getJenisSk(), r.getTanggalSk()),
                 "nomor SK sama tapi tanggal SK beda tidak boleh dianggap duplikat (kasus PLT)");
     }
 
     @Test
     void skSpec_nomorSamaPersis_terhitungDuplikat() {
         insertSk(TANGGAL_ASLI);
-        assertTrue(repository.exists(req(TANGGAL_ASLI).getSpecification()),
+        RiwayatSkPostRequest r = req(TANGGAL_ASLI);
+        assertTrue(repository.existsByPegawai_IdAndNomorSkAndJenisSkAndTanggalSk(
+                r.getPegawaiId(), r.getNomorSk(), r.getJenisSk(), r.getTanggalSk()),
                 "baris (pegawai, nomorSk, jenisSk, tanggalSk) identik harus terdeteksi duplikat");
     }
 
@@ -111,10 +115,12 @@ class RiwayatSkAntiDuplikatIT {
         r.setJenisSk(EJenisSk.SK_JABATAN);
         r.setTanggalSk(TANGGAL_ASLI);
 
-        assertTrue(mutasiRepository.exists(r.getSpecificationMutasi()),
+        assertTrue(mutasiRepository.existsByRiwayatSk_NomorSkAndPegawai_IdAndRiwayatSk_TanggalSk(
+                r.getNomorSk(), r.getPegawaiId(), r.getTanggalSk()),
                 "mutasi dengan (pegawai, nomorSk, tanggalSk) yang sudah ada harus terdeteksi duplikat");
         r.setTanggalSk(TANGGAL_KEMBALI);
-        assertFalse(mutasiRepository.exists(r.getSpecificationMutasi()),
+        assertFalse(mutasiRepository.existsByRiwayatSk_NomorSkAndPegawai_IdAndRiwayatSk_TanggalSk(
+                r.getNomorSk(), r.getPegawaiId(), r.getTanggalSk()),
                 "mutasi nomor SK sama tapi tanggal SK beda harus diterima (kasus PLT)");
     }
 

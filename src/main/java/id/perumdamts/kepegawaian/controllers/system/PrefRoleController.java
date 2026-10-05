@@ -9,6 +9,7 @@ import id.perumdamts.kepegawaian.exceptions.ConflictException;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.PrefRoleRepository;
 import id.perumdamts.kepegawaian.services.system.PrefRoleService;
+import id.perumdamts.kepegawaian.services.system.roles.PrefRoleQueryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -27,12 +28,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class PrefRoleController {
     private final PrefRoleRepository repository;
     private final PrefRoleService roleService;
+    private final PrefRoleQueryService queryService;
 
     @PreAuthorize("hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_ROLE')")
     @Operation(summary = "List data dengan paginasi")
     @GetMapping
     public ResponseEntity<PageResult<Page<PrefRole>>> index(@Valid @ParameterObject PrefRoleRequest request) {
-        Page<PrefRole> result = repository.findAll(request.getSpecification(), request.getPageable());
+        Page<PrefRole> result = queryService.findPage(request);
         return CustomResult.page(result);
     }
 

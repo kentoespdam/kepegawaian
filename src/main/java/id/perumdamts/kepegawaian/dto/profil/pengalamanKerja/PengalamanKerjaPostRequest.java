@@ -1,11 +1,8 @@
 package id.perumdamts.kepegawaian.dto.profil.pengalamanKerja;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.profil.PengalamanKerja;
-import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
-import org.springframework.data.jpa.domain.Specification;
 
 @Data
 public class PengalamanKerjaPostRequest {
@@ -20,13 +17,5 @@ public class PengalamanKerjaPostRequest {
     private Integer tahunKeluar;
     private String notes;
 
-    @JsonIgnore
-    public Specification<PengalamanKerja> getSpecification() {
-        return SpecificationBuilder.<PengalamanKerja>of()
-                .addEqual(biodataId, "biodata", "nik")
-                .addEqual(namaPerusahaan, "namaPerusahaan")
-                .addEqual(typePerusahaan, "typePerusahaan")
-                .addEqual(jabatan, "jabatan")
-                .build();
-    }
+
 }

@@ -1,12 +1,9 @@
 package id.perumdamts.kepegawaian.dto.profil.pendidikan;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.profil.Pendidikan;
-import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
-import org.springframework.data.jpa.domain.Specification;
 
 @Data
 public class PendidikanPostRequest {
@@ -27,11 +24,5 @@ public class PendidikanPostRequest {
     private Boolean isLatest = false;
 
 
-    @JsonIgnore
-    public Specification<Pendidikan> getSpecification() {
-        return SpecificationBuilder.<Pendidikan>of()
-                .addEqual(biodataId, "biodata", "nik")
-                .addEqual(jenjangPendidikanId, "jenjangPendidikan", "id")
-                .build();
-    }
+
 }

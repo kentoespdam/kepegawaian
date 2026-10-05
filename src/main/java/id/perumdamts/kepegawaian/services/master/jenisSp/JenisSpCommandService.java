@@ -21,7 +21,7 @@ public class JenisSpCommandService {
 
     @Transactional
     public JenisSp create(JenisSpPostRequest request) {
-        Optional<JenisSp> existing = repository.findOne(request.getSpecification());
+        Optional<JenisSp> existing = repository.findByKode(request.getKode());
         if (existing.isPresent()) {
             if (existing.get().getIsDeleted()) {
                 JenisSp revived = existing.get();
@@ -38,7 +38,7 @@ public class JenisSpCommandService {
     public JenisSp update(Long id, JenisSpPostRequest request) {
         JenisSp existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Jenis SP not found"));
-        Optional<JenisSp> duplicate = repository.findOne(request.getSpecification());
+        Optional<JenisSp> duplicate = repository.findByKode(request.getKode());
         if (duplicate.isPresent() && !duplicate.get().getId().equals(id)) {
             throw new ConflictException("Jenis SP already exists");
         }

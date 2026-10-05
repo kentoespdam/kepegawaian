@@ -23,7 +23,7 @@ public class GradeCommandService {
     @Transactional
     public Grade create(GradePostRequest request) {
         Level level = findLevel(request.getLevelId());
-        Optional<Grade> existing = repository.findOne(request.getSpecification());
+        Optional<Grade> existing = repository.findByLevelIdAndGrade(request.getLevelId(), request.getGrade());
         if (existing.isPresent()) {
             if (existing.get().getIsDeleted()) {
                 Grade revived = existing.get();
@@ -42,7 +42,7 @@ public class GradeCommandService {
         Grade existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Grade not found"));
         Level level = findLevel(request.getLevelId());
-        Optional<Grade> duplicate = repository.findOne(request.getSpecification());
+        Optional<Grade> duplicate = repository.findByLevelIdAndGrade(request.getLevelId(), request.getGrade());
         if (duplicate.isPresent() && !duplicate.get().getId().equals(id)) {
             throw new ConflictException("Grade already exists");
         }
@@ -62,6 +62,6 @@ public class GradeCommandService {
     private Level findLevel(Long id) {
         if (id == null) return null;
         return levelRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Level not found"));
+                .orElseThrow(() -> new NotFoundException("Level not found with id: " + id));
     }
 }

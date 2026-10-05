@@ -35,7 +35,7 @@ public class RiwayatSpCommandService {
 
     @Transactional(rollbackFor = Exception.class)
     public RiwayatSp save(RiwayatSpPostRequest request) {
-        boolean exists = repository.exists(request.getSpecification());
+        boolean exists = repository.existsByNomorSpAndPegawai_Id(request.getNomorSp(), request.getPegawaiId());
         if (exists) {
             throw new ConflictException("Riwayat SP is Exists");
         }

@@ -1,6 +1,5 @@
 package id.perumdamts.kepegawaian.dto.profil.keluarga;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.commons.EAgama;
 import id.perumdamts.kepegawaian.entities.commons.EHubunganKeluarga;
 import id.perumdamts.kepegawaian.entities.commons.EJenisKelamin;
@@ -11,7 +10,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDate;
 
@@ -49,15 +47,5 @@ public class ProfilKeluargaPostRequest {
         return pendidikanId != null ? pendidikanId : 0L;
     }
 
-    @JsonIgnore
-    public Specification<ProfilKeluarga> getSpecification() {
-        return (root, query, criteriaBuilder) ->
-                criteriaBuilder.and(
-                        criteriaBuilder.equal(root.get("biodata").get("nik"), biodataId),
-                        criteriaBuilder.equal(root.get("nik"), nik),
-                        criteriaBuilder.equal(root.get("nama"), nama),
-                        criteriaBuilder.equal(root.get("jenisKelamin"), jenisKelamin),
-                        criteriaBuilder.equal(root.get("hubunganKeluarga"), hubunganKeluarga)
-                );
-    }
+
 }

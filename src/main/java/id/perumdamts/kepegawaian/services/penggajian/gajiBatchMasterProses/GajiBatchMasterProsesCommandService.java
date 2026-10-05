@@ -13,7 +13,6 @@ import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiBatchMasterPros
 import id.perumdamts.kepegawaian.repositories.penggajian.jpa.GajiBatchMasterRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +28,8 @@ public class GajiBatchMasterProsesCommandService {
 
     @Transactional
     public SavedStatus<Long> save(GajiBatchMasterProsesPostRequest request) {
-        boolean exists = repository.exists(request.getSpecification());
+        boolean exists = repository.existsByBatchMasterIdAndNamaAndJenisGaji(
+                request.getBatchMasterId(), request.getNama(), request.getJenisGaji());
         if (exists) throw new ConflictException("Komponen Gaji sudah ada");
 
         GajiBatchMaster gajiBatchMaster = gajiBatchMasterRepository.findById(request.getBatchMasterId())
@@ -47,12 +47,8 @@ public class GajiBatchMasterProsesCommandService {
         if (gbmList.isEmpty())
             return false;
 
-        Specification<GajiBatchMasterProses> kodeSpec = (root, query, cb) ->
-                cb.like(root.get("kode"), "ADD_%");
-        Specification<GajiBatchMasterProses> gbmSpec = (root, query, cb) ->
-                cb.in(root.get("batchMasterId")).value(gbmList.stream().map(GajiBatchMaster::getId).toList());
-        Specification<GajiBatchMasterProses> where = kodeSpec.and(gbmSpec);
-        List<GajiBatchMasterProses> gbpList = repository.findAll(where);
+        List<Long> batchMasterIds = gbmList.stream().map(GajiBatchMaster::getId).toList();
+        List<GajiBatchMasterProses> gbpList = repository.findByKodeStartingWithAndBatchMasterIdIn("ADD_", batchMasterIds);
         if (!gbpList.isEmpty())
             repository.deleteAll(gbpList);
 

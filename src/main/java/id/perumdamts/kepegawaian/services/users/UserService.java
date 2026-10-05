@@ -6,41 +6,23 @@ import id.perumdamts.kepegawaian.dto.commons.SavedStatus;
 import id.perumdamts.kepegawaian.dto.users.UserPatchStatusRequest;
 import id.perumdamts.kepegawaian.dto.users.UserRequest;
 import id.perumdamts.kepegawaian.dto.users.UserResponse;
-import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
-import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
 import id.perumdamts.kepegawaian.services.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final PegawaiRepository repository;
+    private final UserServiceQueryService queryService;
     private final AuthService authService;
-    private final Executor taskExecutor;
 
     public Page<UserResponse> findPage(UserRequest request) {
-        Page<Pegawai> pegawaiPage = repository.findAll(request.getSpecification(), request.getPageable());
-        List<CompletableFuture<UserResponse>> futures = pegawaiPage.getContent().stream().map(this::fetchUserAsync).toList();
-        List<UserResponse> list = futures.stream().map(CompletableFuture::join).toList();
-        return new PageImpl<>(list, pegawaiPage.getPageable(), pegawaiPage.getTotalElements());
+        return queryService.findPage(request);
     }
 
     // ADR-0039: id Appwrite user adalah String (sama dengan pegawai.id), seragam dengan endpoint pref/{id}
     public SavedStatus<AppwriteUser> patchStatus(String id, UserPatchStatusRequest request) {
         return SavedStatus.build(ESaveStatus.SUCCESS, authService.updateStatus(id, request));
-    }
-
-    private CompletableFuture<UserResponse> fetchUserAsync(Pegawai pegawai) {
-        return CompletableFuture.supplyAsync(() -> {
-            AppwriteUser appwriteUser = authService.getUser(pegawai.getId().toString());
-            return UserResponse.build(pegawai, appwriteUser);
-        }, taskExecutor);
     }
 }

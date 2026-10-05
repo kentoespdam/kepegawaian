@@ -1,21 +1,18 @@
 package id.perumdamts.kepegawaian.dto.kepegawaian.mutasi;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk.GajiSk;
 import id.perumdamts.kepegawaian.entities.commons.EJenisMutasi;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatMutasi;
-import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDate;
 
@@ -87,13 +84,6 @@ public class RiwayatMutasiPostRequest {
     private Long golonganLamaId;
     private Long profesiLamaId;
 
-    @JsonIgnore
-    public Specification<RiwayatMutasi> getSpecificationMutasi() {
-        return SpecificationBuilder.<RiwayatMutasi>of()
-                .addEqual(getNomorSk(), "riwayatSk", "nomorSk")
-                .addEqual(getPegawaiId(), "pegawai", "id")
-                .addEqual(getTanggalSk(), "riwayatSk", "tanggalSk")
-                .build();
-    }
+
 
 }

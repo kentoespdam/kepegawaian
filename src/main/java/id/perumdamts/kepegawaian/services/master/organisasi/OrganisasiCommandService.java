@@ -44,7 +44,7 @@ public class OrganisasiCommandService {
         Organisasi parent = findParent(request.getParentId());
 
         // Live collision (different id).
-        Optional<Organisasi> duplicate = repository.findOne(request.uniquenessSpecification());
+        Optional<Organisasi> duplicate = repository.findByNamaAndParent(request.getNama(), parent);
         if (duplicate.isPresent() && !duplicate.get().getId().equals(id)) {
             throw new ConflictException("Organisasi already exists");
         }

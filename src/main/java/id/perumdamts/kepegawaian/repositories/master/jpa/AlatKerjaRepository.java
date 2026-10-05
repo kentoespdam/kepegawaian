@@ -2,8 +2,7 @@ package id.perumdamts.kepegawaian.repositories.master.jpa;
 
 import id.perumdamts.kepegawaian.entities.master.AlatKerja;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface AlatKerjaRepository extends JpaRepository<AlatKerja, Long>, JpaSpecificationExecutor<AlatKerja> {
+public interface AlatKerjaRepository extends JpaRepository<AlatKerja, Long> {
     boolean existsByProfesiIdAndIsDeletedFalse(Long profesiId);
 }

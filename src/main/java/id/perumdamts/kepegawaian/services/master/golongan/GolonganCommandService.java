@@ -19,11 +19,9 @@ public class GolonganCommandService {
 
     @Transactional
     public Golongan create(GolonganPostRequest request) {
-        // Check for existing soft-deleted record with same golongan/pangkat
-        Optional<Golongan> existing = repository.findOne(request.getSpecification());
+        Optional<Golongan> existing = repository.findByGolonganAndPangkat(request.getGolongan(), request.getPangkat());
         if (existing.isPresent()) {
             if (existing.get().getIsDeleted()) {
-                // Revive existing record
                 Golongan revived = existing.get();
                 revived.setIsDeleted(false);
                 return repository.save(revived);
@@ -32,7 +30,6 @@ public class GolonganCommandService {
             }
         }
 
-        // Create new record
         Golongan entity = GolonganMapper.toEntity(request);
         return repository.save(entity);
     }
@@ -42,8 +39,7 @@ public class GolonganCommandService {
         Golongan existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Golongan not found"));
 
-        // Check for duplicate with different ID
-        Optional<Golongan> duplicate = repository.findOne(request.getSpecification());
+        Optional<Golongan> duplicate = repository.findByGolonganAndPangkat(request.getGolongan(), request.getPangkat());
         if (duplicate.isPresent() && !duplicate.get().getId().equals(id)) {
             throw new ConflictException("Golongan with same golongan/pangkat already exists");
         }

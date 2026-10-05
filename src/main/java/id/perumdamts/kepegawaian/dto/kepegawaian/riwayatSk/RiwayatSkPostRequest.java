@@ -1,12 +1,10 @@
 package id.perumdamts.kepegawaian.dto.kepegawaian.riwayatSk;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
-import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Min;
@@ -15,7 +13,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDate;
 
@@ -58,14 +55,6 @@ public class RiwayatSkPostRequest {
     private String notes;
 
 
-    @JsonIgnore
-    public Specification<RiwayatSk> getSpecification() {
-        return SpecificationBuilder.<RiwayatSk>of()
-                .addEqual(pegawaiId, "pegawai", "id")
-                .addEqual(nomorSk, "nomorSk")
-                .addEqual(jenisSk, "jenisSk")
-                .addEqual(tanggalSk, "tanggalSk")
-                .build();
-    }
+
 
 }

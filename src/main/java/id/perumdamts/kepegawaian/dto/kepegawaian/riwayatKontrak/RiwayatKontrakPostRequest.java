@@ -1,17 +1,14 @@
 package id.perumdamts.kepegawaian.dto.kepegawaian.riwayatKontrak;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.entities.commons.EJenisKontrak;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatKontrak;
-import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDate;
 
@@ -47,13 +44,5 @@ public class RiwayatKontrakPostRequest {
     private Boolean isLatest = false;
     private String notes;
 
-    @JsonIgnore
-    public Specification<RiwayatKontrak> getSpecification() {
-        return SpecificationBuilder.<RiwayatKontrak>of()
-                .addEqual(pegawaiId, "pegawai", "id")
-                .addEqual(nipam, "nipam")
-                .addEqual(nomorKontrak, "nomorKontrak")
-                .addEqual(jenisKontrak, "jenisKontrak")
-                .build();
-    }
+
 }

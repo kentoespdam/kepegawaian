@@ -1,12 +1,10 @@
 package id.perumdamts.kepegawaian.dto.kepegawaian.lampiran;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.kepegawaian.LampiranSk;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.springframework.data.jpa.domain.Specification;
 
 @Data
 public class LampiranSkAcceptRequest {
@@ -19,15 +17,7 @@ public class LampiranSkAcceptRequest {
     @Min(value = 1, message = "Referensi ID is required")
     private Long refId;
 
-    @JsonIgnore
-    public Specification<LampiranSk> getSpecification() {
-        return (root, query, cb) ->
-                cb.and(
-                        cb.equal(root.get("id"), id),
-                        cb.equal(root.get("ref"), ref),
-                        cb.equal(root.get("refId"), refId)
-                );
-    }
+
 
 
 }

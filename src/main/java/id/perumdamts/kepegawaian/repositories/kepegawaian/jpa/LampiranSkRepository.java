@@ -3,15 +3,18 @@ package id.perumdamts.kepegawaian.repositories.kepegawaian.jpa;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.kepegawaian.LampiranSk;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.history.RevisionRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface LampiranSkRepository extends JpaRepository<LampiranSk, Long>,
-        JpaSpecificationExecutor<LampiranSk>,
-        RevisionRepository<LampiranSk, Long, Integer> {
+RevisionRepository<LampiranSk, Long, Integer> {
     List<LampiranSk> findByRefAndRefId(EJenisSk jenisSk, Long id);
 
     List<LampiranSk> findAllByRefId(Long id);
+
+    boolean existsByRefAndRefId(EJenisSk ref, Long refId);
+
+    Optional<LampiranSk> findByIdAndRefAndRefId(Long id, EJenisSk ref, Long refId);
 }

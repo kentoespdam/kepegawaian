@@ -28,7 +28,7 @@ public class GajiKomponenCommandService {
     @Transactional
     @CacheEvict(value = "gaji-referensi", key = "'komponen'")
     public SavedStatus<Long> create(GajiKomponenPostRequest request) {
-        boolean exists = repository.exists(request.getSpecification());
+        boolean exists = repository.existsByProfilGajiIdAndKode(request.getProfilGajiId(), request.getKode());
         if (exists) throw new ConflictException("Gaji Komponen sudah ada");
         GajiProfil gajiProfil = gajiProfilRepository.findById(request.getProfilGajiId())
                 .orElseThrow(() -> new NotFoundException("Profil Gaji not found"));

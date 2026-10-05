@@ -24,8 +24,7 @@ public class GajiParameterSettingCommandService {
     @Transactional
     @CacheEvict(value = "gaji-referensi", key = "'parameter'")
     public SavedStatus<Long> save(GajiParameterSettingPostRequest request) {
-        Optional<GajiParameterSetting> one = repository.findOne(request.getSpecification());
-        if (one.isPresent())
+        if (repository.existsByKode(request.getKode()))
             throw new ConflictException("Setting Parameter Gaji sudah ada");
         GajiParameterSetting entity = GajiParameterSettingMapper.toEntity(request);
         repository.save(entity);

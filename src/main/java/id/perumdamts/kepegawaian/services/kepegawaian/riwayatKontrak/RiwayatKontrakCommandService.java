@@ -20,9 +20,10 @@ import id.perumdamts.kepegawaian.services.kepegawaian.riwayatSk.RiwayatSkCommand
 import id.perumdamts.kepegawaian.services.pegawai.pegawai.PegawaiWriteback;
 import id.perumdamts.kepegawaian.services.pegawai.port.KontrakBootstrapPort;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -59,7 +60,8 @@ public class RiwayatKontrakCommandService implements KontrakBootstrapPort {
 
     @Transactional(rollbackFor = Exception.class)
     public RiwayatKontrak save(RiwayatKontrakPostRequest request) {
-        boolean exists = repository.exists(request.getSpecification());
+        boolean exists = repository.existsByPegawai_IdAndNipamAndNomorKontrakAndJenisKontrak(
+                request.getPegawaiId(), request.getNipam(), request.getNomorKontrak(), request.getJenisKontrak());
         if (exists) {
             throw new ConflictException("Riwayat Kontrak is Exists");
         }
@@ -200,10 +202,8 @@ public class RiwayatKontrakCommandService implements KontrakBootstrapPort {
     }
 
     private void updateLatest(RiwayatKontrak entity) {
-        Specification<RiwayatKontrak> specification = (root, query, criteriaBuilder) -> criteriaBuilder.and(
-                criteriaBuilder.equal(root.get("pegawai").get("id"), entity.getPegawai().getId()),
-                criteriaBuilder.notEqual(root.get("id"), entity.getId())
-        );
-        repository.findAll(specification).stream().peek(k -> k.setIsLatest(false)).forEach(repository::save);
+        List<RiwayatKontrak> others = repository.findByPegawai_IdAndIdNot(entity.getPegawai().getId(), entity.getId());
+        others.forEach(k -> k.setIsLatest(false));
+        repository.saveAll(others);
     }
 }

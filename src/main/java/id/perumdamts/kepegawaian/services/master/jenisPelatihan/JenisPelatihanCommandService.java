@@ -19,7 +19,7 @@ public class JenisPelatihanCommandService {
 
     @Transactional
     public JenisPelatihan create(JenisPelatihanPostRequest request) {
-        Optional<JenisPelatihan> existing = repository.findOne(request.getSpecification());
+        Optional<JenisPelatihan> existing = repository.findByNama(request.getNama());
         if (existing.isPresent()) {
             if (existing.get().getIsDeleted()) {
                 JenisPelatihan revived = existing.get();
@@ -38,7 +38,7 @@ public class JenisPelatihanCommandService {
         JenisPelatihan existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("JenisPelatihan not found"));
 
-        Optional<JenisPelatihan> duplicate = repository.findOne(request.getSpecification());
+        Optional<JenisPelatihan> duplicate = repository.findByNama(request.getNama());
         if (duplicate.isPresent() && !duplicate.get().getId().equals(id)) {
             throw new ConflictException("JenisPelatihan with same nama already exists");
         }

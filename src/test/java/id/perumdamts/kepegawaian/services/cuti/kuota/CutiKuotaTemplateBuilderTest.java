@@ -9,7 +9,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -34,7 +33,8 @@ class CutiKuotaTemplateBuilderTest {
         Pegawai pegawai = new Pegawai();
         pegawai.setNipam("123456");
         // biodata sengaja null — kondisi data lama yang memicu NPE
-        when(pegawaiRepository.findAll(ArgumentMatchers.<Specification<Pegawai>>any())).thenReturn(List.of(pegawai));
+        when(pegawaiRepository.findByStatusKerjaInAndStatusPegawaiIn(ArgumentMatchers.any(), ArgumentMatchers.any()))
+                .thenReturn(List.of(pegawai));
 
         ResponseEntity<?> response = builder.build();
 

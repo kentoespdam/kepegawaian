@@ -27,4 +27,17 @@ public class UserResponse {
         }
         return response;
     }
+
+    public static UserResponse build(UserProjection projection, @Nullable AppwriteUser user) {
+        UserResponse response = new UserResponse();
+        response.setId(projection.getId());
+        response.setNipam(projection.getNipam());
+        response.setNama(projection.getNama());
+        if (user != null) {
+            response.setPrefs(user.getPrefs());
+            response.setIsVerified(user.getEmailVerification());
+            response.setIsActive(user.getStatus());
+        }
+        return response;
+    }
 }

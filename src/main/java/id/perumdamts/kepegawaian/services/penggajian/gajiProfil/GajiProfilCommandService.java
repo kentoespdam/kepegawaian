@@ -24,7 +24,7 @@ public class GajiProfilCommandService {
 
     @Transactional
     public SavedStatus<Long> create(GajiProfilPostRequest request) {
-        boolean exists = repository.exists(request.getSpecification());
+        boolean exists = repository.existsByNamaIgnoreCase(request.getNama());
         if (exists) throw new ConflictException("Gaji Profil sudah ada");
         GajiProfil entity = GajiProfilMapper.toEntity(request);
         GajiProfil save = repository.save(entity);

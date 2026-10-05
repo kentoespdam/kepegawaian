@@ -28,7 +28,7 @@ public class JabatanCommandService {
         Jabatan parent = findParent(request.getParentId());
         Organisasi organisasi = findOrganisasi(request.getOrganisasiId());
         Level level = findLevel(request.getLevelId());
-        Optional<Jabatan> existing = repository.findOne(request.getSpecification());
+        Optional<Jabatan> existing = repository.findByKode(request.getKode());
         if (existing.isPresent()) {
             if (existing.get().getIsDeleted()) {
                 Jabatan revived = existing.get();
@@ -49,7 +49,7 @@ public class JabatanCommandService {
         Jabatan parent = findParent(request.getParentId());
         Organisasi organisasi = findOrganisasi(request.getOrganisasiId());
         Level level = findLevel(request.getLevelId());
-        Optional<Jabatan> duplicate = repository.findOne(request.getSpecification());
+        Optional<Jabatan> duplicate = repository.findByKode(request.getKode());
         if (duplicate.isPresent() && !duplicate.get().getId().equals(id)) {
             throw new ConflictException("Jabatan already exists");
         }
@@ -72,18 +72,18 @@ public class JabatanCommandService {
     private Jabatan findParent(Long parentId) {
         if (parentId == null) return null;
         return repository.findById(parentId)
-                .orElseThrow(() -> new NotFoundException("Parent jabatan not found"));
+                .orElseThrow(() -> new NotFoundException("Parent Jabatan not found with id: " + parentId));
     }
 
-    private Organisasi findOrganisasi(Long id) {
-        if (id == null) return null;
-        return organisasiRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Organisasi not found"));
+    private Organisasi findOrganisasi(Long organisasiId) {
+        if (organisasiId == null) return null;
+        return organisasiRepository.findById(organisasiId)
+                .orElseThrow(() -> new NotFoundException("Organisasi not found with id: " + organisasiId));
     }
 
-    private Level findLevel(Long id) {
-        if (id == null) return null;
-        return levelRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Level not found"));
+    private Level findLevel(Long levelId) {
+        if (levelId == null) return null;
+        return levelRepository.findById(levelId)
+                .orElseThrow(() -> new NotFoundException("Level not found with id: " + levelId));
     }
 }

@@ -31,7 +31,17 @@ public class GajiTunjanganCommandService {
     @Transactional
     @CacheEvict(value = "gaji-referensi", key = "'tunjangan'")
     public SavedStatus<Long> save(EJenisTunjangan jenis, GajiTunjanganPostRequest request) {
-        boolean exists = repository.exists(request.getSpecification());
+        EJenisTunjangan targetJenis = request.getJenisTunjangan() != null ? request.getJenisTunjangan() : jenis;
+        boolean exists;
+        if (request.getLevelId() != null && request.getGolonganId() != null) {
+            exists = repository.existsByJenisTunjanganAndLevelIdAndGolonganId(targetJenis, request.getLevelId(), request.getGolonganId());
+        } else if (request.getLevelId() != null) {
+            exists = repository.existsByJenisTunjanganAndLevelIdAndGolonganIsNull(targetJenis, request.getLevelId());
+        } else if (request.getGolonganId() != null) {
+            exists = repository.existsByJenisTunjanganAndGolonganId(targetJenis, request.getGolonganId());
+        } else {
+            exists = false;
+        }
         if (exists) throw new ConflictException("Gaji Tunjangan sudah ada");
 
         Level level = levelRepository.findById(request.getLevelId())

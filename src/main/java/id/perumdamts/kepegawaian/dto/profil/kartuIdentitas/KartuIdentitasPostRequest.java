@@ -1,13 +1,10 @@
 package id.perumdamts.kepegawaian.dto.profil.kartuIdentitas;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.profil.KartuIdentitas;
-import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
-import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDate;
 
@@ -25,12 +22,5 @@ public class KartuIdentitasPostRequest {
     private LocalDate tanggalTerima = LocalDate.of(1945, 8, 17);
     private String notes;
 
-    @JsonIgnore
-    public Specification<KartuIdentitas> getSpecification() {
-        return SpecificationBuilder.<KartuIdentitas>of()
-                .addEqual(nik, "biodata", "nik")
-                .addEqual(jenisKartuId, "jenisKartu", "id")
-                .addEqual(nomorKartu, "nomorKartu")
-                .build();
-    }
+
 }

@@ -12,11 +12,9 @@ import id.perumdamts.kepegawaian.repositories.profil.jpa.LampiranProfilRepositor
 import id.perumdamts.kepegawaian.services.profil.OwnershipGuard;
 import id.perumdamts.kepegawaian.services.profil.profilUpdate.ProfileUpdateService;
 import id.perumdamts.kepegawaian.utils.FileUploadUtil;
-import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import id.perumdamts.kepegawaian.utils.UploadResultUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.history.RevisionMetadata;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,7 +36,7 @@ public class LampiranProfilCommandService {
     @Transactional
     public SavedStatus<Long> addLampiran(LampiranProfilPostRequest request, boolean requiresApproval) {
         if (requiresApproval) ownershipGuard.assertSelfOwnsLampiran(request.getRef(), request.getRefId());
-        boolean exists = repository.exists(request.getSpecification());
+        boolean exists = repository.existsByRefAndRefId(request.getRef(), request.getRefId());
         if (exists)
             throw new ConflictException("Lampiran Profil sudah ada");
 
@@ -82,11 +80,7 @@ public class LampiranProfilCommandService {
 
     @Transactional
     public void deleteByRefId(EJenisLampiranProfil eJenisLampiranProfil, Long id) {
-        Specification<LampiranProfil> specification = SpecificationBuilder.<LampiranProfil>of()
-                .addEqual(eJenisLampiranProfil, "ref")
-                .addEqual(id, "refId")
-                .build();
-        List<LampiranProfil> all = repository.findAll(specification).stream()
+        List<LampiranProfil> all = repository.findByRefAndRefId(eJenisLampiranProfil, id).stream()
                 .peek(lampiranProfil -> lampiranProfil.setIsDeleted(true)).toList();
         repository.saveAll(all);
     }

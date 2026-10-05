@@ -29,7 +29,7 @@ public class CutiKuotaCommandService {
 
     @Transactional
     public SavedStatus<Long> save(CutiKuotaPostRequest request) {
-        boolean exists = repository.exists(request.getSpecification());
+        boolean exists = repository.existsByPegawai_IdAndTahun(request.getPegawaiId(), request.getTahun());
         if (exists) {
             throw new ConflictException("Cuti Kuota sudah ada");
         }

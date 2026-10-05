@@ -1,12 +1,9 @@
 package id.perumdamts.kepegawaian.dto.penggajian.gajiProfil;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiProfil;
-import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.springframework.data.jpa.domain.Specification;
 
 @Data
 public class GajiProfilPostRequest {
@@ -14,11 +11,6 @@ public class GajiProfilPostRequest {
     @NotNull(message = "Nama is required")
     private String nama;
 
-    @JsonIgnore
-    public Specification<GajiProfil> getSpecification() {
-        return SpecificationBuilder.<GajiProfil>of()
-                .addEqual(nama, "nama")
-                .build();
-    }
+
 
 }

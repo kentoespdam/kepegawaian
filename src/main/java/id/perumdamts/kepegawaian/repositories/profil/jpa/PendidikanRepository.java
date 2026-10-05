@@ -2,7 +2,6 @@ package id.perumdamts.kepegawaian.repositories.profil.jpa;
 
 import id.perumdamts.kepegawaian.entities.profil.Pendidikan;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-public interface PendidikanRepository extends JpaRepository<Pendidikan, Long>, JpaSpecificationExecutor<Pendidikan> {
+public interface PendidikanRepository extends JpaRepository<Pendidikan, Long> {
     /**
      * Native carcass-finder — bypasses {@code @SQLRestriction("is_deleted = FALSE")}
      * on {@code Pendidikan} so the create-seam can see soft-deleted rows and

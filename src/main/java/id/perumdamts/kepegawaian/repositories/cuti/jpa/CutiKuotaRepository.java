@@ -2,16 +2,16 @@ package id.perumdamts.kepegawaian.repositories.cuti.jpa;
 
 import id.perumdamts.kepegawaian.entities.cuti.CutiKuota;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.history.RevisionRepository;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
 public interface CutiKuotaRepository extends JpaRepository<CutiKuota, Long>,
-        JpaSpecificationExecutor<CutiKuota>,
-        RevisionRepository<CutiKuota, Long, Integer> {
+RevisionRepository<CutiKuota, Long, Integer> {
     boolean existsByTahun(Integer tahun);
+
+    boolean existsByPegawai_IdAndTahun(Long pegawaiId, Integer tahun);
 
     Optional<CutiKuota> findByPegawai_IdAndTahun(Long pegawaiIdList, Integer tahun);
 

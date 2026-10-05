@@ -1,16 +1,13 @@
 package id.perumdamts.kepegawaian.dto.penggajian.gajiKomponen;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.commons.EJenisGaji;
 import id.perumdamts.kepegawaian.entities.penggajian.GajiKomponen;
-import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.springframework.data.jpa.domain.Specification;
 
 @Data
 public class GajiKomponenPostRequest {
@@ -30,12 +27,6 @@ public class GajiKomponenPostRequest {
     private Boolean isReference = false;
     private String formula;
 
-    @JsonIgnore
-    public Specification<GajiKomponen> getSpecification() {
-        return SpecificationBuilder.<GajiKomponen>of()
-                .addEqual(profilGajiId,"profilGaji","id")
-                .addEqual(kode,"kode")
-                .build();
-    }
+
 
 }

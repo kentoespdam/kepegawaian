@@ -24,7 +24,7 @@ public class SanksiCommandService {
     @Transactional
     public Sanksi create(SanksiPostRequest request) {
         JenisSp jenisSp = findJenisSp(request.getJenisSpId());
-        Optional<Sanksi> existing = repository.findOne(request.getSpecification());
+        Optional<Sanksi> existing = repository.findByKode(request.getKode());
         if (existing.isPresent()) {
             if (existing.get().getIsDeleted()) {
                 Sanksi revived = existing.get();
@@ -42,7 +42,7 @@ public class SanksiCommandService {
         Sanksi existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Sanksi not found"));
         JenisSp jenisSp = findJenisSp(request.getJenisSpId());
-        Optional<Sanksi> duplicate = repository.findOne(request.getSpecification());
+        Optional<Sanksi> duplicate = repository.findByKode(request.getKode());
         if (duplicate.isPresent() && !duplicate.get().getId().equals(id)) {
             throw new ConflictException("Sanksi already exists");
         }

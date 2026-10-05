@@ -1,17 +1,14 @@
 package id.perumdamts.kepegawaian.dto.master.hariLibur;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLibur;
 import id.perumdamts.kepegawaian.entities.master.HariLibur;
-import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDate;
 
@@ -26,12 +23,6 @@ public class HariLiburPostRequest {
     private EJenisLibur jenisLibur;
     private String notes;
 
-    @JsonIgnore
-    public Specification<HariLibur> getSpecification() {
-        return SpecificationBuilder.<HariLibur>of()
-                .addEqual(tanggal, "tanggal")
-                .addEqual(jenisLibur, "jenisLibur")
-                .build();
-    }
+
 
 }

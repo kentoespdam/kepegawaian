@@ -12,7 +12,6 @@ import id.perumdamts.kepegawaian.repositories.kepegawaian.jpa.LampiranSkReposito
 import id.perumdamts.kepegawaian.utils.FileUploadUtil;
 import id.perumdamts.kepegawaian.utils.UploadResultUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +25,7 @@ public class LampiranSkCommandService {
 
     @Transactional(rollbackFor = Exception.class)
     public LampiranSk addLampiran(LampiranSkPostRequest request) {
-        boolean exists = repository.exists(request.getSpecification());
+        boolean exists = repository.existsByRefAndRefId(request.getRef(), request.getRefId());
         if (exists) {
             throw new ConflictException("Lampiran SK sudah ada");
         }
@@ -49,13 +48,7 @@ public class LampiranSkCommandService {
 
     @Transactional(rollbackFor = Exception.class)
     public boolean deleteLampiran(EJenisSk ref, Long refId, Long id) {
-        Specification<LampiranSk> specification = (root, query, cb) ->
-                cb.and(
-                        cb.equal(root.get("ref"), ref),
-                        cb.equal(root.get("refId"), refId),
-                        cb.equal(root.get("id"), id)
-                );
-        LampiranSk one = repository.findOne(specification)
+        LampiranSk one = repository.findByIdAndRefAndRefId(id, ref, refId)
                 .orElseThrow(() -> new NotFoundException("Lampiran SK not found"));
         one.setIsDeleted(true);
         repository.save(one);
@@ -64,7 +57,7 @@ public class LampiranSkCommandService {
 
     @Transactional(rollbackFor = Exception.class)
     public LampiranSk acceptLampiran(LampiranSkAcceptRequest request, String oleh) {
-        LampiranSk one = repository.findOne(request.getSpecification())
+        LampiranSk one = repository.findByIdAndRefAndRefId(request.getId(), request.getRef(), request.getRefId())
                 .orElseThrow(() -> new NotFoundException("Lampiran SK Not Found"));
         LampiranSk entity = LampiranSkMapper.acceptEntity(one, oleh);
         return repository.save(entity);

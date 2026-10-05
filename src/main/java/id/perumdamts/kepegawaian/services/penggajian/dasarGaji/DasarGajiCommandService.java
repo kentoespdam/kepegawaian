@@ -21,7 +21,7 @@ public class DasarGajiCommandService {
 
     @Transactional
     public DasarGaji create(DasarGajiPostRequest request) {
-        Optional<DasarGaji> existing = repository.findOne(request.getSpecification());
+        Optional<DasarGaji> existing = repository.findByDeskripsiAndTanggalAwal(request.getDeskripsi(), request.getTanggalAwal());
         if (existing.isPresent()) {
             if (existing.get().getIsDeleted()) {
                 DasarGaji revived = existing.get();

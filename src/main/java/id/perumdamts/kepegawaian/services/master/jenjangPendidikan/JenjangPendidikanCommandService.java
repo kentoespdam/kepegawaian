@@ -21,7 +21,7 @@ public class JenjangPendidikanCommandService {
 
     @Transactional
     public JenjangPendidikan create(JenjangPendidikanPostRequest request) {
-        Optional<JenjangPendidikan> existing = repository.findOne(request.getSpecification());
+        Optional<JenjangPendidikan> existing = repository.findByNama(request.getNama());
         if (existing.isPresent()) {
             if (existing.get().getIsDeleted()) {
                 JenjangPendidikan revived = existing.get();
@@ -46,7 +46,7 @@ public class JenjangPendidikanCommandService {
         JenjangPendidikan existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("JenjangPendidikan not found"));
 
-        Optional<JenjangPendidikan> duplicate = repository.findOne(request.getSpecification());
+        Optional<JenjangPendidikan> duplicate = repository.findByNama(request.getNama());
         if (duplicate.isPresent() && !duplicate.get().getId().equals(id)) {
             throw new ConflictException("JenjangPendidikan with same nama already exists");
         }

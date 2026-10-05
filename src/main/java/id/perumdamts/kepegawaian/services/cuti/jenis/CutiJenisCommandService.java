@@ -22,7 +22,7 @@ public class CutiJenisCommandService {
 
     @Transactional
     public SavedStatus<Long> save(CutiJenisPostRequest request) {
-        boolean exists = repository.exists(request.getSpecification());
+        boolean exists = repository.existsByNamaIgnoreCase(request.getNama());
         if (exists) {
             throw new ConflictException("Cuti Jenis sudah ada");
         }

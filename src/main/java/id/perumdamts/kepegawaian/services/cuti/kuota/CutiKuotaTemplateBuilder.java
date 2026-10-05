@@ -12,7 +12,6 @@ import org.apache.poi.xssf.streaming.SXSSFRow;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,12 +28,10 @@ public class CutiKuotaTemplateBuilder {
     private final PegawaiRepository pegawaiRepository;
 
     public ResponseEntity<?> build() {
-        Specification<Pegawai> pegawaiSpec = (root, query, criteriaBuilder) ->
-                criteriaBuilder.and(
-                        criteriaBuilder.in(root.get("statusKerja")).value(List.of(EStatusKerja.DIRUMAHKAN, EStatusKerja.KARYAWAN_AKTIF)),
-                        criteriaBuilder.in(root.get("statusPegawai")).value(List.of(EStatusPegawai.PEGAWAI, EStatusPegawai.HONORER))
-                );
-        List<Pegawai> listPegawai = pegawaiRepository.findAll(pegawaiSpec);
+        List<Pegawai> listPegawai = pegawaiRepository.findByStatusKerjaInAndStatusPegawaiIn(
+                List.of(EStatusKerja.DIRUMAHKAN, EStatusKerja.KARYAWAN_AKTIF),
+                List.of(EStatusPegawai.PEGAWAI, EStatusPegawai.HONORER)
+        );
         ByteArrayResource byteArrayResource = buildWorkbook(listPegawai);
         if (byteArrayResource == null)
             return ResponseEntity.notFound().build();

@@ -19,7 +19,7 @@ public class RumahDinasCommandService {
 
     @Transactional
     public RumahDinas create(RumahDinasPostRequest request) {
-        Optional<RumahDinas> existing = repository.findOne(request.getSpecification());
+        Optional<RumahDinas> existing = repository.findByNama(request.getNama());
         if (existing.isPresent()) {
             if (existing.get().getIsDeleted()) {
                 RumahDinas revived = existing.get();
@@ -39,7 +39,7 @@ public class RumahDinasCommandService {
         RumahDinas existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("RumahDinas not found"));
 
-        Optional<RumahDinas> duplicate = repository.findOne(request.getSpecification());
+        Optional<RumahDinas> duplicate = repository.findByNama(request.getNama());
         if (duplicate.isPresent() && !duplicate.get().getId().equals(id)) {
             throw new ConflictException("RumahDinas with same nama already exists");
         }

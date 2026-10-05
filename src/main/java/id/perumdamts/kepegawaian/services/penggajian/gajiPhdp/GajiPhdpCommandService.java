@@ -22,8 +22,7 @@ public class GajiPhdpCommandService {
 
     @Transactional
     public SavedStatus<Long> save(GajiPhdpPostRequest request) {
-        Optional<GajiPhdp> one = repository.findOne(request.getSpecification());
-        if (one.isPresent())
+        if (repository.existsByKondisiAndFormula(request.getKondisi(), request.getFormula()))
             throw new ConflictException("PhDP sudah ada");
         GajiPhdp entity = GajiPhdpMapper.toEntity(request);
         repository.save(entity);

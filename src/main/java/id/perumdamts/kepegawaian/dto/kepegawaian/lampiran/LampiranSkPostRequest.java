@@ -1,16 +1,13 @@
 package id.perumdamts.kepegawaian.dto.kepegawaian.lampiran;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.kepegawaian.LampiranSk;
-import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
@@ -26,13 +23,7 @@ public class LampiranSkPostRequest implements Serializable {
     private MultipartFile fileName;
     private String notes;
 
-    @JsonIgnore
-    public Specification<LampiranSk> getSpecification() {
-        return SpecificationBuilder.<LampiranSk>of()
-                .addEqual(ref, "ref")
-                .addEqual(refId, "refId")
-                .build();
-    }
+
 
 
 }

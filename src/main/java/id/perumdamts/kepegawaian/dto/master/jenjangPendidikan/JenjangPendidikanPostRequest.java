@@ -1,12 +1,9 @@
 package id.perumdamts.kepegawaian.dto.master.jenjangPendidikan;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.perumdamts.kepegawaian.entities.master.JenjangPendidikan;
-import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
-import org.springframework.data.jpa.domain.Specification;
 
 @Data
 public class JenjangPendidikanPostRequest {
@@ -17,11 +14,6 @@ public class JenjangPendidikanPostRequest {
     private Integer seq;
     private Boolean isStatistik = Boolean.FALSE;
 
-    @JsonIgnore
-    public Specification<JenjangPendidikan> getSpecification() {
-        return SpecificationBuilder.<JenjangPendidikan>of()
-                .addEqual(nama,"nama")
-                .build();
-    }
+
 
 }

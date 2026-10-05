@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -82,12 +81,11 @@ class CalonPensiunFilterTest {
         RiwayatTerminasiRequest request = new RiwayatTerminasiRequest();
         request.setOrganisasiId(orgA.getId());
 
-        Page<Pegawai> page = pegawaiRepository.findAll(
-                request.getCalonPensiunSpecification(), PageRequest.of(0, 10));
+        Page<PegawaiResponse> page = queryService.findPageCalonPensiun(request);
 
         assertEquals(1, page.getTotalElements(),
                 "filter organisasiId harus mengecualikan pegawai dari organisasi lain");
-        assertEquals(pA.getId(), page.getContent().getFirst().getId());
+        assertEquals(pA.getId(), page.getContent().getFirst().id());
     }
 
     @Test
@@ -96,12 +94,12 @@ class CalonPensiunFilterTest {
         Pegawai p = createPegawai("ABDUL AZIZ MIFTAHUDDIN", org, LocalDate.now().plusMonths(1));
 
         RiwayatTerminasiRequest request = new RiwayatTerminasiRequest();
+        request.setOrganisasiId(org.getId());
         request.setNama("abdul");
 
-        Page<Pegawai> page = pegawaiRepository.findAll(
-                request.getCalonPensiunSpecification(), PageRequest.of(0, 10));
+        Page<PegawaiResponse> page = queryService.findPageCalonPensiun(request);
 
-        assertTrue(page.getContent().stream().anyMatch(pg -> pg.getId().equals(p.getId())),
+        assertTrue(page.getContent().stream().anyMatch(pg -> pg.id().equals(p.getId())),
                 "filter nama harus partial match (LIKE) — pegawai dengan nama 'ABDUL AZIZ...' harus muncul untuk input 'abdul'");
     }
 
@@ -131,12 +129,11 @@ class CalonPensiunFilterTest {
         request.setOrganisasiId(org.getId()); // scoping: hindari data lama di DB dev
         request.setTahunPensiun(tahun);
 
-        Page<Pegawai> page = pegawaiRepository.findAll(
-                request.getCalonPensiunSpecification(), PageRequest.of(0, 10));
+        Page<PegawaiResponse> page = queryService.findPageCalonPensiun(request);
 
         assertEquals(1, page.getTotalElements(),
                 "filter tahunPensiun harus membatasi ke pegawai yang TMT pensiun-nya di tahun tersebut");
-        assertEquals(pTahunIni.getId(), page.getContent().getFirst().getId());
+        assertEquals(pTahunIni.getId(), page.getContent().getFirst().id());
     }
 
     @Test
@@ -149,12 +146,11 @@ class CalonPensiunFilterTest {
         request.setOrganisasiId(org.getId()); // scoping: hindari data lama di DB dev
         request.setTanggalTerminasi(tmt); // sama persis dengan tmtPensiun
 
-        Page<Pegawai> page = pegawaiRepository.findAll(
-                request.getCalonPensiunSpecification(), PageRequest.of(0, 10));
+        Page<PegawaiResponse> page = queryService.findPageCalonPensiun(request);
 
         assertEquals(1, page.getTotalElements(),
                 "batas atas tanggalTerminasi harus inklusif — pegawai dengan tmtPensiun == tanggalTerminasi ikut masuk");
-        assertEquals(p.getId(), page.getContent().getFirst().getId());
+        assertEquals(p.getId(), page.getContent().getFirst().id());
     }
 
     @Test

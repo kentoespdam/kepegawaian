@@ -1,14 +1,11 @@
 package id.perumdamts.kepegawaian.dto.cuti.kuota;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import id.perumdamts.kepegawaian.entities.cuti.CutiKuota;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDate;
 
@@ -27,12 +24,4 @@ public class CutiKuotaPostRequest {
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate expired;
-
-    @JsonIgnore
-    public Specification<CutiKuota> getSpecification() {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.and(
-                criteriaBuilder.equal(root.get("pegawai").get("id"), pegawaiId),
-                criteriaBuilder.equal(root.get("tahun"), tahun)
-        );
-    }
 }

@@ -2,7 +2,6 @@ package id.perumdamts.kepegawaian.repositories.kepegawaian.jpa;
 
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSp;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.history.RevisionRepository;
 
@@ -11,8 +10,7 @@ import java.util.Collection;
 import java.util.Set;
 
 public interface RiwayatSpRepository extends JpaRepository<RiwayatSp, Long>,
-        JpaSpecificationExecutor<RiwayatSp>,
-        RevisionRepository<RiwayatSp, Long, Integer> {
+RevisionRepository<RiwayatSp, Long, Integer> {
     /**
      * Ada RiwayatSp SP-3 yang aktif pada periode gaji {@code periode} (format YYYY-MM):
      * interval SP [tanggalMulai, tanggalSelesai] overlap window gaji
@@ -44,4 +42,6 @@ public interface RiwayatSpRepository extends JpaRepository<RiwayatSp, Long>,
     default Set<Long> findPegawaiIdsWithActiveSp3In(Collection<Long> pegawaiIds, LocalDate windowEnd, LocalDate windowStart) {
         return findAllPegawaiIdsWithActiveSp3In(pegawaiIds, windowEnd, windowStart);
     }
+
+    boolean existsByNomorSpAndPegawai_Id(String nomorSp, Long pegawaiId);
 }

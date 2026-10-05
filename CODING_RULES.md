@@ -5,7 +5,7 @@
 1. **Understand** — Read issue. Clarify ambiguities.
 2. **Plan** — Identify files, approach, edge cases. `EnterPlanMode` for nontrivial tasks.
 3. **Explore** — `gitnexus_impact` / `gitnexus_context` / `gitnexus_query` before editing. Context7 for library docs.
-4. **Write** — Max 120 lines per file. Split if exceeded. Follow conventions.
+4. **Write** — Target 150–250 LOC per file. Hard ceiling 300 LOC. Split if exceeded. Follow conventions.
 5. **Test** — Unit tests required for new logic.
 6. **Scope** — Out-of-scope errors → file new issue. Do not resolve ad-hoc.
 7. **Finish** — Zero errors. Run quality gates (tests, linters, builds).
@@ -57,7 +57,8 @@ Controller (Query/Command)
 | Rule | Description |
 |------|-------------|
 | **Jakarta EE 11** | All imports `jakarta.*`. Zero `javax.*` allowed. |
-| **Jackson 3** | Package `tools.jackson`; immutable `JsonMapper.builder()`. Do NOT use mutable `ObjectMapper`. |
+| **Jackson 2 (DTO & Entity)** | Pakai `com.fasterxml.jackson.*` untuk semua DTO, Entity, dan anotasi (`@JsonProperty`, `@JsonIgnore`, dll). |
+| **Jackson 3 (`tools.jackson`)** | Hanya untuk handler infrastruktur (e.g., `JwtAuthEntryPoint`). JANGAN gunakan di DTO/Entity layer. |
 | **@MockitoBean** | `@MockBean`/`@SpyBean` removed. Use `org.springframework.test.context.bean.override.mockito.MockitoBean`. |
 | **@ServiceConnection** | Prefer over `@DynamicPropertySource` for Testcontainers. |
 | **Lambda DSL** | All `HttpSecurity` config MUST use lambda DSL. `.and()` chaining removed. |
@@ -235,7 +236,7 @@ public class FeatureController {
 ### Security
 
 - `@PreAuthorize("hasRole('ADMIN') or hasAuthority('DOMAIN:ACTION')")` on mutating endpoints.
-- Complex SpEL → delegate to `@ownershipGuard` bean. Avoid fragile inline expressions.
+- Ownership verification → **service layer** via `OwnershipGuard` (`@Component`), bukan SpEL inline. Lempar `NotFoundException` (404, bukan 403) untuk mencegah information leakage. Blokir akun DEV dari self-service endpoints.
 - NEVER `allowedOrigins("*")` with `allowCredentials(true)`.
 
 ### Validation
@@ -285,7 +286,9 @@ public class FeatureController {
 
 ---
 
-## Kafka
+## Kafka _(Planned — Not Yet Active)_
+
+> [!NOTE] Kafka belum diimplementasikan di codebase saat ini. Aturan ini berlaku saat integrasi aktif.
 
 | Rule | Detail |
 |------|--------|
@@ -389,3 +392,338 @@ public class FeatureController {
 | Kafka topic | `<env>.<domain>.<entity>.<event>.<ver>` | `prod.kepegawaian.pegawai.created.v1` |
 | Kafka consumer group | `<svc>.<domain>-consumer-group` | `kepegawaian.pegawai-sync-group` |
 | Migration file | `V<timestamp>__<desc>.sql` | `V20260820104500__create_employee_table.sql` |
+
+---
+
+## Base Entity Hierarchy
+
+Dua base class tersedia di `entities.commons`:
+
+| Base Class | Digunakan untuk | Fitur |
+|-----------|-----------------|-------|
+| `IdsAbstract` | Entitas transaksional/operasional (`Pegawai`, `CutiPengajuan`, dll) | `@Audited`, `@Version` (optimistic lock, init=1), `createdBy`/`createdAt`/`updatedBy`/`updatedAt`, soft-delete, proxy-safe `equals`/`hashCode` |
+| `MasterBaseEntity` | Entitas referensi/master (`Golongan`, `Jabatan`, dll) | Tanpa `@Audited`, tanpa `@Version`, `@SQLRestriction("is_deleted = FALSE")`, minimal audit fields |
+
+- Entitas dengan PK non-Long (e.g., `Biodata` ber-PK String `nik`) implementasikan audit & soft-delete **secara manual** tanpa inheritance.
+- JANGAN mencampur base class: operasional → `IdsAbstract`, master → `MasterBaseEntity`.
+
+---
+
+## Exception Handling & Error Response
+
+### Hierarki Exception
+
+```
+ApiException (abstract, memuat HttpStatus)
+├── NotFoundException       → 404
+├── BadRequestException     → 400
+├── ConflictException       → 409
+├── ForbiddenException      → 403
+└── GajiFormulaException    → 400
+```
+
+- Lempar subclass spesifik. DILARANG membuat `RuntimeException` baru tanpa extend `ApiException`.
+- `GlobalExceptionHandler` (`@RestControllerAdvice extends ResponseEntityExceptionHandler`) menangkap semua exception.
+
+### Format Error Envelope
+
+```json
+{
+  "status": 404,
+  "statusText": "Not Found",
+  "errors": ["field [nip] : already exists"],
+  "message": "Data tidak ditemukan",
+  "data": null,
+  "timestamp": "2026-10-05T07:00:00Z"
+}
+```
+
+- Security errors (`JwtAuthEntryPoint`, `DeniedHandler`) mengembalikan format `{ status, error, message, timestamp, path }` — ini pengecualian yang disengaja.
+- DILARANG membocorkan stack trace di response body production.
+- Aktifkan RFC 9457: `spring.mvc.problemdetails.enabled=true` (menghasilkan `Content-Type: application/problem+json`).
+
+---
+
+## Package Structure
+
+```
+src/main/java/id/co/<pkg>/
+├── controllers/
+│   └── <domain>/           # flat per-domain (e.g., master/GolonganController.java)
+├── services/
+│   └── <domain>/
+│       └── <feature>/      # per-fitur (e.g., master/golongan/GolonganCommandService.java)
+├── repositories/
+│   └── <domain>/
+│       ├── jpa/            # Spring Data JPA interfaces
+│       └── jooq/           # jOOQ DSL query repos
+├── dto/
+│   └── <domain>/
+│       └── <feature>/
+├── mapper/
+│   └── <domain>/
+├── entities/
+│   ├── commons/            # IdsAbstract, MasterBaseEntity
+│   └── <domain>/
+└── config/
+```
+
+- Repository wajib dipisah: `.jpa` untuk Spring Data JPA, `.jooq` untuk jOOQ DSLContext.
+- Controllers bersifat flat per-domain (tidak ada sub-package feature di controller).
+
+
+## PagedRequest Contract
+
+```java
+public abstract class PagedRequest {
+    public static final int DEFAULT_SIZE = 20;
+    public static final int MAX_SIZE = 100;
+    // direction regex: (?i)asc|desc
+    
+    public Pageable getPageable() { ... } // returns Pageable dengan sort & limit safe
+}
+```
+
+- Semua `*IndexQuery` WAJIB extend `PagedRequest`.
+- `MAX_SIZE = 100` adalah batas keras — tidak boleh dioverride tanpa alasan eksplisit.
+
+---
+
+## File Upload & Multipart
+
+| Rule | Detail |
+|------|--------|
+| **Base dir** | `System.getProperty("user.dir") + "/attachments/"` via `FileUploadUtil`. |
+| **MIME validation** | Validasi tipe file via `MimeTypesUtils`. DILARANG mengandalkan extension saja. |
+| **Response** | Bungkus hasil upload dalam `UploadResultUtil` DTO. |
+| **Controller annotation** | `@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)` + `@ModelAttribute @Valid <Dto>`. |
+| **Tomcat config** | `server.tomcat.max-part-count: 1000` (default 10 di SB4 terlalu kecil). `max-http-form-post-size: 100MB`. |
+| **Try-with-resources** | Semua `InputStream`/`OutputStream` dari multipart wajib di-close. |
+
+---
+
+## Apache Fesod (Excel Read/Import)
+
+Untuk **parsing/import** Excel batch, gunakan `org.apache.fesod:fesod-sheet` (bukan POI manual):
+
+```java
+@ExcelProperty(index = 0)
+private String nip;
+
+// Listener pattern:
+FesodSheet.read(inputStream, MyRow.class, row -> {
+    // process each row
+});
+```
+
+| Rule | Detail |
+|------|--------|
+| **Import** | Gunakan `fesod-sheet` dengan anotasi `@ExcelProperty` + listener streaming. |
+| **Export** | Tetap gunakan `SXSSFWorkbook(100)` (Apache POI streaming) untuk output Excel. |
+| **DILARANG** | `XSSFWorkbook` untuk >1000 rows di import maupun export. |
+
+---
+
+## Spring Events & Async (Virtual Threads)
+
+Pola async pasca-commit menggunakan Spring Events (bukan Kafka):
+
+```java
+// Publisher (di CommandService, setelah operasi transaksional)
+private final ApplicationEventPublisher eventPublisher;
+
+@Transactional
+public void prosesGaji(GajiCommand cmd) {
+    // ... logic ...
+    eventPublisher.publishEvent(new GajiBatchEvent(this, cmd.getId()));
+}
+
+// Listener (thread terpisah, pasca-commit)
+@Component
+@RequiredArgsConstructor
+public class GajiBatchRootEventListener {
+
+    @Async("gajiProsesExecutor")
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    public void onGajiBatch(GajiBatchEvent event) {
+        // dijalankan di Virtual Thread setelah commit
+    }
+}
+```
+
+```java
+// ThreadPoolConfig
+@Bean("gajiProsesExecutor")
+public Executor gajiProsesExecutor() {
+    return Executors.newVirtualThreadPerTaskExecutor();
+}
+```
+
+| Rule | Detail |
+|------|--------|
+| **AFTER_COMMIT only** | Gunakan `TransactionPhase.AFTER_COMMIT`. JANGAN jalankan side-effect dalam transaksi aktif. |
+| **Virtual Thread executor** | Gunakan `Executors.newVirtualThreadPerTaskExecutor()`. JANGAN buat thread pool konvensional untuk task I/O async. |
+| **DILARANG** | Menyuntikkan `ApplicationEventPublisher` di controller. Publish event hanya dari service layer. |
+
+---
+
+## HTTP Client (RestClient)
+
+Semua komunikasi HTTP keluar menggunakan `RestClient` (bukan `RestTemplate` — deprecated di Spring 7):
+
+```java
+@Bean
+public RestClient appwriteRestClient(RestClient.Builder builder) {
+    return builder
+        .requestFactory(new JdkClientHttpRequestFactory())
+        .baseUrl(appwriteConfig.getEndpoint())
+        .defaultHeader(HttpHeaders.ACCEPT_ENCODING, "identity")
+        .build();
+}
+```
+
+| Rule | Detail |
+|------|--------|
+| **`RestClient`** | WAJIB untuk semua HTTP call sinkronus baru. |
+| **`@HttpExchange`** | Gunakan declarative interface via `HttpServiceProxyFactory` untuk client dengan banyak endpoint. |
+| **DILARANG** | `RestTemplate` (deprecated Spring Framework 7 / Boot 4). |
+| **HTTP/1.1 pin** | Explicit pin ke HTTP/1.1 dengan `JdkClientHttpRequestFactory` jika server target tidak support HTTP/2. |
+
+---
+
+## Java 25 Concurrency
+
+### ScopedValue (menggantikan ThreadLocal)
+
+```java
+public static final ScopedValue<AppwriteUser> CURRENT_USER = ScopedValue.newInstance();
+
+// Binding di filter/interceptor:
+ScopedValue.runWhere(CURRENT_USER, user, () -> service.execute());
+
+// Akses:
+var user = CURRENT_USER.get();
+```
+
+| Rule | Detail |
+|------|--------|
+| **`ScopedValue`** | Gunakan untuk propagating context (User ID, Auth, Tenant ID) di Virtual Threads (JEP 506, Java 25 finalized). |
+| **DILARANG `ThreadLocal`** | Di Virtual Threads, `ThreadLocal` menyebabkan memory footprint besar (jutaan carrier thread copies). |
+
+### Structured Concurrency
+
+```java
+try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
+    var fA = scope.fork(() -> serviceA.getData());
+    var fB = scope.fork(() -> serviceB.getData());
+    scope.join().throwIfFailed();
+    return new Result(fA.get(), fB.get());
+}
+```
+
+| Rule | Detail |
+|------|--------|
+| **`StructuredTaskScope`** | Gunakan untuk subtask paralel yang harus selesai bersama (JEP 505). Child tasks dibatalkan otomatis jika salah satu gagal. |
+| **DILARANG** | `CompletableFuture` tak-terstruktur untuk task paralel yang saling bergantung. |
+
+---
+
+## Observability (Structured Logging & Tracing)
+
+### Structured Logging
+
+```yaml
+# application.yml
+logging:
+  structured:
+    format:
+      console: logstash   # atau 'ecs'
+```
+
+- JANGAN pakai `logstash-logback-encoder` dependency terpisah — Spring Boot 3.4+ menyediakan native.
+- `micrometer-tracing-bridge-otel` otomatis menginjeksi `traceId` dan `spanId` ke JSON log output.
+
+### Trace Propagation ke Async
+
+```java
+@Bean
+public TaskDecorator mdcTaskDecorator() {
+    return runnable -> {
+        var context = MDC.getCopyOfContextMap();
+        return () -> {
+            if (context != null) MDC.setContextMap(context);
+            try { runnable.run(); } finally { MDC.clear(); }
+        };
+    };
+}
+```
+
+| Rule | Detail |
+|------|--------|
+| **Trace propagation** | Async executor WAJIB dikonfigurasi dengan `TaskDecorator` untuk membawa MDC context (traceId, spanId) ke worker thread. |
+| **Correlation ID** | Inject `X-Correlation-ID` dari request header ke MDC di `OncePerRequestFilter`. |
+| **DILARANG** | `System.out.println` atau `e.printStackTrace()`. Selalu `log.error("msg", ex)` via `@Slf4j`. |
+
+---
+
+## GraalVM Native Image Hints
+
+```java
+@RegisterReflectionForBinding({PegawaiResponse.class, PegawaiPostRequest.class})
+@RestController
+public class PegawaiController { ... }
+```
+
+| Rule | Detail |
+|------|--------|
+| **`@RegisterReflectionForBinding`** | Prioritaskan untuk Jackson 3 DTO binding di native image. Tempelkan di controller atau service yang menggunakan DTO tersebut. |
+| **`RuntimeHintsRegistrar`** | Gunakan HANYA untuk dynamic proxy atau resource pattern eksternal (`hints.resources().registerPattern(...)`). Daftarkan via `@ImportRuntimeHints`. |
+| **Pre-AOT test** | Uji kompatibilitas refleksi dengan flag `-Dspring.aot.enabled=true` sebelum build native. |
+| **DILARANG** | Menggunakan `reflect-config.json` manual jika anotasi Spring bisa menanganinya. |
+
+---
+
+## jOOQ 3.20+ Additions
+
+| Rule | Detail |
+|------|--------|
+| **Redacted columns** | Tandai kolom PII/sensitif (gaji, NIK) dengan konfigurasi redacted di jOOQ generator agar tersensor di SQL debug logs. |
+| **`leftAntiJoin()`** | Gantikan pola `LEFT JOIN ... WHERE right.id IS NULL` dengan `.leftAntiJoin()` untuk keterbacaan dan optimasi query plan. |
+| **Multiset JSON Array** | Pada `DSL.multiset()` one-to-many, prioritaskan mapping berbasis JSON Array (bukan JSON Object) untuk mengurangi alokasi memori. |
+
+---
+
+## Flyway 11+ Additions
+
+| Rule | Detail |
+|------|--------|
+| **MariaDB module** | Tambahkan `org.flywaydb:flyway-database-mariadb` di Gradle bersama `flyway-core` (Flyway 11 memecah database drivers). |
+| **DILARANG `clean-on-validation-error`** | Fitur deprecated/dihapus di Flyway 11. Jangan ada di konfigurasi mana pun. |
+
+---
+
+## Jakarta Validation 3.1 Additions
+
+| Rule | Detail |
+|------|--------|
+| **Record component validation** | Letakkan anotasi constraint langsung di komponen record: `public record Req(@NotBlank String nip, @Positive BigDecimal gaji)`. Divalidasi otomatis saat `@Valid` binding. |
+| **`@UUID` constraint** | Gunakan `@UUID` bawaan (Hibernate Validator 9) untuk validasi format UUID. DILARANG regex manual `@Pattern(regexp = "UUID_REGEX")`. |
+| **Validation groups** | Gunakan `groups = {...}` untuk conditional validation (e.g., berbeda antara create dan update). |
+
+---
+
+## RedisHelper (One-Time Token)
+
+```java
+// Generate one-time download token (5 menit TTL)
+String token = redisHelper.generateToken("download:laporan", userId);
+
+// Verify & consume (one-time)
+boolean valid = redisHelper.verifyAndConsumeToken(token);
+```
+
+| Rule | Detail |
+|------|--------|
+| **TTL 5 menit** | Default TTL untuk one-time token operasi idempoten/unduhan. |
+| **Key pattern** | `kepegawaian:token:<purpose>:<userId>` |
+| **One-time** | Token dihapus setelah satu verifikasi berhasil (idempotent protection). |

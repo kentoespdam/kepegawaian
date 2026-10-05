@@ -19,7 +19,7 @@ public class JenisKitasCommandService {
 
     @Transactional
     public JenisKitas create(JenisKitasPostRequest request) {
-        Optional<JenisKitas> existing = repository.findOne(request.getSpecification());
+        Optional<JenisKitas> existing = repository.findByNama(request.getNama());
         if (existing.isPresent()) {
             if (existing.get().getIsDeleted()) {
                 JenisKitas revived = existing.get();
@@ -38,7 +38,7 @@ public class JenisKitasCommandService {
         JenisKitas existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("JenisKitas not found"));
 
-        Optional<JenisKitas> duplicate = repository.findOne(request.getSpecification());
+        Optional<JenisKitas> duplicate = repository.findByNama(request.getNama());
         if (duplicate.isPresent() && !duplicate.get().getId().equals(id)) {
             throw new ConflictException("JenisKitas with same nama already exists");
         }

@@ -19,7 +19,7 @@ public class HariLiburCommandService {
 
     @Transactional
     public HariLibur create(HariLiburPostRequest request) {
-        Optional<HariLibur> existing = repository.findOne(request.getSpecification());
+        Optional<HariLibur> existing = repository.findByTanggalAndJenisLibur(request.getTanggal(), request.getJenisLibur());
         if (existing.isPresent()) {
             if (existing.get().getIsDeleted()) {
                 HariLibur revived = existing.get();
@@ -38,7 +38,7 @@ public class HariLiburCommandService {
         HariLibur existing = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("HariLibur not found"));
 
-        Optional<HariLibur> duplicate = repository.findOne(request.getSpecification());
+        Optional<HariLibur> duplicate = repository.findByTanggalAndJenisLibur(request.getTanggal(), request.getJenisLibur());
         if (duplicate.isPresent() && !duplicate.get().getId().equals(id)) {
             throw new ConflictException("HariLibur with same tanggal and jenisLibur already exists");
         }

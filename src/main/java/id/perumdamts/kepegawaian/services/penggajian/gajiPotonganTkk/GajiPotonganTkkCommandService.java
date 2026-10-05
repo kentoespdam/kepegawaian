@@ -30,7 +30,16 @@ public class GajiPotonganTkkCommandService {
     @Transactional
     @CacheEvict(value = "gaji-referensi", key = "'potongan-tkk'")
     public SavedStatus<Long> create(GajiPotonganTkkPostRequest request) {
-        boolean exists = repository.exists(request.getSpecification());
+        boolean exists;
+        if (request.getLevelId() != null && request.getGolonganId() != null) {
+            exists = repository.existsByStatusPegawaiAndLevelIdAndGolonganId(request.getStatusPegawai(), request.getLevelId(), request.getGolonganId());
+        } else if (request.getLevelId() != null) {
+            exists = repository.existsByStatusPegawaiAndLevelIdAndGolonganIsNull(request.getStatusPegawai(), request.getLevelId());
+        } else if (request.getGolonganId() != null) {
+            exists = repository.existsByStatusPegawaiAndGolonganIdAndLevelIsNull(request.getStatusPegawai(), request.getGolonganId());
+        } else {
+            exists = repository.existsByStatusPegawaiAndLevelIsNullAndGolonganIsNull(request.getStatusPegawai());
+        }
         if (exists) throw new ConflictException("Gaji Potongan Tkk sudah ada");
         Level level = levelRepository.findById(request.getLevelId()).orElse(null);
         Golongan golongan = golonganRepository.findById(request.getGolonganId()).orElse(null);

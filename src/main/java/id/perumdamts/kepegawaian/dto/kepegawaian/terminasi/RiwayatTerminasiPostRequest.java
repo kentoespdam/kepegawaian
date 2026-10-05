@@ -1,19 +1,16 @@
 package id.perumdamts.kepegawaian.dto.kepegawaian.terminasi;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import id.perumdamts.kepegawaian.entities.commons.EJenisSk;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatTerminasi;
-import id.perumdamts.kepegawaian.utils.SpecificationBuilder;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
@@ -64,14 +61,7 @@ public class RiwayatTerminasiPostRequest {
     private Long jabatanId;
     private MultipartFile fileName;
 
-    @JsonIgnore
-    public Specification<RiwayatTerminasi> getTerminasiSpecification() {
-        return SpecificationBuilder.<RiwayatTerminasi>of()
-                .addEqual(getPegawaiId(), "pegawai", "id")
-                .addEqual(getNomorSk(), "skTerminasi", "nomorSk")
-                .addEqual(getTanggalSk(), "skTerminasi", "tanggalSk")
-                .build();
-    }
+
 
 
 }
