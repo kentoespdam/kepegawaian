@@ -101,7 +101,7 @@ class SlipGajiPdfGeneratorTest {
     }
 
     @Test
-    void generatePdf_withAddInPotongan_ignoresAddInMainPotongan() {
+    void generatePdf_withAddInPotongan_movesToAdditionalComponents() {
         SlipGajiDto dto = new SlipGajiDto(
                 3L,
                 "202501-003",
@@ -119,15 +119,15 @@ class SlipGajiPdfGeneratorTest {
                         new SlipGajiKomponenItemDto("ADD_KOPERASI", "Simpanan Koperasi", 50000.0)
                 ),
                 4000000.0,
-                100000.0,
-                3900000.0,
+                150000.0,
+                3850000.0,
                 0.0,
-                3900000.0,
+                3850000.0,
                 List.of(),
                 List.of(),
                 0.0,
-                0.0,
-                3900000.0
+                50000.0,
+                3850000.0
         );
 
         byte[] pdfBytes = pdfGenerator.generatePdf(dto);
@@ -135,5 +135,13 @@ class SlipGajiPdfGeneratorTest {
         assertNotNull(pdfBytes);
         assertTrue(pdfBytes.length > 0);
         assertEquals("%PDF", new String(pdfBytes, 0, 4));
+
+        List<SlipGajiKomponenItemDto> addPotongan = SlipGajiTableHelper.filterAdditionalPotongan(dto);
+        assertEquals(1, addPotongan.size());
+        assertEquals("ADD_KOPERASI", addPotongan.get(0).kode());
+
+        List<SlipGajiKomponenItemDto> regularPotongan = SlipGajiTableHelper.filterRegularPotongan(dto);
+        assertEquals(1, regularPotongan.size());
+        assertEquals("POT_PENSIUN", regularPotongan.get(0).kode());
     }
 }

@@ -17,6 +17,7 @@ import java.text.DecimalFormatSymbols;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Locale;
 
 @Component
@@ -120,6 +121,7 @@ public class SlipGajiPdfGenerator {
         if (dto.penerimaan() != null) {
             int num = 1;
             for (SlipGajiKomponenItemDto item : dto.penerimaan()) {
+                if (SlipGajiTableHelper.isAdd(item)) continue;
                 SlipGajiTableHelper.addNumberedItemRow(leftTable, num++ + ". " + item.nama(), formatRupiah(item.nilai()), FONT_NORMAL);
             }
         }
@@ -131,10 +133,10 @@ public class SlipGajiPdfGenerator {
         PdfPCell hRight = new PdfPCell(new Phrase("Potongan ( - )", FONT_BOLD));
         hRight.setColspan(3); hRight.setBorder(PdfPCell.NO_BORDER); hRight.setPaddingBottom(6f);
         rightTable.addCell(hRight);
-        if (dto.potongan() != null) {
+        List<SlipGajiKomponenItemDto> regularPotongan = SlipGajiTableHelper.filterRegularPotongan(dto);
+        if (regularPotongan != null) {
             int num = 1;
-            for (SlipGajiKomponenItemDto item : dto.potongan()) {
-                if (SlipGajiTableHelper.isAdd(item)) continue;
+            for (SlipGajiKomponenItemDto item : regularPotongan) {
                 SlipGajiTableHelper.addNumberedItemRow(rightTable, num++ + ". " + item.nama(), formatRupiah(item.nilai()), FONT_NORMAL);
             }
         }
@@ -155,9 +157,10 @@ public class SlipGajiPdfGenerator {
         PdfPCell hLeft = new PdfPCell(new Phrase("Penerimaan Tambahan", FONT_BOLD));
         hLeft.setColspan(3); hLeft.setBorder(PdfPCell.NO_BORDER); hLeft.setPaddingBottom(6f);
         leftTable.addCell(hLeft);
-        if (dto.penerimaanTambahan() != null && !dto.penerimaanTambahan().isEmpty()) {
+        List<SlipGajiKomponenItemDto> addPenerimaan = SlipGajiTableHelper.filterAdditionalPenerimaan(dto);
+        if (addPenerimaan != null && !addPenerimaan.isEmpty()) {
             int num = 1;
-            for (SlipGajiKomponenItemDto item : dto.penerimaanTambahan()) {
+            for (SlipGajiKomponenItemDto item : addPenerimaan) {
                 SlipGajiTableHelper.addNumberedItemRow(leftTable, num++ + ". " + item.nama(), formatRupiah(item.nilai()), FONT_NORMAL);
             }
         } else {
@@ -173,9 +176,10 @@ public class SlipGajiPdfGenerator {
         PdfPCell hRight = new PdfPCell(new Phrase("Potongan Tambahan", FONT_BOLD));
         hRight.setColspan(3); hRight.setBorder(PdfPCell.NO_BORDER); hRight.setPaddingBottom(6f);
         rightTable.addCell(hRight);
-        if (dto.potonganTambahan() != null && !dto.potonganTambahan().isEmpty()) {
+        List<SlipGajiKomponenItemDto> addPotongan = SlipGajiTableHelper.filterAdditionalPotongan(dto);
+        if (addPotongan != null && !addPotongan.isEmpty()) {
             int num = 1;
-            for (SlipGajiKomponenItemDto item : dto.potonganTambahan()) {
+            for (SlipGajiKomponenItemDto item : addPotongan) {
                 SlipGajiTableHelper.addNumberedItemRow(rightTable, num++ + ". " + item.nama(), formatRupiah(item.nilai()), FONT_NORMAL);
             }
         } else {
