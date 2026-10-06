@@ -6,8 +6,20 @@ import com.lowagie.text.Phrase;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 
+import id.perumdamts.kepegawaian.dto.penggajian.SlipGajiKomponenItemDto;
+
 public final class SlipGajiTableHelper {
     private SlipGajiTableHelper() {}
+
+    public static boolean isAdd(SlipGajiKomponenItemDto item) {
+        if (item == null) {
+            return false;
+        }
+        String kode = item.kode() != null ? item.kode().trim().toUpperCase() : "";
+        String nama = item.nama() != null ? item.nama().trim().toUpperCase() : "";
+        return kode.startsWith("ADD") || nama.startsWith("ADD");
+    }
+
 
     public static void addEmpRow(PdfPTable t, String l1, String v1, String l2, String v2, Font fBold, Font fNormal) {
         PdfPCell c1 = new PdfPCell(new Phrase(l1, fBold)); c1.setBorder(PdfPCell.NO_BORDER);

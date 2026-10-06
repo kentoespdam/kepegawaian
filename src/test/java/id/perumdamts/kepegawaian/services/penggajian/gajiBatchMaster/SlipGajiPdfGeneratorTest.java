@@ -99,4 +99,41 @@ class SlipGajiPdfGeneratorTest {
         assertTrue(pdfBytes.length > 0);
         assertEquals("%PDF", new String(pdfBytes, 0, 4));
     }
+
+    @Test
+    void generatePdf_withAddInPotongan_ignoresAddInMainPotongan() {
+        SlipGajiDto dto = new SlipGajiDto(
+                3L,
+                "202501-003",
+                "2025-01",
+                102L,
+                "11223",
+                "Ahmad Pegawai",
+                "Kabag",
+                "IV/a",
+                "Pembina",
+                "- - -",
+                List.of(new SlipGajiKomponenItemDto("GP", "Gaji Pokok", 4000000.0)),
+                List.of(
+                        new SlipGajiKomponenItemDto("POT_PENSIUN", "Potongan Pensiun", 100000.0),
+                        new SlipGajiKomponenItemDto("ADD_KOPERASI", "Simpanan Koperasi", 50000.0)
+                ),
+                4000000.0,
+                100000.0,
+                3900000.0,
+                0.0,
+                3900000.0,
+                List.of(),
+                List.of(),
+                0.0,
+                0.0,
+                3900000.0
+        );
+
+        byte[] pdfBytes = pdfGenerator.generatePdf(dto);
+
+        assertNotNull(pdfBytes);
+        assertTrue(pdfBytes.length > 0);
+        assertEquals("%PDF", new String(pdfBytes, 0, 4));
+    }
 }

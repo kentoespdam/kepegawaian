@@ -73,17 +73,17 @@ public class GajiBatchMasterQueryService {
         );
 
         List<SlipGajiKomponenItemDto> potongan = prosesList.stream()
-                .filter(p -> p.jenisGaji() == EJenisGaji.POTONGAN && (p.kode() == null || !p.kode().startsWith("ADD_")))
+                .filter(p -> p.jenisGaji() == EJenisGaji.POTONGAN && !isAdd(p))
                 .map(p -> new SlipGajiKomponenItemDto(p.kode(), p.nama(), p.nilai() != null ? p.nilai() : 0.0))
                 .toList();
 
         List<SlipGajiKomponenItemDto> penerimaanTambahan = prosesList.stream()
-                .filter(p -> p.jenisGaji() == EJenisGaji.PEMASUKAN && p.kode() != null && p.kode().startsWith("ADD_"))
+                .filter(p -> p.jenisGaji() == EJenisGaji.PEMASUKAN && isAdd(p))
                 .map(p -> new SlipGajiKomponenItemDto(p.kode(), p.nama(), p.nilai() != null ? p.nilai() : 0.0))
                 .toList();
 
         List<SlipGajiKomponenItemDto> potonganTambahan = prosesList.stream()
-                .filter(p -> p.jenisGaji() == EJenisGaji.POTONGAN && p.kode() != null && p.kode().startsWith("ADD_"))
+                .filter(p -> p.jenisGaji() == EJenisGaji.POTONGAN && isAdd(p))
                 .map(p -> new SlipGajiKomponenItemDto(p.kode(), p.nama(), p.nilai() != null ? p.nilai() : 0.0))
                 .toList();
 
@@ -188,5 +188,14 @@ public class GajiBatchMasterQueryService {
                 .mapToDouble(p -> p.nilai() != null ? p.nilai() : 0.0)
                 .findFirst()
                 .orElse(0.0);
+    }
+
+    private boolean isAdd(GajiBatchMasterProsesResponse p) {
+        if (p == null) {
+            return false;
+        }
+        String kode = p.kode() != null ? p.kode().trim().toUpperCase() : "";
+        String nama = p.nama() != null ? p.nama().trim().toUpperCase() : "";
+        return kode.startsWith("ADD") || nama.startsWith("ADD");
     }
 }
