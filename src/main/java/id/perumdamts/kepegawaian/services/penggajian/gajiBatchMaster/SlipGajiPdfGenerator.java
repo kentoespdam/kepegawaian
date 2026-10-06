@@ -37,7 +37,7 @@ public class SlipGajiPdfGenerator {
     }
     private String formatPeriode(String p) {
         if (p == null || p.isBlank()) return "-";
-        try { return YearMonth.parse(p).format(DateTimeFormatter.ofPattern("MMMM yyyy", Locale.of("id", "ID"))); } catch (Exception e) { return p; }
+        return YearMonth.parse(p).format(DateTimeFormatter.ofPattern("MMMM yyyy", Locale.of("id", "ID")));
     }
     public byte[] generatePdf(SlipGajiDto dto) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -148,47 +148,38 @@ public class SlipGajiPdfGenerator {
         mainTable.addCell(leftCell); mainTable.addCell(rightCell); mainTable.setSpacingAfter(8f);
         document.add(mainTable);
     }
+    private PdfPCell createAdditionalColumn(String title, List<SlipGajiKomponenItemDto> items, Double total) {
+        PdfPCell cell = new PdfPCell();
+        cell.setPadding(6f);
+        PdfPTable table = new PdfPTable(3);
+        table.setWidthPercentage(100);
+        table.setWidths(new float[]{65f, 5f, 30f});
+        PdfPCell header = new PdfPCell(new Phrase(title, FONT_BOLD));
+        header.setColspan(3);
+        header.setBorder(PdfPCell.NO_BORDER);
+        header.setPaddingBottom(6f);
+        table.addCell(header);
+        if (items != null && !items.isEmpty()) {
+            int num = 1;
+            for (SlipGajiKomponenItemDto item : items) {
+                SlipGajiTableHelper.addNumberedItemRow(table, num++ + ". " + item.nama(), formatRupiah(item.nilai()), FONT_NORMAL);
+            }
+        } else {
+            PdfPCell empty = new PdfPCell(new Phrase("(tidak ada)", FONT_NORMAL));
+            empty.setColspan(3);
+            empty.setBorder(PdfPCell.NO_BORDER);
+            empty.setPaddingBottom(4f);
+            table.addCell(empty);
+        }
+        SlipGajiTableHelper.addTotalLine(table, "Total " + title, formatRupiah(total), FONT_BOLD);
+        cell.addElement(table);
+        return cell;
+    }
     private void addAdditionalComponents(Document document, SlipGajiDto dto) throws DocumentException {
         PdfPTable addTable = new PdfPTable(2);
         addTable.setWidthPercentage(100); addTable.setWidths(new float[]{50f, 50f});
-        PdfPCell leftCell = new PdfPCell(); leftCell.setPadding(6f);
-        PdfPTable leftTable = new PdfPTable(3);
-        leftTable.setWidthPercentage(100); leftTable.setWidths(new float[]{65f, 5f, 30f});
-        PdfPCell hLeft = new PdfPCell(new Phrase("Penerimaan Tambahan", FONT_BOLD));
-        hLeft.setColspan(3); hLeft.setBorder(PdfPCell.NO_BORDER); hLeft.setPaddingBottom(6f);
-        leftTable.addCell(hLeft);
-        List<SlipGajiKomponenItemDto> addPenerimaan = SlipGajiTableHelper.filterAdditionalPenerimaan(dto);
-        if (addPenerimaan != null && !addPenerimaan.isEmpty()) {
-            int num = 1;
-            for (SlipGajiKomponenItemDto item : addPenerimaan) {
-                SlipGajiTableHelper.addNumberedItemRow(leftTable, num++ + ". " + item.nama(), formatRupiah(item.nilai()), FONT_NORMAL);
-            }
-        } else {
-            PdfPCell empty = new PdfPCell(new Phrase("(tidak ada)", FONT_NORMAL));
-            empty.setColspan(3); empty.setBorder(PdfPCell.NO_BORDER); empty.setPaddingBottom(4f);
-            leftTable.addCell(empty);
-        }
-        SlipGajiTableHelper.addTotalLine(leftTable, "Total Penerimaan Tambahan", formatRupiah(dto.totalPenerimaanTambahan()), FONT_BOLD);
-        leftCell.addElement(leftTable);
-        PdfPCell rightCell = new PdfPCell(); rightCell.setPadding(6f);
-        PdfPTable rightTable = new PdfPTable(3);
-        rightTable.setWidthPercentage(100); rightTable.setWidths(new float[]{65f, 5f, 30f});
-        PdfPCell hRight = new PdfPCell(new Phrase("Potongan Tambahan", FONT_BOLD));
-        hRight.setColspan(3); hRight.setBorder(PdfPCell.NO_BORDER); hRight.setPaddingBottom(6f);
-        rightTable.addCell(hRight);
-        List<SlipGajiKomponenItemDto> addPotongan = SlipGajiTableHelper.filterAdditionalPotongan(dto);
-        if (addPotongan != null && !addPotongan.isEmpty()) {
-            int num = 1;
-            for (SlipGajiKomponenItemDto item : addPotongan) {
-                SlipGajiTableHelper.addNumberedItemRow(rightTable, num++ + ". " + item.nama(), formatRupiah(item.nilai()), FONT_NORMAL);
-            }
-        } else {
-            PdfPCell empty = new PdfPCell(new Phrase("(tidak ada)", FONT_NORMAL));
-            empty.setColspan(3); empty.setBorder(PdfPCell.NO_BORDER); empty.setPaddingBottom(4f);
-            rightTable.addCell(empty);
-        }
-        SlipGajiTableHelper.addTotalLine(rightTable, "Total Potongan Tambahan", formatRupiah(dto.totalPotonganTambahan()), FONT_BOLD);
-        rightCell.addElement(rightTable);
+        PdfPCell leftCell = createAdditionalColumn("Penerimaan Tambahan", SlipGajiTableHelper.filterAdditionalPenerimaan(dto), dto.totalPenerimaanTambahan());
+        PdfPCell rightCell = createAdditionalColumn("Potongan Tambahan", SlipGajiTableHelper.filterAdditionalPotongan(dto), dto.totalPotonganTambahan());
         PdfPCell totalDibayarkanCell = new PdfPCell();
         totalDibayarkanCell.setColspan(2); 
         totalDibayarkanCell.setBorder(PdfPCell.TOP); 
