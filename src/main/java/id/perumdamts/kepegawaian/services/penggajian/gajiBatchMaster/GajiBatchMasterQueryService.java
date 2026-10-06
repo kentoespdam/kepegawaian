@@ -57,10 +57,20 @@ public class GajiBatchMasterQueryService {
 
         List<GajiBatchMasterProsesResponse> prosesList = prosesRepository.findByMasterId(id);
 
-        List<SlipGajiKomponenItemDto> penerimaan = prosesList.stream()
-                .filter(p -> p.jenisGaji() == EJenisGaji.PEMASUKAN && (p.kode() == null || !p.kode().startsWith("ADD_")))
-                .map(p -> new SlipGajiKomponenItemDto(p.kode(), p.nama(), p.nilai() != null ? p.nilai() : 0.0))
-                .toList();
+        // 5 item standar penerimaan yang ditampilkan di slip gaji
+        Double gajiPokok = findPemasukanNilai(prosesList, "GP", "gaji");
+        Double tunjSi = findPemasukanNilai(prosesList, "TUNJ_SI", "suami", "istri");
+        Double tunjAnak = findPemasukanNilai(prosesList, "TUNJ_ANAK", "anak");
+        Double tunjJabatan = findPemasukanNilai(prosesList, "TUNJ_JABATAN", "jabatan");
+        Double tunjKinerja = findPemasukanNilai(prosesList, "TUNJ_KINERJA", "kinerja", "kpi", "tunj_kk");
+
+        List<SlipGajiKomponenItemDto> penerimaan = List.of(
+                new SlipGajiKomponenItemDto("GP", "Gaji", gajiPokok),
+                new SlipGajiKomponenItemDto("TUNJ_SI", "Tunjangan Suami Istri", tunjSi),
+                new SlipGajiKomponenItemDto("TUNJ_ANAK", "Tunjangan Anak", tunjAnak),
+                new SlipGajiKomponenItemDto("TUNJ_JABATAN", "Tunjangan Jabatan", tunjJabatan),
+                new SlipGajiKomponenItemDto("TUNJ_KINERJA", "Tunjangan Kinerja", tunjKinerja)
+        );
 
         List<SlipGajiKomponenItemDto> potongan = prosesList.stream()
                 .filter(p -> p.jenisGaji() == EJenisGaji.POTONGAN && (p.kode() == null || !p.kode().startsWith("ADD_")))
@@ -77,8 +87,14 @@ public class GajiBatchMasterQueryService {
                 .map(p -> new SlipGajiKomponenItemDto(p.kode(), p.nama(), p.nilai() != null ? p.nilai() : 0.0))
                 .toList();
 
-        Double totalPenerimaan = master.penghasilanKotor() != null ? master.penghasilanKotor() :
-                penerimaan.stream().mapToDouble(SlipGajiKomponenItemDto::nilai).sum();
+        // Total penerimaan dihitung dari akumulasi seluruh komponen berjenis PEMASUKAN
+        Double totalPenerimaan = prosesList.stream()
+                .filter(p -> p.jenisGaji() == EJenisGaji.PEMASUKAN)
+                .mapToDouble(p -> p.nilai() != null ? p.nilai() : 0.0)
+                .sum();
+        if (totalPenerimaan == 0.0 && master.penghasilanKotor() != null) {
+            totalPenerimaan = master.penghasilanKotor();
+        }
         Double totalPotongan = master.totalPotongan() != null ? master.totalPotongan() :
                 potongan.stream().mapToDouble(SlipGajiKomponenItemDto::nilai).sum();
         Double selisihPenerimaanPotongan = totalPenerimaan - totalPotongan;
@@ -153,5 +169,24 @@ public class GajiBatchMasterQueryService {
 
     public Page<GajiBatchMasterResponse> findHistoryByPegawaiId(Long pegawaiId, GajiBatchMasterSelfQuery query) {
         return queryRepository.findHistoryByPegawaiId(pegawaiId, query);
+    }
+
+    private Double findPemasukanNilai(List<GajiBatchMasterProsesResponse> list, String kodeMatch, String... keywords) {
+        if (list == null) return 0.0;
+        return list.stream()
+                .filter(p -> p.jenisGaji() == EJenisGaji.PEMASUKAN)
+                .filter(p -> {
+                    if (p.kode() != null && p.kode().equalsIgnoreCase(kodeMatch)) return true;
+                    if (p.nama() != null) {
+                        String lower = p.nama().toLowerCase();
+                        for (String kw : keywords) {
+                            if (lower.contains(kw)) return true;
+                        }
+                    }
+                    return false;
+                })
+                .mapToDouble(p -> p.nilai() != null ? p.nilai() : 0.0)
+                .findFirst()
+                .orElse(0.0);
     }
 }
