@@ -33,7 +33,7 @@ public class SlipGajiPdfGenerator {
 
     private String formatRupiah(Double amount) {
         if (amount == null) amount = 0.0;
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols(new Locale("id", "ID"));
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.of("id", "ID"));
         symbols.setGroupingSeparator('.');
         symbols.setDecimalSeparator(',');
         return new DecimalFormat("Rp #,##0", symbols).format(amount);
