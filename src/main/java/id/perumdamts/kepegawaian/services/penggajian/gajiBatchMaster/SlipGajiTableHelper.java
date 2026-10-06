@@ -20,11 +20,11 @@ public final class SlipGajiTableHelper {
             return false;
         }
         String kode = item.kode() != null ? item.kode().trim().toUpperCase() : "";
-        if (kode.startsWith("ADD_") || kode.startsWith("ADD")) {
+        if (kode.startsWith("ADD_") || kode.startsWith("ADD") || kode.startsWith("ADHOC")) {
             return true;
         }
         String nama = item.nama() != null ? item.nama().trim().toUpperCase() : "";
-        return nama.startsWith("ADD_") || nama.startsWith("ADD ");
+        return nama.startsWith("ADD_") || nama.startsWith("ADD ") || nama.startsWith("ADHOC");
     }
 
     public static List<SlipGajiKomponenItemDto> filterRegularPotongan(SlipGajiDto dto) {

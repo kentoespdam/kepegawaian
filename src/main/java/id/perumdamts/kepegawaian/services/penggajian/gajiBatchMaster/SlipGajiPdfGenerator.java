@@ -190,11 +190,16 @@ public class SlipGajiPdfGenerator {
         SlipGajiTableHelper.addTotalLine(rightTable, "Total Potongan Tambahan", formatRupiah(dto.totalPotonganTambahan()), FONT_BOLD);
         rightCell.addElement(rightTable);
         PdfPCell totalDibayarkanCell = new PdfPCell();
-        totalDibayarkanCell.setColspan(2); totalDibayarkanCell.setBorder(PdfPCell.TOP); totalDibayarkanCell.setPadding(6f);
+        totalDibayarkanCell.setColspan(2); 
+        totalDibayarkanCell.setBorder(PdfPCell.TOP); 
+        totalDibayarkanCell.setPadding(6f);
         PdfPTable totalTable = new PdfPTable(2);
-        totalTable.setWidthPercentage(100); totalTable.setWidths(new float[]{70f, 30f});
+        totalTable.setWidthPercentage(100); 
+        totalTable.setWidths(new float[]{70f, 30f});
         PdfPCell lCell = new PdfPCell(new Phrase("Total Dibayarkan", FONT_BOLD));
-        lCell.setBorder(PdfPCell.NO_BORDER); lCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        lCell.setBorder(PdfPCell.NO_BORDER); 
+        lCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        // Total Dibayarkan bersumber dari penghasilan_bersih_final2 (atau fallback ke penghasilan_bersih_final / kalkulasi subtotal)
         PdfPCell vCell = new PdfPCell(new Phrase(formatRupiah(dto.totalDibayarkan()), FONT_BOLD));
         vCell.setBorder(PdfPCell.NO_BORDER); vCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
         totalTable.addCell(lCell); totalTable.addCell(vCell);
