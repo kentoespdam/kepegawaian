@@ -45,121 +45,150 @@ public class SlipGajiPdfGenerator {
         try {
             PdfWriter.getInstance(document, baos);
             document.open();
-            PdfPTable kopTable = new PdfPTable(2);
-            kopTable.setWidthPercentage(100);
-            kopTable.setWidths(new float[]{15f, 85f});
-
-            PdfPCell logoCell = new PdfPCell();
-            logoCell.setBorder(PdfPCell.BOTTOM);
-            logoCell.setBorderWidthBottom(1.5f);
-            logoCell.setPaddingBottom(8f);
-            try {
-                ClassPathResource resource = new ClassPathResource(properties.kop().logoPath());
-                if (resource.exists()) {
-                    Image img = Image.getInstance(resource.getURL());
-                    img.scaleAbsolute(45, 45);
-                    logoCell.addElement(img);
-                }
-            } catch (Exception e) {
-                log.warn("Logo slip gaji tidak ditemukan: {}", e.getMessage());
-            }
-
-            PdfPCell infoCell = new PdfPCell();
-            infoCell.setBorder(PdfPCell.BOTTOM);
-            infoCell.setBorderWidthBottom(1.5f);
-            infoCell.setPaddingBottom(8f);
-            infoCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-            Paragraph pInstansi = new Paragraph(properties.kop().instansi(), FONT_TITLE);
-            pInstansi.setAlignment(Element.ALIGN_CENTER);
-            infoCell.addElement(pInstansi);
-            Paragraph pUnit = new Paragraph(properties.kop().unitKerja(), FONT_SUBTITLE);
-            pUnit.setAlignment(Element.ALIGN_CENTER);
-            infoCell.addElement(pUnit);
-            Paragraph pAddress = new Paragraph(properties.kop().alamat(), FONT_SMALL);
-            pAddress.setAlignment(Element.ALIGN_CENTER);
-            infoCell.addElement(pAddress);
-            Paragraph pContact = new Paragraph("Telp: " + properties.kop().telepon() + " | Fax: " + properties.kop().fax() , FONT_SMALL);
-            pContact.setAlignment(Element.ALIGN_CENTER);
-            infoCell.addElement(pContact);
-            Paragraph pWebsite = new Paragraph("Website: " + properties.kop().website()+ " | Email: " + properties.kop().email(), FONT_SMALL);
-            pWebsite.setAlignment(Element.ALIGN_CENTER);
-            infoCell.addElement(pWebsite);
-
-            kopTable.addCell(logoCell);
-            kopTable.addCell(infoCell);
-            document.add(kopTable);
-
-            Paragraph title = new Paragraph("SLIP GAJI PEGAWAI", FONT_TITLE);
-            title.setAlignment(Element.ALIGN_CENTER);
-            title.setSpacingBefore(10f);
-            document.add(title);
-
-            Paragraph periode = new Paragraph("Periode: " + (dto.periode() != null ? dto.periode() : "-"), FONT_SUBTITLE);
-            periode.setAlignment(Element.ALIGN_CENTER);
-            periode.setSpacingAfter(10f);
-            document.add(periode);
-
-            PdfPTable empTable = new PdfPTable(4);
-            empTable.setWidthPercentage(100);
-            empTable.setWidths(new float[]{15f, 35f, 15f, 35f});
-            addEmpRow(empTable, "Nama", dto.nama(),  "Pangkat", dto.pangkat());
-            addEmpRow(empTable, "NIPAM", dto.nipam(),"Golongan", dto.golongan());
-            addEmpRow(empTable, "Jabatan", dto.namaJabatan(), "Bank", dto.bank());
-            empTable.setSpacingAfter(10f);
-            document.add(empTable);
-
-            PdfPTable mainTable = new PdfPTable(2);
-            mainTable.setWidthPercentage(100);
-            mainTable.setWidths(new float[]{50f, 50f});
-            mainTable.addCell(createKomponenBox("PENERIMAAN", dto.penerimaan(), dto.totalPenerimaan()));
-            mainTable.addCell(createKomponenBox("POTONGAN", dto.potongan(), dto.totalPotongan()));
-            mainTable.setSpacingAfter(10f);
-            document.add(mainTable);
-
-            PdfPTable summaryTable = new PdfPTable(2);
-            summaryTable.setWidthPercentage(100);
-            summaryTable.setWidths(new float[]{70f, 30f});
-            addSummaryRow(summaryTable, "Penerimaan - Potongan", formatRupiah(dto.selisihPenerimaanPotongan()));
-            addSummaryRow(summaryTable, "Pembulatan", formatRupiah(dto.pembulatan()));
-            addSummaryRow(summaryTable, "Sub Total", formatRupiah(dto.subTotal()));
-            summaryTable.setSpacingAfter(10f);
-            document.add(summaryTable);
-
-            if ((dto.penerimaanTambahan() != null && !dto.penerimaanTambahan().isEmpty()) ||
-                    (dto.potonganTambahan() != null && !dto.potonganTambahan().isEmpty())) {
-                PdfPTable addTable = new PdfPTable(2);
-                addTable.setWidthPercentage(100);
-                addTable.setWidths(new float[]{50f, 50f});
-                addTable.addCell(createKomponenBox("PENERIMAAN TAMBAHAN", dto.penerimaanTambahan(), dto.totalPenerimaanTambahan()));
-                addTable.addCell(createKomponenBox("POTONGAN TAMBAHAN", dto.potonganTambahan(), dto.totalPotonganTambahan()));
-                addTable.setSpacingAfter(10f);
-                document.add(addTable);
-            }
-
-            PdfPTable finalTable = new PdfPTable(2);
-            finalTable.setWidthPercentage(100);
-            finalTable.setWidths(new float[]{70f, 30f});
-            PdfPCell labelFinal = new PdfPCell(new Paragraph("TOTAL DIBAYARKAN", FONT_TITLE));
-            labelFinal.setPadding(8f);
-            labelFinal.setHorizontalAlignment(Element.ALIGN_RIGHT);
-            PdfPCell valFinal = new PdfPCell(new Paragraph(formatRupiah(dto.totalDibayarkan()), FONT_TITLE));
-            valFinal.setPadding(8f);
-            valFinal.setHorizontalAlignment(Element.ALIGN_RIGHT);
-            finalTable.addCell(labelFinal);
-            finalTable.addCell(valFinal);
-            finalTable.setSpacingAfter(20f);
-            document.add(finalTable);
-
-            Paragraph footer = new Paragraph("Dicetak otomatis pada " +
-                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")), FONT_SMALL);
-            footer.setAlignment(Element.ALIGN_RIGHT);
-            document.add(footer);
+            addHeader(document);
+            addTitle(document, dto);
+            addEmployeeData(document, dto);
+            addMainComponents(document, dto);
+            addSummary(document, dto);
+            addAdditionalComponents(document, dto);
+            addTotalDibayarkan(document, dto);
+            addFooter(document);
             document.close();
         } catch (Exception e) {
             log.error("Gagal generate PDF slip gaji: {}", e.getMessage(), e);
-            throw new RuntimeException("Gagal generate PDF slip gaji", e);
+            throw new IllegalStateException("Gagal generate PDF slip gaji", e);
         }
         return baos.toByteArray();
+    }
+
+    private void addHeader(Document document) throws Exception {
+        PdfPTable kopTable = new PdfPTable(2);
+        kopTable.setWidthPercentage(100);
+        kopTable.setWidths(new float[]{15f, 85f});
+
+        PdfPCell logoCell = new PdfPCell();
+        logoCell.setBorder(PdfPCell.BOTTOM);
+        logoCell.setBorderWidthBottom(1.5f);
+        logoCell.setPaddingBottom(8f);
+        addLogo(logoCell);
+
+        PdfPCell infoCell = new PdfPCell();
+        infoCell.setBorder(PdfPCell.BOTTOM);
+        infoCell.setBorderWidthBottom(1.5f);
+        infoCell.setPaddingBottom(8f);
+        infoCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        addHeaderParagraph(infoCell, properties.kop().instansi(), FONT_TITLE);
+        addHeaderParagraph(infoCell, properties.kop().unitKerja(), FONT_SUBTITLE);
+        addHeaderParagraph(infoCell, properties.kop().alamat(), FONT_SMALL);
+        addHeaderParagraph(infoCell, "Telp: " + properties.kop().telepon() + " | Fax: " + properties.kop().fax(), FONT_SMALL);
+        addHeaderParagraph(infoCell, "Website: " + properties.kop().website() + " | Email: " + properties.kop().email(), FONT_SMALL);
+
+        kopTable.addCell(logoCell);
+        kopTable.addCell(infoCell);
+        document.add(kopTable);
+    }
+
+    private void addLogo(PdfPCell logoCell) {
+        try {
+            ClassPathResource resource = new ClassPathResource(properties.kop().logoPath());
+            if (resource.exists()) {
+                Image img = Image.getInstance(resource.getURL());
+                img.scaleAbsolute(45, 45);
+                logoCell.addElement(img);
+            }
+        } catch (Exception e) {
+            log.warn("Logo slip gaji tidak ditemukan: {}", e.getMessage());
+        }
+    }
+
+    private void addHeaderParagraph(PdfPCell cell, String text, Font font) {
+        Paragraph paragraph = new Paragraph(text, font);
+        paragraph.setAlignment(Element.ALIGN_CENTER);
+        cell.addElement(paragraph);
+    }
+
+    private void addTitle(Document document, SlipGajiDto dto) throws Exception {
+        Paragraph title = new Paragraph("SLIP GAJI PEGAWAI", FONT_TITLE);
+        title.setAlignment(Element.ALIGN_CENTER);
+        title.setSpacingBefore(10f);
+        document.add(title);
+
+        Paragraph periode = new Paragraph("Periode: " + (dto.periode() != null ? dto.periode() : "-"), FONT_SUBTITLE);
+        periode.setAlignment(Element.ALIGN_CENTER);
+        periode.setSpacingAfter(10f);
+        document.add(periode);
+    }
+
+    private void addEmployeeData(Document document, SlipGajiDto dto) throws Exception {
+        PdfPTable empTable = new PdfPTable(4);
+        empTable.setWidthPercentage(100);
+        empTable.setWidths(new float[]{15f, 35f, 15f, 35f});
+        addEmpRow(empTable, "Nama", dto.nama(), "Golongan", dto.golongan() + " - " + dto.pangkat());
+        addEmpRow(empTable, "NIPAM", dto.nipam(), "Bank", dto.bank());
+        addEmpRow(empTable, "Jabatan", dto.namaJabatan(), "", "");
+        empTable.setSpacingAfter(10f);
+        document.add(empTable);
+    }
+
+    private void addMainComponents(Document document, SlipGajiDto dto) throws Exception {
+        PdfPTable mainTable = new PdfPTable(2);
+        mainTable.setWidthPercentage(100);
+        mainTable.setWidths(new float[]{50f, 50f});
+        mainTable.addCell(createKomponenBox("PENERIMAAN", dto.penerimaan(), dto.totalPenerimaan()));
+        mainTable.addCell(createKomponenBox("POTONGAN", dto.potongan(), dto.totalPotongan()));
+        mainTable.setSpacingAfter(10f);
+        document.add(mainTable);
+    }
+
+    private void addSummary(Document document, SlipGajiDto dto) throws Exception {
+        PdfPTable summaryTable = new PdfPTable(2);
+        summaryTable.setWidthPercentage(100);
+        summaryTable.setWidths(new float[]{70f, 30f});
+        addSummaryRow(summaryTable, "Penerimaan - Potongan", formatRupiah(dto.selisihPenerimaanPotongan()));
+        addSummaryRow(summaryTable, "Pembulatan", formatRupiah(dto.pembulatan()));
+        addSummaryRow(summaryTable, "Sub Total", formatRupiah(dto.subTotal()));
+        summaryTable.setSpacingAfter(10f);
+        document.add(summaryTable);
+    }
+
+    private void addAdditionalComponents(Document document, SlipGajiDto dto) throws Exception {
+        if (hasAdditionalComponents(dto)) {
+            PdfPTable addTable = new PdfPTable(2);
+            addTable.setWidthPercentage(100);
+            addTable.setWidths(new float[]{50f, 50f});
+            addTable.addCell(createKomponenBox("PENERIMAAN TAMBAHAN", dto.penerimaanTambahan(), dto.totalPenerimaanTambahan()));
+            addTable.addCell(createKomponenBox("POTONGAN TAMBAHAN", dto.potonganTambahan(), dto.totalPotonganTambahan()));
+            addTable.setSpacingAfter(10f);
+            document.add(addTable);
+        }
+    }
+
+    private boolean hasAdditionalComponents(SlipGajiDto dto) {
+        return (dto.penerimaanTambahan() != null && !dto.penerimaanTambahan().isEmpty()) ||
+                (dto.potonganTambahan() != null && !dto.potonganTambahan().isEmpty());
+    }
+
+    private void addTotalDibayarkan(Document document, SlipGajiDto dto) throws Exception {
+        PdfPTable finalTable = new PdfPTable(2);
+        finalTable.setWidthPercentage(100);
+        finalTable.setWidths(new float[]{70f, 30f});
+        PdfPCell labelFinal = new PdfPCell(new Paragraph("TOTAL DIBAYARKAN", FONT_TITLE));
+        labelFinal.setPadding(8f);
+        labelFinal.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        PdfPCell valFinal = new PdfPCell(new Paragraph(formatRupiah(dto.totalDibayarkan()), FONT_TITLE));
+        valFinal.setPadding(8f);
+        valFinal.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        finalTable.addCell(labelFinal);
+        finalTable.addCell(valFinal);
+        finalTable.setSpacingAfter(20f);
+        document.add(finalTable);
+    }
+
+    private void addFooter(Document document) throws Exception {
+        Paragraph footer = new Paragraph("Dicetak otomatis pada " +
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")), FONT_SMALL);
+        footer.setAlignment(Element.ALIGN_RIGHT);
+        document.add(footer);
     }
 
     private void addEmpRow(PdfPTable t, String l1, String v1, String l2, String v2) {
