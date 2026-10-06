@@ -11,14 +11,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
+
 import java.io.ByteArrayOutputStream;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
+import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Locale;
 
 @Component
 @RequiredArgsConstructor
@@ -31,14 +29,6 @@ public class SlipGajiPdfGenerator {
     private static final Font FONT_NORMAL = FontFactory.getFont(FontFactory.HELVETICA, 9, Font.NORMAL);
     private static final Font FONT_SMALL = FontFactory.getFont(FontFactory.HELVETICA, 8, Font.NORMAL);
 
-    private String formatRupiah(Double amount) {
-        if (amount == null) amount = 0.0;
-        return "Rp. " + new DecimalFormat("#,##0", new DecimalFormatSymbols(Locale.US)).format(amount);
-    }
-    private String formatPeriode(String p) {
-        if (p == null || p.isBlank()) return "-";
-        return YearMonth.parse(p).format(DateTimeFormatter.ofPattern("MMMM yyyy", Locale.of("id", "ID")));
-    }
     public byte[] generatePdf(SlipGajiDto dto) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Document document = new Document(PageSize.A4, 36, 36, 36, 36);
@@ -58,25 +48,13 @@ public class SlipGajiPdfGenerator {
         }
         return baos.toByteArray();
     }
+
     private void addHeader(Document document) throws DocumentException {
         PdfPTable kopTable = new PdfPTable(2);
         kopTable.setWidthPercentage(100);
         kopTable.setWidths(new float[]{15f, 85f});
         PdfPCell logoCell = new PdfPCell();
         logoCell.setBorder(PdfPCell.BOTTOM); logoCell.setBorderWidthBottom(1.5f); logoCell.setPaddingBottom(8f);
-        addLogo(logoCell);
-        PdfPCell infoCell = new PdfPCell();
-        infoCell.setBorder(PdfPCell.BOTTOM); infoCell.setBorderWidthBottom(1.5f); infoCell.setPaddingBottom(8f);
-        infoCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        addHeaderParagraph(infoCell, properties.kop().instansi(), FONT_TITLE);
-        addHeaderParagraph(infoCell, properties.kop().unitKerja(), FONT_SUBTITLE);
-        addHeaderParagraph(infoCell, properties.kop().alamat(), FONT_SMALL);
-        addHeaderParagraph(infoCell, "Telp. " + properties.kop().telepon() + " Fax. " + properties.kop().fax(), FONT_SMALL);
-        addHeaderParagraph(infoCell, "website: " + properties.kop().website() + " E-mail: " + properties.kop().email(), FONT_SMALL);
-        kopTable.addCell(logoCell); kopTable.addCell(infoCell);
-        document.add(kopTable);
-    }
-    private void addLogo(PdfPCell logoCell) {
         try {
             ClassPathResource resource = new ClassPathResource(properties.kop().logoPath());
             if (resource.exists()) {
@@ -84,21 +62,32 @@ public class SlipGajiPdfGenerator {
                 img.scaleAbsolute(45, 45);
                 logoCell.addElement(img);
             }
-        } catch (Exception e) { log.warn("Logo slip gaji tidak ditemukan: {}", e.getMessage()); }
+        } catch (IOException | BadElementException e) {
+            log.warn("Logo slip gaji tidak ditemukan: {}", e.getMessage());
+        }
+        PdfPCell infoCell = new PdfPCell();
+        infoCell.setBorder(PdfPCell.BOTTOM); infoCell.setBorderWidthBottom(1.5f); infoCell.setPaddingBottom(8f);
+        infoCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        
+        Paragraph p1 = new Paragraph(properties.kop().instansi(), FONT_TITLE); p1.setAlignment(Element.ALIGN_CENTER); infoCell.addElement(p1);
+        Paragraph p2 = new Paragraph(properties.kop().unitKerja(), FONT_SUBTITLE); p2.setAlignment(Element.ALIGN_CENTER); infoCell.addElement(p2);
+        Paragraph p3 = new Paragraph(properties.kop().alamat(), FONT_SMALL); p3.setAlignment(Element.ALIGN_CENTER); infoCell.addElement(p3);
+        Paragraph p4 = new Paragraph("Telp. " + properties.kop().telepon() + " Fax. " + properties.kop().fax(), FONT_SMALL); p4.setAlignment(Element.ALIGN_CENTER); infoCell.addElement(p4);
+        Paragraph p5 = new Paragraph("website: " + properties.kop().website() + " E-mail: " + properties.kop().email(), FONT_SMALL); p5.setAlignment(Element.ALIGN_CENTER); infoCell.addElement(p5);
+
+        kopTable.addCell(logoCell); kopTable.addCell(infoCell);
+        document.add(kopTable);
     }
-    private void addHeaderParagraph(PdfPCell cell, String text, Font font) {
-        Paragraph paragraph = new Paragraph(text, font);
-        paragraph.setAlignment(Element.ALIGN_CENTER);
-        cell.addElement(paragraph);
-    }
+
     private void addTitle(Document document, SlipGajiDto dto) throws DocumentException {
         Paragraph title = new Paragraph("SLIP GAJI PEGAWAI", FONT_TITLE);
         title.setAlignment(Element.ALIGN_CENTER); title.setSpacingBefore(10f);
         document.add(title);
-        Paragraph periode = new Paragraph(formatPeriode(dto.periode()), FONT_SUBTITLE);
+        Paragraph periode = new Paragraph(SlipGajiTableHelper.formatPeriode(dto.periode()), FONT_SUBTITLE);
         periode.setAlignment(Element.ALIGN_CENTER); periode.setSpacingAfter(10f);
         document.add(periode);
     }
+
     private void addEmployeeData(Document document, SlipGajiDto dto) throws DocumentException {
         PdfPTable empTable = new PdfPTable(4);
         empTable.setWidthPercentage(100); empTable.setWidths(new float[]{12f, 48f, 15f, 25f});
@@ -109,6 +98,7 @@ public class SlipGajiPdfGenerator {
         empTable.setSpacingAfter(8f);
         document.add(empTable);
     }
+
     private void addMainComponents(Document document, SlipGajiDto dto) throws DocumentException {
         PdfPTable mainTable = new PdfPTable(2);
         mainTable.setWidthPercentage(100); mainTable.setWidths(new float[]{50f, 50f});
@@ -122,10 +112,10 @@ public class SlipGajiPdfGenerator {
             int num = 1;
             for (SlipGajiKomponenItemDto item : dto.penerimaan()) {
                 if (SlipGajiTableHelper.isAdd(item)) continue;
-                SlipGajiTableHelper.addNumberedItemRow(leftTable, num++ + ". " + item.nama(), formatRupiah(item.nilai()), FONT_NORMAL);
+                SlipGajiTableHelper.addNumberedItemRow(leftTable, num++ + ". " + item.nama(), SlipGajiTableHelper.formatRupiah(item.nilai()), FONT_NORMAL);
             }
         }
-        SlipGajiTableHelper.addTotalLine(leftTable, "Total Penerimaan", formatRupiah(dto.totalPenerimaan()), FONT_BOLD);
+        SlipGajiTableHelper.addTotalLine(leftTable, "Total Penerimaan", SlipGajiTableHelper.formatRupiah(dto.totalPenerimaan()), FONT_BOLD);
         leftCell.addElement(leftTable);
         PdfPCell rightCell = new PdfPCell(); rightCell.setPadding(6f);
         PdfPTable rightTable = new PdfPTable(3);
@@ -137,49 +127,23 @@ public class SlipGajiPdfGenerator {
         if (regularPotongan != null) {
             int num = 1;
             for (SlipGajiKomponenItemDto item : regularPotongan) {
-                SlipGajiTableHelper.addNumberedItemRow(rightTable, num++ + ". " + item.nama(), formatRupiah(item.nilai()), FONT_NORMAL);
+                SlipGajiTableHelper.addNumberedItemRow(rightTable, num++ + ". " + item.nama(), SlipGajiTableHelper.formatRupiah(item.nilai()), FONT_NORMAL);
             }
         }
-        SlipGajiTableHelper.addTotalLine(rightTable, "Total Potongan", formatRupiah(dto.totalPotongan()), FONT_BOLD);
-        SlipGajiTableHelper.addSummaryLine(rightTable, "Penerimaan - Potongan", formatRupiah(dto.selisihPenerimaanPotongan()), FONT_NORMAL);
-        SlipGajiTableHelper.addSummaryLine(rightTable, "Pembulatan", formatRupiah(dto.pembulatan()), FONT_NORMAL);
-        SlipGajiTableHelper.addSubTotalLine(rightTable, "Sub Total", formatRupiah(dto.subTotal()), FONT_BOLD);
+        SlipGajiTableHelper.addTotalLine(rightTable, "Total Potongan", SlipGajiTableHelper.formatRupiah(dto.totalPotongan()), FONT_BOLD);
+        SlipGajiTableHelper.addSummaryLine(rightTable, "Penerimaan - Potongan", SlipGajiTableHelper.formatRupiah(dto.selisihPenerimaanPotongan()), FONT_NORMAL);
+        SlipGajiTableHelper.addSummaryLine(rightTable, "Pembulatan", SlipGajiTableHelper.formatRupiah(dto.pembulatan()), FONT_NORMAL);
+        SlipGajiTableHelper.addSubTotalLine(rightTable, "Sub Total", SlipGajiTableHelper.formatRupiah(dto.subTotal()), FONT_BOLD);
         rightCell.addElement(rightTable);
         mainTable.addCell(leftCell); mainTable.addCell(rightCell); mainTable.setSpacingAfter(8f);
         document.add(mainTable);
     }
-    private PdfPCell createAdditionalColumn(String title, List<SlipGajiKomponenItemDto> items, Double total) {
-        PdfPCell cell = new PdfPCell();
-        cell.setPadding(6f);
-        PdfPTable table = new PdfPTable(3);
-        table.setWidthPercentage(100);
-        table.setWidths(new float[]{65f, 5f, 30f});
-        PdfPCell header = new PdfPCell(new Phrase(title, FONT_BOLD));
-        header.setColspan(3);
-        header.setBorder(PdfPCell.NO_BORDER);
-        header.setPaddingBottom(6f);
-        table.addCell(header);
-        if (items != null && !items.isEmpty()) {
-            int num = 1;
-            for (SlipGajiKomponenItemDto item : items) {
-                SlipGajiTableHelper.addNumberedItemRow(table, num++ + ". " + item.nama(), formatRupiah(item.nilai()), FONT_NORMAL);
-            }
-        } else {
-            PdfPCell empty = new PdfPCell(new Phrase("(tidak ada)", FONT_NORMAL));
-            empty.setColspan(3);
-            empty.setBorder(PdfPCell.NO_BORDER);
-            empty.setPaddingBottom(4f);
-            table.addCell(empty);
-        }
-        SlipGajiTableHelper.addTotalLine(table, "Total " + title, formatRupiah(total), FONT_BOLD);
-        cell.addElement(table);
-        return cell;
-    }
+
     private void addAdditionalComponents(Document document, SlipGajiDto dto) throws DocumentException {
         PdfPTable addTable = new PdfPTable(2);
         addTable.setWidthPercentage(100); addTable.setWidths(new float[]{50f, 50f});
-        PdfPCell leftCell = createAdditionalColumn("Penerimaan Tambahan", SlipGajiTableHelper.filterAdditionalPenerimaan(dto), dto.totalPenerimaanTambahan());
-        PdfPCell rightCell = createAdditionalColumn("Potongan Tambahan", SlipGajiTableHelper.filterAdditionalPotongan(dto), dto.totalPotonganTambahan());
+        PdfPCell leftCell = SlipGajiTableHelper.createAdditionalColumn("Penerimaan Tambahan", SlipGajiTableHelper.filterAdditionalPenerimaan(dto), dto.totalPenerimaanTambahan(), FONT_BOLD, FONT_NORMAL);
+        PdfPCell rightCell = SlipGajiTableHelper.createAdditionalColumn("Potongan Tambahan", SlipGajiTableHelper.filterAdditionalPotongan(dto), dto.totalPotonganTambahan(), FONT_BOLD, FONT_NORMAL);
         PdfPCell totalDibayarkanCell = new PdfPCell();
         totalDibayarkanCell.setColspan(2); 
         totalDibayarkanCell.setBorder(PdfPCell.TOP); 
@@ -190,8 +154,7 @@ public class SlipGajiPdfGenerator {
         PdfPCell lCell = new PdfPCell(new Phrase("Total Dibayarkan", FONT_BOLD));
         lCell.setBorder(PdfPCell.NO_BORDER); 
         lCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        // Total Dibayarkan bersumber dari penghasilan_bersih_final2 (atau fallback ke penghasilan_bersih_final / kalkulasi subtotal)
-        PdfPCell vCell = new PdfPCell(new Phrase(formatRupiah(dto.totalDibayarkan()), FONT_BOLD));
+        PdfPCell vCell = new PdfPCell(new Phrase(SlipGajiTableHelper.formatRupiah(dto.totalDibayarkan()), FONT_BOLD));
         vCell.setBorder(PdfPCell.NO_BORDER); vCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
         totalTable.addCell(lCell); totalTable.addCell(vCell);
         totalDibayarkanCell.addElement(totalTable);
@@ -199,6 +162,7 @@ public class SlipGajiPdfGenerator {
         addTable.setSpacingAfter(15f);
         document.add(addTable);
     }
+
     private void addFooter(Document document) throws DocumentException {
         Paragraph footer = new Paragraph("Dicetak otomatis pada " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")), FONT_SMALL);
         footer.setAlignment(Element.ALIGN_RIGHT);

@@ -112,4 +112,42 @@ public final class SlipGajiTableHelper {
         c2.setBorder(PdfPCell.TOP); c2.setHorizontalAlignment(Element.ALIGN_RIGHT); c2.setPaddingTop(3f);
         t.addCell(c1); t.addCell(c2);
     }
+
+    public static String formatRupiah(Double amount) {
+        if (amount == null) amount = 0.0;
+        return "Rp. " + new java.text.DecimalFormat("#,##0", new java.text.DecimalFormatSymbols(java.util.Locale.US)).format(amount);
+    }
+
+    public static String formatPeriode(String p) {
+        if (p == null || p.isBlank()) return "-";
+        return java.time.YearMonth.parse(p).format(java.time.format.DateTimeFormatter.ofPattern("MMMM yyyy", java.util.Locale.of("id", "ID")));
+    }
+
+    public static PdfPCell createAdditionalColumn(String title, List<SlipGajiKomponenItemDto> items, Double total, Font fBold, Font fNormal) {
+        PdfPCell cell = new PdfPCell();
+        cell.setPadding(6f);
+        PdfPTable table = new PdfPTable(3);
+        table.setWidthPercentage(100);
+        table.setWidths(new float[]{65f, 5f, 30f});
+        PdfPCell header = new PdfPCell(new Phrase(title, fBold));
+        header.setColspan(3);
+        header.setBorder(PdfPCell.NO_BORDER);
+        header.setPaddingBottom(6f);
+        table.addCell(header);
+        if (items != null && !items.isEmpty()) {
+            int num = 1;
+            for (SlipGajiKomponenItemDto item : items) {
+                addNumberedItemRow(table, num++ + ". " + item.nama(), formatRupiah(item.nilai()), fNormal);
+            }
+        } else {
+            PdfPCell empty = new PdfPCell(new Phrase("(tidak ada)", fNormal));
+            empty.setColspan(3);
+            empty.setBorder(PdfPCell.NO_BORDER);
+            empty.setPaddingBottom(4f);
+            table.addCell(empty);
+        }
+        addTotalLine(table, "Total " + title, formatRupiah(total), fBold);
+        cell.addElement(table);
+        return cell;
+    }
 }
