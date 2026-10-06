@@ -105,6 +105,9 @@ dependencies {
     // exp4j — formula evaluator engine proses gaji
     implementation("net.objecthunter:exp4j:0.4.8")
 
+    // OpenPDF for PDF generation
+    implementation("com.github.librepdf:openpdf:2.0.3")
+
     // Testing
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")

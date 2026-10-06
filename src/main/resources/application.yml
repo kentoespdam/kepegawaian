@@ -118,6 +118,17 @@ app:
   pegawai:
     excluded-jabatan-ids: 1,2,3,25
     excluded-golongan-statuses: KONTRAK,CALON_HONORER,HONORER
+  kepegawaian:
+    slip-gaji:
+      kop:
+        instansi: "PERUMDAM TIRTA SATRIA"
+        unit-kerja: "KABUPATEN BANYUMAS"
+        alamat: "Jl. Prof. Dr. Suharso No. 52 Purwokerto"
+        telepon: "(0281) 635831"
+        fax: "(0281) 635831"
+        website: "www.tirtasatria.co.id"
+        email: "info@tirtasatria.co.id"
+        logo-path: "images/logo-tirta-satria.png"
   cuti:
     jenis-cuti-tahunan: ${JENIS_CUTI_TAHUNAN:1}
     jenis-cuti-besar: ${JENIS_CUTI_BESAR:2}

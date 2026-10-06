@@ -47,6 +47,9 @@ _Avoid_: "root gaji" sebagai istilah domain — sebut **Batch Gaji**.
 **Master Gaji** (GajiBatchMaster):
 Satu baris hasil gaji per pegawai di dalam sebuah **Batch Gaji** — menyimpan snapshot identitas pegawai (nipam, nama, jabatan, organisasi, golongan, pangkat) beserta hasil hitungnya. Anak: **Proses Master Gaji**. Hard-delete (tanpa `is_deleted`).
 
+**Slip Gaji** (SlipGaji):
+Dokumen resmi rincian penerimaan dan potongan perorangan untuk satu **Master Gaji** (`GajiBatchMaster`) dalam format PDF (`GET /penggajian/batch/master/{id}/slip-gaji`). Dilindungi otorisasi kepemilikan data (self-service pegawai sesuai sesi login) atau role berwenang (HRD/Admin) via role/permission management. Hanya dapat diunduh jika status **Batch Gaji** terkait sudah berstatus `FINISHED` (berlaku ketat baik untuk pegawai maupun Admin/HRD).
+
 **Proses Master Gaji** (GajiBatchMasterProses):
 Baris rincian per **Komponen Gaji** untuk satu **Master Gaji** — `kode`, `urut`, `nama`, **Jenis Gaji**, `nilai`, `formula`, dan `nilaiFormula` (hasil evaluasi). Ini jejak bagaimana satu angka gaji terbentuk.
 

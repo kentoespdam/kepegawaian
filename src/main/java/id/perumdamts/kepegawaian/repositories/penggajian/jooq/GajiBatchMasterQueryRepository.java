@@ -143,4 +143,12 @@ public class GajiBatchMasterQueryRepository {
         }
         return condition;
     }
+
+    public Integer getBatchRootStatusByMasterId(Long masterId) {
+        return dsl.select(GAJI_BATCH_ROOT.STATUS)
+                .from(GAJI_BATCH_MASTER)
+                .join(GAJI_BATCH_ROOT).on(GAJI_BATCH_MASTER.BATCH_ROOT_ID.eq(GAJI_BATCH_ROOT.ID))
+                .where(GAJI_BATCH_MASTER.ID.eq(masterId))
+                .fetchOneInto(Integer.class);
+    }
 }

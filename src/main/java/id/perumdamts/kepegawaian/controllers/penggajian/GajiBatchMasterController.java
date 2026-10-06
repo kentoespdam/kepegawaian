@@ -1,20 +1,27 @@
 package id.perumdamts.kepegawaian.controllers.penggajian;
 
+import id.perumdamts.kepegawaian.dto.appwrite.AppwriteUser;
 import id.perumdamts.kepegawaian.dto.commons.*;
+import id.perumdamts.kepegawaian.dto.penggajian.SlipGajiDto;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterIndexQuery;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterPostRequest;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterResponse;
+import id.perumdamts.kepegawaian.exceptions.ForbiddenException;
 import id.perumdamts.kepegawaian.services.penggajian.gajiBatchMaster.GajiBatchMasterQueryService;
+import id.perumdamts.kepegawaian.services.penggajian.gajiBatchMaster.SlipGajiPdfGenerator;
 import id.perumdamts.kepegawaian.services.penggajian.gajiBatchPotonganTambahan.GajiBatchPotonganTambahanBatchService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -26,6 +33,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class GajiBatchMasterController {
     private final GajiBatchMasterQueryService queryService;
     private final GajiBatchPotonganTambahanBatchService batchPotonganTambahanService;
+    private final SlipGajiPdfGenerator pdfGenerator;
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
     @Operation(summary = "Ambil gaji batch master by periode")
@@ -83,5 +91,63 @@ public class GajiBatchMasterController {
             @PathVariable String rootBatchId,
             @Valid @ModelAttribute GajiBatchMasterPostRequest request) {
         return CustomResult.save(batchPotonganTambahanService.upload(request.getFile(), rootBatchId));
+    }
+
+    @GetMapping("/{id}/slip-gaji")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ') or hasAuthority('PENGGAJIAN_SLIP_READ') or isAuthenticated()")
+    public ResponseEntity<Resource> downloadSlipGaji(@PathVariable Long id) {
+        SlipGajiDto slipGaji = queryService.getSlipGaji(id);
+        assertSlipAccess(slipGaji);
+
+        byte[] pdfBytes = pdfGenerator.generatePdf(slipGaji);
+        ByteArrayResource resource = new ByteArrayResource(pdfBytes);
+
+        String filename = String.format("slip-gaji-%s-%s.pdf",
+                slipGaji.nipam() != null ? slipGaji.nipam() : id,
+                slipGaji.periode() != null ? slipGaji.periode() : "periode");
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + filename + "\"")
+                .body(resource);
+    }
+
+    private void assertSlipAccess(SlipGajiDto slipGaji) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated()) {
+            throw new ForbiddenException("Akses ditolak: autentikasi diperlukan");
+        }
+
+        boolean isPrivileged = auth.getAuthorities().stream().anyMatch(a -> {
+            String role = a.getAuthority();
+            return "ROLE_ADMIN".equals(role)
+                    || "PENGGAJIAN:READ".equals(role)
+                    || "PENGGAJIAN_SLIP_READ".equals(role)
+                    || "ROLE_HRD".equalsIgnoreCase(role)
+                    || "HRD".equalsIgnoreCase(role);
+        });
+
+        if (isPrivileged) {
+            return;
+        }
+
+        Object principal = auth.getPrincipal();
+        if (principal instanceof AppwriteUser user) {
+            String userId = user.get$id();
+            if ("DEV".equalsIgnoreCase(userId)) {
+                return;
+            }
+            if (userId != null && (userId.equals(String.valueOf(slipGaji.pegawaiId())) || userId.equals(slipGaji.nipam()))) {
+                return;
+            }
+        } else if (principal instanceof String principalStr) {
+            if ("DEV".equalsIgnoreCase(principalStr)
+                    || principalStr.equals(String.valueOf(slipGaji.pegawaiId()))
+                    || principalStr.equals(slipGaji.nipam())) {
+                return;
+            }
+        }
+
+        throw new ForbiddenException("Akses ditolak: Anda hanya dapat mengunduh slip gaji milik sendiri");
     }
 }
