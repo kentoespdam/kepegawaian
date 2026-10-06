@@ -97,9 +97,9 @@ public class GajiBatchMasterQueryService {
         }
         Double totalPotongan = master.totalPotongan() != null ? master.totalPotongan() :
                 potongan.stream().mapToDouble(SlipGajiKomponenItemDto::nilai).sum();
-        Double selisihPenerimaanPotongan = totalPenerimaan - totalPotongan;
+        Double selisihPenerimaanPotongan = master.penghasilanBersih() != null ? master.penghasilanBersih() : (totalPenerimaan - totalPotongan);
         Double pembulatan = master.pembulatan() != null ? master.pembulatan() : 0.0;
-        Double subTotal = selisihPenerimaanPotongan + pembulatan;
+        Double subTotal = master.penghasilanBersihFinal() != null ? master.penghasilanBersihFinal() : (selisihPenerimaanPotongan + pembulatan);
 
         Double totalPenerimaanTambahan = master.totalAddTambahan() != null ? master.totalAddTambahan() :
                 penerimaanTambahan.stream().mapToDouble(SlipGajiKomponenItemDto::nilai).sum();
