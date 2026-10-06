@@ -5,6 +5,7 @@ import id.perumdamts.kepegawaian.dto.penggajian.SlipGajiDto;
 import id.perumdamts.kepegawaian.dto.penggajian.SlipGajiKomponenItemDto;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterIndexQuery;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterResponse;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterSelfQuery;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMasterProses.GajiBatchMasterProsesResponse;
 import id.perumdamts.kepegawaian.entities.commons.EJenisGaji;
 import id.perumdamts.kepegawaian.entities.commons.EProsesGaji;
@@ -147,5 +148,9 @@ public class GajiBatchMasterQueryService {
         } catch (Exception e) {
             return ErrorResult.build(e.getMessage());
         }
+    }
+
+    public Page<GajiBatchMasterResponse> findHistoryByPegawaiId(Long pegawaiId, GajiBatchMasterSelfQuery query) {
+        return queryRepository.findHistoryByPegawaiId(pegawaiId, query);
     }
 }

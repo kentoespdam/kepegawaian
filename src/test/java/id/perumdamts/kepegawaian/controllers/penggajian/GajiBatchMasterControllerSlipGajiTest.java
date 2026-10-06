@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.controllers.penggajian;
 
 import id.perumdamts.kepegawaian.dto.appwrite.AppwriteUser;
 import id.perumdamts.kepegawaian.dto.penggajian.SlipGajiDto;
+import id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository;
 import id.perumdamts.kepegawaian.exceptions.BadRequestException;
 import id.perumdamts.kepegawaian.exceptions.ForbiddenException;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
@@ -28,7 +29,8 @@ class GajiBatchMasterControllerSlipGajiTest {
     private final GajiBatchMasterQueryService queryService = mock(GajiBatchMasterQueryService.class);
     private final GajiBatchPotonganTambahanBatchService batchPotonganService = mock(GajiBatchPotonganTambahanBatchService.class);
     private final SlipGajiPdfGenerator pdfGenerator = mock(SlipGajiPdfGenerator.class);
-    private final GajiBatchMasterController controller = new GajiBatchMasterController(queryService, batchPotonganService, pdfGenerator);
+    private final PegawaiRepository pegawaiRepository = mock(PegawaiRepository.class);
+    private final GajiBatchMasterController controller = new GajiBatchMasterController(queryService, batchPotonganService, pdfGenerator, pegawaiRepository);
 
     @BeforeEach
     void setUp() {

@@ -3,6 +3,7 @@ package id.perumdamts.kepegawaian.repositories.penggajian.jooq;
 import id.perumdamts.kepegawaian.dto.commons.SortParam;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterIndexQuery;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterResponse;
+import id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterSelfQuery;
 import id.perumdamts.kepegawaian.entities.commons.EProsesGaji;
 import id.perumdamts.kepegawaian.mapper.penggajian.gajiBatchMaster.GajiBatchMasterJooqMapper;
 import lombok.RequiredArgsConstructor;
@@ -150,5 +151,46 @@ public class GajiBatchMasterQueryRepository {
                 .join(GAJI_BATCH_ROOT).on(GAJI_BATCH_MASTER.BATCH_ROOT_ID.eq(GAJI_BATCH_ROOT.ID))
                 .where(GAJI_BATCH_MASTER.ID.eq(masterId))
                 .fetchOneInto(Integer.class);
+    }
+
+    public Page<GajiBatchMasterResponse> findHistoryByPegawaiId(Long pegawaiId, GajiBatchMasterSelfQuery query) {
+        var sortOrder = SortParam.resolve(query.getSortBy(), query.getSortDirection(),
+                allowedSorts(), GAJI_BATCH_MASTER.ID);
+        Condition where = GAJI_BATCH_MASTER.PEGAWAI_ID.eq(pegawaiId)
+                .and(GAJI_BATCH_ROOT.STATUS.ge(EProsesGaji.FINISHED.ordinal()))
+                .and(GAJI_BATCH_ROOT.IS_DELETED.eq(false));
+        if (query.getPeriode() != null && !query.getPeriode().isBlank()) {
+            where = where.and(GAJI_BATCH_MASTER.PERIODE.eq(query.getPeriode()));
+        }
+        if (query.getSearch() != null && !query.getSearch().isBlank()) {
+            String escaped = query.getSearch()
+                    .replace("\\", "\\\\")
+                    .replace("%", "\\%")
+                    .replace("_", "\\_");
+            String like = "%" + escaped + "%";
+            where = where.and(
+                    GAJI_BATCH_MASTER.NIPAM.likeIgnoreCase(like, '\\')
+                            .or(GAJI_BATCH_MASTER.NAMA.likeIgnoreCase(like, '\\'))
+            );
+        }
+        var count = dsl.selectCount()
+                .from(GAJI_BATCH_MASTER)
+                .join(GAJI_BATCH_ROOT).on(GAJI_BATCH_MASTER.BATCH_ROOT_ID.eq(GAJI_BATCH_ROOT.ID))
+                .where(where)
+                .fetchOptional(0, Long.class).orElse(0L);
+        var data = dsl.select(
+                        GAJI_BATCH_MASTER.asterisk(),
+                        ORGANISASI.KODE,
+                        ORGANISASI.NAMA,
+                        ORGANISASI.ORG_GROUP)
+                .from(GAJI_BATCH_MASTER)
+                .join(GAJI_BATCH_ROOT).on(GAJI_BATCH_MASTER.BATCH_ROOT_ID.eq(GAJI_BATCH_ROOT.ID))
+                .leftJoin(ORGANISASI).on(GAJI_BATCH_MASTER.ORGANISASI_ID.eq(ORGANISASI.ID))
+                .where(where)
+                .orderBy(sortOrder)
+                .limit(query.getSizeOrDefault())
+                .offset(query.getPageNumber() * query.getSizeOrDefault())
+                .fetch(GajiBatchMasterJooqMapper::mapToResponse);
+        return new PageImpl<>(data, PageRequest.of(query.getPageNumber(), query.getSizeOrDefault()), count);
     }
 }

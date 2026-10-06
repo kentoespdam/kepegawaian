@@ -34,6 +34,7 @@ public class GajiBatchMasterController {
     private final GajiBatchMasterQueryService queryService;
     private final GajiBatchPotonganTambahanBatchService batchPotonganTambahanService;
     private final SlipGajiPdfGenerator pdfGenerator;
+    private final id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository pegawaiRepository;
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
     @Operation(summary = "Ambil gaji batch master by periode")
@@ -149,5 +150,20 @@ public class GajiBatchMasterController {
         }
 
         throw new ForbiddenException("Akses ditolak: Anda hanya dapat mengunduh slip gaji milik sendiri");
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @Operation(summary = "Ambil riwayat penggajian milik sendiri (self-service)")
+    @GetMapping("/self")
+    public ResponseEntity<PageResult<Page<GajiBatchMasterResponse>>> getMyGajiBatchMasterHistory(
+            @ParameterObject @Valid id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMaster.GajiBatchMasterSelfQuery query) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        AppwriteUser principal = (AppwriteUser) auth.getPrincipal();
+        if ("DEV".equals(principal.get$id())) {
+            throw new id.perumdamts.kepegawaian.exceptions.NotFoundException("Self-service tidak tersedia untuk DEV — gunakan endpoint admin");
+        }
+        id.perumdamts.kepegawaian.entities.pegawai.Pegawai pegawai = pegawaiRepository.findById(Long.valueOf(principal.get$id()))
+                .orElseThrow(() -> new id.perumdamts.kepegawaian.exceptions.NotFoundException("Unknown Pegawai"));
+        return CustomResult.page(queryService.findHistoryByPegawaiId(pegawai.getId(), query));
     }
 }
