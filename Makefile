@@ -8,11 +8,32 @@ build-dev: bootJar
 bootJar:
 	./gradlew bootJar
 
-.PHONY: run-dev dev
+# DEBUG_PORT: JDWP debug port (default 5005), mirip konfigurasi Remote JVM Debug (IntelliJ / VS Code)
+DEBUG_PORT ?= 5005
+
+# stop-debug: matikan proses yang menggunakan port JDWP 5005
+.PHONY: stop-debug
+stop-debug:
+	@fuser -k $(DEBUG_PORT)/tcp 2>/dev/null || true
+
+# run-dev  : jalankan continuous compiler (./gradlew classes -t) di background + Spring Boot DevTools.
+#            Saat source code diubah & disimpan di VS Code / editor apapun, otomatis recompile & restart app.
+# run-debug: sama seperti run-dev + JDWP port 5005 agar bisa attach VS Code / IntelliJ debugger.
+.PHONY: run-dev run-debug dev
 run-dev:
-	./gradlew bootRun
+	@bash -c 'trap "kill 0" EXIT INT TERM; ./gradlew classes -t --quiet & ./gradlew bootRun'
+
+run-debug: stop-debug
+	@bash -c 'trap "kill 0" EXIT INT TERM; ./gradlew classes -t --quiet & DEBUG_PORT=$(DEBUG_PORT) ./gradlew bootRun'
+
+# run-hotswap: jalankan app dengan JDWP port 5005 untuk VS Code Hot Code Replace (HotSwap).
+#              Ubah isi method langsung diterapkan seketika di memori RAM tanpa restart Spring!
+.PHONY: run-hotswap
+run-hotswap: stop-debug
+	DEVTOOLS_RESTART=false DEBUG_PORT=$(DEBUG_PORT) ./gradlew bootRun
 
 dev: run-dev
+
 
 .PHONY: start-dev
 start-dev:

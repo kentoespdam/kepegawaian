@@ -12,6 +12,7 @@ public record SlipGajiDto(
         String nama,
         String namaJabatan,
         String golongan,
+        String pangkat,
         String bank,
         List<SlipGajiKomponenItemDto> penerimaan,
         List<SlipGajiKomponenItemDto> potongan,

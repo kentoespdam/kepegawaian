@@ -15,10 +15,22 @@ Java 25, Spring Boot 4.0.3, Gradle.
 
 ```bash
 ./gradlew build       # Build
-./gradlew bootRun     # Dev profile
+./gradlew bootRun     # Dev profile (tanpa auto-restart)
 ./gradlew test        # All tests
 ./gradlew clean build # Clean build
 ```
+
+### Make Targets (Direkomendasikan)
+
+```bash
+make run-dev              # Jalankan continuous compiler di background + Spring Boot DevTools (auto-compile & restart saat file disimpan)
+make run-debug            # run-dev + JDWP debug agent port 5005 (attach IntelliJ/VS Code)
+make run-debug DEBUG_PORT=5006  # custom debug port
+```
+
+> **Catatan:** `make run-dev` menjalankan Gradle continuous compiler (`classes -t`) di background sehingga setiap perubahan file `.java` otomatis di-compile ulang dan di-restart oleh Spring Boot DevTools. Tekan `Ctrl+C` untuk menghentikan seluruh proses secara bersih.
+> **Attach debugger:** Konfigurasi Remote JVM Debug (Host `localhost`, Port `5005`). Restart otomatis tetap kompatibel (`suspend=n`).
+
 
 ## Architecture
 

@@ -113,6 +113,7 @@ class GajiBatchMasterControllerSlipGajiTest {
                 "Bagus Pegawai",
                 "Staf IT",
                 "III/a",
+                "Penata Muda",
                 "- - -",
                 List.of(),
                 List.of(),

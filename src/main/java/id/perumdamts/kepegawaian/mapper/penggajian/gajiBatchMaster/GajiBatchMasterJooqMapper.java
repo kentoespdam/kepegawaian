@@ -31,6 +31,7 @@ public final class GajiBatchMasterJooqMapper {
                 record.get(GAJI_BATCH_MASTER.LEVEL_ID),
                 record.get(GAJI_BATCH_MASTER.GOLONGAN_ID),
                 record.get(GAJI_BATCH_MASTER.GOLONGAN),
+                record.get(GAJI_BATCH_MASTER.PANGKAT),
                 record.get(GAJI_BATCH_MASTER.GAJI_PROFIL_ID),
                 record.get(GAJI_BATCH_MASTER.KODE_PAJAK),
                 record.get(GAJI_BATCH_MASTER.GAJI_POKOK),

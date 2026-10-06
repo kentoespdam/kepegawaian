@@ -74,16 +74,28 @@ make rebuild-dev           # stop-dev && build-dev && start-dev
 > Stack Docker development memetakan port `8080:8080` (lihat
 > `docker/development/docker-compose.yml`).
 
-### Dev Tanpa Docker (gradle langsung)
+### Dev Tanpa Docker (Gradle Langsung)
 
-Jika hanya ingin menjalankan via Gradle (bukan Docker image):
+Jika hanya ingin menjalankan via Gradle (bukan Docker image), gunakan make target
+berikut:
 
 ```bash
-./gradlew bootRun        # profile bawaan development; baca env dari .env
+# Jalankan continuous compiler di background + Spring Boot DevTools (auto-restart saat file disimpan di VS Code/editor)
+make run-dev
+
+# Sama seperti run-dev + JDWP debug agent pada port 5005 (IntelliJ / VS Code Remote JVM Debug)
+make run-debug
+
+# Ganti port debug jika diperlukan
+make run-debug DEBUG_PORT=5006
 ```
 
-Skrip `run.sh` juga tersedia untuk poll env dari `.env` lalu menjalankan
-`gradlew bootRun`.
+> **Auto-restart & Continuous Compiler:**
+> - Di VS Code / CLI: `make run-dev` secara otomatis menjalankan Gradle continuous compiler (`classes -t`) di latar belakang bersamaan dengan `bootRun`. Begitu file `.java` disimpan di VS Code, Gradle meng-compile ulang di background dan Spring Boot DevTools langsung me-restart aplikasi.
+> - Saat menekan `Ctrl+C`, semua proses background compiler dan aplikasi dihentikan secara bersamaan dan bersih.
+>
+> **Attach debugger (VS Code / IntelliJ):** jalankan `make run-debug`, lalu konfigurasi debugger remote (Host: `localhost`, Port: `5005`). Debugger tetap terhubung setelah auto-restart karena menggunakan `suspend=n`.
+
 
 ### Build Production
 

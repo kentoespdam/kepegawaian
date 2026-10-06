@@ -102,6 +102,7 @@ public class GajiBatchMasterQueryService {
                 master.nama(),
                 master.namaJabatan(),
                 master.golongan(),
+                master.pangkat(),
                 "- - -",
                 penerimaan,
                 potongan,

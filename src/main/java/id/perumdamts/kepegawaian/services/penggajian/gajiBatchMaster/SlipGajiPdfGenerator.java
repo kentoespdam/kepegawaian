@@ -75,9 +75,15 @@ public class SlipGajiPdfGenerator {
             Paragraph pUnit = new Paragraph(properties.kop().unitKerja(), FONT_SUBTITLE);
             pUnit.setAlignment(Element.ALIGN_CENTER);
             infoCell.addElement(pUnit);
-            Paragraph pAddress = new Paragraph(properties.kop().alamat() + " | Telp: " + properties.kop().telepon(), FONT_SMALL);
+            Paragraph pAddress = new Paragraph(properties.kop().alamat(), FONT_SMALL);
             pAddress.setAlignment(Element.ALIGN_CENTER);
             infoCell.addElement(pAddress);
+            Paragraph pContact = new Paragraph("Telp: " + properties.kop().telepon() + " | Fax: " + properties.kop().fax() , FONT_SMALL);
+            pContact.setAlignment(Element.ALIGN_CENTER);
+            infoCell.addElement(pContact);
+            Paragraph pWebsite = new Paragraph("Website: " + properties.kop().website()+ " | Email: " + properties.kop().email(), FONT_SMALL);
+            pWebsite.setAlignment(Element.ALIGN_CENTER);
+            infoCell.addElement(pWebsite);
 
             kopTable.addCell(logoCell);
             kopTable.addCell(infoCell);
@@ -96,9 +102,9 @@ public class SlipGajiPdfGenerator {
             PdfPTable empTable = new PdfPTable(4);
             empTable.setWidthPercentage(100);
             empTable.setWidths(new float[]{15f, 35f, 15f, 35f});
-            addEmpRow(empTable, "Nama", dto.nama(), "Jabatan", dto.namaJabatan());
-            addEmpRow(empTable, "NIPAM", dto.nipam(), "Golongan", dto.golongan());
-            addEmpRow(empTable, "Bank", dto.bank(), "", "");
+            addEmpRow(empTable, "Nama", dto.nama(),  "Pangkat", dto.pangkat());
+            addEmpRow(empTable, "NIPAM", dto.nipam(),"Golongan", dto.golongan());
+            addEmpRow(empTable, "Jabatan", dto.namaJabatan(), "Bank", dto.bank());
             empTable.setSpacingAfter(10f);
             document.add(empTable);
 

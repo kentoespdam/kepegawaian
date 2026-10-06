@@ -149,7 +149,20 @@ tasks.named<BootJar>("bootJar") {
 }
 
 tasks.named<BootRun>("bootRun") {
-    jvmArgs = listOf("--enable-native-access=ALL-UNNAMED")
+    val debugPort = System.getenv("DEBUG_PORT") ?: System.getProperty("debugPort")
+    val baseJvmArgs = mutableListOf("--enable-native-access=ALL-UNNAMED")
+    if (!debugPort.isNullOrBlank()) {
+        baseJvmArgs += "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:$debugPort"
+    }
+    jvmArgs = baseJvmArgs
+
+    // DevTools: aktifkan restart & livereload pada JVM aplikasi (bukan JVM Gradle).
+    // Flag -D pada CLI Gradle masuk ke JVM Gradle, bukan ke forked bootRun JVM —
+    // satu-satunya cara yang benar adalah lewat systemProperty di sini.
+    val restartEnabled = System.getProperty("spring.devtools.restart.enabled") ?: System.getenv("DEVTOOLS_RESTART") ?: "true"
+    systemProperty("spring.devtools.restart.enabled", restartEnabled)
+    systemProperty("spring.devtools.livereload.enabled", "true")
+
     val envFile = file(".env")
     if (envFile.exists()) {
         envFile.readLines().forEach { line ->
