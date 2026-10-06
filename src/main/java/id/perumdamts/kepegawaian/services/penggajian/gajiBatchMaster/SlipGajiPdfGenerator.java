@@ -54,14 +54,14 @@ public class SlipGajiPdfGenerator {
             addTotalDibayarkan(document, dto);
             addFooter(document);
             document.close();
-        } catch (Exception e) {
+        } catch (DocumentException e) {
             log.error("Gagal generate PDF slip gaji: {}", e.getMessage(), e);
             throw new IllegalStateException("Gagal generate PDF slip gaji", e);
         }
         return baos.toByteArray();
     }
 
-    private void addHeader(Document document) throws Exception {
+    private void addHeader(Document document) throws DocumentException {
         PdfPTable kopTable = new PdfPTable(2);
         kopTable.setWidthPercentage(100);
         kopTable.setWidths(new float[]{15f, 85f});
@@ -107,7 +107,7 @@ public class SlipGajiPdfGenerator {
         cell.addElement(paragraph);
     }
 
-    private void addTitle(Document document, SlipGajiDto dto) throws Exception {
+    private void addTitle(Document document, SlipGajiDto dto) throws DocumentException {
         Paragraph title = new Paragraph("SLIP GAJI PEGAWAI", FONT_TITLE);
         title.setAlignment(Element.ALIGN_CENTER);
         title.setSpacingBefore(10f);
@@ -119,7 +119,7 @@ public class SlipGajiPdfGenerator {
         document.add(periode);
     }
 
-    private void addEmployeeData(Document document, SlipGajiDto dto) throws Exception {
+    private void addEmployeeData(Document document, SlipGajiDto dto) throws DocumentException {
         PdfPTable empTable = new PdfPTable(4);
         empTable.setWidthPercentage(100);
         empTable.setWidths(new float[]{15f, 35f, 15f, 35f});
@@ -130,7 +130,7 @@ public class SlipGajiPdfGenerator {
         document.add(empTable);
     }
 
-    private void addMainComponents(Document document, SlipGajiDto dto) throws Exception {
+    private void addMainComponents(Document document, SlipGajiDto dto) throws DocumentException {
         PdfPTable mainTable = new PdfPTable(2);
         mainTable.setWidthPercentage(100);
         mainTable.setWidths(new float[]{50f, 50f});
@@ -140,7 +140,7 @@ public class SlipGajiPdfGenerator {
         document.add(mainTable);
     }
 
-    private void addSummary(Document document, SlipGajiDto dto) throws Exception {
+    private void addSummary(Document document, SlipGajiDto dto) throws DocumentException {
         PdfPTable summaryTable = new PdfPTable(2);
         summaryTable.setWidthPercentage(100);
         summaryTable.setWidths(new float[]{70f, 30f});
@@ -151,7 +151,7 @@ public class SlipGajiPdfGenerator {
         document.add(summaryTable);
     }
 
-    private void addAdditionalComponents(Document document, SlipGajiDto dto) throws Exception {
+    private void addAdditionalComponents(Document document, SlipGajiDto dto) throws DocumentException {
         if (hasAdditionalComponents(dto)) {
             PdfPTable addTable = new PdfPTable(2);
             addTable.setWidthPercentage(100);
@@ -168,7 +168,7 @@ public class SlipGajiPdfGenerator {
                 (dto.potonganTambahan() != null && !dto.potonganTambahan().isEmpty());
     }
 
-    private void addTotalDibayarkan(Document document, SlipGajiDto dto) throws Exception {
+    private void addTotalDibayarkan(Document document, SlipGajiDto dto) throws DocumentException {
         PdfPTable finalTable = new PdfPTable(2);
         finalTable.setWidthPercentage(100);
         finalTable.setWidths(new float[]{70f, 30f});
@@ -184,7 +184,7 @@ public class SlipGajiPdfGenerator {
         document.add(finalTable);
     }
 
-    private void addFooter(Document document) throws Exception {
+    private void addFooter(Document document) throws DocumentException {
         Paragraph footer = new Paragraph("Dicetak otomatis pada " +
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")), FONT_SMALL);
         footer.setAlignment(Element.ALIGN_RIGHT);
