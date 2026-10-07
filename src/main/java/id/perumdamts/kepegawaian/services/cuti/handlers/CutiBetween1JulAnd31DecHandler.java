@@ -4,6 +4,7 @@ import id.perumdamts.kepegawaian.dto.cuti.kuota.CutiKuotaAllocationResult;
 import id.perumdamts.kepegawaian.dto.cuti.kuota.SisaCutiRecord;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPostRequest;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
+import id.perumdamts.kepegawaian.exceptions.CutiKuotaNotFoundException;
 import id.perumdamts.kepegawaian.helpers.cuti.CutiKuotaAllocator;
 import id.perumdamts.kepegawaian.helpers.cuti.CutiPeriodClassifier;
 import id.perumdamts.kepegawaian.helpers.cuti.MinimalCutiRule;
@@ -23,7 +24,7 @@ public class CutiBetween1JulAnd31DecHandler implements CutiPeriodHandler {
 
         int totalRemainingQuota = cutiKuotaRepository.findRecordByPegawai_IdAndTahun(request.getPegawaiId(), year, SisaCutiRecord.class)
                 .map(SisaCutiRecord::sisaKuota)
-                .orElseThrow(() -> new RuntimeException("Kuota Cuti Tahun " + year + " tidak tersedia!"));
+                .orElseThrow(() -> new CutiKuotaNotFoundException("Kuota Cuti Tahun " + year + " tidak tersedia!"));
 
         MinimalCutiRule.check(totalHariCuti, totalRemainingQuota);
 

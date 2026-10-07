@@ -10,6 +10,7 @@ import id.perumdamts.kepegawaian.entities.commons.EApprovalCutiStatus;
 import id.perumdamts.kepegawaian.entities.commons.ECutiPeriod;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import id.perumdamts.kepegawaian.exceptions.ConflictException;
+import id.perumdamts.kepegawaian.exceptions.CutiPengajuanNotFoundException;
 import id.perumdamts.kepegawaian.helpers.RedisHelper;
 import id.perumdamts.kepegawaian.helpers.cuti.CutiPeriodClassifier;
 import id.perumdamts.kepegawaian.helpers.cuti.WorkdayCalculator;
@@ -89,7 +90,7 @@ public class PengajuanCutiCommand {
         }
         // kepegawaian-3o6c: hanya cuti PENDING yang boleh di-update (konsisten dgn pembatalan)
         var cutiPegawai = repository.findByIdAndApprovalCutiStatus(id, EApprovalCutiStatus.PENDING)
-                .orElseThrow(() -> new RuntimeException("Unknown Cuti Pengajuan"));
+                .orElseThrow(() -> new CutiPengajuanNotFoundException("Unknown Cuti Pengajuan"));
         // kepegawaian-hyq0: ownership WAJIB cek pemilik ENTITY, bukan hanya request pegawaiId
         // (updateEntity mempertahankan pegawai asli — tanpa ini USER bisa mengubah cuti orang lain)
         ownershipService.assertOwns(cutiPegawai.getPegawai().getId());
@@ -129,7 +130,7 @@ public class PengajuanCutiCommand {
     @Transactional
     public boolean pembatalan(Long id) {
         var entity = repository.findByIdAndApprovalCutiStatus(id, EApprovalCutiStatus.PENDING)
-                .orElseThrow(() -> new RuntimeException("Unknown Cuti Pegawai"));
+                .orElseThrow(() -> new CutiPengajuanNotFoundException("Unknown Cuti Pegawai"));
         // non-ADMIN/HRD hanya boleh membatalkan cuti milik sendiri
         ownershipService.assertOwns(entity.getPegawai().getId());
         entity.setApprovalCutiStatus(EApprovalCutiStatus.CANCELED);

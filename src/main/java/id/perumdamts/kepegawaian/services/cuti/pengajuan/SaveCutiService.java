@@ -6,6 +6,7 @@ import id.perumdamts.kepegawaian.dto.cuti.kuota.SisaCutiRecord;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPostRequest;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
 import id.perumdamts.kepegawaian.entities.master.Jabatan;
+import id.perumdamts.kepegawaian.exceptions.CutiKuotaNotFoundException;
 import id.perumdamts.kepegawaian.helpers.cuti.CutiKuotaAllocator;
 import id.perumdamts.kepegawaian.helpers.cuti.CutiPeriodClassifier;
 import id.perumdamts.kepegawaian.helpers.cuti.MinimalCutiRule;
@@ -75,7 +76,7 @@ public class SaveCutiService {
                 .orElse(0);
         int currentKuota = cutiKuotaRepository.findRecordByPegawai_IdAndTahun(request.getPegawaiId(), year, SisaCutiRecord.class)
                 .map(SisaCutiRecord::sisaKuota)
-                .orElseThrow(() -> new RuntimeException("Kuota Cuti Tahun " + year + " tidak tersedia!"));
+                .orElseThrow(() -> new CutiKuotaNotFoundException("Kuota Cuti Tahun " + year + " tidak tersedia!"));
 
         int totalRemainingQuota = currentKuota + prevKuota;
         MinimalCutiRule.check(totalHariCuti, totalRemainingQuota);

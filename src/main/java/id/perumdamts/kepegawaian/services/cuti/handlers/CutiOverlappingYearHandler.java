@@ -4,6 +4,7 @@ import id.perumdamts.kepegawaian.dto.cuti.kuota.CutiKuotaAllocationResult;
 import id.perumdamts.kepegawaian.dto.cuti.kuota.SisaCutiRecord;
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanPostRequest;
 import id.perumdamts.kepegawaian.entities.cuti.CutiPegawai;
+import id.perumdamts.kepegawaian.exceptions.CutiKuotaNotFoundException;
 import id.perumdamts.kepegawaian.helpers.cuti.CutiKuotaAllocator;
 import id.perumdamts.kepegawaian.helpers.cuti.CutiPeriodClassifier;
 import id.perumdamts.kepegawaian.helpers.cuti.MinimalCutiRule;
@@ -25,7 +26,7 @@ public class CutiOverlappingYearHandler implements CutiPeriodHandler {
 
         int currentYearRemaining = cutiKuotaRepository.findRecordByPegawai_IdAndTahun(request.getPegawaiId(), currentYear, SisaCutiRecord.class)
                 .map(SisaCutiRecord::sisaKuota)
-                .orElseThrow(() -> new RuntimeException("Tahun Cuti Tidak Ditemukan"));
+                .orElseThrow(() -> new CutiKuotaNotFoundException("Tahun Cuti Tidak Ditemukan"));
         int nextYearRemaining = cutiKuotaRepository.findRecordByPegawai_IdAndTahun(request.getPegawaiId(), nextYear, SisaCutiRecord.class)
                 .map(SisaCutiRecord::sisaKuota).orElse(0);
 

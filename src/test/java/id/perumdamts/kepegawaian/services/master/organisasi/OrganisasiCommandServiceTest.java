@@ -183,15 +183,16 @@ class OrganisasiCommandServiceTest {
     @Test
     void update_intoOwnSpec_succeeds() {
         String kode = uniqueKode();
-        Long id = createAndRemember(req(kode, "IT-9TF-e"));
+        String nama = "IT-9TF-e-" + UUID.randomUUID().toString().substring(0, 8);
+        Long id = createAndRemember(req(kode, nama));
 
         // Same spec → duplicate exists, but its id == this id → allowed.
-        OrganisasiPostRequest same = req(kode, "IT-9TF-e");
+        OrganisasiPostRequest same = req(kode, nama);
         Organisasi updated = service.update(id, same);
 
         assertEquals(id, updated.getId());
         assertEquals(kode, updated.getKode());
-        assertEquals("IT-9TF-e", updated.getNama());
+        assertEquals(nama, updated.getNama());
     }
 
     /**
