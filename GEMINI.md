@@ -63,7 +63,7 @@
   - WAJIB gunakan Gradle Wrapper:
     - Build: `./gradlew build`
     - Run Dev: `./gradlew bootRun`
-    - Test: `./gradlew test`
+    - Test: `./gradlew test` (WAJIB menggunakan hanya 1 sub-agent dan DILARANG KERAS paralel dengan agent lain saat menjalankan test atau pengujian untuk mencegah lag sistem)
     - Fat JAR: `./gradlew bootJar`
 
 - **Core Architecture & Conventions**:
