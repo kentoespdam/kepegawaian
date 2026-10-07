@@ -138,4 +138,38 @@ class KlaimCutiCommandTest {
         verify(cutiApproveKlaimCutiService, never()).between1JanAnd30Jun(any(), any());
         verify(cutiApproveKlaimCutiService, never()).between1JulAnd31Dec(any(), any());
     }
+
+    @Test
+    void saveKlaimThrowsWhenApproverJabatanMismatch() {
+        CutiPegawai ref = refCuti(LocalDate.of(2026, 1, 1), LocalDate.of(2026, 1, 5),
+                LocalDateTime.of(2026, 1, 1, 9, 0));
+        CutiPegawai claim = claim(ref, LocalDate.of(2026, 1, 2), LocalDate.of(2026, 1, 3));
+        claim.setPicSaatIni(new Jabatan(99L));
+        Pegawai approver = approver(88L); // Mismatched jabatan ID
+
+        when(redisHelper.isTokenAlreadyUsed("csrf-test")).thenReturn(false);
+        when(cutiPegawaiRepository.findById(200L)).thenReturn(Optional.of(claim));
+        when(pegawaiRepository.findById(900L)).thenReturn(Optional.of(approver));
+
+        org.junit.jupiter.api.Assertions.assertThrows(
+                id.perumdamts.kepegawaian.exceptions.NotFoundException.class,
+                () -> command.saveKlaim(request(200L, 900L))
+        );
+    }
+
+    @Test
+    void janJunClaimDispatchesToBetween1JanAnd30Jun() {
+        CutiPegawai ref = refCuti(LocalDate.of(2026, 3, 1), LocalDate.of(2026, 3, 5),
+                LocalDateTime.of(2026, 3, 1, 9, 0));
+        CutiPegawai claim = claim(ref, LocalDate.of(2026, 3, 2), LocalDate.of(2026, 3, 3));
+        Pegawai approver = approver(99L);
+
+        when(redisHelper.isTokenAlreadyUsed("csrf-test")).thenReturn(false);
+        when(cutiPegawaiRepository.findById(200L)).thenReturn(Optional.of(claim));
+        when(pegawaiRepository.findById(900L)).thenReturn(Optional.of(approver));
+
+        command.saveKlaim(request(200L, 900L));
+
+        verify(cutiApproveKlaimCutiService).between1JanAnd30Jun(same(claim), any(CutiApproval.class));
+    }
 }

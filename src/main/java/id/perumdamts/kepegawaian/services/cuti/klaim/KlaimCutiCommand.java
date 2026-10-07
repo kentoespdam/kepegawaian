@@ -34,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -97,7 +98,9 @@ public class KlaimCutiCommand {
         Pegawai approver = pegawaiRepository.findById(request.getApproverId())
                 .orElseThrow(() -> new NotFoundException("Approver Pegawai not found"));
 
-        if (!cutiPegawai.getPicSaatIni().equals(approver.getJabatan())) {
+        Long approverJabatanId = approver.getJabatan() != null ? approver.getJabatan().getId() : null;
+        Long currentPicJabatanId = cutiPegawai.getPicSaatIni() != null ? cutiPegawai.getPicSaatIni().getId() : null;
+        if (!Objects.equals(currentPicJabatanId, approverJabatanId)) {
             throw new NotFoundException("Approver Pegawai not found");
         }
 

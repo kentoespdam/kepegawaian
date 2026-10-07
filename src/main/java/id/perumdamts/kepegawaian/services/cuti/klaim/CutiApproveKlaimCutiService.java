@@ -20,8 +20,7 @@ public class CutiApproveKlaimCutiService {
     private final CutiKuotaRepository cutiKuotaRepository;
 
     public void between1JanAnd30Jun(CutiPegawai cutiPegawai, CutiApproval cutiApproval) {
-        // PRESERVED: see kepegawaian-sfq
-        LocalDate now = LocalDate.now();
+        LocalDate refDate = cutiPegawai.getCreatedAt() != null ? cutiPegawai.getCreatedAt().toLocalDate() : cutiPegawai.getTanggalMulai();
         int currentYear = cutiPegawai.getTanggalMulai().getYear();
         int totalLeaveDays = cutiPegawai.getJumlahHariKerja();
         CutiPegawai referenceCuti = cutiPegawai.getRefCuti();
@@ -29,7 +28,7 @@ public class CutiApproveKlaimCutiService {
         int currentYearUsedQuota = referenceCuti.getRiwayatPakai1();
         int nextYearQuota = referenceCuti.getRiwayatKuota1();
 
-        if (now.isAfter(LocalDate.of(currentYear, 6, 30))
+        if (refDate.isAfter(LocalDate.of(currentYear, 6, 30))
                 && totalLeaveDays < previousYearUsedQuota) {
             cutiApproval.setApprovalStatus(EApprovalCutiStatus.REJECTED);
             cutiPegawai.setApprovalCutiStatus(EApprovalCutiStatus.REJECTED);
