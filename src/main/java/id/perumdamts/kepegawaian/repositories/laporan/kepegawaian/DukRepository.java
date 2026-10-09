@@ -45,6 +45,8 @@ public class DukRepository {
                                 (byte) EStatusKerja.DIRUMAHKAN.ordinal(),
                                 (byte) EStatusKerja.KARYAWAN_AKTIF.ordinal()))
                         .and(PENDIDIKAN.IS_LATEST.eq((byte) 1))
+                        .and(PENDIDIKAN.IS_DELETED.eq(false))
+                        .and(PENDIDIKAN.DISETUJUI.eq((byte) 1))
                 .orderBy(GOLONGAN.GOLONGAN_.desc(), PEGAWAI.TMT_GOLONGAN, PEGAWAI.STATUS_PEGAWAI, PEGAWAI.TMT_KERJA)
                 .fetch(DukRecordMapper::map);
     }
