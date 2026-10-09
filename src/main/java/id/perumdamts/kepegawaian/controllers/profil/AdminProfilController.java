@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.profil;
 
+
+import id.perumdamts.kepegawaian.enums.AppPermission;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
 import id.perumdamts.kepegawaian.dto.commons.SavedResult;
@@ -30,7 +32,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class AdminProfilController {
     private final BiodataCommandService commandService;
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PROFIL:APPROVE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PROFIL_APPROVE + "')")
     @Operation(summary = "Perbarui sebagian biodata admin")
     @PatchMapping("/{id}")
     public ResponseEntity<SavedResult<String>> patchBiodataAdmin(@PathVariable String id,

@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.penggajian;
 
+
+import id.perumdamts.kepegawaian.enums.AppPermission;
 import id.perumdamts.kepegawaian.dto.commons.*;
 import id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji.DetailDasarGajiIndexQuery;
 import id.perumdamts.kepegawaian.dto.penggajian.detailDasarGaji.DetailDasarGajiPostRequest;
@@ -29,28 +31,28 @@ public class DetailDasarGajiController {
     private final DetailDasarGajiCommandService command;
     private final DetailDasarGajiQueryService query;
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_READ + "')")
     @Operation(summary = "List data dengan paginasi")
     @GetMapping
     public ResponseEntity<PageResult<Page<DetailDasarGajiResponse>>> index(@ParameterObject @Valid DetailDasarGajiIndexQuery request) {
         return CustomResult.page(query.pageQuery(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_READ + "')")
     @Operation(summary = "Daftar semua data")
     @GetMapping("/list")
     public ResponseEntity<ListResult<DetailDasarGajiResponse>> list() {
         return CustomResult.list(query.listQuery());
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_READ + "')")
     @Operation(summary = "Detail data berdasarkan ID")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<DetailDasarGajiResponse>> findById(@PathVariable Long id) {
         return CustomResult.any(query.getById(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_READ + "')")
     @Operation(summary = "find by golongan id and masa kerja")
     @GetMapping("/{golonganId}/{masaKerja}")
     public ResponseEntity<SingleResult<DetailDasarGajiNominal>> findByGolonganIdAndMasaKerja(
@@ -58,7 +60,7 @@ public class DetailDasarGajiController {
         return CustomResult.any(query.findNominalByGolonganAndMasaKerja(golonganId, masaKerja));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:WRITE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_WRITE + "')")
     @Operation(summary = "Buat data baru")
     @PostMapping
     public ResponseEntity<SavedResult<Long>> create(@Valid @RequestBody DetailDasarGajiPostRequest request) {
@@ -66,7 +68,7 @@ public class DetailDasarGajiController {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity.getId()));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:WRITE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_WRITE + "')")
     @Operation(summary = "create batch")
     @PostMapping("/batch")
     public ResponseEntity<SavedResult<List<Long>>> createBatch(@Valid @RequestBody List<@Valid DetailDasarGajiPostRequest> requests) {
@@ -75,7 +77,7 @@ public class DetailDasarGajiController {
                 entities.stream().map(DetailDasarGaji::getId).toList()));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:WRITE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_WRITE + "')")
     @Operation(summary = "Perbarui data")
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<Long>> update(@PathVariable Long id, @Valid @RequestBody DetailDasarGajiPutRequest request) {
@@ -83,7 +85,7 @@ public class DetailDasarGajiController {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity.getId()));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:DELETE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_DELETE + "')")
     @Operation(summary = "Hapus data")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> delete(@PathVariable Long id) {

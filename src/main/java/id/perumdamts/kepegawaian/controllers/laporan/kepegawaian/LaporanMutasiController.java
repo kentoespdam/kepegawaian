@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.laporan.kepegawaian;
 
+
+import id.perumdamts.kepegawaian.enums.AppPermission;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.SingleResult;
 import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.MutasiResponse;
@@ -26,7 +28,7 @@ public class LaporanMutasiController {
     private final MutasiService service;
     private final id.perumdamts.kepegawaian.services.laporan.kepegawaian.ReportJobService reportJobService;
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.LAPORAN_READ + "')")
     @Operation(summary = "lap mutasi")
     @GetMapping("/{from_date}/{to_date}")
     public ResponseEntity<SingleResult<List<MutasiResponse>>> lapMutasi(
@@ -36,7 +38,7 @@ public class LaporanMutasiController {
         return CustomResult.any(service.fetch(from_date, to_date, jenis_mutasi));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.LAPORAN_READ + "')")
     @Operation(summary = "lap mutasi excel")
     @GetMapping("/excel/{from_date}/{to_date}")
     public ResponseEntity<?> lapMutasiExcel(
@@ -51,7 +53,7 @@ public class LaporanMutasiController {
                 .body(resource);
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.LAPORAN_READ + "')")
     @Operation(summary = "Async export mutasi excel (Claim Order)")
     @PostMapping("/export/{from_date}/{to_date}")
     public ResponseEntity<SingleResult<id.perumdamts.kepegawaian.dto.laporan.kepegawaian.ReportJobResponse>> exportMutasi(

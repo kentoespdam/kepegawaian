@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.kepegawaian;
 
+
+import id.perumdamts.kepegawaian.enums.AppPermission;
 import id.perumdamts.kepegawaian.dto.commons.*;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatKontrak.RiwayatKontrakPostRequest;
 import id.perumdamts.kepegawaian.dto.kepegawaian.riwayatKontrak.RiwayatKontrakPutRequest;
@@ -25,7 +27,7 @@ public class RiwayatKontrakController {
     private final RiwayatKontrakCommandService commandService;
     private final RiwayatKontrakQueryService queryService;
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.KEPEGAWAIAN_READ + "')")
     @Operation(summary = "List data dengan paginasi")
     @GetMapping("/pegawai/{id}")
     public ResponseEntity<PageResult<Page<RiwayatKontrakQuery>>> index(@PathVariable Long id, @Valid @ParameterObject RiwayatKontrakRequest request) {
@@ -33,28 +35,28 @@ public class RiwayatKontrakController {
         return CustomResult.page(queryService.findPage(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.KEPEGAWAIAN_READ + "')")
     @Operation(summary = "Detail data berdasarkan ID")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<RiwayatKontrakQuery>> findById(@PathVariable Long id) {
         return CustomResult.any(queryService.findById(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:WRITE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.KEPEGAWAIAN_WRITE + "')")
     @Operation(summary = "Simpan data baru")
     @PostMapping
     public ResponseEntity<SavedResult<Long>> save(@Valid @RequestBody RiwayatKontrakPostRequest request) {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.save(request).getId()));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:WRITE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.KEPEGAWAIAN_WRITE + "')")
     @Operation(summary = "Perbarui data")
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<Long>> update(@PathVariable Long id, @Valid @RequestBody RiwayatKontrakPutRequest request) {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, commandService.update(id, request).getId()));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('KEPEGAWAIAN:DELETE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.KEPEGAWAIAN_DELETE + "')")
     @Operation(summary = "Hapus data")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> delete(@PathVariable Long id) {

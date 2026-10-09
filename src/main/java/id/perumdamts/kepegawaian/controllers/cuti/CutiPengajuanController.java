@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.cuti;
 
+
+import id.perumdamts.kepegawaian.enums.AppPermission;
 import id.perumdamts.kepegawaian.dto.commons.*;
 import id.perumdamts.kepegawaian.dto.cuti.approvalChain.CutiApprovalChainRequest;
 import id.perumdamts.kepegawaian.dto.cuti.approvalChain.CutiApprovalChainResponse;
@@ -34,14 +36,14 @@ public class CutiPengajuanController {
     private final KlaimCutiCommand klaimCutiCommand;
     private final CutiOwnershipService ownershipService;
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.CUTI_READ + "')")
     @Operation(summary = "List data dengan paginasi")
     @GetMapping
     public ResponseEntity<PageResult<Page<CutiPengajuanResponse>>> index(@Valid @ParameterObject CutiPengajuanRequest request) {
         return CustomResult.page(queryService.findPage(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:APPROVE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.CUTI_APPROVE + "')")
     @Operation(summary = "index approval")
     @GetMapping("/approval")
     public ResponseEntity<PageResult<Page<CutiApprovalChainResponse>>> indexApproval(@Valid @ParameterObject CutiApprovalChainRequest request) {

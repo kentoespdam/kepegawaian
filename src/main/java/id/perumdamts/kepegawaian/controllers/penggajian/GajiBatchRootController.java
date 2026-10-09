@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.penggajian;
 
+
+import id.perumdamts.kepegawaian.enums.AppPermission;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.DeletedResult;
 import id.perumdamts.kepegawaian.dto.commons.PageResult;
@@ -38,14 +40,14 @@ public class GajiBatchRootController {
     private final GajiBatchRootQueryService queryService;
     private final GajiBatchPotonganTkkBatchService batchPotonganTkkService;
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_READ + "')")
     @Operation(summary = "List data dengan paginasi")
     @GetMapping
     public ResponseEntity<PageResult<Page<GajiBatchRootResponse>>> index(@ParameterObject @Valid GajiBatchRootIndexQuery request) {
         return CustomResult.page(queryService.findPage(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_READ + "')")
     @Operation(summary = "by periode")
     @GetMapping("/{periode}/periode/{status}/status")
     public ResponseEntity<PageResult<Page<GajiBatchRootResponse>>> byPeriode(
@@ -57,7 +59,7 @@ public class GajiBatchRootController {
         return CustomResult.page(queryService.findPage(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_READ + "')")
     @Operation(summary = "Download template potongan TKK")
     @GetMapping("/potongan-tkk/template/download")
     public ResponseEntity<Resource> downloadTemplate() {
@@ -68,14 +70,14 @@ public class GajiBatchRootController {
                 .body(resource);
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:PROCESS')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_PROCESS + "')")
     @Operation(summary = "Buat data baru")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<SavedResult<String>> create(@Valid @ModelAttribute GajiBatchRootPostRequest request) {
         return CustomResult.save(commandService.save(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:PROCESS')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_PROCESS + "')")
     @Operation(summary = "reprocess")
     @PatchMapping("/{id}/reprocess")
     public ResponseEntity<SavedResult<String>> reprocess(@PathVariable String id,
@@ -83,7 +85,7 @@ public class GajiBatchRootController {
         return CustomResult.save(workflowCommandService.reprocess(validated(request, id)));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:PROCESS')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_PROCESS + "')")
     @Operation(summary = "verify (verifikasi tahap 1/2 atau approval, mengikuti status batch)")
     @PatchMapping("/{id}/verify")
     public ResponseEntity<SavedResult<String>> verify(@PathVariable String id,
@@ -97,7 +99,7 @@ public class GajiBatchRootController {
         return request;
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:PROCESS')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_PROCESS + "')")
     @Operation(summary = "Hapus data")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> delete(@PathVariable String id) {

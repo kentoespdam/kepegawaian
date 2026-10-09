@@ -28,3 +28,7 @@ Domain context dipecah per modul/topik di `docs/context/`:
 | [`decisions-cuti.md`](docs/context/decisions-cuti.md) | Keputusan rewrite cuti |
 | [language-laporan.md](docs/context/language-laporan.md) | Domain laporan, DUK, DNP, arsitektur Asynchronous |
 | [`examples-and-flags.md`](docs/context/examples-and-flags.md) | Contoh dialog & ambiguitas |
+
+## Core Definitions
+
+- **Permission**: Hak akses spesifik dalam sistem (format `ENTITY:ACTION`, misal `PROFIL:READ`). Bersifat statis dan didefinisikan dalam source code (Enum), bukan master data di database. Detail: [ADR-0059](docs/adr/0059-static-permissions-via-enum.md).

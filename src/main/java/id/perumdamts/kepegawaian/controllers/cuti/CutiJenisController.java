@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.cuti;
 
+
+import id.perumdamts.kepegawaian.enums.AppPermission;
 import id.perumdamts.kepegawaian.dto.commons.*;
 import id.perumdamts.kepegawaian.dto.cuti.jenis.CutiJenisPostRequest;
 import id.perumdamts.kepegawaian.dto.cuti.jenis.CutiJenisPutRequest;
@@ -46,21 +48,21 @@ public class CutiJenisController {
         return CustomResult.any(queryService.findById(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:WRITE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.CUTI_WRITE + "')")
     @Operation(summary = "Simpan data baru")
     @PostMapping
     public ResponseEntity<SavedResult<Long>> save(@Valid @RequestBody CutiJenisPostRequest request) {
         return CustomResult.save(commandService.save(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:WRITE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.CUTI_WRITE + "')")
     @Operation(summary = "Perbarui data")
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<Long>> update(@PathVariable Long id, @Valid @RequestBody CutiJenisPutRequest request) {
         return CustomResult.save(commandService.update(id, request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:WRITE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.CUTI_WRITE + "')")
     @Operation(summary = "Hapus data")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> delete(@PathVariable Long id) {

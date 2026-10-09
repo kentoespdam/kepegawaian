@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.penggajian;
 
+
+import id.perumdamts.kepegawaian.enums.AppPermission;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.DeletedResult;
 import id.perumdamts.kepegawaian.dto.commons.ListResult;
@@ -49,49 +51,49 @@ public class GajiKpiController {
     private final GajiKpiQueryService queryService;
     private final GajiKpiBatchService batchService;
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_READ + "')")
     @Operation(summary = "List data dengan paginasi")
     @GetMapping
     public ResponseEntity<PageResult<Page<GajiKpiResponse>>> index(@ParameterObject @Valid GajiKpiIndexQuery request) {
         return CustomResult.page(queryService.findPage(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_READ + "')")
     @Operation(summary = "Daftar semua data")
     @GetMapping("/list")
     public ResponseEntity<ListResult<GajiKpiResponse>> list(@ParameterObject @Valid GajiKpiListRequest request) {
         return CustomResult.list(queryService.findAll(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_READ + "')")
     @Operation(summary = "show")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<GajiKpiResponse>> show(@PathVariable Long id) {
         return CustomResult.any(queryService.findById(id).orElse(null));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:WRITE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_WRITE + "')")
     @Operation(summary = "Buat data baru")
     @PostMapping
     public ResponseEntity<SavedResult<Long>> create(@Valid @RequestBody GajiKpiPostRequest request) {
         return CustomResult.save(commandService.save(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:WRITE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_WRITE + "')")
     @Operation(summary = "Perbarui data")
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<Long>> update(@PathVariable Long id, @Valid @RequestBody GajiKpiPutRequest request) {
         return CustomResult.save(commandService.update(id, request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:DELETE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_DELETE + "')")
     @Operation(summary = "Hapus data")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> delete(@PathVariable Long id) {
         return CustomResult.delete(commandService.delete(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:WRITE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_WRITE + "')")
     @Operation(summary = "Upload batch data Gaji KPI via Excel")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<SingleResult<GajiKpiUploadResponse>> upload(
@@ -101,7 +103,7 @@ public class GajiKpiController {
         return CustomResult.any(batchService.upload(file, periode, username));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_READ + "')")
     @Operation(summary = "Unduh template Excel Gaji KPI")
     @GetMapping("/template/download")
     public ResponseEntity<Resource> downloadTemplate() {

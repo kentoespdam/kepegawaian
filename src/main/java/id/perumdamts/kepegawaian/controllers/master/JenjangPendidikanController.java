@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.master;
 
+
+import id.perumdamts.kepegawaian.enums.AppPermission;
 import id.perumdamts.kepegawaian.dto.commons.*;
 import id.perumdamts.kepegawaian.dto.master.jenjangPendidikan.JenjangPendidikanIndexQuery;
 import id.perumdamts.kepegawaian.dto.master.jenjangPendidikan.JenjangPendidikanPostRequest;
@@ -46,7 +48,7 @@ public class JenjangPendidikanController {
         return CustomResult.any(queryService.getById(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:WRITE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.MASTER_WRITE + "')")
     @Operation(summary = "Simpan data baru")
     @PostMapping
     public ResponseEntity<SavedResult<Long>> save(@Valid @RequestBody JenjangPendidikanPostRequest request) {
@@ -54,7 +56,7 @@ public class JenjangPendidikanController {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity.getId()));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:WRITE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.MASTER_WRITE + "')")
     @Operation(summary = "save batch")
     @PostMapping("/batch")
     public ResponseEntity<SavedResult<List<Long>>> saveBatch(@Valid @RequestBody List<@Valid JenjangPendidikanPostRequest> requests) {
@@ -62,7 +64,7 @@ public class JenjangPendidikanController {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entities.stream().map(MasterBaseEntity::getId).toList()));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:WRITE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.MASTER_WRITE + "')")
     @Operation(summary = "Perbarui data")
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<Long>> update(@PathVariable Long id, @Valid @RequestBody JenjangPendidikanPutRequest request) {
@@ -70,7 +72,7 @@ public class JenjangPendidikanController {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity.getId()));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:DELETE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.MASTER_DELETE + "')")
     @Operation(summary = "Hapus data berdasarkan ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> deleteById(@PathVariable Long id) {

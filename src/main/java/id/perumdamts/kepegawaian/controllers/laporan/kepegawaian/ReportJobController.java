@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.laporan.kepegawaian;
 
+
+import id.perumdamts.kepegawaian.enums.AppPermission;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.SingleResult;
 import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.ReportJobResponse;
@@ -24,14 +26,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReportJobController {
     private final ReportJobService reportJobService;
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.LAPORAN_READ + "')")
     @Operation(summary = "Get report job status")
     @GetMapping("/{jobId}")
     public ResponseEntity<SingleResult<ReportJobResponse>> getJobStatus(@PathVariable String jobId) {
         return CustomResult.any(reportJobService.getJobStatus(jobId));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.LAPORAN_READ + "')")
     @Operation(summary = "Download completed report file")
     @GetMapping("/{jobId}/download")
     public ResponseEntity<Resource> downloadJobFile(@PathVariable String jobId) {

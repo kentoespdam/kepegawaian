@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.cuti;
 
+
+import id.perumdamts.kepegawaian.enums.AppPermission;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.PageResult;
 import id.perumdamts.kepegawaian.dto.commons.SavedResult;
@@ -28,7 +30,7 @@ public class CutiApprovalController {
     private final ApprovalCutiCommand approvalCutiCommand;
     private final KlaimCutiCommand klaimCutiCommand;
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:APPROVE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.CUTI_APPROVE + "')")
     @Operation(summary = "find approval")
     @GetMapping("/{cutiId}")
     public ResponseEntity<PageResult<Page<CutiApprovalMiniResponse>>> findApproval(@PathVariable Long cutiId, @Valid @ParameterObject CutiApprovalRequest request) {
@@ -36,14 +38,14 @@ public class CutiApprovalController {
         return CustomResult.page(queryService.findPage(cutiId, request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:APPROVE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.CUTI_APPROVE + "')")
     @Operation(summary = "save approval")
     @PostMapping
     public ResponseEntity<SavedResult<String>> saveApproval(@Valid @RequestBody CutiApprovalPostRequest request) {
         return CustomResult.save(approvalCutiCommand.savePengajuan(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:APPROVE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.CUTI_APPROVE + "')")
     @Operation(summary = "klaim")
     @PostMapping("/klaim")
     public ResponseEntity<SavedResult<String>> klaim(@Valid @RequestBody CutiApprovalPostRequest request) {

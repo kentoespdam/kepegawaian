@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.profil;
 
+
+import id.perumdamts.kepegawaian.enums.AppPermission;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.DeletedResult;
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
@@ -20,7 +22,7 @@ public class LampiranProfilController {
     private final LampiranProfilQueryService queryService;
     private final LampiranProfilCommandService commandService;
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PROFIL:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PROFIL_READ + "')")
     @Operation(summary = "Ambil file")
     @GetMapping("/file/{jenis}/{id}")
     public ResponseEntity<?> getFile(@PathVariable EJenisLampiranProfil jenis, @PathVariable Long id) {
@@ -29,7 +31,7 @@ public class LampiranProfilController {
 
     // ADR-0036 §6: jalur approval lampiran lama (POST /profil/lampiran/accept) dihapus —
     // approval kini lewat antrian ProfileUpdate (PUT /profil/profil-update/{id}).
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PROFIL:UPDATE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PROFIL_UPDATE + "')")
     @Operation(summary = "Hapus data")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<DeletedResult> delete(@PathVariable Long id) {

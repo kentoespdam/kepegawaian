@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.system;
 
+
+import id.perumdamts.kepegawaian.enums.AppPermission;
 import id.perumdamts.kepegawaian.dto.appwrite.PrefRole;
 import id.perumdamts.kepegawaian.dto.commons.*;
 import id.perumdamts.kepegawaian.dto.system.roles.PrefRoleRequest;
@@ -30,7 +32,7 @@ public class PrefRoleController {
     private final PrefRoleService roleService;
     private final PrefRoleQueryService queryService;
 
-    @PreAuthorize("hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_ROLE')")
+    @PreAuthorize("hasRole('SYSTEM') or hasAuthority('" + AppPermission.Authority.SYSTEM_MANAGE_ROLE + "')")
     @Operation(summary = "List data dengan paginasi")
     @GetMapping
     public ResponseEntity<PageResult<Page<PrefRole>>> index(@Valid @ParameterObject PrefRoleRequest request) {
@@ -38,14 +40,14 @@ public class PrefRoleController {
         return CustomResult.page(result);
     }
 
-    @PreAuthorize("hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_ROLE')")
+    @PreAuthorize("hasRole('SYSTEM') or hasAuthority('" + AppPermission.Authority.SYSTEM_MANAGE_ROLE + "')")
     @Operation(summary = "Daftar semua data")
     @GetMapping("/list")
     public ResponseEntity<ListResult<PrefRole>> list() {
         return CustomResult.list(repository.findAll());
     }
 
-    @PreAuthorize("hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_ROLE')")
+    @PreAuthorize("hasRole('SYSTEM') or hasAuthority('" + AppPermission.Authority.SYSTEM_MANAGE_ROLE + "')")
     @Operation(summary = "show")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<PrefRole>> show(@PathVariable String id) {
@@ -54,7 +56,7 @@ public class PrefRoleController {
         return CustomResult.any(role);
     }
 
-    @PreAuthorize("hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_ROLE')")
+    @PreAuthorize("hasRole('SYSTEM') or hasAuthority('" + AppPermission.Authority.SYSTEM_MANAGE_ROLE + "')")
     @Operation(summary = "store")
     @PostMapping
     public ResponseEntity<SavedResult<String>> store(@Valid @RequestBody PrefRoleStoreRequest request) {
@@ -66,7 +68,7 @@ public class PrefRoleController {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, "success"));
     }
 
-    @PreAuthorize("hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_ROLE')")
+    @PreAuthorize("hasRole('SYSTEM') or hasAuthority('" + AppPermission.Authority.SYSTEM_MANAGE_ROLE + "')")
     @Operation(summary = "Perbarui data")
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<String>> update(@PathVariable String id,
@@ -78,7 +80,7 @@ public class PrefRoleController {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, "success"));
     }
 
-    @PreAuthorize("hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_ROLE')")
+    @PreAuthorize("hasRole('SYSTEM') or hasAuthority('" + AppPermission.Authority.SYSTEM_MANAGE_ROLE + "')")
     @Operation(summary = "destroy")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> destroy(@PathVariable String id) {

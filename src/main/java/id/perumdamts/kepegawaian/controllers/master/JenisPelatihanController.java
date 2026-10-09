@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.master;
 
+
+import id.perumdamts.kepegawaian.enums.AppPermission;
 import id.perumdamts.kepegawaian.dto.commons.*;
 import id.perumdamts.kepegawaian.dto.master.jenisPelatihan.JenisPelatihanIndexQuery;
 import id.perumdamts.kepegawaian.dto.master.jenisPelatihan.JenisPelatihanPostRequest;
@@ -42,7 +44,7 @@ public class JenisPelatihanController {
         return CustomResult.any(query.getById(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:WRITE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.MASTER_WRITE + "')")
     @Operation(summary = "Simpan data baru")
     @PostMapping
     public ResponseEntity<SavedResult<Long>> save(@Valid @RequestBody JenisPelatihanPostRequest request) {
@@ -50,7 +52,7 @@ public class JenisPelatihanController {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity.getId()));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:WRITE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.MASTER_WRITE + "')")
     @Operation(summary = "Perbarui data")
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<Long>> update(@PathVariable Long id, @Valid @RequestBody JenisPelatihanPostRequest request) {
@@ -58,7 +60,7 @@ public class JenisPelatihanController {
         return CustomResult.save(SavedStatus.build(ESaveStatus.SUCCESS, entity.getId()));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:DELETE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.MASTER_DELETE + "')")
     @Operation(summary = "Hapus data berdasarkan ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> deleteById(@PathVariable Long id) {

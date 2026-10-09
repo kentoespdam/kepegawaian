@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.profil;
 
+
+import id.perumdamts.kepegawaian.enums.AppPermission;
 import id.perumdamts.kepegawaian.dto.appwrite.AppwriteUser;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.ESaveStatus;
@@ -35,7 +37,7 @@ public class SelfProfilController {
     private final BiodataCommandService commandService;
     private final PegawaiRepository pegawaiRepository;
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PROFIL:UPDATE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PROFIL_UPDATE + "')")
     @Operation(summary = "Perbarui sebagian biodata self")
     @PatchMapping
     public ResponseEntity<SavedResult<String>> patchBiodataSelf(@Valid @RequestBody BiodataPatchRequest request) {

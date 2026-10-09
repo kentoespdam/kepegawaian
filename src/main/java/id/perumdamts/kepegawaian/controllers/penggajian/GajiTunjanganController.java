@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.penggajian;
 
+
+import id.perumdamts.kepegawaian.enums.AppPermission;
 import id.perumdamts.kepegawaian.dto.commons.*;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiTunjangan.GajiTunjanganIndexQuery;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiTunjangan.GajiTunjanganPostRequest;
@@ -45,7 +47,7 @@ public class GajiTunjanganController {
         return CustomResult.list(list);
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_READ + "')")
     @Operation(summary = "List data dengan paginasi")
     @GetMapping("/{jenis}")
     public ResponseEntity<PageResult<Page<GajiTunjanganResponse>>> index(@PathVariable EJenisTunjangan jenis, @ParameterObject @Valid GajiTunjanganIndexQuery request) {
@@ -53,28 +55,28 @@ public class GajiTunjanganController {
         return CustomResult.page(queryService.findPage(jenis, request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_READ + "')")
     @Operation(summary = "show")
     @GetMapping("/{jenis}/{id}")
     public ResponseEntity<SingleResult<GajiTunjanganResponse>> show(@PathVariable EJenisTunjangan jenis, @PathVariable Long id) {
         return CustomResult.any(queryService.findById(jenis, id).orElse(null));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:WRITE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_WRITE + "')")
     @Operation(summary = "Simpan data baru")
     @PostMapping("/{jenis}")
     public ResponseEntity<SavedResult<Long>> save(@PathVariable EJenisTunjangan jenis, @Valid @RequestBody GajiTunjanganPostRequest request) {
         return CustomResult.save(commandService.save(jenis, request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:WRITE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_WRITE + "')")
     @Operation(summary = "Perbarui data")
     @PutMapping("/{jenis}/{id}")
     public ResponseEntity<SavedResult<Long>> update(@PathVariable EJenisTunjangan jenis, @PathVariable Long id, @Valid @RequestBody GajiTunjanganPutRequest request) {
         return CustomResult.save(commandService.update(jenis, id, request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:DELETE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_DELETE + "')")
     @Operation(summary = "Hapus data berdasarkan ID")
     @DeleteMapping("/{jenis}/{id}")
     public ResponseEntity<DeletedResult> deleteById(@PathVariable EJenisTunjangan jenis, @PathVariable Long id) {

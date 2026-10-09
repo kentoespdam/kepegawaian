@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.laporan.kepegawaian;
 
+
+import id.perumdamts.kepegawaian.enums.AppPermission;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.SingleResult;
 import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.EFilterLta;
@@ -27,7 +29,7 @@ import java.util.List;
 public class LaporanLtaController {
     private final LtaService service;
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.LAPORAN_READ + "')")
     @Operation(summary = "lap lta")
     @GetMapping()
     public ResponseEntity<SingleResult<List<LtaResponse>>> lapLta(
@@ -35,7 +37,7 @@ public class LaporanLtaController {
         return CustomResult.any(service.fetch(filter));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.LAPORAN_READ + "')")
     @Operation(summary = "lap lta count")
     @GetMapping("/count")
     public ResponseEntity<SingleResult<LtaCountResponse>> lapLtaCount(
@@ -43,7 +45,7 @@ public class LaporanLtaController {
         return CustomResult.any(service.count(filter));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.LAPORAN_READ + "')")
     @Operation(summary = "lap lta excel")
     @GetMapping("/excel")
     public ResponseEntity<?> lapLtaExcel(

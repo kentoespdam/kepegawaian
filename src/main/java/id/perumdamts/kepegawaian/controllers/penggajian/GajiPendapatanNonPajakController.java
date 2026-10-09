@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.penggajian;
 
+
+import id.perumdamts.kepegawaian.enums.AppPermission;
 import id.perumdamts.kepegawaian.dto.commons.*;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiPendapatanNonPajak.GajiPendapatanNonPajakIndexQuery;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiPendapatanNonPajak.GajiPendapatanNonPajakListRequest;
@@ -26,42 +28,42 @@ public class GajiPendapatanNonPajakController {
     private final GajiPendapatanNonPajakCommandService commandService;
     private final GajiPendapatanNonPajakQueryService queryService;
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_READ + "')")
     @Operation(summary = "List data dengan paginasi")
     @GetMapping
     public ResponseEntity<PageResult<Page<GajiPendapatanNonPajakResponse>>> index(@ParameterObject @Valid GajiPendapatanNonPajakIndexQuery request) {
         return CustomResult.page(queryService.findPage(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_READ + "')")
     @Operation(summary = "Daftar semua data")
     @GetMapping("/list")
     public ResponseEntity<ListResult<GajiPendapatanNonPajakResponse>> list(@ParameterObject @Valid GajiPendapatanNonPajakListRequest request) {
         return CustomResult.list(queryService.findAll(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_READ + "')")
     @Operation(summary = "show")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<GajiPendapatanNonPajakResponse>> show(@PathVariable Long id) {
         return CustomResult.any(queryService.findById(id).orElse(null));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:WRITE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_WRITE + "')")
     @Operation(summary = "Buat data baru")
     @PostMapping
     public ResponseEntity<SavedResult<Long>> create(@Valid @RequestBody GajiPendapatanNonPajakPostRequest request) {
         return CustomResult.save(commandService.save(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:WRITE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_WRITE + "')")
     @Operation(summary = "Perbarui data")
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<Long>> update(@PathVariable Long id, @Valid @RequestBody GajiPendapatanNonPajakPutRequest request) {
         return CustomResult.save(commandService.update(id, request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:DELETE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_DELETE + "')")
     @Operation(summary = "Hapus data")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> delete(@PathVariable Long id) {

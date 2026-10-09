@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.laporan.kepegawaian;
 
+
+import id.perumdamts.kepegawaian.enums.AppPermission;
 import java.util.List;
 
 import org.springframework.http.HttpHeaders;
@@ -30,7 +32,7 @@ import lombok.RequiredArgsConstructor;
 public class LaporanKenaikanBerkalaController {
     private final KenaikanBerkalaService service;
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.LAPORAN_READ + "')")
     @Operation(summary = "lap kenaikan berkala")
     @GetMapping
     public ResponseEntity<SingleResult<List<KenaikanBerkalaResponse>>> lapKenaikanBerkala(
@@ -39,7 +41,7 @@ public class LaporanKenaikanBerkalaController {
         return CustomResult.any(service.fetch(filter, jenisSk));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.LAPORAN_READ + "')")
     @Operation(summary = "lap kenaikan berkala count")
     @GetMapping("/count")
     public ResponseEntity<SingleResult<Long>> lapKenaikanBerkalaCount(
@@ -48,7 +50,7 @@ public class LaporanKenaikanBerkalaController {
         return CustomResult.any(service.count(filter, jenisSk));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.LAPORAN_READ + "')")
     @Operation(summary = "lap kenaikan berkala excel")
     @GetMapping("/excel")
     public ResponseEntity<?> lapKenaikanBerkalaExcel(

@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.profil;
 
+
+import id.perumdamts.kepegawaian.enums.AppPermission;
 import id.perumdamts.kepegawaian.dto.commons.*;
 import id.perumdamts.kepegawaian.dto.profil.kartuIdentitas.*;
 import id.perumdamts.kepegawaian.services.profil.kartuIdentitas.KartuIdentitasCommandService;
@@ -20,7 +22,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin/profil/kartu-identitas")
-@PreAuthorize("hasRole('ADMIN') or hasAuthority('PROFIL:APPROVE')")
+@PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PROFIL_APPROVE + "')")
 public class AdminKartuIdentitasController {
     private final KartuIdentitasCommandService command;
     private final KartuIdentitasLampiranCommandService lampiranCommand;

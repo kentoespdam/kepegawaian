@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.profil;
 
+
+import id.perumdamts.kepegawaian.enums.AppPermission;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.PageResult;
 import id.perumdamts.kepegawaian.dto.commons.SavedResult;
@@ -29,21 +31,21 @@ public class ProfilUpdateController {
     private final ProfileUpdateService service;
 
     // ADR-0038/0039: antrian approval profil khusus HRD/ADMIN (kepegawaian-t3s3) — tidak untuk USER
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PROFIL:APPROVE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PROFIL_APPROVE + "')")
     @Operation(summary = "List data dengan paginasi")
     @GetMapping
     public ResponseEntity<PageResult<Page<ProfileUpdateQuery>>> index(@ParameterObject @Valid ProfileUpdateRequest request) {
         return CustomResult.page(queryService.findPage(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PROFIL:APPROVE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PROFIL_APPROVE + "')")
     @Operation(summary = "show")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<ProfilUpdateDetail<?>>> show(@PathVariable Long id) {
         return CustomResult.any(queryService.findById(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PROFIL:APPROVE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PROFIL_APPROVE + "')")
     @Operation(summary = "approval")
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<String>> approval(@PathVariable Long id, @Valid @RequestBody ProfilUpdateAcceptRequest approval) {

@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.laporan.kepegawaian;
 
+
+import id.perumdamts.kepegawaian.enums.AppPermission;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.SingleResult;
 import id.perumdamts.kepegawaian.services.laporan.kepegawaian.SoService;
@@ -21,7 +23,7 @@ import java.util.Map;
 public class LaporanSoController {
     private final SoService service;
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.LAPORAN_READ + "')")
     @Operation(summary = "lap so")
     @GetMapping()
     public ResponseEntity<SingleResult<Map<String, Object>>> lapSo() {

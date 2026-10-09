@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.pegawai;
 
+
+import id.perumdamts.kepegawaian.enums.AppPermission;
 import id.perumdamts.kepegawaian.config.PegawaiProperties;
 import id.perumdamts.kepegawaian.dto.commons.*;
 import id.perumdamts.kepegawaian.dto.pegawai.pegawai.*;
@@ -32,56 +34,56 @@ public class PegawaiController {
     private final PegawaiProperties pegawaiProperties;
     private final Validator validator;
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PEGAWAI:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PEGAWAI_READ + "')")
     @Operation(summary = "List data dengan paginasi")
     @GetMapping
     public ResponseEntity<PageResult<Page<PegawaiTableResponse>>> index(@ParameterObject @Valid PegawaiRequest request) {
         return CustomResult.page(queryService.findTablePage(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PEGAWAI:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PEGAWAI_READ + "')")
     @Operation(summary = "Daftar semua data")
     @GetMapping("/list")
     public ResponseEntity<ListResult<PegawaiListResponse>> list(@ParameterObject @Valid PegawaiListRequest request) {
         return CustomResult.list(queryService.findAll(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PEGAWAI:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PEGAWAI_READ + "')")
     @Operation(summary = "Detail data berdasarkan ID")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<PegawaiResponseDetail>> findById(@PathVariable Long id) {
         return CustomResult.any(queryService.findById(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PEGAWAI:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PEGAWAI_READ + "')")
     @Operation(summary = "find by nipam")
     @GetMapping("/{nipam}/nipam")
     public ResponseEntity<SingleResult<PegawaiResponse>> findByNipam(@PathVariable String nipam) {
         return CustomResult.any(queryService.findByNipam(nipam));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PEGAWAI:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PEGAWAI_READ + "')")
     @Operation(summary = "find ringkasan")
     @GetMapping("/{id}/ringkasan")
     public ResponseEntity<SingleResult<PegawaiResponseRingkasan>> findRingkasan(@PathVariable Long id) {
         return CustomResult.any(queryService.findRingkasan(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PEGAWAI:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PEGAWAI_READ + "')")
     @Operation(summary = "find session")
     @GetMapping("/{id}/session")
     public ResponseEntity<SingleResult<PegawaiResponseSession>> findSession(@PathVariable Long id) {
         return CustomResult.any(queryService.findSession(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PEGAWAI:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PEGAWAI_READ + "')")
     @Operation(summary = "find mutasi context")
     @GetMapping("/{id}/mutasi-context")
     public ResponseEntity<SingleResult<PegawaiResponseMutasiContext>> findMutasiContext(@PathVariable Long id) {
         return CustomResult.any(queryService.findMutasiContext(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PEGAWAI:WRITE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PEGAWAI_WRITE + "')")
     @Operation(summary = "Simpan data baru")
     @PostMapping
     public ResponseEntity<SavedResult<Long>> save(@Valid @RequestBody PegawaiPostRequest request) {
@@ -95,21 +97,21 @@ public class PegawaiController {
         return CustomResult.save(commandService.save(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PEGAWAI:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PEGAWAI_READ + "')")
     @Operation(summary = "batch by ids")
     @PostMapping("/batch-by-ids")
     public ResponseEntity<ListResult<PegawaiListResponse>> batchByIds(@Valid @RequestBody PegawaiBatchIdsRequest request) {
         return CustomResult.list(queryService.findByIds(request.getIds()));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PEGAWAI:WRITE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PEGAWAI_WRITE + "')")
     @Operation(summary = "save batch")
     @PostMapping("/batch")
     public ResponseEntity<SavedResult<String>> saveBatch(@Valid @RequestBody List<PegawaiPostRequest> requests) {
         return CustomResult.save(commandService.saveBatch(requests));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PEGAWAI:WRITE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PEGAWAI_WRITE + "')")
     @Operation(summary = "Perbarui data")
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<Long>> update(@PathVariable Long id,
@@ -117,7 +119,7 @@ public class PegawaiController {
         return CustomResult.save(commandService.update(id, request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PEGAWAI:WRITE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PEGAWAI_WRITE + "')")
     @Operation(summary = "Perbarui sebagian gaji")
     @PatchMapping("/{id}/gaji")
     public ResponseEntity<SavedResult<Long>> patchGaji(@PathVariable Long id,
@@ -125,7 +127,7 @@ public class PegawaiController {
         return CustomResult.save(commandService.patchGaji(id, request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PEGAWAI:WRITE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PEGAWAI_WRITE + "')")
     @Operation(summary = "Perbarui sebagian profil")
     @PatchMapping("/{id}/profil")
     public ResponseEntity<SavedResult<Long>> patchProfil(@PathVariable Long id,
@@ -136,7 +138,7 @@ public class PegawaiController {
         return CustomResult.save(commandService.patchProfil(id, request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PEGAWAI:DELETE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PEGAWAI_DELETE + "')")
     @Operation(summary = "Hapus data berdasarkan ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> deleteById(@PathVariable Long id) {

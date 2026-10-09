@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.cuti;
 
+
+import id.perumdamts.kepegawaian.enums.AppPermission;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.DeletedResult;
 import id.perumdamts.kepegawaian.dto.commons.PageResult;
@@ -26,14 +28,14 @@ public class CutiKuotaController {
     private final CutiKuotaQueryService queryService;
     private final CutiKuotaCommandService commandService;
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.CUTI_READ + "')")
     @Operation(summary = "List data dengan paginasi")
     @GetMapping
     public ResponseEntity<PageResult<CutiKuotaPegawaiResponse>> index(@Valid @ParameterObject CutiKuotaRequest request) {
         return CustomResult.page(queryService.findIndex(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.CUTI_READ + "')")
     @Operation(summary = "show")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<CutiKuotaResponse>> show(@PathVariable Long id) {
@@ -46,35 +48,35 @@ public class CutiKuotaController {
         return CustomResult.any(queryService.findByPegawai(pegawaiId, tahun));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.CUTI_READ + "')")
     @Operation(summary = "template")
     @GetMapping("/template")
     public ResponseEntity<?> template() {
         return commandService.exportTemplate();
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:WRITE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.CUTI_WRITE + "')")
     @Operation(summary = "store")
     @PostMapping
     public ResponseEntity<SavedResult<Long>> store(@Valid @RequestBody CutiKuotaPostRequest request) {
         return CustomResult.save(commandService.save(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:WRITE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.CUTI_WRITE + "')")
     @Operation(summary = "import data")
     @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<SavedResult<String>> importData(@Valid @ModelAttribute CutiKuotaImportRequest request) {
         return CustomResult.save(commandService.importData(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:WRITE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.CUTI_WRITE + "')")
     @Operation(summary = "Perbarui data")
     @PutMapping("/{id}")
     public ResponseEntity<SavedResult<Long>> update(@PathVariable Long id, @Valid @RequestBody CutiKuotaPutRequest request) {
         return CustomResult.save(commandService.update(id, request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('CUTI:WRITE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.CUTI_WRITE + "')")
     @Operation(summary = "Hapus data")
     @DeleteMapping("/{id}")
     public ResponseEntity<DeletedResult> delete(@PathVariable Long id) {

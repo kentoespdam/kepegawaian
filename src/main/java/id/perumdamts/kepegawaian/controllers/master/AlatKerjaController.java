@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.master;
 
+
+import id.perumdamts.kepegawaian.enums.AppPermission;
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
 import id.perumdamts.kepegawaian.dto.commons.DeletedResult;
 import id.perumdamts.kepegawaian.dto.commons.SavedResult;
@@ -19,7 +21,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class AlatKerjaController {
     private final AlatKerjaCommandService command;
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:WRITE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.MASTER_WRITE + "')")
     @PostMapping("/master/profesi/{profesiId}/alat-kerja")
     @Operation(summary = "Tambah alat kerja baru")
     public ResponseEntity<SavedResult<Long>> save(@PathVariable Long profesiId,
@@ -27,7 +29,7 @@ public class AlatKerjaController {
         return CustomResult.save(command.create(profesiId, request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:WRITE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.MASTER_WRITE + "')")
     @PutMapping("/master/profesi/{profesiId}/alat-kerja/{id}")
     @Operation(summary = "Perbarui alat kerja")
     public ResponseEntity<SavedResult<Long>> update(@PathVariable Long profesiId,
@@ -36,7 +38,7 @@ public class AlatKerjaController {
         return CustomResult.save(command.update(id, profesiId, request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('MASTER:DELETE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.MASTER_DELETE + "')")
     @DeleteMapping("/master/profesi/{profesiId}/alat-kerja/{id}")
     @Operation(summary = "Hapus alat kerja")
     public ResponseEntity<DeletedResult> delete(@PathVariable Long profesiId,

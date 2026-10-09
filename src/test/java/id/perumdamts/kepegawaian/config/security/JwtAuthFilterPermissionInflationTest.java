@@ -1,7 +1,7 @@
 package id.perumdamts.kepegawaian.config.security;
 
 import id.perumdamts.kepegawaian.dto.appwrite.PrefRole;
-import id.perumdamts.kepegawaian.entities.system.PrefPermission;
+import id.perumdamts.kepegawaian.enums.AppPermission;
 import id.perumdamts.kepegawaian.repositories.PrefRoleRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,10 +40,10 @@ class JwtAuthFilterPermissionInflationTest {
     void inflatesUnionOfPermissionsAcrossRolesDeduplicated() {
         PrefRole admin = new PrefRole("ADMIN");
         admin.getPermissions().addAll(Set.of(
-                new PrefPermission("MASTER:DELETE"), new PrefPermission("PEGAWAI:READ")));
+                AppPermission.MASTER_DELETE, AppPermission.PEGAWAI_READ));
         PrefRole user = new PrefRole("USER");
         user.getPermissions().addAll(Set.of(
-                new PrefPermission("PEGAWAI:READ"), new PrefPermission("PROFIL:UPDATE")));
+                AppPermission.PEGAWAI_READ, AppPermission.PROFIL_UPDATE));
 
         when(prefRoleRepository.findAllById(List.of("ADMIN", "USER"))).thenReturn(List.of(admin, user));
 
@@ -63,7 +63,7 @@ class JwtAuthFilterPermissionInflationTest {
     @Test
     void rolesMissingFromDbAreSkipped() {
         PrefRole admin = new PrefRole("ADMIN");
-        admin.getPermissions().add(new PrefPermission("CUTI:APPROVE"));
+        admin.getPermissions().add(AppPermission.CUTI_APPROVE);
 
         when(prefRoleRepository.findAllById(List.of("ADMIN", "GHOST"))).thenReturn(List.of(admin));
 

@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.profil;
 
+
+import id.perumdamts.kepegawaian.enums.AppPermission;
 import id.perumdamts.kepegawaian.dto.commons.*;
 import id.perumdamts.kepegawaian.dto.profil.pendidikan.*;
 import id.perumdamts.kepegawaian.services.profil.pendidikan.PendidikanCommandService;
@@ -21,7 +23,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin/profil/pendidikan")
-@PreAuthorize("hasRole('ADMIN') or hasAuthority('PROFIL:APPROVE')")
+@PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PROFIL_APPROVE + "')")
 public class AdminPendidikanController {
     private final PendidikanCommandService command;
     private final PendidikanLampiranCommandService lampiranCommand;

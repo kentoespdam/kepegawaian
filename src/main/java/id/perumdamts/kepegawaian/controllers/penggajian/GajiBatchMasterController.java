@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.penggajian;
 
+
+import id.perumdamts.kepegawaian.enums.AppPermission;
 import id.perumdamts.kepegawaian.dto.appwrite.AppwriteUser;
 import id.perumdamts.kepegawaian.dto.commons.*;
 import id.perumdamts.kepegawaian.dto.penggajian.SlipGajiDto;
@@ -36,7 +38,7 @@ public class GajiBatchMasterController {
     private final SlipGajiPdfGenerator pdfGenerator;
     private final id.perumdamts.kepegawaian.repositories.pegawai.jpa.PegawaiRepository pegawaiRepository;
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_READ + "')")
     @Operation(summary = "Ambil gaji batch master by periode")
     @GetMapping
     public ResponseEntity<ListResult<GajiBatchMasterResponse>> getGajiBatchMasterByPeriode(
@@ -44,14 +46,14 @@ public class GajiBatchMasterController {
         return CustomResult.list(queryService.findAll(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_READ + "')")
     @Operation(summary = "Ambil gaji batch master by id")
     @GetMapping("/{id}")
     public ResponseEntity<SingleResult<GajiBatchMasterResponse>> getGajiBatchMasterById(@PathVariable Long id) {
         return CustomResult.any(queryService.findById(id).orElse(null));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_READ + "')")
     @Operation(summary = "Ambil gaji batch master by pegawai id")
     @GetMapping("/pegawai/{pegawaiId}")
     public ResponseEntity<PageResult<Page<GajiBatchMasterResponse>>> getGajiBatchMasterByPegawaiId(
@@ -60,21 +62,21 @@ public class GajiBatchMasterController {
         return CustomResult.page(queryService.findByPegawaiId(pegawaiId, query));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_READ + "')")
     @Operation(summary = "download table gaji")
     @GetMapping("/download/table-gaji/{rootBatchId}")
     public ResponseEntity<?> downloadTableGaji(@PathVariable String rootBatchId) {
         return queryService.downloadTableGaji(rootBatchId);
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_READ + "')")
     @Operation(summary = "download potongan gaji")
     @GetMapping("/download/potongan-gaji/{rootBatchId}")
     public ResponseEntity<?> downloadPotonganGaji(@PathVariable String rootBatchId) {
         return queryService.downloadPotonganGaji(rootBatchId);
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_READ + "')")
     @Operation(summary = "download template potongan tambahan per batch")
     @GetMapping("/template/download/{rootBatchId}")
     public ResponseEntity<Resource> downloadTemplatePotonganTambahan(@PathVariable String rootBatchId) {
@@ -85,7 +87,7 @@ public class GajiBatchMasterController {
                 .body(resource);
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:WRITE')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_WRITE + "')")
     @Operation(summary = "upload potongan tambahan")
     @PatchMapping(value = "upload/{rootBatchId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<SavedResult<String>> uploadPotonganTambahan(
@@ -95,7 +97,7 @@ public class GajiBatchMasterController {
     }
 
     @GetMapping("/{id}/slip-gaji")
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('PENGGAJIAN:READ') or hasAuthority('PENGGAJIAN_SLIP_READ') or isAuthenticated()")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.PENGGAJIAN_READ + "') or hasAuthority('PENGGAJIAN_SLIP_READ') or isAuthenticated()")
     public ResponseEntity<Resource> downloadSlipGaji(@PathVariable Long id) {
         SlipGajiDto slipGaji = queryService.getSlipGaji(id);
         assertSlipAccess(slipGaji);

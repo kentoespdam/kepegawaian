@@ -1,5 +1,8 @@
 # AGENTS.md
 
+> **Autoload**: Aturan teknis AI agent dimuat dari file berikut — baca sebelum memulai sesi:
+> @[LLM Routing & Token Rules](GEMINI.md)
+
 **Canonical guidance: [CLAUDE.md](./CLAUDE.md)** — build/run, architecture, issue tracking, GitNexus repo `kepegawaian`, agent skills.
 
 <!-- gitnexus:start -->

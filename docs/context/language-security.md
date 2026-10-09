@@ -27,8 +27,7 @@ Label hak akses yang di-assign ke Appwrite User via `prefs.roles` (mis. `ADMIN`,
 _Avoid_: "privilege", "level akses"
 
 **Permission**:
-Atomic unit akses dengan format `{ENTITY}:{ACTION}` (mis. `CUTI:APPROVE`, `PEGAWAI:WRITE`, `MASTER:DELETE`). Disimpan di tabel `pref_permission` MariaDB dan terikat ke Role via `pref_role_permission`. Di-inject ke `GrantedAuthority` Spring sebagai string literal (tanpa prefix). Di-enforce via `@PreAuthorize("hasAuthority('CUTI:APPROVE')")`. Tidak bisa di-assign langsung ke user — hanya bisa via Role.
-**Katalog Permission seed-only** (ADR-0039): tidak ada endpoint create/delete permission — katalog diisi via migration seed, karena enforcement sebenarnya ada di string `@PreAuthorize` di kode. Menambah permission baru = migration + `@PreAuthorize` baru + deploy. Yang bisa diubah runtime hanya **matrix** (assign/revoke role ↔ permission). Aturan audit: setiap permission di katalog wajib di-enforce oleh ≥1 controller.
+Atomic unit akses dengan format `{ENTITY}:{ACTION}` (mis. `CUTI:APPROVE`, `PEGAWAI:WRITE`, `MASTER:DELETE`). Bersifat statis dan didefinisikan dalam source code sebagai Java Enum (`AppPermission`), bukan master data di database. Terikat ke Role via `@ElementCollection` di Entity Role (disimpan di join table `pref_role_permission`). Di-inject ke `GrantedAuthority` Spring sebagai string literal (tanpa prefix). Di-enforce via `@PreAuthorize("hasAuthority('CUTI:APPROVE')")`. Detail: [ADR-0059](../adr/0059-static-permissions-via-enum.md).
 _Avoid_: "izin", "hak", "access right"
 
 **Permission Matrix**:

@@ -1,5 +1,7 @@
 package id.perumdamts.kepegawaian.controllers.system;
 
+
+import id.perumdamts.kepegawaian.enums.AppPermission;
 import id.perumdamts.kepegawaian.dto.appwrite.AppwriteUser;
 import id.perumdamts.kepegawaian.dto.appwrite.PrefRole;
 import id.perumdamts.kepegawaian.dto.auth.AuthPostRequest;
@@ -31,28 +33,28 @@ public class UsersController {
     private final UserService service;
     private final AuthService authService;
 
-    @PreAuthorize("hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_USER')")
+    @PreAuthorize("hasRole('SYSTEM') or hasAuthority('" + AppPermission.Authority.SYSTEM_MANAGE_USER + "')")
     @Operation(summary = "List data dengan paginasi")
     @GetMapping
     public ResponseEntity<PageResult<Page<UserResponse>>> index(@Valid @ParameterObject UserRequest request) {
         return CustomResult.page(service.findPage(request));
     }
 
-    @PreAuthorize("hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_USER')")
+    @PreAuthorize("hasRole('SYSTEM') or hasAuthority('" + AppPermission.Authority.SYSTEM_MANAGE_USER + "')")
     @Operation(summary = "Buat data baru")
     @PostMapping()
     public ResponseEntity<SavedResult<String>> create(@Valid @RequestBody AuthPostRequest request) {
         return CustomResult.save(authService.createUser(request));
     }
 
-    @PreAuthorize("hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_USER')")
+    @PreAuthorize("hasRole('SYSTEM') or hasAuthority('" + AppPermission.Authority.SYSTEM_MANAGE_USER + "')")
     @Operation(summary = "update pref")
     @PatchMapping("/pref/{id}")
     public ResponseEntity<SavedResult<String>> updatePref(@PathVariable String id, @RequestBody List<PrefRole> request) {
         return CustomResult.save(authService.updatePref(id, request));
     }
 
-    @PreAuthorize("hasRole('SYSTEM') or hasAuthority('SYSTEM:MANAGE_USER')")
+    @PreAuthorize("hasRole('SYSTEM') or hasAuthority('" + AppPermission.Authority.SYSTEM_MANAGE_USER + "')")
     @Operation(summary = "Perbarui sebagian status")
     @PatchMapping("/{id}/status")
     public ResponseEntity<SavedResult<AppwriteUser>> patchStatus(@PathVariable String id, @Valid @RequestBody UserPatchStatusRequest request) {

@@ -117,7 +117,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
         return prefRoleRepository.findAllById(roles).stream()
                 .flatMap(role -> role.getPermissions().stream())
-                .map(permission -> new SimpleGrantedAuthority(permission.getName()))
+                .map(permission -> new SimpleGrantedAuthority(permission.getAuthority()))
                 .distinct()
                 .toList();
     }

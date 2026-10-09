@@ -1,6 +1,6 @@
 package id.perumdamts.kepegawaian.dto.appwrite;
 
-import id.perumdamts.kepegawaian.entities.system.PrefPermission;
+import id.perumdamts.kepegawaian.enums.AppPermission;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
@@ -24,11 +24,12 @@ public class PrefRole {
     // ADR-0039: label role untuk UI manajemen role (nullable; update via PUT /system/roles/{id})
     String description;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "pref_role_permission",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "perm_name"))
-    Set<PrefPermission> permissions = new HashSet<>();
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "pref_role_permission",
+            joinColumns = @JoinColumn(name = "role_id"))
+    @Column(name = "perm_name")
+    @Enumerated(EnumType.STRING)
+    Set<AppPermission> permissions = new HashSet<>();
 
     public PrefRole(String id) {
         this.id = id;
