@@ -204,7 +204,7 @@ public class FileUploadUtilImpl implements FileUploadUtil {
             Files.write(filePath, content);
             return filePath;
         } catch (IOException e) {
-            throw new RuntimeException("Failed to save report file", e);
+            throw new IllegalStateException("Failed to save report file", e);
         }
     }
 

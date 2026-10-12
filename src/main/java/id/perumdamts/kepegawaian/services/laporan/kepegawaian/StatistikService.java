@@ -7,6 +7,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,8 +115,8 @@ public class StatistikService {
             wb.write(out);
             wb.close();
             return new ByteArrayResource(out.toByteArray());
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to generate Pendidikan2 Excel", e);
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to generate Pendidikan2 Excel", e);
         }
     }
 

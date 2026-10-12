@@ -169,7 +169,7 @@ public class GajiBatchProsesCommandService {
         } catch (InterruptedException | ExecutionException e) {
             if (e instanceof InterruptedException)
                 Thread.currentThread().interrupt();
-            throw new RuntimeException("Proses gaji paralel gagal", e);
+            throw new IllegalStateException("Proses gaji paralel gagal", e);
         }
     }
 

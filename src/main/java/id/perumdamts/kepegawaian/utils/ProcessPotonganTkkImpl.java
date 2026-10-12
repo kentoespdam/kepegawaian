@@ -50,7 +50,7 @@ public class ProcessPotonganTkkImpl implements ProcessPotonganTkk {
                 batchService.processStream(rootBatchId, fileInputStream);
             } catch (IOException e) {
                 log.error("Failed to read Potongan TKK file: {}", originalFilePath, e);
-                throw new RuntimeException("Failed to read spreadsheet file", e);
+                throw new IllegalStateException("Failed to read spreadsheet file", e);
             }
         } finally {
             log.info("processPotonganTkk took {}ms", System.currentTimeMillis() - start);

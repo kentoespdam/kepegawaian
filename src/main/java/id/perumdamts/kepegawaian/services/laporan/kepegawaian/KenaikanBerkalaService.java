@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -81,8 +82,8 @@ public class KenaikanBerkalaService {
             wb.write(out);
             wb.close();
             return new ByteArrayResource(out.toByteArray());
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to generate Kenaikan Berkala Excel", e);
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to generate Kenaikan Berkala Excel", e);
         }
     }
 
