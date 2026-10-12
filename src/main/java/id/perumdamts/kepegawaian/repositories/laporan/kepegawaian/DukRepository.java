@@ -24,7 +24,7 @@ public class DukRepository {
 
     public List<DukResponse> fetch() {
         var mkTahun = DSL.field("TIMESTAMPDIFF(YEAR, {0}, NOW())", Integer.class, PEGAWAI.TMT_KERJA);
-        var mkBulan = DSL.field("TIMESTAMPDIFF(MONTH, {0}, NOW())", Integer.class, PEGAWAI.TMT_KERJA);
+        var mkBulan = DSL.field("MOD(TIMESTAMPDIFF(MONTH, {0}, NOW()), 12)", Integer.class, PEGAWAI.TMT_KERJA);
         var usia = DSL.field("TIMESTAMPDIFF(YEAR, {0}, NOW())", Integer.class, BIODATA.TANGGAL_LAHIR);
 
         return dsl.select(
