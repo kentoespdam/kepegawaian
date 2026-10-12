@@ -318,23 +318,6 @@ def sync_biodata_and_pegawai(
         work_status_raw = r.get("emp_work_status")
         status_kerja = _STATUS_KERJA_MAP.get(work_status_raw, 0)  # default: BERHENTI_OR_KELUAR
 
-        # Koreksi data legacy kadaluarsa: pegawai dengan tmt_pensiun sudah lewat tapi
-        # emp_work_status tidak diperbarui ke 8 oleh admin legacy
-        tmt_pensiun_val = r.get("tmt_pensiun")
-        if tmt_pensiun_val is not None and status_kerja == 2:  # saat ini dianggap Aktif
-            import datetime as _dt
-            if hasattr(tmt_pensiun_val, "date"):
-                tmt_date = tmt_pensiun_val.date()
-            elif isinstance(tmt_pensiun_val, _dt.date):
-                tmt_date = tmt_pensiun_val
-            else:
-                try:
-                    tmt_date = _dt.date.fromisoformat(str(tmt_pensiun_val)[:10])
-                except ValueError:
-                    tmt_date = None
-            if tmt_date and tmt_date <= _dt.date.today():
-                status_kerja = 0  # BERHENTI_OR_KELUAR — pensiun terlewat di data legacy
-
         # Mapping lengkap berdasarkan smartoffice.sys_reference (code='emp_flag')
         # ke ordinal EStatusPegawai Java (@Enumerated(EnumType.ORDINAL))
         _STATUS_PEGAWAI_MAP = {
