@@ -37,6 +37,7 @@ public class DnpRepository {
 
         return dsl.select(
                         ORGANISASI.KODE.as("kode_organisasi"),
+                        ORGANISASI.ORG_GROUP.as("org_group"),
                         JABATAN.LEVEL_ID.as("level_jabatan"),
                         BIODATA.NAMA, PEGAWAI.NIPAM, JABATAN.NAMA.as("nama_jabatan"),
                         tmtJabatan.as("tmt_jabatan"),

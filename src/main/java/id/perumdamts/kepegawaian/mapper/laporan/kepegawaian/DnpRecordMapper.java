@@ -11,6 +11,7 @@ public class DnpRecordMapper {
     public static DnpResponse map(Record r) {
         return new DnpResponse(
                 r.get("kode_organisasi", String.class),
+                r.get("org_group", String.class),
                 r.get("level_jabatan", Integer.class),
                 r.get(BIODATA.NAMA),
                 r.get(PEGAWAI.NIPAM),

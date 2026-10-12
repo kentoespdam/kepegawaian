@@ -2,6 +2,7 @@ package id.perumdamts.kepegawaian.dto.laporan.kepegawaian;
 
 public record DnpResponse(
         String kodeOrganisasi,
+        String orgGroup,
         Integer levelJabatan,
         String nama,
         String nipam,

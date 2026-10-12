@@ -16,6 +16,7 @@ class DnpRecordMapperTest {
         var record = DSL.using(org.jooq.SQLDialect.MYSQL)
                 .newRecord(
                         DSL.field("kode_organisasi", String.class),
+                        DSL.field("org_group", String.class),
                         DSL.field("level_jabatan", Integer.class),
                         BIODATA.NAMA, PEGAWAI.NIPAM,
                         DSL.field("nama_jabatan", String.class),
@@ -32,6 +33,7 @@ class DnpRecordMapperTest {
                 );
 
         record.set(DSL.field("kode_organisasi", String.class), "ORG001");
+        record.set(DSL.field("org_group", String.class), "GROUP-A");
         record.set(DSL.field("level_jabatan", Integer.class), 3);
         record.set(BIODATA.NAMA, "Budi");
         record.set(PEGAWAI.NIPAM, "8903002");
@@ -51,6 +53,7 @@ class DnpRecordMapperTest {
         DnpResponse result = DnpRecordMapper.map(record);
 
         assertEquals("ORG001", result.kodeOrganisasi());
+        assertEquals("GROUP-A", result.orgGroup());
         assertEquals(3, result.levelJabatan());
         assertEquals("Budi", result.nama());
         assertEquals("8903002", result.nipam());
