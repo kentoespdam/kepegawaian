@@ -344,6 +344,37 @@ class OrganisasiCommandServiceTest {
     }
 
     /**
+     * (n) kode organisasi — `@NotBlank`, `@Size(max=64)`, dan format legacy alfanumerik (DPW, D1, B1.3).
+     */
+    @Test
+    void kode_constraintsAndLegacyFormats() {
+        // 1. Blank kode -> @NotBlank violation
+        OrganisasiPostRequest blank = req("", "IT-9TF-n-blank");
+        var blankViolations = validator.validate(blank);
+        assertTrue(blankViolations.stream()
+                        .anyMatch(v -> "Kode organisasi tidak boleh kosong".equals(v.getMessage())),
+                "blank kode must trigger @NotBlank violation");
+
+        // 2. Too long kode (> 64 chars) -> @Size violation
+        String longKode = "A".repeat(65);
+        OrganisasiPostRequest tooLong = req(longKode, "IT-9TF-n-long");
+        var longViolations = validator.validate(tooLong);
+        assertTrue(longViolations.stream()
+                        .anyMatch(v -> "Kode organisasi maksimal 64 karakter".equals(v.getMessage())),
+                "kode > 64 chars must trigger @Size violation");
+
+        // 3. Legacy alphanumeric formats (DPW, D1, B1.3) -> valid and successfully persisted
+        for (String legacyKode : List.of("DPW", "D1", "B1.3")) {
+            OrganisasiPostRequest legacyReq = req(legacyKode, "IT-9TF-n-" + legacyKode);
+            assertTrue(validator.validate(legacyReq).isEmpty(),
+                    "legacy format " + legacyKode + " must have no validation violations");
+            Long id = createAndRemember(legacyReq);
+            Organisasi saved = service.update(id, legacyReq);
+            assertEquals(legacyKode, saved.getKode());
+        }
+    }
+
+    /**
      * (l) update mengganti group → tersimpan (kepegawaian-m04g).
      */
     @Test
