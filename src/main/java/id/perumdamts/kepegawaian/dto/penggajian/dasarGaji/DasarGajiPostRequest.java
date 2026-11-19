@@ -3,7 +3,6 @@ package id.perumdamts.kepegawaian.dto.penggajian.dasarGaji;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import id.perumdamts.kepegawaian.entities.penggajian.DasarGaji;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;

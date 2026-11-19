@@ -1,7 +1,6 @@
 package id.perumdamts.kepegawaian.dto.penggajian.gajiKomponen;
 
 import id.perumdamts.kepegawaian.entities.commons.EJenisGaji;
-import id.perumdamts.kepegawaian.entities.penggajian.GajiKomponen;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Min;

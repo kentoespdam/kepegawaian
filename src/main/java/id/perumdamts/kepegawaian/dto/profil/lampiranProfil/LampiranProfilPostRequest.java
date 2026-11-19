@@ -1,7 +1,6 @@
 package id.perumdamts.kepegawaian.dto.profil.lampiranProfil;
 
 import id.perumdamts.kepegawaian.entities.commons.EJenisLampiranProfil;
-import id.perumdamts.kepegawaian.entities.profil.LampiranProfil;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

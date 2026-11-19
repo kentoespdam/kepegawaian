@@ -19,4 +19,3 @@ public record DasarGajiResponse(
         Boolean aktif
 ) {
 }
-

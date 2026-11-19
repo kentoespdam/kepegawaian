@@ -1,6 +1,5 @@
 package id.perumdamts.kepegawaian.dto.master.organisasi;
 
-import id.perumdamts.kepegawaian.entities.master.Organisasi;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;

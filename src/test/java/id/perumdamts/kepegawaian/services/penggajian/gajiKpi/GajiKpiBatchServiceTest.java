@@ -3,7 +3,6 @@ package id.perumdamts.kepegawaian.services.penggajian.gajiKpi;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiKpi.GajiKpiItem;
 import id.perumdamts.kepegawaian.dto.penggajian.gajiKpi.GajiKpiUploadResponse;
 import id.perumdamts.kepegawaian.exceptions.BadRequestException;
-import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.repositories.penggajian.jooq.GajiKpiBatchRepository;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;

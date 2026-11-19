@@ -1,7 +1,6 @@
 package id.perumdamts.kepegawaian.dto.profil.kartuIdentitas;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import id.perumdamts.kepegawaian.entities.profil.KartuIdentitas;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;

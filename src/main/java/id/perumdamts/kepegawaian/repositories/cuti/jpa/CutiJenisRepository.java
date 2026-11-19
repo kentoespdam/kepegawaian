@@ -1,15 +1,16 @@
 package id.perumdamts.kepegawaian.repositories.cuti.jpa;
 
-import id.perumdamts.kepegawaian.entities.cuti.CutiJenis;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.history.RevisionRepository;
 import org.springframework.data.repository.query.Param;
 
-import java.util.Optional;
+import id.perumdamts.kepegawaian.entities.cuti.CutiJenis;
 
 public interface CutiJenisRepository extends JpaRepository<CutiJenis, Long>,
-RevisionRepository<CutiJenis, Long, Integer> {
+        RevisionRepository<CutiJenis, Long, Integer> {
 
     boolean existsByNamaIgnoreCase(String nama);
 

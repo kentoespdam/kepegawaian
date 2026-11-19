@@ -1,6 +1,5 @@
 package id.perumdamts.kepegawaian.dto.master.grade;
 
-import id.perumdamts.kepegawaian.entities.master.Grade;
 import jakarta.validation.constraints.Min;
 import lombok.Data;
 

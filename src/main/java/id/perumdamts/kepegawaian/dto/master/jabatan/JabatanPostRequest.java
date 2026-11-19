@@ -1,6 +1,5 @@
 package id.perumdamts.kepegawaian.dto.master.jabatan;
 
-import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

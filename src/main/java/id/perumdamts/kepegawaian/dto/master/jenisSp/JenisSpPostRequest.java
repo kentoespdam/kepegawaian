@@ -1,6 +1,5 @@
 package id.perumdamts.kepegawaian.dto.master.jenisSp;
 
-import id.perumdamts.kepegawaian.entities.master.JenisSp;
 import lombok.Data;
 
 @Data

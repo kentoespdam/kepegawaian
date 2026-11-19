@@ -727,3 +727,18 @@ boolean valid = redisHelper.verifyAndConsumeToken(token);
 | **TTL 5 menit** | Default TTL untuk one-time token operasi idempoten/unduhan. |
 | **Key pattern** | `kepegawaian:token:<purpose>:<userId>` |
 | **One-time** | Token dihapus setelah satu verifikasi berhasil (idempotent protection). |
+
+---
+
+## Code Quality & Formatting (Spotless)
+
+Proyek menggunakan plugin **Spotless** (`com.diffplug.spotless`) untuk enforcement standard formatting dan pembersihan kode otomatis:
+
+| Rule | Detail |
+|------|--------|
+| **Auto-format & Clean** | Jalankan `make format` (atau `./gradlew spotlessApply`) sebelum commit. Aturan ini otomatis membersihkan seluruh unused import, merapikan trailing whitespace, dan memastikan newline di akhir file. |
+| **Lint / Format Check** | Jalankan `make lint` (atau `./gradlew spotlessCheck`) pada quality gate sebelum commit/push. Build dan CI WAJIB bersih dari pelanggaran formatting. |
+| **Target Scope** | Target format mencakup seluruh source Java (`src/*/java/**/*.java`). |
+| **jOOQ Exclude** | Kode auto-generated jOOQ (`src/main/java/id/perumdamts/kepegawaian/jooq/**`) WAJIB dikecualikan dari Spotless. |
+| **DILARANG Unused & Wildcard Import** | Dilarang keras menyisakan unused import atau menggunakan wildcard import (`import package.*`) di seluruh kode produksi. |
+

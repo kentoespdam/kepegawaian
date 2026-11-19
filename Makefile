@@ -65,6 +65,15 @@ stop-prod:
 rebuild-jar:
 	git pull && ./gradlew clean && ./gradlew bootJar
 
+# Code formatting & linting (Spotless)
+.PHONY: lint format
+lint:
+	./gradlew spotlessCheck
+
+format:
+	./gradlew spotlessApply
+
+
 # ==============================================================================
 # Data Migration Tooling (tools/migration)
 # ==============================================================================

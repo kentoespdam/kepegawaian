@@ -1,7 +1,6 @@
 package id.perumdamts.kepegawaian.dto.profil.keahlian;
 
 import id.perumdamts.kepegawaian.entities.commons.EKualifikasi;
-import id.perumdamts.kepegawaian.entities.profil.Keahlian;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Min;

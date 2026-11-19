@@ -49,4 +49,3 @@ public class GajiBatchRootLampiran implements Serializable {
                 '}';
     }
 }
-

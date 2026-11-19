@@ -114,7 +114,7 @@ public class PegawaiRingkasanQueryRepository {
 
         var record = opt.get();
         var cards = record.get(kartuIdentitasMultiset);
-        
+
         PegawaiResponseRingkasan ringkasan = PegawaiRingkasanMapper.map(record, cards);
         return Optional.of(ringkasan);
     }

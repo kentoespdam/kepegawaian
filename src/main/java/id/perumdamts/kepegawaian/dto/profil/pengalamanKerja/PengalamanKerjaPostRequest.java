@@ -1,6 +1,5 @@
 package id.perumdamts.kepegawaian.dto.profil.pengalamanKerja;
 
-import id.perumdamts.kepegawaian.entities.profil.PengalamanKerja;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 

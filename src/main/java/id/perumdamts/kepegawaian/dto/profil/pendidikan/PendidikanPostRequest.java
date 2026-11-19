@@ -1,6 +1,5 @@
 package id.perumdamts.kepegawaian.dto.profil.pendidikan;
 
-import id.perumdamts.kepegawaian.entities.profil.Pendidikan;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;

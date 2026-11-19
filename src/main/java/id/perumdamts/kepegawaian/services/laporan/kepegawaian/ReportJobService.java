@@ -3,7 +3,6 @@ package id.perumdamts.kepegawaian.services.laporan.kepegawaian;
 import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.ReportJobResponse;
 import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.ReportJobStatus;
 import id.perumdamts.kepegawaian.utils.FileUploadUtil;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;

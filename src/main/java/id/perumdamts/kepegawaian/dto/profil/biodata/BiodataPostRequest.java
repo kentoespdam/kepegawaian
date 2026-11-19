@@ -4,7 +4,6 @@ import id.perumdamts.kepegawaian.entities.commons.EAgama;
 import id.perumdamts.kepegawaian.entities.commons.EGolonganDarah;
 import id.perumdamts.kepegawaian.entities.commons.EJenisKelamin;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKawin;
-import id.perumdamts.kepegawaian.entities.profil.Biodata;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Min;

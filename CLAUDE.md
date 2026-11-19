@@ -26,6 +26,8 @@ Java 25, Spring Boot 4.0.3, Gradle.
 make run-dev              # Jalankan continuous compiler di background + Spring Boot DevTools (auto-compile & restart saat file disimpan)
 make run-debug            # run-dev + JDWP debug agent port 5005 (attach IntelliJ/VS Code)
 make run-debug DEBUG_PORT=5006  # custom debug port
+make lint                 # Cek formatting & lint Spotless (./gradlew spotlessCheck)
+make format               # Auto-format & hapus unused import otomatis (./gradlew spotlessApply)
 ```
 
 > **Catatan:** `make run-dev` menjalankan Gradle continuous compiler (`classes -t`) di background sehingga setiap perubahan file `.java` otomatis di-compile ulang dan di-restart oleh Spring Boot DevTools. Tekan `Ctrl+C` untuk menghentikan seluruh proses secara bersih.

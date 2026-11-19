@@ -4,7 +4,6 @@ import id.perumdamts.kepegawaian.entities.commons.EAgama;
 import id.perumdamts.kepegawaian.entities.commons.EHubunganKeluarga;
 import id.perumdamts.kepegawaian.entities.commons.EJenisKelamin;
 import id.perumdamts.kepegawaian.entities.commons.EStatusPendidikan;
-import id.perumdamts.kepegawaian.entities.profil.ProfilKeluarga;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotEmpty;

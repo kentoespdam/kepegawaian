@@ -17,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,9 +47,6 @@ public class ProcessCutiKuotaService {
             if (cutiKuotaList.isEmpty())
                 throw new BadRequestException("Tidak ada data");
             repository.saveAll(cutiKuotaList);
-            if (workbook instanceof SXSSFWorkbook sxssfWorkbook) {
-                sxssfWorkbook.dispose();
-            }
             return SavedStatus.build(ESaveStatus.SUCCESS, cutiKuotaList.size() + " success");
         } catch (IOException e) {
             throw new CutiImportException("Failed to process the spreadsheet file", e);
@@ -63,7 +59,7 @@ public class ProcessCutiKuotaService {
             if ("application/vnd.ms-excel".equals(contentType)) {
                 return new HSSFWorkbook(file.getInputStream());
             } else if ("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet".equals(contentType)) {
-                return new SXSSFWorkbook(new XSSFWorkbook(file.getInputStream()), 100);
+                return new XSSFWorkbook(file.getInputStream());
             }
         } catch (IOException e) {
             throw new CutiImportException("Failed to process the spreadsheet file", e);

@@ -1,7 +1,6 @@
 package id.perumdamts.kepegawaian.dto.master.jabatan;
 
 import id.perumdamts.kepegawaian.dto.commons.PagedRequest;
-import id.perumdamts.kepegawaian.entities.master.Jabatan;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

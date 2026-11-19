@@ -1,6 +1,5 @@
 package id.perumdamts.kepegawaian.dto.master.alasanBerhenti;
 
-import id.perumdamts.kepegawaian.entities.master.AlasanBerhenti;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 

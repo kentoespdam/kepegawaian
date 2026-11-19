@@ -1,10 +1,7 @@
 package id.perumdamts.kepegawaian.config;
 
-import id.perumdamts.kepegawaian.config.security.DeniedHandler;
-import id.perumdamts.kepegawaian.config.security.DevAuthFilter;
-import id.perumdamts.kepegawaian.config.security.JwtAuthEntryPoint;
-import id.perumdamts.kepegawaian.config.security.JwtAuthFilter;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +17,11 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.List;
+import id.perumdamts.kepegawaian.config.security.DeniedHandler;
+import id.perumdamts.kepegawaian.config.security.DevAuthFilter;
+import id.perumdamts.kepegawaian.config.security.JwtAuthEntryPoint;
+import id.perumdamts.kepegawaian.config.security.JwtAuthFilter;
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
@@ -30,7 +31,8 @@ public class WebSecurity {
     private final JwtAuthEntryPoint jwtAuthEntryPoint;
     private final DeniedHandler deniedHandler;
     private final JwtAuthFilter jwtAuthFilter;
-    // DevAuthFilter TIDAK di-inject via constructor: bean-nya @Profile("development"),
+    // DevAuthFilter TIDAK di-inject via constructor: bean-nya
+    // @Profile("development"),
     // hanya di-resolve sebagai parameter method devFilterChain (injeksi per-@Bean).
 
     @Value("${custom.cors.allowed-origins:http://localhost:5173}")
@@ -55,11 +57,10 @@ public class WebSecurity {
                             .requestMatchers("/swagger-ui/**").permitAll()
                             .requestMatchers("/v3/api-docs/**").permitAll()
                             .requestMatchers("/auth/**").permitAll()
-                            .anyRequest().authenticated()
-                    )
+                            .anyRequest().authenticated())
                     .build();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException("Failed to configure JWT security filter chain", e);
         }
     }
 
@@ -83,11 +84,10 @@ public class WebSecurity {
                             .requestMatchers("/swagger-ui/**").permitAll()
                             .requestMatchers("/v3/api-docs/**").permitAll()
                             .requestMatchers("/auth/**").permitAll()
-                            .anyRequest().authenticated()
-                    )
+                            .anyRequest().authenticated())
                     .build();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException("Failed to configure development security filter chain", e);
         }
     }
 

@@ -3,7 +3,6 @@ package id.perumdamts.kepegawaian.services.penggajian.gajiBatchMasterProses.prel
 import id.perumdamts.kepegawaian.entities.commons.EJenisGaji;
 import id.perumdamts.kepegawaian.entities.commons.EJenisTunjangan;
 import id.perumdamts.kepegawaian.entities.commons.EStatusKawin;
-import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.master.Level;
 import id.perumdamts.kepegawaian.entities.penggajian.*;

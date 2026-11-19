@@ -1,7 +1,6 @@
 package id.perumdamts.kepegawaian.mapper.laporan.kepegawaian;
 
 import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.SoResponse;
-import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 import org.junit.jupiter.api.Test;
 

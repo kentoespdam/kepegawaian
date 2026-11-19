@@ -67,4 +67,3 @@ public class RiwayatTerminasi extends IdsAbstract {
     private Integer masaKerja;
     private String notes;
 }
-

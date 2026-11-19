@@ -1,85 +1,157 @@
-# Project Rules for AI Agents: Token Conservation
+# Project Rules for AI Agents: kepegawaian (Antigravity 2.0 Optimized)
 
-- **Root Agent (Strict Manager)**:
-  - Root agent bertindak HANYA sebagai Manager/Orchestrator dan High-level Planner.
-  - DILARANG melakukan manipulasi file, riset, atau eksekusi teknis langsung.
-  - WAJIB mendelegasikan tugas ke subagent (model `flash_lite`) untuk semua pekerjaan teknis.
-  - Hanya menerima ringkasan laporan dari subagent.
+## Konteks Project
 
-- **Sub-Agent Reporting Protocol (STRICT)**:
-  - Sub-agent WAJIB melaporkan ringkasan padat/eksekutif berbasis fakta (high-signal, zero fluff) dari hasil analisis/tugas tanpa menghilangkan konteks teknis esensial, serta DILARANG melakukan dump raw text/output panjang yang memboroskan token di root agent.
-  - Sub-agent **DILARANG KERAS**:
-    - Memberikan saran, rekomendasi, atau opini tentang langkah berikutnya.
-    - Mengambil keputusan di luar lingkup tugas yang diberikan.
-    - Menyarankan pendekatan alternatif kecuali diminta root agent.
-    - Memulai pekerjaan tambahan yang tidak diminta secara eksplisit.
-  - Sub-agent harus menutup laporannya dengan: **"Laporan selesai. Menunggu instruksi berikutnya dari root agent."**
-  - Root agent **WAJIB** mengevaluasi laporan secara mandiri dan menentukan langkah selanjutnya — tidak boleh langsung menyetujui saran dari sub-agent.
+Project **kepegawaian** adalah backend sistem kepegawaian PDAM (Perusahaan Daerah Air Minum). Stack: **Java + Spring Boot 4.0.3**, **jOOQ**, **Flyway 12**, **MariaDB**, **Redis**, **Appwrite JWT**. Build tool: **Gradle (Kotlin DSL)**.
+Referensi utama: [`CLAUDE.md`](./CLAUDE.md), [`CODING_RULES.md`](./CODING_RULES.md), [`CONTEXT-MAP.md`](./CONTEXT-MAP.md), [`CONTEXT.md`](./CONTEXT.md).
 
-- **Sub-Agent Error Handling**:
-  - Jika sub-agent menemukan error, WAJIB melaporkan detail error ke root agent. DILARANG melakukan *self-fix loop*.
-  - Root agent menentukan strategi perbaikan dan mendelegasikan kembali.
-  - Jika dalam 3x percobaan perbaikan error tetap terjadi, root agent WAJIB memerintahkan riset ke internet untuk best practice dan referensi source code terbaru terkait library yang digunakan.
+Domain utama: `profil/`, `pegawai/`, `master/`, `cuti/`, `kepegawaian/`, `penggajian/`.
 
-- **Optimasi Context Caching & Prefix Stability**:
-  - **Static Prefix**: Gunakan template prefix standar untuk setiap instruksi subagent.
-  - **Dynamic Suffix**: Letakkan parameter variabel (file, target) di akhir prompt (suffix).
-  - **Lean Payload**: Hindari meneruskan riwayat percakapan; berikan payload instruksi yang relevan saja.
+---
 
-- **Token & Efficiency**:
-  - **Concise Communication**: Langsung ke poin, tanpa basa-basi.
-  - **Targeted Modifications**: Gunakan `replace_file_content` (micro-diffs).
-  - **Selective Reading**: Hanya baca bagian file yang relevan.
-  - **Quiet Commands**: Gunakan flag peringkas output terminal (`-q`, `head`, `grep`).
+## 1. Adaptive Routing & Agent Roles (Direct-First)
 
-- **Mandatory Pre-Coding Gates**:
-  - **Ponytail**: WAJIB load skill `/ponytail` sebelum modifikasi kode.
-  - **Issue Tracking (Beads/bd)**: Klaim tugas (`bd update <id> --claim`), tutup tugas (`bd close <id>`). DILARANG membuat todo list manual.
-  - **GitNexus First**: WAJIB jalankan `gitnexus_impact` & `gitnexus_query` sebelum eksplorasi atau modifikasi kode.
-  - **Graphify**: WAJIB gunakan `graphify query` / `path` untuk audit arsitektur; jalankan `graphify . --update` jika ada perubahan modul/struktur. Ekstraksi semantik via sub-agent internal (`flash_lite`).
-  - **Sandbox Policy**: WAJIB gunakan `BypassSandbox: true` untuk semua perintah `git` dan `bd`.
+Apply this strict priority order before executing any task:
 
-- **Code Intelligence Optimization (Graphify & GitNexus)**:
-  - **Sinergi Analisa**: Gunakan **Graphify** untuk arsitektur makro (knowledge graph, clustering komunitas, batasan domain/modul) dan **GitNexus** untuk navigasi mikro (AST, call graph, execution flows, blast radius).
-  - **Sesi Grilling (Planning & Stress-Testing Desain)**:
-    - **Graphify**: Jalankan `graphify query "<konsep>"` atau `graphify path "<A>" "<B>"` untuk memvalidasi batas modul dan dependensi arsitektur sebelum menyusun opsi desain atau bertanya ke user.
-    - **GitNexus**: Gunakan `query({search_query: "<alur/konsep>"})` dan `context({name: "<simbol>"})` untuk menelusuri trace execution flow konkret. Pertanyaan grilling WAJIB grounded pada kode aktual untuk memverifikasi asumsi implementasi tanpa menebak.
-  - **Sesi Coding (Implementasi & Refactoring)**:
-    - **GitNexus (Pre-Edit)**: WAJIB `impact({target: "<simbol>", direction: "upstream"})` sebelum mengubah metode/kelas. Laporkan blast radius (direct callers, affected processes). Stop & konfirmasi jika risiko HIGH/CRITICAL.
-    - **GitNexus (Refactoring & Pre-Commit)**: Gunakan `rename` berbasis call graph (DILARANG find-and-replace). WAJIB jalankan `detect_changes()` sebelum commit untuk memvalidasi alur yang terdampak.
-    - **Graphify**: Pastikan desain tetap modular (target 150–250 LOC). Jalankan `graphify . --update` saat menambah/mengubah struktur paket atau modul.
-  - **Sesi Diagnosa Bug (Debugging & Root Cause Analysis)**:
-    - **Graphify**: Gunakan `graphify path "<KomponenA>" "<KomponenB>"` untuk menelusuri rantai dependensi antar-layer/modul saat menganalisis bug sistemik atau anomali alur data lintas modul.
-    - **GitNexus (Tracing)**: Telusuri execution flow bug via `gitnexus://repo/kepegawaian/process/{name}` atau `query({search_query: "<error/flow>"})` dari controller/entry point hingga titik kegagalan.
-    - **GitNexus (Callers & Taint)**: Gunakan `context({name: "<method>"})` untuk inspeksi caller/callee dan `explain({target: "<fileOrSymbol>"})` untuk analisis aliran data (source-to-sink).
-    - **GitNexus (Fix Safety)**: WAJIB jalankan `impact` pada fungsi target perbaikan sebelum menulis fix untuk mencegah side-effect atau regresi baru.
+### Priority 1: Mandatory Deep-Reasoning (`deep_reasoner` Sub-Agent)
+Invoke `invoke_subagent` with `deep_reasoner` (tier: `pro`) BEFORE writing code when ANY of these objective conditions is met:
+- **Security/Auth:** Menyentuh `JwtAuthFilter`, `SecurityConfig`, atau logika `@PreAuthorize` — SELALU.
+- **Payroll/Penggajian:** Mengubah formula gaji, komponen tunjangan, atau batch `penggajian/`.
+- **Interface Break:** Refactor yang mengubah signature publik `CustomResult`, `PagedRequest`, atau kontrak controller antar-modul.
+- **DB Migration:** Menulis atau mengubah skrip Flyway (`V*.sql`) yang melibatkan DDL kritis (DROP, ALTER pada tabel live).
+- **Stuck Bug:** Bug tidak terjelaskan setelah tepat 2 attempt debugging di Root Agent.
 
-- **File Size & Modularity (Token Conservation)**:
-  - Target: 150 – 250 LOC per file.
-  - Hard Ceiling: Max 300 LOC. WAJIB modularisasi jika mendekati batas.
+*Exceptions (Do NOT invoke `deep_reasoner`):*
+- Implementing an already-confirmed Implementation Contract from a prior `deep_reasoner` response.
+- Writing routine unit tests (`*Test`, `*ControllerTest`) or fixing localized bugs with an already-identified root cause.
+- Task yang tidak menyentuh `auth/`, `penggajian/`, atau kontrak publik antar-modul sama sekali.
 
-- **Java & Gradle Toolchain**:
-  - Java 25 & Spring Boot 4.0.3 (GraalVM JDK 25).
-  - WAJIB gunakan Gradle Wrapper:
-    - Build: `./gradlew build`
-    - Run Dev: `./gradlew bootRun`
-    - Test: `./gradlew test` (WAJIB menggunakan hanya 1 sub-agent dan DILARANG KERAS paralel dengan agent lain saat menjalankan test atau pengujian untuk mencegah lag sistem)
-    - Fat JAR: `./gradlew bootJar`
+**Quota Fallback:** Jika `deep_reasoner` (model: `pro`) mengembalikan error quota/rate-limit, WAJIB segera re-invoke dengan `deep_reasoner_fallback` (model: `flash`). Gunakan prompt dan context identik. Jika fallback `Confidence Level: LOW`, tunda implementasi dan laporkan ke user.
 
-- **Core Architecture & Conventions**:
-  - **CQRS-lite**:
-    - Query: `*QueryService` (`@Transactional(readOnly = true)`) → `*QueryRepository` (jOOQ `DSLContext` → Java record DTOs).
-    - Command: `*CommandService` (`@Transactional`) → `*Repository` (Spring Data JPA → `@Entity` + Envers).
-  - **DTO & Response**: Selalu kembalikan DTO / record via `CustomResult` (`any`, `page`, dll). DILARANG mengembalikan `@Entity` dari Controller.
-  - **Spring Boot 4 / Java 25 Standards**:
-    - Jakarta EE 11 (`jakarta.*`, zero `javax.*`).
-    - Jackson 3 (`tools.jackson`).
-    - Test: JUnit 5, `@MockitoBean` (bukan `@MockBean`), `@ServiceConnection` (Testcontainers), ArchUnit (`1.4.1`).
-  - **Database & Migration**:
-    - MariaDB + Flyway (`V<YYYYMMDDHHmmss>__<desc>.sql`).
-    - Redis: Serializer JSON, mandatory TTL, key prefix `kepegawaian:<domain>:<id>`.
+### Priority 2: Direct Execution (Root Agent — No Sub-Agent)
+Root Agent MUST execute directly without spawning any sub-agent when:
+- Running issue tracker operations (`bd`), `git` commands, or single `gitnexus` queries.
+- Making localized code edits (≤ 2 files, < 50 LOC) following established patterns in `CODING_RULES.md`.
+- Running final verification commands (`./gradlew test`, `./gradlew compileJava`).
+- Responding to questions, writing docs, or analysis without code changes.
 
-- **Session Completion & Checklist**:
-  - Jalankan `gitnexus_detect_changes()` dan `./gradlew test`.
-  - WAJIB update `CHECKLIST.md` dan push: `git pull --rebase` && `git push` (WAJIB gunakan `BypassSandbox: true`).
-  - Rujuk `CODING_RULES.md` & `CHECKLIST.md` untuk standar detail.
+### Priority 3: Substantial Technical Delegation (`flash` Sub-Agent)
+Invoke `invoke_subagent` with model `flash` when:
+- Implementation spans ≥ 2 files with substantial changes (new endpoints, new modules).
+- Creating a test suite with ≥ 3 test cases.
+- Broad codebase exploration requiring reads across > 5 files.
+- Any task estimated to take > 15 minutes of execution time.
+
+---
+
+## 2. Sub-Agent Execution, Error Handling & Reporting Protocol
+
+### Bounded Self-Fix (Anti Ping-Pong)
+- Sub-agent DIIZINKAN melakukan perbaikan mandiri (*self-fix*) maksimal **2 kali percobaan lokal** khusus untuk error deterministik (syntax error, import hilang, kegagalan `compileJava`, atau kegagalan test dengan penyebab jelas).
+- Jika masih gagal setelah 2 percobaan, atau jika menemukan ambiguitas desain/pelanggaran constraint, sub-agent WAJIB berhenti dan melapor ke Root Agent.
+- Jika error berlanjut setelah 3 percobaan di Root Agent, lakukan riset `CODING_RULES.md` atau dokumentasi Spring/jOOQ terbaru.
+
+### Proportional Reporting Protocol (STRICT)
+
+**A. Untuk Tugas Eksplorasi / Riset (Tanpa Modifikasi File):**
+Laporkan temuan secara padat dalam maksimal 5 baris berisi poin inti dan referensi `file:baris`. Akhiri dengan: `"Report complete. Awaiting next instructions."`
+
+**B. Untuk Tugas Modifikasi Kode / Eksekusi Teknis:**
+Sub-agent wajib melaporkan dalam format berlapis berikut:
+
+```text
+STATUS: [DONE|PARTIAL|BLOCKED|ERROR]
+HASIL: <1–3 kalimat inti — apa yang berubah, ditemukan, atau gagal, dan mengapa penting>
+
+ARTEFAK TERMODIFIKASI:
+- <file>:<baris-dari>–<baris-ke> — <deskripsi singkat perubahan>
+  CONSTRAINT CHECK: <PASS/FAIL + alasan singkat terhadap: soft-delete, audit fields, TTL Redis, Flyway atomicity>
+
+VERIFIKASI:
+- Tests: <X passed, Y failed — sebutkan nama test spesifik yang relevan; nyatakan eksplisit jika 0 test>
+- Build: <PASS / FAIL: <baris pesan error spesifik dari compileJava/bootJar>>
+- Regression: <Ya/Tidak + detail singkat>
+
+Report complete. Awaiting next instructions.
+```
+
+**Aturan Ketat Laporan Modifikasi:**
+- **Wajib sebutkan `file:baris`** untuk setiap perubahan dan **wajib jalankan Constraint Check**.
+- Buang *stack trace* penuh atau listing kode panjang — ringkas hanya ke baris error spesifik (< 10 baris raw output).
+- DILARANG menyertakan saran, opini, langkah selanjutnya, atau mengeksekusi pekerjaan di luar scope.
+- DILARANG melaporkan `STATUS: DONE` jika ada test `FAIL` atau build `FAIL`.
+- Root Agent WAJIB memeriksa bagian `ARTEFAK TERMODIFIKASI` dan `VERIFIKASI` sebelum mengambil keputusan berikutnya.
+
+---
+
+## 3. Token Economy & Pre-Coding Gates
+
+- **No Preamble & Concise Output:** Hilangkan kalimat basa-basi ("Baik", "Tentu saja", "Saya akan..."). Mulai langsung dari substansi.
+- **Selective Reading & Micro-Diffs:** Baca hanya rentang baris yang relevan. Edit hanya baris yang berubah.
+- **Quiet Commands:** Selalu gunakan flag minim output (`--quiet`, `head`, `grep`).
+- **Domain Context Gate:** Sebelum menyentuh modul baru, baca konteks relevan dari `CONTEXT-MAP.md`:
+  - `master/` → `docs/context/language-master.md`
+  - `pegawai/` → `docs/context/language-pegawai.md` + `decisions-pegawai.md`
+  - `profil/` → `docs/context/language-profil.md`
+  - `cuti/` → `docs/context/language-cuti.md` + `decisions-cuti.md`
+  - Auth/JWT → `docs/context/language-security.md`
+- **GitNexus Targeted Gate:**
+  - WAJIB gunakan `gitnexus_impact` sebelum memodifikasi symbol apa pun.
+  - Untuk CLI: selalu sertakan `--repo kepegawaian` (contoh: `npx gitnexus query "CustomResult" --repo kepegawaian`).
+- **Conditional Skill Gate:**
+  - **Ponytail:** WAJIB load skill `/ponytail` sebelum memodifikasi kode produksi.
+  - **Grilling:** WAJIB ikuti skill `grilling` saat melakukan Q&A arsitektur atau desain baru.
+- **Issue Tracking (Beads/`bd`):** Klaim task (`bd update <id> --claim`), tutup task (`bd close <id>`).
+- **Sandbox Policy:** WAJIB gunakan `BypassSandbox: true` untuk semua eksekusi perintah `git` dan `bd`.
+
+---
+
+## 4. File Size, Java Toolchain & Domain Rules
+
+### Modularitas & Ukuran File
+- Target: **150–250 LOC** per file.
+- Hard Ceiling: **Maksimal 300 LOC**. WAJIB pecah/modularisasi jika mendekati batas.
+- Struktur modul: pisahkan per domain → `controller/`, `service/`, `repository/` (sub: `.jpa`, `.jooq`), `dto/`, `entity/`, `mapper/`.
+
+### Java/Gradle Toolchain (Wajib)
+Seluruh eksekusi WAJIB menggunakan Gradle wrapper:
+```bash
+./gradlew compileJava          # Kompilasi (cek syntax & import)
+./gradlew test                 # Jalankan seluruh test
+./gradlew test --tests "*.XxxTest"  # Jalankan test spesifik
+./gradlew bootJar              # Build JAR produksi
+make lint                      # Cek lint & formatting Spotless (./gradlew spotlessCheck)
+make format                    # Format kode & bersihkan unused import otomatis (./gradlew spotlessApply)
+make run-dev                   # Dev mode: continuous compile + Spring Boot DevTools
+make start-dev                 # Jalankan Docker dev stack (MariaDB, Redis, dll)
+```
+
+### Domain & Coding Constraints (Harga Mati)
+1. **Soft Delete Only:** JANGAN pernah hard-delete. Gunakan flag `is_deleted`. Semua query WAJIB filter `is_deleted = false`.
+2. **Audit Fields:** Setiap entity WAJIB punya `created_at`, `created_by`, `updated_at`, `updated_by` via `AuditAware`. Jangan set manual.
+3. **Controller Response:** SELALU gunakan `CustomResult.any()` / `CustomResult.list()` / `CustomResult.save()` / `CustomResult.delete()`. JANGAN return `@Entity` langsung.
+4. **Repository Split:** `.jpa` untuk Spring Data JPA, `.jooq` untuk jOOQ DSLContext. JANGAN campur keduanya dalam satu class.
+5. **Redis TTL Mandatory:** Setiap cache key WAJIB punya TTL. Konfigurasi per-cache di `RedisCacheManagerBuilderCustomizer`.
+6. **Flyway Atomicity:** Satu migration file = satu perubahan logis. DDL kritis (DROP, ALTER) = satu statement per file. JANGAN batch DDL kritis.
+7. **Security:** Semua endpoint mutating WAJIB `@PreAuthorize("hasRole('ADMIN')")`. Lambda DSL untuk `HttpSecurity` — tidak boleh menggunakan `.and()` chaining (removed di Spring Security 6+).
+8. **Nominal Gaji:** SELALU ambil dari data server-side (entity `Penggajian`). Klien TIDAK BOLEH menentukan atau mengubah nilai komponen gaji.
+9. **Spotless Lint & Format:** Seluruh file Java WAJIB bersih dari unused import dan mematuhi format Spotless (`make lint`). Jalankan `make format` sebelum commit.
+
+---
+
+## 5. Prosedur Penyelesaian Pekerjaan (Completion Workflow)
+
+Sebelum menyatakan task selesai secara keseluruhan:
+1. Jalankan `gitnexus_detect_changes()` untuk memverifikasi cakupan perubahan.
+2. Jalankan `make format` atau `./gradlew spotlessApply` untuk memastikan formatting bersih & tanpa unused import.
+3. Jalankan `make lint` atau `./gradlew spotlessCheck` — pastikan zero formatting/linting violations.
+4. Jalankan `./gradlew test` — pastikan seluruh test yang relevan lulus (hijau).
+5. Jalankan `./gradlew compileJava` — pastikan bebas error kompilasi.
+6. Push perubahan ke remote (WAJIB dengan `BypassSandbox: true`):
+   ```bash
+   git pull --rebase
+   bd dolt push
+   git push
+   git status  # HARUS menunjukkan "up to date with origin"
+   ```
+7. Perbarui atau tutup status issue di `bd` (`bd close <id>`).

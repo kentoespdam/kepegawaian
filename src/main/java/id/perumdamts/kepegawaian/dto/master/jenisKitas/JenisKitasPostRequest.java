@@ -1,6 +1,5 @@
 package id.perumdamts.kepegawaian.dto.master.jenisKitas;
 
-import id.perumdamts.kepegawaian.entities.master.JenisKitas;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 

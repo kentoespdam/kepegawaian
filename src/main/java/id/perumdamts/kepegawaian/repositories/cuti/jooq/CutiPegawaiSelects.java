@@ -1,15 +1,17 @@
 package id.perumdamts.kepegawaian.repositories.cuti.jooq;
 
-import id.perumdamts.kepegawaian.jooq.tables.CutiJenis;
-import id.perumdamts.kepegawaian.jooq.tables.Jabatan;
-import org.jooq.Field;
-
 import static id.perumdamts.kepegawaian.jooq.tables.CutiPegawai.CUTI_PEGAWAI;
 import static id.perumdamts.kepegawaian.jooq.tables.Jabatan.JABATAN;
 import static id.perumdamts.kepegawaian.jooq.tables.Organisasi.ORGANISASI;
 
+import org.jooq.Field;
+
+import id.perumdamts.kepegawaian.jooq.tables.CutiJenis;
+import id.perumdamts.kepegawaian.jooq.tables.Jabatan;
+
 public final class CutiPegawaiSelects {
-    private CutiPegawaiSelects() {}
+    private CutiPegawaiSelects() {
+    }
 
     // ── Direct CUTI_PEGAWAI columns ──────────────────────────────────────────
     public static final Field<Long> ID = CUTI_PEGAWAI.ID;
@@ -78,12 +80,13 @@ public final class CutiPegawaiSelects {
     // ── Combined column arrays ────────────────────────────────────────────────
 
     /**
-     * Full SELECT columns for {@code CutiPengajuanResponse} including {@code refCuti}.
+     * Full SELECT columns for {@code CutiPengajuanResponse} including
+     * {@code refCuti}.
      * Includes all joined-table aliases.
      *
-     * @param jenisCutiAlias  aliased table {@code CUTI_JENIS.as("jc")}
+     * @param jenisCutiAlias    aliased table {@code CUTI_JENIS.as("jc")}
      * @param subJenisCutiAlias aliased table {@code CUTI_JENIS.as("sjc")}
-     * @param picAlias        aliased table {@code JABATAN.as("pic")}
+     * @param picAlias          aliased table {@code JABATAN.as("pic")}
      */
     public static Field<?>[] fullQueryFields(CutiJenis jenisCutiAlias, CutiJenis subJenisCutiAlias, Jabatan picAlias) {
         return new Field<?>[] {
@@ -105,7 +108,8 @@ public final class CutiPegawaiSelects {
     }
 
     /**
-     * SELECT columns for mini-response ({@code CutiPengajuanMiniResponse}) — same as
+     * SELECT columns for mini-response ({@code CutiPengajuanMiniResponse}) — same
+     * as
      * {@link #fullQueryFields} but without {@code REF_CUTI_ID}.
      */
     public static Field<?>[] miniQueryFields(CutiJenis jenisCutiAlias, CutiJenis subJenisCutiAlias, Jabatan picAlias) {

@@ -1,6 +1,5 @@
 package id.perumdamts.kepegawaian.dto.master.jenisKeahlian;
 
-import id.perumdamts.kepegawaian.entities.master.JenisKeahlian;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 

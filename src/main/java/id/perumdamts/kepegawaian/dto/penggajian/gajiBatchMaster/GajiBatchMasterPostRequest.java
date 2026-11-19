@@ -7,4 +7,3 @@ import org.springframework.web.multipart.MultipartFile;
 public class GajiBatchMasterPostRequest {
     private MultipartFile file;
 }
-

@@ -5,7 +5,6 @@ import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.DukResponse;
 import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.ReportJobResponse;
 import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.ReportJobStatus;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;

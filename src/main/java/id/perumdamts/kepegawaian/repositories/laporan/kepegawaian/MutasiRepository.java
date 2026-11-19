@@ -1,17 +1,18 @@
 package id.perumdamts.kepegawaian.repositories.laporan.kepegawaian;
 
-import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.MutasiResponse;
-import id.perumdamts.kepegawaian.entities.commons.EJenisMutasi;
-import id.perumdamts.kepegawaian.mapper.laporan.kepegawaian.MutasiRecordMapper;
-import lombok.RequiredArgsConstructor;
-import org.jooq.Condition;
-import org.jooq.DSLContext;
-import org.springframework.stereotype.Repository;
+import static id.perumdamts.kepegawaian.jooq.tables.RiwayatMutasi.RIWAYAT_MUTASI;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import static id.perumdamts.kepegawaian.jooq.tables.RiwayatMutasi.RIWAYAT_MUTASI;
+import org.jooq.Condition;
+import org.jooq.DSLContext;
+import org.springframework.stereotype.Repository;
+
+import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.MutasiResponse;
+import id.perumdamts.kepegawaian.entities.commons.EJenisMutasi;
+import id.perumdamts.kepegawaian.mapper.laporan.kepegawaian.MutasiRecordMapper;
+import lombok.RequiredArgsConstructor;
 
 @Repository
 @RequiredArgsConstructor

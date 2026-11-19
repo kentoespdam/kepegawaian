@@ -7,6 +7,7 @@ plugins {
     id("org.springframework.boot") version "4.0.3"
     id("io.spring.dependency-management") version "1.1.7"
     id("org.flywaydb.flyway") version "12.8.1"
+    id("com.diffplug.spotless") version "7.0.2"
 }
 
 buildscript {
@@ -123,13 +124,23 @@ tasks.named<Test>("test") {
 
 tasks.withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
-    options.compilerArgs.add("-parameters")
+    options.compilerArgs.addAll(listOf("-parameters", "-Xlint:deprecation"))
     // Lombok's annotation processor (lombok.permit.Permit) calls the terminally
     // deprecated sun.misc.Unsafe::objectFieldOffset (JEP 498). Silence the JDK 25
     // warning by allowing it in the forked compiler JVM until Lombok drops the call.
     options.isFork = true
     options.forkOptions.jvmArgs =
         (options.forkOptions.jvmArgs ?: emptyList()) + "--sun-misc-unsafe-memory-access=allow"
+}
+
+spotless {
+    java {
+        target("src/*/java/**/*.java")
+        targetExclude("src/main/java/id/perumdamts/kepegawaian/jooq/**/*.java")
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
 }
 
 tasks.register<JooqCodegenTask>("jooqCodegen") {

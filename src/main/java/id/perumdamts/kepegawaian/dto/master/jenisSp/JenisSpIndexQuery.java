@@ -1,7 +1,6 @@
 package id.perumdamts.kepegawaian.dto.master.jenisSp;
 
 import id.perumdamts.kepegawaian.dto.commons.PagedRequest;
-import id.perumdamts.kepegawaian.entities.master.JenisSp;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

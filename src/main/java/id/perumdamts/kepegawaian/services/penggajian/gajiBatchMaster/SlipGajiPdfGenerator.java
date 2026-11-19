@@ -68,7 +68,7 @@ public class SlipGajiPdfGenerator {
         PdfPCell infoCell = new PdfPCell();
         infoCell.setBorder(PdfPCell.BOTTOM); infoCell.setBorderWidthBottom(1.5f); infoCell.setPaddingBottom(8f);
         infoCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        
+
         Paragraph p1 = new Paragraph(properties.kop().instansi(), FONT_TITLE); p1.setAlignment(Element.ALIGN_CENTER); infoCell.addElement(p1);
         Paragraph p2 = new Paragraph(properties.kop().unitKerja(), FONT_SUBTITLE); p2.setAlignment(Element.ALIGN_CENTER); infoCell.addElement(p2);
         Paragraph p3 = new Paragraph(properties.kop().alamat(), FONT_SMALL); p3.setAlignment(Element.ALIGN_CENTER); infoCell.addElement(p3);
@@ -145,14 +145,14 @@ public class SlipGajiPdfGenerator {
         PdfPCell leftCell = SlipGajiTableHelper.createAdditionalColumn("Penerimaan Tambahan", SlipGajiTableHelper.filterAdditionalPenerimaan(dto), dto.totalPenerimaanTambahan(), FONT_BOLD, FONT_NORMAL);
         PdfPCell rightCell = SlipGajiTableHelper.createAdditionalColumn("Potongan Tambahan", SlipGajiTableHelper.filterAdditionalPotongan(dto), dto.totalPotonganTambahan(), FONT_BOLD, FONT_NORMAL);
         PdfPCell totalDibayarkanCell = new PdfPCell();
-        totalDibayarkanCell.setColspan(2); 
-        totalDibayarkanCell.setBorder(PdfPCell.TOP); 
+        totalDibayarkanCell.setColspan(2);
+        totalDibayarkanCell.setBorder(PdfPCell.TOP);
         totalDibayarkanCell.setPadding(6f);
         PdfPTable totalTable = new PdfPTable(2);
-        totalTable.setWidthPercentage(100); 
+        totalTable.setWidthPercentage(100);
         totalTable.setWidths(new float[]{70f, 30f});
         PdfPCell lCell = new PdfPCell(new Phrase("Total Dibayarkan", FONT_BOLD));
-        lCell.setBorder(PdfPCell.NO_BORDER); 
+        lCell.setBorder(PdfPCell.NO_BORDER);
         lCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
         PdfPCell vCell = new PdfPCell(new Phrase(SlipGajiTableHelper.formatRupiah(dto.totalDibayarkan()), FONT_BOLD));
         vCell.setBorder(PdfPCell.NO_BORDER); vCell.setHorizontalAlignment(Element.ALIGN_RIGHT);

@@ -1,7 +1,6 @@
 package id.perumdamts.kepegawaian.services.profil.profilUpdate;
 
 import id.perumdamts.kepegawaian.entities.commons.EProfileUpdateTable;
-import id.perumdamts.kepegawaian.entities.profil.LampiranProfil;
 import id.perumdamts.kepegawaian.entities.profil.ProfileUpdate;
 import id.perumdamts.kepegawaian.repositories.profil.jpa.LampiranProfilRepository;
 import id.perumdamts.kepegawaian.services.profil.ChangedStatusResolver;

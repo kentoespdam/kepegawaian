@@ -1,10 +1,12 @@
 package id.perumdamts.kepegawaian.repositories.cuti.jooq;
 
-import id.perumdamts.kepegawaian.dto.commons.SortParam;
-import id.perumdamts.kepegawaian.dto.cuti.approval.CutiApprovalMiniResponse;
-import id.perumdamts.kepegawaian.dto.cuti.approval.CutiApprovalRequest;
-import id.perumdamts.kepegawaian.mapper.cuti.CutiApprovalJooqMapper;
-import lombok.RequiredArgsConstructor;
+import static id.perumdamts.kepegawaian.jooq.tables.Biodata.BIODATA;
+import static id.perumdamts.kepegawaian.jooq.tables.CutiApproval.CUTI_APPROVAL;
+import static id.perumdamts.kepegawaian.jooq.tables.Jabatan.JABATAN;
+import static id.perumdamts.kepegawaian.jooq.tables.Pegawai.PEGAWAI;
+
+import java.util.Map;
+
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
@@ -13,12 +15,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
-import java.util.Map;
-
-import static id.perumdamts.kepegawaian.jooq.tables.Biodata.BIODATA;
-import static id.perumdamts.kepegawaian.jooq.tables.CutiApproval.CUTI_APPROVAL;
-import static id.perumdamts.kepegawaian.jooq.tables.Jabatan.JABATAN;
-import static id.perumdamts.kepegawaian.jooq.tables.Pegawai.PEGAWAI;
+import id.perumdamts.kepegawaian.dto.commons.SortParam;
+import id.perumdamts.kepegawaian.dto.cuti.approval.CutiApprovalMiniResponse;
+import id.perumdamts.kepegawaian.dto.cuti.approval.CutiApprovalRequest;
+import id.perumdamts.kepegawaian.mapper.cuti.CutiApprovalJooqMapper;
+import lombok.RequiredArgsConstructor;
 
 @Repository
 @RequiredArgsConstructor
@@ -35,18 +36,17 @@ public class CutiApprovalQueryRepository {
                 .where(where).fetchOptional(0, Long.class).orElse(0L);
 
         var data = dsl.select(
-                        CUTI_APPROVAL.ID,
-                        CUTI_APPROVAL.APPROVAL_LEVEL,
-                        CUTI_APPROVAL.APPROVAL_STATUS,
-                        CUTI_APPROVAL.NOTES,
-                        CUTI_APPROVAL.CREATED_AT,
-                        PEGAWAI.ID.as("approver_id"),
-                        PEGAWAI.NIPAM.as("approver_nipam"),
-                        BIODATA.NAMA.as("approver_nama"),
-                        JABATAN.ID.as("jab_id"),
-                        JABATAN.KODE.as("jab_kode"),
-                        JABATAN.NAMA.as("jab_nama")
-                )
+                CUTI_APPROVAL.ID,
+                CUTI_APPROVAL.APPROVAL_LEVEL,
+                CUTI_APPROVAL.APPROVAL_STATUS,
+                CUTI_APPROVAL.NOTES,
+                CUTI_APPROVAL.CREATED_AT,
+                PEGAWAI.ID.as("approver_id"),
+                PEGAWAI.NIPAM.as("approver_nipam"),
+                BIODATA.NAMA.as("approver_nama"),
+                JABATAN.ID.as("jab_id"),
+                JABATAN.KODE.as("jab_kode"),
+                JABATAN.NAMA.as("jab_nama"))
                 .from(CUTI_APPROVAL)
                 .leftJoin(PEGAWAI).on(CUTI_APPROVAL.APPROVER_ID.eq(PEGAWAI.ID))
                 .leftJoin(BIODATA).on(PEGAWAI.BIODATA_ID.eq(BIODATA.NIK))
@@ -81,7 +81,6 @@ public class CutiApprovalQueryRepository {
         return Map.of(
                 "id", CUTI_APPROVAL.ID,
                 "createdAt", CUTI_APPROVAL.CREATED_AT,
-                "approvalLevel", CUTI_APPROVAL.APPROVAL_LEVEL
-        );
+                "approvalLevel", CUTI_APPROVAL.APPROVAL_LEVEL);
     }
 }

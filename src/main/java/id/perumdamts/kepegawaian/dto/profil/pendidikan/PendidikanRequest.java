@@ -1,7 +1,6 @@
 package id.perumdamts.kepegawaian.dto.profil.pendidikan;
 
 import id.perumdamts.kepegawaian.dto.commons.PagedRequest;
-import id.perumdamts.kepegawaian.entities.profil.Pendidikan;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.domain.PageRequest;

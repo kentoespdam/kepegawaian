@@ -83,4 +83,3 @@ public abstract class PagedRequest implements Serializable {
                 : Sort.Direction.ASC;
     }
 }
-

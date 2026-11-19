@@ -1,7 +1,6 @@
 package id.perumdamts.kepegawaian.services.cuti.pengajuan;
 
 import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanRequest;
-import id.perumdamts.kepegawaian.dto.cuti.pengajuan.CutiPengajuanResponse;
 import id.perumdamts.kepegawaian.repositories.cuti.jooq.CutiPengajuanQueryRepository;
 import id.perumdamts.kepegawaian.repositories.master.jpa.HariLiburRepository;
 import id.perumdamts.kepegawaian.services.cuti.CutiOwnershipService;

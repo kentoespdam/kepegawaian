@@ -1,16 +1,16 @@
 package id.perumdamts.kepegawaian.dto.kepegawaian.riwayatKontrak;
 
+import java.time.LocalDate;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+
 import id.perumdamts.kepegawaian.entities.commons.EJenisKontrak;
-import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatKontrak;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-
-import java.time.LocalDate;
 
 @Data
 public class RiwayatKontrakPostRequest {
@@ -43,6 +43,5 @@ public class RiwayatKontrakPostRequest {
     private Double gajiPokok;
     private Boolean isLatest = false;
     private String notes;
-
 
 }

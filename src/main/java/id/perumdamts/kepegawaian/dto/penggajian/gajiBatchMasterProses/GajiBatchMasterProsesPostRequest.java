@@ -1,7 +1,6 @@
 package id.perumdamts.kepegawaian.dto.penggajian.gajiBatchMasterProses;
 
 import id.perumdamts.kepegawaian.entities.commons.EJenisGaji;
-import id.perumdamts.kepegawaian.entities.penggajian.GajiBatchMasterProses;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;

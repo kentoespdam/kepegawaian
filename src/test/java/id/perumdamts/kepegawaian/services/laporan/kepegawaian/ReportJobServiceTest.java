@@ -4,7 +4,6 @@ import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.ReportJobResponse;
 import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.ReportJobStatus;
 import id.perumdamts.kepegawaian.utils.FileUploadUtil;
 import org.junit.jupiter.api.Test;
-import org.springframework.core.io.ByteArrayResource;
 
 import java.util.concurrent.Executors;
 
