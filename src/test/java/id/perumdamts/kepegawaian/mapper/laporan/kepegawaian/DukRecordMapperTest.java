@@ -63,6 +63,6 @@ class DukRecordMapperTest {
         assertEquals("Teknik Informatika", result.jurusan());
         assertEquals(2014, result.tahunLulus());
         assertEquals("S1", result.tingkatPendidikan());
-        assertEquals((byte) 2, result.statusPegawai());
+        assertEquals("Pegawai Tetap", result.statusPegawai());
     }
 }

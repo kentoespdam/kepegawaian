@@ -5,6 +5,7 @@ import static id.perumdamts.kepegawaian.jooq.tables.Golongan.GOLONGAN;
 import static id.perumdamts.kepegawaian.jooq.tables.Pegawai.PEGAWAI;
 
 import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.DukResponse;
+import id.perumdamts.kepegawaian.entities.commons.EStatusPegawai;
 import org.jooq.Record;
 
 public final class DukRecordMapper {
@@ -13,6 +14,12 @@ public final class DukRecordMapper {
   }
 
   public static DukResponse map(Record r) {
+    Byte spByte = r.get(PEGAWAI.STATUS_PEGAWAI);
+    String statusPegawai =
+        (spByte != null && spByte >= 0 && spByte < EStatusPegawai.values().length)
+            ? EStatusPegawai.values()[spByte].value
+            : null;
+
     return new DukResponse(
         r.get(BIODATA.NAMA),
         r.get(PEGAWAI.NIPAM),
@@ -28,6 +35,6 @@ public final class DukRecordMapper {
         r.get("jurusan", String.class),
         r.get("tahun_lulus", Integer.class),
         r.get("tingkat_pendidikan", String.class),
-        r.get(PEGAWAI.STATUS_PEGAWAI));
+        statusPegawai);
   }
 }

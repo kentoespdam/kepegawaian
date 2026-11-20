@@ -11,12 +11,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class DukService {
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
     private final DukRepository repository;
 
     public List<DukResponse> fetch() {
@@ -54,35 +58,26 @@ public class DukService {
         ExcelDateHelper.writeStyledCell(row, 2, r.nipam(), "allborder");
         ExcelDateHelper.writeStyledCell(row, 3, r.golongan(), "allborder");
         ExcelDateHelper.writeStyledCell(row, 4, r.pangkat(), "allborder");
-        ExcelDateHelper.writeStyledCell(row, 5, ExcelDateHelper.formatDate(r.tmtGolongan()), "allborder");
+        ExcelDateHelper.writeStyledCell(row, 5, formatDate(r.tmtGolongan()), "allborder");
         ExcelDateHelper.writeStyledCell(row, 6, r.namaJabatan(), "allborder");
-        ExcelDateHelper.writeStyledCell(row, 7, ExcelDateHelper.formatDate(r.tmtJabatan()), "allborder");
-        ExcelDateHelper.writeStyledCell(row, 8, ExcelDateHelper.formatDate(r.tmtKerja()), "allborder");
+        ExcelDateHelper.writeStyledCell(row, 7, formatDate(r.tmtJabatan()), "allborder");
+        ExcelDateHelper.writeStyledCell(row, 8, formatDate(r.tmtKerja()), "allborder");
         ExcelDateHelper.writeStyledCell(row, 9, r.mkTahun(), "allborder");
         ExcelDateHelper.writeStyledCell(row, 10, hitungSisaBulan(r.mkTahun(), r.mkBulan()), "allborder");
         ExcelDateHelper.writeStyledCell(row, 11, r.jurusan(), "allborder");
         ExcelDateHelper.writeStyledCell(row, 12, r.tahunLulus(), "allborder");
         ExcelDateHelper.writeStyledCell(row, 13, r.tingkatPendidikan(), "allborder");
         ExcelDateHelper.writeStyledCell(row, 14, r.usia(), "allborder");
-        ExcelDateHelper.writeStyledCell(row, 15, decodeStatusPegawai(r.statusPegawai()), "allborder");
+        ExcelDateHelper.writeStyledCell(row, 15, r.statusPegawai(), "allborder");
+    }
+
+    private String formatDate(LocalDate date) {
+        return date != null ? date.format(DATE_FORMATTER) : null;
     }
 
     private int hitungSisaBulan(Integer tahun, Integer bulan) {
         int t = tahun != null ? tahun : 0;
         int b = bulan != null ? bulan : 0;
         return Math.max(0, b - (t * 12));
-    }
-
-    private String decodeStatusPegawai(Byte b) {
-        if (b == null) return "";
-        return switch (b) {
-            case 0 -> "Pegawai Kontrak";
-            case 1 -> "Calon Pegawai";
-            case 2 -> "Pegawai Tetap";
-            case 3 -> "Calon Honorer Tetap";
-            case 4 -> "Honorer Tetap";
-            case 5 -> "Non Pegawai";
-            default -> "Invalid";
-        };
     }
 }

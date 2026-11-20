@@ -55,12 +55,15 @@ class LaporanJsonParityTest {
                 "Informatika",
                 2015,
                 "S1",
-                (byte) 1
+                "Calon Pegawai"
         );
 
         String json = objectMapper.writeValueAsString(duk);
         assertNotNull(json);
         assertTrue(json.contains("Bagus"));
         assertTrue(json.contains("Informatika"));
+        assertTrue(json.contains("01.01.2020"));
+        assertTrue(json.contains("01.01.2015"));
+        assertTrue(json.contains("Calon Pegawai"));
     }
 }
