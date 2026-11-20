@@ -12,7 +12,7 @@ public enum EAgama {
     ALIRAN_KEPERCAYAAN("Aliran Kepercayaan"),
     LAINNYA("Lainnya");
 
-    private final String label;
+    public final String label;
 
     EAgama(String label) {
         this.label = label;

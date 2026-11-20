@@ -9,6 +9,7 @@ import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatKontrak;
 import id.perumdamts.kepegawaian.entities.kepegawaian.RiwayatSk;
 import id.perumdamts.kepegawaian.entities.master.Golongan;
 import id.perumdamts.kepegawaian.entities.pegawai.Pegawai;
+import id.perumdamts.kepegawaian.exceptions.BadRequestException;
 import id.perumdamts.kepegawaian.exceptions.ConflictException;
 import id.perumdamts.kepegawaian.exceptions.NotFoundException;
 import id.perumdamts.kepegawaian.mapper.kepegawaian.riwayatKontrak.RiwayatKontrakMapper;
@@ -109,6 +110,10 @@ public class RiwayatKontrakCommandService implements KontrakBootstrapPort {
                 pegawaiWriteback.writebackGolonganPensiun(pegawai, savedSk, request.getTanggalSelesai());
                 break;
             }
+            case TERMINASI:
+                throw new BadRequestException("Jenis kontrak TERMINASI hanya dapat diproses melalui alur Terminasi");
+            default:
+                throw new BadRequestException("Jenis kontrak tidak didukung: " + request.getJenisKontrak());
         }
 
         RiwayatKontrak saved = repository.save(entity);
@@ -165,6 +170,10 @@ public class RiwayatKontrakCommandService implements KontrakBootstrapPort {
                 pegawaiWriteback.writebackGolonganPensiun(pegawai, savedSk, request.getTanggalSelesai());
                 break;
             }
+            case TERMINASI:
+                throw new BadRequestException("Jenis kontrak TERMINASI hanya dapat diproses melalui alur Terminasi");
+            default:
+                throw new BadRequestException("Jenis kontrak tidak didukung: " + request.getJenisKontrak());
         }
 
         RiwayatKontrak saved = repository.save(entity);
@@ -188,12 +197,14 @@ public class RiwayatKontrakCommandService implements KontrakBootstrapPort {
 
     /**
      * Saga terminasi (ADR-0021): baris kontrak terminasi dibuat untuk pegawai
-     * berstatus KONTRAK. Dipanggil oleh {@code RiwayatTerminasiCommandService.save} —
+     * berstatus KONTRAK. Dipanggil oleh {@code RiwayatTerminasiCommandService.save}
+     * —
      * tulis milik aggregate ini tidak boleh di-inline di orkestrator, dan flag
      * isLatest dikelola di sini (updateLatest), bukan disalin ke service lain.
      */
     @Transactional(rollbackFor = Exception.class)
-    public RiwayatKontrak createForTerminasi(RiwayatTerminasiPostRequest request, Pegawai pegawai, RiwayatSk riwayatSk) {
+    public RiwayatKontrak createForTerminasi(RiwayatTerminasiPostRequest request, Pegawai pegawai,
+            RiwayatSk riwayatSk) {
         RiwayatKontrak kontrak = RiwayatKontrakMapper.toEntity(request, pegawai);
         kontrak.setRiwayatSk(riwayatSk);
         RiwayatKontrak saved = repository.save(kontrak);
