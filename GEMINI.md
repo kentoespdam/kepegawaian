@@ -11,36 +11,37 @@ Domain utama: `profil/`, `pegawai/`, `master/`, `cuti/`, `kepegawaian/`, `pengga
 
 ## 1. Adaptive Routing & Agent Roles (Direct-First)
 
-Apply this strict priority order before executing any task:
+Terapkan urutan prioritas ketat ini sebelum mengeksekusi task apapun:
 
 ### Priority 1: Mandatory Deep-Reasoning (`deep_reasoner` Sub-Agent)
-Invoke `invoke_subagent` with `deep_reasoner` (tier: `pro`) BEFORE writing code when ANY of these objective conditions is met:
+Invoke `invoke_subagent` dengan `deep_reasoner` (tier: `pro`) SEBELUM menulis kode jika salah satu kondisi objektif berikut terpenuhi:
 - **Security/Auth:** Menyentuh `JwtAuthFilter`, `SecurityConfig`, atau logika `@PreAuthorize` — SELALU.
 - **Payroll/Penggajian:** Mengubah formula gaji, komponen tunjangan, atau batch `penggajian/`.
 - **Interface Break:** Refactor yang mengubah signature publik `CustomResult`, `PagedRequest`, atau kontrak controller antar-modul.
 - **DB Migration:** Menulis atau mengubah skrip Flyway (`V*.sql`) yang melibatkan DDL kritis (DROP, ALTER pada tabel live).
-- **Stuck Bug:** Bug tidak terjelaskan setelah tepat 2 attempt debugging di Root Agent.
+- **Blast Radius Tinggi:** `gitnexus_impact` mengembalikan risk level HIGH atau CRITICAL.
+- **Stuck Bug:** Bug yang tidak terjelaskan setelah tepat 2 attempt debugging di level Root Agent.
 
 *Exceptions (Do NOT invoke `deep_reasoner`):*
-- Implementing an already-confirmed Implementation Contract from a prior `deep_reasoner` response.
-- Writing routine unit tests (`*Test`, `*ControllerTest`) or fixing localized bugs with an already-identified root cause.
-- Task yang tidak menyentuh `auth/`, `penggajian/`, atau kontrak publik antar-modul sama sekali.
+- Implementasi sudah ada Implementation Contract yang dikonfirmasi dari respons `deep_reasoner` sebelumnya.
+- Menulis unit/integration test rutin (`*Test`, `*ControllerTest`) atau memperbaiki bug terlokalisasi dengan root cause yang sudah diidentifikasi.
+- Task yang tidak menyentuh `auth/`, `penggajian/`, kontrak publik antar-modul, atau migrasi DB sama sekali.
 
-**Quota Fallback:** Jika `deep_reasoner` (model: `pro`) mengembalikan error quota/rate-limit, WAJIB segera re-invoke dengan `deep_reasoner_fallback` (model: `flash`). Gunakan prompt dan context identik. Jika fallback `Confidence Level: LOW`, tunda implementasi dan laporkan ke user.
+**Quota Fallback:** Jika `deep_reasoner` (model: `pro`) mengembalikan error quota/rate-limit, WAJIB segera re-invoke dengan `deep_reasoner_fallback` (model: `flash`). Gunakan prompt dan context yang identik. Jika fallback mengembalikan `Confidence Level: LOW`, tunda implementasi dan laporkan ke user.
 
 ### Priority 2: Direct Execution (Root Agent — No Sub-Agent)
-Root Agent MUST execute directly without spawning any sub-agent when:
-- Running issue tracker operations (`bd`), `git` commands, or single `gitnexus` queries.
-- Making localized code edits (≤ 2 files, < 50 LOC) following established patterns in `CODING_RULES.md`.
-- Running final verification commands (`./gradlew test`, `./gradlew compileJava`).
-- Responding to questions, writing docs, or analysis without code changes.
+Root Agent HARUS mengeksekusi langsung tanpa spawn sub-agent ketika:
+- Menjalankan operasi issue tracker (`bd`), perintah `git`, atau query `gitnexus` tunggal.
+- Membuat perubahan kode terlokalisasi (≤ 2 file, < 50 LOC) pada file **selain** auth, penggajian, kontrak publik, atau migrasi DB, mengikuti pola yang sudah ada di `CODING_RULES.md`.
+- Menjalankan perintah verifikasi akhir (`./gradlew test`, `./gradlew compileJava`, `make lint`).
+- Menjawab pertanyaan, menulis dokumentasi, atau analisis tanpa perubahan kode.
 
-### Priority 3: Substantial Technical Delegation (`flash` Sub-Agent)
-Invoke `invoke_subagent` with model `flash` when:
-- Implementation spans ≥ 2 files with substantial changes (new endpoints, new modules).
-- Creating a test suite with ≥ 3 test cases.
-- Broad codebase exploration requiring reads across > 5 files.
-- Any task estimated to take > 15 minutes of execution time.
+### Priority 3: Substantial Technical Delegation (`flash_lite` Sub-Agent)
+Invoke `invoke_subagent` dengan `flash_lite` (tier: `flash`) ketika:
+- Implementasi mencakup ≥ 2 file dengan perubahan substansial (endpoint baru, modul baru).
+- Membuat test suite dengan ≥ 3 test case.
+- Eksplorasi codebase luas yang memerlukan pembacaan > 5 file.
+- Task yang diestimasi memakan > 15 menit waktu eksekusi.
 
 ---
 
