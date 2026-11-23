@@ -247,22 +247,31 @@ def cmd_run_all(args: argparse.Namespace, console=None) -> int:
         overall_success = False
 
     # 8. Stage 7: Appwrite Auth Provisioning
-    logger.info("Starting Stage 7: Appwrite Auth Provisioning...")
-    try:
-        s7_res = run_stage7_auth(dry_run=args.dry_run, console=console)
-        s7_success = s7_res.get("status") == "COMPLETED"
+    if not getattr(args, "skip_auth", False):
+        logger.info("Starting Stage 7: Appwrite Auth Provisioning...")
+        try:
+            s7_res = run_stage7_auth(dry_run=args.dry_run, console=console)
+            s7_success = s7_res.get("status") == "COMPLETED"
+            stages_results.append({
+                "stage": "Stage 7: Appwrite Auth",
+                "status": "PASSED" if s7_success else "FAILED",
+                "details": f"Created: {s7_res.get('active_created', 0)}, Blocked: {s7_res.get('retired_blocked', 0)}",
+                "success": s7_success,
+            })
+            if not s7_success:
+                overall_success = False
+        except Exception as exc:
+            logger.exception("Stage 7 failed: %s", exc)
+            stages_results.append({"stage": "Stage 7: Appwrite Auth", "status": "ERROR", "details": str(exc), "success": False})
+            overall_success = False
+    else:
+        logger.info("Skipping Stage 7: Appwrite Auth Provisioning (--skip-auth specified).")
         stages_results.append({
             "stage": "Stage 7: Appwrite Auth",
-            "status": "PASSED" if s7_success else "FAILED",
-            "details": f"Created: {s7_res.get('active_created', 0)}, Blocked: {s7_res.get('retired_blocked', 0)}",
-            "success": s7_success,
+            "status": "SKIPPED",
+            "details": "Skipped via --skip-auth flag",
+            "success": True,
         })
-        if not s7_success:
-            overall_success = False
-    except Exception as exc:
-        logger.exception("Stage 7 failed: %s", exc)
-        stages_results.append({"stage": "Stage 7: Appwrite Auth", "status": "ERROR", "details": str(exc), "success": False})
-        overall_success = False
 
     elapsed = time.time() - start_total
     _render_run_all_summary(stages_results, console, elapsed)
@@ -286,6 +295,8 @@ def _render_run_all_summary(stages_results: list[dict[str, Any]], console=None, 
                 st = sr["status"]
                 if st == "PASSED":
                     st_str = "[green]PASSED[/green]"
+                elif st == "SKIPPED":
+                    st_str = "[bold yellow]SKIPPED[/bold yellow]"
                 else:
                     st_str = "[bold red]FAILED[/bold red]"
                     all_ok = False
@@ -437,6 +448,7 @@ def build_parser() -> argparse.ArgumentParser:
     p_run_all.add_argument("--dry-run", action="store_true", help="Parse without mutating target database")
     p_run_all.add_argument("--force", action="store_true", help="Continue pipeline even if Stage 0 preflight fails")
     p_run_all.add_argument("--limit", type=int, default=None, help="Record limit for stages where supported")
+    p_run_all.add_argument("--skip-auth", action="store_true", help="Skip Stage 7 Appwrite Auth Provisioning")
 
     # Command: stage
     p_stage = subparsers.add_parser("stage", help="Execute a specific migration stage independently")

@@ -88,7 +88,8 @@ MIGRATE_COMMON_FLAGS = \
 MIGRATE_RUN_ALL_FLAGS = \
 	$(MIGRATE_COMMON_FLAGS) \
 	$(if $(filter 1 true yes,$(FRESH)),--fresh) \
-	$(if $(filter 1 true yes,$(FORCE)),--force)
+	$(if $(filter 1 true yes,$(FORCE)),--force) \
+	$(if $(filter 1 true yes,$(SKIP_AUTH)),--skip-auth)
 
 .PHONY: migrate-help migrate-venv migrate-preflight migrate-test migrate-run-all migrate-stage migrate-audit migrate-audit-integrity migrate-reconcile-payroll migrate-sync-files migrate-sync-files-dry migrate-sync-auth migrate-sync-auth-dry
 
