@@ -1,5 +1,10 @@
 package id.perumdamts.kepegawaian.dto.laporan.kepegawaian;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import java.time.LocalDate;
+
 public record DnpResponse(
         String kodeOrganisasi,
         String orgGroup,
@@ -7,13 +12,19 @@ public record DnpResponse(
         String nama,
         String nipam,
         String namaJabatan,
-        String tmtJabatan,
+        @JsonSerialize(using = LocalDateSerializer.class)
+        @JsonFormat(pattern = "dd.MM.yyyy")
+        LocalDate tmtJabatan,
         String pangkat,
         String golongan,
-        String tmtGolongan,
+        @JsonSerialize(using = LocalDateSerializer.class)
+        @JsonFormat(pattern = "dd.MM.yyyy")
+        LocalDate tmtGolongan,
         Integer mkgTahun,
         Integer mkgBulan,
-        String tmtKerja,
+        @JsonSerialize(using = LocalDateSerializer.class)
+        @JsonFormat(pattern = "dd.MM.yyyy")
+        LocalDate tmtKerja,
         Integer mkTahun,
         Integer mkBulan,
         String pendidikan,

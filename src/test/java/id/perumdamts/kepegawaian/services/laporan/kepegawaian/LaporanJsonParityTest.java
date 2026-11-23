@@ -1,6 +1,7 @@
 package id.perumdamts.kepegawaian.services.laporan.kepegawaian;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.DnpResponse;
 import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.DukResponse;
 import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.ReportJobResponse;
 import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.ReportJobStatus;
@@ -65,5 +66,36 @@ class LaporanJsonParityTest {
         assertTrue(json.contains("01.01.2020"));
         assertTrue(json.contains("01.01.2015"));
         assertTrue(json.contains("Calon Pegawai"));
+    }
+
+    @Test
+    void testDnpResponseSerialization() throws Exception {
+        DnpResponse dnp = new DnpResponse(
+                "ORG01",
+                "GROUP-A",
+                3,
+                "Budi",
+                "8903002",
+                "Manager",
+                LocalDate.of(2021, 6, 1),
+                "Pembina",
+                "IV/a",
+                LocalDate.of(2020, 1, 1),
+                6,
+                72,
+                LocalDate.of(2015, 3, 15),
+                11,
+                133,
+                "S1 Teknik Informatika 2014",
+                "Jakarta 01.01.1990"
+        );
+
+        String json = objectMapper.writeValueAsString(dnp);
+        assertNotNull(json);
+        assertTrue(json.contains("01.06.2021"));
+        assertTrue(json.contains("01.01.2020"));
+        assertTrue(json.contains("15.03.2015"));
+        assertTrue(json.contains("Budi"));
+        assertTrue(json.contains("ORG01"));
     }
 }

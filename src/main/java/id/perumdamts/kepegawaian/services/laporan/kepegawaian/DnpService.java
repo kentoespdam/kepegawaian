@@ -4,6 +4,8 @@ import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.DnpResponse;
 import id.perumdamts.kepegawaian.repositories.laporan.kepegawaian.DnpRepository;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -19,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class DnpService {
+  private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
   private final DnpRepository repository;
 
   public List<DnpResponse> fetch() {
@@ -126,16 +130,20 @@ public class DnpService {
     ExcelDateHelper.writeStyledCell(row, 2, p.nama(), "allborder");
     ExcelDateHelper.writeStyledCell(row, 3, p.nipam(), "allborder");
     ExcelDateHelper.writeStyledCell(row, 4, p.namaJabatan(), "allborder");
-    ExcelDateHelper.writeStyledCell(row, 5, p.tmtJabatan(), "allborder");
+    ExcelDateHelper.writeStyledCell(row, 5, formatDate(p.tmtJabatan()), "allborder");
     ExcelDateHelper.writeStyledCell(row, 6, p.pangkat(), "allborder");
     ExcelDateHelper.writeStyledCell(row, 7, p.golongan(), "allborder");
-    ExcelDateHelper.writeStyledCell(row, 8, p.tmtGolongan(), "allborder");
+    ExcelDateHelper.writeStyledCell(row, 8, formatDate(p.tmtGolongan()), "allborder");
     ExcelDateHelper.writeStyledCell(row, 9, p.mkgTahun(), "allborder");
     ExcelDateHelper.writeStyledCell(row, 10, p.mkgBulan(), "allborder");
-    ExcelDateHelper.writeStyledCell(row, 11, p.tmtKerja(), "allborder");
+    ExcelDateHelper.writeStyledCell(row, 11, formatDate(p.tmtKerja()), "allborder");
     ExcelDateHelper.writeStyledCell(row, 12, p.mkTahun(), "allborder");
     ExcelDateHelper.writeStyledCell(row, 13, p.mkBulan(), "allborder");
     ExcelDateHelper.writeStyledCell(row, 14, p.pendidikan(), "allborder");
     ExcelDateHelper.writeStyledCell(row, 15, p.ttl(), "allborder");
+  }
+
+  private static String formatDate(LocalDate date) {
+    return date != null ? date.format(DATE_FORMATTER) : null;
   }
 }

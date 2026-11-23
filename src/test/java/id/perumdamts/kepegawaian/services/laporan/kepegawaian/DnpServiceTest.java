@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -23,8 +24,8 @@ class DnpServiceTest {
     private DnpResponse sampleDnp(String kode, Integer levelJabatan) {
         return new DnpResponse(
                 kode, "GROUP-A", levelJabatan, "Budi", "8903001", "Kepala",
-                "01.06.2021", "Pembina", "IV/a", "01.01.2020",
-                4, 6, "10.03.2015", 11, 5,
+                LocalDate.of(2021, 6, 1), "Pembina", "IV/a", LocalDate.of(2020, 1, 1),
+                4, 6, LocalDate.of(2015, 3, 10), 11, 5,
                 "S1 Teknik Informatika", "Bandung, 01.01.1990"
         );
     }

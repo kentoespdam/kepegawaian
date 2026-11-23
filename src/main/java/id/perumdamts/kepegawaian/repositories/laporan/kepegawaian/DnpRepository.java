@@ -24,9 +24,6 @@ public class DnpRepository {
         private final DSLContext dsl;
 
         public List<DnpResponse> fetch() {
-                var tmtJabatan = DSL.field("DATE_FORMAT({0}, '%d.%m.%Y')", String.class, PEGAWAI.TMT_JABATAN);
-                var tmtGolongan = DSL.field("DATE_FORMAT({0}, '%d.%m.%Y')", String.class, PEGAWAI.TMT_GOLONGAN);
-                var tmtKerja = DSL.field("DATE_FORMAT({0}, '%d.%m.%Y')", String.class, PEGAWAI.TMT_KERJA);
                 var mkgTahun = DSL.field("TIMESTAMPDIFF(YEAR, {0}, NOW())", Integer.class, PEGAWAI.TMT_GOLONGAN);
                 var mkgBulan = DSL.field("TIMESTAMPDIFF(MONTH, {0}, NOW())", Integer.class, PEGAWAI.TMT_GOLONGAN);
                 var mkTahun = DSL.field("TIMESTAMPDIFF(YEAR, {0}, NOW())", Integer.class, PEGAWAI.TMT_KERJA);
@@ -41,11 +38,11 @@ public class DnpRepository {
                                 ORGANISASI.ORG_GROUP.as("org_group"),
                                 JABATAN.LEVEL_ID.as("level_jabatan"),
                                 BIODATA.NAMA, PEGAWAI.NIPAM, JABATAN.NAMA.as("nama_jabatan"),
-                                tmtJabatan.as("tmt_jabatan"),
+                                PEGAWAI.TMT_JABATAN,
                                 GOLONGAN.PANGKAT, GOLONGAN.GOLONGAN_,
-                                tmtGolongan.as("tmt_golongan"),
+                                PEGAWAI.TMT_GOLONGAN,
                                 mkgTahun.as("mkg_tahun"), mkgBulan.as("mkg_bulan"),
-                                tmtKerja.as("tmt_kerja"),
+                                PEGAWAI.TMT_KERJA,
                                 mkTahun.as("mk_tahun"), mkBulan.as("mk_bulan"),
                                 pendidikan.as("pendidikan"),
                                 ttl.as("ttl"))
