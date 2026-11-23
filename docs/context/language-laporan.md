@@ -10,8 +10,10 @@ Daftar susunan urutan pegawai negeri/karyawan yang disusun berdasarkan peringkat
 **DNP (Daftar Nominatif Pegawai)**:
 Daftar rekapitulasi data administratif seluruh pegawai aktif yang dikelompokkan berdasarkan unit organisasi/kerja, level jabatan, pangkat/golongan, dan masa kerja (MK & MKG). Digunakan untuk audit formasi dan daftar riwayat ringkas kepegawaian.
 
-**SO (Susunan Organisasi)**:
-Laporan rekapitulasi pohon hierarki organisasi kepegawaian yang memetakan jumlah dan distribusi pegawai aktif pada masing-masing unit kerja dan sub-unit.
+**SO (Susunan Organisasi / Struktur Organisasi)**:
+Laporan dan bagan pohon hierarki organisasi kepegawaian yang memetakan kedudukan struktural **Jabatan** (dari Dewan Pengawas dan Direksi hingga batas `maxLevel`, default Supervisor / level 6), dilengkapi dengan pejabat aktif (**Pegawai**) yang menempatinya, NIPAM, dan unit kerja **Organisasi**.
+- Posisi jabatan struktural yang belum terisi pejabat aktif ditandai dengan flag `isLowong = true`.
+- Dikonsumsi oleh komponen bagan visualisasi frontend (seperti `d3-org-chart`) dalam format **Flat Array** (relasi `id` dan `parentId`), dengan opsi parameter `?format=tree` untuk format bersarang (`children`).
 
 **LTA (Lepas Tanggungan Anak)**:
 Laporan pemantauan anak pegawai yang mendekati batas usia tunjangan atau batas akhir kriteria tanggungan (usia maksimal, status pendidikan/kuliah, pernikahan). Filter evaluasi mencakup:

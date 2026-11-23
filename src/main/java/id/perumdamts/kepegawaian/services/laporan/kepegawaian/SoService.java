@@ -2,12 +2,13 @@ package id.perumdamts.kepegawaian.services.laporan.kepegawaian;
 
 import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.SoResponse;
 import id.perumdamts.kepegawaian.repositories.laporan.kepegawaian.SoRepository;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -15,50 +16,63 @@ import java.util.Map;
 public class SoService {
     private final SoRepository repository;
 
-    public Map<String, Object> fetch() {
-        var flat = repository.fetch();
+    public List<SoResponse> fetchFlat(Integer maxLevel) {
+        int level = (maxLevel == null || maxLevel <= 0) ? 6 : maxLevel;
+        return repository.fetch(level);
+    }
+
+    public Map<String, Object> fetchTree(Integer maxLevel) {
+        var flat = fetchFlat(maxLevel);
         return buildHierarchy(flat);
     }
 
-    private Map<String, Object> buildHierarchy(java.util.List<SoResponse> flat) {
-        if (flat.isEmpty()) {
-            return Map.of("hierarchy", Map.of());
-        }
-        var nodes = new HashMap<Long, SoResponse>();
-        for (var item : flat) {
-            nodes.put(item.key(), item);
-        }
-
-        SoResponse root = null;
-        for (var item : flat) {
-            if (item.boss() == 0L) {
-                root = item;
-                break;
-            }
-        }
-        if (root == null) {
-            root = flat.getFirst();
-        }
-
-        // Build parent→children relationships using mutable copies
-        var childrenMap = new HashMap<Long, java.util.List<SoResponse>>();
-        for (var item : flat) {
-            if (item.boss() != 0L && nodes.containsKey(item.boss())) {
-                childrenMap.computeIfAbsent(item.boss(), k -> new java.util.ArrayList<>()).add(item);
-            }
-        }
-
-        // Rebuild tree with children
-        var rootWithChildren = buildNode(root, childrenMap);
-        return Map.of("hierarchy", rootWithChildren);
+    public Map<String, Object> fetch() {
+        return fetchTree(6);
     }
 
-    private SoResponse buildNode(SoResponse node, Map<Long, java.util.List<SoResponse>> childrenMap) {
-        var children = childrenMap.getOrDefault(node.key(), java.util.List.of());
-        var childNodes = new java.util.ArrayList<SoResponse>();
+    private Map<String, Object> buildHierarchy(List<SoResponse> flat) {
+        if (flat == null || flat.isEmpty()) {
+            return Map.of("hierarchy", Map.of());
+        }
+
+        var nodes = new HashMap<Long, SoResponse>();
+        for (var item : flat) {
+            nodes.put(item.id(), item);
+        }
+
+        var roots = new ArrayList<SoResponse>();
+        for (var item : flat) {
+            if (item.parentId() == null || item.parentId() == 0L || !nodes.containsKey(item.parentId())) {
+                roots.add(item);
+            }
+        }
+
+        if (roots.isEmpty()) {
+            roots.add(flat.getFirst());
+        }
+
+        var childrenMap = new HashMap<Long, List<SoResponse>>();
+        for (var item : flat) {
+            if (item.parentId() != null && item.parentId() != 0L && nodes.containsKey(item.parentId())) {
+                childrenMap.computeIfAbsent(item.parentId(), k -> new ArrayList<>()).add(item);
+            }
+        }
+
+        if (roots.size() == 1) {
+            var rootWithChildren = buildNode(roots.getFirst(), childrenMap);
+            return Map.of("hierarchy", rootWithChildren);
+        }
+
+        var rootsWithChildren = roots.stream().map(r -> buildNode(r, childrenMap)).toList();
+        return Map.of("hierarchy", rootsWithChildren);
+    }
+
+    private SoResponse buildNode(SoResponse node, Map<Long, List<SoResponse>> childrenMap) {
+        var children = childrenMap.getOrDefault(node.id(), List.of());
+        var childNodes = new ArrayList<SoResponse>();
         for (var child : children) {
             childNodes.add(buildNode(child, childrenMap));
         }
-        return new SoResponse(node.key(), node.boss(), node.level(), node.jabatan(), node.name(), node.nik(), childNodes);
+        return node.withChildren(childNodes);
     }
 }

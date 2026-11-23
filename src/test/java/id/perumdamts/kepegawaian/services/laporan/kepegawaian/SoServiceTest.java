@@ -1,48 +1,101 @@
 package id.perumdamts.kepegawaian.services.laporan.kepegawaian;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.SoResponse;
 import id.perumdamts.kepegawaian.repositories.laporan.kepegawaian.SoRepository;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
-
 @ExtendWith(MockitoExtension.class)
 class SoServiceTest {
 
-    @Mock private SoRepository repository;
-    @InjectMocks private SoService service;
+    @Mock
+    private SoRepository repository;
+
+    @InjectMocks
+    private SoService service;
 
     @Test
-    void buildHierarchyCreatesTree() {
-        var root = new SoResponse(1L, 0L, 1, "Direktur", "Andi", "8903001", List.of());
-        var child = new SoResponse(2L, 1L, 2, "Manager SDM", "Budi", "8903002", List.of());
-        var grandchild = new SoResponse(3L, 2L, 3, "Staff HRD", "Citra", "8903003", List.of());
-        when(repository.fetch()).thenReturn(List.of(root, child, grandchild));
+    void fetchFlatDelegatesToRepositoryWithDefaults() {
+        when(repository.fetch(6)).thenReturn(List.of());
+        when(repository.fetch(3)).thenReturn(List.of());
 
-        var result = service.fetch();
+        service.fetchFlat(null);
+        service.fetchFlat(0);
+        service.fetchFlat(-1);
+        service.fetchFlat(3);
 
-        @SuppressWarnings("unchecked")
-        var hierarchy = (SoResponse) result.get("hierarchy");
-        assertNotNull(hierarchy);
-        assertEquals(1L, hierarchy.key());
-        assertEquals("Direktur", hierarchy.jabatan());
-        assertEquals(1, hierarchy.subordinates().size());
-        assertEquals("Manager SDM", hierarchy.subordinates().getFirst().jabatan());
-        assertEquals(1, hierarchy.subordinates().getFirst().subordinates().size());
-        assertEquals("Staff HRD", hierarchy.subordinates().getFirst().subordinates().getFirst().jabatan());
+        verify(repository, times(3)).fetch(6);
+        verify(repository, times(1)).fetch(3);
     }
 
     @Test
-    void buildHierarchyEmptyReturnsEmptyMap() {
-        when(repository.fetch()).thenReturn(List.of());
-        var result = service.fetch();
+    void fetchTreeBuildsHierarchySingleRoot() {
+        var root = SoResponse.flat(1L, null, "DIR", "Direktur", 1, "Andi", "8903001", "Direksi", null, false);
+        var child = SoResponse.flat(2L, 1L, "MGR", "Manager SDM", 2, "Budi", "8903002", "Bagian SDM", null, false);
+        var grandchild = SoResponse.flat(3L, 2L, "STF", "Staff HRD", 3, null, null, "Sub Bagian SDM", null, true);
+
+        when(repository.fetch(6)).thenReturn(List.of(root, child, grandchild));
+
+        var result = service.fetchTree(6);
+
+        var hierarchy = (SoResponse) result.get("hierarchy");
+        assertNotNull(hierarchy);
+        assertEquals(1L, hierarchy.id());
+        assertEquals("Direktur", hierarchy.namaJabatan());
+        assertEquals(1, hierarchy.children().size());
+
+        var childNode = hierarchy.children().getFirst();
+        assertEquals("Manager SDM", childNode.namaJabatan());
+        assertEquals(1, childNode.children().size());
+
+        var grandchildNode = childNode.children().getFirst();
+        assertEquals("Staff HRD", grandchildNode.namaJabatan());
+        assertTrue(grandchildNode.isLowong());
+        assertTrue(grandchildNode.children().isEmpty());
+    }
+
+    @Test
+    void fetchTreeMultiRootReturnsList() {
+        var root1 = SoResponse.flat(1L, null, "DEWAS", "Dewan Pengawas", 1, "Agus", "111", "Dewan Pengawas", null, false);
+        var root2 = SoResponse.flat(2L, null, "DIRUT", "Direktur Utama", 1, "Bambang", "222", "Direksi", null, false);
+
+        when(repository.fetch(6)).thenReturn(List.of(root1, root2));
+
+        var result = service.fetchTree(6);
+
+        @SuppressWarnings("unchecked")
+        var hierarchyList = (List<SoResponse>) result.get("hierarchy");
+        assertNotNull(hierarchyList);
+        assertEquals(2, hierarchyList.size());
+        assertEquals("Dewan Pengawas", hierarchyList.get(0).namaJabatan());
+        assertEquals("Direktur Utama", hierarchyList.get(1).namaJabatan());
+    }
+
+    @Test
+    void fetchTreeEmptyReturnsEmptyMap() {
+        when(repository.fetch(6)).thenReturn(List.of());
+
+        var result = service.fetchTree(6);
+
         assertNotNull(result.get("hierarchy"));
+        assertTrue(result.get("hierarchy") instanceof java.util.Map);
+    }
+
+    @Test
+    void fetchBackwardsCompatibilityDelegatesToFetchTree() {
+        var root = SoResponse.flat(1L, null, "DIR", "Direktur", 1, "Andi", "8903001", "Direksi", null, false);
+        when(repository.fetch(6)).thenReturn(List.of(root));
+
+        var result = service.fetch();
+
+        assertNotNull(result.get("hierarchy"));
+        verify(repository).fetch(6);
     }
 }
