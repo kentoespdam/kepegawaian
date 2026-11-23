@@ -105,6 +105,22 @@ class TestMigrationStages(unittest.TestCase):
         self.assertEqual(status_kawin_map.get(99, 4), 4)
         self.assertEqual(status_kawin_map.get(999, 4), 4)
 
+    def test_stage2_edu_level_mapping(self):
+        from tools.migration.stages.stage2_pegawai import _EDU_LEVEL_MAP
+
+        # Verify sys_reference (code='pendidikan') value -> jenjang_pendidikan.id
+        self.assertEqual(_EDU_LEVEL_MAP.get(1), 1)  # SD
+        self.assertEqual(_EDU_LEVEL_MAP.get(2), 2)  # SMP
+        self.assertEqual(_EDU_LEVEL_MAP.get(3), 3)  # SMA
+        self.assertEqual(_EDU_LEVEL_MAP.get(4), 4)  # Diploma 1
+        self.assertEqual(_EDU_LEVEL_MAP.get(8), 5)  # Diploma 2 (legacy value 8 -> target 5)
+        self.assertEqual(_EDU_LEVEL_MAP.get(9), 6)  # Diploma 3 (legacy value 9 -> target 6)
+        self.assertEqual(_EDU_LEVEL_MAP.get(5), 7)  # S1 (legacy value 5 -> target 7)
+        self.assertEqual(_EDU_LEVEL_MAP.get(6), 8)  # S2 (legacy value 6 -> target 8)
+        self.assertEqual(_EDU_LEVEL_MAP.get(7), 9)  # S3 (legacy value 7 -> target 9)
+        self.assertIsNone(_EDU_LEVEL_MAP.get(0))    # 0 -> None (unselected)
+        self.assertIsNone(_EDU_LEVEL_MAP.get(99))
+
     def test_stage3_kontrak_grouping_and_latest(self):
         from datetime import date
         from collections import defaultdict

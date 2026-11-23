@@ -98,6 +98,30 @@ def _clean_float(val: Any) -> Optional[float]:
         return None
 
 
+# Mapping legacy sys_reference (code='pendidikan') value -> target jenjang_pendidikan.id
+# Legacy sys_reference:
+#   value 1 -> SD - Sederajat (seq 1)  -> target id 1
+#   value 2 -> SMP - Sederajat (seq 2) -> target id 2
+#   value 3 -> SMA - Sederajat (seq 3) -> target id 3
+#   value 4 -> Diploma 1 (seq 4)       -> target id 4
+#   value 8 -> Diploma 2 (seq 5)       -> target id 5
+#   value 9 -> Diploma 3 (seq 6)       -> target id 6
+#   value 5 -> S1 (seq 7)              -> target id 7
+#   value 6 -> S2 (seq 8)              -> target id 8
+#   value 7 -> S3 (seq 9)              -> target id 9
+_EDU_LEVEL_MAP: dict[int, int] = {
+    1: 1,  # SD - Sederajat
+    2: 2,  # SMP - Sederajat
+    3: 3,  # SMA - Sederajat
+    4: 4,  # Diploma 1
+    8: 5,  # Diploma 2
+    9: 6,  # Diploma 3
+    5: 7,  # S1
+    6: 8,  # S2
+    7: 9,  # S3
+}
+
+
 def _export_unresolved_nik_audit(audit_rows: list[dict[str, Any]]) -> None:
     """Exports unresolved NIK audit list to CSV files for HR reconciliation."""
     if not audit_rows:
@@ -528,7 +552,12 @@ def sync_child_profiles(
             hubungan_keluarga = FAM_RELATION_MAP.get(rel_raw, 4) if rel_raw is not None else None
             status_kawin = 1 if r.get("fam_sts_nikah") == 1 else 0
             fam_pend = r.get("fam_pendidikan")
-            pend_id = fam_pend if fam_pend in valid_jenjang else None
+            try:
+                fam_pend_int = int(fam_pend) if fam_pend is not None else None
+                mapped_fam_pend = _EDU_LEVEL_MAP.get(fam_pend_int)
+                pend_id = mapped_fam_pend if mapped_fam_pend in valid_jenjang else None
+            except (ValueError, TypeError):
+                pend_id = None
 
             fam_name = str(r.get("fam_name") or "").strip()
             bdate_str = str(r.get("fam_birth_date") or "")
@@ -604,7 +633,13 @@ def sync_child_profiles(
                 continue
 
             lvl = r.get("edu_level")
-            jenjang_id = lvl if lvl in valid_jenjang else None
+            try:
+                lvl_int = int(lvl) if lvl is not None else None
+                mapped_jenjang = _EDU_LEVEL_MAP.get(lvl_int)
+                jenjang_id = mapped_jenjang if mapped_jenjang in valid_jenjang else None
+            except (ValueError, TypeError):
+                jenjang_id = None
+
             is_del = 1 if r.get("edu_status") != 1 else 0
             is_lulus = 1 if r.get("edu_lulus") == 1 else 0
             is_latest = 1 if r.get("edu_last_edu_flag") == 1 else 0
@@ -612,14 +647,16 @@ def sync_child_profiles(
             thn_masuk = _extract_year(r.get("edu_sdate"))
             thn_lulus = _extract_year(r.get("edu_edate"))
             gpa = _clean_float(r.get("edu_gpa"))
+            institusi = r.get("edu_institution")
 
-            key = (bio_nik, jenjang_id, thn_masuk)
+            inst_k = institusi if thn_masuk is None else None
+            key = (bio_nik, jenjang_id, inst_k, thn_masuk)
             edu_key_to_legacy.setdefault(key, []).append(r["edu_id"])
 
             edu_records.append({
                 "biodata_id": bio_nik,
                 "jenjang_id": jenjang_id,
-                "institusi": r.get("edu_institution"),
+                "institusi": institusi,
                 "jurusan": r.get("edu_major"),
                 "kota": None,
                 "tahun_masuk": thn_masuk,
@@ -633,25 +670,31 @@ def sync_child_profiles(
                 "version": 0,
             })
 
-        # Deduplicate in-memory
-        dedup_edu: dict[tuple[str, Any, Any], dict[str, Any]] = {}
+        # Deduplicate in-memory by (biodata_id, jenjang_id, institusi, tahun_masuk)
+        dedup_edu: dict[tuple[str, Any, Any, Any], dict[str, Any]] = {}
         for rec in edu_records:
-            k = (rec["biodata_id"], rec["jenjang_id"], rec["tahun_masuk"])
+            inst_k = rec["institusi"] if rec["tahun_masuk"] is None else None
+            k = (rec["biodata_id"], rec["jenjang_id"], inst_k, rec["tahun_masuk"])
             dedup_edu[k] = rec
+
+        # Clean previous migration rows in pendidikan and old mappings to avoid duplicate accumulation
+        execute_query(conn, "DELETE FROM migration_id_map WHERE domain='pegawai' AND legacy_table='emp_education'")
+        execute_query(conn, "DELETE FROM pendidikan WHERE (created_by IS NULL OR created_by = 'SYSTEM')")
 
         batch_upsert(
             conn=conn,
             table_name="pendidikan",
             records=list(dedup_edu.values()),
-            update_columns=["institusi", "jurusan", "kota", "tahun_lulus", "is_lulus", "gpa", "is_latest", "is_deleted"],
+            update_columns=["jenjang_id", "institusi", "jurusan", "kota", "tahun_masuk", "tahun_lulus", "is_lulus", "gpa", "is_latest", "is_deleted"],
             chunk_size=500,
         )
-        edu_target_rows = execute_query(conn, "SELECT id, biodata_id, jenjang_id, tahun_masuk FROM pendidikan")
+        edu_target_rows = execute_query(conn, "SELECT id, biodata_id, jenjang_id, institusi, tahun_masuk FROM pendidikan")
         edu_ids = [row["id"] for row in edu_target_rows]
         results["pendidikan"] = (len(edu_rows), len(dedup_edu), edu_ids)
 
         for tr in edu_target_rows:
-            k = (tr["biodata_id"], tr["jenjang_id"], tr["tahun_masuk"])
+            inst_k = tr["institusi"] if tr["tahun_masuk"] is None else None
+            k = (tr["biodata_id"], tr["jenjang_id"], inst_k, tr["tahun_masuk"])
             if k in edu_key_to_legacy:
                 for leg_id in edu_key_to_legacy[k]:
                     child_mappings.append({
