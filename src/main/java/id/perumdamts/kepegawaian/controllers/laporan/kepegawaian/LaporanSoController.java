@@ -1,9 +1,12 @@
 package id.perumdamts.kepegawaian.controllers.laporan.kepegawaian;
 
 import id.perumdamts.kepegawaian.dto.commons.CustomResult;
+import id.perumdamts.kepegawaian.dto.commons.ListResult;
+import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.SoResponse;
 import id.perumdamts.kepegawaian.enums.AppPermission;
 import id.perumdamts.kepegawaian.services.laporan.kepegawaian.SoService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +26,14 @@ public class LaporanSoController {
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('" + AppPermission.Authority.LAPORAN_READ + "') or hasAuthority('" + AppPermission.Authority.PEGAWAI_READ + "')")
     @Operation(summary = "lap so")
     @GetMapping
-    public ResponseEntity<?> lapSo(
+    public ResponseEntity<ListResult<SoResponse>> lapSo(
+            @Parameter(description = "Batas level jabatan maksimum", example = "6")
             @RequestParam(name = "maxLevel", defaultValue = "6") Integer maxLevel,
+            @Parameter(description = "Format penyajian data (flat atau tree)", example = "flat")
             @RequestParam(name = "format", defaultValue = "flat") String format
     ) {
         if ("tree".equalsIgnoreCase(format)) {
-            return CustomResult.any(service.fetchTree(maxLevel));
+            return CustomResult.list(service.fetchTreeList(maxLevel));
         }
         return CustomResult.list(service.fetchFlat(maxLevel));
     }

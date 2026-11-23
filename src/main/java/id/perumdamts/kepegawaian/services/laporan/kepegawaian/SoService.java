@@ -21,6 +21,10 @@ public class SoService {
         return repository.fetch(level);
     }
 
+    public List<SoResponse> fetchTreeList(Integer maxLevel) {
+        return buildTreeNodes(fetchFlat(maxLevel));
+    }
+
     public Map<String, Object> fetchTree(Integer maxLevel) {
         var flat = fetchFlat(maxLevel);
         return buildHierarchy(flat);
@@ -30,9 +34,9 @@ public class SoService {
         return fetchTree(6);
     }
 
-    private Map<String, Object> buildHierarchy(List<SoResponse> flat) {
+    private List<SoResponse> buildTreeNodes(List<SoResponse> flat) {
         if (flat == null || flat.isEmpty()) {
-            return Map.of("hierarchy", Map.of());
+            return List.of();
         }
 
         var nodes = new HashMap<Long, SoResponse>();
@@ -58,13 +62,20 @@ public class SoService {
             }
         }
 
-        if (roots.size() == 1) {
-            var rootWithChildren = buildNode(roots.getFirst(), childrenMap);
-            return Map.of("hierarchy", rootWithChildren);
+        return roots.stream().map(r -> buildNode(r, childrenMap)).toList();
+    }
+
+    private Map<String, Object> buildHierarchy(List<SoResponse> flat) {
+        var treeNodes = buildTreeNodes(flat);
+        if (treeNodes.isEmpty()) {
+            return Map.of("hierarchy", Map.of());
         }
 
-        var rootsWithChildren = roots.stream().map(r -> buildNode(r, childrenMap)).toList();
-        return Map.of("hierarchy", rootsWithChildren);
+        if (treeNodes.size() == 1) {
+            return Map.of("hierarchy", treeNodes.getFirst());
+        }
+
+        return Map.of("hierarchy", treeNodes);
     }
 
     private SoResponse buildNode(SoResponse node, Map<Long, List<SoResponse>> childrenMap) {

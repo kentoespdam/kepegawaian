@@ -98,4 +98,41 @@ class SoServiceTest {
         assertNotNull(result.get("hierarchy"));
         verify(repository).fetch(6);
     }
+
+    @Test
+    void fetchTreeListBuildsHierarchyRootNodes() {
+        var root = SoResponse.flat(1L, null, "DIR", "Direktur", 1, "Andi", "8903001", "Direksi", null, false);
+        var child = SoResponse.flat(2L, 1L, "MGR", "Manager SDM", 2, "Budi", "8903002", "Bagian SDM", null, false);
+        var grandchild = SoResponse.flat(3L, 2L, "STF", "Staff HRD", 3, null, null, "Sub Bagian SDM", null, true);
+
+        when(repository.fetch(6)).thenReturn(List.of(root, child, grandchild));
+
+        var result = service.fetchTreeList(6);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        var rootNode = result.getFirst();
+        assertEquals(1L, rootNode.id());
+        assertEquals("Direktur", rootNode.namaJabatan());
+        assertEquals(1, rootNode.children().size());
+
+        var childNode = rootNode.children().getFirst();
+        assertEquals("Manager SDM", childNode.namaJabatan());
+        assertEquals(1, childNode.children().size());
+
+        var grandchildNode = childNode.children().getFirst();
+        assertEquals("Staff HRD", grandchildNode.namaJabatan());
+        assertTrue(grandchildNode.isLowong());
+        assertTrue(grandchildNode.children().isEmpty());
+    }
+
+    @Test
+    void fetchTreeListEmptyReturnsEmptyList() {
+        when(repository.fetch(6)).thenReturn(List.of());
+
+        var result = service.fetchTreeList(6);
+
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+    }
 }
