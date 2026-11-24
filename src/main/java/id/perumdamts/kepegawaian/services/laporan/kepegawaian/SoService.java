@@ -17,12 +17,19 @@ public class SoService {
     private final SoRepository repository;
 
     public List<SoResponse> fetchFlat(Integer maxLevel) {
-        int level = (maxLevel == null || maxLevel <= 0) ? 6 : maxLevel;
-        return repository.fetch(level);
+        return repository.fetch(maxLevel);
+    }
+
+    public List<SoResponse> fetchFlat() {
+        return repository.fetch(null);
     }
 
     public List<SoResponse> fetchTreeList(Integer maxLevel) {
         return buildTreeNodes(fetchFlat(maxLevel));
+    }
+
+    public List<SoResponse> fetchTreeList() {
+        return buildTreeNodes(fetchFlat());
     }
 
     public Map<String, Object> fetchTree(Integer maxLevel) {
@@ -30,8 +37,12 @@ public class SoService {
         return buildHierarchy(flat);
     }
 
+    public Map<String, Object> fetchTree() {
+        return buildHierarchy(fetchFlat());
+    }
+
     public Map<String, Object> fetch() {
-        return fetchTree(6);
+        return fetchTree();
     }
 
     private List<SoResponse> buildTreeNodes(List<SoResponse> flat) {

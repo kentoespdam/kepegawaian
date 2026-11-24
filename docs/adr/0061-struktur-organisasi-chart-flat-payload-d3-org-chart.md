@@ -9,8 +9,8 @@
 - **Decision**:
   1. **Dual Format Support**: Endpoint `GET /laporan/kepegawaian/so` secara default mengembalikan **Flat Array** (`CustomResult.list(...)`), dan menyediakan opsi query parameter `?format=tree` untuk klien yang membutuhkan struktur hierarki berakar (nested tree dengan array `children`).
   2. **Standard Field Naming**: Mengubah field legacy `key` dan `boss` menjadi `id` dan `parentId` (bernilai `null` untuk root/Dewan Pengawas). Menggunakan penamaan field deskriptif: `kodeJabatan`, `namaJabatan`, `level`, `namaPegawai`, `nipam`, `namaOrganisasi`, `fotoProfil`, dan `isLowong`.
-  3. **Depth Filter**: Menyediakan parameter opsional `?maxLevel=N` dengan nilai bawaan `6` (menampilkan posisi struktural dari Dewan Pengawas & Direksi hingga tingkat Supervisor, mengecualikan Staf pelaksana reguler level 7).
-  4. **Vacancy Handling**: Jabatan struktural yang belum memiliki pejabat aktif (`isLowong = true`) tetap dimunculkan di dalam bagan organisasi dengan `namaPegawai = null` dan `nipam = null`.
+  3. **Depth Filter & Full Coverage**: Secara default, data yang disajikan mencakup seluruh kedalaman hierarki hingga Staf (level 7). Menyediakan parameter query opsional `?maxLevel=N` (default `null`/seluruh level) jika klien ingin membatasi kedalaman struktur (misalnya `6` untuk membatasi hingga tingkat Supervisor).
+  4. **Jabatan as Main Data & Vacancy Handling**: Query menggunakan tabel `jabatan` sebagai entitas utama (`FROM jabatan WHERE is_deleted = false`) dengan `LEFT JOIN` ke `pegawai` aktif (`status_kerja = 2` dan `is_deleted = false`) serta `LEFT JOIN` ke `biodata` (`is_deleted = false`). Dengan pendekatan ini, posisi jabatan yang belum memiliki pejabat aktif tetap muncul di dalam bagan organisasi dengan `isLowong = true`, `namaPegawai = null`, dan `nipam = null`.
   5. **Security & Authorization**: Mempertahankan perlindungan `@PreAuthorize("hasRole('ADMIN') or hasAuthority('LAPORAN:READ') or hasAuthority('PEGAWAI:READ')")`.
 
 - **Consequences**:

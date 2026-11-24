@@ -22,16 +22,15 @@ class SoServiceTest {
     private SoService service;
 
     @Test
-    void fetchFlatDelegatesToRepositoryWithDefaults() {
-        when(repository.fetch(6)).thenReturn(List.of());
+    void fetchFlatDelegatesToRepository() {
+        when(repository.fetch(null)).thenReturn(List.of());
         when(repository.fetch(3)).thenReturn(List.of());
 
+        service.fetchFlat();
         service.fetchFlat(null);
-        service.fetchFlat(0);
-        service.fetchFlat(-1);
         service.fetchFlat(3);
 
-        verify(repository, times(3)).fetch(6);
+        verify(repository, times(2)).fetch(null);
         verify(repository, times(1)).fetch(3);
     }
 
@@ -91,12 +90,35 @@ class SoServiceTest {
     @Test
     void fetchBackwardsCompatibilityDelegatesToFetchTree() {
         var root = SoResponse.flat(1L, null, "DIR", "Direktur", 1, "Andi", "8903001", "Direksi", null, false);
-        when(repository.fetch(6)).thenReturn(List.of(root));
+        when(repository.fetch(null)).thenReturn(List.of(root));
 
         var result = service.fetch();
 
         assertNotNull(result.get("hierarchy"));
-        verify(repository).fetch(6);
+        verify(repository).fetch(null);
+    }
+
+    @Test
+    void fetchTreeNoArgFetchesAllLevels() {
+        var root = SoResponse.flat(1L, null, "DIR", "Direktur", 1, "Andi", "8903001", "Direksi", null, false);
+        when(repository.fetch(null)).thenReturn(List.of(root));
+
+        var result = service.fetchTree();
+
+        assertNotNull(result.get("hierarchy"));
+        verify(repository).fetch(null);
+    }
+
+    @Test
+    void fetchTreeListNoArgFetchesAllLevels() {
+        var root = SoResponse.flat(1L, null, "DIR", "Direktur", 1, "Andi", "8903001", "Direksi", null, false);
+        when(repository.fetch(null)).thenReturn(List.of(root));
+
+        var result = service.fetchTreeList();
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        verify(repository).fetch(null);
     }
 
     @Test

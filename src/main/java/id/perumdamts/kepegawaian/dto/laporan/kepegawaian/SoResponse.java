@@ -15,7 +15,7 @@ public record SoResponse(
         String kodeJabatan,
         @Schema(description = "Nama Jabatan", example = "Kepala Dewan Pengawas")
         String namaJabatan,
-        @Schema(description = "Level Jabatan (1: Dewas s.d. 6: Supervisor)", example = "1")
+        @Schema(description = "Level Jabatan (1: Dewas s.d. 7: Staf)", example = "1")
         Integer level,
         @Schema(description = "Nama Pejabat Aktif (null jika lowong)", example = "Drs. H. Suwandi, M.M.")
         String namaPegawai,

@@ -17,7 +17,21 @@ class LaporanSoControllerTest {
     private final LaporanSoController controller = new LaporanSoController(service);
 
     @Test
-    void lapSoFlatReturnsListResult() {
+    void lapSoFlatDefaultReturnsListResult() {
+        var item = SoResponse.flat(1L, null, "DIR", "Direktur", 1, "Andi", "8903001", "Direksi", null, false);
+        when(service.fetchFlat(null)).thenReturn(List.of(item));
+
+        ResponseEntity<ListResult<SoResponse>> response = controller.lapSo(null, "flat");
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(1, response.getBody().getData().size());
+        verify(service).fetchFlat(null);
+        verify(service, never()).fetchTreeList(any());
+    }
+
+    @Test
+    void lapSoFlatWithMaxLevelReturnsListResult() {
         var item = SoResponse.flat(1L, null, "DIR", "Direktur", 1, "Andi", "8903001", "Direksi", null, false);
         when(service.fetchFlat(6)).thenReturn(List.of(item));
 

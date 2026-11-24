@@ -9,6 +9,7 @@ import id.perumdamts.kepegawaian.dto.laporan.kepegawaian.SoResponse;
 import id.perumdamts.kepegawaian.mapper.laporan.kepegawaian.SoRecordMapper;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 
@@ -17,7 +18,12 @@ import org.springframework.stereotype.Repository;
 public class SoRepository {
     private final DSLContext dsl;
 
-    public List<SoResponse> fetch(int maxLevel) {
+    public List<SoResponse> fetch(Integer maxLevel) {
+        Condition condition = JABATAN.IS_DELETED.eq(false);
+        if (maxLevel != null && maxLevel > 0) {
+            condition = condition.and(JABATAN.LEVEL_ID.le((long) maxLevel));
+        }
+
         return dsl.select(
                         JABATAN.ID.as("id"),
                         JABATAN.PARENT_ID.as("parent_id"),
@@ -32,15 +38,16 @@ public class SoRepository {
                 .from(JABATAN)
                 .leftJoin(ORGANISASI).on(JABATAN.ORGANISASI_ID.eq(ORGANISASI.ID))
                 .leftJoin(PEGAWAI).on(JABATAN.ID.eq(PEGAWAI.JABATAN_ID)
-                        .and(PEGAWAI.STATUS_KERJA.eq((byte) 2)))
-                .leftJoin(BIODATA).on(PEGAWAI.BIODATA_ID.eq(BIODATA.NIK))
-                .where(JABATAN.IS_DELETED.eq(false)
-                        .and(JABATAN.LEVEL_ID.le((long) maxLevel)))
+                        .and(PEGAWAI.STATUS_KERJA.eq((byte) 2))
+                        .and(PEGAWAI.IS_DELETED.eq(false)))
+                .leftJoin(BIODATA).on(PEGAWAI.BIODATA_ID.eq(BIODATA.NIK)
+                        .and(BIODATA.IS_DELETED.eq(false)))
+                .where(condition)
                 .orderBy(JABATAN.LEVEL_ID.asc(), JABATAN.ID.asc())
                 .fetch(SoRecordMapper::map);
     }
 
     public List<SoResponse> fetch() {
-        return fetch(6);
+        return fetch(null);
     }
 }

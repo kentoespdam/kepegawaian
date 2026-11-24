@@ -36,7 +36,7 @@ Pada aplikasi legacy (SmartOffice PHP), visualisasi struktur organisasi mengguna
 * **Query Parameters**:
   | Parameter | Tipe | Default | Keterangan |
   |-----------|------|---------|------------|
-  | `maxLevel` | `Integer` | `6` | Membatasi kedalaman struktur. Default `6` mencakup Supervisor (Level 1: Dewan Pengawas, 2: Direktur Utama, 3–4: Direktur, 5: Manajer, 6: Supervisor). Level 7 (Staf) dikecualikan secara default. |
+  | `maxLevel` | `Integer` | `null` (opsional) | Membatasi kedalaman struktur. Secara default `null` (seluruh level hingga Staf / level 7 dimuat). Jika ingin membatasi kedalaman, dapat diisi nilai integer misalnya `6` (hingga Supervisor) atau `5` (hingga Manajer). |
   | `format` | `String` | `flat` | `flat` (default untuk `d3-org-chart`) atau `tree` (jika membutuhkan nested hierarki `children`). |
 
 ### Schema Data Response (`format=flat`)
@@ -361,15 +361,16 @@ import { OrgChartNode } from "@/types/laporan/so";
 import { api } from "@/lib/api"; // Axios / Fetch client dengan bearer auth
 
 export default function StrukturOrganisasiPage() {
-  const [maxLevel, setMaxLevel] = useState<number>(6);
+  const [maxLevel, setMaxLevel] = useState<number | undefined>(undefined);
 
   const { data, isLoading, isError, refetch } = useQuery<OrgChartNode[]>({
     queryKey: ["laporan", "so", maxLevel],
     queryFn: async () => {
-      // Panggil endpoint backend
-      const res = await api.get<{ data: OrgChartNode[] }>(
-        `/laporan/kepegawaian/so?maxLevel=${maxLevel}&format=flat`
-      );
+      // Panggil endpoint backend (maxLevel opsional)
+      const url = maxLevel
+        ? `/laporan/kepegawaian/so?maxLevel=${maxLevel}&format=flat`
+        : `/laporan/kepegawaian/so?format=flat`;
+      const res = await api.get<{ data: OrgChartNode[] }>(url);
       return res.data.data;
     },
   });
@@ -391,14 +392,14 @@ export default function StrukturOrganisasiPage() {
           </label>
           <select
             id="maxLevel"
-            value={maxLevel}
-            onChange={(e) => setMaxLevel(Number(e.target.value))}
+            value={maxLevel ?? ""}
+            onChange={(e) => setMaxLevel(e.target.value ? Number(e.target.value) : undefined)}
             className="px-3 py-1.5 text-sm bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
           >
-            <option value={2}>Direksi Saja (Level 1–2)</option>
-            <option value={5}>Hingga Manajer (Level 1–5)</option>
-            <option value={6}>Hingga Supervisor (Level 1–6) — Rekomendasi</option>
-            <option value={7}>Seluruh Karyawan & Staf (Level 1–7)</option>
+            <option value="">Semua Level Hingga Staf (Default)</option>
+            <option value="6">Hingga Supervisor (Level 1–6)</option>
+            <option value="5">Hingga Manajer (Level 1–5)</option>
+            <option value="2">Direksi Saja (Level 1–2)</option>
           </select>
         </div>
       </div>

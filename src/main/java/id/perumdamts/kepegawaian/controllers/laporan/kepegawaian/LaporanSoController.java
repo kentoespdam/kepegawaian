@@ -27,9 +27,9 @@ public class LaporanSoController {
     @Operation(summary = "lap so")
     @GetMapping
     public ResponseEntity<ListResult<SoResponse>> lapSo(
-            @Parameter(description = "Batas level jabatan maksimum", example = "6")
-            @RequestParam(name = "maxLevel", defaultValue = "6") Integer maxLevel,
-            @Parameter(description = "Format penyajian data (flat atau tree)", example = "flat")
+            @Parameter(description = "Maksimal level jabatan (opsional, default null/seluruh level hingga staf)", example = "7")
+            @RequestParam(name = "maxLevel", required = false) Integer maxLevel,
+            @Parameter(description = "Format output: 'flat' (d3-org-chart) atau 'tree'", example = "flat")
             @RequestParam(name = "format", defaultValue = "flat") String format
     ) {
         if ("tree".equalsIgnoreCase(format)) {
